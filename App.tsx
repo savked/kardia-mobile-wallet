@@ -17,9 +17,9 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/Home';
-import SettingScreen from './screens/Setting';
 import TransactionScreen from './screens/Transactions';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import NewsScreen from './screens/News';
 
 declare const global: {HermesInternal: null | {}};
 
@@ -54,7 +54,7 @@ const App = () => {
         >
           <Tab.Screen name="Home" component={HomeScreen} />
           <Tab.Screen name="Transaction" component={TransactionScreen} />
-          <Tab.Screen name="Setting" component={SettingScreen} />
+          <Tab.Screen name="News" component={NewsScreen} />
         </Tab.Navigator>
       </NavigationContainer>
     </>

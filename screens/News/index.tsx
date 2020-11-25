@@ -1,14 +1,14 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-const SettingScreen = () => {
+const NewsScreen = () => {
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text>
-                Transaction screen
+                News screen
             </Text>
         </View>
     )
 }
 
-export default SettingScreen
+export default NewsScreen
