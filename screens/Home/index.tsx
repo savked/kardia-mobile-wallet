@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button'
 
 const HomeScreen = () => {
@@ -13,7 +13,7 @@ const HomeScreen = () => {
   }
 
   return (
-    <View >
+    <SafeAreaView>
       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
         <Button 
           title="Send" 
@@ -24,7 +24,7 @@ const HomeScreen = () => {
         />
         <Button title="Receive" type="outline" onPress={receive} />
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
