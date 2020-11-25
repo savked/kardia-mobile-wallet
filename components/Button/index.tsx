@@ -25,6 +25,9 @@ const parseType = (type: string) => {
     } else if (type === "ghost") {
         typeStyle = styles.ghostButton
         textTypeStyle = styles.ghostButtonText
+    } else if (type === "link") {
+        typeStyle = styles.linkButton
+        textTypeStyle = styles.linkButtonText
     }
 
     return {typeStyle, textTypeStyle}
@@ -58,7 +61,7 @@ const Button = ({title, style, textStyle, onPress, icon, iconName, size = "mediu
     return (
         <TouchableOpacity
             onPress={onPress}
-            style={[styles.button, parseSize(size), typeStyle, style]}
+            style={[styles.button, parseSize(size), typeStyle, style, type === "link" ? {padding: 0, minWidth: 0} : null]}
         >
             <View style={{display:'flex', flexDirection: 'row', alignItems:'center'}}>
                 {

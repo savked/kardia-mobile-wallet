@@ -53,5 +53,12 @@ export const styles = StyleSheet.create({
   },
   ghostButtonText: {
     color: '#364766'
+  },
+  linkButton: {
+    backgroundColor: 'transparent',
+  },
+  linkButtonText: {
+    color: '#3f70b0',
+    fontWeight: 'bold'
   }
 });
