@@ -28,7 +28,7 @@ const Tab = createBottomTabNavigator();
 const App = () => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <NavigationContainer>
         <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -37,8 +37,8 @@ const App = () => {
   
               if (route.name === 'Home') {
                 iconName = 'home';
-              } else if (route.name === 'Setting') {
-                iconName = 'cog';
+              } else if (route.name === 'News') {
+                iconName = 'newspaper-o';
               } else if (route.name === 'Transaction') {
                 iconName = 'exchange'
               }
