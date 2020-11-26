@@ -18,6 +18,7 @@ import TransactionScreen from './screens/Transactions';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NewsScreen from './screens/News';
 import DAppScreen from './screens/DApp';
+import { RecoilRoot } from 'recoil';
 
 declare const global: {HermesInternal: null | {}};
 
@@ -28,37 +29,39 @@ const App = () => {
     <>
       <StatusBar barStyle="light-content" />
       <SafeAreaProvider>
-        <NavigationContainer>
-          <Tab.Navigator
-            screenOptions={({ route }) => ({
-              tabBarIcon: ({ focused, color, size }) => {
-                let iconName = '';
-    
-                if (route.name === 'Home') {
-                  iconName = 'home';
-                } else if (route.name === 'News') {
-                  iconName = 'newspaper-o';
-                } else if (route.name === 'Transaction') {
-                  iconName = 'exchange'
-                } else if (route.name === 'DApp') {
-                  iconName = 'th-large'
-                }
-    
-                // You can return any component that you like here!
-                return <Icon name={iconName} size={size} color={color} />;
-              },
-            })}
-            tabBarOptions={{
-              activeTintColor: 'tomato',
-              inactiveTintColor: 'gray',
-            }}
-          >
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Transaction" component={TransactionScreen} />
-            <Tab.Screen name="DApp" component={DAppScreen} />
-            <Tab.Screen name="News" component={NewsScreen} />
-          </Tab.Navigator>
-        </NavigationContainer>
+        <RecoilRoot>
+          <NavigationContainer>
+            <Tab.Navigator
+              screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                  let iconName = '';
+      
+                  if (route.name === 'Home') {
+                    iconName = 'home';
+                  } else if (route.name === 'News') {
+                    iconName = 'newspaper-o';
+                  } else if (route.name === 'Transaction') {
+                    iconName = 'exchange'
+                  } else if (route.name === 'DApp') {
+                    iconName = 'th-large'
+                  }
+      
+                  // You can return any component that you like here!
+                  return <Icon name={iconName} size={size} color={color} />;
+                },
+              })}
+              tabBarOptions={{
+                activeTintColor: '#AD182A',
+                inactiveTintColor: 'gray',
+              }}
+            >
+              <Tab.Screen name="Home" component={HomeScreen} />
+              <Tab.Screen name="Transaction" component={TransactionScreen} />
+              <Tab.Screen name="DApp" component={DAppScreen} />
+              <Tab.Screen name="News" component={NewsScreen} />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </RecoilRoot>
       </SafeAreaProvider>
     </>
   );
