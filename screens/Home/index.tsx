@@ -1,13 +1,14 @@
-import React from 'react';
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, TouchableOpacity, Dimensions } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 import Button from '../../components/Button'
 import { truncate } from '../../utils/string';
 import { styles } from './style';
 import HomeHeader from './Header';
 import List from '../../components/List';
-import { useNavigation } from '@react-navigation/native';
 
 const wallets = [
   {
@@ -78,7 +79,12 @@ const txList = [
   }
 ]
 
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
+
 const HomeScreen = () => {
+
+  const [selectedWallet, setSelectedWallet] = useState(0)
+  
   function send() {
     console.log('send');
   }
@@ -89,23 +95,52 @@ const HomeScreen = () => {
 
   const navigation = useNavigation()
 
+  const renderWalletItem = ({item: wallet, index}: any) => {
+    return (
+      <View style={styles.kaiCardContainer}>
+        <LinearGradient colors={['#42378f', '#f53844']} style={styles.kaiCard}>
+          <View>
+            <Text style={styles.kaiCardText}>Address:</Text>
+            <Text style={styles.kaiCardText}>{ truncate(wallet.address, 12, 20) }</Text>
+          </View>
+          <View>
+            <Text style={[styles.kaiCardText, styles.kaiCardBalanceText]}>{wallet.balance} KAI 
+              <Text style={{fontSize: 12}}> ~ 100 USD</Text>
+            </Text>
+          </View>
+        </LinearGradient>
+      </View>
+    )
+  }
+
   return (
     <SafeAreaView>
       <HomeHeader />
       <View style={styles.kaiCardSlider}>
-        <View style={styles.kaiCardContainer}>
-          <LinearGradient colors={['#42378f', '#f53844']} style={styles.kaiCard}>
-            <View>
-              <Text style={styles.kaiCardText}>Address:</Text>
-              <Text style={styles.kaiCardText}>{ truncate(wallets[0].address, 12, 20) }</Text>
-            </View>
-            <View>
-              <Text style={[styles.kaiCardText, styles.kaiCardBalanceText]}>{wallets[0].balance} KAI 
-                <Text style={{fontSize: 12}}> ~ 100 USD</Text>
-              </Text>
-            </View>
-          </LinearGradient>
-        </View>
+        <Carousel
+          data={wallets}
+          renderItem={renderWalletItem}
+          sliderWidth={viewportWidth}
+          itemWidth={viewportWidth}
+          onSnapToItem={setSelectedWallet}
+        />
+        <Pagination
+          dotsLength={wallets.length}
+          activeDotIndex={selectedWallet}
+          containerStyle={{ paddingVertical: 0, height: 20, justifyContent: 'center' }}
+          dotStyle={{
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            marginHorizontal: 8,
+            backgroundColor: 'rgba(255, 255, 255, 0.92)'
+          }}
+          inactiveDotStyle={{
+            // Define styles for inactive dots here
+          }}
+          inactiveDotOpacity={0.4}
+          inactiveDotScale={0.6}
+        />
         <View style={styles.buttonGroupContainer}>
           <Button 
             title="Send" 
@@ -117,7 +152,7 @@ const HomeScreen = () => {
           <Button title="Receive" size="large" type="secondary" onPress={receive} iconName="download" />
         </View>
       </View>
-      <View style={{height: 420}}>
+      <View style={{height: 430}}>
         <List
           items={txList}
           render={(item, index) => {
@@ -132,7 +167,7 @@ const HomeScreen = () => {
           }}
           header={
             <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={{fontSize: 18}}>Recent transactions</Text>
+              <Text style={{fontSize: 18, fontWeight: 'bold'}}>Recent transactions</Text>
               <Button type="link" onPress={() => navigation.navigate('Transaction')} title="View all >" />
             </View>
           }
