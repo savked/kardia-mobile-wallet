@@ -53,6 +53,7 @@ const Button = ({title, style, textStyle, onPress, icon, iconName, size = "mediu
                 default:
                     break;
             }
+            if (textStyle && textStyle.color) iconColor = textStyle.color
             return <Icon style={styles.icon} name={iconName} color={iconColor} size={14} />
         }
         return null

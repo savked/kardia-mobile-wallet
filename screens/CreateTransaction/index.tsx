@@ -1,11 +1,16 @@
-import React from 'react'
-import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React, {useState} from 'react'
+import { View, Text, FlatList } from 'react-native'
 import { styles } from './style';
 import Button from '../../components/Button'
+import TextInput from '../../components/TextInput'
+import { useNavigation } from '@react-navigation/native';
 
-const SendTx = () => {
-    const [value, onChangeText] = React.useState('');
+const CreateTxScreen = () => {
+    const [address, setAddress] = useState('');
+    const [amount, setAmount] = useState('');
+
+    const navigation = useNavigation()
+
     function send() {
         console.log('send');
     }
@@ -17,43 +22,32 @@ const SendTx = () => {
     return (
         <View style={styles.container}>
             <View style={{ marginBottom: 10 }}>
-                <Text style={styles.headline}>Send to address</Text>
-                <View style={{ flexDirection: 'row' }}>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={text => onChangeText(text)}
-                        value={value}
-                    />
-                    <TouchableOpacity onPress={max}>
-                        <Icon name="qrcode" size={25} color={"black"} style={{ position: 'absolute', right: 15, top: 8 }} />
-                    </TouchableOpacity>
-                </View>
-
+                <TextInput
+                    onChangeText={setAddress}
+                    value={address}
+                    iconName="qrcode"
+                    onIconPress={max}
+                    headline="Send to address"
+                />
             </View>
 
             <View style={{ marginBottom: 20 }}>
-                <Text style={styles.headline}>Amount</Text>
-                <View style={{ flexDirection: 'row' }}>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={text => onChangeText(text)}
-                        value={value}
-                    />
-                    <TouchableOpacity onPress={max}>
-                        <Text style={{ position: 'absolute', right: 10, top: 9 }}>MAX</Text>
-                    </TouchableOpacity>
-                </View>
+                <TextInput
+                    onChangeText={setAmount}
+                    value={amount}
+                    headline="Amount"
+                />
             </View>
 
             <View style={{ marginBottom: 20 }}>
                 <Text style={styles.title}>Recap of your transaction</Text>
                 <View style={styles.wrap}>
-                    <View style={styles.left}>
-                        <Text >Gas Price</Text>
+                    <View>
+                        <Text>Gas Price</Text>
                         <Text>300 GWEI</Text>
                     </View>
-                    <View style={styles.right}>
-                        <Text >Gas Limit</Text>
+                    <View>
+                        <Text>Gas Limit</Text>
                         <Text>21.000 WEI</Text>
                     </View>
                 </View>
@@ -65,12 +59,21 @@ const SendTx = () => {
             <Text style={{ marginTop: 20, fontStyle: 'italic' }}>
                 * Accelerating a transaction by using a higher gas price increases its chances of getting processed by the network faster, but it is not always guaranteed.
             </Text>
-            <Button
-                title="SEND"
-                onPress={send}
-                iconName="paper-plane"
-                style={{ backgroundColor: '#00487C', marginTop: 20 }}
-            />
+            <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-around' }}>
+                <Button
+                    title="SEND"
+                    onPress={send}
+                    iconName="paper-plane"
+                    type="primary"
+                    size="large"
+                />
+                <Button
+                    title="CANCEL"
+                    onPress={() => navigation.goBack()}
+                    type="outline"
+                    size="large"
+                />
+            </View>
         </View>
     )
 }
@@ -111,4 +114,4 @@ const ListCard = () => {
         />
     )
 }
-export default SendTx
+export default CreateTxScreen

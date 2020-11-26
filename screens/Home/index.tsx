@@ -36,8 +36,14 @@ const HomeScreen = () => {
   const [wallets, setWallets] = useRecoilState(walletsAtom)
   const [txList, setTxList] = useState([] as any[])
 
+  const navigation = useNavigation()
+
   function send() {
-    console.log('send');
+    navigation.navigate('Transaction', {screen: 'CreateTx'});
+  }
+
+  function importWallet() {
+
   }
 
   const parseTXForList = (tx: Transaction) => {
@@ -45,7 +51,7 @@ const HomeScreen = () => {
       label: tx.hash,
       value: tx.hash,
       amount: tx.amount,
-      type: tx.from === wallets[selectedWallet].address ? 'OUT' : 'IN'
+      type: wallets[selectedWallet] && tx.from === wallets[selectedWallet].address ? 'OUT' : 'IN'
     }
   }
 
@@ -61,8 +67,6 @@ const HomeScreen = () => {
   useEffect(() => {
     getTX()
   }, [selectedWallet])
-
-  const navigation = useNavigation()
 
   const renderWalletItem = ({ item: wallet, index }: any) => {
     return (
@@ -116,9 +120,17 @@ const HomeScreen = () => {
             type="primary"
             onPress={send}
             iconName="paper-plane"
-            size="large"
+            size="small"
           />
-          <Button onPress={() => setShowQRModal(true)} title="Receive" size="large" type="secondary" iconName="download" />
+          <Button onPress={() => setShowQRModal(true)} title="Receive" size="small" type="secondary" iconName="download" />
+          <Button
+            title="Import"
+            onPress={importWallet}
+            type="outline"
+            iconName="plus"
+            size="small"
+            textStyle={{color: '#FFFFFF'}}
+          />
         </View>
       </View>
       <View style={{ height: 430 }}>

@@ -14,12 +14,10 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/Home';
-import TransactionScreen from './screens/Transactions';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NewsScreen from './screens/News';
 import DAppScreen from './screens/DApp';
-import Send from './screens/Send';
-
+import TransactionStackScreen from './TransactionStack'
 import { RecoilRoot } from 'recoil';
 
 declare const global: {HermesInternal: null | {}};
@@ -60,10 +58,9 @@ const App = () => {
               }}
             >
               <Tab.Screen name="Home" component={HomeScreen} />
-              <Tab.Screen name="Transaction" component={TransactionScreen} />
+              <Tab.Screen name="Transaction" component={TransactionStackScreen} />
               <Tab.Screen name="DApp" component={DAppScreen} />
               <Tab.Screen name="News" component={NewsScreen} />
-              <Tab.Screen name="Send" component={Send} />
             </Tab.Navigator>
           </NavigationContainer>
         </RecoilRoot>
