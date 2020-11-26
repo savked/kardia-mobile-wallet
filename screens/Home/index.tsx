@@ -14,6 +14,7 @@ import List from '../../components/List';
 import Modal from "../../components/Modal"
 import { useRecoilState } from 'recoil';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import { getTXHistory } from '../../services/api';
 
 const fakeWallets = [
   {
@@ -26,75 +27,6 @@ const fakeWallets = [
   }
 ]
 
-const txList = [
-  {
-    label: '0xbe1cdf260866f7ae710ad1963203ab1c9bcc9e0e86798c229d7efdbaaecda559',
-    value: '0xbe1cdf260866f7ae710ad1963203ab1c9bcc9e0e86798c229d7efdbaaecda559',
-    amount: 100,
-    type: 'IN'
-  },
-  {
-    label: '0x94a7c2f45e578d6439ee529ff8d097ab4c15dd9947b5f5cfbf64565bae483a72',
-    value: '0x94a7c2f45e578d6439ee529ff8d097ab4c15dd9947b5f5cfbf64565bae483a72',
-    amount: 100,
-    type: 'IN'
-  },
-  {
-    label: '0x1dacfc9a02136e5b42abcb96dd6dd2cfb8e05548650976ccce98a1e292125646',
-    value: '0x1dacfc9a02136e5b42abcb96dd6dd2cfb8e05548650976ccce98a1e292125646',
-    amount: 100,
-    type: 'OUT'
-  },
-  {
-    label: '0xbe1cdf260866f7ae710ad1963203ab1c9bcc9e0e86798c229d7efdbaaecda558',
-    value: '0xbe1cdf260866f7ae710ad1963203ab1c9bcc9e0e86798c229d7efdbaaecda558',
-    amount: 100,
-    type: 'IN'
-  },
-  {
-    label: '0x94a7c2f45e578d6439ee529ff8d097ab4c15dd9947b5f5cfbf64565bae483a71',
-    value: '0x94a7c2f45e578d6439ee529ff8d097ab4c15dd9947b5f5cfbf64565bae483a71',
-    amount: 100,
-    type: 'OUT'
-  },
-  {
-    label: '0x1dacfc9a02136e5b42abcb96dd6dd2cfb8e05548650976ccce98a1e292125645',
-    value: '0x1dacfc9a02136e5b42abcb96dd6dd2cfb8e05548650976ccce98a1e292125645',
-    amount: 100,
-    type: 'OUT'
-  },
-  {
-    label: '0xbe1cdf260866f7ae710ad1963203ab1c9bcc9e0e86798c229d7efdbaaecda557',
-    value: '0xbe1cdf260866f7ae710ad1963203ab1c9bcc9e0e86798c229d7efdbaaecda557',
-    amount: 100,
-    type: 'OUT'
-  },
-  {
-    label: '0x94a7c2f45e578d6439ee529ff8d097ab4c15dd9947b5f5cfbf64565bae483a73',
-    value: '0x94a7c2f45e578d6439ee529ff8d097ab4c15dd9947b5f5cfbf64565bae483a73',
-    amount: 100,
-    type: 'IN'
-  },
-  {
-    label: '0x1dacfc9a02136e5b42abcb96dd6dd2cfb8e05548650976ccce98a1e292125644',
-    value: '0x1dacfc9a02136e5b42abcb96dd6dd2cfb8e05548650976ccce98a1e292125644',
-    amount: 100,
-    type: 'IN'
-  },
-  {
-    label: '0x1dacfc9a02136e5b42abcb96dd6dd2cfb8e05548650976ccce98a1e292125649',
-    value: '0x1dacfc9a02136e5b42abcb96dd6dd2cfb8e05548650976ccce98a1e292125649',
-    amount: 100,
-    type: 'IN'
-  },
-  {
-    label: '0x1dacfc9a02136e5b42abcb96dd6dd2cfb8e05548650976ccce98a1e292125650',
-    value: '0x1dacfc9a02136e5b42abcb96dd6dd2cfb8e05548650976ccce98a1e292125650',
-    amount: 100,
-    type: 'OUT'
-  }
-]
-
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
 const HomeScreen = () => {
@@ -102,14 +34,33 @@ const HomeScreen = () => {
   const [selectedWallet, setSelectedWallet] = useRecoilState(selectedWalletAtom)
   const [showQRModal, setShowQRModal] = useState(false)
   const [wallets, setWallets] = useRecoilState(walletsAtom)
+  const [txList, setTxList] = useState([] as any[])
 
   function send() {
     console.log('send');
   }
 
+  const parseTXForList = (tx: Transaction) => {
+    return {
+      label: tx.hash,
+      value: tx.hash,
+      amount: tx.amount,
+      type: tx.from === wallets[selectedWallet].address ? 'OUT' : 'IN'
+    }
+  }
+
+  const getTX = () => {
+    getTXHistory()
+      .then(txList => setTxList(txList.map(parseTXForList)))
+  }
+
   useEffect(() => {
     setWallets(fakeWallets)
   }, [])
+
+  useEffect(() => {
+    getTX()
+  }, [selectedWallet])
 
   const navigation = useNavigation()
 
