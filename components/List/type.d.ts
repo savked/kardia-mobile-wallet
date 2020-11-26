@@ -8,7 +8,7 @@ interface ListProps {
     items: ListItemProps[];
     selectedIndex?: number;
     onSelect?: (itemIndex: number) => void
-    render?: (item: ListItemProps, index: number) => any;
+    render?: (item: any, index: number) => any;
     initialNumToRender?: number;
     header?: any;
 }
