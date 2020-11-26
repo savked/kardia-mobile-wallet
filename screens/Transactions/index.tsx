@@ -21,7 +21,6 @@ const txList = [
 const TransactionScreen = () => {
 
     const onSelect = (itemIndex: number) => {
-        console.log(itemIndex)
         Alert.alert(`${itemIndex}`)
     }
 
@@ -39,7 +38,6 @@ const TransactionScreen = () => {
                     //     return <TouchableOpacity onPress={() => onSelect(index)}><Text>{truncate(item.label, 10, 15)}</Text></TouchableOpacity>
                     // }}
                     onSelect={(itemIndex) => {
-                        console.log(itemIndex)
                         Alert.alert(`${itemIndex}`)
                     }}
                 />
