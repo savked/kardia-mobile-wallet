@@ -18,6 +18,8 @@ import TransactionScreen from './screens/Transactions';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NewsScreen from './screens/News';
 import DAppScreen from './screens/DApp';
+import Send from './screens/Send';
+
 import { RecoilRoot } from 'recoil';
 
 declare const global: {HermesInternal: null | {}};
@@ -44,6 +46,8 @@ const App = () => {
                     iconName = 'exchange'
                   } else if (route.name === 'DApp') {
                     iconName = 'th-large'
+                  } else if (route.name === 'Send') {
+                    iconName = 'th-large'
                   }
       
                   // You can return any component that you like here!
@@ -59,6 +63,7 @@ const App = () => {
               <Tab.Screen name="Transaction" component={TransactionScreen} />
               <Tab.Screen name="DApp" component={DAppScreen} />
               <Tab.Screen name="News" component={NewsScreen} />
+              <Tab.Screen name="Send" component={Send} />
             </Tab.Navigator>
           </NavigationContainer>
         </RecoilRoot>
