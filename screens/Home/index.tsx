@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,8 +12,10 @@ import { styles } from './style';
 import HomeHeader from './Header';
 import List from '../../components/List';
 import Modal from "../../components/Modal"
+import { useRecoilState } from 'recoil';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 
-const wallets = [
+const fakeWallets = [
   {
     address: '0xf8fcb8eEc610699Bd7d0A30433B75C5f60097eFC',
     balance: 123
@@ -97,16 +99,17 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 
 const HomeScreen = () => {
 
-  const [selectedWallet, setSelectedWallet] = useState(0)
+  const [selectedWallet, setSelectedWallet] = useRecoilState(selectedWalletAtom)
   const [showQRModal, setShowQRModal] = useState(false)
+  const [wallets, setWallets] = useRecoilState(walletsAtom)
 
   function send() {
     console.log('send');
   }
 
-  function receive() {
-    console.log('receive');
-  }
+  useEffect(() => {
+    setWallets(fakeWallets)
+  }, [])
 
   const navigation = useNavigation()
 
