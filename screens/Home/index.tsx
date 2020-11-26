@@ -7,6 +7,7 @@ import { truncate } from '../../utils/string';
 import { styles } from './style';
 import HomeHeader from './Header';
 import List from '../../components/List';
+import { useNavigation } from '@react-navigation/native';
 
 const wallets = [
   {
@@ -86,6 +87,8 @@ const HomeScreen = () => {
     console.log('receive');
   }
 
+  const navigation = useNavigation()
+
   return (
     <SafeAreaView>
       <HomeHeader />
@@ -130,7 +133,7 @@ const HomeScreen = () => {
           header={
             <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{fontSize: 18}}>Recent transactions</Text>
-              <Button type="link" onPress={() => console.log('tx')} title="View all >" />
+              <Button type="link" onPress={() => navigation.navigate('Transaction')} title="View all >" />
             </View>
           }
         />
