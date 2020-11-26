@@ -3,7 +3,7 @@ import {Modal, View} from 'react-native'
 import Button from '../Button'
 import {styles} from './style'
 
-const CustomModal = ({animationType = "slide", visible, onClose, children, full = false}: CustomModalProps) => {
+const CustomModal = ({animationType = "slide", visible, onClose, children, full = false, showCloseButton = true}: CustomModalProps) => {
 
     return (
         <View style={styles.centeredView}>
@@ -15,7 +15,7 @@ const CustomModal = ({animationType = "slide", visible, onClose, children, full 
             >
                 <View style={[styles.modalView, full ? {flex: 1} : {flex: 0.5}]}>
                     {children}
-                    <Button size="small" title="Close" onPress={onClose} />
+                    {showCloseButton && <Button size="small" title="Close" onPress={onClose} /> }
                 </View>
             </Modal>
         </View>

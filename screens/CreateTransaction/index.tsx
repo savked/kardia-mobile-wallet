@@ -1,13 +1,16 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { View, Text, FlatList } from 'react-native'
+import QRCodeScanner from 'react-native-qrcode-scanner';
 import { styles } from './style';
 import Button from '../../components/Button'
 import TextInput from '../../components/TextInput'
 import { useNavigation } from '@react-navigation/native';
+import { truncate } from '../../utils/string';
 
 const CreateTxScreen = () => {
     const [address, setAddress] = useState('');
     const [amount, setAmount] = useState('');
+    const [showQRModal, setShowQRModal] = useState(false)
 
     const navigation = useNavigation()
 
@@ -15,8 +18,28 @@ const CreateTxScreen = () => {
         console.log('send');
     }
 
-    function max() {
-        console.log('max')
+    const showQRScanner = () => {
+        console.log('here')
+        setShowQRModal(true)
+    }
+
+    if (showQRModal) {
+        return (
+            <QRCodeScanner
+                onRead={(e) => {
+                    setAddress(e.data)
+                    setShowQRModal(false)
+                }}
+                topContent={
+                    <Text style={styles.centerText}>
+                        Scan address QR code
+                    </Text>
+                }
+                bottomContent={
+                    <Button style={{marginTop: 50}} title="Cancel" onPress={() => setShowQRModal(false)} />
+                }
+            />
+        )
     }
 
     return (
@@ -24,9 +47,9 @@ const CreateTxScreen = () => {
             <View style={{ marginBottom: 10 }}>
                 <TextInput
                     onChangeText={setAddress}
-                    value={address}
+                    value={truncate(address, 10, 20)}
                     iconName="qrcode"
-                    onIconPress={max}
+                    onIconPress={showQRScanner}
                     headline="Send to address"
                 />
             </View>

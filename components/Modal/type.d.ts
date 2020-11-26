@@ -3,5 +3,6 @@ interface CustomModalProps {
     visible: boolean;
     onClose: () => void;
     children?: any;
-    full?: boolean
+    full?: boolean;
+    showCloseButton?: boolean;
 }
