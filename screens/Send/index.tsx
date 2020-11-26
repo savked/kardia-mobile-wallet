@@ -1,40 +1,56 @@
 import React from 'react'
-import { View, Text, TextInput, FlatList } from 'react-native'
+import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { styles } from './style';
 import Button from '../../components/Button'
+
 const SendTx = () => {
     const [value, onChangeText] = React.useState('');
-    const [activeButton, updateActiveButton] = React.useState("first");
     function send() {
         console.log('send');
     }
 
+    function max() {
+        console.log('max')
+    }
+
     return (
         <View style={styles.container}>
-            <View style={{ marginBottom: 15 }}>
+            <View style={{ marginBottom: 10 }}>
                 <Text style={styles.headline}>Send to address</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={text => onChangeText(text)}
-                    value={value}
-                />
+                <View style={{ flexDirection: 'row' }}>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={text => onChangeText(text)}
+                        value={value}
+                    />
+                    <TouchableOpacity onPress={max}>
+                        <Icon name="qrcode" size={25} color={"black"} style={{ position: 'absolute', right: 15, top: 8 }} />
+                    </TouchableOpacity>
+                </View>
+
             </View>
 
-            <View style={{ marginBottom: 15 }}>
+            <View style={{ marginBottom: 20 }}>
                 <Text style={styles.headline}>Amount</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={text => onChangeText(text)}
-                    value={value}
-                />
+                <View style={{ flexDirection: 'row' }}>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={text => onChangeText(text)}
+                        value={value}
+                    />
+                    <TouchableOpacity onPress={max}>
+                        <Text style={{ position: 'absolute', right: 10, top: 9 }}>MAX</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
-            <View style={{ marginBottom: 15 }}>
+            <View style={{ marginBottom: 20 }}>
                 <Text style={styles.title}>Recap of your transaction</Text>
                 <View style={styles.wrap}>
                     <View style={styles.left}>
                         <Text >Gas Price</Text>
-                        <Text>300 GWEI</Text> 
+                        <Text>300 GWEI</Text>
                     </View>
                     <View style={styles.right}>
                         <Text >Gas Limit</Text>
@@ -44,16 +60,16 @@ const SendTx = () => {
             </View>
 
             <Text style={styles.title}>Transaction Speed</Text>
-            <ListCard/>
+            <ListCard />
 
-            <Text style={{marginTop:15, fontStyle:'italic'}}>
+            <Text style={{ marginTop: 20, fontStyle: 'italic' }}>
                 * Accelerating a transaction by using a higher gas price increases its chances of getting processed by the network faster, but it is not always guaranteed.
             </Text>
             <Button
                 title="SEND"
                 onPress={send}
                 iconName="paper-plane"
-                style={{ backgroundColor: '#00487C', marginTop:15 }}
+                style={{ backgroundColor: '#00487C', marginTop: 20 }}
             />
         </View>
     )
@@ -82,8 +98,10 @@ const ListCard = () => {
             data={data}
             renderItem={({ item, index }) => {
                 return (
-                    <View style={{ backgroundColor: '#F7F8F9', padding: 20, borderRadius: 8}}>
-                        <Text style={{textAlign: 'center'}}>{item.title}</Text>
+                    <View style={{
+                        backgroundColor: 'white', padding: 20, borderRadius: 8,
+                    }}>
+                        <Text style={{ textAlign: 'center' }}>{item.title}</Text>
                         <Text>{item.time}</Text>
                     </View>
                 )

@@ -14,7 +14,9 @@ export const styles = StyleSheet.create({
         borderRadius: 8,
         height: 40, 
         borderColor: 'gray',
-        borderWidth: 1
+        borderWidth: 1,
+        backgroundColor:'white',
+        minWidth:'100%',
     },
 
     wrap:{
