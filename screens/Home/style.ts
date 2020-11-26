@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     kaiCardSlider: {
-        backgroundColor: '#2e2b2b',
+        backgroundColor: '#2A343D',
         paddingVertical: 15
     },
     kaiCardContainer: {
