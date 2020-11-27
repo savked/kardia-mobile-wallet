@@ -44,8 +44,6 @@ const App = () => {
                     iconName = 'exchange'
                   } else if (route.name === 'DApp') {
                     iconName = 'th-large'
-                  } else if (route.name === 'Send') {
-                    iconName = 'th-large'
                   }
       
                   // You can return any component that you like here!
