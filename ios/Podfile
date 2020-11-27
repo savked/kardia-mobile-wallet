@@ -18,6 +18,8 @@ target 'KardiaWallet' do
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
 
+  pod 'react-native-blur', :path => '../node_modules/@react-native-community/blur'
+
   target 'KardiaWalletTests' do
     inherit! :complete
     # Pods for testing
