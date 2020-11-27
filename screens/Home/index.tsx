@@ -7,7 +7,7 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import Icon from "react-native-vector-icons/FontAwesome"
 import QRCode from 'react-native-qrcode-svg';
 import Button from '../../components/Button'
-import { truncate } from '../../utils/string';
+import { addZero, truncate } from '../../utils/string';
 import { styles } from './style';
 import HomeHeader from './Header';
 import List from '../../components/List';
@@ -15,6 +15,7 @@ import Modal from "../../components/Modal"
 import { useRecoilState } from 'recoil';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import { getTXHistory } from '../../services/api';
+import { getMonthName } from '../../utils/date';
 
 const fakeWallets = [
   {
@@ -51,6 +52,7 @@ const HomeScreen = () => {
       label: tx.hash,
       value: tx.hash,
       amount: tx.amount,
+      date: tx.date,
       type: wallets[selectedWallet] && tx.from === wallets[selectedWallet].address ? 'OUT' : 'IN'
     }
   }
@@ -82,6 +84,17 @@ const HomeScreen = () => {
             </Text>
           </View>
         </LinearGradient>
+      </View>
+    )
+  }
+
+  const renderDate = (date: Date) => {
+    const dateStr = addZero(date.getDate())
+    const monthStr = getMonthName(date.getMonth() + 1)
+    return (
+      <View style={styles.dateContainer}>
+        <Text style={styles.dateText}>{dateStr}</Text>
+        <Text style={styles.dateText}>{monthStr}</Text>
       </View>
     )
   }
@@ -140,15 +153,16 @@ const HomeScreen = () => {
             render={(item, index) => {
               return (
                 <View style={{ padding: 15 }}>
-                  <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    {
-                      item.type === 'IN' && <Icon name="level-down" size={20} color="green" />
-                    }
-                    {
-                      item.type === 'OUT' && <Icon name="level-up" size={20} color="#AD182A" />
-                    }
+                  <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    {renderDate(item.date)}
                     <Text>{truncate(item.label, 10, 15)}</Text>
-                    <Text style={styles.kaiAmount}>{item.amount} KAI</Text>
+                    <Text 
+                      style={
+                        [styles.kaiAmount, item.type === 'IN' ? {color: 'green'} : {color: 'red'}]
+                      }
+                    >
+                      {item.type === 'IN' ? '+' : '-'}{item.amount} KAI
+                    </Text>
                   </TouchableOpacity>
                 </View>
               )

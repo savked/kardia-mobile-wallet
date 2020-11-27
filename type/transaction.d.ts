@@ -3,4 +3,5 @@ interface Transaction {
     to: string;
     hash: string;
     amount: number;
+    date: Date;
 }

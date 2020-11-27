@@ -52,5 +52,14 @@ export const styles = StyleSheet.create({
     },
     kaiAmount: {
         fontWeight: 'bold'
+    },
+    dateContainer: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    dateText: {
+        color: '#b0acac',
+        fontSize: 11,
+        fontWeight: 'bold'
     }
 })
