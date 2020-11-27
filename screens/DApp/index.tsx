@@ -4,12 +4,14 @@ import { styles } from './style'
 
 const DAppScreen = () => {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flex: 1, padding: 20}}>
+            <Text style={styles.title}>Explorer Kardia's ecosystem</Text>
             <FlatList
+                numColumns={2}
                 data={data}
                 renderItem={({ item, index }) => {
                     return (
-                        <View style={{ flexDirection: 'row', padding: 20, backgroundColor: 'white', marginBottom: 10, marginTop: 10, borderRadius: 12, minWidth: '100%' }}>
+                        <View style={styles.appContainer}>
                             <Image
                                 style={styles.thumbnail}
                                 source={{
@@ -18,7 +20,7 @@ const DAppScreen = () => {
                             />
                             <View>
                                 <Text>{item.title}</Text>
-                                <Text>{item.description}</Text>
+                                {/* <Text>{item.description}</Text> */}
                             </View>
                         </View>
                     )
