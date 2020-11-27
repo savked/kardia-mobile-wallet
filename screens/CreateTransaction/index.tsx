@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList } from 'react-native'
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { styles } from './style';
@@ -6,10 +6,13 @@ import Button from '../../components/Button'
 import TextInput from '../../components/TextInput'
 import { useNavigation } from '@react-navigation/native';
 import { truncate } from '../../utils/string';
+import { format, getDigit, isNumber } from '../../utils/number';
+
+const MAX_AMOUNT = 5000000000
 
 const CreateTxScreen = () => {
     const [address, setAddress] = useState('');
-    const [amount, setAmount] = useState('');
+    const [amount, setAmount] = useState('0');
     const [showQRModal, setShowQRModal] = useState(false)
 
     const navigation = useNavigation()
@@ -56,9 +59,17 @@ const CreateTxScreen = () => {
 
             <View style={{ marginBottom: 20 }}>
                 <TextInput
-                    onChangeText={setAmount}
-                    value={amount}
-                    headline="Amount"
+                    onChangeText={(newAmount) => {
+                        const digitOnly = getDigit(newAmount)
+                        if (Number(digitOnly) > MAX_AMOUNT) return
+                        if (digitOnly === '') {
+                            setAmount('0')
+                            return;
+                        }
+                        isNumber(digitOnly) && setAmount(digitOnly)
+                    }}
+                    value={format(Number(amount))}
+                    headline="Amount (maximum: 5,000,000,000)"
                 />
             </View>
 
