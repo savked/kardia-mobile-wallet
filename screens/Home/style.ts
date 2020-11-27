@@ -49,5 +49,8 @@ export const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF', 
         borderTopLeftRadius: 27, 
         borderTopRightRadius: 27 
+    },
+    kaiAmount: {
+        fontWeight: 'bold'
     }
 })

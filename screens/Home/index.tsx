@@ -148,7 +148,7 @@ const HomeScreen = () => {
                       item.type === 'OUT' && <Icon name="level-up" size={20} color="#AD182A" />
                     }
                     <Text>{truncate(item.label, 10, 15)}</Text>
-                    <Text>{item.amount} KAI</Text>
+                    <Text style={styles.kaiAmount}>{item.amount} KAI</Text>
                   </TouchableOpacity>
                 </View>
               )
