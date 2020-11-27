@@ -58,12 +58,12 @@ const HomeScreen = () => {
   }
 
   const getTX = () => {
-    getTXHistory()
+    getTXHistory(wallets[selectedWallet])
       .then(txList => setTxList(txList.map(parseTXForList)))
   }
 
   useEffect(() => {
-    setWallets(fakeWallets)
+    // setWallets(fakeWallets)
   }, [])
 
   useEffect(() => {
@@ -150,9 +150,10 @@ const HomeScreen = () => {
         <View style={styles.transactionContainer}>
           <List
             items={txList}
+            listStyle={{paddingHorizontal: 15}}
             render={(item, index) => {
               return (
-                <View style={{ padding: 15 }}>
+                <View style={[{ padding: 15 }, index % 2 === 0 ? {backgroundColor: 'rgba(0,0,0,0.04)'} : {backgroundColor: '#FFFFFF'}]}>
                   <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     {renderDate(item.date)}
                     <Text>{truncate(item.label, 10, 15)}</Text>

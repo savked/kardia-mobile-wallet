@@ -10,6 +10,6 @@ export const styles = StyleSheet.create({
         paddingVertical: 10
     },
     list: {
-        paddingHorizontal: 15
+        // paddingHorizontal: 15
     }
 })

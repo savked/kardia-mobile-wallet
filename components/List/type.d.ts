@@ -12,4 +12,5 @@ interface ListProps {
     initialNumToRender?: number;
     header?: any;
     ItemSeprator?: any;
+    listStyle?: Record<string, any>
 }

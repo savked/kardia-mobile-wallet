@@ -6,17 +6,17 @@ import { styles } from './style';
 
 // const ItemSeprator = () => <View style={styles.separator} />
 
-const List = ({items, render, onSelect, initialNumToRender, header, ItemSeprator}: ListProps) => {
+const List = ({items, render, onSelect, initialNumToRender, header, ItemSeprator, listStyle}: ListProps) => {
     return (
         <>
             {
                 header && 
-                <View style={styles.list}>
+                <View style={[styles.list, listStyle]}>
                     {header}
                 </View>
             }
             <FlatList
-                style={styles.list}
+                style={[styles.list, listStyle]}
                 data={items}
                 renderItem={({item, index}) => {
                     if (render) return render(item as any, index)

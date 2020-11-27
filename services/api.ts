@@ -1,4 +1,4 @@
-export const getTXHistory = async () => {
+export const getTXHistory = async (wallet: Wallet) => {
     return [
         {
             from: '0xf8fcb8eEc610699Bd7d0A30433B75C5f60097eFC',

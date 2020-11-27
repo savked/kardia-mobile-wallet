@@ -1,49 +1,82 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { useRecoilState } from 'recoil';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import List from '../../components/List';
-import { truncate } from '../../utils/string';
-
-const txList = [
-    {
-        label: '0xbe1cdf260866f7ae710ad1963203ab1c9bcc9e0e86798c229d7efdbaaecda559',
-        value: '0xbe1cdf260866f7ae710ad1963203ab1c9bcc9e0e86798c229d7efdbaaecda559'
-    },
-    {
-        label: '0x94a7c2f45e578d6439ee529ff8d097ab4c15dd9947b5f5cfbf64565bae483a73',
-        value: '0x94a7c2f45e578d6439ee529ff8d097ab4c15dd9947b5f5cfbf64565bae483a73'
-    },
-    {
-        label: '0x1dacfc9a02136e5b42abcb96dd6dd2cfb8e05548650976ccce98a1e292125646',
-        value: '0x1dacfc9a02136e5b42abcb96dd6dd2cfb8e05548650976ccce98a1e292125646'
-    }
-]
+import { getTXHistory } from '../../services/api';
+import { getMonthName } from '../../utils/date';
+import { addZero, truncate } from '../../utils/string';
+import { styles } from './style';
 
 const TransactionScreen = () => {
 
-    const onSelect = (itemIndex: number) => {
-        Alert.alert(`${itemIndex}`)
-    }
+  const [wallets, setWallets] = useRecoilState(walletsAtom)
+  const [selectedWallet, setSelectedWallet] = useRecoilState(selectedWalletAtom)
+  const [txList, setTxList] = useState([] as any[])
 
+  const onSelect = (itemIndex: number) => {
+    Alert.alert(`${itemIndex}`)
+  }
+
+  const parseTXForList = (tx: Transaction) => {
+    return {
+      label: tx.hash,
+      value: tx.hash,
+      amount: tx.amount,
+      date: tx.date,
+      type: wallets[selectedWallet] && tx.from === wallets[selectedWallet].address ? 'OUT' : 'IN'
+    }
+  }
+
+  const getTX = () => {
+    getTXHistory(wallets[selectedWallet])
+      .then(txList => setTxList(txList.map(parseTXForList)))
+  }
+
+  const renderDate = (date: Date) => {
+    const dateStr = addZero(date.getDate())
+    const monthStr = getMonthName(date.getMonth() + 1)
     return (
-        <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{flex: 1}}>
-                <Text>
-                    Transaction screen
-                </Text>
-            </View>
-            <View style={{flex: 1}}>
-                <List 
-                    items={txList} 
-                    // render={(item, index) => {
-                    //     return <TouchableOpacity onPress={() => onSelect(index)}><Text>{truncate(item.label, 10, 15)}</Text></TouchableOpacity>
-                    // }}
-                    onSelect={(itemIndex) => {
-                        Alert.alert(`${itemIndex}`)
-                    }}
-                />
-            </View>
-        </SafeAreaView>
+      <View style={styles.dateContainer}>
+        <Text style={styles.dateText}>{dateStr}</Text>
+        <Text style={styles.dateText}>{monthStr}</Text>
+      </View>
     )
+  }
+
+  useEffect(() => {
+    getTX()
+  }, [selectedWallet])
+
+  return (
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'stretch' }}>
+      <View style={{ flex: 1 }}>
+        <List
+          items={txList}
+          render={(item, index) => {
+            return (
+              <View style={[{ padding: 15 }, index % 2 === 0 ? {backgroundColor: 'rgba(0,0,0,0.04)'} : {backgroundColor: '#FFFFFF'}]}>
+                <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                  {renderDate(item.date)}
+                  <Text>{truncate(item.label, 10, 15)}</Text>
+                  <Text
+                    style={
+                      [styles.kaiAmount, item.type === 'IN' ? { color: 'green' } : { color: 'red' }]
+                    }
+                  >
+                    {item.type === 'IN' ? '+' : '-'}{item.amount} KAI
+                              </Text>
+                </TouchableOpacity>
+              </View>
+            )
+          }}
+          onSelect={(itemIndex) => {
+            Alert.alert(`${itemIndex}`)
+          }}
+        />
+      </View>
+    </SafeAreaView>
+  )
 }
 
 export default TransactionScreen
