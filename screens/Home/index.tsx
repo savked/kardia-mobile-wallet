@@ -89,87 +89,94 @@ const HomeScreen = () => {
   return (
     <SafeAreaView>
       <HomeHeader />
-      <View style={styles.kaiCardSlider}>
-        <Carousel
-          data={wallets}
-          renderItem={renderWalletItem}
-          sliderWidth={viewportWidth}
-          itemWidth={viewportWidth}
-          onSnapToItem={setSelectedWallet}
-        />
-        <Pagination
-          dotsLength={wallets.length}
-          activeDotIndex={selectedWallet}
-          containerStyle={{ paddingVertical: 0, height: 20, justifyContent: 'center' }}
-          dotStyle={{
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-            marginHorizontal: 8,
-            backgroundColor: 'rgba(255, 255, 255, 0.92)'
-          }}
-          inactiveDotStyle={{
-            // Define styles for inactive dots here
-          }}
-          inactiveDotOpacity={0.4}
-          inactiveDotScale={0.6}
-        />
-        <View style={styles.buttonGroupContainer}>
-          <Button
-            title="Send"
-            type="primary"
-            onPress={send}
-            iconName="paper-plane"
-            size="small"
+      <View style={styles.bodyContainer}>
+        <View style={styles.kaiCardSlider}>
+          <Carousel
+            data={wallets}
+            renderItem={renderWalletItem}
+            sliderWidth={viewportWidth}
+            itemWidth={viewportWidth}
+            onSnapToItem={setSelectedWallet}
           />
-          <Button onPress={() => setShowQRModal(true)} title="Receive" size="small" type="secondary" iconName="download" />
-          <Button
-            title="Import"
-            onPress={importWallet}
-            type="outline"
-            iconName="plus"
-            size="small"
-            textStyle={{color: '#FFFFFF'}}
+          <Pagination
+            dotsLength={wallets.length}
+            activeDotIndex={selectedWallet}
+            containerStyle={{ paddingVertical: 0, height: 20, justifyContent: 'center' }}
+            dotStyle={{
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              marginHorizontal: 8,
+              backgroundColor: 'rgba(255, 255, 255, 0.92)'
+            }}
+            inactiveDotStyle={{
+              // Define styles for inactive dots here
+            }}
+            inactiveDotOpacity={0.4}
+            inactiveDotScale={0.6}
+          />
+          <View style={styles.buttonGroupContainer}>
+            <Button
+              title="Send"
+              type="primary"
+              onPress={send}
+              iconName="paper-plane"
+              size="small"
+            />
+            <Button onPress={() => setShowQRModal(true)} title="Receive" size="small" type="secondary" iconName="download" />
+            <Button
+              title="Import"
+              onPress={importWallet}
+              type="outline"
+              iconName="plus"
+              size="small"
+              textStyle={{color: '#FFFFFF'}}
+            />
+          </View>
+        </View>
+        <View style={styles.transactionContainer}>
+          <List
+            items={txList}
+            render={(item, index) => {
+              return (
+                <View style={{ padding: 15 }}>
+                  <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    {
+                      item.type === 'IN' && <Icon name="level-down" size={20} color="green" />
+                    }
+                    {
+                      item.type === 'OUT' && <Icon name="level-up" size={20} color="#AD182A" />
+                    }
+                    <Text>{truncate(item.label, 10, 15)}</Text>
+                    <Text>{item.amount} KAI</Text>
+                  </TouchableOpacity>
+                </View>
+              )
+            }}
+            header={
+              <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Recent transactions</Text>
+                <Button type="link" onPress={() => navigation.navigate('Transaction')} title="View all >" />
+              </View>
+            }
           />
         </View>
+        {
+          showQRModal &&
+          <Modal visible={true} onClose={() => setShowQRModal(false)}>
+            <Text>Scan below QR code for address</Text>
+            <QRCode
+              size={viewportWidth/1.5}
+              value={wallets[selectedWallet].address}
+              logo={require('../../assets/logo.png')}
+              logoBackgroundColor='#FFFFFF'
+              logoSize={35}
+              logoMargin={5}
+              logoBorderRadius={20}
+            />
+          </Modal>
+        }
       </View>
-      <View style={{ height: 430 }}>
-        <List
-          items={txList}
-          render={(item, index) => {
-            return (
-              <View style={{ padding: 15 }}>
-                <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  {
-                    item.type === 'IN' && <Icon name="level-down" size={20} color="green" />
-                  }
-                  {
-                    item.type === 'OUT' && <Icon name="level-up" size={20} color="#AD182A" />
-                  }
-                  <Text>{truncate(item.label, 10, 15)}</Text>
-                  <Text>{item.amount} KAI</Text>
-                </TouchableOpacity>
-              </View>
-            )
-          }}
-          header={
-            <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Recent transactions</Text>
-              <Button type="link" onPress={() => navigation.navigate('Transaction')} title="View all >" />
-            </View>
-          }
-        />
-      </View>
-      {
-        showQRModal &&
-        <Modal visible={true} onClose={() => setShowQRModal(false)}>
-          <Text>Scan below QR code for address</Text>
-          <QRCode
-            size={viewportWidth/2}
-            value="http://awesome.link.qr"
-          />
-        </Modal>
-      }
     </SafeAreaView>
   )
 }

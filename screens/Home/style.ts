@@ -13,9 +13,12 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-    kaiCardSlider: {
+    bodyContainer: {
         backgroundColor: '#2A343D',
-        paddingVertical: 15
+    },
+    kaiCardSlider: {
+        // backgroundColor: '#2A343D',
+        paddingVertical: 10
     },
     kaiCardContainer: {
         paddingHorizontal: 30,
@@ -40,5 +43,11 @@ export const styles = StyleSheet.create({
         paddingVertical: 10,
         flexDirection: 'row',
         justifyContent: 'space-between'
+    },
+    transactionContainer: { 
+        height: 445, 
+        backgroundColor: '#FFFFFF', 
+        borderTopLeftRadius: 27, 
+        borderTopRightRadius: 27 
     }
 })
