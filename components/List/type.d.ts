@@ -11,4 +11,5 @@ interface ListProps {
     render?: (item: any, index: number) => any;
     initialNumToRender?: number;
     header?: any;
+    ItemSeprator?: any;
 }

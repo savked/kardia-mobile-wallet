@@ -4,9 +4,9 @@ import { FlatList } from 'react-native-gesture-handler';
 import ListItem from './ListItem'
 import { styles } from './style';
 
-const ItemSeprator = () => <View style={styles.separator} />
+// const ItemSeprator = () => <View style={styles.separator} />
 
-const List = ({items, render, onSelect, initialNumToRender, header}: ListProps) => {
+const List = ({items, render, onSelect, initialNumToRender, header, ItemSeprator}: ListProps) => {
     return (
         <>
             {
@@ -25,7 +25,7 @@ const List = ({items, render, onSelect, initialNumToRender, header}: ListProps) 
                     }} />
                 }}
                 keyExtractor={item => item.value}
-                ItemSeparatorComponent={ItemSeprator}
+                ItemSeparatorComponent={ItemSeprator || null}
                 ListEmptyComponent={<Text>No data</Text>}
                 initialNumToRender={initialNumToRender || 5}
                 // ListHeaderComponent={header}
