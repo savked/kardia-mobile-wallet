@@ -6,8 +6,15 @@ export const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    absolute: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0
+    },
     modalView: {
-        margin: 20,
+        marginHorizontal: 20,
         backgroundColor: "white",
         borderRadius: 20,
         padding: 35,
