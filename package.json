@@ -20,6 +20,7 @@
     "@types/react-native-snap-carousel": "^3.8.2",
     "@types/react-native-vector-icons": "^6.4.6",
     "assert": "^1.5.0",
+    "bip39": "^3.0.3",
     "buffer": "^4.9.2",
     "ethereumjs-util": "^7.0.7",
     "ethereumjs-wallet": "^1.0.1",

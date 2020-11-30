@@ -12,7 +12,7 @@ const ImportWallet = () => {
             <View style={styles.optionContainer}>
                 <Button title="Import with Private key" type="primary" onPress={() => navigation.navigate('ImportPrivateKey')} />
                 <Button title="Import with Keystore file" type="primary" onPress={() => {}} />
-                <Button title="Import with mnemonic phrase" type="primary" onPress={() => {}} />
+                <Button title="Import with Mnemonic phrase" type="primary" onPress={() => navigation.navigate('ImportMnemonic')}/>
             </View>
         </View>
     )
