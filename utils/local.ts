@@ -41,3 +41,13 @@ export const saveWallets = async (wallets: Wallet[]) => {
         return false
     }
 }
+
+export const clearLocalWallets = async () => {
+    try {
+        await AsyncStorage.removeItem('@kardia_wallets')
+        return true
+    } catch (e) {
+        console.error(e)
+        return false
+    }
+}

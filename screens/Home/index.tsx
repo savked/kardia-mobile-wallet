@@ -17,7 +17,7 @@ import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import { getTXHistory } from '../../services/api';
 import { getMonthName } from '../../utils/date';
 import { getWalletFromPK } from '../../utils/blockchain';
-import { saveWallets } from '../../utils/local';
+import { clearLocalWallets, saveWallets } from '../../utils/local';
 import AlertModal from '../../components/AlertModal';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
@@ -57,10 +57,6 @@ const HomeScreen = () => {
     getTXHistory(wallets[selectedWallet])
       .then(txList => setTxList(txList.map(parseTXForList)))
   }
-
-  useEffect(() => {
-    // setWallets(fakeWallets)
-  }, [])
 
   useEffect(() => {
     getTX()
@@ -104,13 +100,13 @@ const HomeScreen = () => {
     const wallet = getWalletFromPK(privateKey)
     const walletObj: Wallet = {
       address: wallet.getAddressString(),
+      privateKey: wallet.getPrivateKeyString(),
       balance: 0
     }
 
     const walletExisted = wallets.map((item) => item.address).includes(walletObj.address)
 
     if (walletExisted) {
-      // Alert.alert('Wallet already imported')
       setScanMessage('Wallet already imported')
       setScanType('warning')
       setShowScanAlert(true)
