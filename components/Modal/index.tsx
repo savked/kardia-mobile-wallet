@@ -6,8 +6,7 @@ import {styles} from './style'
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
-const CustomModal = ({animationType = "slide", visible, onClose, children, full = false, showCloseButton = true}: CustomModalProps) => {
-
+const CustomModal = ({animationType = "slide", visible, onClose, children, full = false, showCloseButton = true, contentStyle}: CustomModalProps) => {
     return (
         <BlurView blurType="dark" style={styles.absolute}>
             <Modal
@@ -16,7 +15,7 @@ const CustomModal = ({animationType = "slide", visible, onClose, children, full 
                 visible={visible}
                 onRequestClose={onClose}
             >
-                <View style={[styles.modalView, {marginTop: viewportHeight / 5}, full ? {flex: 1} : {flex: 0.6}]}>
+                <View style={[styles.modalView, {marginTop: viewportHeight / 5}, full ? {flex: 1} : {flex: 0.6}, contentStyle]}>
                     {children}
                     {showCloseButton && <Button size="small" title="Close" onPress={onClose} /> }
                 </View>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { Text, View, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import Icon from "react-native-vector-icons/FontAwesome"
+import QRCodeScanner from 'react-native-qrcode-scanner';
 import QRCode from 'react-native-qrcode-svg';
 import Button from '../../components/Button'
 import { addZero, truncate } from '../../utils/string';
@@ -16,17 +16,9 @@ import { useRecoilState } from 'recoil';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import { getTXHistory } from '../../services/api';
 import { getMonthName } from '../../utils/date';
-
-const fakeWallets = [
-  {
-    address: '0xf8fcb8eEc610699Bd7d0A30433B75C5f60097eFC',
-    balance: 123
-  },
-  {
-    address: '0xDA7acDE9A7e9F5EAd5ce2F9087de4ca37A65b1c6',
-    balance: 456
-  }
-]
+import { getWalletFromPK } from '../../utils/blockchain';
+import { saveWallets } from '../../utils/local';
+import AlertModal from '../../components/AlertModal';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
@@ -36,15 +28,19 @@ const HomeScreen = () => {
   const [showQRModal, setShowQRModal] = useState(false)
   const [wallets, setWallets] = useRecoilState(walletsAtom)
   const [txList, setTxList] = useState([] as any[])
+  const [showImportModal, setShowImportModal] = useState(false)
+  const [showScanAlert, setShowScanAlert] = useState(false)
+  const [scanMessage, setScanMessage] = useState('')
+  const [scanType, setScanType] = useState('warning')
 
   const navigation = useNavigation()
 
   function send() {
-    navigation.navigate('Transaction', {screen: 'CreateTx'});
+    navigation.navigate('Transaction', { screen: 'CreateTx' });
   }
 
   function importWallet() {
-
+    setShowImportModal(true)
   }
 
   const parseTXForList = (tx: Transaction) => {
@@ -99,6 +95,35 @@ const HomeScreen = () => {
     )
   }
 
+  const onSuccessScan = (e: any) => {
+    importPK(e.data)
+    setShowImportModal(false)
+  }
+
+  const importPK = (privateKey: string) => {
+    const wallet = getWalletFromPK(privateKey)
+    const walletObj: Wallet = {
+      address: wallet.getAddressString(),
+      balance: 0
+    }
+
+    const walletExisted = wallets.map((item) => item.address).includes(walletObj.address)
+
+    if (walletExisted) {
+      // Alert.alert('Wallet already imported')
+      setScanMessage('Wallet already imported')
+      setScanType('warning')
+      setShowScanAlert(true)
+      return;
+    }
+
+    const newWallets = JSON.parse(JSON.stringify(wallets))
+    newWallets.push(walletObj)
+
+    setWallets(newWallets)
+    saveWallets(newWallets)
+  }
+
   return (
     <SafeAreaView>
       <HomeHeader />
@@ -143,23 +168,23 @@ const HomeScreen = () => {
               type="outline"
               iconName="plus"
               size="small"
-              textStyle={{color: '#FFFFFF'}}
+              textStyle={{ color: '#FFFFFF' }}
             />
           </View>
         </View>
         <View style={styles.transactionContainer}>
           <List
             items={txList}
-            listStyle={{paddingHorizontal: 15}}
+            listStyle={{ paddingHorizontal: 15 }}
             render={(item, index) => {
               return (
-                <View style={[{ padding: 15 }, index % 2 === 0 ? {backgroundColor: 'rgba(0,0,0,0.04)'} : {backgroundColor: '#FFFFFF'}]}>
+                <View style={[{ padding: 15 }, index % 2 === 0 ? { backgroundColor: 'rgba(0,0,0,0.04)' } : { backgroundColor: '#FFFFFF' }]}>
                   <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     {renderDate(item.date)}
                     <Text>{truncate(item.label, 10, 15)}</Text>
-                    <Text 
+                    <Text
                       style={
-                        [styles.kaiAmount, item.type === 'IN' ? {color: 'green'} : {color: 'red'}]
+                        [styles.kaiAmount, item.type === 'IN' ? { color: 'green' } : { color: 'red' }]
                       }
                     >
                       {item.type === 'IN' ? '+' : '-'}{item.amount} KAI
@@ -181,7 +206,7 @@ const HomeScreen = () => {
           <Modal visible={true} onClose={() => setShowQRModal(false)}>
             <Text>Scan below QR code for address</Text>
             <QRCode
-              size={viewportWidth/1.5}
+              size={viewportWidth / 1.5}
               value={wallets[selectedWallet].address}
               logo={require('../../assets/logo.png')}
               logoBackgroundColor='#FFFFFF'
@@ -190,6 +215,24 @@ const HomeScreen = () => {
               logoBorderRadius={20}
             />
           </Modal>
+        }
+        {
+          showImportModal &&
+          <Modal showCloseButton={false} visible={true} onClose={() => setShowImportModal(false)}>
+            <Text>Scan QR Code for Private key</Text>
+            <QRCodeScanner
+              onRead={onSuccessScan}
+            />
+          </Modal>
+        }
+        {
+          showScanAlert && 
+          <AlertModal
+            type={scanType as any}
+            visible={showScanAlert}
+            onClose={() => setShowScanAlert(false)}
+            message={scanMessage}
+          />
         }
       </View>
     </SafeAreaView>

@@ -14,7 +14,7 @@ const fakeWallets = [
 export const getWallets = async () => {
     // return fakeWallets
     try {
-        const value = await AsyncStorage.getItem('@storage_Key')
+        const value = await AsyncStorage.getItem('@kardia_wallets')
         if (value !== null) {
             // value previously stored
             const wallets = JSON.parse(value)
@@ -29,5 +29,15 @@ export const getWallets = async () => {
         console.error(e)
         return []
         // error reading value
+    }
+}
+
+export const saveWallets = async (wallets: Wallet[]) => {
+    try {
+        await AsyncStorage.setItem('@kardia_wallets', JSON.stringify(wallets))
+        return true
+    } catch (e) {
+        console.error(e)
+        return false
     }
 }

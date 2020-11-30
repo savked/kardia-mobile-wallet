@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getWalletFromPK } from '../../utils/blockchain';
 import { useRecoilState } from 'recoil';
 import { walletsAtom } from '../../atoms/wallets';
+import { saveWallets } from '../../utils/local';
 
 const ImportPrivateKey = () => {
     const navigation = useNavigation()
@@ -28,7 +29,12 @@ const ImportPrivateKey = () => {
             address: wallet.getAddressString(),
             balance: 0
         }
-        setWallets([walletObj])
+
+        const newWallets = JSON.parse(JSON.stringify(wallets))
+        newWallets.push(walletObj)
+
+        setWallets(newWallets)
+        saveWallets(newWallets)
     }
 
     return (

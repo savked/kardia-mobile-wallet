@@ -5,4 +5,5 @@ interface CustomModalProps {
     children?: any;
     full?: boolean;
     showCloseButton?: boolean;
+    contentStyle?: any
 }
