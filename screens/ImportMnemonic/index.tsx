@@ -13,9 +13,10 @@ const ImportMnemonic = () => {
     const [error, setError] = useState("");
 
     function accessWalletByMnemonic() {
-        setMnemonic("casino ivory topple frog afraid dose discover hybrid absent acid genuine clip basic smooth mountain expose praise fiscal magic gauge auto close spin column");
         const valid = validateSeedPhrase();
-        console.log(valid);
+        if(valid){
+            // todo
+        }
     }
 
     function validateSeedPhrase() {
