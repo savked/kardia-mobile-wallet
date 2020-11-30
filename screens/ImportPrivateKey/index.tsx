@@ -27,6 +27,7 @@ const ImportPrivateKey = () => {
         const wallet = getWalletFromPK(privateKey)
         const walletObj: Wallet = {
             address: wallet.getAddressString(),
+            privateKey: wallet.getPrivateKeyString(),
             balance: 0
         }
 

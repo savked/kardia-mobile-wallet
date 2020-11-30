@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Text, View, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
@@ -6,6 +6,12 @@ import { useNavigation } from '@react-navigation/native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import QRCode from 'react-native-qrcode-svg';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 import Button from '../../components/Button'
 import { addZero, truncate } from '../../utils/string';
 import { styles } from './style';
@@ -19,6 +25,7 @@ import { getMonthName } from '../../utils/date';
 import { getWalletFromPK } from '../../utils/blockchain';
 import { saveWallets } from '../../utils/local';
 import AlertModal from '../../components/AlertModal';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
@@ -32,6 +39,7 @@ const HomeScreen = () => {
   const [showScanAlert, setShowScanAlert] = useState(false)
   const [scanMessage, setScanMessage] = useState('')
   const [scanType, setScanType] = useState('warning')
+  const carouselRef = useRef<Carousel<Wallet>>(null)
 
   const navigation = useNavigation()
 
@@ -41,6 +49,23 @@ const HomeScreen = () => {
 
   function importWallet() {
     setShowImportModal(true)
+  }
+
+  useEffect(() => {
+    if (carouselRef.current) {
+      carouselRef.current.triggerRenderingHack()
+      carouselRef.current.snapToItem(selectedWallet)
+    }
+  }, [selectedWallet])
+
+  const removeWallet = (walletIndex: number) => {
+    if (selectedWallet > wallets.length - 2) {
+      setSelectedWallet(wallets.length)
+    }
+    const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets))
+    newWallets.splice(walletIndex, 1)
+    setWallets(newWallets)
+    saveWallets(newWallets)
   }
 
   const parseTXForList = (tx: Transaction) => {
@@ -59,10 +84,6 @@ const HomeScreen = () => {
   }
 
   useEffect(() => {
-    // setWallets(fakeWallets)
-  }, [])
-
-  useEffect(() => {
     getTX()
   }, [selectedWallet])
 
@@ -70,9 +91,39 @@ const HomeScreen = () => {
     return (
       <View style={styles.kaiCardContainer}>
         <LinearGradient colors={['#42378f', '#f53844']} style={styles.kaiCard}>
-          <View>
-            <Text style={styles.kaiCardText}>Address:</Text>
-            <Text style={styles.kaiCardText}>{truncate(wallet.address, 12, 20)}</Text>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{paddingRight: 8, flex: 10}}>
+              <Text style={styles.kaiCardText}>Address:</Text>
+              <Text style={styles.kaiCardText}>{truncate(wallet.address, 12, 18)}</Text>
+            </View>
+            <Menu>
+              <MenuTrigger
+                customStyles={{
+                  triggerOuterWrapper: {
+                    width: 27,
+                    height: 27,
+                    alignItems: 'flex-end'
+                  },
+                  TriggerTouchableComponent: TouchableOpacity,
+                  triggerWrapper: {
+                    width: 27,
+                    height: 27,
+                    alignItems: 'flex-end'
+                  }
+                }}
+              >
+                <Icon name="cog" color="#FFFFFF" size={27} />
+              </MenuTrigger>
+              <MenuOptions
+                customStyles={{
+                  optionWrapper: {padding: 18}
+                }}
+              >
+                <MenuOption onSelect={() => removeWallet(index)} >
+                  <Text>Remove wallet</Text>
+                </MenuOption>
+              </MenuOptions>
+            </Menu>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <Text style={[styles.kaiCardText, styles.kaiCardBalanceText]}>{wallet.balance} KAI
@@ -104,13 +155,13 @@ const HomeScreen = () => {
     const wallet = getWalletFromPK(privateKey)
     const walletObj: Wallet = {
       address: wallet.getAddressString(),
+      privateKey: wallet.getPrivateKeyString(),
       balance: 0
     }
 
     const walletExisted = wallets.map((item) => item.address).includes(walletObj.address)
 
     if (walletExisted) {
-      // Alert.alert('Wallet already imported')
       setScanMessage('Wallet already imported')
       setScanType('warning')
       setShowScanAlert(true)
@@ -122,6 +173,9 @@ const HomeScreen = () => {
 
     setWallets(newWallets)
     saveWallets(newWallets)
+    setTimeout(() => {
+      setSelectedWallet(newWallets.length - 1)
+    }, 400)
   }
 
   return (
@@ -130,11 +184,14 @@ const HomeScreen = () => {
       <View style={styles.bodyContainer}>
         <View style={styles.kaiCardSlider}>
           <Carousel
+            ref={carouselRef}
             data={wallets}
             renderItem={renderWalletItem}
             sliderWidth={viewportWidth}
             itemWidth={viewportWidth}
             onSnapToItem={setSelectedWallet}
+            onBeforeSnapToItem={setSelectedWallet}
+            removeClippedSubviews={false}
           />
           <Pagination
             dotsLength={wallets.length}

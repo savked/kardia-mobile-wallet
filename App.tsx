@@ -12,6 +12,7 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import { RecoilRoot } from 'recoil';
+import { MenuProvider } from 'react-native-popup-menu';
 import AppContainer from './screens/Container';
 
 declare const global: {HermesInternal: null | {}};
@@ -23,7 +24,9 @@ const App = () => {
       <StatusBar barStyle="light-content" />
       <SafeAreaProvider>
         <RecoilRoot>
-          <AppContainer />
+          <MenuProvider>
+            <AppContainer />
+          </MenuProvider>
         </RecoilRoot>
       </SafeAreaProvider>
     </>
