@@ -12,8 +12,44 @@ import TransactionStackScreen from '../../TransactionStack'
 import { getWallets } from '../../utils/local';
 import { styles } from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
-
+import { createStackNavigator } from '@react-navigation/stack';
+import Notification from '../Notification'
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+const Wrap = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName = '';
+
+          if (route.name === 'Home') {
+            iconName = 'home';
+          } else if (route.name === 'News') {
+            iconName = 'newspaper-o';
+          } else if (route.name === 'Transaction') {
+            iconName = 'exchange'
+          } else if (route.name === 'DApp') {
+            iconName = 'th-large'
+          }
+
+          // You can return any component that you like here!
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: '#AD182A',
+        inactiveTintColor: 'gray',
+      }}
+    >
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Transaction" component={TransactionStackScreen} />
+      <Tab.Screen name="DApp" component={DAppScreen} />
+      <Tab.Screen name="News" component={NewsScreen} />
+    </Tab.Navigator>
+  )
+}
 
 const AppContainer = () => {
 
@@ -45,36 +81,43 @@ const AppContainer = () => {
   }
 
   return (
+    // <NavigationContainer>
+    //   <Tab.Navigator
+    //     screenOptions={({ route }) => ({
+    //       tabBarIcon: ({ focused, color, size }) => {
+    //         let iconName = '';
+
+    //         if (route.name === 'Home') {
+    //           iconName = 'home';
+    //         } else if (route.name === 'News') {
+    //           iconName = 'newspaper-o';
+    //         } else if (route.name === 'Transaction') {
+    //           iconName = 'exchange'
+    //         } else if (route.name === 'DApp') {
+    //           iconName = 'th-large'
+    //         }
+
+    //         // You can return any component that you like here!
+    //         return <Icon name={iconName} size={size} color={color} />;
+    //       },
+    //     })}
+    //     tabBarOptions={{
+    //       activeTintColor: '#AD182A',
+    //       inactiveTintColor: 'gray',
+    //     }}
+    //   >
+    //     <Tab.Screen name="Home" component={HomeScreen} />
+    //     <Tab.Screen name="Transaction" component={TransactionStackScreen} />
+    //     <Tab.Screen name="DApp" component={DAppScreen} />
+    //     <Tab.Screen name="News" component={NewsScreen} />
+    //   </Tab.Navigator>
+    // </NavigationContainer>
+
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName = '';
-
-            if (route.name === 'Home') {
-              iconName = 'home';
-            } else if (route.name === 'News') {
-              iconName = 'newspaper-o';
-            } else if (route.name === 'Transaction') {
-              iconName = 'exchange'
-            } else if (route.name === 'DApp') {
-              iconName = 'th-large'
-            }
-
-            // You can return any component that you like here!
-            return <Icon name={iconName} size={size} color={color} />;
-          },
-        })}
-        tabBarOptions={{
-          activeTintColor: '#AD182A',
-          inactiveTintColor: 'gray',
-        }}
-      >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Transaction" component={TransactionStackScreen} />
-        <Tab.Screen name="DApp" component={DAppScreen} />
-        <Tab.Screen name="News" component={NewsScreen} />
-      </Tab.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen options={{ headerShown: false }} name="Wrap" component={Wrap}></Stack.Screen>
+        <Stack.Screen name="Notification" component={Notification}></Stack.Screen>
+      </Stack.Navigator>
     </NavigationContainer>
   )
 }
