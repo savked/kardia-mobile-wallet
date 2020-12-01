@@ -5,6 +5,8 @@ interface ButtonProps {
     style?: any;
     textStyle?: any;
     iconName?: string;
+    iconSize?: number;
+    iconColor?: string;
     size?: "small" | "medium" | "large";
     type?: "primary" | "secondary" | "outline" | "ghost" | "link";
 }
