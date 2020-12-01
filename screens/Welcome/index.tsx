@@ -18,7 +18,7 @@ const Welcome = () => {
         <Text style={{ fontSize: 14 }}>To get started, choose one of the following options</Text>
       </View>
       <View style={{ height: 140, justifyContent: 'space-evenly' }}>
-        <Button size="large" title="Create new wallet" type="primary" onPress={() => { }} style={{ width: 300 }} />
+        <Button size="large" title="Create new wallet" type="primary" onPress={() => navigation.navigate('CreateWallet')} style={{ width: 300 }} />
         <Button size="large" title="Import your wallet" type="secondary" onPress={() => navigation.navigate('ImportWallet')} />
       </View>
     </View>
