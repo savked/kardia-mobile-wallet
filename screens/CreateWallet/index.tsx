@@ -47,7 +47,7 @@ const CreateWallet = () => {
                     size="large"
                     title="Create with mnemonic phrase" 
                     type="outline" 
-                    onPress={() => {}} 
+                    onPress={() => navigation.navigate('CreateWithMnemonicPhrase')} 
                     style={{
                         justifyContent: 'space-between',
                         paddingVertical: 15,

@@ -7,4 +7,5 @@ interface CustomTextInputProps {
     style?: Record<string, any>;
     numberOfLines?: number;
     multiline?: boolean;
+    editable?: boolean;
 }

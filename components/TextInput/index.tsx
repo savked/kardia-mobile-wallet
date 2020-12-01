@@ -3,7 +3,7 @@ import { TextInput, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {styles} from './style'
 
-const CustomTextInput = ({onChangeText, value, iconName, onIconPress, headline, multiline = false, numberOfLines = 5}: CustomTextInputProps) => {
+const CustomTextInput = ({onChangeText, value, iconName, onIconPress, headline, multiline = false, numberOfLines = 5, editable = true}: CustomTextInputProps) => {
     return (
         <>
             { headline && <Text style={styles.headline}>{headline}</Text> }
@@ -14,6 +14,7 @@ const CustomTextInput = ({onChangeText, value, iconName, onIconPress, headline, 
                     value={value}
                     multiline={multiline}
                     numberOfLines={multiline ? numberOfLines : 1}
+                    editable={editable}
                 />
                 {
                     iconName && <Icon onPress={onIconPress} name={iconName} size={25} color={"black"} style={{ position: 'absolute', right: 15 }} />
