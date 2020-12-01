@@ -8,7 +8,10 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         backgroundColor:'white',
         flex: 1,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+    },
+    multiline: {
+        height: 120
     },
     headline: {
         fontWeight: "bold",
