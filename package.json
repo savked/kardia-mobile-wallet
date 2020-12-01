@@ -11,6 +11,7 @@
     "postinstall": "rn-nodeify --install assert,crypto,buffer,stream,events,process --hack"
   },
   "dependencies": {
+    "@ethersproject/shims": "^5.0.10",
     "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "^0.1.10",
