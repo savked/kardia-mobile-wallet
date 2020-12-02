@@ -44,7 +44,7 @@ const HomeScreen = () => {
   const navigation = useNavigation()
 
   function send() {
-    navigation.navigate('Transaction', { screen: 'CreateTx' });
+    navigation.navigate('Transaction', { screen: 'CreateTx', initial: false, });
   }
 
   function importWallet() {
@@ -238,7 +238,7 @@ const HomeScreen = () => {
                 <View style={[{ padding: 15 }]}>
                   <TouchableOpacity 
                     style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
-                    onPress={() => navigation.navigate('Transaction', { screen: 'TransactionDetail', params: {txHash: item.label}  })}
+                    onPress={() => navigation.navigate('Transaction', { screen: 'TransactionDetail', initial: false, params: {txHash: item.label}  })}
                   >
                     {renderDate(item.date)}
                     <Text style={{color: '#FFFFFF'}}>{truncate(item.label, 10, 15)}</Text>

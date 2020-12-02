@@ -39,7 +39,7 @@ const Wrap = () => {
 
           // You can return any component that you like here!
           return <Icon name={iconName} size={size} color={color} />;
-        },
+        }
       })}
       tabBarOptions={{
         activeTintColor: theme.primaryColor,
