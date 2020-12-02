@@ -235,7 +235,6 @@ const HomeScreen = () => {
             listStyle={{ paddingHorizontal: 15 }}
             render={(item, index) => {
               return (
-                // <View style={[{ padding: 15 }, index % 2 === 0 ? { backgroundColor: 'rgba(0,0,0,0.04)' } : { backgroundColor: '#FFFFFF' }]}>
                 <View style={[{ padding: 15 }]}>
                   <TouchableOpacity 
                     style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}

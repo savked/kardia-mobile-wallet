@@ -27,8 +27,7 @@ const CreateWallet = () => {
                     style={{
                         justifyContent: 'flex-start',
                         paddingVertical: 15,
-                        paddingHorizontal: 60,
-                        borderWidth: 2
+                        paddingHorizontal: 60
                     }}
                 />
                 <Button 
@@ -46,8 +45,7 @@ const CreateWallet = () => {
                     style={{
                         justifyContent: 'flex-start',
                         paddingVertical: 15,
-                        paddingHorizontal: 60,
-                        borderWidth: 2
+                        paddingHorizontal: 60
                     }}
                 />
                 <Button 
@@ -65,8 +63,7 @@ const CreateWallet = () => {
                     style={{
                         justifyContent: 'flex-start',
                         paddingVertical: 15,
-                        paddingHorizontal: 60,
-                        borderWidth: 2
+                        paddingHorizontal: 60
                     }}
                 />
                 <Text style={[styles.accessWalletText, { color: theme.textColor } ]}>

@@ -9,6 +9,7 @@ export const theme = {
     ghostColor: '#F7F8F9',
     ghostTextColor: '#364766',
     linkTextColor: '#3f70b0',
-    backgroundColor: '#171E28',
-    textColor: '#B4BDC9'
+    backgroundColor: '#2A333F',
+    backgroundFocusColor: '#171E28',
+    textColor: '#F7F7F7'
 }
