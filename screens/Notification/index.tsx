@@ -17,12 +17,21 @@ const Notification = () => {
         return Math.floor((utc2 - utc1) / _MS_PER_DAY);
     }
 
-    function convertSecondsToDate(seconds: number){
+    function convertSecondsToDate(seconds: number, format = 'h:m') {
         const _date = new Date(seconds * 1000);
+        const day = _date.getDate() < 10 ? `0${_date.getDate()}` : _date.getDate();
+        const month = _date.getMonth() + 1 < 10 ? `0${_date.getMonth() + 1}` : _date.getMonth() + 1;
         const hours = _date.getHours() < 10 ? `0${_date.getHours()}` : _date.getHours();
         const minutes = _date.getMinutes() < 10 ? `0${_date.getMinutes()}` : _date.getMinutes();
-        return <Text>{hours + ':' + minutes }</Text>
+
+        if (format == 'h:m') {
+            return <Text style={styles.time}>{hours + ':' + minutes}</Text>
+        } else if (format == 'd/m h:m') {
+            return <Text style={styles.time}>{day + '/' + month + ' ' + hours + ':' + month}</Text>
+        }
     }
+
+
 
     return (
         <View style={{ minWidth: '100%', backgroundColor: '#f8f9fa' }}>
@@ -32,50 +41,50 @@ const Notification = () => {
                 renderItem={({ item, index }) => {
                     return (
                         dateDiffInDays(new Date(item.date * 1000), new Date()) == 0 && <TouchableOpacity onPress={viewDetail}>
-                        <View style={styles.row}>
-                            <View style={styles.left}>
-                                <Image
-                                    style={styles.thumbnail}
-                                    source={{
-                                        uri: 'https://reactnative.dev/img/tiny_logo.png',
-                                    }}
-                                />
+                            <View style={styles.row}>
+                                <View style={styles.left}>
+                                    <Image
+                                        style={styles.thumbnail}
+                                        source={{
+                                            uri: 'https://reactnative.dev/img/tiny_logo.png',
+                                        }}
+                                    />
+                                </View>
+                                <View style={styles.right}>
+                                    <Text style={styles.title}>{item.title}</Text>
+                                    <Text style={styles.description}>{item.description}</Text>
+                                    {convertSecondsToDate(item.date)}
+                                </View>
                             </View>
-                            <View style={styles.right}>
-                                <Text style={styles.title}>{item.title}</Text>
-                                <Text style={styles.description}>{item.description}</Text>
-                                {convertSecondsToDate(item.date)}
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+                        </TouchableOpacity>
                     )
                 }}
                 keyExtractor={item => item.title}
                 ListEmptyComponent={<Text>No data</Text>}
             />
 
-            <Text style={styles.headline}>Yesterday</Text>
+            <Text style={styles.headline}>Earlier</Text>
             <FlatList
                 data={data}
                 renderItem={({ item, index }) => {
                     return (
                         dateDiffInDays(new Date(item.date * 1000), new Date()) !== 0 && <TouchableOpacity onPress={viewDetail}>
-                        <View style={styles.row}>
-                            <View style={styles.left}>
-                                <Image
-                                    style={styles.thumbnail}
-                                    source={{
-                                        uri: 'https://reactnative.dev/img/tiny_logo.png',
-                                    }}
-                                />
+                            <View style={styles.row}>
+                                <View style={styles.left}>
+                                    <Image
+                                        style={styles.thumbnail}
+                                        source={{
+                                            uri: 'https://reactnative.dev/img/tiny_logo.png',
+                                        }}
+                                    />
+                                </View>
+                                <View style={styles.right}>
+                                    <Text style={styles.title}>{item.title}</Text>
+                                    <Text style={styles.description}>{item.description}</Text>
+                                    {convertSecondsToDate(item.date, "d/m h:m")}
+                                </View>
                             </View>
-                            <View style={styles.right}>
-                                <Text style={styles.title}>{item.title}</Text>
-                                <Text style={styles.description}>{item.description}</Text>
-                                {convertSecondsToDate(item.date)}
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+                        </TouchableOpacity>
                     )
                 }}
                 keyExtractor={item => item.title}
