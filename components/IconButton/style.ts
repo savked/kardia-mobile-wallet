@@ -3,12 +3,12 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     badgeContainer: {
         position: 'absolute',
-        top: -12,
-        right: -12,
+        top: -9,
+        right: -9,
         backgroundColor: '#AD182A',
         padding: 5,
-        width: 25,
-        height: 25,
+        width: 20,
+        height: 20,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 100

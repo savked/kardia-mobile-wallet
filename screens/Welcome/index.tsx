@@ -14,11 +14,11 @@ const Welcome = () => {
         <Image style={styles.noWalletLogo} source={require('../../assets/logo.png')} />
       </View>
       <View>
-        <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 7 }}>Welcome to Kardia Wallet</Text>
-        <Text style={{ fontSize: 14 }}>To get started, choose one of the following options</Text>
+        <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 7, color: '#B4BDC9' }}>Welcome to Kardia Wallet</Text>
+        <Text style={{ fontSize: 14, color: '#B4BDC9' }}>To get started, choose one of the following options</Text>
       </View>
       <View style={{ height: 140, justifyContent: 'space-evenly' }}>
-        <Button size="large" title="Create new wallet" type="primary" onPress={() => { }} style={{ width: 300 }} />
+        <Button size="large" title="Create new wallet" type="primary" onPress={() => navigation.navigate('CreateWallet')} style={{ width: 300 }} />
         <Button size="large" title="Import your wallet" type="secondary" onPress={() => navigation.navigate('ImportWallet')} />
       </View>
     </View>

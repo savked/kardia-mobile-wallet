@@ -4,4 +4,8 @@ interface CustomTextInputProps {
     iconName?: string;
     onIconPress?: () => void;
     headline?: string;
+    style?: Record<string, any>;
+    numberOfLines?: number;
+    multiline?: boolean;
+    editable?: boolean;
 }

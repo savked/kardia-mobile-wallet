@@ -5,26 +5,18 @@ export const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 22,
-        // backgroundColor: '#171E28'
+        padding: 22
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 25,
-        // color: '#B4BDC9'
+        marginBottom: 25
     },
     optionContainer: {
         width: '100%',
         height: 420,
         alignItems: 'stretch',
         justifyContent: 'space-around'
-    },
-    option: {
-        width: '100%',
-        padding: 8,
-        borderRadius: 8,
-        backgroundColor: '#FADACF'
     },
     accessWalletText: {
         paddingHorizontal: 24,

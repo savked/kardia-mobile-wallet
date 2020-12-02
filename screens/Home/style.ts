@@ -2,16 +2,17 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     logo: {
-        width: 32,
-        height: 32,
+        width: 26,
+        height: 26,
         marginRight: 15
     },
     headerContainer: {
-        height: 55,
+        height: 38,
         flexDirection: 'row',
         paddingHorizontal: 30,
-        alignItems: 'center',
-        justifyContent: 'space-between'
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+        backgroundColor: '#2A343D'
     },
     bodyContainer: {
         backgroundColor: '#2A343D',
@@ -23,7 +24,7 @@ export const styles = StyleSheet.create({
     kaiCardContainer: {
         paddingHorizontal: 30,
         paddingVertical: 10,
-        height: 220
+        height: 240
     },
     kaiCard: {
         borderRadius: 9,
@@ -33,7 +34,8 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     kaiCardText: {
-        color: '#FFFFFF'
+        color: '#FFFFFF',
+        fontSize: 16
     },
     kaiCardBalanceText: {
         fontSize: 18
@@ -46,9 +48,10 @@ export const styles = StyleSheet.create({
     },
     transactionContainer: { 
         height: 445, 
-        backgroundColor: '#FFFFFF', 
-        borderTopLeftRadius: 27, 
-        borderTopRightRadius: 27 
+        // backgroundColor: '#FFFFFF', 
+        backgroundColor: '#171E28', 
+        borderTopLeftRadius: 22, 
+        borderTopRightRadius: 22 
     },
     kaiAmount: {
         fontWeight: 'bold'

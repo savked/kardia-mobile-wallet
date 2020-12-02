@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { View, Text } from 'react-native'
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import TextInput from '../../components/TextInput'
@@ -11,8 +11,10 @@ import { getWalletFromPK } from '../../utils/blockchain';
 import { useRecoilState } from 'recoil';
 import { walletsAtom } from '../../atoms/wallets';
 import { saveWallets } from '../../utils/local';
+import { ThemeContext } from '../../App';
 
 const ImportPrivateKey = () => {
+    const theme = useContext(ThemeContext);
     const navigation = useNavigation()
     const [privateKey, setPrivateKey] = useState('')
     const [showModal, setShowModal] = useState(false)
@@ -39,8 +41,8 @@ const ImportPrivateKey = () => {
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Enter your Private key</Text>
+        <View style={[styles.container, { backgroundColor: theme.backgroundColor } ]}>
+            <Text style={[styles.title, { color: theme.textColor } ]}>Enter your Private key</Text>
             <TextInput value={truncate(privateKey, 10, 20)} onChangeText={setPrivateKey} iconName='qrcode' onIconPress={() => setShowModal(true)} />
             {
                 showModal &&

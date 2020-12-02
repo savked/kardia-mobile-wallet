@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, Image } from 'react-native'
 import { useRecoilState } from 'recoil'
 import { NavigationContainer } from '@react-navigation/native';
@@ -14,10 +14,13 @@ import { styles } from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
 import { createStackNavigator } from '@react-navigation/stack';
 import Notification from '../Notification'
+import { ThemeContext } from '../../App';
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const Wrap = () => {
+  const theme = useContext(ThemeContext)
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -39,8 +42,22 @@ const Wrap = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: '#AD182A',
-        inactiveTintColor: 'gray',
+        activeTintColor: theme.primaryColor,
+        inactiveTintColor: '#7A859A',
+        inactiveBackgroundColor: theme.backgroundColor,
+        activeBackgroundColor: theme.backgroundColor,
+        keyboardHidesTabBar: true,
+        tabStyle: {
+          backgroundColor: theme.backgroundColor,
+          borderTopColor: theme.backgroundColor
+        },
+        labelStyle: {
+          fontWeight: 'bold'
+        },
+        style: {
+          backgroundColor: theme.backgroundColor,
+          borderTopColor: theme.backgroundColor
+        }
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
@@ -52,7 +69,6 @@ const Wrap = () => {
 }
 
 const AppContainer = () => {
-
   const [wallets, setWallets] = useRecoilState(walletsAtom)
   const [inited, setInited] = useState(0)
 
@@ -81,37 +97,6 @@ const AppContainer = () => {
   }
 
   return (
-    // <NavigationContainer>
-    //   <Tab.Navigator
-    //     screenOptions={({ route }) => ({
-    //       tabBarIcon: ({ focused, color, size }) => {
-    //         let iconName = '';
-
-    //         if (route.name === 'Home') {
-    //           iconName = 'home';
-    //         } else if (route.name === 'News') {
-    //           iconName = 'newspaper-o';
-    //         } else if (route.name === 'Transaction') {
-    //           iconName = 'exchange'
-    //         } else if (route.name === 'DApp') {
-    //           iconName = 'th-large'
-    //         }
-
-    //         // You can return any component that you like here!
-    //         return <Icon name={iconName} size={size} color={color} />;
-    //       },
-    //     })}
-    //     tabBarOptions={{
-    //       activeTintColor: '#AD182A',
-    //       inactiveTintColor: 'gray',
-    //     }}
-    //   >
-    //     <Tab.Screen name="Home" component={HomeScreen} />
-    //     <Tab.Screen name="Transaction" component={TransactionStackScreen} />
-    //     <Tab.Screen name="DApp" component={DAppScreen} />
-    //     <Tab.Screen name="News" component={NewsScreen} />
-    //   </Tab.Navigator>
-    // </NavigationContainer>
 
     <NavigationContainer>
       <Stack.Navigator>
