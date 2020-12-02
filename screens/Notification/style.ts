@@ -8,11 +8,11 @@ export const styles = StyleSheet.create({
     row:{
         flexDirection: 'row',
         justifyContent:'space-around',
-        marginBottom:10,
-        padding:20,
+        paddingHorizontal: 20,
+        paddingVertical: 5,
         alignItems:'center',
         backgroundColor:'white',
-        borderRadius:8
+        borderRadius:8,
     },
 
     left:{
@@ -30,5 +30,12 @@ export const styles = StyleSheet.create({
 
     time:{
 
+    },
+    headline:{
+        fontSize:16,
+        fontWeight:'bold',
+        paddingLeft:20,
+        color:'gray',
+        paddingVertical:10
     }
 })
