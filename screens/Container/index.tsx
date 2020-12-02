@@ -97,7 +97,6 @@ const AppContainer = () => {
   }
 
   return (
-
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen options={{ headerShown: false }} name="Wrap" component={Wrap}></Stack.Screen>
