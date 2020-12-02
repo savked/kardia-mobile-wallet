@@ -1,28 +1,39 @@
 import React from 'react'
 import { View, Text, Image } from 'react-native'
-import { FlatList } from 'react-native-gesture-handler'
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { styles } from './style'
 
 const Notification = () => {
+    function viewDetail(){
+        console.log('view detail');
+    }
+
     return (
-        <View style={{minWidth:'100%', backgroundColor:'gray'}}>
+        <View style={{ minWidth: '100%', backgroundColor: '#f8f9fa' }}>
             <FlatList
-                numColumns={3}
                 data={data}
-                renderItem={({ item, index }) => {
+                renderItem={ ({item, index})  => {
                     return (
-                        <View style={{minWidth:'40%'}}>
-                           <Image
-                                style={styles.thumbnail}
-                                source={{
-                                    uri: 'https://reactnative.dev/img/tiny_logo.png',
-                                }}
-                            />
-                            <Text>{item.name}</Text>
-                        </View>
+                        <TouchableOpacity onPress={viewDetail}>
+                            <View style={styles.row}>
+                                <View style={styles.left}>
+                                    <Image
+                                        style={styles.thumbnail}
+                                        source={{
+                                            uri: 'https://reactnative.dev/img/tiny_logo.png',
+                                        }}
+                                    />
+                                </View>
+                                <View style={styles.right}>
+                                    <Text style={styles.title}>{item.title}</Text>
+                                    <Text style={styles.description}>{item.description}</Text>
+                                    <Text style={styles.time}>12:00 PM</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
                     )
-                }}
-                keyExtractor={item => item.name}
+                    }}
+                keyExtractor={item => item.title}
                 ListEmptyComponent={<Text>No data</Text>}
             />
         </View>
@@ -32,29 +43,35 @@ const Notification = () => {
 const data = [
     {
         url: 'https://reactnative.dev/img/tiny_logo.png',
-        name: 'Sports'
+        title: 'The News that wins customers',
+        description: "Why I quit my job in order to pursue News"
     },
     {
         url: 'https://reactnative.dev/img/tiny_logo.png',
-        name: 'News'
+        title: 'News in 3 easy steps',
+        description: "12 things you didn't know about News"
     },
     {
         url: 'https://reactnative.dev/img/tiny_logo.png',
-        name: 'Culture'
+        title: 'How News are changing my life',
+        description: "Is pizza really better than News?"
     },
     {
         url: 'https://reactnative.dev/img/tiny_logo.png',
-        name: 'A'
+        title: 'Why News are more important than the air you breathe',
+        description: "5 important lessons I learned about News"
     },
     {
         url: 'https://reactnative.dev/img/tiny_logo.png',
-        name: 'B'
+        title: 'How to use News to solve problems',
+        description: "How much is News worth to you?"
     },
     {
         url: 'https://reactnative.dev/img/tiny_logo.png',
-        name: 'C'
+        title: '3 different ways to get your own News',
+        description: "How News are changing my life"
     },
-    
+
 ]
 
 export default Notification
