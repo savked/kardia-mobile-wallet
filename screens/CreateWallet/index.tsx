@@ -1,25 +1,31 @@
 import { useNavigation } from '@react-navigation/native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Text } from 'react-native'
+import { ThemeContext } from '../../App'
 import Button from '../../components/Button'
 import { styles } from './style'
 
 const CreateWallet = () => {
     const navigation = useNavigation()
+    const theme = useContext(ThemeContext);
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Create new wallet</Text>
+        <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+            <Text style={[styles.title, { color: theme.textColor } ]}>Create new wallet</Text>
             <View style={styles.optionContainer}>
                 <Button 
                     iconName="lock"
                     iconSize={60}
-                    iconColor="#AD182A"
+                    iconColor="#FFFFFF"
                     size="large"
                     title="Create with Private key" 
-                    type="outline" 
+                    type="primary" 
                     onPress={() => navigation.navigate('CreateWithPrivateKey')} 
+                    textStyle={{
+                        fontWeight: 'bold',
+                        marginLeft: 10
+                    }}
                     style={{
-                        justifyContent: 'space-between',
+                        justifyContent: 'flex-start',
                         paddingVertical: 15,
                         paddingHorizontal: 60,
                         borderWidth: 2
@@ -28,13 +34,17 @@ const CreateWallet = () => {
                 <Button 
                     iconName="file"
                     iconSize={60}
-                    iconColor="#AD182A"
+                    iconColor="#FFFFFF"
                     size="large"
                     title="Create with Keystore file" 
-                    type="outline" 
+                    type="primary" 
                     onPress={() => {}} 
+                    textStyle={{
+                        fontWeight: 'bold',
+                        marginLeft: 10
+                    }}
                     style={{
-                        justifyContent: 'space-between',
+                        justifyContent: 'flex-start',
                         paddingVertical: 15,
                         paddingHorizontal: 60,
                         borderWidth: 2
@@ -43,21 +53,25 @@ const CreateWallet = () => {
                 <Button 
                     iconName="book"
                     iconSize={60}
-                    iconColor="#AD182A"
+                    iconColor="#FFFFFF"
                     size="large"
                     title="Create with mnemonic phrase" 
-                    type="outline" 
+                    type="primary" 
                     onPress={() => navigation.navigate('CreateWithMnemonicPhrase')} 
+                    textStyle={{
+                        fontWeight: 'bold',
+                        marginLeft: 10
+                    }}
                     style={{
-                        justifyContent: 'space-between',
+                        justifyContent: 'flex-start',
                         paddingVertical: 15,
                         paddingHorizontal: 60,
                         borderWidth: 2
                     }}
                 />
-                <Text style={styles.accessWalletText}>
+                <Text style={[styles.accessWalletText, { color: theme.textColor } ]}>
                     Already have wallet ? {' '} 
-                    <Text style={styles.accessLink} onPress={() => navigation.navigate('ImportWallet')} >Access here</Text>
+                    <Text style={[styles.accessLink, { color: theme.primaryColor } ]} onPress={() => navigation.navigate('ImportWallet')} >Access here</Text>
                 </Text>
             </View>
         </View>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, Image } from 'react-native'
 import { useRecoilState } from 'recoil'
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,11 +12,12 @@ import TransactionStackScreen from '../../TransactionStack'
 import { getWallets } from '../../utils/local';
 import { styles } from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
+import { ThemeContext } from '../../App';
 
 const Tab = createBottomTabNavigator();
 
 const AppContainer = () => {
-
+  const theme = useContext(ThemeContext)
   const [wallets, setWallets] = useRecoilState(walletsAtom)
   const [inited, setInited] = useState(0)
 
@@ -66,21 +67,21 @@ const AppContainer = () => {
           },
         })}
         tabBarOptions={{
-          activeTintColor: '#EA425C',
+          activeTintColor: theme.primaryColor,
           inactiveTintColor: '#7A859A',
-          inactiveBackgroundColor: '#171E28',
-          activeBackgroundColor: '#171E28',
+          inactiveBackgroundColor: theme.backgroundColor,
+          activeBackgroundColor: theme.backgroundColor,
           keyboardHidesTabBar: true,
           tabStyle: {
-            backgroundColor: '#171E28',
-            borderTopColor: '#171E28'
+            backgroundColor: theme.backgroundColor,
+            borderTopColor: theme.backgroundColor
           },
           labelStyle: {
             fontWeight: 'bold'
           },
           style: {
-            backgroundColor: '#171E28',
-            borderTopColor: '#171E28'
+            backgroundColor: theme.backgroundColor,
+            borderTopColor: theme.backgroundColor
           }
         }}
       >

@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   linkButtonText: {
-    color: '#3f70b0',
+    // color: '#3f70b0',
     fontWeight: 'bold'
   }
 });
