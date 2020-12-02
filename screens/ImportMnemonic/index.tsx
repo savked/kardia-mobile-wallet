@@ -9,6 +9,7 @@ import { walletsAtom } from '../../atoms/wallets';
 import { saveWallets } from '../../utils/local';
 import { useRecoilState } from 'recoil';
 import { hdkey } from 'ethereumjs-wallet'
+import CustomTextInput from '../../components/TextInput';
 
 const ImportMnemonic = () => {
     const navigation = useNavigation()
@@ -18,25 +19,23 @@ const ImportMnemonic = () => {
 
     async function accessWalletByMnemonic() {
         const valid = validateSeedPhrase();
-        if (valid) {
-            
-            const seed = await Bip39.mnemonicToSeed(mnemonic.trim())
-            const root = hdkey.fromMasterSeed(seed)
-            const masterWallet = root.getWallet()
-            const privateKey = masterWallet.getPrivateKeyString();
-            const walletAddress = masterWallet.getAddressString();
-            const wallet: Wallet = {
-                privateKey: privateKey,
-                address: walletAddress,
-                balance: 0
-            }
-
-            const _wallets = JSON.parse(JSON.stringify(wallets))
-            _wallets.push(wallet)
-
-            setWallets(_wallets);
-            saveWallets(_wallets);
+        if (!valid) return;
+        const seed = await Bip39.mnemonicToSeed(mnemonic.trim())
+        const root = hdkey.fromMasterSeed(seed)
+        const masterWallet = root.getWallet()
+        const privateKey = masterWallet.getPrivateKeyString();
+        const walletAddress = masterWallet.getAddressString();
+        const wallet: Wallet = {
+            privateKey: privateKey,
+            address: walletAddress,
+            balance: 0
         }
+
+        const _wallets = JSON.parse(JSON.stringify(wallets))
+        _wallets.push(wallet)
+
+        setWallets(_wallets);
+        saveWallets(_wallets);
     }
 
     function validateSeedPhrase() {
@@ -55,7 +54,7 @@ const ImportMnemonic = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Enter seed phrase</Text>
-            <TextInput style={styles.input} value={mnemonic} onChangeText={setMnemonic} numberOfLines={5}
+            <CustomTextInput style={styles.input} value={mnemonic} onChangeText={setMnemonic} numberOfLines={5}
                 multiline={true} />
             <ErrorMessage message={error} style={{ textAlign: 'left' }} />
 

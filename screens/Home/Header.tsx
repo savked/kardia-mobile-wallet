@@ -16,10 +16,14 @@ const HomeHeader = () => {
         <View style={styles.headerContainer}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Image style={styles.logo} source={require('../../assets/logo.png')} />
-                <Text style={{fontSize: 24, fontWeight: 'bold', color: "#000000"}}>Kardia Wallet</Text>
+                <Text style={{fontSize: 20, fontWeight: 'bold', color: "#FFFFFF"}}>Kardia Wallet</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
+<<<<<<< HEAD
                 <IconButton name="bell-o" size={24} color='#000000' badge={"9"} onPress={navigateNotiScreen}/>
+=======
+                <IconButton name="bell-o" size={20} color='#FFFFFF' badge={"9"} />
+>>>>>>> 52ba04134051115534e40c60773b5f88439455a7
             </View>  
         </View>
     )

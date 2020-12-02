@@ -18,12 +18,6 @@ export const styles = StyleSheet.create({
         alignItems: 'stretch',
         justifyContent: 'space-around'
     },
-    option: {
-        width: '100%',
-        padding: 8,
-        borderRadius: 8,
-        backgroundColor: '#FADACF'
-    },
     accessWalletText: {
         paddingHorizontal: 24,
         marginTop: 30,
