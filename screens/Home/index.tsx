@@ -236,7 +236,10 @@ const HomeScreen = () => {
             render={(item, index) => {
               return (
                 <View style={[{ padding: 15 }, index % 2 === 0 ? { backgroundColor: 'rgba(0,0,0,0.04)' } : { backgroundColor: '#FFFFFF' }]}>
-                  <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <TouchableOpacity 
+                    style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
+                    onPress={() => navigation.navigate('Transaction', { screen: 'TransactionDetail', params: {txHash: item.label}  })}
+                  >
                     {renderDate(item.date)}
                     <Text>{truncate(item.label, 10, 15)}</Text>
                     <Text
@@ -253,7 +256,7 @@ const HomeScreen = () => {
             header={
               <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Recent transactions</Text>
-                <Button type="link" onPress={() => navigation.navigate('Transaction')} title="View all >" />
+                <Button type="link" onPress={() => navigation.navigate('Transaction', { screen: 'TransactionList' })} title="View all >" />
               </View>
             }
           />
