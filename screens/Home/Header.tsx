@@ -10,10 +10,10 @@ const HomeHeader = () => {
         <View style={styles.headerContainer}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Image style={styles.logo} source={require('../../assets/logo.png')} />
-                <Text style={{fontSize: 24, fontWeight: 'bold', color: "#000000"}}>Kardia Wallet</Text>
+                <Text style={{fontSize: 20, fontWeight: 'bold', color: "#FFFFFF"}}>Kardia Wallet</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
-                <IconButton name="bell-o" size={24} color='#000000' badge={"9"} />
+                <IconButton name="bell-o" size={20} color='#FFFFFF' badge={"9"} />
             </View>  
         </View>
     )

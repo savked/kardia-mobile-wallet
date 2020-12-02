@@ -66,8 +66,22 @@ const AppContainer = () => {
           },
         })}
         tabBarOptions={{
-          activeTintColor: '#AD182A',
-          inactiveTintColor: 'gray',
+          activeTintColor: '#EA425C',
+          inactiveTintColor: '#7A859A',
+          inactiveBackgroundColor: '#171E28',
+          activeBackgroundColor: '#171E28',
+          keyboardHidesTabBar: true,
+          tabStyle: {
+            backgroundColor: '#171E28',
+            borderTopColor: '#171E28'
+          },
+          labelStyle: {
+            fontWeight: 'bold'
+          },
+          style: {
+            backgroundColor: '#171E28',
+            borderTopColor: '#171E28'
+          }
         }}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
