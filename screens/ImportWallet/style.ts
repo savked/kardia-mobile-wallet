@@ -5,12 +5,14 @@ export const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 22
+        padding: 22,
+        // backgroundColor: '#171E28'
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 25
+        marginBottom: 25,
+        // color: '#B4BDC9'
     },
     optionContainer: {
         width: '100%',
@@ -32,7 +34,6 @@ export const styles = StyleSheet.create({
     },
     accessLink: {
         textDecorationLine: 'underline',
-        fontWeight: 'bold',
-        color: '#AD182A'
+        fontWeight: 'bold'
     }
 })

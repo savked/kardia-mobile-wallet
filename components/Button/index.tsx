@@ -1,40 +1,41 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { ThemeContext } from '../../App';
 import { styles } from './style';
 
-const parseSize = (size: string) => {
-    let sizeStyle = styles.mediumButton
-    if (size === "small") {
-        sizeStyle = styles.smallButton
-    } else if (size === "large") {
-        sizeStyle = styles.largeButton
-    }
-    return sizeStyle
-}
-
-const parseType = (type: string) => {
-    let typeStyle = styles.primaryButton
-    let textTypeStyle = styles.primaryButtonText
-    if (type === "secondary") {
-        typeStyle = styles.secondaryButton
-        textTypeStyle = styles.secondaryButtonText
-    } else if (type === "outline") {
-        typeStyle = styles.outlineButton
-        textTypeStyle = styles.outlineButtonText
-    } else if (type === "ghost") {
-        typeStyle = styles.ghostButton
-        textTypeStyle = styles.ghostButtonText
-    } else if (type === "link") {
-        typeStyle = styles.linkButton
-        textTypeStyle = styles.linkButtonText
-    }
-
-    return {typeStyle, textTypeStyle}
-}
-
 const Button = ({title, style, textStyle, onPress, icon, iconName, size = "medium", type = 'primary', iconSize = 14, iconColor}: ButtonProps) => {
-    const {typeStyle, textTypeStyle} = parseType(type)
+    const theme = useContext(ThemeContext)
+
+    const parseSize = (size: string) => {
+        let sizeStyle = styles.mediumButton
+        if (size === "small") {
+            sizeStyle = styles.smallButton
+        } else if (size === "large") {
+            sizeStyle = styles.largeButton
+        }
+        return sizeStyle
+    }
+    
+    const parseType = (type: string) => {
+        let typeStyle = {...styles.primaryButton,...{backgroundColor: theme.primaryColor}}
+        let textTypeStyle = {...styles.primaryButtonText,...{ color: theme.primaryTextColor }}
+        if (type === "secondary") {
+            typeStyle = styles.secondaryButton
+            textTypeStyle = styles.secondaryButtonText
+        } else if (type === "outline") {
+            typeStyle = {...styles.outlineButton,...{ borderColor: theme.outlineBorderColor }}
+            textTypeStyle = {...styles.outlineButtonText,...{ color: theme.outlineTextColor }}
+        } else if (type === "ghost") {
+            typeStyle = {...styles.ghostButton, ...{ backgroundColor: theme.ghostColor }}
+            textTypeStyle = {...styles.ghostButtonText, ...{ color: theme.ghostTextColor }}
+        } else if (type === "link") {
+            typeStyle = styles.linkButton
+            textTypeStyle = {...styles.linkButtonText, ...{ color: theme.linkTextColor }}
+        }
+    
+        return {typeStyle, textTypeStyle}
+    }
 
     const renderIcon = () => {
         if (icon) return icon
@@ -59,6 +60,8 @@ const Button = ({title, style, textStyle, onPress, icon, iconName, size = "mediu
         }
         return null
     }
+
+    const {typeStyle, textTypeStyle} = parseType(type)
 
     return (
         <TouchableOpacity

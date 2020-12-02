@@ -5,7 +5,8 @@ export const styles = StyleSheet.create({
         flex: 1, 
         alignItems: 'center', 
         justifyContent: 'center',
-        padding: 25
+        padding: 25,
+        backgroundColor: '#171E28'
     },
     noWalletLogo: {
         width: 100,

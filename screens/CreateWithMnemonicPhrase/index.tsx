@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Text, View } from 'react-native';
-import * as Bip39 from 'bip39';
 import TextInput from '../../components/TextInput';
 import { styles } from './style'
 import Button from '../../components/Button';
@@ -9,8 +8,10 @@ import AlertModal from '../../components/AlertModal';
 import { useRecoilState } from 'recoil';
 import { walletsAtom } from '../../atoms/wallets';
 import { saveWallets } from '../../utils/local';
+import { ThemeContext } from '../../App';
 
 const CreateWithMnemonicPhrase = () => {
+    const theme = useContext(ThemeContext);
     const [mnemonic, setMnemonic] = useState('')
     const [mnemonicError, setMnemonicError] = useState('')
     const [wallets, setWallets] = useRecoilState(walletsAtom)
@@ -33,15 +34,15 @@ const CreateWithMnemonicPhrase = () => {
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Mnemonic phrase</Text>
+        <View style={[styles.container, { backgroundColor: theme.backgroundColor } ]}>
+            <Text style={[styles.title, { color: theme.textColor } ]}>Mnemonic phrase</Text>
             <TextInput
                 multiline={true}
                 numberOfLines={5}
                 value={mnemonic}
                 editable={false}
             />
-            <Text style={[styles.description, styles.paragraph]}>
+            <Text style={[styles.description, styles.paragraph, { color: theme.textColor }]}>
                 Please make sure you 
                 <Text style={{fontWeight: 'bold'}}> WRITE DOWN</Text> and <Text style={{fontWeight: 'bold'}}>SAVE</Text> your mnemonic phrase. You will need it to access your wallet.
             </Text>

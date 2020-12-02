@@ -26,7 +26,6 @@ export const styles = StyleSheet.create({
     },
     accessLink: {
         textDecorationLine: 'underline',
-        fontWeight: 'bold',
-        color: '#AD182A'
+        fontWeight: 'bold'
     }
 })

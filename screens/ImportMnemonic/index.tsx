@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { View, Text, TextInput } from 'react-native'
 import Button from '../../components/Button';
 import ErrorMessage from '../../components/ErrorMessage';
@@ -10,8 +10,10 @@ import { saveWallets } from '../../utils/local';
 import { useRecoilState } from 'recoil';
 import { hdkey } from 'ethereumjs-wallet'
 import CustomTextInput from '../../components/TextInput';
+import { ThemeContext } from '../../App';
 
 const ImportMnemonic = () => {
+    const theme = useContext(ThemeContext);
     const navigation = useNavigation()
     const [mnemonic, setMnemonic] = useState("");
     const [error, setError] = useState("");
@@ -52,14 +54,11 @@ const ImportMnemonic = () => {
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Enter seed phrase</Text>
+        <View style={[styles.container, { backgroundColor: theme.backgroundColor } ]}>
+            <Text style={[styles.title, { color: theme.textColor } ]}>Enter seed phrase</Text>
             <CustomTextInput style={styles.input} value={mnemonic} onChangeText={setMnemonic} numberOfLines={5}
                 multiline={true} />
             <ErrorMessage message={error} style={{ textAlign: 'left' }} />
-
-
-
             <View style={styles.buttonGroup}>
                 <Button size="large" type="primary" title="Import" onPress={accessWalletByMnemonic} />
                 <Button size="large" type="secondary" onPress={() => navigation.goBack()} title="Cancel" />
