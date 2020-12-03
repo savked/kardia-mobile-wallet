@@ -4,7 +4,8 @@ export const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
+        paddingVertical: 120
     },
     infoContainer: {
         flexDirection: 'row',
@@ -21,9 +22,9 @@ export const styles = StyleSheet.create({
     },
     txMeta: {
         width: '100%',
-        paddingVertical: 25,
+        paddingVertical: 55,
         paddingHorizontal: 22,
-        flexDirection: 'row',
+        // flexDirection: 'row',
         alignItems: 'center'
     },
     statusContainer: {
