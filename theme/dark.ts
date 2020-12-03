@@ -11,5 +11,7 @@ export const theme = {
     linkTextColor: '#FFFFFF',
     backgroundColor: '#2A333F',
     backgroundFocusColor: '#171E28',
-    textColor: '#F7F7F7'
+    textColor: '#F7F7F7',
+    successColor: '#52c93a',
+    failColor: '#db4537'
 }
