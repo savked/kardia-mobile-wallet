@@ -8,7 +8,7 @@ export const theme = {
     outlineTextColor: '#C9CED6',
     ghostColor: '#F7F8F9',
     ghostTextColor: '#364766',
-    linkTextColor: '#3f70b0',
+    linkTextColor: '#FFFFFF',
     backgroundColor: '#2A333F',
     backgroundFocusColor: '#171E28',
     textColor: '#F7F7F7'

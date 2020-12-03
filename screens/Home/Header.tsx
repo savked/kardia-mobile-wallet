@@ -16,8 +16,8 @@ const HomeHeader = () => {
     return (
         <View style={styles.headerContainer}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image style={styles.logo} source={require('../../assets/logo.png')} />
-                <Text style={{fontSize: 20, fontWeight: 'bold', color: theme.textColor}}>Kardia Wallet</Text>
+                {/* <Image style={styles.logo} source={require('../../assets/logo.png')} /> */}
+                <Text style={{fontSize: 25, fontWeight: 'bold', color: theme.textColor}}>Wallet</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
                 <IconButton name="bell-o" size={24} color={theme.textColor} badge={"9"} onPress={navigateNotiScreen}/>
