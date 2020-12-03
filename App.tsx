@@ -9,23 +9,24 @@
  */
 import 'react-native-gesture-handler';
 import React from 'react';
-import { StatusBar } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import { RecoilRoot } from 'recoil';
 import { MenuProvider } from 'react-native-popup-menu';
 import AppContainer from './screens/Container';
 import themes from './theme/index'
+import CustomStatusBar from './components/StatusBar';
 
 declare const global: {HermesInternal: null | {}};
 
-export const ThemeContext = React.createContext(themes.dark);
+const DEFAULT_THEME = themes.dark
+export const ThemeContext = React.createContext(DEFAULT_THEME);
 
 const App = () => {
 
   return (
     <>
-      <ThemeContext.Provider value={themes.dark}>
-        <StatusBar barStyle="light-content" />
+      <ThemeContext.Provider value={DEFAULT_THEME}>
+        <CustomStatusBar barStyle="light-content" backgroundColor={DEFAULT_THEME.backgroundColor} />
         <SafeAreaProvider>
           <RecoilRoot>
             <MenuProvider>

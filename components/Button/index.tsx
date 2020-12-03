@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { ThemeContext } from '../../App';
 import { styles } from './style';
 
-const Button = ({title, style, textStyle, onPress, icon, iconName, size = "medium", type = 'primary', iconSize = 14, iconColor}: ButtonProps) => {
+const Button = ({title, style, textStyle, onPress, icon, iconName, block, size = "medium", type = 'primary', iconSize = 14, iconColor}: ButtonProps) => {
     const theme = useContext(ThemeContext)
 
     const parseSize = (size: string) => {
@@ -66,7 +66,7 @@ const Button = ({title, style, textStyle, onPress, icon, iconName, size = "mediu
     return (
         <TouchableOpacity
             onPress={onPress}
-            style={[styles.button, parseSize(size), typeStyle, style, type === "link" ? {padding: 0, minWidth: 0} : null]}
+            style={[styles.button, parseSize(size), typeStyle, style, type === "link" ? {padding: 0, minWidth: 0} : null, block ? {width: '100%'} : null]}
         >
             {
                 renderIcon()
