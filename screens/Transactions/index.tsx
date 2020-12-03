@@ -65,7 +65,7 @@ const TransactionScreen = () => {
                     }
                   >
                     {item.type === 'IN' ? '+' : '-'}{item.amount} KAI
-                              </Text>
+                  </Text>
                 </TouchableOpacity>
               </View>
             )
