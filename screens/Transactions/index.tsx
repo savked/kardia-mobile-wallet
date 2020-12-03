@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Alert, Text, TouchableOpacity, View, Keyboard } from 'react-native';
 import { useRecoilState } from 'recoil';
+import { ThemeContext } from '../../App';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import List from '../../components/List';
+import TextInput from '../../components/TextInput';
 import { getTXHistory } from '../../services/api';
 import { getMonthName } from '../../utils/date';
 import { addZero, truncate } from '../../utils/string';
@@ -10,13 +13,34 @@ import { styles } from './style';
 
 const TransactionScreen = () => {
 
-  const [wallets, setWallets] = useRecoilState(walletsAtom)
-  const [selectedWallet, setSelectedWallet] = useRecoilState(selectedWalletAtom)
-  const [txList, setTxList] = useState([] as any[])
+  const theme = useContext(ThemeContext)
+  const navigation = useNavigation()
 
-  const onSelect = (itemIndex: number) => {
-    Alert.alert(`${itemIndex}`)
+  const [wallets] = useRecoilState(walletsAtom)
+  const [selectedWallet] = useRecoilState(selectedWalletAtom)
+  const [txList, setTxList] = useState([] as any[])
+  const [listHeight, setListHeight] = useState<number>()
+
+  const [filterStartDate, setFilterStartDate] = useState(new Date())
+
+  const handleShow = () => {
+    setListHeight(370)
   }
+
+  const handleHide = () => {
+    setListHeight(undefined)
+  }
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', handleShow);
+    Keyboard.addListener('keyboardDidHide', handleHide);
+
+    return () => {
+      Keyboard.removeListener('keyboardDidShow', handleShow);
+      Keyboard.removeListener('keyboardDidHide', handleHide);
+    }
+
+  }, [])
 
   const parseTXForList = (tx: Transaction) => {
     return {
@@ -49,33 +73,44 @@ const TransactionScreen = () => {
   }, [selectedWallet])
 
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'stretch' }}>
-      <View style={{ flex: 1 }}>
+    <View
+      style={[styles.container, { backgroundColor: theme.backgroundColor }]}
+    >
+      <View style={[styles.controlContainer, { height: 80 } ]}>
+        <TextInput block={true} placeholder="Search with address / tx hash / block number / block hash..." />
+      </View>
+      <View style={{height: listHeight, paddingHorizontal: 7}}>
         <List
           items={txList}
           render={(item, index) => {
             return (
-              <View style={[{ padding: 15 }, index % 2 === 0 ? {backgroundColor: 'rgba(0,0,0,0.04)'} : {backgroundColor: '#FFFFFF'}]}>
-                <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View style={[{ padding: 15 }]}>
+                <TouchableOpacity
+                  style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
+                  onPress={() => navigation.navigate('Transaction', { screen: 'TransactionDetail', initial: false, params: { txHash: item.label } })}
+                >
                   {renderDate(item.date)}
-                  <Text>{truncate(item.label, 10, 15)}</Text>
+                  <Text style={{ color: '#FFFFFF' }}>{truncate(item.label, 10, 15)}</Text>
                   <Text
                     style={
-                      [styles.kaiAmount, item.type === 'IN' ? { color: 'green' } : { color: 'red' }]
+                      [styles.kaiAmount, item.type === 'IN' ? { color: '#53B680' } : { color: 'red' }]
                     }
                   >
                     {item.type === 'IN' ? '+' : '-'}{item.amount} KAI
-                  </Text>
+                    </Text>
                 </TouchableOpacity>
               </View>
             )
           }}
+          header={
+            <Text style={{ fontSize: 18, paddingHorizontal: 15, fontWeight: 'bold', color: '#FFFFFF' }}>Recent transactions</Text>
+          }
           onSelect={(itemIndex) => {
             Alert.alert(`${itemIndex}`)
           }}
         />
       </View>
-    </SafeAreaView>
+    </View>
   )
 }
 

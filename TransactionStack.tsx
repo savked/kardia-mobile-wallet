@@ -10,10 +10,13 @@ const TransactionStackScreen = () => {
     return (
         <TransactionStack.Navigator
             initialRouteName="TransactionList"
+            screenOptions={{
+                headerShown: false
+            }}
         >
-            <TransactionStack.Screen name="TransactionList" component={TransactionScreen} options={{ title: 'Transaction history' }} />
-            <TransactionStack.Screen name="CreateTx" component={CreateTxScreen} options={{headerShown: false}} />
-            <TransactionStack.Screen name="TransactionDetail" component={TransactionDetail} options={{headerShown: false}} />
+            <TransactionStack.Screen name="TransactionList" component={TransactionScreen} />
+            <TransactionStack.Screen name="CreateTx" component={CreateTxScreen} />
+            <TransactionStack.Screen name="TransactionDetail" component={TransactionDetail} />
         </TransactionStack.Navigator>
     );
 }

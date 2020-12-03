@@ -8,4 +8,6 @@ interface CustomTextInputProps {
     numberOfLines?: number;
     multiline?: boolean;
     editable?: boolean;
+    placeholder?: string;
+    block?: boolean;
 }

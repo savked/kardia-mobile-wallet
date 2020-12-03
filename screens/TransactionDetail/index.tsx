@@ -1,10 +1,9 @@
-import { useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
-import { useRecoilState } from 'recoil'
 import { ThemeContext } from '../../App'
-import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets'
+import Button from '../../components/Button'
 import Divider from '../../components/Divider'
 import { getTxDetail } from '../../services/api'
 import { truncate } from '../../utils/string'
@@ -14,27 +13,14 @@ const TransactionDetail = () => {
     const theme = useContext(ThemeContext)
     const {params} = useRoute()
     const txHash = params ? (params as any).txHash : ''
+    const navigation = useNavigation()
 
     const [txData, setTxData] = useState<Transaction>()
-    const [wallets] = useRecoilState(walletsAtom)
-    const [selectedWallet] = useRecoilState(selectedWalletAtom)
 
     useEffect(() => {
         const data = getTxDetail(txHash)
         setTxData(data)
     }, [txHash])
-
-    const renderStatusText = (status?: number) => {
-        return (
-            <View style={[styles.statusContainer ]}>
-                <Text style={[styles.statusText, status ? {color: 'green'} : {color: 'red'}]}>
-                    {
-                        status ? "Transaction success" : "Transaction failed"
-                    }
-                </Text>
-            </View>
-        )
-    }
 
     const renderStatusIcon = (status?: number) => {
         let iconName, iconColor
@@ -87,6 +73,14 @@ const TransactionDetail = () => {
                 <View style={styles.infoContainer}>
                     <Text style={[styles.infoTitle, { color: theme.textColor } ]}>Date</Text>
                     <Text style={[styles.infoValue, { color: theme.textColor } ]}>{txData?.date.toLocaleString()}</Text>
+                </View>
+                <View style={[styles.infoContainer, { marginTop: 15 } ]}>
+                    <Button
+                        title="Go back"
+                        type="outline"
+                        block
+                        onPress={() => navigation.goBack()}
+                    />
                 </View>
             </View>
         </View>

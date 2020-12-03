@@ -9,7 +9,6 @@
  */
 import 'react-native-gesture-handler';
 import React from 'react';
-import { StatusBar } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import { RecoilRoot } from 'recoil';
 import { MenuProvider } from 'react-native-popup-menu';
@@ -27,7 +26,6 @@ const App = () => {
   return (
     <>
       <ThemeContext.Provider value={DEFAULT_THEME}>
-        {/* <StatusBar barStyle="light-content" /> */}
         <CustomStatusBar barStyle="light-content" backgroundColor={DEFAULT_THEME.backgroundColor} />
         <SafeAreaProvider>
           <RecoilRoot>
