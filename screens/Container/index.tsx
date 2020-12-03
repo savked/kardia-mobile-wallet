@@ -42,7 +42,7 @@ const Wrap = () => {
         }
       })}
       tabBarOptions={{
-        activeTintColor: theme.primaryColor,
+        activeTintColor: theme.primaryTextColor,
         inactiveTintColor: '#7A859A',
         inactiveBackgroundColor: theme.backgroundColor,
         activeBackgroundColor: theme.backgroundColor,
@@ -57,7 +57,8 @@ const Wrap = () => {
         style: {
           backgroundColor: theme.backgroundColor,
           borderTopColor: theme.backgroundColor
-        }
+        },
+        showLabel: false
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />

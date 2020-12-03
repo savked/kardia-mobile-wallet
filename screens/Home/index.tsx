@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, View, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import { Text, View, TouchableOpacity, Dimensions, Alert, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
@@ -26,7 +26,7 @@ import { getWalletFromPK } from '../../utils/blockchain';
 import { saveWallets } from '../../utils/local';
 import AlertModal from '../../components/AlertModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import IconM from 'react-native-vector-icons/MaterialIcons';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
 const HomeScreen = () => {
@@ -90,11 +90,11 @@ const HomeScreen = () => {
   const renderWalletItem = ({ item: wallet, index }: any) => {
     return (
       <View style={styles.kaiCardContainer}>
-        <LinearGradient colors={['#42378f', '#f53844']} style={styles.kaiCard}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <View style={{paddingRight: 8, flex: 10}}>
+        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} colors={['#623555', '#e62c2c']} style={styles.kaiCard}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={{ paddingRight: 8, flex: 10 }}>
               <Text style={styles.kaiCardText}>Address:</Text>
-              <Text style={styles.kaiCardText}>{truncate(wallet.address, 12, 17)}</Text>
+              <Text style={styles.kaiCardText}>{truncate(wallet.address, 8, 10)}</Text>
             </View>
             <Menu>
               <MenuTrigger
@@ -116,7 +116,7 @@ const HomeScreen = () => {
               </MenuTrigger>
               <MenuOptions
                 customStyles={{
-                  optionWrapper: {padding: 18}
+                  optionWrapper: { padding: 18 }
                 }}
               >
                 <MenuOption onSelect={() => removeWallet(index)} >
@@ -125,9 +125,18 @@ const HomeScreen = () => {
               </MenuOptions>
             </Menu>
           </View>
+          <View>
+            <Text style={{ fontSize: 30, color: 'white' }}>
+              $2,500
+          </Text>
+            <Image
+              style={styles.cardLogo}
+              source={require('../../assets/kar1.png')}
+            />
+          </View>
+
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <Text style={[styles.kaiCardText, styles.kaiCardBalanceText]}>{wallet.balance} KAI
-              <Text style={{ fontSize: 12 }}> ~ 100 USD</Text>
             </Text>
           </View>
         </LinearGradient>
@@ -142,6 +151,30 @@ const HomeScreen = () => {
       <View style={styles.dateContainer}>
         <Text style={styles.dateText}>{dateStr}</Text>
         <Text style={styles.dateText}>{monthStr}</Text>
+      </View>
+    )
+  }
+
+  const renderIcon = () => {
+    return (
+      <View>
+        <View style={{
+          width: 50,
+          height: 50,
+
+          borderRadius: 25,
+          backgroundColor: 'white',
+
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+
+          borderWidth: 1,
+          borderColor: 'gray',
+        }}>
+          <IconM name={'attach-money'} size={30} color={'red'} />
+        </View>
+        <IconM name={'verified'} size={20} color={'green'} style={{ position: 'absolute', right: 0, bottom: 0 }} />
       </View>
     )
   }
@@ -210,21 +243,33 @@ const HomeScreen = () => {
             inactiveDotOpacity={0.4}
             inactiveDotScale={0.6}
           />
+
           <View style={styles.buttonGroupContainer}>
             <Button
               title="Send"
-              type="primary"
+              type="outline"
               onPress={send}
               iconName="paper-plane"
               size="small"
+              textStyle={{ color: '#FFFFFF' }}
+              style={{ marginRight: 5 }}
             />
-            <Button onPress={() => setShowQRModal(true)} title="Receive" size="small" type="secondary" iconName="download" />
+
+            <Button onPress={() => setShowQRModal(true)}
+              title="Receive"
+              size="small"
+              type="outline"
+              iconName="download"
+              style={{ marginLeft: 5, marginRight: 5 }}
+              textStyle={{ color: '#FFFFFF' }} />
+
             <Button
               title="Import"
               onPress={importWallet}
               type="outline"
               iconName="plus"
               size="small"
+              style={{ marginLeft: 5 }}
               textStyle={{ color: '#FFFFFF' }}
             />
           </View>
@@ -236,15 +281,21 @@ const HomeScreen = () => {
             render={(item, index) => {
               return (
                 <View style={[{ padding: 15 }]}>
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
-                    onPress={() => navigation.navigate('Transaction', { screen: 'TransactionDetail', initial: false, params: {txHash: item.label}  })}
+                    onPress={() => navigation.navigate('Transaction', { screen: 'TransactionDetail', initial: false, params: { txHash: item.label } })}
                   >
-                    {renderDate(item.date)}
-                    <Text style={{color: '#FFFFFF'}}>{truncate(item.label, 10, 15)}</Text>
+                    {/* {renderDate(item.date)} */}
+                    {renderIcon()}
+                    <View style={{ flexDirection: 'column' }}>
+                      <Text style={{ color: '#FFFFFF' }}>{truncate(item.label, 8, 12)}
+                      </Text>
+                      <Text style={{ color: 'gray' }}>07/08 - 19:23</Text>
+                      <Text style={{ color: '#FFFFFF' }}>Success</Text>
+                    </View>
                     <Text
                       style={
-                        [styles.kaiAmount, item.type === 'IN' ? { color: '#53B680' } : { color: 'red' }]
+                        [styles.kaiAmount, item.type === 'IN' ? { color: '#61b15a' } : { color: 'red' }]
                       }
                     >
                       {item.type === 'IN' ? '+' : '-'}{item.amount} KAI
@@ -286,7 +337,7 @@ const HomeScreen = () => {
           </Modal>
         }
         {
-          showScanAlert && 
+          showScanAlert &&
           <AlertModal
             type={scanType as any}
             visible={showScanAlert}
