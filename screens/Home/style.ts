@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
     transactionContainer: {
         height: 445,
         // backgroundColor: '#FFFFFF', 
-        backgroundColor: '#171E28',
+        // backgroundColor: '#171E28',
         borderTopLeftRadius: 22,
         borderTopRightRadius: 22
     },

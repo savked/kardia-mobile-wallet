@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Text, Image } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { styles } from './style'
+import { ThemeContext } from "../../App";
 
 const Notification = () => {
+    const theme = useContext(ThemeContext)
+
     function viewDetail() {
         console.log('view detail');
     }
@@ -34,7 +37,7 @@ const Notification = () => {
 
 
     return (
-        <View style={{ minWidth: '100%', backgroundColor: '#f8f9fa' }}>
+        <View style={{ minWidth: '100%', backgroundColor: theme.backgroundColor }}>
             <Text style={styles.headline}>Today</Text>
             <FlatList
                 data={data}
