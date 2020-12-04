@@ -8,7 +8,7 @@ const NewsScreen = () => {
     const theme = useContext(ThemeContext)
 
     return (
-        <View style={styles.wrapper}>
+        <View style={[styles.wrapper, { backgroundColor: theme.backgroundColor }]}>
             <Text style={[styles.headline, { color: theme.textColor }]}>News</Text>
             <View style={styles.highlight}>
                 <Image
@@ -22,7 +22,6 @@ const NewsScreen = () => {
 
             </View>
             <FlatList
-                contentContainerStyle={{ flexGrow: 1 }}
                 data={data}
                 renderItem={({ item, index }) => {
                     return (
