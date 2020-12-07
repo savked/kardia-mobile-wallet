@@ -10,6 +10,7 @@ import { getTXHistory } from '../../services/api';
 import { getMonthName } from '../../utils/date';
 import { addZero, truncate } from '../../utils/string';
 import { styles } from './style';
+import IconM from 'react-native-vector-icons/MaterialIcons';
 
 const TransactionScreen = () => {
 
@@ -57,13 +58,37 @@ const TransactionScreen = () => {
       .then(txList => setTxList(txList.map(parseTXForList)))
   }
 
-  const renderDate = (date: Date) => {
-    const dateStr = addZero(date.getDate())
-    const monthStr = getMonthName(date.getMonth() + 1)
+  // const renderDate = (date: Date) => {
+  //   const dateStr = addZero(date.getDate())
+  //   const monthStr = getMonthName(date.getMonth() + 1)
+  //   return (
+  //     <View style={styles.dateContainer}>
+  //       <Text style={styles.dateText}>{dateStr}</Text>
+  //       <Text style={styles.dateText}>{monthStr}</Text>
+  //     </View>
+  //   )
+  // }
+
+  const renderIcon = () => {
     return (
-      <View style={styles.dateContainer}>
-        <Text style={styles.dateText}>{dateStr}</Text>
-        <Text style={styles.dateText}>{monthStr}</Text>
+      <View>
+        <View style={{
+          width: 50,
+          height: 50,
+
+          borderRadius: 25,
+          backgroundColor: 'white',
+
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+
+          borderWidth: 1,
+          borderColor: 'gray',
+        }}>
+          <IconM name={'attach-money'} size={30} color={'red'} />
+        </View>
+        <IconM name={'verified'} size={20} color={'green'} style={{ position: 'absolute', right: 0, bottom: 0 }} />
       </View>
     )
   }
@@ -76,6 +101,7 @@ const TransactionScreen = () => {
     <View
       style={[styles.container, { backgroundColor: theme.backgroundColor }]}
     >
+      <Text style={[styles.headline, {color: theme.textColor}]}>Transactions</Text>
       <View style={[styles.controlContainer, { height: 80 } ]}>
         <TextInput block={true} placeholder="Search with address / tx hash / block number / block hash..." />
       </View>
@@ -89,8 +115,14 @@ const TransactionScreen = () => {
                   style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
                   onPress={() => navigation.navigate('Transaction', { screen: 'TransactionDetail', initial: false, params: { txHash: item.label } })}
                 >
-                  {renderDate(item.date)}
-                  <Text style={{ color: '#FFFFFF' }}>{truncate(item.label, 10, 15)}</Text>
+                  {/* {renderDate(item.date)} */}
+                  {renderIcon()}
+                  <View style={{ flexDirection: 'column' }}>
+                      <Text style={{ color: '#FFFFFF' }}>{truncate(item.label, 8, 12)}
+                      </Text>
+                      <Text style={{ color: 'gray' }}>07/08 - 19:23</Text>
+                      <Text style={{ color: '#FFFFFF' }}>Success</Text>
+                    </View>
                   <Text
                     style={
                       [styles.kaiAmount, item.type === 'IN' ? { color: '#53B680' } : { color: 'red' }]
@@ -102,9 +134,9 @@ const TransactionScreen = () => {
               </View>
             )
           }}
-          header={
-            <Text style={{ fontSize: 18, paddingHorizontal: 15, fontWeight: 'bold', color: '#FFFFFF' }}>Recent transactions</Text>
-          }
+          // header={
+          //   <Text style={{ fontSize: 18, paddingHorizontal: 15, fontWeight: 'bold', color: '#FFFFFF' }}>Recent transactions</Text>
+          // }
           onSelect={(itemIndex) => {
             Alert.alert(`${itemIndex}`)
           }}

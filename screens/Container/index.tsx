@@ -48,22 +48,22 @@ const Wrap = () => {
         activeBackgroundColor: theme.backgroundColor,
         keyboardHidesTabBar: true,
         tabStyle: {
-          backgroundColor: theme.backgroundColor,
-          borderTopColor: theme.backgroundColor
+          backgroundColor: theme.backgroundFocusColor,
+          borderTopColor: theme.backgroundFocusColor
         },
         labelStyle: {
           fontWeight: 'bold'
         },
         style: {
-          backgroundColor: theme.backgroundColor,
-          borderTopColor: theme.backgroundColor
+          backgroundColor: theme.backgroundFocusColor,
+          borderTopColor: theme.backgroundFocusColor
         },
         showLabel: false
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Transaction" component={TransactionStackScreen} />
-      <Tab.Screen name="DApp" component={DAppScreen} />
+      {/* <Tab.Screen name="DApp" component={DAppScreen} /> */}
       <Tab.Screen name="News" component={NewsScreen} />
     </Tab.Navigator>
   )
