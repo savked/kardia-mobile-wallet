@@ -1,5 +1,5 @@
 interface Wallet {
-    address: string;
-    privateKey?: string;
-    balance: number;
+  address: string;
+  privateKey?: string;
+  balance: number;
 }

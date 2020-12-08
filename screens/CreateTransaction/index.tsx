@@ -65,7 +65,9 @@ const CreateTxScreen = () => {
         <TextInput
           onChangeText={(newAmount) => {
             const digitOnly = getDigit(newAmount);
-            if (Number(digitOnly) > MAX_AMOUNT) return;
+            if (Number(digitOnly) > MAX_AMOUNT) {
+              return;
+            }
             if (digitOnly === '') {
               setAmount('0');
               return;
