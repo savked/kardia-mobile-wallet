@@ -1,4 +1,4 @@
-import './shim'
+import './shim';
 /**
  * @format
  */
