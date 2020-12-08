@@ -1,4 +1,4 @@
-import { theme as darkTheme } from './dark'
+import {theme as darkTheme} from './dark';
 export default {
-    dark: darkTheme
-}
+  dark: darkTheme,
+};
