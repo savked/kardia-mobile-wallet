@@ -12,11 +12,14 @@ import {useRecoilState} from 'recoil';
 import {walletsAtom} from '../../atoms/wallets';
 import {saveWallets} from '../../utils/local';
 import {ThemeContext} from '../../App';
+import {getBalance} from '../../services/account';
 
 const ImportPrivateKey = () => {
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
-  const [privateKey, setPrivateKey] = useState('');
+  const [privateKey, setPrivateKey] = useState(
+    '0x7e0f202dddd68f87212144cc0cac3e2ca11bf1b7b1f019bc5d1eed8ea1c5c59a',
+  );
   const [showModal, setShowModal] = useState(false);
   const [wallets, setWallets] = useRecoilState(walletsAtom);
 
@@ -25,12 +28,13 @@ const ImportPrivateKey = () => {
     setShowModal(false);
   };
 
-  const importPK = () => {
+  const importPK = async () => {
     const wallet = getWalletFromPK(privateKey);
+    const balance = await getBalance(wallet.getAddressString());
     const walletObj: Wallet = {
-      address: wallet.getAddressString(),
+      address: wallet.getChecksumAddressString(),
       privateKey: wallet.getPrivateKeyString(),
-      balance: 0,
+      balance,
     };
 
     const newWallets = JSON.parse(JSON.stringify(wallets));

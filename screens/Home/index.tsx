@@ -21,18 +21,21 @@ import List from '../../components/List';
 import Modal from '../../components/Modal';
 import {useRecoilState} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {getTXHistory} from '../../services/api';
 import {getWalletFromPK} from '../../utils/blockchain';
 import {saveWallets} from '../../utils/local';
 import AlertModal from '../../components/AlertModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconM from 'react-native-vector-icons/MaterialIcons';
+import {parseKaiBalance} from '../../utils/number';
+import {getTxByAddress} from '../../services/transaction';
+import {tokenInfoAtom} from '../../atoms/token';
 const {width: viewportWidth} = Dimensions.get('window');
 
 const HomeScreen = () => {
   const [selectedWallet, setSelectedWallet] = useRecoilState(
     selectedWalletAtom,
   );
+  const [tokenInfo] = useRecoilState(tokenInfoAtom);
   const [showQRModal, setShowQRModal] = useState(false);
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [txList, setTxList] = useState([] as any[]);
@@ -83,13 +86,18 @@ const HomeScreen = () => {
   };
 
   const getTX = () => {
-    getTXHistory(wallets[selectedWallet]).then((newTxList) =>
+    getTxByAddress(wallets[selectedWallet].address, 1, 5).then((newTxList) =>
       setTxList(newTxList.map(parseTXForList)),
     );
+    // getTXHistory(wallets[selectedWallet]).then((newTxList) =>
+    //   setTxList(newTxList.map(parseTXForList)),
+    // );
   };
 
   useEffect(() => {
-    getTX();
+    if (wallets[selectedWallet]) {
+      getTX();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
 
@@ -136,7 +144,9 @@ const HomeScreen = () => {
             </Menu>
           </View>
           <View>
-            <Text style={{fontSize: 30, color: 'white'}}>$2,500</Text>
+            <Text style={{fontSize: 30, color: 'white'}}>
+              ${parseKaiBalance(tokenInfo.price * wallet.balance)}
+            </Text>
             <Image
               style={styles.cardLogo}
               source={require('../../assets/kar1.png')}
@@ -150,7 +160,7 @@ const HomeScreen = () => {
               justifyContent: 'space-between',
             }}>
             <Text style={[styles.kaiCardText, styles.kaiCardBalanceText]}>
-              {wallet.balance} KAI
+              {parseKaiBalance(wallet.balance)} KAI
             </Text>
           </View>
         </LinearGradient>
@@ -319,7 +329,10 @@ const HomeScreen = () => {
                       <Text style={{color: '#FFFFFF'}}>
                         {truncate(item.label, 8, 12)}
                       </Text>
-                      <Text style={{color: 'gray'}}>07/08 - 19:23</Text>
+                      {/* <Text style={{color: 'gray'}}>07/08 - 19:23</Text> */}
+                      <Text style={{color: 'gray'}}>
+                        {item.date.toLocaleString()}
+                      </Text>
                       <Text style={{color: '#FFFFFF'}}>Success</Text>
                     </View>
                     <Text
@@ -330,7 +343,7 @@ const HomeScreen = () => {
                           : {color: 'red'},
                       ]}>
                       {item.type === 'IN' ? '+' : '-'}
-                      {item.amount} KAI
+                      {parseKaiBalance(item.amount)} KAI
                     </Text>
                   </TouchableOpacity>
                 </View>

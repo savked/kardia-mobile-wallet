@@ -14,6 +14,9 @@ import NoWalletStackScreen from '../../NoWalletStack';
 import {createStackNavigator} from '@react-navigation/stack';
 import Notification from '../Notification';
 import {ThemeContext} from '../../App';
+import {getBalance} from '../../services/account';
+import {tokenInfoAtom} from '../../atoms/token';
+import {getTokenInfo} from '../../services/token';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -69,15 +72,29 @@ const Wrap = () => {
 
 const AppContainer = () => {
   const [wallets, setWallets] = useRecoilState(walletsAtom);
+  const [, setTokenInfo] = useRecoilState(tokenInfoAtom);
   const [inited, setInited] = useState(0);
 
   useEffect(() => {
     (async () => {
-      const localWallets = await getWallets();
+      let localWallets = await getWallets();
+
+      const promiseArr = localWallets.map(async (wallet) => {
+        wallet.balance = await getBalance(wallet.address);
+        return wallet;
+      });
+
+      localWallets = await Promise.all(promiseArr);
+
       setWallets(localWallets);
+
+      // Get token info
+      const info = await getTokenInfo();
+      setTokenInfo(info);
+
       setInited(1);
     })();
-  }, [setWallets]);
+  }, [setWallets, setTokenInfo]);
 
   if (!inited) {
     return (

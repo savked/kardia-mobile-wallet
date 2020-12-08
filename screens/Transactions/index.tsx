@@ -7,10 +7,11 @@ import {ThemeContext} from '../../App';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import List from '../../components/List';
 import TextInput from '../../components/TextInput';
-import {getTXHistory} from '../../services/api';
 import {truncate} from '../../utils/string';
 import {styles} from './style';
 import IconM from 'react-native-vector-icons/MaterialIcons';
+import {getTxByAddress} from '../../services/transaction';
+import {parseKaiBalance} from '../../utils/number';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
@@ -53,9 +54,12 @@ const TransactionScreen = () => {
   };
 
   const getTX = () => {
-    getTXHistory(wallets[selectedWallet]).then((newTxList) =>
+    getTxByAddress(wallets[selectedWallet].address).then((newTxList) =>
       setTxList(newTxList.map(parseTXForList)),
     );
+    // getTXHistory(wallets[selectedWallet]).then((newTxList) =>
+    //   setTxList(newTxList.map(parseTXForList)),
+    // );
   };
 
   const renderIcon = () => {
@@ -123,13 +127,14 @@ const TransactionScreen = () => {
                       params: {txHash: item.label},
                     })
                   }>
-                  {/* {renderDate(item.date)} */}
                   {renderIcon()}
                   <View style={{flexDirection: 'column'}}>
                     <Text style={{color: '#FFFFFF'}}>
                       {truncate(item.label, 8, 12)}
                     </Text>
-                    <Text style={{color: 'gray'}}>07/08 - 19:23</Text>
+                    <Text style={{color: 'gray'}}>
+                      {item.date.toLocaleString()}
+                    </Text>
                     <Text style={{color: '#FFFFFF'}}>Success</Text>
                   </View>
                   <Text
@@ -138,7 +143,7 @@ const TransactionScreen = () => {
                       item.type === 'IN' ? {color: '#53B680'} : {color: 'red'},
                     ]}>
                     {item.type === 'IN' ? '+' : '-'}
-                    {item.amount} KAI
+                    {parseKaiBalance(item.amount)} KAI
                   </Text>
                 </TouchableOpacity>
               </View>

@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const getWallets = async () => {
-  // return fakeWallets
   try {
     const value = await AsyncStorage.getItem('@kardia_wallets');
     if (value !== null) {
