@@ -1,16 +1,16 @@
 interface ListItemProps {
-    label: string;
-    value: any;
-    onSelect?: () => void
+  label: string;
+  value: any;
+  onSelect?: () => void;
 }
 
 interface ListProps {
-    items: ListItemProps[];
-    selectedIndex?: number;
-    onSelect?: (itemIndex: number) => void
-    render?: (item: any, index: number) => any;
-    initialNumToRender?: number;
-    header?: any;
-    ItemSeprator?: any;
-    listStyle?: Record<string, any>
+  items: ListItemProps[];
+  selectedIndex?: number;
+  onSelect?: (itemIndex: number) => void;
+  render?: (item: any, index: number) => any;
+  initialNumToRender?: number;
+  header?: any;
+  ItemSeprator?: any;
+  listStyle?: Record<string, any>;
 }
