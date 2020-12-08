@@ -1,4 +1,4 @@
 interface DividerProps {
-    height?: number;
-    color?: string;
+  height?: number;
+  color?: string;
 }
