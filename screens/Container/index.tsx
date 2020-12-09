@@ -75,6 +75,8 @@ const AppContainer = () => {
   const [, setTokenInfo] = useRecoilState(tokenInfoAtom);
   const [inited, setInited] = useState(0);
 
+  const theme = useContext(ThemeContext);
+
   useEffect(() => {
     (async () => {
       let localWallets = await getWallets();
@@ -123,7 +125,19 @@ const AppContainer = () => {
           name="Wrap"
           component={Wrap}
         />
-        <Stack.Screen name="Notification" component={Notification} />
+        <Stack.Screen
+          name="Notification"
+          component={Notification}
+          options={{
+            headerStyle: {
+              backgroundColor: theme.backgroundColor,
+            },
+            headerTitleStyle: {
+              color: theme.textColor,
+            },
+            headerTintColor: theme.textColor,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

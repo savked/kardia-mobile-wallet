@@ -52,69 +52,94 @@ const Notification = () => {
     }
   }
 
+  const todayNotification = data.filter(
+    (item) => dateDiffInDays(new Date(item.date * 1000), new Date()) === 0,
+  );
+
+  const earlierNotification = data.filter(
+    (item) => dateDiffInDays(new Date(item.date * 1000), new Date()) !== 0,
+  );
+
   return (
-    <View style={{minWidth: '100%', backgroundColor: theme.backgroundColor}}>
+    <View
+      style={{
+        backgroundColor: theme.backgroundColor,
+        flex: 1,
+        justifyContent: 'flex-start',
+      }}>
       <Text style={styles.headline}>Today</Text>
-      <FlatList
-        data={data.filter(
-          (item) =>
-            dateDiffInDays(new Date(item.date * 1000), new Date()) === 0,
-        )}
-        renderItem={({item}) => {
-          return (
-            <TouchableOpacity onPress={viewDetail}>
-              <View style={styles.row}>
-                <View style={styles.left}>
-                  <Image
-                    style={styles.thumbnail}
-                    source={{
-                      uri: 'https://reactnative.dev/img/tiny_logo.png',
-                    }}
-                  />
+      {todayNotification.length > 0 && (
+        <FlatList
+          data={todayNotification}
+          renderItem={({item}) => {
+            return (
+              <TouchableOpacity onPress={viewDetail}>
+                <View style={styles.row}>
+                  <View style={styles.left}>
+                    <Image
+                      style={styles.thumbnail}
+                      source={{
+                        uri: 'https://reactnative.dev/img/tiny_logo.png',
+                      }}
+                    />
+                  </View>
+                  <View style={styles.right}>
+                    <Text style={[styles.title, {color: theme.textColor}]}>
+                      {item.title}
+                    </Text>
+                    <Text
+                      style={[styles.description, {color: theme.textColor}]}>
+                      {item.description}
+                    </Text>
+                    {convertSecondsToDate(item.date)}
+                  </View>
                 </View>
-                <View style={styles.right}>
-                  <Text style={styles.title}>{item.title}</Text>
-                  <Text style={styles.description}>{item.description}</Text>
-                  {convertSecondsToDate(item.date)}
-                </View>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-        keyExtractor={(item) => item.title}
-        ListEmptyComponent={<Text>No data</Text>}
-      />
+              </TouchableOpacity>
+            );
+          }}
+          keyExtractor={(item) => item.title}
+          ListEmptyComponent={null}
+        />
+      )}
 
       <Text style={styles.headline}>Earlier</Text>
-      <FlatList
-        data={data.filter(
-          (item) =>
-            dateDiffInDays(new Date(item.date * 1000), new Date()) !== 0,
-        )}
-        renderItem={({item}) => {
-          return (
-            <TouchableOpacity onPress={viewDetail}>
-              <View style={styles.row}>
-                <View style={styles.left}>
-                  <Image
-                    style={styles.thumbnail}
-                    source={{
-                      uri: 'https://reactnative.dev/img/tiny_logo.png',
-                    }}
-                  />
+      {earlierNotification.length > 0 && (
+        <FlatList
+          data={earlierNotification}
+          renderItem={({item}) => {
+            return (
+              <TouchableOpacity onPress={viewDetail}>
+                <View
+                  style={[
+                    styles.row,
+                    {backgroundColor: theme.backgroundFocusColor},
+                  ]}>
+                  <View style={styles.left}>
+                    <Image
+                      style={styles.thumbnail}
+                      source={{
+                        uri: 'https://reactnative.dev/img/tiny_logo.png',
+                      }}
+                    />
+                  </View>
+                  <View style={styles.right}>
+                    <Text style={[styles.title, {color: theme.textColor}]}>
+                      {item.title}
+                    </Text>
+                    <Text
+                      style={[styles.description, {color: theme.textColor}]}>
+                      {item.description}
+                    </Text>
+                    {convertSecondsToDate(item.date, 'd/m h:m')}
+                  </View>
                 </View>
-                <View style={styles.right}>
-                  <Text style={styles.title}>{item.title}</Text>
-                  <Text style={styles.description}>{item.description}</Text>
-                  {convertSecondsToDate(item.date, 'd/m h:m')}
-                </View>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-        keyExtractor={(item) => item.title}
-        ListEmptyComponent={<Text>No data</Text>}
-      />
+              </TouchableOpacity>
+            );
+          }}
+          keyExtractor={(item) => item.title}
+          ListEmptyComponent={null}
+        />
+      )}
     </View>
   );
 };

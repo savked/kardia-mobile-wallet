@@ -9,10 +9,12 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingHorizontal: 20,
-    paddingVertical: 5,
+    paddingVertical: 8,
     alignItems: 'center',
-    backgroundColor: 'white',
+    // backgroundColor: '#15161A',
     borderRadius: 8,
+    marginHorizontal: 12,
+    marginVertical: 4,
   },
 
   left: {
