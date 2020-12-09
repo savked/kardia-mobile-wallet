@@ -13,4 +13,5 @@ interface ListProps {
   header?: any;
   ItemSeprator?: any;
   listStyle?: Record<string, any>;
+  ListEmptyComponent?: any;
 }

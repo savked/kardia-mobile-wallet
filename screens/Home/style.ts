@@ -82,4 +82,8 @@ export const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
+  noTXText: {
+    // padding: 15,
+    fontSize: 16,
+  },
 });

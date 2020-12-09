@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Text, View, TouchableOpacity, Dimensions, Image} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
@@ -30,6 +30,7 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import {parseKaiBalance} from '../../utils/number';
 import {getTxByAddress} from '../../services/transaction';
 import {tokenInfoAtom} from '../../atoms/token';
+import {ThemeContext} from '../../App';
 const {width: viewportWidth} = Dimensions.get('window');
 
 const HomeScreen = () => {
@@ -45,6 +46,8 @@ const HomeScreen = () => {
   const [scanMessage, setScanMessage] = useState('');
   const [scanType, setScanType] = useState('warning');
   const carouselRef = useRef<Carousel<Wallet>>(null);
+
+  const theme = useContext(ThemeContext);
 
   const navigation = useNavigation();
 
@@ -376,6 +379,11 @@ const HomeScreen = () => {
                 </View>
               );
             }}
+            ListEmptyComponent={
+              <Text style={[styles.noTXText, {color: theme.textColor}]}>
+                No transaction
+              </Text>
+            }
             header={
               <View
                 style={{

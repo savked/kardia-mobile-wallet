@@ -194,6 +194,11 @@ const TransactionScreen = () => {
           onSelect={(itemIndex) => {
             Alert.alert(`${itemIndex}`);
           }}
+          ListEmptyComponent={
+            <Text style={[styles.noTXText, {color: theme.textColor}]}>
+              No transaction
+            </Text>
+          }
         />
       </View>
     </View>

@@ -14,6 +14,7 @@ const List = ({
   header,
   ItemSeprator,
   listStyle,
+  ListEmptyComponent,
 }: ListProps) => {
   return (
     <>
@@ -37,7 +38,7 @@ const List = ({
         }}
         keyExtractor={(item) => item.value}
         ItemSeparatorComponent={ItemSeprator || null}
-        ListEmptyComponent={<Text>No data</Text>}
+        ListEmptyComponent={ListEmptyComponent || <Text>No data</Text>}
         initialNumToRender={initialNumToRender || 5}
         // ListHeaderComponent={header}
       />
