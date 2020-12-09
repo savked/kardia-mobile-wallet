@@ -1,7 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
-import {Alert, Text, TouchableOpacity, View, Keyboard} from 'react-native';
+import {
+  Alert,
+  Text,
+  TouchableOpacity,
+  View,
+  Keyboard,
+  Image,
+} from 'react-native';
 import {useRecoilState} from 'recoil';
 import {ThemeContext} from '../../App';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
@@ -9,9 +16,10 @@ import List from '../../components/List';
 import TextInput from '../../components/TextInput';
 import {truncate} from '../../utils/string';
 import {styles} from './style';
-import IconM from 'react-native-vector-icons/MaterialIcons';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 import {getTxByAddress} from '../../services/transaction';
 import {parseKaiBalance} from '../../utils/number';
+import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
@@ -46,6 +54,7 @@ const TransactionScreen = () => {
       value: tx.hash,
       amount: tx.amount,
       date: tx.date,
+      status: tx.status,
       type:
         wallets[selectedWallet] && tx.from === wallets[selectedWallet].address
           ? 'OUT'
@@ -54,7 +63,7 @@ const TransactionScreen = () => {
   };
 
   const getTX = () => {
-    getTxByAddress(wallets[selectedWallet].address).then((newTxList) =>
+    getTxByAddress(wallets[selectedWallet].address, 1, 30).then((newTxList) =>
       setTxList(newTxList.map(parseTXForList)),
     );
     // getTXHistory(wallets[selectedWallet]).then((newTxList) =>
@@ -62,9 +71,9 @@ const TransactionScreen = () => {
     // );
   };
 
-  const renderIcon = () => {
+  const renderIcon = (status: number) => {
     return (
-      <View>
+      <View style={{flex: 1}}>
         <View
           style={{
             width: 50,
@@ -80,14 +89,27 @@ const TransactionScreen = () => {
             borderWidth: 1,
             borderColor: 'gray',
           }}>
-          <IconM name={'attach-money'} size={30} color={'red'} />
+          {/* <IconM name={'attach-money'} size={30} color={'red'} /> */}
+          <Image
+            source={require('../../assets/logo.png')}
+            style={styles.kaiLogo}
+          />
         </View>
-        <IconM
-          name={'verified'}
-          size={20}
-          color={'green'}
-          style={{position: 'absolute', right: 0, bottom: 0}}
-        />
+        {status ? (
+          <AntIcon
+            name="checkcircle"
+            size={20}
+            color={'green'}
+            style={{position: 'absolute', right: -7, bottom: 0}}
+          />
+        ) : (
+          <AntIcon
+            name="closecircle"
+            size={20}
+            color={'red'}
+            style={{position: 'absolute', right: -7, bottom: 0}}
+          />
+        )}
       </View>
     );
   };
@@ -127,24 +149,41 @@ const TransactionScreen = () => {
                       params: {txHash: item.label},
                     })
                   }>
-                  {renderIcon()}
-                  <View style={{flexDirection: 'column'}}>
+                  {renderIcon(item.status)}
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                      flex: 4,
+                      paddingHorizontal: 14,
+                    }}>
                     <Text style={{color: '#FFFFFF'}}>
                       {truncate(item.label, 8, 12)}
                     </Text>
                     <Text style={{color: 'gray'}}>
-                      {item.date.toLocaleString()}
+                      {/* {item.date.toLocaleString()} */}
+                      {isSameDay(item.date, new Date())
+                        ? `${formatDistanceToNowStrict(item.date)} ago`
+                        : format(item.date, 'MMM d yyyy HH:mm')}
                     </Text>
-                    <Text style={{color: '#FFFFFF'}}>Success</Text>
+                    {/* <Text style={{color: '#FFFFFF'}}>Success</Text> */}
                   </View>
-                  <Text
-                    style={[
-                      styles.kaiAmount,
-                      item.type === 'IN' ? {color: '#53B680'} : {color: 'red'},
-                    ]}>
-                    {item.type === 'IN' ? '+' : '-'}
-                    {parseKaiBalance(item.amount)} KAI
-                  </Text>
+                  <View
+                    style={{
+                      flex: 3,
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                    }}>
+                    <Text
+                      style={[
+                        styles.kaiAmount,
+                        item.type === 'IN'
+                          ? {color: '#53B680'}
+                          : {color: 'red'},
+                      ]}>
+                      {item.type === 'IN' ? '+' : '-'}
+                      {parseKaiBalance(item.amount)} KAI
+                    </Text>
+                  </View>
                 </TouchableOpacity>
               </View>
             );

@@ -17,14 +17,21 @@ const getIcon = (type: string) => {
   }
 };
 
-const AlertModal = ({visible, onClose, message, type}: AlertModal) => {
+const AlertModal = ({
+  visible,
+  onClose,
+  message,
+  type,
+  children,
+}: AlertModal) => {
   return (
     <Modal
       visible={visible}
       onClose={onClose}
       contentStyle={styles.modalContent}>
       {getIcon(type)}
-      <Text style={styles.messageContent}>{message}</Text>
+      {children}
+      {!children && <Text style={styles.messageContent}>{message}</Text>}
     </Modal>
   );
 };

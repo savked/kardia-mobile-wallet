@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ThemeContext} from '../../App';
 import {styles} from './style';
@@ -17,6 +17,8 @@ const Button = ({
   type = 'primary',
   iconSize = 14,
   iconColor,
+  disabled,
+  loading = false,
 }: ButtonProps) => {
   const theme = useContext(ThemeContext);
 
@@ -112,7 +114,10 @@ const Button = ({
 
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={() => {
+        !loading && onPress();
+      }}
+      disabled={disabled}
       style={[
         styles.button,
         parseSize(),
@@ -121,9 +126,12 @@ const Button = ({
         type === 'link' ? {padding: 0, minWidth: 0} : null,
         block ? {width: '100%'} : null,
       ]}>
-      {renderIcon()}
+      {loading && <ActivityIndicator color={textTypeStyle.color} />}
+      {!loading && renderIcon()}
       {/* <Icon name={iconName} size={size} color={color} style={{marginRight:8}}/> */}
-      <Text style={[styles.title, textTypeStyle, textStyle]}>{title}</Text>
+      {!loading && (
+        <Text style={[styles.title, textTypeStyle, textStyle]}>{title}</Text>
+      )}
     </TouchableOpacity>
   );
 };

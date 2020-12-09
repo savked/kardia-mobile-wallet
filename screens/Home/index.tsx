@@ -5,6 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
+import {formatDistanceToNowStrict, isSameDay, format} from 'date-fns';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import QRCode from 'react-native-qrcode-svg';
 import {
@@ -25,7 +26,7 @@ import {getWalletFromPK} from '../../utils/blockchain';
 import {saveWallets} from '../../utils/local';
 import AlertModal from '../../components/AlertModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import IconM from 'react-native-vector-icons/MaterialIcons';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 import {parseKaiBalance} from '../../utils/number';
 import {getTxByAddress} from '../../services/transaction';
 import {tokenInfoAtom} from '../../atoms/token';
@@ -78,6 +79,7 @@ const HomeScreen = () => {
       value: tx.hash,
       amount: tx.amount,
       date: tx.date,
+      status: tx.status,
       type:
         wallets[selectedWallet] && tx.from === wallets[selectedWallet].address
           ? 'OUT'
@@ -86,7 +88,7 @@ const HomeScreen = () => {
   };
 
   const getTX = () => {
-    getTxByAddress(wallets[selectedWallet].address, 1, 5).then((newTxList) =>
+    getTxByAddress(wallets[selectedWallet].address, 1, 10).then((newTxList) =>
       setTxList(newTxList.map(parseTXForList)),
     );
     // getTXHistory(wallets[selectedWallet]).then((newTxList) =>
@@ -168,9 +170,9 @@ const HomeScreen = () => {
     );
   };
 
-  const renderIcon = () => {
+  const renderIcon = (status: number) => {
     return (
-      <View>
+      <View style={{flex: 1}}>
         <View
           style={{
             width: 50,
@@ -186,14 +188,26 @@ const HomeScreen = () => {
             borderWidth: 1,
             borderColor: 'gray',
           }}>
-          <IconM name={'attach-money'} size={30} color={'red'} />
+          <Image
+            source={require('../../assets/logo.png')}
+            style={styles.kaiLogo}
+          />
+          {status ? (
+            <AntIcon
+              name="checkcircle"
+              size={20}
+              color={'green'}
+              style={{position: 'absolute', right: 0, bottom: 0}}
+            />
+          ) : (
+            <AntIcon
+              name="closecircle"
+              size={20}
+              color={'red'}
+              style={{position: 'absolute', right: 0, bottom: 0}}
+            />
+          )}
         </View>
-        <IconM
-          name={'verified'}
-          size={20}
-          color={'green'}
-          style={{position: 'absolute', right: 0, bottom: 0}}
-        />
       </View>
     );
   };
@@ -313,8 +327,9 @@ const HomeScreen = () => {
                   <TouchableOpacity
                     style={{
                       flexDirection: 'row',
-                      justifyContent: 'space-between',
+                      // justifyContent: 'space-between',
                       alignItems: 'center',
+                      flex: 1,
                     }}
                     onPress={() =>
                       navigation.navigate('Transaction', {
@@ -323,28 +338,40 @@ const HomeScreen = () => {
                         params: {txHash: item.label},
                       })
                     }>
-                    {/* {renderDate(item.date)} */}
-                    {renderIcon()}
-                    <View style={{flexDirection: 'column'}}>
+                    {renderIcon(item.status)}
+                    <View
+                      style={{
+                        flex: 4,
+                        flexDirection: 'column',
+                        paddingHorizontal: 14,
+                      }}>
                       <Text style={{color: '#FFFFFF'}}>
-                        {truncate(item.label, 8, 12)}
+                        {truncate(item.label, 6, 10)}
                       </Text>
-                      {/* <Text style={{color: 'gray'}}>07/08 - 19:23</Text> */}
                       <Text style={{color: 'gray'}}>
-                        {item.date.toLocaleString()}
+                        {isSameDay(item.date, new Date())
+                          ? `${formatDistanceToNowStrict(item.date)} ago`
+                          : format(item.date, 'MMM d yyyy HH:mm')}
                       </Text>
-                      <Text style={{color: '#FFFFFF'}}>Success</Text>
+                      {/* <Text style={{color: '#FFFFFF'}}>Success</Text> */}
                     </View>
-                    <Text
-                      style={[
-                        styles.kaiAmount,
-                        item.type === 'IN'
-                          ? {color: '#61b15a'}
-                          : {color: 'red'},
-                      ]}>
-                      {item.type === 'IN' ? '+' : '-'}
-                      {parseKaiBalance(item.amount)} KAI
-                    </Text>
+                    <View
+                      style={{
+                        flex: 3,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                      }}>
+                      <Text
+                        style={[
+                          styles.kaiAmount,
+                          item.type === 'IN'
+                            ? {color: '#61b15a'}
+                            : {color: 'red'},
+                        ]}>
+                        {item.type === 'IN' ? '+' : '-'}
+                        {parseKaiBalance(item.amount)} KAI
+                      </Text>
+                    </View>
                   </TouchableOpacity>
                 </View>
               );

@@ -10,4 +10,6 @@ interface ButtonProps {
   size?: 'small' | 'medium' | 'large';
   type?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'link';
   block?: boolean;
+  loading?: boolean;
+  disabled?: boolean;
 }

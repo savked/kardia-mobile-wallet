@@ -57,6 +57,7 @@ export const styles = StyleSheet.create({
   kaiAmount: {
     fontWeight: 'bold',
     fontSize: 16,
+    textAlign: 'right',
   },
   dateContainer: {
     alignItems: 'center',
@@ -75,5 +76,10 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     left: -20,
     top: 40,
+  },
+
+  kaiLogo: {
+    width: 30,
+    height: 30,
   },
 });

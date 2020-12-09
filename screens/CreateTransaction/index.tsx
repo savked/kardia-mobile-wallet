@@ -9,19 +9,53 @@ import {useNavigation} from '@react-navigation/native';
 import {truncate} from '../../utils/string';
 import {format, getDigit, isNumber} from '../../utils/number';
 import {ThemeContext} from '../../App';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
+import {createTx} from '../../services/transaction';
+import AlertModal from '../../components/AlertModal';
+import {getBalance} from '../../services/account';
+import {saveWallets} from '../../utils/local';
 
 const MAX_AMOUNT = 5000000000;
 
 const CreateTxScreen = () => {
-  const [address, setAddress] = useState('');
+  const [wallets, setWallets] = useRecoilState(walletsAtom);
+  const selectedWallet = useRecoilValue(selectedWalletAtom);
+  const [address, setAddress] = useState(
+    '0xf64C35a3d5340B8493cE4CD988B3c1e890B2bD68',
+  );
   const [amount, setAmount] = useState('0');
   const [showQRModal, setShowQRModal] = useState(false);
+  const [error, setError] = useState('');
+  const [successTxHash, setSuccessHash] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
 
-  function send() {
-    console.log('send');
+  async function send() {
+    setLoading(true);
+    const wallet = wallets[selectedWallet];
+    try {
+      const txHash = await createTx(wallet, address, Number(amount));
+      const newBallance = await getBalance(wallet.address);
+      const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
+
+      newWallets[selectedWallet].balance = newBallance;
+      setWallets(newWallets);
+      saveWallets(newWallets);
+
+      setSuccessHash(txHash);
+      setLoading(false);
+    } catch (err) {
+      if (err.message) {
+        setError(err.message);
+      } else {
+        console.log(err);
+        setError('Error happen');
+      }
+      setLoading(false);
+    }
   }
 
   const showQRScanner = () => {
@@ -123,6 +157,7 @@ const CreateTxScreen = () => {
           iconName="paper-plane"
           type="primary"
           size="large"
+          loading={loading}
         />
         <Button
           title="CANCEL"
@@ -131,6 +166,27 @@ const CreateTxScreen = () => {
           size="large"
         />
       </View>
+      {error !== '' && (
+        <AlertModal
+          type="error"
+          message={error}
+          onClose={() => setError('')}
+          visible={true}
+        />
+      )}
+      {successTxHash !== '' && (
+        <AlertModal
+          type="success"
+          // message={`Transaction completed. Hash: ${successTxHash}`}
+          onClose={() => {
+            setSuccessHash('');
+            navigation.goBack();
+          }}
+          visible={true}>
+          <Text>Transaction completed</Text>
+          <Text>Tx Hash: {truncate(successTxHash, 10, 20)}</Text>
+        </AlertModal>
+      )}
     </View>
   );
 };

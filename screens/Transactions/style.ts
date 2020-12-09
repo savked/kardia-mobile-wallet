@@ -28,4 +28,8 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingHorizontal: 15,
   },
+  kaiLogo: {
+    width: 30,
+    height: 30,
+  },
 });
