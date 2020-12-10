@@ -30,3 +30,16 @@ export const cellValue = (kaiValue: any) => {
   cellString = `${numberStr}${decimalStr || ''}`;
   return cellString;
 };
+
+export const weiToKAI = (value: any): string => {
+  if (!value || value === '0') {
+    return '0';
+  }
+
+  value = value.toLocaleString('en-US', {useGrouping: false});
+
+  const cellString = value.toString().padStart(36, '0');
+  const kaiNumString = parseInt(cellString.slice(0, 18), 10);
+  const kaiDecimalString = cellString.slice(-18);
+  return `${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
+};

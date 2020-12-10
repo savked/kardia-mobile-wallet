@@ -3,3 +3,9 @@ interface Wallet {
   privateKey?: string;
   balance: number;
 }
+
+interface Address {
+  name: string;
+  address: string;
+  avatar?: string;
+}

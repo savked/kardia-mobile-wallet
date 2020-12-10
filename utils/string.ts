@@ -11,3 +11,11 @@ export const addZero = (value: number) => {
   }
   return `${value}`;
 };
+
+export const getFromAddressBook = (addressBook: Address[], address: string) => {
+  const result = addressBook.find((item) => item.address === address);
+  if (!result) {
+    return address;
+  }
+  return result.name;
+};

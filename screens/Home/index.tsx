@@ -94,9 +94,6 @@ const HomeScreen = () => {
     getTxByAddress(wallets[selectedWallet].address, 1, 10).then((newTxList) =>
       setTxList(newTxList.map(parseTXForList)),
     );
-    // getTXHistory(wallets[selectedWallet]).then((newTxList) =>
-    //   setTxList(newTxList.map(parseTXForList)),
-    // );
   };
 
   useEffect(() => {
@@ -330,7 +327,6 @@ const HomeScreen = () => {
                   <TouchableOpacity
                     style={{
                       flexDirection: 'row',
-                      // justifyContent: 'space-between',
                       alignItems: 'center',
                       flex: 1,
                     }}

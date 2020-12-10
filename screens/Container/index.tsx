@@ -17,7 +17,7 @@ import {ThemeContext} from '../../App';
 import {getBalance} from '../../services/account';
 import {tokenInfoAtom} from '../../atoms/token';
 import {getTokenInfo} from '../../services/token';
-import SettingScreen from '../Setting';
+import SettingStackScreen from '../../SettingStack';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -69,7 +69,7 @@ const Wrap = () => {
       <Tab.Screen name="Transaction" component={TransactionStackScreen} />
       {/* <Tab.Screen name="DApp" component={DAppScreen} /> */}
       <Tab.Screen name="News" component={NewsScreen} />
-      <Tab.Screen name="Setting" component={SettingScreen} />
+      <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>
   );
 };

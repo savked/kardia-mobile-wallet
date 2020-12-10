@@ -5,8 +5,9 @@ interface ListItemProps {
 }
 
 interface ListProps {
-  items: ListItemProps[];
+  items: ListItemProps[] | any[];
   selectedIndex?: number;
+  keyExtractor?: (item: any) => string;
   onSelect?: (itemIndex: number) => void;
   render?: (item: any, index: number) => any;
   initialNumToRender?: number;

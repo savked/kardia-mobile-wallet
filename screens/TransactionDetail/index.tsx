@@ -1,14 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import numeral from 'numeral';
 import {ThemeContext} from '../../App';
 import Button from '../../components/Button';
 import Divider from '../../components/Divider';
-import {getTxDetail} from '../../services/api';
-import {truncate} from '../../utils/string';
+import {getTxDetail} from '../../services/transaction';
+import {getFromAddressBook, truncate} from '../../utils/string';
 import {styles} from './style';
+import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
+import {useRecoilValue} from 'recoil';
+import {addressBookAtom} from '../../atoms/addressBook';
 
 const TransactionDetail = () => {
   const theme = useContext(ThemeContext);
@@ -16,11 +20,14 @@ const TransactionDetail = () => {
   const txHash = params ? (params as any).txHash : '';
   const navigation = useNavigation();
 
+  const addressBook = useRecoilValue(addressBookAtom);
   const [txData, setTxData] = useState<Transaction>();
 
   useEffect(() => {
-    const data = getTxDetail(txHash);
-    setTxData(data);
+    (async () => {
+      const data = await getTxDetail(txHash);
+      setTxData(data);
+    })();
   }, [txHash]);
 
   const renderStatusIcon = (status?: number) => {
@@ -41,10 +48,19 @@ const TransactionDetail = () => {
     );
   };
 
+  if (!txData) {
+    return (
+      <View
+        style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <ActivityIndicator color={theme.textColor} />
+      </View>
+    );
+  }
+
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.txMeta}>
-        {renderStatusIcon()}
+        {renderStatusIcon(txData?.status)}
         <View style={{justifyContent: 'space-between', paddingTop: 10}}>
           <View style={{flexDirection: 'row'}}>
             <Text style={[{fontSize: 18}, {color: theme.textColor}]}>
@@ -73,25 +89,43 @@ const TransactionDetail = () => {
             Amount
           </Text>
           <Text style={[styles.infoValue, {color: theme.textColor}]}>
-            {txData?.amount} KAI
+            {numeral(txData?.amount).format('0,0.00')} KAI
+          </Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={[styles.infoTitle, {color: theme.textColor}]}>
+            Transaction fee
+          </Text>
+          <Text style={[styles.infoValue, {color: theme.textColor}]}>
+            {txData.fee} KAI
           </Text>
         </View>
         <View style={styles.infoContainer}>
           <Text style={[styles.infoTitle, {color: theme.textColor}]}>From</Text>
           <Text style={[styles.infoValue, {color: theme.textColor}]}>
-            {truncate(txData?.from || '', 10, 15)}
+            {truncate(
+              getFromAddressBook(addressBook, txData?.from || ''),
+              10,
+              15,
+            )}
           </Text>
         </View>
         <View style={styles.infoContainer}>
           <Text style={[styles.infoTitle, {color: theme.textColor}]}>To</Text>
           <Text style={[styles.infoValue, {color: theme.textColor}]}>
-            {truncate(txData?.to || '', 10, 15)}
+            {truncate(
+              getFromAddressBook(addressBook, txData?.to || ''),
+              10,
+              15,
+            )}
           </Text>
         </View>
         <View style={styles.infoContainer}>
           <Text style={[styles.infoTitle, {color: theme.textColor}]}>Date</Text>
           <Text style={[styles.infoValue, {color: theme.textColor}]}>
-            {txData?.date.toLocaleString()}
+            {isSameDay(txData.date, new Date())
+              ? `${formatDistanceToNowStrict(txData.date)} ago`
+              : format(txData.date, 'MMM d yyyy HH:mm')}
           </Text>
         </View>
         <View style={[styles.infoContainer, {marginTop: 15}]}>

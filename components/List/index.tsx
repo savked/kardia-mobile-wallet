@@ -15,6 +15,7 @@ const List = ({
   ItemSeprator,
   listStyle,
   ListEmptyComponent,
+  keyExtractor = (item) => item.value,
 }: ListProps) => {
   return (
     <>
@@ -24,19 +25,20 @@ const List = ({
         data={items}
         renderItem={({item, index}) => {
           if (render) {
-            return render(item as any, index);
+            return render(item, index);
           }
           return (
             <ListItem
-              label={item.label}
-              value={item.value}
+              key={`item-${index}`}
+              label={(item as ListItemProps).label}
+              value={(item as ListItemProps).value}
               onSelect={() => {
                 onSelect && onSelect(index);
               }}
             />
           );
         }}
-        keyExtractor={(item) => item.value}
+        keyExtractor={keyExtractor}
         ItemSeparatorComponent={ItemSeprator || null}
         ListEmptyComponent={ListEmptyComponent || <Text>No data</Text>}
         initialNumToRender={initialNumToRender || 5}
