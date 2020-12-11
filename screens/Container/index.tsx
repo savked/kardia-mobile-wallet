@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {View, Image} from 'react-native';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useSetRecoilState} from 'recoil';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -8,7 +8,7 @@ import {walletsAtom} from '../../atoms/wallets';
 import HomeScreen from '../Home';
 import NewsScreen from '../News';
 import TransactionStackScreen from '../../TransactionStack';
-import {getWallets} from '../../utils/local';
+import {getAddressBook, getWallets} from '../../utils/local';
 import {styles} from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -18,6 +18,7 @@ import {getBalance} from '../../services/account';
 import {tokenInfoAtom} from '../../atoms/token';
 import {getTokenInfo} from '../../services/token';
 import SettingStackScreen from '../../SettingStack';
+import {addressBookAtom} from '../../atoms/addressBook';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -76,13 +77,15 @@ const Wrap = () => {
 
 const AppContainer = () => {
   const [wallets, setWallets] = useRecoilState(walletsAtom);
-  const [, setTokenInfo] = useRecoilState(tokenInfoAtom);
+  const setTokenInfo = useSetRecoilState(tokenInfoAtom);
+  const setAddressBook = useSetRecoilState(addressBookAtom);
   const [inited, setInited] = useState(0);
 
   const theme = useContext(ThemeContext);
 
   useEffect(() => {
     (async () => {
+      // Get local wallets data
       let localWallets = await getWallets();
 
       const promiseArr = localWallets.map(async (wallet) => {
@@ -91,16 +94,19 @@ const AppContainer = () => {
       });
 
       localWallets = await Promise.all(promiseArr);
-
       setWallets(localWallets);
 
       // Get token info
       const info = await getTokenInfo();
       setTokenInfo(info);
 
+      // Get local address book
+      const addressBook = await getAddressBook();
+      setAddressBook(addressBook);
+
       setInited(1);
     })();
-  }, [setWallets, setTokenInfo]);
+  }, [setWallets, setTokenInfo, setAddressBook]);
 
   if (!inited) {
     return (

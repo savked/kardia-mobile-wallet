@@ -11,4 +11,7 @@ export const styles = StyleSheet.create({
   avatarPickerContainer: {
     alignItems: 'center',
   },
+  saveButton: {
+    marginTop: 15,
+  },
 });

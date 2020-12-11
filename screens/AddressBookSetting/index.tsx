@@ -1,5 +1,6 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useContext} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {ThemeContext} from '../../App';
 import {addressBookAtom} from '../../atoms/addressBook';
@@ -10,6 +11,7 @@ import {styles} from './style';
 
 const AddressBookSetting = () => {
   const theme = useContext(ThemeContext);
+  const navigation = useNavigation();
   const addressBook = useRecoilValue(addressBookAtom);
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
@@ -18,7 +20,13 @@ const AddressBookSetting = () => {
         keyExtractor={(item) => item.address}
         render={(address: Address) => {
           return (
-            <View style={styles.addressContainer}>
+            <TouchableOpacity
+              style={styles.addressContainer}
+              onPress={() =>
+                navigation.navigate('AddressDetail', {
+                  addressHash: address.address,
+                })
+              }>
               <View style={styles.addressAvatarContainer}>
                 {address.avatar ? (
                   <Image source={{uri: address.avatar}} />
@@ -34,9 +42,14 @@ const AddressBookSetting = () => {
                   {truncate(address.address, 20, 20)}
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           );
         }}
+        ListEmptyComponent={
+          <Text style={[styles.emptyAddressBook, {color: theme.textColor}]}>
+            No saved address
+          </Text>
+        }
       />
     </View>
   );

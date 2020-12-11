@@ -22,4 +22,8 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     fontStyle: 'italic',
   },
+  emptyAddressBook: {
+    fontSize: 16,
+    padding: 15,
+  },
 });

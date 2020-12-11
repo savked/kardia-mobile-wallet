@@ -39,3 +39,36 @@ export const clearLocalWallets = async () => {
     return false;
   }
 };
+
+export const saveAddressBook = async (addressBook: Address[]) => {
+  try {
+    await AsyncStorage.setItem(
+      '@kardia_address_book',
+      JSON.stringify(addressBook),
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};
+
+export const getAddressBook = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@kardia_address_book');
+    if (value !== null) {
+      // value previously stored
+      const addressBook = JSON.parse(value);
+      if (!Array.isArray(addressBook)) {
+        console.error('Invalid local data');
+        return [];
+      }
+      return addressBook;
+    }
+    return [];
+  } catch (e) {
+    console.error(e);
+    return [];
+    // error reading value
+  }
+};
