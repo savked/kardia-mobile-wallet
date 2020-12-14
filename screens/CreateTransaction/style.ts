@@ -40,4 +40,28 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#000',
   },
+  textIcon: {
+    position: 'absolute',
+  },
+  emptyAddressBook: {
+    fontSize: 16,
+    padding: 15,
+  },
+  addressName: {
+    fontSize: 16,
+  },
+  addressHash: {
+    fontSize: 13,
+    fontStyle: 'italic',
+  },
+  addressContainer: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  addressAvatarContainer: {
+    width: 50,
+    height: 50,
+    marginRight: 12,
+  },
 });

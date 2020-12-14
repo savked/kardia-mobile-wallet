@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {styles} from './style';
 import Button from '../../components/Button';
@@ -15,17 +15,22 @@ import {createTx} from '../../services/transaction';
 import AlertModal from '../../components/AlertModal';
 import {getBalance} from '../../services/account';
 import {saveWallets} from '../../utils/local';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Modal from '../../components/Modal';
+import List from '../../components/List';
+import {addressBookAtom} from '../../atoms/addressBook';
+import TextAvatar from '../../components/TextAvatar';
 
 const MAX_AMOUNT = 5000000000;
 
 const CreateTxScreen = () => {
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
-  const [address, setAddress] = useState(
-    '0xf64C35a3d5340B8493cE4CD988B3c1e890B2bD68',
-  );
+  const addressBook = useRecoilValue(addressBookAtom);
+  const [address, setAddress] = useState('');
   const [amount, setAmount] = useState('0');
   const [showQRModal, setShowQRModal] = useState(false);
+  const [showAddressBookModal, setShowAddressBookModal] = useState(false);
   const [error, setError] = useState('');
   const [successTxHash, setSuccessHash] = useState('');
   const [loading, setLoading] = useState(false);
@@ -59,8 +64,11 @@ const CreateTxScreen = () => {
   }
 
   const showQRScanner = () => {
-    console.log('here');
     setShowQRModal(true);
+  };
+
+  const showAddressBookSelector = () => {
+    setShowAddressBookModal(true);
   };
 
   if (showQRModal) {
@@ -82,6 +90,49 @@ const CreateTxScreen = () => {
     );
   }
 
+  if (showAddressBookModal) {
+    return (
+      <Modal full visible={true} onClose={() => setShowAddressBookModal(false)}>
+        <Text>Select Address</Text>
+        <List
+          items={addressBook}
+          keyExtractor={(item) => item.address}
+          render={(_address: Address) => {
+            return (
+              <TouchableOpacity
+                style={styles.addressContainer}
+                onPress={() => {
+                  setAddress(_address.address);
+                  setShowAddressBookModal(false);
+                }}>
+                <View style={styles.addressAvatarContainer}>
+                  {_address.avatar ? (
+                    <Image source={{uri: _address.avatar}} />
+                  ) : (
+                    <TextAvatar text={_address.name} />
+                  )}
+                </View>
+                <View>
+                  <Text style={[styles.addressName, {color: '#000000'}]}>
+                    {_address.name}
+                  </Text>
+                  <Text style={[styles.addressHash, {color: '#000000'}]}>
+                    {truncate(_address.address, 20, 20)}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+          ListEmptyComponent={
+            <Text style={[styles.emptyAddressBook, {color: theme.textColor}]}>
+              No saved address
+            </Text>
+          }
+        />
+      </Modal>
+    );
+  }
+
   return (
     <View
       style={[styles.container, {backgroundColor: theme.backgroundFocusColor}]}>
@@ -89,9 +140,29 @@ const CreateTxScreen = () => {
         <TextInput
           onChangeText={setAddress}
           value={truncate(address, 10, 20)}
-          iconName="qrcode"
-          onIconPress={showQRScanner}
+          // iconName="qrcode"
+          // onIconPress={showQRScanner}
           headline="Send to address"
+          icons={() => {
+            return (
+              <>
+                <Icon
+                  onPress={showQRScanner}
+                  name="qrcode"
+                  size={25}
+                  color={'black'}
+                  style={[styles.textIcon, {right: 45}]}
+                />
+                <Icon
+                  onPress={showAddressBookSelector}
+                  name="address-book"
+                  size={25}
+                  color={'black'}
+                  style={[styles.textIcon, {right: 15}]}
+                />
+              </>
+            );
+          }}
         />
       </View>
 
