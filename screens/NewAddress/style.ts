@@ -14,4 +14,11 @@ export const styles = StyleSheet.create({
   saveButton: {
     marginTop: 15,
   },
+  centerText: {
+    flex: 1,
+    fontSize: 18,
+    paddingVertical: 30,
+    color: '#000000',
+    fontWeight: 'bold',
+  },
 });

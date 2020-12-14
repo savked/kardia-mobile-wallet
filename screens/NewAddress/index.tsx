@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useState} from 'react';
-import {ImageURISource, View} from 'react-native';
+import {ImageURISource, Text, View} from 'react-native';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 import {useRecoilState} from 'recoil';
 import {ThemeContext} from '../../App';
 import {addressBookAtom} from '../../atoms/addressBook';
@@ -17,6 +18,7 @@ const NewAddress = () => {
   const [address, setAddress] = useState('');
   const [avatar, setAvatar] = useState<ImageURISource>({uri: ''});
   const [addressBook, setAddressBook] = useRecoilState(addressBookAtom);
+  const [showModal, setShowModal] = useState(false);
 
   const saveAddress = async () => {
     const currentAB: Address[] = JSON.parse(JSON.stringify(addressBook));
@@ -29,6 +31,30 @@ const NewAddress = () => {
     saveAddressBook(currentAB);
     navigation.navigate('AddressBook');
   };
+
+  const showQRScanner = () => {
+    setShowModal(true);
+  };
+
+  if (showModal) {
+    return (
+      <QRCodeScanner
+        onRead={(e) => {
+          setAddress(e.data);
+          setShowModal(false);
+        }}
+        topContent={<Text style={styles.centerText}>Scan address QR code</Text>}
+        bottomContent={
+          <Button
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{marginTop: 50}}
+            title="Cancel"
+            onPress={() => setShowModal(false)}
+          />
+        }
+      />
+    );
+  }
 
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
@@ -44,6 +70,8 @@ const NewAddress = () => {
           block
           value={address}
           onChangeText={setAddress}
+          iconName="qrcode"
+          onIconPress={showQRScanner}
         />
       </View>
       <Button
