@@ -17,9 +17,7 @@ import {getBalance} from '../../services/account';
 const ImportPrivateKey = () => {
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
-  const [privateKey, setPrivateKey] = useState(
-    '0x7e0f202dddd68f87212144cc0cac3e2ca11bf1b7b1f019bc5d1eed8ea1c5c59a',
-  );
+  const [privateKey, setPrivateKey] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [wallets, setWallets] = useRecoilState(walletsAtom);
 

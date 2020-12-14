@@ -33,7 +33,7 @@ const CreateWallet = () => {
             paddingHorizontal: 60,
           }}
         />
-        <Button
+        {/* <Button
           iconName="file"
           iconSize={60}
           iconColor="#FFFFFF"
@@ -50,7 +50,7 @@ const CreateWallet = () => {
             paddingVertical: 15,
             paddingHorizontal: 60,
           }}
-        />
+        /> */}
         <Button
           iconName="book"
           iconSize={60}

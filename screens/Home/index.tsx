@@ -31,6 +31,7 @@ import {parseKaiBalance} from '../../utils/number';
 import {getTxByAddress} from '../../services/transaction';
 import {tokenInfoAtom} from '../../atoms/token';
 import {ThemeContext} from '../../App';
+import {getBalance} from '../../services/account';
 const {width: viewportWidth} = Dimensions.get('window');
 
 const HomeScreen = () => {
@@ -59,16 +60,35 @@ const HomeScreen = () => {
     setShowImportModal(true);
   }
 
+  const updateWalletBalance = async () => {
+    const balance = await getBalance(wallets[selectedWallet].address);
+    const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
+    _wallets.forEach((_wallet, index) => {
+      _wallet.address === wallets[selectedWallet].address;
+      _wallets[index].balance = balance;
+    });
+    setWallets(_wallets);
+  };
+
   useEffect(() => {
+    if (wallets[selectedWallet]) {
+      getTX();
+      updateWalletBalance();
+    }
     if (carouselRef.current) {
+      console.log('Trigger');
       carouselRef.current.triggerRenderingHack();
       carouselRef.current.snapToItem(selectedWallet);
+      // forceUpdate();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
 
   const removeWallet = (walletIndex: number) => {
     if (selectedWallet > wallets.length - 2) {
-      setSelectedWallet(wallets.length);
+      console.log('heheheheheheh');
+      setSelectedWallet(wallets.length - 2);
+      // setSelectedWallet(0);
     }
     const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
     newWallets.splice(walletIndex, 1);
@@ -91,19 +111,16 @@ const HomeScreen = () => {
   };
 
   const getTX = () => {
-    getTxByAddress(wallets[selectedWallet].address, 1, 10).then((newTxList) =>
-      setTxList(newTxList.map(parseTXForList)),
-    );
+    if (!wallets[selectedWallet].address) {
+      return;
+    }
+    getTxByAddress(wallets[selectedWallet].address, 1, 10).then((newTxList) => {
+      setTxList(newTxList.map(parseTXForList));
+    });
   };
 
-  useEffect(() => {
-    if (wallets[selectedWallet]) {
-      getTX();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedWallet]);
-
   const renderWalletItem = ({item: wallet, index}: any) => {
+    console.log('index: ', index);
     return (
       <View style={styles.kaiCardContainer}>
         <LinearGradient
@@ -172,7 +189,7 @@ const HomeScreen = () => {
 
   const renderIcon = (status: number) => {
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, marginRight: 18}}>
         <View
           style={{
             width: 50,
@@ -217,12 +234,13 @@ const HomeScreen = () => {
     setShowImportModal(false);
   };
 
-  const importPK = (privateKey: string) => {
+  const importPK = async (privateKey: string) => {
     const wallet = getWalletFromPK(privateKey);
+    const balance = await getBalance(wallet.getAddressString());
     const walletObj: Wallet = {
-      address: wallet.getAddressString(),
+      address: wallet.getChecksumAddressString(),
       privateKey: wallet.getPrivateKeyString(),
-      balance: 0,
+      balance,
     };
 
     const walletExisted = wallets
@@ -247,13 +265,14 @@ const HomeScreen = () => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
       <HomeHeader />
-      <View style={styles.bodyContainer}>
+      <View style={[styles.bodyContainer]}>
         <View style={styles.kaiCardSlider}>
           <Carousel
             ref={carouselRef}
             data={wallets}
+            enableSnap={true}
             renderItem={renderWalletItem}
             sliderWidth={viewportWidth}
             itemWidth={viewportWidth}
@@ -340,12 +359,11 @@ const HomeScreen = () => {
                     {renderIcon(item.status)}
                     <View
                       style={{
-                        flex: 4,
+                        flex: 3,
                         flexDirection: 'column',
-                        paddingHorizontal: 14,
                       }}>
                       <Text style={{color: '#FFFFFF'}}>
-                        {truncate(item.label, 6, 10)}
+                        {truncate(item.label, 6, 4)}
                       </Text>
                       <Text style={{color: 'gray'}}>
                         {isSameDay(item.date, new Date())
@@ -356,7 +374,7 @@ const HomeScreen = () => {
                     </View>
                     <View
                       style={{
-                        flex: 3,
+                        flex: 4,
                         flexDirection: 'row',
                         justifyContent: 'flex-end',
                       }}>
@@ -412,8 +430,8 @@ const HomeScreen = () => {
               value={wallets[selectedWallet].address}
               logo={require('../../assets/logo.png')}
               logoBackgroundColor="#FFFFFF"
-              logoSize={35}
-              logoMargin={5}
+              logoSize={22}
+              logoMargin={2}
               logoBorderRadius={20}
             />
           </Modal>

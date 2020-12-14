@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#2A343D',
   },
   bodyContainer: {
-    backgroundColor: '#2A343D',
+    // flex: 1,
   },
   kaiCardSlider: {
     // backgroundColor: '#2A343D',
