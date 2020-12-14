@@ -26,8 +26,8 @@ const CustomModal = ({
         <View
           style={[
             styles.modalView,
-            {marginTop: viewportHeight / 5},
-            full ? {flex: 1} : {flex: 0.6},
+            {marginTop: full ? viewportHeight / 20 : viewportHeight / 5},
+            full ? {flex: 0.9} : {flex: 0.6},
             contentStyle,
           ]}>
           {children}

@@ -10,4 +10,5 @@ interface CustomTextInputProps {
   editable?: boolean;
   placeholder?: string;
   block?: boolean;
+  icons?: () => any;
 }

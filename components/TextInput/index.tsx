@@ -16,6 +16,7 @@ const CustomTextInput = ({
   editable = true,
   placeholder,
   block,
+  icons,
 }: CustomTextInputProps) => {
   const theme = useContext(ThemeContext);
   return (
@@ -52,6 +53,7 @@ const CustomTextInput = ({
             style={styles.textIcon}
           />
         )}
+        {icons && icons()}
       </View>
     </>
   );
