@@ -71,7 +71,7 @@ const TransactionDetail = () => {
                 {fontSize: 18, fontWeight: 'bold'},
                 {color: theme.textColor},
               ]}>
-              {truncate(txHash, 7, 15)}
+              {truncate(txHash, 7, 7)}
             </Text>
           </View>
         </View>

@@ -157,7 +157,7 @@ const TransactionScreen = () => {
                       paddingHorizontal: 14,
                     }}>
                     <Text style={{color: '#FFFFFF'}}>
-                      {truncate(item.label, 8, 12)}
+                      {truncate(item.label, 8, 10)}
                     </Text>
                     <Text style={{color: 'gray'}}>
                       {/* {item.date.toLocaleString()} */}

@@ -46,6 +46,7 @@ const HomeScreen = () => {
   const [showScanAlert, setShowScanAlert] = useState(false);
   const [scanMessage, setScanMessage] = useState('');
   const [scanType, setScanType] = useState('warning');
+
   const carouselRef = useRef<Carousel<Wallet>>(null);
 
   const theme = useContext(ThemeContext);
@@ -76,24 +77,28 @@ const HomeScreen = () => {
       updateWalletBalance();
     }
     if (carouselRef.current) {
-      console.log('Trigger');
-      carouselRef.current.triggerRenderingHack();
       carouselRef.current.snapToItem(selectedWallet);
-      // forceUpdate();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
 
-  const removeWallet = (walletIndex: number) => {
-    if (selectedWallet > wallets.length - 2) {
-      console.log('heheheheheheh');
-      setSelectedWallet(wallets.length - 2);
-      // setSelectedWallet(0);
-    }
+  const removeWallet = async (walletIndex: number) => {
+    let hack = false;
     const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
     newWallets.splice(walletIndex, 1);
+    await saveWallets(newWallets);
+    if (selectedWallet > newWallets.length - 1) {
+      hack = true;
+      setSelectedWallet(newWallets.length - 1);
+    }
     setWallets(newWallets);
-    saveWallets(newWallets);
+
+    // Carousel hack
+    setTimeout(() => {
+      if (carouselRef.current && hack) {
+        carouselRef.current.triggerRenderingHack();
+      }
+    }, 1);
   };
 
   const parseTXForList = (tx: Transaction) => {
@@ -120,7 +125,6 @@ const HomeScreen = () => {
   };
 
   const renderWalletItem = ({item: wallet, index}: any) => {
-    console.log('index: ', index);
     return (
       <View style={styles.kaiCardContainer}>
         <LinearGradient
@@ -277,8 +281,7 @@ const HomeScreen = () => {
             sliderWidth={viewportWidth}
             itemWidth={viewportWidth}
             onSnapToItem={setSelectedWallet}
-            onBeforeSnapToItem={setSelectedWallet}
-            removeClippedSubviews={false}
+            // removeClippedSubviews={false}
           />
           <Pagination
             dotsLength={wallets.length}
@@ -370,7 +373,6 @@ const HomeScreen = () => {
                           ? `${formatDistanceToNowStrict(item.date)} ago`
                           : format(item.date, 'MMM d yyyy HH:mm')}
                       </Text>
-                      {/* <Text style={{color: '#FFFFFF'}}>Success</Text> */}
                     </View>
                     <View
                       style={{
