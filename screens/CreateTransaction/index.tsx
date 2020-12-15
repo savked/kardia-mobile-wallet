@@ -136,12 +136,10 @@ const CreateTxScreen = () => {
   return (
     <View
       style={[styles.container, {backgroundColor: theme.backgroundFocusColor}]}>
-      <View style={{marginBottom: 10}}>
+      <View style={{marginBottom: 10}} removeClippedSubviews={true}>
         <TextInput
           onChangeText={setAddress}
           value={truncate(address, 10, 20)}
-          // iconName="qrcode"
-          // onIconPress={showQRScanner}
           headline="Send to address"
           icons={() => {
             return (
@@ -166,7 +164,7 @@ const CreateTxScreen = () => {
         />
       </View>
 
-      <View style={{marginBottom: 20}}>
+      <View style={{marginBottom: 20}} removeClippedSubviews={true}>
         <TextInput
           onChangeText={(newAmount) => {
             const digitOnly = getDigit(newAmount);

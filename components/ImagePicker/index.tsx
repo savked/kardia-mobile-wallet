@@ -32,18 +32,24 @@ const CustomImagePicker = ({
       {
         text: 'Take picture...',
         onPress: () =>
-          launchCamera({mediaType: 'photo'}, (response) => {
+          launchCamera({mediaType: 'photo', durationLimit: 120}, (response) => {
             const source = {uri: response.uri};
             onSelect && onSelect(source);
           }),
       },
       {
         text: 'Choose from library',
-        onPress: () =>
-          launchImageLibrary({mediaType: 'photo'}, (response) => {
-            const source = {uri: response.uri};
-            onSelect && onSelect(source);
-          }),
+        onPress: () => {
+          launchImageLibrary(
+            // TODO: Check for library error fixing
+            // @ts-ignore
+            {mediaType: 'photo', durationLimit: 120},
+            (response) => {
+              const source = {uri: response.uri};
+              onSelect && onSelect(source);
+            },
+          );
+        },
       },
     ]);
   };

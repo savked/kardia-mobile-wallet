@@ -1,10 +1,10 @@
 import React, {useContext, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Alert} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import TextInput from '../../components/TextInput';
 import Modal from '../../components/Modal';
 import {styles} from './style';
-import {truncate} from '../../utils/string';
+import {isAddress, truncate} from '../../utils/string';
 import Button from '../../components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {getWalletFromPK} from '../../utils/blockchain';
@@ -22,8 +22,12 @@ const ImportPrivateKey = () => {
   const [wallets, setWallets] = useRecoilState(walletsAtom);
 
   const onSuccess = (e: any) => {
-    setPrivateKey(e.data);
     setShowModal(false);
+    if (!isAddress(e.data)) {
+      Alert.alert('Invalid QR code');
+      return;
+    }
+    setPrivateKey(e.data);
   };
 
   const importPK = async () => {

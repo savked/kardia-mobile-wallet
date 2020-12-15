@@ -61,10 +61,10 @@ const NewAddress = () => {
       <View style={styles.avatarPickerContainer}>
         <CustomImagePicker image={avatar} onSelect={setAvatar} />
       </View>
-      <View style={styles.formFieldContainer}>
+      <View style={styles.formFieldContainer} removeClippedSubviews={true}>
         <TextInput headline="Name" block value={name} onChangeText={setName} />
       </View>
-      <View style={styles.formFieldContainer}>
+      <View style={styles.formFieldContainer} removeClippedSubviews={true}>
         <TextInput
           headline="Address"
           block

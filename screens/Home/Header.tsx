@@ -5,6 +5,8 @@ import IconButton from '../../components/IconButton';
 import {styles} from './style';
 import {useNavigation} from '@react-navigation/native';
 import {ThemeContext} from '../../App';
+import {useRecoilValue} from 'recoil';
+import {notificationAtom} from '../../atoms/notification';
 
 const HomeHeader = () => {
   const navigation = useNavigation();
@@ -12,6 +14,10 @@ const HomeHeader = () => {
   function navigateNotiScreen() {
     navigation.navigate('Notification');
   }
+
+  const notificationList = useRecoilValue(notificationAtom);
+  const newNotiCount = notificationList.filter((item) => item.status === 0)
+    .length;
 
   return (
     <View style={styles.headerContainer}>
@@ -27,7 +33,7 @@ const HomeHeader = () => {
           name="bell-o"
           size={24}
           color={theme.textColor}
-          badge={'9'}
+          badge={newNotiCount}
           onPress={navigateNotiScreen}
         />
       </View>

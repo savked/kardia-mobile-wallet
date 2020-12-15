@@ -4,9 +4,13 @@ import {View, Text, Image} from 'react-native';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import {styles} from './style';
 import {ThemeContext} from '../../App';
+import {useRecoilValue} from 'recoil';
+import {notificationAtom} from '../../atoms/notification';
 
 const Notification = () => {
   const theme = useContext(ThemeContext);
+
+  const notificationList = useRecoilValue(notificationAtom);
 
   function viewDetail() {
     console.log('view detail');
@@ -52,12 +56,12 @@ const Notification = () => {
     }
   }
 
-  const todayNotification = data.filter(
-    (item) => dateDiffInDays(new Date(item.date * 1000), new Date()) === 0,
+  const todayNotification = notificationList.filter(
+    (item) => dateDiffInDays(item.date, new Date()) === 0,
   );
 
-  const earlierNotification = data.filter(
-    (item) => dateDiffInDays(new Date(item.date * 1000), new Date()) !== 0,
+  const earlierNotification = notificationList.filter(
+    (item) => dateDiffInDays(item.date, new Date()) !== 0,
   );
 
   return (
@@ -91,7 +95,7 @@ const Notification = () => {
                       style={[styles.description, {color: theme.textColor}]}>
                       {item.description}
                     </Text>
-                    {convertSecondsToDate(item.date)}
+                    {convertSecondsToDate(item.date.getTime())}
                   </View>
                 </View>
               </TouchableOpacity>
@@ -130,7 +134,7 @@ const Notification = () => {
                       style={[styles.description, {color: theme.textColor}]}>
                       {item.description}
                     </Text>
-                    {convertSecondsToDate(item.date, 'd/m h:m')}
+                    {convertSecondsToDate(item.date.getTime(), 'd/m h:m')}
                   </View>
                 </View>
               </TouchableOpacity>
@@ -143,44 +147,5 @@ const Notification = () => {
     </View>
   );
 };
-
-const data = [
-  {
-    url: 'https://reactnative.dev/img/tiny_logo.png',
-    title: 'The News that wins customers',
-    description: 'Why I quit my job in order to pursue News',
-    date: 1606876708,
-  },
-  {
-    url: 'https://reactnative.dev/img/tiny_logo.png',
-    title: 'News in 3 easy steps',
-    description: "12 things you didn't know about News",
-    date: 1606876708,
-  },
-  {
-    url: 'https://reactnative.dev/img/tiny_logo.png',
-    title: 'How News are changing my life',
-    description: 'Is pizza really better than News?',
-    date: 1606876708,
-  },
-  {
-    url: 'https://reactnative.dev/img/tiny_logo.png',
-    title: 'Why News are more important than the air you breathe',
-    description: '5 important lessons I learned about News',
-    date: 1606876708,
-  },
-  {
-    url: 'https://reactnative.dev/img/tiny_logo.png',
-    title: 'How to use News to solve problems',
-    description: 'How much is News worth to you?',
-    date: 1506876708,
-  },
-  {
-    url: 'https://reactnative.dev/img/tiny_logo.png',
-    title: '3 different ways to get your own News',
-    description: 'How News are changing my life',
-    date: 1506876708,
-  },
-];
 
 export default Notification;

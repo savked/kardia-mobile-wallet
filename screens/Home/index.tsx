@@ -1,6 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Text, View, TouchableOpacity, Dimensions, Image} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  Alert,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
@@ -15,7 +22,7 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 import Button from '../../components/Button';
-import {truncate} from '../../utils/string';
+import {copyToClipboard, isAddress, truncate} from '../../utils/string';
 import {styles} from './style';
 import HomeHeader from './Header';
 import List from '../../components/List';
@@ -89,7 +96,7 @@ const HomeScreen = () => {
     await saveWallets(newWallets);
     if (selectedWallet > newWallets.length - 1) {
       hack = true;
-      setSelectedWallet(newWallets.length - 1);
+      newWallets.length - 1 >= 0 && setSelectedWallet(newWallets.length - 1);
     }
     setWallets(newWallets);
 
@@ -234,8 +241,12 @@ const HomeScreen = () => {
   };
 
   const onSuccessScan = (e: any) => {
-    importPK(e.data);
     setShowImportModal(false);
+    if (!isAddress(e.data)) {
+      Alert.alert('Invalid QR code');
+      return;
+    }
+    importPK(e.data);
   };
 
   const importPK = async (privateKey: string) => {
@@ -425,17 +436,45 @@ const HomeScreen = () => {
           />
         </View>
         {showQRModal && (
-          <Modal visible={true} onClose={() => setShowQRModal(false)}>
+          <Modal
+            visible={true}
+            showCloseButton={false}
+            contentStyle={{
+              paddingHorizontal: 24,
+            }}
+            onClose={() => setShowQRModal(false)}>
             <Text>Scan below QR code for address</Text>
-            <QRCode
-              size={viewportWidth / 1.5}
-              value={wallets[selectedWallet].address}
-              logo={require('../../assets/logo.png')}
-              logoBackgroundColor="#FFFFFF"
-              logoSize={22}
-              logoMargin={2}
-              logoBorderRadius={20}
-            />
+            <View style={{paddingVertical: 14}}>
+              <QRCode
+                size={viewportWidth / 1.5}
+                value={wallets[selectedWallet].address}
+                logo={require('../../assets/logo.png')}
+                logoBackgroundColor="#FFFFFF"
+                logoSize={22}
+                logoMargin={2}
+                logoBorderRadius={20}
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                width: '100%',
+              }}>
+              <Button
+                size="large"
+                title="Copy address"
+                type="secondary"
+                onPress={() => copyToClipboard(wallets[selectedWallet].address)}
+                iconName="copy"
+              />
+              <Button
+                size="large"
+                title="Close"
+                type="primary"
+                onPress={() => setShowQRModal(false)}
+              />
+            </View>
           </Modal>
         )}
         {showImportModal && (
