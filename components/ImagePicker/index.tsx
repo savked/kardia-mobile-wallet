@@ -3,10 +3,12 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   Image,
-  View,
   TouchableOpacity,
   ImageURISource,
   Alert,
+  ViewStyle,
+  StyleProp,
+  ImageStyle,
 } from 'react-native';
 import styles from './style';
 
@@ -14,10 +16,16 @@ const CustomImagePicker = ({
   image,
   onSelect,
   pickerTitle = 'Choose image',
+  editable = true,
+  style,
+  imageStyle,
 }: {
   image: ImageURISource;
   onSelect?: (image: ImageURISource) => void;
   pickerTitle?: string;
+  editable?: boolean;
+  style?: StyleProp<ViewStyle>;
+  imageStyle?: StyleProp<ImageStyle>;
 }) => {
   const pickImage = () => {
     Alert.alert(pickerTitle, '', [
@@ -39,20 +47,21 @@ const CustomImagePicker = ({
       },
     ]);
   };
-
   if (image.uri) {
     return (
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={image} />
-      </View>
+      <TouchableOpacity
+        style={[styles.imageContainer, style]}
+        onPress={() => editable && pickImage()}>
+        <Image style={[styles.image, imageStyle]} source={image} />
+      </TouchableOpacity>
     );
   }
   return (
-    <View>
-      <TouchableOpacity style={styles.newImageContainer} onPress={pickImage}>
-        <MCIcon name="image-plus" color={'#DADADA'} size={32} />
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity
+      style={[styles.newImageContainer, style]}
+      onPress={() => editable && pickImage()}>
+      <MCIcon name="image-plus" color={'#DADADA'} size={32} />
+    </TouchableOpacity>
   );
 };
 
