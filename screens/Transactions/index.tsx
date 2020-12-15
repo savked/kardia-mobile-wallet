@@ -9,7 +9,7 @@ import {
   Keyboard,
   Image,
 } from 'react-native';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import {ThemeContext} from '../../App';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import List from '../../components/List';
@@ -20,6 +20,7 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import {getTxByAddress} from '../../services/transaction';
 import {parseKaiBalance} from '../../utils/number';
 import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
+import {addressBookAtom} from '../../atoms/addressBook';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
@@ -29,6 +30,8 @@ const TransactionScreen = () => {
   const [selectedWallet] = useRecoilState(selectedWalletAtom);
   const [txList, setTxList] = useState([] as any[]);
   const [listHeight, setListHeight] = useState<number>();
+  const [filterTx, setFilterTx] = useState('');
+  const addressBook = useRecoilValue(addressBookAtom);
 
   const handleShow = () => {
     setListHeight(370);
@@ -54,6 +57,10 @@ const TransactionScreen = () => {
       value: tx.hash,
       amount: tx.amount,
       date: tx.date,
+      from: tx.from,
+      to: tx.to,
+      blockHash: tx.blockHash || '',
+      blockNumber: tx.blockNumber || '',
       status: tx.status,
       type:
         wallets[selectedWallet] && tx.from === wallets[selectedWallet].address
@@ -66,9 +73,27 @@ const TransactionScreen = () => {
     getTxByAddress(wallets[selectedWallet].address, 1, 30).then((newTxList) =>
       setTxList(newTxList.map(parseTXForList)),
     );
-    // getTXHistory(wallets[selectedWallet]).then((newTxList) =>
-    //   setTxList(newTxList.map(parseTXForList)),
-    // );
+  };
+
+  const filterTransaction = (tx: any) => {
+    if (filterTx.length < 3) {
+      return true;
+    }
+    if (
+      tx.label.toUpperCase().includes(filterTx.toUpperCase()) ||
+      tx.blockHash.toUpperCase().includes(filterTx.toUpperCase()) ||
+      tx.blockNumber.includes(filterTx)
+    ) {
+      return true;
+    }
+    const posibleAddress = addressBook.filter((item) =>
+      item.name.toUpperCase().includes(filterTx.toUpperCase()),
+    );
+    const existed = posibleAddress.find((item) => item.address === tx.from);
+    if (existed) {
+      return true;
+    }
+    return false;
   };
 
   const renderIcon = (status: number) => {
@@ -128,11 +153,13 @@ const TransactionScreen = () => {
         <TextInput
           block={true}
           placeholder="Search with address / tx hash / block number / block hash..."
+          value={filterTx}
+          onChangeText={setFilterTx}
         />
       </View>
       <View style={{height: listHeight, paddingHorizontal: 7}}>
         <List
-          items={txList}
+          items={txList.filter(filterTransaction)}
           render={(item) => {
             return (
               <View style={[{padding: 15}]}>

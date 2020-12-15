@@ -373,11 +373,11 @@ const HomeScreen = () => {
                     {renderIcon(item.status)}
                     <View
                       style={{
-                        flex: 3,
+                        flex: 2.5,
                         flexDirection: 'column',
                       }}>
                       <Text style={{color: '#FFFFFF'}}>
-                        {truncate(item.label, 6, 4)}
+                        {truncate(item.label, 6, 8)}
                       </Text>
                       <Text style={{color: 'gray'}}>
                         {isSameDay(item.date, new Date())
@@ -387,7 +387,7 @@ const HomeScreen = () => {
                     </View>
                     <View
                       style={{
-                        flex: 4,
+                        flex: 2.5,
                         flexDirection: 'row',
                         justifyContent: 'flex-end',
                       }}>

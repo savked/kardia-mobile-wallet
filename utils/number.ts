@@ -30,5 +30,5 @@ export const parseKaiBalance = (kaiAmount: number) => {
   if (kaiAmount < 10 ** 13) {
     return '0';
   }
-  return numeral(kaiAmount / 10 ** 18).format('0,0.00');
+  return numeral(kaiAmount / 10 ** 18).format('0,0.00 a');
 };

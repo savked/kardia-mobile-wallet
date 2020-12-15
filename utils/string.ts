@@ -16,6 +16,8 @@ export const addZero = (value: number) => {
 };
 
 export const getFromAddressBook = (addressBook: Address[], address: string) => {
+  console.log(addressBook);
+  console.log(address);
   const result = addressBook.find((item) => item.address === address);
   if (!result) {
     return address;
