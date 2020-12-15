@@ -1,5 +1,8 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from '@react-navigation/stack';
 import CreateTxScreen from './screens/CreateTransaction';
 import TransactionScreen from './screens/Transactions';
 import TransactionDetail from './screens/TransactionDetail';
@@ -12,6 +15,8 @@ const TransactionStackScreen = () => {
       initialRouteName="TransactionList"
       screenOptions={{
         headerShown: false,
+        gestureEnabled: true,
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}>
       <TransactionStack.Screen
         name="TransactionList"

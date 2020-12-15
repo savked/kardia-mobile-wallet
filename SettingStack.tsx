@@ -1,11 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import SettingScreen from './screens/Setting';
 import AddressBookSetting from './screens/AddressBookSetting';
 import {ThemeContext} from './App';
 import IconButton from './components/IconButton';
-import {Alert, Text, TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 import NewAddress from './screens/NewAddress';
 import {useNavigation} from '@react-navigation/native';
 import AddressDetail from './screens/AddressDetail';
@@ -16,7 +19,11 @@ const SettingStackScreen = () => {
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
   return (
-    <SettingStack.Navigator initialRouteName="TransactionList">
+    <SettingStack.Navigator
+      initialRouteName="TransactionList"
+      screenOptions={{
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}>
       <SettingStack.Screen
         name="Setting"
         component={SettingScreen}
