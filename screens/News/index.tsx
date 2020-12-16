@@ -8,8 +8,10 @@ const NewsScreen = () => {
   const theme = useContext(ThemeContext);
 
   return (
-    <View style={[styles.wrapper, {backgroundColor: theme.backgroundColor}]}>
-      <Text style={[styles.headline, {color: theme.textColor}]}>News</Text>
+    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+      <View style={styles.header}>
+        <Text style={[styles.headline, {color: theme.textColor}]}>News</Text>
+      </View>
       <View style={styles.highlight}>
         <Image
           style={styles.highlightImg}

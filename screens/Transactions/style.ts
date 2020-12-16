@@ -1,20 +1,12 @@
 import {StyleSheet} from 'react-native';
+import {HEADER_HEIGHT} from '../../theme';
+
+export const SEARCH_INPUT_HEIGHT = 80;
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'stretch'
   },
-  // dateText: {
-  //     color: '#b0acac',
-  //     fontSize: 11,
-  //     fontWeight: 'bold'
-  // },
-  // dateContainer: {
-  //     alignItems: 'center',
-  //     justifyContent: 'center'
-  // },
   kaiAmount: {
     fontWeight: 'bold',
   },
@@ -22,11 +14,17 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     padding: 22,
+    height: SEARCH_INPUT_HEIGHT,
   },
   headline: {
     fontSize: 25,
     fontWeight: 'bold',
     paddingHorizontal: 15,
+  },
+  header: {
+    height: HEADER_HEIGHT,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   kaiLogo: {
     width: 30,

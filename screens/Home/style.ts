@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {HEADER_HEIGHT} from '../../theme';
 
 export const styles = StyleSheet.create({
   logo: {
@@ -7,10 +8,10 @@ export const styles = StyleSheet.create({
     marginRight: 15,
   },
   headerContainer: {
-    height: 38,
+    height: HEADER_HEIGHT,
     flexDirection: 'row',
     paddingHorizontal: 15,
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#2A343D',
   },
@@ -19,7 +20,7 @@ export const styles = StyleSheet.create({
   },
   kaiCardSlider: {
     // backgroundColor: '#2A343D',
-    paddingVertical: 10,
+    paddingBottom: 10,
   },
   kaiCardContainer: {
     paddingHorizontal: 15,

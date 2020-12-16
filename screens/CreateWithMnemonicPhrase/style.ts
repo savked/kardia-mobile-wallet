@@ -15,8 +15,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   paragraph: {
-    marginBottom: 40,
-    marginTop: 20,
+    marginVertical: 10,
     textAlign: 'justify',
   },
   description: {
@@ -26,5 +25,14 @@ export const styles = StyleSheet.create({
   buttonGroupContainer: {
     width: '100%',
     paddingVertical: 15,
+  },
+  phraseItemContainer: {
+    // flex: 1,
+    padding: 10,
+    margin: 5,
+  },
+  phraseItemText: {
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });

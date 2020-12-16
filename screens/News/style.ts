@@ -1,17 +1,23 @@
 import {StyleSheet} from 'react-native';
+import {HEADER_HEIGHT} from '../../theme';
 
 export const styles = StyleSheet.create({
-  wrapper: {
-    paddingTop: 0,
-    padding: 15,
+  container: {
+    // paddingTop: 0,
+    paddingHorizontal: 15,
     flex: 1,
   },
   headline: {
     fontSize: 25,
     fontWeight: 'bold',
+    // marginBottom: 20,
+  },
+  header: {
+    height: HEADER_HEIGHT,
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 20,
   },
-
   highlight: {
     borderWidth: 1,
     borderColor: 'white',

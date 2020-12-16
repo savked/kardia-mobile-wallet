@@ -1,6 +1,6 @@
 import numeral from 'numeral';
 export const isNumber = (val: string) => {
-  return /^\d+(,\d{3})*(\.\d+)?$/.test(val);
+  return /^\d+(,\d{3})*(\.\d*)?$/.test(val);
 };
 
 export const getDigit = (val: string) => {
@@ -9,8 +9,16 @@ export const getDigit = (val: string) => {
     const char = val.charAt(index);
     if (/\d/.test(char)) {
       result += char;
+    } else if (char === '.') {
+      result += char;
     }
   }
+  if (result[0] === '0' && result[1] !== '.') {
+    result = result.slice(1);
+  }
+  // if (result[result.length - 1] === '.') {
+  //   result += '0';
+  // }
   return result;
 };
 

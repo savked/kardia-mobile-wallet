@@ -14,13 +14,16 @@ const List = ({
   header,
   ItemSeprator,
   listStyle,
+  containerStyle,
   ListEmptyComponent,
   keyExtractor = (item) => item.value,
+  numColumns = 1,
 }: ListProps) => {
   return (
     <>
       {header && <View style={[styles.list, listStyle]}>{header}</View>}
       <FlatList
+        contentContainerStyle={containerStyle}
         style={[styles.list, listStyle]}
         data={items}
         renderItem={({item, index}) => {
@@ -42,6 +45,7 @@ const List = ({
         ItemSeparatorComponent={ItemSeprator || null}
         ListEmptyComponent={ListEmptyComponent || <Text>No data</Text>}
         initialNumToRender={initialNumToRender || 5}
+        numColumns={numColumns}
         // ListHeaderComponent={header}
       />
     </>

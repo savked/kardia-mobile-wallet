@@ -177,7 +177,8 @@ const CreateTxScreen = () => {
             }
             isNumber(digitOnly) && setAmount(digitOnly);
           }}
-          value={format(Number(amount))}
+          onBlur={() => setAmount(format(Number(amount)))}
+          value={amount}
           headline="Amount (maximum: 5,000,000,000)"
         />
       </View>

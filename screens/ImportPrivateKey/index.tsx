@@ -4,7 +4,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import TextInput from '../../components/TextInput';
 import Modal from '../../components/Modal';
 import {styles} from './style';
-import {isAddress, truncate} from '../../utils/string';
+import {truncate} from '../../utils/string';
 import Button from '../../components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {getWalletFromPK} from '../../utils/blockchain';
@@ -23,7 +23,7 @@ const ImportPrivateKey = () => {
 
   const onSuccess = (e: any) => {
     setShowModal(false);
-    if (!isAddress(e.data)) {
+    if (e.data === '') {
       Alert.alert('Invalid QR code');
       return;
     }

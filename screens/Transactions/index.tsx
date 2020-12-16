@@ -1,14 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  Alert,
-  Text,
-  TouchableOpacity,
-  View,
-  Keyboard,
-  Image,
-} from 'react-native';
+import {Alert, Text, TouchableOpacity, View, Image} from 'react-native';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import {ThemeContext} from '../../App';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
@@ -29,27 +22,8 @@ const TransactionScreen = () => {
   const [wallets] = useRecoilState(walletsAtom);
   const [selectedWallet] = useRecoilState(selectedWalletAtom);
   const [txList, setTxList] = useState([] as any[]);
-  const [listHeight, setListHeight] = useState<number>();
   const [filterTx, setFilterTx] = useState('');
   const addressBook = useRecoilValue(addressBookAtom);
-
-  const handleShow = () => {
-    setListHeight(370);
-  };
-
-  const handleHide = () => {
-    setListHeight(undefined);
-  };
-
-  useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', handleShow);
-    Keyboard.addListener('keyboardDidHide', handleHide);
-
-    return () => {
-      Keyboard.removeListener('keyboardDidShow', handleShow);
-      Keyboard.removeListener('keyboardDidHide', handleHide);
-    };
-  }, []);
 
   const parseTXForList = (tx: Transaction) => {
     return {
@@ -146,10 +120,12 @@ const TransactionScreen = () => {
 
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <Text style={[styles.headline, {color: theme.textColor}]}>
-        Transactions
-      </Text>
-      <View style={[styles.controlContainer, {height: 80}]}>
+      <View style={styles.header}>
+        <Text style={[styles.headline, {color: theme.textColor}]}>
+          Transactions
+        </Text>
+      </View>
+      <View style={styles.controlContainer}>
         <TextInput
           block={true}
           placeholder="Search with address / tx hash / block number / block hash..."
@@ -157,7 +133,7 @@ const TransactionScreen = () => {
           onChangeText={setFilterTx}
         />
       </View>
-      <View style={{height: listHeight, paddingHorizontal: 7}}>
+      <View style={{flex: 1, paddingHorizontal: 7}}>
         <List
           items={txList.filter(filterTransaction)}
           render={(item) => {

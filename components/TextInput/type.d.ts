@@ -1,5 +1,6 @@
 interface CustomTextInputProps {
   onChangeText?: (newText: string) => void;
+  onBlur?: () => void;
   value?: string;
   iconName?: string;
   onIconPress?: () => void;
@@ -11,4 +12,5 @@ interface CustomTextInputProps {
   placeholder?: string;
   block?: boolean;
   icons?: () => any;
+  keyboardType?: string;
 }

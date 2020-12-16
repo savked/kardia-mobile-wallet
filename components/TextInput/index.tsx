@@ -7,6 +7,7 @@ import {styles} from './style';
 
 const CustomTextInput = ({
   onChangeText,
+  onBlur,
   value,
   iconName,
   onIconPress,
@@ -43,6 +44,7 @@ const CustomTextInput = ({
           numberOfLines={multiline ? numberOfLines : 1}
           editable={editable}
           placeholder={placeholder}
+          onBlur={onBlur}
         />
         {iconName && (
           <Icon

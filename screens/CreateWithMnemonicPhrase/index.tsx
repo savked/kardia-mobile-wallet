@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
-import TextInput from '../../components/TextInput';
 import {styles} from './style';
 import Button from '../../components/Button';
 import {generateMnemonic, getWalletFromMnemonic} from '../../utils/blockchain';
@@ -10,6 +9,7 @@ import {useRecoilState} from 'recoil';
 import {walletsAtom} from '../../atoms/wallets';
 import {saveWallets} from '../../utils/local';
 import {ThemeContext} from '../../App';
+import List from '../../components/List';
 
 const CreateWithMnemonicPhrase = () => {
   const theme = useContext(ThemeContext);
@@ -34,17 +34,49 @@ const CreateWithMnemonicPhrase = () => {
     saveWallets(_wallets);
   };
 
+  const mnemonicArr = mnemonic.split(' ').map((item) => ({
+    label: item,
+    value: item,
+  }));
+
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <Text style={[styles.title, {color: theme.textColor}]}>
-        Mnemonic phrase
-      </Text>
-      <TextInput
-        multiline={true}
-        numberOfLines={5}
-        value={mnemonic}
-        editable={false}
+      {/* <Text style={[styles.title, {color: theme.textColor}]}>
+        Secret phrase
+      </Text> */}
+      <List
+        items={mnemonicArr}
+        numColumns={4}
+        containerStyle={{
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        }}
+        listStyle={{
+          maxHeight: 390,
+        }}
+        render={(item, index) => {
+          return (
+            <View
+              key={index}
+              style={[
+                styles.phraseItemContainer,
+                {backgroundColor: theme.backgroundFocusColor},
+              ]}>
+              <Text style={[styles.phraseItemText, {color: theme.textColor}]}>
+                {item.label}
+              </Text>
+            </View>
+          );
+        }}
       />
+      <Text
+        style={[
+          styles.description,
+          styles.paragraph,
+          {color: theme.textColor},
+        ]}>
+        Above 24 words will be used to recover as well as access your wallet.
+      </Text>
       <Text
         style={[
           styles.description,

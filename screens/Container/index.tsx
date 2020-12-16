@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {View, Image} from 'react-native';
-import {useRecoilState, useSetRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {walletsAtom} from '../../atoms/wallets';
+import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import HomeScreen from '../Home';
 import NewsScreen from '../News';
 import TransactionStackScreen from '../../TransactionStack';
@@ -79,6 +79,7 @@ const AppContainer = () => {
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const setTokenInfo = useSetRecoilState(tokenInfoAtom);
   const setAddressBook = useSetRecoilState(addressBookAtom);
+  const selectedWallet = useRecoilValue(selectedWalletAtom);
   const [inited, setInited] = useState(0);
 
   const theme = useContext(ThemeContext);
@@ -107,6 +108,29 @@ const AppContainer = () => {
       setInited(1);
     })();
   }, [setWallets, setTokenInfo, setAddressBook]);
+
+  const updateWalletBalance = async () => {
+    const balance = await getBalance(wallets[selectedWallet].address);
+    const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
+    _wallets.forEach((_wallet, index) => {
+      _wallet.address === wallets[selectedWallet].address;
+      _wallets[index].balance = balance;
+    });
+    setWallets(_wallets);
+  };
+
+  useEffect(() => {
+    if (!inited) {
+      return;
+    }
+    const balanceInterval = setInterval(() => {
+      if (wallets[selectedWallet]) {
+        updateWalletBalance();
+      }
+    }, 3000);
+    return () => clearInterval(balanceInterval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inited, selectedWallet, wallets]);
 
   if (!inited) {
     return (

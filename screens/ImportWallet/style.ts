@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   optionContainer: {
     width: '100%',
-    height: 420,
+    height: 300,
     alignItems: 'stretch',
     justifyContent: 'space-around',
   },

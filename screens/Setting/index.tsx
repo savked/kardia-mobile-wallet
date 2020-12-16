@@ -10,7 +10,9 @@ const SettingScreen = () => {
   const navigation = useNavigation();
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <Text style={[styles.headline, {color: theme.textColor}]}>Setting</Text>
+      <View style={styles.header}>
+        <Text style={[styles.headline, {color: theme.textColor}]}>Setting</Text>
+      </View>
       <TouchableOpacity
         style={styles.settingItemContainer}
         onPress={() => navigation.navigate('AddressBook')}>
