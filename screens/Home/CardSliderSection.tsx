@@ -2,7 +2,7 @@
 import React, {useRef} from 'react';
 import {Dimensions, Image, Text, TouchableOpacity, View} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   Menu,
@@ -19,6 +19,8 @@ import {styles} from './style';
 import {saveWallets} from '../../utils/local';
 import {useNavigation} from '@react-navigation/native';
 import {tokenInfoAtom} from '../../atoms/token';
+import {languageAtom} from '../../atoms/language';
+import {getLanguageString} from '../../utils/lang';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -36,6 +38,7 @@ const CardSliderSection = ({
   const [selectedWallet, setSelectedWallet] = useRecoilState(
     selectedWalletAtom,
   );
+  const language = useRecoilValue(languageAtom);
 
   function send() {
     navigation.navigate('Transaction', {screen: 'CreateTx', initial: false});
@@ -51,7 +54,9 @@ const CardSliderSection = ({
           style={styles.kaiCard}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{paddingRight: 8, flex: 10}}>
-              <Text style={styles.kaiCardText}>Address:</Text>
+              <Text style={styles.kaiCardText}>
+                {getLanguageString(language, 'ADDRESS')}:
+              </Text>
               <Text style={styles.kaiCardText}>
                 {truncate(wallet.address, 8, 10)}
               </Text>
@@ -164,7 +169,7 @@ const CardSliderSection = ({
 
       <View style={styles.buttonGroupContainer}>
         <Button
-          title="Send"
+          title={getLanguageString(language, 'SEND')}
           type="outline"
           onPress={send}
           iconName="paper-plane"
@@ -175,7 +180,7 @@ const CardSliderSection = ({
 
         <Button
           onPress={showQRModal}
-          title="Receive"
+          title={getLanguageString(language, 'RECEIVE')}
           size="small"
           type="outline"
           iconName="download"
@@ -184,7 +189,7 @@ const CardSliderSection = ({
         />
 
         <Button
-          title="Import"
+          title={getLanguageString(language, 'IMPORT')}
           onPress={importWallet}
           type="outline"
           iconName="plus"

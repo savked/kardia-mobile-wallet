@@ -20,6 +20,8 @@ import Modal from '../../components/Modal';
 import List from '../../components/List';
 import {addressBookAtom} from '../../atoms/addressBook';
 import TextAvatar from '../../components/TextAvatar';
+import {getLanguageString} from '../../utils/lang';
+import {languageAtom} from '../../atoms/language';
 
 const MAX_AMOUNT = 5000000000;
 
@@ -31,12 +33,14 @@ const CreateTxScreen = () => {
   const [amount, setAmount] = useState('0');
   const [showQRModal, setShowQRModal] = useState(false);
   const [showAddressBookModal, setShowAddressBookModal] = useState(false);
+  const [gasPrice, setGasPrice] = useState(1);
   const [error, setError] = useState('');
   const [successTxHash, setSuccessHash] = useState('');
   const [loading, setLoading] = useState(false);
 
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
+  const language = useRecoilValue(languageAtom);
 
   async function send() {
     setLoading(true);
@@ -136,11 +140,11 @@ const CreateTxScreen = () => {
   return (
     <View
       style={[styles.container, {backgroundColor: theme.backgroundFocusColor}]}>
-      <View style={{marginBottom: 10}} removeClippedSubviews={true}>
+      <View style={{marginBottom: 10}} removeClippedSubviews={false}>
         <TextInput
           onChangeText={setAddress}
           value={truncate(address, 10, 20)}
-          headline="Send to address"
+          headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
           icons={() => {
             return (
               <>
@@ -179,7 +183,7 @@ const CreateTxScreen = () => {
           }}
           onBlur={() => setAmount(format(Number(amount)))}
           value={amount}
-          headline="Amount (maximum: 5,000,000,000)"
+          headline={getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}
         />
       </View>
 
@@ -190,7 +194,7 @@ const CreateTxScreen = () => {
         <View style={styles.wrap}>
           <View>
             <Text style={[{color: theme.textColor}]}>Gas Price</Text>
-            <Text style={[{color: theme.textColor}]}>300 GWEI</Text>
+            <Text style={[{color: theme.textColor}]}>{gasPrice} Oxy</Text>
           </View>
           <View>
             <Text style={[{color: theme.textColor}]}>Gas Limit</Text>
@@ -203,7 +207,7 @@ const CreateTxScreen = () => {
         Transaction Speed
       </Text>
       <View>
-        <ListCard />
+        <ListCard gasPrice={gasPrice} selectGasPrice={setGasPrice} />
       </View>
 
       <Text
@@ -222,7 +226,7 @@ const CreateTxScreen = () => {
           justifyContent: 'space-around',
         }}>
         <Button
-          title="SEND"
+          title={getLanguageString(language, 'SEND').toUpperCase()}
           onPress={send}
           iconName="paper-plane"
           type="primary"
@@ -230,7 +234,7 @@ const CreateTxScreen = () => {
           loading={loading}
         />
         <Button
-          title="CANCEL"
+          title={getLanguageString(language, 'GO_BACK').toUpperCase()}
           onPress={() => navigation.goBack()}
           type="outline"
           size="large"
@@ -265,33 +269,57 @@ const data = [
   {
     title: 'Slow',
     time: '~30 sec',
+    gasPrice: 1,
   },
   {
     title: 'Average',
     time: '~20 sec',
+    gasPrice: 2,
   },
   {
     title: 'Fast',
     time: '~10 sec',
+    gasPrice: 3,
   },
 ];
 
-const ListCard = () => {
+const ListCard = ({
+  gasPrice,
+  selectGasPrice,
+}: {
+  gasPrice: number;
+  selectGasPrice: (gasPrice: number) => void;
+}) => {
+  const theme = useContext(ThemeContext);
   return (
     <FlatList
       contentContainerStyle={styles.listCard}
       data={data}
       renderItem={({item}) => {
+        const active = item.gasPrice === gasPrice;
         return (
-          <View
+          <TouchableOpacity
+            onPress={() => selectGasPrice(item.gasPrice)}
             style={{
-              backgroundColor: 'white',
+              backgroundColor: active ? theme.primaryColor : 'white',
               padding: 20,
               borderRadius: 8,
             }}>
-            <Text style={{textAlign: 'center'}}>{item.title}</Text>
-            <Text>{item.time}</Text>
-          </View>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: active ? theme.primaryTextColor : theme.ghostTextColor,
+              }}>
+              {item.title}
+            </Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: active ? theme.primaryTextColor : theme.ghostTextColor,
+              }}>
+              {item.time}
+            </Text>
+          </TouchableOpacity>
         );
       }}
       keyExtractor={(item) => item.title}

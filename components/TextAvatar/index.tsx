@@ -7,6 +7,7 @@ const TextAvatar = ({
   backgroundColor = '#32a852',
   textColor = '#FFFFFF',
   size = 50,
+  style,
 }: TextAvatarProps) => {
   const containerStyle = {
     backgroundColor,
@@ -18,7 +19,7 @@ const TextAvatar = ({
     color: textColor,
   };
   return (
-    <View style={[styles.containerStyle, containerStyle]}>
+    <View style={[styles.containerStyle, containerStyle, style]}>
       <Text style={[styles.textStyle, textStyle]}>{text[0]}</Text>
     </View>
   );

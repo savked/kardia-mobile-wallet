@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
@@ -36,7 +37,11 @@ const AddressBookSetting = () => {
                   imageStyle={styles.addressAvatar}
                 />
               ) : (
-                <TextAvatar text={address.name} />
+                <TextAvatar
+                  text={address.name}
+                  size={60}
+                  style={{marginRight: 12}}
+                />
               )}
               <View>
                 <Text style={[styles.addressName, {color: theme.textColor}]}>

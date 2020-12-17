@@ -19,12 +19,13 @@ export const styles = StyleSheet.create({
   headline: {
     fontSize: 25,
     fontWeight: 'bold',
-    paddingHorizontal: 15,
   },
   header: {
+    paddingHorizontal: 15,
     height: HEADER_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   kaiLogo: {
     width: 30,
@@ -33,5 +34,6 @@ export const styles = StyleSheet.create({
   noTXText: {
     padding: 15,
     fontSize: 16,
+    fontStyle: 'italic',
   },
 });

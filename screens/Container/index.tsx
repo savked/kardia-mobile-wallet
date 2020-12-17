@@ -8,7 +8,7 @@ import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import HomeScreen from '../Home';
 import NewsScreen from '../News';
 import TransactionStackScreen from '../../TransactionStack';
-import {getAddressBook, getWallets} from '../../utils/local';
+import {getAddressBook, getLanguageSetting, getWallets} from '../../utils/local';
 import {styles} from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -19,6 +19,7 @@ import {tokenInfoAtom} from '../../atoms/token';
 import {getTokenInfo} from '../../services/token';
 import SettingStackScreen from '../../SettingStack';
 import {addressBookAtom} from '../../atoms/addressBook';
+import { languageAtom } from '../../atoms/language';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -80,6 +81,7 @@ const AppContainer = () => {
   const setTokenInfo = useSetRecoilState(tokenInfoAtom);
   const setAddressBook = useSetRecoilState(addressBookAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
+  const setLanguage = useSetRecoilState(languageAtom);
   const [inited, setInited] = useState(0);
 
   const theme = useContext(ThemeContext);
@@ -105,18 +107,26 @@ const AppContainer = () => {
       const addressBook = await getAddressBook();
       setAddressBook(addressBook);
 
+      // Get language setting
+      const languageSetting = await getLanguageSetting();
+      setLanguage(languageSetting);
+
       setInited(1);
     })();
-  }, [setWallets, setTokenInfo, setAddressBook]);
+  }, [setWallets, setTokenInfo, setAddressBook, setLanguage]);
 
   const updateWalletBalance = async () => {
-    const balance = await getBalance(wallets[selectedWallet].address);
-    const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
-    _wallets.forEach((_wallet, index) => {
-      _wallet.address === wallets[selectedWallet].address;
-      _wallets[index].balance = balance;
-    });
-    setWallets(_wallets);
+    try {
+      const balance = await getBalance(wallets[selectedWallet].address);
+      const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
+      _wallets.forEach((_wallet, index) => {
+        _wallet.address === wallets[selectedWallet].address;
+        _wallets[index].balance = balance;
+      });
+      setWallets(_wallets);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {

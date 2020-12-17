@@ -3,4 +3,5 @@ interface TextAvatarProps {
   backgroundColor?: string;
   textColor?: string;
   size?: number;
+  style?: Record<string, any>;
 }

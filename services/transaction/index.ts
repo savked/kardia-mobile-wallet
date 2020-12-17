@@ -29,6 +29,7 @@ export const createTx = async (
   wallet: Wallet,
   receiver: string,
   amount: number,
+  gasPrice = 1,
 ) => {
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
   const nonce = await kardiaClient.account.getNonce(wallet.address.trim());
@@ -36,7 +37,7 @@ export const createTx = async (
     receiver,
     gas: 50000,
     nonce,
-    gasPrice: 1,
+    gasPrice,
     amount: cellValue(amount),
   };
 

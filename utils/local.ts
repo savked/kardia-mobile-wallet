@@ -72,3 +72,27 @@ export const getAddressBook = async () => {
     // error reading value
   }
 };
+
+export const saveLanguageSetting = async (lang: string) => {
+  try {
+    await AsyncStorage.setItem('@kardia_language_setting', lang);
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};
+
+export const getLanguageSetting = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@kardia_language_setting');
+    if (value !== null) {
+      return value;
+    }
+    return '';
+  } catch (e) {
+    console.error(e);
+    return [];
+    // error reading value
+  }
+};

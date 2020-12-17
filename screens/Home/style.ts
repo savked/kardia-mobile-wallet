@@ -86,5 +86,6 @@ export const styles = StyleSheet.create({
   noTXText: {
     // padding: 15,
     fontSize: 16,
+    fontStyle: 'italic',
   },
 });

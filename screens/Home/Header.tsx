@@ -7,10 +7,13 @@ import {useNavigation} from '@react-navigation/native';
 import {ThemeContext} from '../../App';
 import {useRecoilValue} from 'recoil';
 import {notificationAtom} from '../../atoms/notification';
+import {getLanguageString} from '../../utils/lang';
+import {languageAtom} from '../../atoms/language';
 
 const HomeHeader = () => {
   const navigation = useNavigation();
   const theme = useContext(ThemeContext);
+  const language = useRecoilValue(languageAtom);
   function navigateNotiScreen() {
     navigation.navigate('Notification');
   }
@@ -22,10 +25,9 @@ const HomeHeader = () => {
   return (
     <View style={styles.headerContainer}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        {/* <Image style={styles.logo} source={require('../../assets/logo.png')} /> */}
         <Text
           style={{fontSize: 25, fontWeight: 'bold', color: theme.textColor}}>
-          Wallet
+          {getLanguageString(language, 'WALLET')}
         </Text>
       </View>
       <View style={{flexDirection: 'row'}}>

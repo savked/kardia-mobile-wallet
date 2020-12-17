@@ -3,14 +3,20 @@ import {Text, View, Image} from 'react-native';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import {styles} from './style';
 import {ThemeContext} from '../../App';
+import {getLanguageString} from '../../utils/lang';
+import {useRecoilValue} from 'recoil';
+import {languageAtom} from '../../atoms/language';
 
 const NewsScreen = () => {
   const theme = useContext(ThemeContext);
+  const language = useRecoilValue(languageAtom);
 
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
-        <Text style={[styles.headline, {color: theme.textColor}]}>News</Text>
+        <Text style={[styles.headline, {color: theme.textColor}]}>
+          {getLanguageString(language, 'NEWS_SCREEN_TITLE')}
+        </Text>
       </View>
       <View style={styles.highlight}>
         <Image

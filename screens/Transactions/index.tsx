@@ -14,6 +14,9 @@ import {getTxByAddress} from '../../services/transaction';
 import {parseKaiBalance} from '../../utils/number';
 import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
 import {addressBookAtom} from '../../atoms/addressBook';
+import IconButton from '../../components/IconButton';
+import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
+import {languageAtom} from '../../atoms/language';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
@@ -24,6 +27,7 @@ const TransactionScreen = () => {
   const [txList, setTxList] = useState([] as any[]);
   const [filterTx, setFilterTx] = useState('');
   const addressBook = useRecoilValue(addressBookAtom);
+  const language = useRecoilValue(languageAtom);
 
   const parseTXForList = (tx: Transaction) => {
     return {
@@ -43,10 +47,17 @@ const TransactionScreen = () => {
     };
   };
 
-  const getTX = () => {
-    getTxByAddress(wallets[selectedWallet].address, 1, 30).then((newTxList) =>
-      setTxList(newTxList.map(parseTXForList)),
-    );
+  const getTX = async () => {
+    try {
+      const newTxList = await getTxByAddress(
+        wallets[selectedWallet].address,
+        1,
+        30,
+      );
+      setTxList(newTxList.map(parseTXForList));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const filterTransaction = (tx: any) => {
@@ -115,6 +126,12 @@ const TransactionScreen = () => {
 
   useEffect(() => {
     getTX();
+    const getTxInterval = setInterval(() => {
+      if (wallets[selectedWallet]) {
+        getTX();
+      }
+    }, 3000);
+    return () => clearInterval(getTxInterval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
 
@@ -122,13 +139,22 @@ const TransactionScreen = () => {
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
         <Text style={[styles.headline, {color: theme.textColor}]}>
-          Transactions
+          {getLanguageString(language, 'RECENT_TRANSACTION')}
         </Text>
+        <IconButton
+          name="plus-circle"
+          color={theme.textColor}
+          size={styles.headline.fontSize}
+          onPress={() => navigation.navigate('CreateTx')}
+        />
       </View>
       <View style={styles.controlContainer}>
         <TextInput
           block={true}
-          placeholder="Search with address / tx hash / block number / block hash..."
+          placeholder={getLanguageString(
+            language,
+            'SEARCH_TRANSACTION_PLACEHOLDER',
+          )}
           value={filterTx}
           onChangeText={setFilterTx}
         />
@@ -163,12 +189,12 @@ const TransactionScreen = () => {
                       {truncate(item.label, 8, 10)}
                     </Text>
                     <Text style={{color: 'gray'}}>
-                      {/* {item.date.toLocaleString()} */}
                       {isSameDay(item.date, new Date())
-                        ? `${formatDistanceToNowStrict(item.date)} ago`
+                        ? `${formatDistanceToNowStrict(item.date, {
+                            locale: getDateFNSLocale(language),
+                          })} ${getLanguageString(language, 'AGO')}`
                         : format(item.date, 'MMM d yyyy HH:mm')}
                     </Text>
-                    {/* <Text style={{color: '#FFFFFF'}}>Success</Text> */}
                   </View>
                   <View
                     style={{
@@ -199,7 +225,7 @@ const TransactionScreen = () => {
           }}
           ListEmptyComponent={
             <Text style={[styles.noTXText, {color: theme.textColor}]}>
-              No transaction
+              {getLanguageString(language, 'NO_TRANSACTION')}
             </Text>
           }
         />

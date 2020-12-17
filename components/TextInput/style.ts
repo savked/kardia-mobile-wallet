@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
   input: {
     borderRadius: 8,
     height: 44,
-    minWidth: 100,
+    // minWidth: 100,
     borderColor: 'gray',
     borderWidth: 1,
     backgroundColor: 'white',

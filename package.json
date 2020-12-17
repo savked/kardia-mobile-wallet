@@ -10,7 +10,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "postinstall": "rn-nodeify --install assert,crypto,buffer,stream,events,process --hack",
     "bundle-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
-    "build-apk": "cd android && ./gradlew assembleDebug"
+    "build-apk": "cd android && ./gradlew assembleDebug",
+    "link": "react-native link"
   },
   "dependencies": {
     "@ethersproject/shims": "^5.0.10",
@@ -39,6 +40,7 @@
     "react-native": "0.63.3",
     "react-native-camera": "^3.40.0",
     "react-native-crypto": "^2.2.0",
+    "react-native-flags": "^1.0.0",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-image-picker": "^3.1.1",
     "react-native-linear-gradient": "^2.5.6",

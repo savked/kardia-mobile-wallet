@@ -12,12 +12,17 @@ import {View} from 'react-native';
 import NewAddress from './screens/NewAddress';
 import {useNavigation} from '@react-navigation/native';
 import AddressDetail from './screens/AddressDetail';
+import LanguageSetting from './screens/LanguageSetting';
+import {useRecoilValue} from 'recoil';
+import {languageAtom} from './atoms/language';
+import {getLanguageString} from './utils/lang';
 
 const SettingStack = createStackNavigator();
 
 const SettingStackScreen = () => {
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
+  const language = useRecoilValue(languageAtom);
   return (
     <SettingStack.Navigator
       initialRouteName="TransactionList"
@@ -33,7 +38,7 @@ const SettingStackScreen = () => {
         name="AddressBook"
         component={AddressBookSetting}
         options={{
-          title: 'Address Book',
+          title: getLanguageString(language, 'ADDRESS_BOOK_MENU'),
           headerStyle: {
             backgroundColor: theme.backgroundColor,
           },
@@ -76,6 +81,20 @@ const SettingStackScreen = () => {
         component={AddressDetail}
         options={{
           title: 'Detail',
+          headerStyle: {
+            backgroundColor: theme.backgroundColor,
+          },
+          headerTitleStyle: {
+            color: theme.textColor,
+          },
+          headerTintColor: theme.textColor,
+        }}
+      />
+      <SettingStack.Screen
+        name="LanguageSetting"
+        component={LanguageSetting}
+        options={{
+          title: getLanguageString(language, 'LANGUAGE_SETTING_TITLE'),
           headerStyle: {
             backgroundColor: theme.backgroundColor,
           },

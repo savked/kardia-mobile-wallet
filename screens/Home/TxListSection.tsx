@@ -13,6 +13,8 @@ import Button from '../../components/Button';
 import {useRecoilValue} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {getTxByAddress} from '../../services/transaction';
+import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
+import {languageAtom} from '../../atoms/language';
 
 const TxListSection = () => {
   const navigation = useNavigation();
@@ -21,6 +23,7 @@ const TxListSection = () => {
 
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
+  const language = useRecoilValue(languageAtom);
 
   const parseTXForList = (tx: Transaction) => {
     return {
@@ -36,13 +39,20 @@ const TxListSection = () => {
     };
   };
 
-  const getTX = () => {
+  const getTX = async () => {
     if (!wallets[selectedWallet].address) {
       return;
     }
-    getTxByAddress(wallets[selectedWallet].address, 1, 10).then((newTxList) => {
+    try {
+      const newTxList = await getTxByAddress(
+        wallets[selectedWallet].address,
+        1,
+        30,
+      );
       setTxList(newTxList.map(parseTXForList));
-    });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -130,7 +140,9 @@ const TxListSection = () => {
                   </Text>
                   <Text style={{color: 'gray'}}>
                     {isSameDay(item.date, new Date())
-                      ? `${formatDistanceToNowStrict(item.date)} ago`
+                      ? `${formatDistanceToNowStrict(item.date, {
+                          locale: getDateFNSLocale(language),
+                        })} ${getLanguageString(language, 'AGO')}`
                       : format(item.date, 'MMM d yyyy HH:mm')}
                   </Text>
                 </View>
@@ -155,7 +167,7 @@ const TxListSection = () => {
         }}
         ListEmptyComponent={
           <Text style={[styles.noTXText, {color: theme.textColor}]}>
-            No transaction
+            {getLanguageString(language, 'NO_TRANSACTION')}
           </Text>
         }
         header={
@@ -166,7 +178,7 @@ const TxListSection = () => {
               justifyContent: 'space-between',
             }}>
             <Text style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
-              Recent transactions
+              {getLanguageString(language, 'RECENT_TRANSACTION')}
             </Text>
             <Button
               type="link"
@@ -175,7 +187,7 @@ const TxListSection = () => {
                   screen: 'TransactionList',
                 })
               }
-              title="View all >"
+              title={`${getLanguageString(language, 'VIEW_ALL_TRANSACTION')} >`}
             />
           </View>
         }

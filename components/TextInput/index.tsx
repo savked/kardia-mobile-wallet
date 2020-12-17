@@ -20,6 +20,7 @@ const CustomTextInput = ({
   icons,
 }: CustomTextInputProps) => {
   const theme = useContext(ThemeContext);
+
   return (
     <>
       {headline && (
@@ -28,6 +29,7 @@ const CustomTextInput = ({
         </Text>
       )}
       <View
+        removeClippedSubviews={false}
         style={[
           {flexDirection: 'row', alignItems: 'center'},
           block ? {width: '100%'} : null,
@@ -36,7 +38,7 @@ const CustomTextInput = ({
           style={[
             styles.input,
             multiline ? styles.multiline : null,
-            block ? {width: '100%'} : null,
+            // block ? {width: '100%'} : null,
           ]}
           onChangeText={onChangeText}
           value={value}
