@@ -2,11 +2,15 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Image, Text, View} from 'react-native';
+import {useRecoilValue} from 'recoil';
+import {languageAtom} from '../../atoms/language';
 import Button from '../../components/Button';
+import {getLanguageString} from '../../utils/lang';
 import {styles} from './style';
 
 const Welcome = () => {
   const navigation = useNavigation();
+  const language = useRecoilValue(languageAtom);
 
   return (
     <View style={styles.noWalletContainer}>
@@ -19,30 +23,31 @@ const Welcome = () => {
       <View>
         <Text
           style={{
-            fontSize: 28,
+            fontSize: 24,
+            textAlign: 'center',
             fontWeight: 'bold',
-            marginBottom: 7,
+            marginBottom: 36,
             color: '#B4BDC9',
           }}>
-          Welcome to Kardia Wallet
+          {getLanguageString(language, 'WELCOME')}
         </Text>
-        <Text style={{fontSize: 14, color: '#B4BDC9'}}>
-          To get started, choose one of the following options
+        <Text style={{fontSize: 14, color: '#B4BDC9', textAlign: 'center'}}>
+          {getLanguageString(language, 'GETTING_STARTED_DESCRIPTION')}
         </Text>
       </View>
       <View style={{height: 140, justifyContent: 'space-evenly'}}>
         <Button
           size="large"
-          title="Create new wallet"
+          title={getLanguageString(language, 'CREATE_NEW_WALLET')}
           type="primary"
           onPress={() => navigation.navigate('CreateWallet')}
           style={{width: 300}}
         />
         <Button
           size="large"
-          title="Import your wallet"
+          title={getLanguageString(language, 'IMPORT_WALLET')}
           type="secondary"
-          onPress={() => navigation.navigate('ImportWallet')}
+          onPress={() => navigation.navigate('ImportMnemonic')}
         />
       </View>
     </View>

@@ -8,7 +8,11 @@ import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import HomeScreen from '../Home';
 import NewsScreen from '../News';
 import TransactionStackScreen from '../../TransactionStack';
-import {getAddressBook, getLanguageSetting, getWallets} from '../../utils/local';
+import {
+  getAddressBook,
+  getLanguageSetting,
+  getWallets,
+} from '../../utils/local';
 import {styles} from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -19,7 +23,7 @@ import {tokenInfoAtom} from '../../atoms/token';
 import {getTokenInfo} from '../../services/token';
 import SettingStackScreen from '../../SettingStack';
 import {addressBookAtom} from '../../atoms/addressBook';
-import { languageAtom } from '../../atoms/language';
+import {languageAtom} from '../../atoms/language';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -89,19 +93,27 @@ const AppContainer = () => {
   useEffect(() => {
     (async () => {
       // Get local wallets data
-      let localWallets = await getWallets();
+      try {
+        let localWallets = await getWallets();
 
-      const promiseArr = localWallets.map(async (wallet) => {
-        wallet.balance = await getBalance(wallet.address);
-        return wallet;
-      });
+        const promiseArr = localWallets.map(async (wallet) => {
+          wallet.balance = await getBalance(wallet.address);
+          return wallet;
+        });
 
-      localWallets = await Promise.all(promiseArr);
-      setWallets(localWallets);
+        localWallets = await Promise.all(promiseArr);
+        setWallets(localWallets);
+      } catch (error) {
+        console.error(error);
+      }
 
       // Get token info
-      const info = await getTokenInfo();
-      setTokenInfo(info);
+      try {
+        const info = await getTokenInfo();
+        setTokenInfo(info);
+      } catch (error) {
+        console.error(error);
+      }
 
       // Get local address book
       const addressBook = await getAddressBook();

@@ -16,6 +16,7 @@ import LanguageSetting from './screens/LanguageSetting';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from './atoms/language';
 import {getLanguageString} from './utils/lang';
+import MnemonicPhraseSetting from './screens/MnemonicPhraseSetting';
 
 const SettingStack = createStackNavigator();
 
@@ -95,6 +96,20 @@ const SettingStackScreen = () => {
         component={LanguageSetting}
         options={{
           title: getLanguageString(language, 'LANGUAGE_SETTING_TITLE'),
+          headerStyle: {
+            backgroundColor: theme.backgroundColor,
+          },
+          headerTitleStyle: {
+            color: theme.textColor,
+          },
+          headerTintColor: theme.textColor,
+        }}
+      />
+      <SettingStack.Screen
+        name="MnemonicPhraseSetting"
+        component={MnemonicPhraseSetting}
+        options={{
+          title: getLanguageString(language, 'MNEMONIC_SETTING_TITLE'),
           headerStyle: {
             backgroundColor: theme.backgroundColor,
           },

@@ -7,11 +7,13 @@ import {useNavigation} from '@react-navigation/native';
 import {styles} from './style';
 import * as Bip39 from 'bip39';
 import {walletsAtom} from '../../atoms/wallets';
-import {saveWallets} from '../../utils/local';
-import {useRecoilState} from 'recoil';
+import {saveMnemonic, saveWallets} from '../../utils/local';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import {hdkey} from 'ethereumjs-wallet';
 import CustomTextInput from '../../components/TextInput';
 import {ThemeContext} from '../../App';
+import {languageAtom} from '../../atoms/language';
+import {getLanguageString} from '../../utils/lang';
 
 const ImportMnemonic = () => {
   const theme = useContext(ThemeContext);
@@ -19,33 +21,42 @@ const ImportMnemonic = () => {
   const [mnemonic, setMnemonic] = useState('');
   const [error, setError] = useState('');
   const [wallets, setWallets] = useRecoilState(walletsAtom);
+  const [loading, setLoading] = useState(false);
 
-  async function accessWalletByMnemonic() {
-    const valid = validateSeedPhrase();
-    if (!valid) {
-      return;
-    }
-    const seed = await Bip39.mnemonicToSeed(mnemonic.trim());
-    const root = hdkey.fromMasterSeed(seed);
-    const masterWallet = root.getWallet();
-    const privateKey = masterWallet.getPrivateKeyString();
-    const walletAddress = masterWallet.getAddressString();
-    const wallet: Wallet = {
-      privateKey: privateKey,
-      address: walletAddress,
-      balance: 0,
-    };
+  const language = useRecoilValue(languageAtom);
 
-    const _wallets = JSON.parse(JSON.stringify(wallets));
-    _wallets.push(wallet);
+  const accessWalletByMnemonic = async () => {
+    setLoading(true);
+    setError('');
+    setTimeout(async () => {
+      const valid = validateSeedPhrase();
+      if (!valid) {
+        setLoading(false);
+        return;
+      }
+      const seed = await Bip39.mnemonicToSeed(mnemonic.trim());
+      await saveMnemonic(mnemonic.trim());
+      const root = hdkey.fromMasterSeed(seed);
+      const masterWallet = root.getWallet();
+      const privateKey = masterWallet.getPrivateKeyString();
+      const walletAddress = masterWallet.getAddressString();
+      const wallet: Wallet = {
+        privateKey: privateKey,
+        address: walletAddress,
+        balance: 0,
+      };
 
-    setWallets(_wallets);
-    saveWallets(_wallets);
-  }
+      const _wallets = JSON.parse(JSON.stringify(wallets));
+      _wallets.push(wallet);
+      await saveWallets(_wallets);
+      setLoading(false);
+      setWallets(_wallets);
+    }, 10);
+  };
 
   function validateSeedPhrase() {
     if (!mnemonic) {
-      setError('Field is required');
+      setError(getLanguageString(language, 'REQUIRED_FIELD'));
       return false;
     }
     const valid = Bip39.validateMnemonic(mnemonic);
@@ -59,7 +70,7 @@ const ImportMnemonic = () => {
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <Text style={[styles.title, {color: theme.textColor}]}>
-        Enter seed phrase
+        {getLanguageString(language, 'ENTER_SEED_PHRASE')}
       </Text>
       <CustomTextInput
         style={styles.input}
@@ -71,16 +82,19 @@ const ImportMnemonic = () => {
       <ErrorMessage message={error} style={{textAlign: 'left'}} />
       <View style={styles.buttonGroup}>
         <Button
+          loading={loading}
+          disabled={loading}
           size="large"
           type="primary"
-          title="Import"
+          title={getLanguageString(language, 'SUBMIT')}
           onPress={accessWalletByMnemonic}
         />
         <Button
+          disabled={loading}
           size="large"
           type="secondary"
           onPress={() => navigation.goBack()}
-          title="Cancel"
+          title={getLanguageString(language, 'GO_BACK')}
         />
       </View>
     </View>

@@ -13,7 +13,11 @@ import Button from '../../components/Button';
 import {useRecoilValue} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {getTxByAddress} from '../../services/transaction';
-import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
+import {
+  getDateFNSLocale,
+  getDateTimeFormat,
+  getLanguageString,
+} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 
 const TxListSection = () => {
@@ -143,7 +147,9 @@ const TxListSection = () => {
                       ? `${formatDistanceToNowStrict(item.date, {
                           locale: getDateFNSLocale(language),
                         })} ${getLanguageString(language, 'AGO')}`
-                      : format(item.date, 'MMM d yyyy HH:mm')}
+                      : format(item.date, getDateTimeFormat(language), {
+                          locale: getDateFNSLocale(language),
+                        })}
                   </Text>
                 </View>
                 <View

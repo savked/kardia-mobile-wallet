@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {styles} from './style';
 import Button from '../../components/Button';
@@ -187,27 +187,28 @@ const CreateTxScreen = () => {
         />
       </View>
 
+      <Text style={[styles.title, {color: theme.textColor, marginBottom: 12}]}>
+        {getLanguageString(language, 'TRANSACTION_SPEED')}
+      </Text>
       <View style={{marginBottom: 20}}>
-        <Text style={[styles.title, {color: theme.textColor}]}>
-          Recap of your transaction
-        </Text>
+        <ListCard gasPrice={gasPrice} selectGasPrice={setGasPrice} />
+      </View>
+
+      <View>
         <View style={styles.wrap}>
           <View>
-            <Text style={[{color: theme.textColor}]}>Gas Price</Text>
+            <Text style={[{color: theme.textColor}]}>
+              {getLanguageString(language, 'GAS_PRICE')}
+            </Text>
             <Text style={[{color: theme.textColor}]}>{gasPrice} Oxy</Text>
           </View>
           <View>
-            <Text style={[{color: theme.textColor}]}>Gas Limit</Text>
+            <Text style={[{color: theme.textColor}]}>
+              {getLanguageString(language, 'GAS_LIMIT')}
+            </Text>
             <Text style={[{color: theme.textColor}]}>21.000 WEI</Text>
           </View>
         </View>
-      </View>
-
-      <Text style={[styles.title, {color: theme.textColor}]}>
-        Transaction Speed
-      </Text>
-      <View>
-        <ListCard gasPrice={gasPrice} selectGasPrice={setGasPrice} />
       </View>
 
       <Text
@@ -265,24 +266,6 @@ const CreateTxScreen = () => {
   );
 };
 
-const data = [
-  {
-    title: 'Slow',
-    time: '~30 sec',
-    gasPrice: 1,
-  },
-  {
-    title: 'Average',
-    time: '~20 sec',
-    gasPrice: 2,
-  },
-  {
-    title: 'Fast',
-    time: '~10 sec',
-    gasPrice: 3,
-  },
-];
-
 const ListCard = ({
   gasPrice,
   selectGasPrice,
@@ -291,11 +274,29 @@ const ListCard = ({
   selectGasPrice: (gasPrice: number) => void;
 }) => {
   const theme = useContext(ThemeContext);
+  const language = useRecoilValue(languageAtom);
+
+  const data = [
+    {
+      title: getLanguageString(language, 'SLOW_SPEED'),
+      time: `~30 ${getLanguageString(language, 'SECOND')}`,
+      gasPrice: 1,
+    },
+    {
+      title: getLanguageString(language, 'AVERAGE_SPEED'),
+      time: `~20 ${getLanguageString(language, 'SECOND')}`,
+      gasPrice: 2,
+    },
+    {
+      title: getLanguageString(language, 'FAST_SPEED'),
+      time: `~10 ${getLanguageString(language, 'SECOND')}`,
+      gasPrice: 3,
+    },
+  ];
+
   return (
-    <FlatList
-      contentContainerStyle={styles.listCard}
-      data={data}
-      renderItem={({item}) => {
+    <View style={styles.listCard}>
+      {data.map((item) => {
         const active = item.gasPrice === gasPrice;
         return (
           <TouchableOpacity
@@ -304,6 +305,7 @@ const ListCard = ({
               backgroundColor: active ? theme.primaryColor : 'white',
               padding: 20,
               borderRadius: 8,
+              width: '30%',
             }}>
             <Text
               style={{
@@ -321,10 +323,8 @@ const ListCard = ({
             </Text>
           </TouchableOpacity>
         );
-      }}
-      keyExtractor={(item) => item.title}
-      ListEmptyComponent={<Text>No data</Text>}
-    />
+      })}
+    </View>
   );
 };
 export default CreateTxScreen;

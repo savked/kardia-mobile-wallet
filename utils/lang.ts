@@ -31,3 +31,11 @@ export const getDateFNSLocale = (langKey: string) => {
       return US_LOCALE;
   }
 };
+
+export const getDateTimeFormat = (langKey: string) => {
+  if (!(lang as Record<string, any>)[langKey]) {
+    return '';
+  }
+  const langObj = (lang as Record<string, any>)[langKey] as Language;
+  return langObj.dateTimeFormat;
+};

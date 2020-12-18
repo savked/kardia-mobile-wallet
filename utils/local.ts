@@ -92,7 +92,31 @@ export const getLanguageSetting = async () => {
     return '';
   } catch (e) {
     console.error(e);
-    return [];
+    return '';
+    // error reading value
+  }
+};
+
+export const saveMnemonic = async (mnemonic: string) => {
+  try {
+    await AsyncStorage.setItem('@kardia_mnemonic', mnemonic);
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};
+
+export const getMnemonic = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@kardia_mnemonic');
+    if (value !== null) {
+      return value;
+    }
+    return '';
+  } catch (e) {
+    console.error(e);
+    return '';
     // error reading value
   }
 };

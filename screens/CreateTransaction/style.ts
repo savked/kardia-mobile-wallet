@@ -25,7 +25,8 @@ export const styles = StyleSheet.create({
 
   listCard: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+    width: '100%',
   },
 
   centerText: {

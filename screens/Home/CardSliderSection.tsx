@@ -80,10 +80,12 @@ const CardSliderSection = ({
               </MenuTrigger>
               <MenuOptions
                 customStyles={{
-                  optionWrapper: {padding: 18},
+                  optionWrapper: {
+                    padding: 12,
+                  },
                 }}>
                 <MenuOption onSelect={() => removeWallet(index)}>
-                  <Text>Remove wallet</Text>
+                  <Text>{getLanguageString(language, 'REMOVE_WALLET')}</Text>
                 </MenuOption>
               </MenuOptions>
             </Menu>
