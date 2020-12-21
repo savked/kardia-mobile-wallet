@@ -39,7 +39,7 @@ const ImportMnemonic = () => {
       const root = hdkey.fromMasterSeed(seed);
       const masterWallet = root.getWallet();
       const privateKey = masterWallet.getPrivateKeyString();
-      const walletAddress = masterWallet.getAddressString();
+      const walletAddress = masterWallet.getChecksumAddressString();
       const wallet: Wallet = {
         privateKey: privateKey,
         address: walletAddress,
