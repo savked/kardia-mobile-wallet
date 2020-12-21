@@ -1,19 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import React, { useContext } from 'react';
 import {Image, Text, View} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
 import Button from '../../components/Button';
 import {getLanguageString} from '../../utils/lang';
 import {styles} from './style';
+import { ThemeContext } from '../../App';
 
 const Welcome = () => {
   const navigation = useNavigation();
   const language = useRecoilValue(languageAtom);
+  const theme = useContext(ThemeContext);
 
   return (
-    <View style={styles.noWalletContainer}>
+    <SafeAreaView style={[styles.noWalletContainer, {backgroundColor: theme.backgroundColor}]}>
       <View>
         <Image
           style={styles.noWalletLogo}
@@ -50,7 +53,7 @@ const Welcome = () => {
           onPress={() => navigation.navigate('ImportMnemonic')}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
