@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "api-4969676771129722326-43696",
+  "private_key_id": "71e8cf0c0068862149df31583a9bc29d1237220e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC0e2kadRXB+biP\nl8jLEZP8Quw3V97NWyry8ooEP5mse5ZW9aedva4eSrCQIXrfTgIVcoBt1a5QK0ED\n9LtPOdJHdj8ytvPee2xjmIRTXbmj6SI60Dg91TOGKgo3FB15yKxuDFMH4m773MXr\nevrFkwqap0ul+OpIELhUaq0ChUm2U4A2LBYCYX87fxzgj0txuT9uqM+qUZkI4Bdu\nfQcZicDf3aS2hLxIpRdPrEEVB8KPwCX7A4xQQNU9OnABRsFESPHbn0xwGQNz6GIg\nwDJoQi+UGKzB/S0CcMzpSaNAq00V4VCqqHAyyep6mCRujw6ABa2XCYhLB8C/RAfM\ntPbYkhGzAgMBAAECggEAANgcIVz4ZZ90GTQpr6bAsm2gWLQ+Ij7YGc3PTDbelQC7\nixFDmtz6PnSgx41n5bRArz4Try/VihJ/KTbWA0rfuWEBgzBauPrSh7R88SlcxFjs\nWh/K17ZluCihvaPZ/Hu9jCu/G0bBKPrdjwISHD+1pEm+ZS3iN5wyAsPfIX6B6GCL\ntZutSZXdlWDBY1khMd2bHJUSQ8vNZ691z7kTfeGPJTk+wd6ByWLGV2uKkPU20pNe\nMf5M8odAxpeA6C1EDW7oZULRcPGwkGw9r71eOHyfZzN3d/t1RB+axj9X/qX7+l2/\n/teEX0MQSb3+NHCl8UBYO6wI1J7vKYzP1qElLPantQKBgQDrdJcNMoUIvt2ZeISJ\niqdo+DWgo/sl+dzEekcby0uSgH82OkPvnO4hpEFK6UfNy2TiMjbAAgqvxaWUmJiL\nbrbSxp3LZV6mQT/41vz4AID1pjb8m+T7Fkrhv0EsAcvrAA41H2yx5rh+3M/QoX5D\nYrUediwhCqGjrxlSjVC4kOqplwKBgQDEOt7uItQe7dvABFisIFvdnwjdsZ3I/J5+\nT6aZWTldicjXv+UW2lBIb16uERNVu9ziVzFUgeOMgEi6Vmn4/NaYM5w3zKKwjMOL\nj6rXlKG70mXQWAeNYmSsAHZEPhrn3Sm1ez0RYF19+/vqaezQaNq8T8JgX77eRlJE\n8ETBNDQERQKBgQCv/+qZNtYyf1ltyqRnm3kgAck0Vt74uBjJ1Q0qPYAz9lEg29TE\nW221P+5+bHn73rl+S0KZq+0JDpiCxr3gG9YVH9n7m75wT/3dp/ZX+yhqduBLWsyC\n01sN+8RffMhM1THJi7/YCzqFudCthsm23SW9q1+5IxVIIS6wgmmATPLb6QKBgDAK\nrbuloUM1PsDDD6aMgZE/t173dkbXukH4ZDRVCNtiuV5A5+hxaIhjY82/9njd9pUf\nfb9P0ZL7cVLVhzpjRHKc6BktK4OH4vQPJ2eCRxqBx1V7x9WQik8mCc5pWhL8LZL1\n6hyP+DO49pMMfeMEWNETweXwav1mQAwKuvqGOln1AoGBAI65mZ1bxVCdTLZLQV3c\nUB+HNAjEUZqvIQI60+BoU2AMjXctKmx1p0ys/lxl+nVCx0fn0eFq0jIkzk9Pg6Qi\nkdbkxtwaKncrz5GSPLsSoqu8tBwIjstThlOmFg/u28rx8uIRldGIjrKRPdL5STP8\nPdh80B3Dd5GM3bP+P3rCe1uk\n-----END PRIVATE KEY-----\n",
+  "client_email": "kardia-wallet@api-4969676771129722326-43696.iam.gserviceaccount.com",
+  "client_id": "106429970966094960573",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/kardia-wallet%40api-4969676771129722326-43696.iam.gserviceaccount.com"
+}

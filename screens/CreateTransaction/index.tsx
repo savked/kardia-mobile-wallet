@@ -138,8 +138,7 @@ const CreateTxScreen = () => {
   }
 
   return (
-    <View
-      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={{marginBottom: 10}} removeClippedSubviews={false}>
         <TextInput
           onChangeText={setAddress}
