@@ -1,5 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useRecoilValue} from 'recoil';
@@ -15,7 +16,7 @@ const SettingScreen = () => {
   const language = useRecoilValue(languageAtom);
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
         <Text style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'SETTING_SCREEN_TITLE')}
@@ -45,7 +46,7 @@ const SettingScreen = () => {
           {getLanguageString(language, 'SECRET_PHRASE_MENU')}
         </Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 export default SettingScreen;

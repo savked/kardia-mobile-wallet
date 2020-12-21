@@ -3,6 +3,7 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
 import {Alert, Text, TouchableOpacity, View, Image} from 'react-native';
 import {useRecoilState, useRecoilValue} from 'recoil';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {ThemeContext} from '../../App';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import List from '../../components/List';
@@ -136,7 +137,7 @@ const TransactionScreen = () => {
   }, [selectedWallet]);
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
         <Text style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'RECENT_TRANSACTION')}
@@ -230,7 +231,7 @@ const TransactionScreen = () => {
           }
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -29,6 +29,11 @@ const SettingStackScreen = () => {
       initialRouteName="TransactionList"
       screenOptions={{
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        headerStyle: {
+          shadowColor: 'transparent',
+          backgroundColor: theme.backgroundColor,
+        },
+        headerBackTitleVisible: false,
       }}>
       <SettingStack.Screen
         name="Setting"
@@ -40,9 +45,6 @@ const SettingStackScreen = () => {
         component={AddressBookSetting}
         options={{
           title: getLanguageString(language, 'ADDRESS_BOOK_MENU'),
-          headerStyle: {
-            backgroundColor: theme.backgroundColor,
-          },
           headerTitleStyle: {
             color: theme.textColor,
           },
@@ -68,9 +70,6 @@ const SettingStackScreen = () => {
         component={NewAddress}
         options={{
           title: 'New address',
-          headerStyle: {
-            backgroundColor: theme.backgroundColor,
-          },
           headerTitleStyle: {
             color: theme.textColor,
           },
@@ -82,9 +81,6 @@ const SettingStackScreen = () => {
         component={AddressDetail}
         options={{
           title: 'Detail',
-          headerStyle: {
-            backgroundColor: theme.backgroundColor,
-          },
           headerTitleStyle: {
             color: theme.textColor,
           },
@@ -96,9 +92,6 @@ const SettingStackScreen = () => {
         component={LanguageSetting}
         options={{
           title: getLanguageString(language, 'LANGUAGE_SETTING_TITLE'),
-          headerStyle: {
-            backgroundColor: theme.backgroundColor,
-          },
           headerTitleStyle: {
             color: theme.textColor,
           },
@@ -110,9 +103,6 @@ const SettingStackScreen = () => {
         component={MnemonicPhraseSetting}
         options={{
           title: getLanguageString(language, 'MNEMONIC_SETTING_TITLE'),
-          headerStyle: {
-            backgroundColor: theme.backgroundColor,
-          },
           headerTitleStyle: {
             color: theme.textColor,
           },
