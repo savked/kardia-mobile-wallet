@@ -139,7 +139,7 @@ const CreateTxScreen = () => {
 
   return (
     <View
-      style={[styles.container, {backgroundColor: theme.backgroundFocusColor}]}>
+      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={{marginBottom: 10}} removeClippedSubviews={false}>
         <TextInput
           onChangeText={setAddress}
@@ -296,10 +296,11 @@ const ListCard = ({
 
   return (
     <View style={styles.listCard}>
-      {data.map((item) => {
+      {data.map((item, index) => {
         const active = item.gasPrice === gasPrice;
         return (
           <TouchableOpacity
+            key={`tx-speed-${index}`}
             onPress={() => selectGasPrice(item.gasPrice)}
             style={{
               backgroundColor: active ? theme.primaryColor : 'white',

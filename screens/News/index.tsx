@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import {Text, View, Image} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import {styles} from './style';
 import {ThemeContext} from '../../App';
@@ -12,7 +13,7 @@ const NewsScreen = () => {
   const language = useRecoilValue(languageAtom);
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
         <Text style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'NEWS_SCREEN_TITLE')}
@@ -64,7 +65,7 @@ const NewsScreen = () => {
         keyExtractor={(item) => item.Title}
         ListEmptyComponent={<Text>No data</Text>}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

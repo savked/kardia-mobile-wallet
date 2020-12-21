@@ -121,7 +121,7 @@ const AppContainer = () => {
 
       // Get language setting
       const languageSetting = await getLanguageSetting();
-      setLanguage(languageSetting);
+      languageSetting && setLanguage(languageSetting);
 
       setInited(1);
     })();

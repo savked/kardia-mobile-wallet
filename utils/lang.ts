@@ -1,4 +1,5 @@
 import {lang} from '../lang';
+import {NativeModules, Platform} from 'react-native';
 import US_LOCALE from 'date-fns/locale/en-US';
 import VI_LOCALE from 'date-fns/locale/vi';
 

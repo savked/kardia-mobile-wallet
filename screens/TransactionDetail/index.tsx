@@ -2,6 +2,7 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, Text, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import numeral from 'numeral';
 import {ThemeContext} from '../../App';
@@ -61,7 +62,7 @@ const TransactionDetail = () => {
   }
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.txMeta}>
         {renderStatusIcon(txData?.status)}
         <View style={{justifyContent: 'space-between', paddingTop: 10}}>
@@ -148,7 +149,7 @@ const TransactionDetail = () => {
           />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
