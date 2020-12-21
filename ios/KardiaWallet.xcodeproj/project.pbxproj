@@ -715,6 +715,7 @@
 			baseConfigurationReference = A94612FE1748227D40AA22C5 /* Pods-KardiaWallet-KardiaWalletTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = ZALPS8PCP4;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -739,6 +740,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = ZALPS8PCP4;
 				INFOPLIST_FILE = KardiaWalletTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -749,6 +751,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "0e554333-2676-4c24-b496-88793a3bdecf";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.masterwallet AppStore";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaWallet.app/KardiaWallet";
 			};
 			name = Release;
@@ -761,8 +765,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = ZALPS8PCP4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = KardiaWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -789,8 +793,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = ZALPS8PCP4;
 				INFOPLIST_FILE = KardiaWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -800,7 +804,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kardiachain.masterwallet;
 				PRODUCT_NAME = "Kardia Wallet";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "0e554333-2676-4c24-b496-88793a3bdecf";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.masterwallet AppStore";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -817,6 +822,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = ZALPS8PCP4;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "KardiaWallet-tvOS/Info.plist";
@@ -846,6 +852,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ZALPS8PCP4;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "KardiaWallet-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -856,6 +863,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaWallet-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "0e554333-2676-4c24-b496-88793a3bdecf";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.masterwallet AppStore";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
@@ -872,6 +881,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = ZALPS8PCP4;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "KardiaWallet-tvOSTests/Info.plist";
@@ -900,6 +910,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ZALPS8PCP4;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "KardiaWallet-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -910,6 +921,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaWallet-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "0e554333-2676-4c24-b496-88793a3bdecf";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.masterwallet AppStore";
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaWallet-tvOS.app/KardiaWallet-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
