@@ -1,6 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useState} from 'react';
-import {ImageURISource, Text, View} from 'react-native';
+import {
+  ImageURISource,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {useRecoilState} from 'recoil';
 import {ThemeContext} from '../../App';
@@ -61,30 +67,38 @@ const NewAddress = () => {
   }
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <View style={styles.avatarPickerContainer}>
-        <CustomImagePicker image={avatar} onSelect={setAvatar} />
-      </View>
-      <View style={styles.formFieldContainer} removeClippedSubviews={true}>
-        <TextInput headline="Name" block value={name} onChangeText={setName} />
-      </View>
-      <View style={styles.formFieldContainer} removeClippedSubviews={true}>
-        <TextInput
-          headline="Address"
-          block
-          value={address}
-          onChangeText={setAddress}
-          iconName="qrcode"
-          onIconPress={showQRScanner}
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View
+        style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <View style={styles.avatarPickerContainer}>
+          <CustomImagePicker image={avatar} onSelect={setAvatar} />
+        </View>
+        <View style={styles.formFieldContainer}>
+          <TextInput
+            headline="Name"
+            block
+            value={name}
+            onChangeText={setName}
+          />
+        </View>
+        <View style={styles.formFieldContainer}>
+          <TextInput
+            headline="Address"
+            block
+            value={address}
+            onChangeText={setAddress}
+            iconName="qrcode"
+            onIconPress={showQRScanner}
+          />
+        </View>
+        <Button
+          title="Save"
+          type="primary"
+          onPress={saveAddress}
+          style={styles.saveButton}
         />
       </View>
-      <Button
-        title="Save"
-        type="primary"
-        onPress={saveAddress}
-        style={styles.saveButton}
-      />
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
