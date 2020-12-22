@@ -1,4 +1,4 @@
-import {ENDPOINT, RPC_ENDPOINT} from '../config';
+import {ENDPOINT, RPC_ENDPOINT, ENDPOINT_GATEWAY} from '../config';
 import KardiaClient from 'kardia-dx';
 import {cellValue, weiToKAI} from './amount';
 
@@ -7,7 +7,9 @@ export const getTxByAddress = async (address: string, page = 1, size = 10) => {
     method: 'GET',
   };
   const response = await fetch(
-    `${ENDPOINT}addresses/${address}/txs?page=${page - 1}&limit=${size}`,
+    `${ENDPOINT_GATEWAY}addresses/${address}/txs?page=${
+      page - 1
+    }&limit=${size}`,
     options,
   );
   const responseJSON = await response.json();

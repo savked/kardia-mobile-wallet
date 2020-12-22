@@ -215,9 +215,7 @@ const CreateTxScreen = () => {
           {marginTop: 20, fontStyle: 'italic'},
           {color: theme.textColor},
         ]}>
-        * Accelerating a transaction by using a higher gas price increases its{' '}
-        chances of getting processed by the network faster, but it is not always
-        guaranteed.
+        {getLanguageString(language, 'SPEED_DESCRIPTION')}
       </Text>
       <View
         style={{

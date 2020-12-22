@@ -45,6 +45,8 @@ export const lang: Language = {
     FAST_SPEED: 'Fast',
     GAS_PRICE: 'Gas price',
     GAS_LIMIT: 'Gas limit',
+    SPEED_DESCRIPTION:
+      '* Accelerating a transaction by using a higher gas price increases its chances of getting processed by the network faster, but it is not always guaranteed.',
     // Wallet key
     IMPORT: 'Import',
     WALLET: 'Wallet',

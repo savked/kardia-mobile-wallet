@@ -1,87 +1,127 @@
-import React, {useContext} from 'react';
-import {Text, View, Image} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {Text, View, Image, ActivityIndicator, Linking} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import {styles} from './style';
 import {ThemeContext} from '../../App';
-import {getLanguageString} from '../../utils/lang';
+import {
+  getDateFNSLocale,
+  getDateTimeFormat,
+  getLanguageString,
+} from '../../utils/lang';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
+import {getNews} from '../../services/news';
+import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
 
 const NewsScreen = () => {
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
+  const [news, setNews] = useState<News[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const rs = await getNews();
+      setNews(rs);
+    })();
+  }, []);
+
+  const openNews = async (url: string) => {
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(url);
+    }
+  };
+
+  if (news.length === 0) {
+    return (
+      <SafeAreaView
+        style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <ActivityIndicator />
+      </SafeAreaView>
+    );
+  }
 
   return (
-    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView
+      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
         <Text style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'NEWS_SCREEN_TITLE')}
         </Text>
       </View>
-      <View style={styles.highlight}>
+      <TouchableOpacity
+        style={styles.highlight}
+        onPress={() => openNews(news[0].url)}>
         <Image
           style={styles.highlightImg}
           source={{
-            uri:
-              'https://miro.medium.com/max/12000/1*OFzM1PiAeoUCXFYsbqid1Q.jpeg',
+            uri: news[0].thumbnail,
           }}
         />
         <Text style={[styles.title, {color: theme.textColor}]}>
-          5 Visual design tools for UX designers
+          {news[0].title}
         </Text>
-        <Text style={[styles.time, {color: theme.textColor}]}>4 hours ago</Text>
-      </View>
+        <Text style={[styles.time, {color: theme.textColor}]}>
+          {isSameDay(news[0].createdAt, new Date())
+            ? `${formatDistanceToNowStrict(news[0].createdAt, {
+                locale: getDateFNSLocale(language),
+              })} ${getLanguageString(language, 'AGO')}`
+            : format(news[0].createdAt, getDateTimeFormat(language), {
+                locale: getDateFNSLocale(language),
+              })}
+        </Text>
+      </TouchableOpacity>
       <FlatList
-        data={data}
+        data={news.slice(1)}
         renderItem={({item}) => {
           return (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => openNews(item.url)}>
               <View style={styles.row}>
                 <View style={styles.left}>
                   <Image
                     style={styles.thumbnail}
                     source={{
-                      uri:
-                        'https://i.guim.co.uk/img/media/9e60e5e5886a7f8b0c8cbbd0d864446b25840907/0_283_5467_3280/master/5467.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=4364b4ae7b9d9a5f0d661e2d263d24e6',
+                      uri: item.thumbnail,
                     }}
                   />
                 </View>
                 <View style={styles.right}>
-                  <Text style={[styles.title, {color: theme.textColor}]}>
-                    {item.Title}
+                  <Text
+                    style={[styles.title, {color: theme.textColor}]}
+                    numberOfLines={2}>
+                    {item.title}
                   </Text>
-                  <Text style={[styles.description, {color: theme.textColor}]}>
-                    {item.Description}
+                  <Text
+                    style={[styles.description, {color: theme.textColor}]}
+                    numberOfLines={2}>
+                    {item.description}
                   </Text>
                   <Text style={[styles.time, {color: theme.textColor}]}>
-                    4 hours ago
+                    {isSameDay(item.createdAt, new Date())
+                      ? `${formatDistanceToNowStrict(item.createdAt, {
+                          locale: getDateFNSLocale(language),
+                        })} ${getLanguageString(language, 'AGO')}`
+                      : format(item.createdAt, getDateTimeFormat(language), {
+                          locale: getDateFNSLocale(language),
+                        })}
                   </Text>
                 </View>
               </View>
             </TouchableOpacity>
           );
         }}
-        keyExtractor={(item) => item.Title}
-        ListEmptyComponent={<Text>No data</Text>}
+        keyExtractor={(item) => item.id}
+        ListEmptyComponent={
+          <Text style={[styles.noTXText, {color: theme.textColor}]}>
+            {getLanguageString(language, 'NO_TRANSACTION')}
+          </Text>
+        }
       />
     </SafeAreaView>
   );
 };
-
-const data = [
-  {
-    Title: '5 Visual design tools for UX designers',
-    Description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit',
-  },
-  {
-    Title: '4 Visual design tools for UX designers',
-    Description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit',
-  },
-  {
-    Title: '3 Visual design tools for UX designers',
-    Description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit',
-  },
-];
 
 export default NewsScreen;

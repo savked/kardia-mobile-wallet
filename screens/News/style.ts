@@ -71,4 +71,9 @@ export const styles = StyleSheet.create({
   time: {
     fontSize: 14,
   },
+  noTXText: {
+    padding: 15,
+    fontSize: 16,
+    fontStyle: 'italic',
+  },
 });

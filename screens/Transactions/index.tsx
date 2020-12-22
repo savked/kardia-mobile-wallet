@@ -16,7 +16,11 @@ import {parseKaiBalance} from '../../utils/number';
 import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
 import {addressBookAtom} from '../../atoms/addressBook';
 import IconButton from '../../components/IconButton';
-import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
+import {
+  getDateFNSLocale,
+  getDateTimeFormat,
+  getLanguageString,
+} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 
 const TransactionScreen = () => {
@@ -137,7 +141,8 @@ const TransactionScreen = () => {
   }, [selectedWallet]);
 
   return (
-    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView
+      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
         <Text style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'RECENT_TRANSACTION')}
@@ -194,7 +199,9 @@ const TransactionScreen = () => {
                         ? `${formatDistanceToNowStrict(item.date, {
                             locale: getDateFNSLocale(language),
                           })} ${getLanguageString(language, 'AGO')}`
-                        : format(item.date, 'MMM d yyyy HH:mm')}
+                        : format(item.date, getDateTimeFormat(language), {
+                            locale: getDateFNSLocale(language),
+                          })}
                     </Text>
                   </View>
                   <View

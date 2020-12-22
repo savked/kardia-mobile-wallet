@@ -44,6 +44,8 @@ export const lang: Language = {
     FAST_SPEED: 'Nhanh',
     GAS_PRICE: 'Giá gas',
     GAS_LIMIT: 'Giới hạn gas',
+    SPEED_DESCRIPTION:
+      '* Thông thường các giao dịch có giá gas cao hơn sẽ được network ưu tiên xử lý trước. Tuy nhiên điều này còn phụ thuộc vào trạng thái của network tại thời điểm giao dịch.',
     // Wallet key
     IMPORT: 'Thêm ví',
     WALLET: 'Ví',

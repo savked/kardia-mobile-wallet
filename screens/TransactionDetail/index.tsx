@@ -15,7 +15,11 @@ import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
 import {useRecoilValue} from 'recoil';
 import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
-import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
+import {
+  getDateFNSLocale,
+  getDateTimeFormat,
+  getLanguageString,
+} from '../../utils/lang';
 
 const TransactionDetail = () => {
   const theme = useContext(ThemeContext);
@@ -62,7 +66,8 @@ const TransactionDetail = () => {
   }
 
   return (
-    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView
+      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.txMeta}>
         {renderStatusIcon(txData?.status)}
         <View style={{justifyContent: 'space-between', paddingTop: 10}}>
@@ -137,7 +142,9 @@ const TransactionDetail = () => {
               ? `${formatDistanceToNowStrict(txData.date, {
                   locale: getDateFNSLocale(language),
                 })} ${getLanguageString(language, 'AGO')}`
-              : format(txData.date, 'MMM d yyyy HH:mm')}
+              : format(txData.date, getDateTimeFormat(language), {
+                  locale: getDateFNSLocale(language),
+                })}
           </Text>
         </View>
         <View style={[styles.infoContainer, {marginTop: 15}]}>
