@@ -2,6 +2,7 @@ export const lang: Language = {
   name: 'Tiếng Việt',
   flag: 'VN',
   key: 'vi_VI',
+  tag: ['vi_VI', 'VN', 'vi', 'VI', 'vn', 'Tiếng Việt'],
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:

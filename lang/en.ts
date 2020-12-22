@@ -3,6 +3,7 @@ export const lang: Language = {
   flag: 'US',
   key: 'en_US',
   dateTimeFormat: 'MMM do yyyy - HH:mm',
+  tag: ['en_US', 'US', 'en', 'US English'],
   mapping: {
     // Common key:
     AGO: 'ago',

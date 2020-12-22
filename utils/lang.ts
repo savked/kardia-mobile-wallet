@@ -1,5 +1,4 @@
 import {lang} from '../lang';
-import {NativeModules, Platform} from 'react-native';
 import US_LOCALE from 'date-fns/locale/en-US';
 import VI_LOCALE from 'date-fns/locale/vi';
 
@@ -8,6 +7,7 @@ export const getSupportedLanguage = (): Partial<Language>[] => {
     name: item.name,
     flag: item.flag,
     key: item.key,
+    tag: item.tag,
   }));
 };
 
