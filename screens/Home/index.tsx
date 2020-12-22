@@ -66,6 +66,15 @@ const HomeScreen = () => {
     }, 400);
   };
 
+  if (showImportModal) {
+    return (
+      <ImportModal
+        onClose={() => setShowImportModal(false)}
+        onSuccessScan={onSuccessScan}
+      />
+    );
+  }
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
       <HomeHeader />
@@ -76,12 +85,6 @@ const HomeScreen = () => {
         />
         <TxListSection />
         {showQRModal && <QRModal onClose={() => setShowQRModal(false)} />}
-        {showImportModal && (
-          <ImportModal
-            onClose={() => setShowImportModal(false)}
-            onSuccessScan={onSuccessScan}
-          />
-        )}
         {showScanAlert && (
           <AlertModal
             type={scanType as any}

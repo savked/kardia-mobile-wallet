@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import Button from '../../components/Button';
 import ErrorMessage from '../../components/ErrorMessage';
 import {useNavigation} from '@react-navigation/native';
@@ -68,36 +68,39 @@ const ImportMnemonic = () => {
   }
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <Text style={[styles.title, {color: theme.textColor}]}>
-        {getLanguageString(language, 'ENTER_SEED_PHRASE')}
-      </Text>
-      <CustomTextInput
-        style={styles.input}
-        value={mnemonic}
-        onChangeText={setMnemonic}
-        numberOfLines={5}
-        multiline={true}
-      />
-      <ErrorMessage message={error} style={{textAlign: 'left'}} />
-      <View style={styles.buttonGroup}>
-        <Button
-          loading={loading}
-          disabled={loading}
-          size="large"
-          type="primary"
-          title={getLanguageString(language, 'SUBMIT')}
-          onPress={accessWalletByMnemonic}
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View
+        style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <Text style={[styles.title, {color: theme.textColor}]}>
+          {getLanguageString(language, 'ENTER_SEED_PHRASE')}
+        </Text>
+        <CustomTextInput
+          style={styles.input}
+          value={mnemonic}
+          onChangeText={setMnemonic}
+          numberOfLines={5}
+          multiline={true}
         />
-        <Button
-          disabled={loading}
-          size="large"
-          type="secondary"
-          onPress={() => navigation.goBack()}
-          title={getLanguageString(language, 'GO_BACK')}
-        />
+        <ErrorMessage message={error} style={{textAlign: 'left'}} />
+        <View style={styles.buttonGroup}>
+          <Button
+            loading={loading}
+            disabled={loading}
+            size="large"
+            type="primary"
+            title={getLanguageString(language, 'SUBMIT')}
+            onPress={accessWalletByMnemonic}
+          />
+          <Button
+            disabled={loading}
+            size="large"
+            type="secondary"
+            onPress={() => navigation.goBack()}
+            title={getLanguageString(language, 'GO_BACK')}
+          />
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

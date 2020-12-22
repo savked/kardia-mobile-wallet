@@ -145,7 +145,9 @@ const AppContainer = () => {
     if (!inited) {
       return;
     }
-    updateWalletBalance();
+    if (wallets[selectedWallet]) {
+      updateWalletBalance();
+    }
     const balanceInterval = setInterval(() => {
       if (wallets[selectedWallet]) {
         updateWalletBalance();

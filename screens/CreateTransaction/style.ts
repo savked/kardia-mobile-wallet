@@ -32,6 +32,7 @@ export const styles = StyleSheet.create({
   centerText: {
     flex: 1,
     fontSize: 18,
+    textAlign: 'center',
     paddingVertical: 30,
     color: '#000000',
     fontWeight: 'bold',
@@ -64,5 +65,31 @@ export const styles = StyleSheet.create({
     width: 50,
     height: 50,
     marginRight: 12,
+  },
+  buttonText: {
+    fontSize: 21,
+    color: 'rgb(0,122,255)',
+  },
+  buttonTouchable: {
+    padding: 16,
+  },
+  qrScannerHeader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+    backgroundColor: '#fff',
+  },
+  qrScannerFooter: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 100,
   },
 });

@@ -22,6 +22,7 @@ import {addressBookAtom} from '../../atoms/addressBook';
 import TextAvatar from '../../components/TextAvatar';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const MAX_AMOUNT = 5000000000;
 
@@ -77,20 +78,25 @@ const CreateTxScreen = () => {
 
   if (showQRModal) {
     return (
-      <QRCodeScanner
-        onRead={(e) => {
-          setAddress(e.data);
-          setShowQRModal(false);
-        }}
-        topContent={<Text style={styles.centerText}>Scan address QR code</Text>}
-        bottomContent={
+      <>
+        <View style={styles.qrScannerHeader}>
+          <Text style={styles.centerText}>Scan address QR code</Text>
+        </View>
+        <QRCodeScanner
+          onRead={(e) => {
+            setAddress(e.data);
+            setShowQRModal(false);
+          }}
+          showMarker={true}
+        />
+        <View style={styles.qrScannerFooter}>
           <Button
-            style={{marginTop: 50}}
+            size="large"
             title="Cancel"
             onPress={() => setShowQRModal(false)}
           />
-        }
-      />
+        </View>
+      </>
     );
   }
 
@@ -138,7 +144,8 @@ const CreateTxScreen = () => {
   }
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView
+      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={{marginBottom: 10}} removeClippedSubviews={false}>
         <TextInput
           onChangeText={setAddress}
@@ -259,7 +266,7 @@ const CreateTxScreen = () => {
           <Text>Tx Hash: {truncate(successTxHash, 10, 20)}</Text>
         </AlertModal>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -38,21 +38,25 @@ const NewAddress = () => {
 
   if (showModal) {
     return (
-      <QRCodeScanner
-        onRead={(e) => {
-          setAddress(e.data);
-          setShowModal(false);
-        }}
-        topContent={<Text style={styles.centerText}>Scan address QR code</Text>}
-        bottomContent={
+      <>
+        <View style={styles.qrScannerHeader}>
+          <Text style={styles.centerText}>Scan address QR code</Text>
+        </View>
+        <QRCodeScanner
+          onRead={(e) => {
+            setAddress(e.data);
+            setShowModal(false);
+          }}
+          showMarker={true}
+        />
+        <View style={styles.qrScannerFooter}>
           <Button
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={{marginTop: 50}}
+            size="large"
             title="Cancel"
             onPress={() => setShowModal(false)}
           />
-        }
-      />
+        </View>
+      </>
     );
   }
 

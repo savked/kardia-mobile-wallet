@@ -1,17 +1,28 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import Modal from '../../components/Modal';
+import {styles} from './style';
+// import Modal from '../../components/Modal';
 
 const ScanQRAddressModal = ({onClose}: {onClose: () => void}) => {
   const onSuccess = (e: any) => {
     console.log(e.data);
   };
   return (
-    <Modal showCloseButton={false} visible={true} onClose={onClose}>
-      <Text>Scan QR Code</Text>
-      <QRCodeScanner onRead={onSuccess} />
-    </Modal>
+    <QRCodeScanner
+      onRead={onSuccess}
+      topContent={
+        <Text style={styles.centerText}>
+          Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text>{' '}
+          your computer and scan the QR code.
+        </Text>
+      }
+      bottomContent={
+        <TouchableOpacity style={styles.buttonTouchable} onPress={onClose}>
+          <Text style={styles.buttonText}>OK. Got it!</Text>
+        </TouchableOpacity>
+      }
+    />
   );
 };
 

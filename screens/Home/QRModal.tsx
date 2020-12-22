@@ -25,7 +25,7 @@ const QRModal = ({onClose}: {onClose: () => void}) => {
       <Text>Scan below QR code for address</Text>
       <View style={{paddingVertical: 14}}>
         <QRCode
-          size={viewportWidth / 1.5}
+          size={viewportWidth / 2}
           value={wallets[selectedWallet].address}
           logo={require('../../assets/logo.png')}
           logoBackgroundColor="#FFFFFF"

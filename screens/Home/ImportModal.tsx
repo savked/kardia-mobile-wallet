@@ -1,8 +1,9 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
 import {BarCodeReadEvent} from 'react-native-camera';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import Modal from '../../components/Modal';
+import {styles} from './style';
+import Button from '../../components/Button';
 
 const ImportModal = ({
   onClose,
@@ -12,10 +13,15 @@ const ImportModal = ({
   onSuccessScan: (e: BarCodeReadEvent) => void;
 }) => {
   return (
-    <Modal showCloseButton={false} visible={true} onClose={onClose}>
-      <Text>Scan QR Code for Private key</Text>
-      <QRCodeScanner onRead={onSuccessScan} />
-    </Modal>
+    <>
+      <View style={styles.qrScannerHeader}>
+        <Text style={styles.centerText}>Scan address QR code</Text>
+      </View>
+      <QRCodeScanner onRead={onSuccessScan} showMarker={true} />
+      <View style={styles.qrScannerFooter}>
+        <Button size="large" title="Cancel" onPress={onClose} />
+      </View>
+    </>
   );
 };
 
