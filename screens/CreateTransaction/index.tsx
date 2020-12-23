@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {styles} from './style';
 import Button from '../../components/Button';
@@ -144,129 +144,131 @@ const CreateTxScreen = () => {
   }
 
   return (
-    <SafeAreaView
-      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <View style={{marginBottom: 10}} removeClippedSubviews={false}>
-        <TextInput
-          onChangeText={setAddress}
-          value={truncate(address, 10, 20)}
-          headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
-          icons={() => {
-            return (
-              <>
-                <Icon
-                  onPress={showQRScanner}
-                  name="qrcode"
-                  size={25}
-                  color={'black'}
-                  style={[styles.textIcon, {right: 45}]}
-                />
-                <Icon
-                  onPress={showAddressBookSelector}
-                  name="address-book"
-                  size={25}
-                  color={'black'}
-                  style={[styles.textIcon, {right: 15}]}
-                />
-              </>
-            );
-          }}
-        />
-      </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <SafeAreaView
+        style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <View style={{marginBottom: 10}}>
+          <TextInput
+            onChangeText={setAddress}
+            value={truncate(address, 10, 20)}
+            headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
+            icons={() => {
+              return (
+                <>
+                  <Icon
+                    onPress={showQRScanner}
+                    name="qrcode"
+                    size={25}
+                    color={'black'}
+                    style={[styles.textIcon, {right: 45}]}
+                  />
+                  <Icon
+                    onPress={showAddressBookSelector}
+                    name="address-book"
+                    size={25}
+                    color={'black'}
+                    style={[styles.textIcon, {right: 15}]}
+                  />
+                </>
+              );
+            }}
+          />
+        </View>
 
-      <View style={{marginBottom: 20}} removeClippedSubviews={true}>
-        <TextInput
-          onChangeText={(newAmount) => {
-            const digitOnly = getDigit(newAmount);
-            if (Number(digitOnly) > MAX_AMOUNT) {
-              return;
-            }
-            if (digitOnly === '') {
-              setAmount('0');
-              return;
-            }
-            isNumber(digitOnly) && setAmount(digitOnly);
-          }}
-          onBlur={() => setAmount(format(Number(amount)))}
-          value={amount}
-          headline={getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}
-        />
-      </View>
+        <View style={{marginBottom: 20}}>
+          <TextInput
+            onChangeText={(newAmount) => {
+              const digitOnly = getDigit(newAmount);
+              if (Number(digitOnly) > MAX_AMOUNT) {
+                return;
+              }
+              if (digitOnly === '') {
+                setAmount('0');
+                return;
+              }
+              isNumber(digitOnly) && setAmount(digitOnly);
+            }}
+            onBlur={() => setAmount(format(Number(amount)))}
+            value={amount}
+            headline={getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}
+          />
+        </View>
 
-      <Text style={[styles.title, {color: theme.textColor, marginBottom: 12}]}>
-        {getLanguageString(language, 'TRANSACTION_SPEED')}
-      </Text>
-      <View style={{marginBottom: 20}}>
-        <ListCard gasPrice={gasPrice} selectGasPrice={setGasPrice} />
-      </View>
+        <Text style={[styles.title, {color: theme.textColor, marginBottom: 12}]}>
+          {getLanguageString(language, 'TRANSACTION_SPEED')}
+        </Text>
+        <View style={{marginBottom: 20}}>
+          <ListCard gasPrice={gasPrice} selectGasPrice={setGasPrice} />
+        </View>
 
-      <View>
-        <View style={styles.wrap}>
-          <View>
-            <Text style={[{color: theme.textColor}]}>
-              {getLanguageString(language, 'GAS_PRICE')}
-            </Text>
-            <Text style={[{color: theme.textColor}]}>{gasPrice} Oxy</Text>
-          </View>
-          <View>
-            <Text style={[{color: theme.textColor}]}>
-              {getLanguageString(language, 'GAS_LIMIT')}
-            </Text>
-            <Text style={[{color: theme.textColor}]}>21.000 WEI</Text>
+        <View>
+          <View style={styles.wrap}>
+            <View>
+              <Text style={[{color: theme.textColor}]}>
+                {getLanguageString(language, 'GAS_PRICE')}
+              </Text>
+              <Text style={[{color: theme.textColor}]}>{gasPrice} Oxy</Text>
+            </View>
+            <View>
+              <Text style={[{color: theme.textColor}]}>
+                {getLanguageString(language, 'GAS_LIMIT')}
+              </Text>
+              <Text style={[{color: theme.textColor}]}>21.000 WEI</Text>
+            </View>
           </View>
         </View>
-      </View>
 
-      <Text
-        style={[
-          {marginTop: 20, fontStyle: 'italic'},
-          {color: theme.textColor},
-        ]}>
-        {getLanguageString(language, 'SPEED_DESCRIPTION')}
-      </Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          marginTop: 20,
-          justifyContent: 'space-around',
-        }}>
-        <Button
-          title={getLanguageString(language, 'SEND').toUpperCase()}
-          onPress={send}
-          iconName="paper-plane"
-          type="primary"
-          size="large"
-          loading={loading}
-        />
-        <Button
-          title={getLanguageString(language, 'GO_BACK').toUpperCase()}
-          onPress={() => navigation.goBack()}
-          type="outline"
-          size="large"
-        />
-      </View>
-      {error !== '' && (
-        <AlertModal
-          type="error"
-          message={error}
-          onClose={() => setError('')}
-          visible={true}
-        />
-      )}
-      {successTxHash !== '' && (
-        <AlertModal
-          type="success"
-          // message={`Transaction completed. Hash: ${successTxHash}`}
-          onClose={() => {
-            setSuccessHash('');
-            navigation.goBack();
-          }}
-          visible={true}>
-          <Text>Transaction completed</Text>
-          <Text>Tx Hash: {truncate(successTxHash, 10, 20)}</Text>
-        </AlertModal>
-      )}
-    </SafeAreaView>
+        <Text
+          style={[
+            {marginTop: 20, fontStyle: 'italic'},
+            {color: theme.textColor},
+          ]}>
+          {getLanguageString(language, 'SPEED_DESCRIPTION')}
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginTop: 20,
+            justifyContent: 'space-around',
+          }}>
+          <Button
+            title={getLanguageString(language, 'SEND').toUpperCase()}
+            onPress={send}
+            iconName="paper-plane"
+            type="primary"
+            size="large"
+            loading={loading}
+          />
+          <Button
+            title={getLanguageString(language, 'GO_BACK').toUpperCase()}
+            onPress={() => navigation.goBack()}
+            type="outline"
+            size="large"
+          />
+        </View>
+        {error !== '' && (
+          <AlertModal
+            type="error"
+            message={error}
+            onClose={() => setError('')}
+            visible={true}
+          />
+        )}
+        {successTxHash !== '' && (
+          <AlertModal
+            type="success"
+            // message={`Transaction completed. Hash: ${successTxHash}`}
+            onClose={() => {
+              setSuccessHash('');
+              navigation.goBack();
+            }}
+            visible={true}>
+            <Text>Transaction completed</Text>
+            <Text>Tx Hash: {truncate(successTxHash, 10, 20)}</Text>
+          </AlertModal>
+        )}
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
