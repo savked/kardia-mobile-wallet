@@ -21,8 +21,12 @@ const NewsScreen = () => {
 
   useEffect(() => {
     (async () => {
-      const rs = await getNews();
-      setNews(rs);
+      try {
+        const rs = await getNews();
+        setNews(rs);
+      } catch (error) {
+        console.error(error);
+      }
     })();
   }, []);
 

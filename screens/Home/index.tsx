@@ -37,33 +37,37 @@ const HomeScreen = () => {
   };
 
   const importPK = async (privateKey: string) => {
-    const wallet = getWalletFromPK(privateKey);
-    const balance = await getBalance(wallet.getAddressString());
-    const walletObj: Wallet = {
-      address: wallet.getChecksumAddressString(),
-      privateKey: wallet.getPrivateKeyString(),
-      balance,
-    };
+    try {
+      const wallet = getWalletFromPK(privateKey);
+      const balance = await getBalance(wallet.getAddressString());
+      const walletObj: Wallet = {
+        address: wallet.getChecksumAddressString(),
+        privateKey: wallet.getPrivateKeyString(),
+        balance,
+      };
 
-    const walletExisted = wallets
-      .map((item) => item.address)
-      .includes(walletObj.address);
+      const walletExisted = wallets
+        .map((item) => item.address)
+        .includes(walletObj.address);
 
-    if (walletExisted) {
-      setScanMessage('Wallet already imported');
-      setScanType('warning');
-      setShowScanAlert(true);
-      return;
+      if (walletExisted) {
+        setScanMessage('Wallet already imported');
+        setScanType('warning');
+        setShowScanAlert(true);
+        return;
+      }
+
+      const newWallets = JSON.parse(JSON.stringify(wallets));
+      newWallets.push(walletObj);
+
+      setWallets(newWallets);
+      saveWallets(newWallets);
+      setTimeout(() => {
+        setSelectedWallet(newWallets.length - 1);
+      }, 400);
+    } catch (error) {
+      console.error(error);
     }
-
-    const newWallets = JSON.parse(JSON.stringify(wallets));
-    newWallets.push(walletObj);
-
-    setWallets(newWallets);
-    saveWallets(newWallets);
-    setTimeout(() => {
-      setSelectedWallet(newWallets.length - 1);
-    }, 400);
   };
 
   if (showImportModal) {

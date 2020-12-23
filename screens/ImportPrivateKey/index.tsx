@@ -31,19 +31,23 @@ const ImportPrivateKey = () => {
   };
 
   const importPK = async () => {
-    const wallet = getWalletFromPK(privateKey);
-    const balance = await getBalance(wallet.getAddressString());
-    const walletObj: Wallet = {
-      address: wallet.getChecksumAddressString(),
-      privateKey: wallet.getPrivateKeyString(),
-      balance,
-    };
+    try {
+      const wallet = getWalletFromPK(privateKey);
+      const balance = await getBalance(wallet.getAddressString());
+      const walletObj: Wallet = {
+        address: wallet.getChecksumAddressString(),
+        privateKey: wallet.getPrivateKeyString(),
+        balance,
+      };
 
-    const newWallets = JSON.parse(JSON.stringify(wallets));
-    newWallets.push(walletObj);
+      const newWallets = JSON.parse(JSON.stringify(wallets));
+      newWallets.push(walletObj);
 
-    setWallets(newWallets);
-    saveWallets(newWallets);
+      setWallets(newWallets);
+      saveWallets(newWallets);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
