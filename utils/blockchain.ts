@@ -12,7 +12,7 @@ export const getWalletFromPK = (privateKey: string) => {
 
 export const getWalletFromMnemonic = async (
   mnemonic: string,
-): Promise<Wallet | boolean> => {
+): Promise<Wallet | false> => {
   try {
     const seed = await Bip39.mnemonicToSeed(mnemonic);
     const root = hdkey.fromMasterSeed(seed);

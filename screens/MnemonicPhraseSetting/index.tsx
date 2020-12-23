@@ -10,19 +10,22 @@ import {copyToClipboard} from '../../utils/string';
 import {getLanguageString} from '../../utils/lang';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
+import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 
 const MnemonicPhraseSetting = () => {
   const theme = useContext(ThemeContext);
   const [mnemonic, setMnemonic] = useState('');
   const [showMnemonic, setShowMnemonic] = useState(false);
   const language = useRecoilValue(languageAtom);
+  const wallets = useRecoilValue(walletsAtom);
+  const selectedWallet = useRecoilValue(selectedWalletAtom);
 
   useEffect(() => {
     (async () => {
-      const mn = await getMnemonic();
+      const mn = await getMnemonic(wallets[selectedWallet].address);
       setMnemonic(mn);
     })();
-  }, []);
+  }, [selectedWallet, wallets]);
 
   const mnemonicArr = mnemonic.split(' ').map((item) => ({
     label: item,

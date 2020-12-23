@@ -17,6 +17,9 @@ export const lang: Language = {
     REQUIRED_FIELD: 'Field is required',
     COPY_TO_CLIPBOARD: 'Copy to clipboard',
     SECOND: 'sec',
+    RESTART_APP_DESCRIPTION:
+      'Kardia Wallet will restart to ensure your wallet is properly imported',
+    ARE_YOU_SURE: 'Are you sure ?',
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now',
     MNEMONIC_DESCRIPTION:

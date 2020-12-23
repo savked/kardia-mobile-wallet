@@ -15,7 +15,7 @@ const ImportModal = ({
   return (
     <>
       <View style={styles.qrScannerHeader}>
-        <Text style={styles.centerText}>Scan address QR code</Text>
+        <Text style={styles.centerText}>Scan QR code for mnemonic phrase</Text>
       </View>
       <QRCodeScanner onRead={onSuccessScan} showMarker={true} />
       <View style={styles.qrScannerFooter}>

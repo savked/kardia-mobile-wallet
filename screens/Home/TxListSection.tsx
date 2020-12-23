@@ -45,9 +45,6 @@ const TxListSection = () => {
   };
 
   const getTX = async () => {
-    if (!wallets[selectedWallet].address) {
-      return;
-    }
     try {
       const newTxList = await getTxByAddress(
         wallets[selectedWallet].address,
@@ -61,6 +58,9 @@ const TxListSection = () => {
   };
 
   useEffect(() => {
+    if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
+      return;
+    }
     getTX();
     const getTxInterval = setInterval(() => {
       if (wallets[selectedWallet]) {

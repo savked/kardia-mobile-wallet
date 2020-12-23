@@ -35,7 +35,6 @@ const ImportMnemonic = () => {
         return;
       }
       const seed = await Bip39.mnemonicToSeed(mnemonic.trim());
-      await saveMnemonic(mnemonic.trim());
       const root = hdkey.fromMasterSeed(seed);
       const masterWallet = root.getWallet();
       const privateKey = masterWallet.getPrivateKeyString();
@@ -45,7 +44,7 @@ const ImportMnemonic = () => {
         address: walletAddress,
         balance: 0,
       };
-
+      await saveMnemonic(walletAddress, mnemonic.trim());
       const _wallets = JSON.parse(JSON.stringify(wallets));
       _wallets.push(wallet);
       await saveWallets(_wallets);

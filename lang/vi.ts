@@ -17,6 +17,9 @@ export const lang: Language = {
     REQUIRED_FIELD: 'Vui lòng nhập thông tin',
     COPY_TO_CLIPBOARD: 'Copy vào bộ nhớ tạm',
     SECOND: 'giây',
+    RESTART_APP_DESCRIPTION:
+      'Kardia Wallet sẽ khởi động lại để đảm bảo các thay đổi được cập nhật.',
+    ARE_YOU_SURE: 'Bạn chắc chắn muốn thực hiện thao tác này ?',
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:

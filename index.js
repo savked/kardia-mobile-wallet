@@ -1,4 +1,5 @@
 import './shim';
+import 'react-native-get-random-values';
 /**
  * @format
  */

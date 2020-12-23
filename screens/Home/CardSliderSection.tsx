@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Dimensions, Image, Text, TouchableOpacity, View} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {useRecoilState, useRecoilValue} from 'recoil';
@@ -10,19 +10,21 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
+import RNRestart from 'react-native-restart';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import Button from '../../components/Button';
 import {parseKaiBalance} from '../../utils/number';
 import {truncate} from '../../utils/string';
 import {styles} from './style';
-import {saveWallets} from '../../utils/local';
+import {saveSelectedWallet, saveWallets} from '../../utils/local';
 import {useNavigation} from '@react-navigation/native';
 import {tokenInfoAtom} from '../../atoms/token';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
+import Modal from '../../components/Modal';
 
-const {width: viewportWidth} = Dimensions.get('window');
+const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window');
 
 const CardSliderSection = ({
   importWallet,
@@ -33,18 +35,19 @@ const CardSliderSection = ({
 }) => {
   const navigation = useNavigation();
   const carouselRef = useRef<Carousel<Wallet>>(null);
-  const [wallets, setWallets] = useRecoilState(walletsAtom);
+  const wallets = useRecoilValue(walletsAtom);
   const [tokenInfo] = useRecoilState(tokenInfoAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(
     selectedWalletAtom,
   );
+  const [removeIndex, setRemoveIndex] = useState(-1);
   const language = useRecoilValue(languageAtom);
 
   function send() {
     navigation.navigate('Transaction', {screen: 'CreateTx', initial: false});
   }
 
-  const renderWalletItem = ({item: wallet, index}: any) => {
+  const renderWalletItem = ({item: wallet}: any) => {
     return (
       <View style={styles.kaiCardContainer}>
         <LinearGradient
@@ -84,7 +87,7 @@ const CardSliderSection = ({
                     padding: 12,
                   },
                 }}>
-                <MenuOption onSelect={() => removeWallet(index)}>
+                <MenuOption onSelect={() => setRemoveIndex(selectedWallet)}>
                   <Text>{getLanguageString(language, 'REMOVE_WALLET')}</Text>
                 </MenuOption>
               </MenuOptions>
@@ -115,23 +118,22 @@ const CardSliderSection = ({
     );
   };
 
-  const removeWallet = async (walletIndex: number) => {
-    let hack = false;
+  useEffect(() => {
+    if (carouselRef.current) {
+      if (carouselRef.current.currentIndex !== selectedWallet) {
+        carouselRef.current.snapToItem(selectedWallet);
+      }
+    }
+  }, [selectedWallet]);
+
+  const removeWallet = async () => {
     const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
-    newWallets.splice(walletIndex, 1);
+    newWallets.splice(removeIndex, 1);
     await saveWallets(newWallets);
     if (selectedWallet > newWallets.length - 1) {
-      hack = true;
-      newWallets.length - 1 >= 0 && setSelectedWallet(newWallets.length - 1);
+      await saveSelectedWallet(newWallets.length - 1);
     }
-    setWallets(newWallets);
-
-    // Carousel hack
-    setTimeout(() => {
-      if (carouselRef.current && hack) {
-        carouselRef.current.triggerRenderingHack();
-      }
-    }, 1);
+    RNRestart.Restart();
   };
 
   return (
@@ -141,6 +143,7 @@ const CardSliderSection = ({
         data={wallets}
         enableSnap={true}
         renderItem={renderWalletItem}
+        firstItem={selectedWallet}
         sliderWidth={viewportWidth}
         itemWidth={viewportWidth}
         onSnapToItem={setSelectedWallet}
@@ -200,6 +203,34 @@ const CardSliderSection = ({
           textStyle={{color: '#FFFFFF'}}
         />
       </View>
+      {removeIndex >= 0 && (
+        <Modal
+          showCloseButton={false}
+          visible={true}
+          contentStyle={{flex: 0.3, marginTop: viewportHeight / 3}}
+          onClose={() => setRemoveIndex(-1)}>
+          <View style={{justifyContent: 'space-between', flex: 1}}>
+            <Text style={{textAlign: 'center'}}>
+              {getLanguageString(language, 'ARE_YOU_SURE')}
+            </Text>
+            <Text>
+              {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
+            </Text>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+              <Button
+                title={getLanguageString(language, 'GO_BACK')}
+                type="secondary"
+                onPress={() => setRemoveIndex(-1)}
+              />
+              <Button
+                title={getLanguageString(language, 'SUBMIT')}
+                onPress={removeWallet}
+              />
+            </View>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 };

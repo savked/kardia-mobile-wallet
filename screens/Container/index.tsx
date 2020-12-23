@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {View, Image} from 'react-native';
-import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
+import {useRecoilState, useSetRecoilState} from 'recoil';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import * as Sentry from '@sentry/react-native';
@@ -12,7 +12,9 @@ import TransactionStackScreen from '../../TransactionStack';
 import {
   getAddressBook,
   getLanguageSetting,
+  getSelectedWallet,
   getWallets,
+  saveSelectedWallet,
 } from '../../utils/local';
 import {styles} from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
@@ -85,11 +87,22 @@ const AppContainer = () => {
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const setTokenInfo = useSetRecoilState(tokenInfoAtom);
   const setAddressBook = useSetRecoilState(addressBookAtom);
-  const selectedWallet = useRecoilValue(selectedWalletAtom);
+  const [selectedWallet, setSelectedWallet] = useRecoilState(
+    selectedWalletAtom,
+  );
   const setLanguage = useSetRecoilState(languageAtom);
   const [inited, setInited] = useState(0);
 
   const theme = useContext(ThemeContext);
+
+  useEffect(() => {
+    (async () => {
+      let _selectedWallet = await getSelectedWallet();
+      if (_selectedWallet !== selectedWallet && inited) {
+        await saveSelectedWallet(selectedWallet);
+      }
+    })();
+  }, [selectedWallet, inited]);
 
   useEffect(() => {
     (async () => {
@@ -104,6 +117,14 @@ const AppContainer = () => {
 
         localWallets = await Promise.all(promiseArr);
         setWallets(localWallets);
+      } catch (error) {
+        Sentry.captureException(error);
+      }
+
+      // Get selected wallet
+      try {
+        let _selectedWallet = await getSelectedWallet();
+        setSelectedWallet(_selectedWallet);
       } catch (error) {
         Sentry.captureException(error);
       }
@@ -123,10 +144,15 @@ const AppContainer = () => {
       // Get language setting
       const languageSetting = await getLanguageSetting();
       languageSetting && setLanguage(languageSetting);
-
       setInited(1);
     })();
-  }, [setWallets, setTokenInfo, setAddressBook, setLanguage]);
+  }, [
+    setWallets,
+    setTokenInfo,
+    setAddressBook,
+    setLanguage,
+    setSelectedWallet,
+  ]);
 
   const updateWalletBalance = async () => {
     try {

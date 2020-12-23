@@ -29,12 +29,12 @@ const CreateWithMnemonicPhrase = () => {
 
   const handleAccess = async () => {
     setLoading(true);
-    await saveMnemonic(mnemonic.trim());
     const newWallet = await getWalletFromMnemonic(mnemonic.trim());
     if (!newWallet) {
       setMnemonicError('Error happen!');
       return;
     }
+    await saveMnemonic(newWallet.address, mnemonic.trim());
     const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
     _wallets.push(newWallet as Wallet);
     await saveWallets(_wallets);

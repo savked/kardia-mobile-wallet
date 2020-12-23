@@ -1,6 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {View, Text, TouchableOpacity, Image, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {styles} from './style';
 import Button from '../../components/Button';
@@ -194,7 +201,8 @@ const CreateTxScreen = () => {
           />
         </View>
 
-        <Text style={[styles.title, {color: theme.textColor, marginBottom: 12}]}>
+        <Text
+          style={[styles.title, {color: theme.textColor, marginBottom: 12}]}>
           {getLanguageString(language, 'TRANSACTION_SPEED')}
         </Text>
         <View style={{marginBottom: 20}}>
