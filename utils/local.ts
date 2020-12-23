@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Sentry from '@sentry/react-native';
 
 export const getWallets = async () => {
   try {
@@ -7,14 +8,14 @@ export const getWallets = async () => {
       // value previously stored
       const wallets = JSON.parse(value);
       if (!Array.isArray(wallets)) {
-        console.error('Invalid local data');
+        Sentry.captureMessage('Invalid local data');
         return [];
       }
       return wallets;
     }
     return [];
   } catch (e) {
-    console.error(e);
+    Sentry.captureException(e);
     return [];
     // error reading value
   }
@@ -25,7 +26,7 @@ export const saveWallets = async (wallets: Wallet[]) => {
     await AsyncStorage.setItem('@kardia_wallets', JSON.stringify(wallets));
     return true;
   } catch (e) {
-    console.error(e);
+    Sentry.captureException(e);
     return false;
   }
 };
@@ -35,7 +36,7 @@ export const clearLocalWallets = async () => {
     await AsyncStorage.removeItem('@kardia_wallets');
     return true;
   } catch (e) {
-    console.error(e);
+    Sentry.captureException(e);
     return false;
   }
 };
@@ -48,7 +49,7 @@ export const saveAddressBook = async (addressBook: Address[]) => {
     );
     return true;
   } catch (e) {
-    console.error(e);
+    Sentry.captureException(e);
     return false;
   }
 };
@@ -60,14 +61,14 @@ export const getAddressBook = async () => {
       // value previously stored
       const addressBook = JSON.parse(value);
       if (!Array.isArray(addressBook)) {
-        console.error('Invalid local data');
+        Sentry.captureMessage('Invalid local data');
         return [];
       }
       return addressBook;
     }
     return [];
   } catch (e) {
-    console.error(e);
+    Sentry.captureException(e);
     return [];
     // error reading value
   }
@@ -78,7 +79,7 @@ export const saveLanguageSetting = async (lang: string) => {
     await AsyncStorage.setItem('@kardia_language_setting', lang);
     return true;
   } catch (e) {
-    console.error(e);
+    Sentry.captureException(e);
     return false;
   }
 };
@@ -91,7 +92,7 @@ export const getLanguageSetting = async () => {
     }
     return '';
   } catch (e) {
-    console.error(e);
+    Sentry.captureException(e);
     return '';
     // error reading value
   }
@@ -102,7 +103,7 @@ export const saveMnemonic = async (mnemonic: string) => {
     await AsyncStorage.setItem('@kardia_mnemonic', mnemonic);
     return true;
   } catch (e) {
-    console.error(e);
+    Sentry.captureException(e);
     return false;
   }
 };
@@ -115,7 +116,7 @@ export const getMnemonic = async () => {
     }
     return '';
   } catch (e) {
-    console.error(e);
+    Sentry.captureException(e);
     return '';
     // error reading value
   }

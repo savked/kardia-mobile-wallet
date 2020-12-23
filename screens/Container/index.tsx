@@ -3,6 +3,7 @@ import {View, Image} from 'react-native';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import * as Sentry from '@sentry/react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import HomeScreen from '../Home';
@@ -104,7 +105,7 @@ const AppContainer = () => {
         localWallets = await Promise.all(promiseArr);
         setWallets(localWallets);
       } catch (error) {
-        console.error(error);
+        Sentry.captureException(error);
       }
 
       // Get token info
@@ -112,7 +113,7 @@ const AppContainer = () => {
         const info = await getTokenInfo();
         setTokenInfo(info);
       } catch (error) {
-        console.error(error);
+        Sentry.captureException(error);
       }
 
       // Get local address book
@@ -137,7 +138,7 @@ const AppContainer = () => {
       });
       setWallets(_wallets);
     } catch (error) {
-      console.error(error);
+      Sentry.captureException(error);
     }
   };
 

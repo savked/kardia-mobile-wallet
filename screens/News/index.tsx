@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Text, View, Image, ActivityIndicator, Linking} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import * as Sentry from '@sentry/react-native';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import {styles} from './style';
 import {ThemeContext} from '../../App';
@@ -25,7 +26,7 @@ const NewsScreen = () => {
         const rs = await getNews();
         setNews(rs);
       } catch (error) {
-        console.error(error);
+        Sentry.captureException(error);
       }
     })();
   }, []);

@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {View, Text, Alert} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
+import * as Sentry from '@sentry/react-native';
 import TextInput from '../../components/TextInput';
 import Modal from '../../components/Modal';
 import {styles} from './style';
@@ -46,7 +47,7 @@ const ImportPrivateKey = () => {
       setWallets(newWallets);
       saveWallets(newWallets);
     } catch (error) {
-      console.error(error);
+      Sentry.captureException(error);
     }
   };
 

@@ -5,6 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
 import {useRecoilState, useSetRecoilState} from 'recoil';
+import * as Sentry from '@sentry/react-native';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {getWalletFromPK} from '../../utils/blockchain';
 import {saveWallets} from '../../utils/local';
@@ -66,7 +67,7 @@ const HomeScreen = () => {
         setSelectedWallet(newWallets.length - 1);
       }, 400);
     } catch (error) {
-      console.error(error);
+      Sentry.captureException(error);
     }
   };
 
