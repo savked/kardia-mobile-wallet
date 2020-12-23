@@ -16,12 +16,14 @@ import * as Sentry from '@sentry/react-native';
 import AppContainer from './screens/Container';
 import themes from './theme/index';
 import CustomStatusBar from './components/StatusBar';
+import ErrorBoundary from './screens/ErrorBoundary';
+import {ThemeContext} from './ThemeContext';
 import {SENTRY_DSN} from './config';
 
 declare const global: {HermesInternal: null | {}};
 
 const DEFAULT_THEME = themes.dark;
-export const ThemeContext = React.createContext(DEFAULT_THEME);
+export {ThemeContext};
 
 Sentry.init({
   dsn: SENTRY_DSN,
@@ -29,21 +31,21 @@ Sentry.init({
 
 const App = () => {
   return (
-    <>
-      <ThemeContext.Provider value={DEFAULT_THEME}>
-        <CustomStatusBar
-          barStyle="light-content"
-          backgroundColor={DEFAULT_THEME.backgroundColor}
-        />
-        <SafeAreaProvider>
-          <RecoilRoot>
+    <ThemeContext.Provider value={DEFAULT_THEME}>
+      <CustomStatusBar
+        barStyle="light-content"
+        backgroundColor={DEFAULT_THEME.backgroundColor}
+      />
+      <SafeAreaProvider>
+        <RecoilRoot>
+          <ErrorBoundary>
             <MenuProvider>
               <AppContainer />
             </MenuProvider>
-          </RecoilRoot>
-        </SafeAreaProvider>
-      </ThemeContext.Provider>
-    </>
+          </ErrorBoundary>
+        </RecoilRoot>
+      </SafeAreaProvider>
+    </ThemeContext.Provider>
   );
 };
 

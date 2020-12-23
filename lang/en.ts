@@ -63,5 +63,9 @@ export const lang: Language = {
     SECRET_PHRASE_MENU: 'Export secret phrase',
     MNEMONIC_SETTING_TITLE: 'Secret phrase',
     SHOW_SECRET_TEXT: 'Show my secret phrase',
+    // Error boundary key
+    ERROR_BOUNDARY_TITLE: 'Oops, Something Went Wrong',
+    ERROR_BOUNDARY_DESCRIPTION:
+      'The app ran into a problem and could not continue. We apologise for any inconvenience this has caused! Press the button below to restart the app and sign back in. Please contact us if this issue persists.',
   },
 };

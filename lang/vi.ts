@@ -62,5 +62,9 @@ export const lang: Language = {
     SECRET_PHRASE_MENU: 'Chuỗi khóa bí mật',
     MNEMONIC_SETTING_TITLE: 'Chuỗi khóa bí mật',
     SHOW_SECRET_TEXT: 'Hiển thị chuỗi bí mật',
+    // Error boundary key
+    ERROR_BOUNDARY_TITLE: 'Oops, có lỗi xảy ra.',
+    ERROR_BOUNDARY_DESCRIPTION:
+      'Chúng tôi rất xin lỗi vì sự bất tiện này. Lỗi đã được gửi cho admin để xử lý',
   },
 };
