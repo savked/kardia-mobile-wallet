@@ -12,14 +12,20 @@ import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {RecoilRoot} from 'recoil';
 import {MenuProvider} from 'react-native-popup-menu';
+import * as Sentry from '@sentry/react-native';
 import AppContainer from './screens/Container';
 import themes from './theme/index';
 import CustomStatusBar from './components/StatusBar';
+import {SENTRY_DSN} from './config';
 
 declare const global: {HermesInternal: null | {}};
 
 const DEFAULT_THEME = themes.dark;
 export const ThemeContext = React.createContext(DEFAULT_THEME);
+
+Sentry.init({
+  dsn: SENTRY_DSN,
+});
 
 const App = () => {
   return (
