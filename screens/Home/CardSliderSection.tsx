@@ -121,7 +121,10 @@ const CardSliderSection = ({
   useEffect(() => {
     if (carouselRef.current) {
       if (carouselRef.current.currentIndex !== selectedWallet) {
-        carouselRef.current.snapToItem(selectedWallet);
+        // react-native-snap-carousel issue. TODO: wait for issue resolved and update
+        setTimeout(() => {
+          carouselRef.current!.snapToItem(selectedWallet);
+        }, 300);
       }
     }
   }, [selectedWallet]);
@@ -143,7 +146,7 @@ const CardSliderSection = ({
         data={wallets}
         enableSnap={true}
         renderItem={renderWalletItem}
-        firstItem={selectedWallet}
+        // firstItem={selectedWallet}
         sliderWidth={viewportWidth}
         itemWidth={viewportWidth}
         onSnapToItem={setSelectedWallet}

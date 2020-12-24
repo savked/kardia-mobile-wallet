@@ -6,10 +6,10 @@ import {styles} from './style';
 import HomeHeader from './Header';
 import * as Bip39 from 'bip39';
 import {hdkey} from 'ethereumjs-wallet';
-import {useRecoilValue} from 'recoil';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
 import * as Sentry from '@sentry/react-native';
-import RNRestart from 'react-native-restart';
-import {walletsAtom} from '../../atoms/wallets';
+// import RNRestart from 'react-native-restart';
+import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {saveMnemonic, saveSelectedWallet, saveWallets} from '../../utils/local';
 import AlertModal from '../../components/AlertModal';
 import {ThemeContext} from '../../App';
@@ -33,6 +33,9 @@ const HomeScreen = () => {
   const [scanMessage, setScanMessage] = useState('');
   const [scanType, setScanType] = useState('warning');
   const [mnemonic, setMnemonic] = useState('');
+
+  const setWallets = useSetRecoilState(walletsAtom);
+  const setSelectedWallet = useSetRecoilState(selectedWalletAtom);
 
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
@@ -80,7 +83,10 @@ const HomeScreen = () => {
       _wallets.push(wallet);
       await saveWallets(_wallets);
       await saveSelectedWallet(_wallets.length - 1);
-      RNRestart.Restart();
+      setWallets(_wallets);
+      setSelectedWallet(_wallets.length - 1);
+      setMnemonic('');
+      // RNRestart.Restart();
     } catch (error) {
       console.error(error);
       Sentry.captureException(error);
