@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
 import {Text, View} from 'react-native';
 import {BarCodeReadEvent} from 'react-native-camera';
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -7,6 +8,8 @@ import Button from '../../components/Button';
 import {getLanguageString} from '../../utils/lang';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
+import Modal from '../../components/Modal';
+import CustomTextInput from '../../components/TextInput';
 
 const ImportModal = ({
   onClose,
@@ -15,7 +18,58 @@ const ImportModal = ({
   onClose: () => void;
   onSuccessScan: (e: BarCodeReadEvent) => void;
 }) => {
+  const [showScanner, setShowScanner] = useState(false);
+  const [mnemonic, setMnemonic] = useState('');
+
   const language = useRecoilValue(languageAtom);
+
+  if (!showScanner) {
+    return (
+      <Modal
+        visible={true}
+        onClose={onClose}
+        showCloseButton={false}
+        contentStyle={{justifyContent: 'space-around', flex: 0.5}}>
+        <Text style={{fontSize: 22}}>
+          {getLanguageString(language, 'ENTER_SEED_PHRASE')}
+        </Text>
+        <CustomTextInput
+          style={styles.input}
+          value={mnemonic}
+          onChangeText={setMnemonic}
+          numberOfLines={5}
+          multiline={true}
+        />
+        <Button
+          block
+          title={getLanguageString(language, 'SCAN_SEED_PHRASE')}
+          type="ghost"
+          iconName="qrcode"
+          onPress={() => setShowScanner(true)}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}>
+          <Button
+            title={getLanguageString(language, 'GO_BACK')}
+            type="secondary"
+            onPress={onClose}
+            size="large"
+          />
+          <Button
+            title={getLanguageString(language, 'IMPORT')}
+            type="primary"
+            onPress={onClose}
+            size="large"
+          />
+        </View>
+      </Modal>
+    );
+  }
+
   return (
     <>
       <View style={styles.qrScannerHeader}>
