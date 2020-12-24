@@ -8,12 +8,14 @@ import {
   Keyboard,
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import {ThemeContext} from '../../App';
 import {addressBookAtom} from '../../atoms/addressBook';
+import {languageAtom} from '../../atoms/language';
 import Button from '../../components/Button';
 import CustomImagePicker from '../../components/ImagePicker';
 import TextInput from '../../components/TextInput';
+import {getLanguageString} from '../../utils/lang';
 import {saveAddressBook} from '../../utils/local';
 import {styles} from './style';
 
@@ -25,6 +27,7 @@ const NewAddress = () => {
   const [avatar, setAvatar] = useState<ImageURISource>({uri: ''});
   const [addressBook, setAddressBook] = useRecoilState(addressBookAtom);
   const [showModal, setShowModal] = useState(false);
+  const language = useRecoilValue(languageAtom);
 
   const saveAddress = async () => {
     const currentAB: Address[] = JSON.parse(JSON.stringify(addressBook));
@@ -46,7 +49,9 @@ const NewAddress = () => {
     return (
       <>
         <View style={styles.qrScannerHeader}>
-          <Text style={styles.centerText}>Scan address QR code</Text>
+          <Text style={styles.centerText}>
+            {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS')}
+          </Text>
         </View>
         <QRCodeScanner
           onRead={(e) => {
@@ -58,7 +63,7 @@ const NewAddress = () => {
         <View style={styles.qrScannerFooter}>
           <Button
             size="large"
-            title="Cancel"
+            title={getLanguageString(language, 'GO_BACK')}
             onPress={() => setShowModal(false)}
           />
         </View>
@@ -75,7 +80,7 @@ const NewAddress = () => {
         </View>
         <View style={styles.formFieldContainer}>
           <TextInput
-            headline="Name"
+            headline={getLanguageString(language, 'ADDRESS_NAME')}
             block
             value={name}
             onChangeText={setName}
@@ -83,7 +88,7 @@ const NewAddress = () => {
         </View>
         <View style={styles.formFieldContainer}>
           <TextInput
-            headline="Address"
+            headline={getLanguageString(language, 'ADDRESS_ADDRESS')}
             block
             value={address}
             onChangeText={setAddress}
@@ -92,7 +97,7 @@ const NewAddress = () => {
           />
         </View>
         <Button
-          title="Save"
+          title={getLanguageString(language, 'SAVE')}
           type="primary"
           onPress={saveAddress}
           style={styles.saveButton}

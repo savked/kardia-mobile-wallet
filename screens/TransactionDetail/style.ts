@@ -24,7 +24,6 @@ export const styles = StyleSheet.create({
     width: '100%',
     paddingVertical: 55,
     paddingHorizontal: 22,
-    // flexDirection: 'row',
     alignItems: 'center',
   },
   statusContainer: {

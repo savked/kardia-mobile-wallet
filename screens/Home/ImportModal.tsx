@@ -4,6 +4,9 @@ import {BarCodeReadEvent} from 'react-native-camera';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {styles} from './style';
 import Button from '../../components/Button';
+import {getLanguageString} from '../../utils/lang';
+import {useRecoilValue} from 'recoil';
+import {languageAtom} from '../../atoms/language';
 
 const ImportModal = ({
   onClose,
@@ -12,10 +15,13 @@ const ImportModal = ({
   onClose: () => void;
   onSuccessScan: (e: BarCodeReadEvent) => void;
 }) => {
+  const language = useRecoilValue(languageAtom);
   return (
     <>
       <View style={styles.qrScannerHeader}>
-        <Text style={styles.centerText}>Scan QR code for mnemonic phrase</Text>
+        <Text style={styles.centerText}>
+          {getLanguageString(language, 'SCAN_SEED_PHRASE')}
+        </Text>
       </View>
       <QRCodeScanner onRead={onSuccessScan} showMarker={true} />
       <View style={styles.qrScannerFooter}>

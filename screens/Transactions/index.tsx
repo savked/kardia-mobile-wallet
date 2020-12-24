@@ -105,7 +105,6 @@ const TransactionScreen = () => {
             borderWidth: 1,
             borderColor: 'gray',
           }}>
-          {/* <IconM name={'attach-money'} size={30} color={'red'} /> */}
           <Image
             source={require('../../assets/logo.png')}
             style={styles.kaiLogo}
@@ -226,9 +225,6 @@ const TransactionScreen = () => {
               </View>
             );
           }}
-          // header={
-          //   <Text style={{ fontSize: 18, paddingHorizontal: 15, fontWeight: 'bold', color: '#FFFFFF' }}>Recent transactions</Text>
-          // }
           onSelect={(itemIndex) => {
             Alert.alert(`${itemIndex}`);
           }}

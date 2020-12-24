@@ -221,7 +221,7 @@ const CreateTxScreen = () => {
               <Text style={[{color: theme.textColor}]}>
                 {getLanguageString(language, 'GAS_LIMIT')}
               </Text>
-              <Text style={[{color: theme.textColor}]}>21.000 WEI</Text>
+              <Text style={[{color: theme.textColor}]}>21.000</Text>
             </View>
           </View>
         </View>

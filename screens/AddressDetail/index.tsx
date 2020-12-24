@@ -1,12 +1,14 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
 import {Alert, Text, TouchableOpacity, View} from 'react-native';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import {ThemeContext} from '../../App';
 import {addressBookAtom} from '../../atoms/addressBook';
+import {languageAtom} from '../../atoms/language';
 import Button from '../../components/Button';
 import CustomImagePicker from '../../components/ImagePicker';
 import TextInput from '../../components/TextInput';
+import {getLanguageString} from '../../utils/lang';
 import {saveAddressBook} from '../../utils/local';
 import {styles} from './style';
 
@@ -17,6 +19,7 @@ const AddressDetail = () => {
   const addressHash = params ? (params as any).addressHash : '';
   const [addressBook, setAddressBook] = useRecoilState(addressBookAtom);
   const [addressData, setAddressData] = useState<Address>();
+  const language = useRecoilValue(languageAtom);
 
   const removeAddress = () => {
     Alert.alert('', 'Are you sure you want to delete this address ?', [
@@ -104,7 +107,7 @@ const AddressDetail = () => {
       </View>
       <View style={styles.formFieldContainer}>
         <TextInput
-          headline="Name"
+          headline={getLanguageString(language, 'ADDRESS_NAME')}
           block
           value={addressData.name}
           onChangeText={(newValue) => updateAddressData('name', newValue)}
@@ -112,7 +115,7 @@ const AddressDetail = () => {
       </View>
       <View style={styles.formFieldContainer}>
         <TextInput
-          headline="Address"
+          headline={getLanguageString(language, 'ADDRESS_ADDRESS')}
           block
           value={addressData.address}
           onChangeText={(newValue) => updateAddressData('address', newValue)}
@@ -120,13 +123,13 @@ const AddressDetail = () => {
       </View>
       <View style={styles.buttonGroupContainer}>
         <Button
-          title="Save"
+          title={getLanguageString(language, 'SAVE')}
           type="primary"
           onPress={saveAddress}
           style={styles.button}
         />
         <Button
-          title="Cancel"
+          title={getLanguageString(language, 'GO_BACK')}
           type="outline"
           onPress={() => navigation.goBack()}
           style={styles.button}

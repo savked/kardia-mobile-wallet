@@ -8,4 +8,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-around',
     flex: 0.5,
   },
+  buttonGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+  },
 });

@@ -16,7 +16,8 @@ const SettingScreen = () => {
   const language = useRecoilValue(languageAtom);
 
   return (
-    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView
+      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
         <Text style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'SETTING_SCREEN_TITLE')}

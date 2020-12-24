@@ -20,12 +20,18 @@ export const lang: Language = {
     RESTART_APP_DESCRIPTION:
       'Kardia Wallet sẽ khởi động lại để đảm bảo các thay đổi được cập nhật.',
     ARE_YOU_SURE: 'Bạn chắc chắn muốn thực hiện thao tác này ?',
+    SAVE: 'Lưu',
+    CLOSE: 'Đóng',
+    SCAN_QR_FOR_ADDRESS: 'Quét mã QR chứa địa chỉ ví',
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
       '24 từ trên được dùng để  truy cập cũng như khôi phục lại ví của bạn.',
     // Import wallet key:
     ENTER_SEED_PHRASE: 'Nhập chuỗi từ khóa bí mật',
+    SCAN_SEED_PHRASE: 'Quét mã QR chứa chuỗi khóa bí mật',
+    WALLET_EXISTED: 'Ví đã tồn tại',
+    ERROR_SEED_PHRASE: 'Chuỗi khóa bis mật sai, vui lòng thử lại',
     // Transaction key
     RECENT_TRANSACTION: 'Giao dịch gần đây',
     NO_TRANSACTION: 'Không có giao dịch',
@@ -65,6 +71,8 @@ export const lang: Language = {
     SECRET_PHRASE_MENU: 'Chuỗi khóa bí mật',
     MNEMONIC_SETTING_TITLE: 'Chuỗi khóa bí mật',
     SHOW_SECRET_TEXT: 'Hiển thị chuỗi bí mật',
+    ADDRESS_NAME: 'Tên hiển thị',
+    ADDRESS_ADDRESS: 'Địa chỉ ví',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, có lỗi xảy ra.',
     ERROR_BOUNDARY_DESCRIPTION:

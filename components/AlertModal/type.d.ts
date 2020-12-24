@@ -1,9 +1,11 @@
 interface AlertModal {
-  type: 'success' | 'error' | 'warning';
+  type: 'success' | 'error' | 'warning' | 'confirm';
   message?: string;
   onOK?: () => void;
-  onCancel?: () => void;
+  cancelText?: string;
+  okText?: string;
   visible: boolean;
   onClose: () => void;
   children?: any;
+  iconSize?: number;
 }

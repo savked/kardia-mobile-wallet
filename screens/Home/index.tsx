@@ -72,7 +72,7 @@ const HomeScreen = () => {
         .includes(wallet.address);
 
       if (walletExisted) {
-        setScanMessage('Wallet already imported');
+        setScanMessage(getLanguageString(language, 'WALLET_EXISTED'));
         setScanType('warning');
         setShowScanAlert(true);
         return;
@@ -86,7 +86,6 @@ const HomeScreen = () => {
       setWallets(_wallets);
       setSelectedWallet(_wallets.length - 1);
       setMnemonic('');
-      // RNRestart.Restart();
     } catch (error) {
       console.error(error);
       Sentry.captureException(error);

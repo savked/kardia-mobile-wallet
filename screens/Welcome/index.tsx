@@ -1,14 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import {Image, Text, View} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
 import Button from '../../components/Button';
 import {getLanguageString} from '../../utils/lang';
 import {styles} from './style';
-import { ThemeContext } from '../../App';
+import {ThemeContext} from '../../App';
 
 const Welcome = () => {
   const navigation = useNavigation();
@@ -16,7 +16,11 @@ const Welcome = () => {
   const theme = useContext(ThemeContext);
 
   return (
-    <SafeAreaView style={[styles.noWalletContainer, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView
+      style={[
+        styles.noWalletContainer,
+        {backgroundColor: theme.backgroundColor},
+      ]}>
       <View>
         <Image
           style={styles.noWalletLogo}

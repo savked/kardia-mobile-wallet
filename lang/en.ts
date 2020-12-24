@@ -20,12 +20,18 @@ export const lang: Language = {
     RESTART_APP_DESCRIPTION:
       'Kardia Wallet will restart to ensure your wallet is properly imported',
     ARE_YOU_SURE: 'Are you sure ?',
+    SAVE: 'Save',
+    CLOSE: 'Close',
+    SCAN_QR_FOR_ADDRESS: 'Scan QR code for address',
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now',
     MNEMONIC_DESCRIPTION:
       'Above 24 words will be used to recover as well as access your wallet.',
     // Import wallet key:
     ENTER_SEED_PHRASE: 'Enter secret phrase',
+    SCAN_SEED_PHRASE: 'Scan QR code for mnemonic phrase',
+    WALLET_EXISTED: 'Wallet already existed',
+    ERROR_SEED_PHRASE: 'Wrong format seed phrase, please recheck',
     // Transaction key
     RECENT_TRANSACTION: 'Recent transactions',
     NO_TRANSACTION: 'No transaction',
@@ -66,6 +72,8 @@ export const lang: Language = {
     SECRET_PHRASE_MENU: 'Export secret phrase',
     MNEMONIC_SETTING_TITLE: 'Secret phrase',
     SHOW_SECRET_TEXT: 'Show my secret phrase',
+    ADDRESS_NAME: 'Name',
+    ADDRESS_ADDRESS: 'Address',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, Something Went Wrong',
     ERROR_BOUNDARY_DESCRIPTION:

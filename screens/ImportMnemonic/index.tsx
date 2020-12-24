@@ -60,7 +60,7 @@ const ImportMnemonic = () => {
     }
     const valid = Bip39.validateMnemonic(mnemonic);
     if (!valid) {
-      setError('Seed phrase wrong format');
+      setError(getLanguageString(language, 'ERROR_SEED_PHRASE'));
       return false;
     }
     return true;

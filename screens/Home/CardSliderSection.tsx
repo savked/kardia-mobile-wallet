@@ -22,9 +22,9 @@ import {useNavigation} from '@react-navigation/native';
 import {tokenInfoAtom} from '../../atoms/token';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
-import Modal from '../../components/Modal';
+import AlertModal from '../../components/AlertModal';
 
-const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window');
+const {width: viewportWidth} = Dimensions.get('window');
 
 const CardSliderSection = ({
   importWallet,
@@ -133,7 +133,9 @@ const CardSliderSection = ({
     const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
     newWallets.splice(removeIndex, 1);
     await saveWallets(newWallets);
-    if (selectedWallet > newWallets.length - 1) {
+    if (newWallets.length === 0) {
+      await saveSelectedWallet(0);
+    } else if (selectedWallet > newWallets.length - 1) {
       await saveSelectedWallet(newWallets.length - 1);
     }
     RNRestart.Restart();
@@ -146,7 +148,6 @@ const CardSliderSection = ({
         data={wallets}
         enableSnap={true}
         renderItem={renderWalletItem}
-        // firstItem={selectedWallet}
         sliderWidth={viewportWidth}
         itemWidth={viewportWidth}
         onSnapToItem={setSelectedWallet}
@@ -166,11 +167,6 @@ const CardSliderSection = ({
           marginHorizontal: 8,
           backgroundColor: 'rgba(255, 255, 255, 0.92)',
         }}
-        inactiveDotStyle={
-          {
-            // Define styles for inactive dots here
-          }
-        }
         inactiveDotOpacity={0.4}
         inactiveDotScale={0.6}
       />
@@ -207,32 +203,21 @@ const CardSliderSection = ({
         />
       </View>
       {removeIndex >= 0 && (
-        <Modal
-          showCloseButton={false}
+        <AlertModal
           visible={true}
-          contentStyle={{flex: 0.3, marginTop: viewportHeight / 3}}
-          onClose={() => setRemoveIndex(-1)}>
-          <View style={{justifyContent: 'space-between', flex: 1}}>
-            <Text style={{textAlign: 'center'}}>
-              {getLanguageString(language, 'ARE_YOU_SURE')}
-            </Text>
-            <Text>
-              {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
-            </Text>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-              <Button
-                title={getLanguageString(language, 'GO_BACK')}
-                type="secondary"
-                onPress={() => setRemoveIndex(-1)}
-              />
-              <Button
-                title={getLanguageString(language, 'SUBMIT')}
-                onPress={removeWallet}
-              />
-            </View>
-          </View>
-        </Modal>
+          type="confirm"
+          iconSize={90}
+          onClose={() => setRemoveIndex(-1)}
+          cancelText={getLanguageString(language, 'GO_BACK')}
+          okText={getLanguageString(language, 'SUBMIT')}
+          onOK={removeWallet}>
+          <Text style={{textAlign: 'center', fontSize: 22, fontWeight: 'bold'}}>
+            {getLanguageString(language, 'ARE_YOU_SURE')}
+          </Text>
+          <Text style={{fontStyle: 'italic'}}>
+            {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
+          </Text>
+        </AlertModal>
       )}
     </View>
   );

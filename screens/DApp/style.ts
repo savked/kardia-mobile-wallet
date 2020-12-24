@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
   thumbnail: {
     width: 50,
     height: 50,
-    // marginRight: 15
     marginBottom: 10,
   },
   title: {
