@@ -119,4 +119,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 100,
   },
+  input: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    minWidth: '100%',
+    borderRadius: 8,
+    padding: 10,
+  },
 });
