@@ -13,4 +13,5 @@ interface CustomTextInputProps {
   block?: boolean;
   icons?: () => any;
   keyboardType?: string;
+  message?: string | (() => any);
 }

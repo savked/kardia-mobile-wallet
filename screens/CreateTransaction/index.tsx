@@ -7,8 +7,10 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
+  Dimensions,
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
+import * as Sentry from '@sentry/react-native';
 import {styles} from './style';
 import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
@@ -27,11 +29,13 @@ import Modal from '../../components/Modal';
 import List from '../../components/List';
 import {addressBookAtom} from '../../atoms/addressBook';
 import TextAvatar from '../../components/TextAvatar';
-import {getLanguageString} from '../../utils/lang';
+import {getLanguageString, parseError} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const MAX_AMOUNT = 5000000000;
+
+const {height: viewportHeight} = Dimensions.get('window');
 
 const CreateTxScreen = () => {
   const [wallets, setWallets] = useRecoilState(walletsAtom);
@@ -45,16 +49,24 @@ const CreateTxScreen = () => {
   const [error, setError] = useState('');
   const [successTxHash, setSuccessHash] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [errorAddress, setErrorAddress] = useState('');
+  const [errorAmount, setErrorAmount] = useState('');
 
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
   const language = useRecoilValue(languageAtom);
 
   async function send() {
+    setShowConfirmModal(false);
     setLoading(true);
     const wallet = wallets[selectedWallet];
     try {
-      const txHash = await createTx(wallet, address, Number(amount));
+      const txHash = await createTx(
+        wallet,
+        address,
+        Number(amount.replace(/,/, '')),
+      );
       const newBallance = await getBalance(wallet.address);
       const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
 
@@ -65,8 +77,9 @@ const CreateTxScreen = () => {
       setSuccessHash(txHash);
       setLoading(false);
     } catch (err) {
+      Sentry.captureException(err);
       if (err.message) {
-        setError(err.message);
+        setError(parseError(err.message, language));
       } else {
         console.log(err);
         setError('Error happen');
@@ -81,6 +94,22 @@ const CreateTxScreen = () => {
 
   const showAddressBookSelector = () => {
     setShowAddressBookModal(true);
+  };
+
+  const showConfirm = () => {
+    let isValid = true;
+    if (address === '') {
+      setErrorAddress(getLanguageString(language, 'REQUIRED_FIELD'));
+      isValid = false;
+    }
+    if (amount === '' || amount === '0') {
+      setErrorAmount(getLanguageString(language, 'REQUIRED_FIELD'));
+      isValid = false;
+    }
+    if (!isValid) {
+      return;
+    }
+    setShowConfirmModal(true);
   };
 
   if (showQRModal) {
@@ -150,6 +179,53 @@ const CreateTxScreen = () => {
     );
   }
 
+  if (showConfirmModal) {
+    return (
+      <Modal
+        showCloseButton={false}
+        visible={true}
+        contentStyle={{flex: 0.3, marginTop: viewportHeight / 3}}
+        onClose={() => setShowConfirmModal(false)}>
+        <Text style={styles.confirmTitle}>
+          {getLanguageString(language, 'CONFIRM_TRANSACTION')}
+        </Text>
+        <View>
+          <View style={styles.confirmGroup}>
+            <Text style={styles.confirmText}>
+              {getLanguageString(language, 'CREATE_TX_ADDRESS')}:{' '}
+            </Text>
+            <Text style={styles.confirmContent}>
+              {truncate(address, 10, 10)}
+            </Text>
+          </View>
+          <View style={styles.confirmGroup}>
+            <Text style={styles.confirmText}>
+              {getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:{' '}
+            </Text>
+            <Text style={styles.confirmContent}>{amount} KAI</Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            width: '100%',
+          }}>
+          <Button
+            title={getLanguageString(language, 'GO_BACK')}
+            onPress={() => setShowConfirmModal(false)}
+            type="ghost"
+          />
+          <Button
+            title={getLanguageString(language, 'CONFIRM')}
+            onPress={send}
+            type="primary"
+          />
+        </View>
+      </Modal>
+    );
+  }
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView
@@ -157,6 +233,7 @@ const CreateTxScreen = () => {
         <View style={{marginBottom: 10}}>
           <TextInput
             onChangeText={setAddress}
+            message={errorAddress}
             value={truncate(address, 10, 20)}
             headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
             icons={() => {
@@ -184,6 +261,7 @@ const CreateTxScreen = () => {
 
         <View style={{marginBottom: 20}}>
           <TextInput
+            message={errorAmount}
             onChangeText={(newAmount) => {
               const digitOnly = getDigit(newAmount);
               if (Number(digitOnly) > MAX_AMOUNT) {
@@ -241,7 +319,7 @@ const CreateTxScreen = () => {
           }}>
           <Button
             title={getLanguageString(language, 'SEND').toUpperCase()}
-            onPress={send}
+            onPress={showConfirm}
             iconName="paper-plane"
             type="primary"
             size="large"
@@ -275,6 +353,7 @@ const CreateTxScreen = () => {
             <Text>Tx Hash: {truncate(successTxHash, 10, 20)}</Text>
           </AlertModal>
         )}
+        {}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

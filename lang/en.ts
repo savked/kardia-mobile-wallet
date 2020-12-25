@@ -14,7 +14,7 @@ export const lang: Language = {
     GETTING_STARTED_DESCRIPTION:
       'To get started, choose one of the following options',
     SUBMIT: 'Submit',
-    REQUIRED_FIELD: 'Field is required',
+    REQUIRED_FIELD: 'This field is required',
     COPY_TO_CLIPBOARD: 'Copy to clipboard',
     SECOND: 'sec',
     RESTART_APP_DESCRIPTION:
@@ -57,6 +57,9 @@ export const lang: Language = {
     GAS_LIMIT: 'Gas limit',
     SPEED_DESCRIPTION:
       '* Accelerating a transaction by using a higher gas price increases its chances of getting processed by the network faster, but it is not always guaranteed.',
+    CONFIRM_TRANSACTION: 'Confirm your transaction',
+    CONFIRM_KAI_AMOUNT: 'Amount',
+    CONFIRM: 'Confirm',
     // Wallet key
     IMPORT: 'Import',
     WALLET: 'Wallet',
@@ -78,5 +81,6 @@ export const lang: Language = {
     ERROR_BOUNDARY_TITLE: 'Oops, Something Went Wrong',
     ERROR_BOUNDARY_DESCRIPTION:
       'The app ran into a problem and could not continue. We apologise for any inconvenience this has caused! Press the button below to restart the app and sign back in. Please contact us if this issue persists.',
+    NOT_ENOUGH_BALANCE: 'The amount exceed your wallet balance.',
   },
 };

@@ -56,6 +56,9 @@ export const lang: Language = {
     GAS_LIMIT: 'Giới hạn gas',
     SPEED_DESCRIPTION:
       '* Thông thường các giao dịch có giá gas cao hơn sẽ được network ưu tiên xử lý trước. Tuy nhiên điều này còn phụ thuộc vào trạng thái của network tại thời điểm giao dịch.',
+    CONFIRM_TRANSACTION: 'Xác nhận giao dịch của bạn',
+    CONFIRM_KAI_AMOUNT: 'Số lượng',
+    CONFIRM: 'Xác nhận',
     // Wallet key
     IMPORT: 'Thêm ví',
     WALLET: 'Ví',
@@ -77,5 +80,6 @@ export const lang: Language = {
     ERROR_BOUNDARY_TITLE: 'Oops, có lỗi xảy ra.',
     ERROR_BOUNDARY_DESCRIPTION:
       'Chúng tôi rất xin lỗi vì sự bất tiện này. Lỗi đã được gửi cho admin để xử lý',
+    NOT_ENOUGH_BALANCE: 'Giao dịch vượt quá số tiền trong ví.',
   },
 };

@@ -146,3 +146,27 @@ export const getMnemonic = async (address: string) => {
     // error reading value
   }
 };
+
+export const saveAppPasscode = async (passcode: string) => {
+  try {
+    await AsyncStorage.setItem('@kardia_app_passcode', passcode);
+    return true;
+  } catch (e) {
+    Sentry.captureException(e);
+    return false;
+  }
+};
+
+export const getAppPasscode = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@kardia_app_passcode');
+    if (value !== null) {
+      return value;
+    }
+    return '';
+  } catch (e) {
+    Sentry.captureException(e);
+    return '';
+    // error reading value
+  }
+};
