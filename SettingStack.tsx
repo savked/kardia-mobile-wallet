@@ -27,7 +27,7 @@ const SettingStackScreen = () => {
   const language = useRecoilValue(languageAtom);
   return (
     <SettingStack.Navigator
-      initialRouteName="TransactionList"
+      initialRouteName="Setting"
       screenOptions={{
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         headerStyle: {

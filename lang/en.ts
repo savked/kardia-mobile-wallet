@@ -22,6 +22,7 @@ export const lang: Language = {
     ARE_YOU_SURE: 'Are you sure ?',
     SAVE: 'Save',
     CLOSE: 'Close',
+    CONFIRM: 'Confirm',
     SCAN_QR_FOR_ADDRESS: 'Scan QR code for address',
     LATER: 'Later',
     SET_APP_PASSCODE: 'Set passcode',
@@ -64,7 +65,6 @@ export const lang: Language = {
       '* Accelerating a transaction by using a higher gas price increases its chances of getting processed by the network faster, but it is not always guaranteed.',
     CONFIRM_TRANSACTION: 'Confirm your transaction',
     CONFIRM_KAI_AMOUNT: 'Amount',
-    CONFIRM: 'Confirm',
     // Wallet key
     IMPORT: 'Import',
     WALLET: 'Wallet',
@@ -78,11 +78,17 @@ export const lang: Language = {
     LANGUAGE_MENU: 'Language setting',
     LANGUAGE_SETTING_TITLE: 'Choose display language',
     SECRET_PHRASE_MENU: 'Export secret phrase',
+    PASSCODE_MENU: 'App passcode setting',
     MNEMONIC_SETTING_TITLE: 'Secret phrase',
     SHOW_SECRET_TEXT: 'Show my secret phrase',
     ADDRESS_NAME: 'Name',
     ADDRESS_ADDRESS: 'Address',
     PASSCODE_SETTING_TITLE: 'App passcode',
+    NEW_PASSCODE: 'Enter new passcode',
+    CONFIRM_PASSCODE: 'Confirm new passcode',
+    CONFIRM_PASSCODE_NOT_MATCH: 'Confirmation passcode does NOT match',
+    ENTER_PASSCODE: 'Enter passcode to continue',
+    INCORRECT_PASSCODE: 'Incorrect passcode',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, Something Went Wrong',
     ERROR_BOUNDARY_DESCRIPTION:

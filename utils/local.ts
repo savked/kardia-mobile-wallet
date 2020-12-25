@@ -56,9 +56,19 @@ export const getSelectedWallet = async () => {
   }
 };
 
+export const clearLocalData = async (key: string) => {
+  try {
+    await AsyncStorage.removeItem(key);
+    return true;
+  } catch (e) {
+    Sentry.captureException(e);
+    return false;
+  }
+};
+
 export const clearLocalWallets = async () => {
   try {
-    await AsyncStorage.removeItem('@kardia_wallets');
+    await clearLocalData('@kardia_wallets');
     return true;
   } catch (e) {
     Sentry.captureException(e);
@@ -168,5 +178,35 @@ export const getAppPasscode = async () => {
     Sentry.captureException(e);
     return '';
     // error reading value
+  }
+};
+
+export const getAppPasscodeSetting = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@kardia_app_passcode_setting');
+    if (value !== null) {
+      if (value === 'disabled') {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  } catch (e) {
+    Sentry.captureException(e);
+    return false;
+    // error reading value
+  }
+};
+
+export const saveAppPasscodeSetting = async (on: boolean) => {
+  try {
+    await AsyncStorage.setItem(
+      '@kardia_app_passcode_setting',
+      on ? 'enabled' : 'disabled',
+    );
+    return true;
+  } catch (e) {
+    Sentry.captureException(e);
+    return false;
   }
 };
