@@ -23,6 +23,11 @@ export const lang: Language = {
     SAVE: 'Save',
     CLOSE: 'Close',
     SCAN_QR_FOR_ADDRESS: 'Scan QR code for address',
+    LATER: 'Later',
+    SET_APP_PASSCODE: 'Set passcode',
+    NO_PASSCODE: "You haven't set your app passcode yet.",
+    PASSCODE_DESCRIPTION:
+      "Passcode help increase your wallet's security level.",
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now',
     MNEMONIC_DESCRIPTION:
@@ -77,6 +82,7 @@ export const lang: Language = {
     SHOW_SECRET_TEXT: 'Show my secret phrase',
     ADDRESS_NAME: 'Name',
     ADDRESS_ADDRESS: 'Address',
+    PASSCODE_SETTING_TITLE: 'App passcode',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, Something Went Wrong',
     ERROR_BOUNDARY_DESCRIPTION:

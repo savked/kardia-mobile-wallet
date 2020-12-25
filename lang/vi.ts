@@ -23,6 +23,11 @@ export const lang: Language = {
     SAVE: 'Lưu',
     CLOSE: 'Đóng',
     SCAN_QR_FOR_ADDRESS: 'Quét mã QR chứa địa chỉ ví',
+    LATER: 'Để sau',
+    SET_APP_PASSCODE: 'Cài đặt mật khẩu',
+    NO_PASSCODE: 'Bạn chưa cài mật khẩu cho ví',
+    PASSCODE_DESCRIPTION:
+      'Mật khẩu ví đảm bảo chỉ có bạn là người sử dụng Kardia Wallet',
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
@@ -76,6 +81,7 @@ export const lang: Language = {
     SHOW_SECRET_TEXT: 'Hiển thị chuỗi bí mật',
     ADDRESS_NAME: 'Tên hiển thị',
     ADDRESS_ADDRESS: 'Địa chỉ ví',
+    PASSCODE_SETTING_TITLE: 'Mật khẩu ví',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, có lỗi xảy ra.',
     ERROR_BOUNDARY_DESCRIPTION:

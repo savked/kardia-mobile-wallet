@@ -17,6 +17,7 @@ import {useRecoilValue} from 'recoil';
 import {languageAtom} from './atoms/language';
 import {getLanguageString} from './utils/lang';
 import MnemonicPhraseSetting from './screens/MnemonicPhraseSetting';
+import SettingPasscode from './screens/SettingPasscode';
 
 const SettingStack = createStackNavigator();
 
@@ -103,6 +104,17 @@ const SettingStackScreen = () => {
         component={MnemonicPhraseSetting}
         options={{
           title: getLanguageString(language, 'MNEMONIC_SETTING_TITLE'),
+          headerTitleStyle: {
+            color: theme.textColor,
+          },
+          headerTintColor: theme.textColor,
+        }}
+      />
+      <SettingStack.Screen
+        name="SettingPasscode"
+        component={SettingPasscode}
+        options={{
+          title: getLanguageString(language, 'PASSCODE_SETTING_TITLE'),
           headerTitleStyle: {
             color: theme.textColor,
           },

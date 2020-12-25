@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, Alert, Text, Dimensions} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
@@ -8,9 +8,13 @@ import * as Bip39 from 'bip39';
 import {hdkey} from 'ethereumjs-wallet';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import * as Sentry from '@sentry/react-native';
-// import RNRestart from 'react-native-restart';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {saveMnemonic, saveSelectedWallet, saveWallets} from '../../utils/local';
+import {
+  getAppPasscode,
+  saveMnemonic,
+  saveSelectedWallet,
+  saveWallets,
+} from '../../utils/local';
 import AlertModal from '../../components/AlertModal';
 import {ThemeContext} from '../../App';
 import {getBalance} from '../../services/account';
@@ -22,6 +26,7 @@ import Modal from '../../components/Modal';
 import Button from '../../components/Button';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
+import {useNavigation} from '@react-navigation/native';
 
 const {height: viewportHeight} = Dimensions.get('window');
 
@@ -33,12 +38,23 @@ const HomeScreen = () => {
   const [scanMessage, setScanMessage] = useState('');
   const [scanType, setScanType] = useState('warning');
   const [mnemonic, setMnemonic] = useState('');
+  const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
 
   const setWallets = useSetRecoilState(walletsAtom);
   const setSelectedWallet = useSetRecoilState(selectedWalletAtom);
 
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    (async () => {
+      const passcode = await getAppPasscode();
+      if (!passcode) {
+        setShowPasscodeRemindModal(true);
+      }
+    })();
+  }, []);
 
   const onSuccessScan = (e: any) => {
     setShowImportModal(false);
@@ -103,6 +119,35 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
+      {showPasscodeRemindModal && (
+        <Modal
+          showCloseButton={false}
+          contentStyle={{flex: 0.3, marginTop: viewportHeight / 3}}
+          visible={true}
+          onClose={() => setShowPasscodeRemindModal(false)}>
+          <Text>{getLanguageString(language, 'NO_PASSCODE')}</Text>
+          <Text>{getLanguageString(language, 'PASSCODE_DESCRIPTION')}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'space-evenly',
+            }}>
+            <Button
+              type="ghost"
+              title={getLanguageString(language, 'LATER')}
+              onPress={() => setShowPasscodeRemindModal(false)}
+            />
+            <Button
+              type="primary"
+              title={getLanguageString(language, 'SET_APP_PASSCODE')}
+              onPress={() =>
+                navigation.navigate('Setting', {screen: 'SettingPasscode'})
+              }
+            />
+          </View>
+        </Modal>
+      )}
       <HomeHeader />
       <View style={[styles.bodyContainer]}>
         <CardSliderSection
