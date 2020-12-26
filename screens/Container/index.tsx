@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {View, Image} from 'react-native';
-import {useRecoilState, useSetRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import * as Sentry from '@sentry/react-native';
@@ -27,6 +27,8 @@ import {getTokenInfo} from '../../services/token';
 import SettingStackScreen from '../../SettingStack';
 import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
+import {localAuthAtom} from '../../atoms/localAuth';
+import ConfirmPasscode from '../ConfirmPasscode';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -91,6 +93,7 @@ const AppContainer = () => {
     selectedWalletAtom,
   );
   const setLanguage = useSetRecoilState(languageAtom);
+  const isLocalAuthed = useRecoilValue(localAuthAtom);
   const [inited, setInited] = useState(0);
 
   const theme = useContext(ThemeContext);
@@ -201,6 +204,10 @@ const AppContainer = () => {
         <NoWalletStackScreen />
       </NavigationContainer>
     );
+  }
+
+  if (!isLocalAuthed) {
+    return <ConfirmPasscode />;
   }
 
   return (

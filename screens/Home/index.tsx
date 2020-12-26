@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
-import {View, Alert, Text, Dimensions, ActivityIndicator} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {View, Alert, Text, Dimensions} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
@@ -9,13 +9,7 @@ import {hdkey} from 'ethereumjs-wallet';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import * as Sentry from '@sentry/react-native';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {
-  getAppPasscode,
-  getAppPasscodeSetting,
-  saveMnemonic,
-  saveSelectedWallet,
-  saveWallets,
-} from '../../utils/local';
+import {saveMnemonic, saveSelectedWallet, saveWallets} from '../../utils/local';
 import AlertModal from '../../components/AlertModal';
 import {ThemeContext} from '../../App';
 import {getBalance} from '../../services/account';
@@ -28,7 +22,6 @@ import Button from '../../components/Button';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
 import {useNavigation} from '@react-navigation/native';
-import ConfirmPasscode from '../ConfirmPasscode';
 
 const {height: viewportHeight} = Dimensions.get('window');
 
@@ -41,8 +34,6 @@ const HomeScreen = () => {
   const [scanType, setScanType] = useState('warning');
   const [mnemonic, setMnemonic] = useState('');
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
-  const [showConfirmPassCodeView, setShowConfirmPasscodeView] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   const setWallets = useSetRecoilState(walletsAtom);
   const setSelectedWallet = useSetRecoilState(selectedWalletAtom);
@@ -50,41 +41,6 @@ const HomeScreen = () => {
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
   const navigation = useNavigation();
-
-  useEffect(() => {
-    (async () => {
-      const passcode = await getAppPasscode();
-      const isEnabled = await getAppPasscodeSetting();
-      if (!isEnabled) {
-        setLoading(false);
-        return;
-      }
-      if (!passcode) {
-        setShowPasscodeRemindModal(true);
-      } else {
-        setShowConfirmPasscodeView(true);
-      }
-      setLoading(false);
-    })();
-  }, []);
-
-  if (loading) {
-    return (
-      <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
-        <ActivityIndicator color={theme.textColor} />
-      </SafeAreaView>
-    );
-  }
-
-  if (showConfirmPassCodeView) {
-    return (
-      <ConfirmPasscode
-        onSuccess={() => {
-          setShowConfirmPasscodeView(false);
-        }}
-      />
-    );
-  }
 
   const onSuccessScan = (e: any) => {
     setShowImportModal(false);

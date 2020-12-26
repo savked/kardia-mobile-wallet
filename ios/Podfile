@@ -20,6 +20,8 @@ target 'KardiaWallet' do
 
   pod 'react-native-blur', :path => '../node_modules/@react-native-community/blur'
 
+  pod 'TouchID', :path => '../node_modules/react-native-touch-id'
+
   target 'KardiaWalletTests' do
     inherit! :complete
     # Pods for testing

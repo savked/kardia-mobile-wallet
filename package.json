@@ -58,6 +58,7 @@
     "react-native-screens": "^2.15.0",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "^12.1.0",
+    "react-native-touch-id": "^4.4.1",
     "react-native-vector-icons": "^7.1.0",
     "readable-stream": "^1.0.33",
     "recoil": "^0.1.2",

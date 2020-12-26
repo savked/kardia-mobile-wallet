@@ -18,7 +18,7 @@ export const getWalletFromMnemonic = async (
     const root = hdkey.fromMasterSeed(seed);
     const masterWallet = root.getWallet();
     const privateKey = masterWallet.getPrivateKeyString();
-    const addressStr = masterWallet.getAddressString();
+    const addressStr = masterWallet.getChecksumAddressString();
     return {
       address: addressStr,
       privateKey,
