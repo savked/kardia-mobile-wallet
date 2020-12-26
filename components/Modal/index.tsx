@@ -17,7 +17,7 @@ const CustomModal = ({
   contentStyle,
 }: CustomModalProps) => {
   return (
-    <BlurView blurType="dark" style={styles.absolute}>
+    <BlurView blurType="dark" blurAmount={50} style={styles.absolute}>
       <Modal
         animationType={animationType}
         transparent={true}

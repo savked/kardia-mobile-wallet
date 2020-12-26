@@ -22,7 +22,13 @@ export const lang: Language = {
     ARE_YOU_SURE: 'Bạn chắc chắn muốn thực hiện thao tác này ?',
     SAVE: 'Lưu',
     CLOSE: 'Đóng',
+    CONFIRM: 'Xác nhận',
     SCAN_QR_FOR_ADDRESS: 'Quét mã QR chứa địa chỉ ví',
+    LATER: 'Để sau',
+    SET_APP_PASSCODE: 'Cài đặt mật khẩu',
+    NO_PASSCODE: 'Bạn chưa cài mật khẩu cho ví',
+    PASSCODE_DESCRIPTION:
+      'Mật khẩu ví đảm bảo chỉ có bạn là người sử dụng Kardia Wallet',
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
@@ -56,6 +62,8 @@ export const lang: Language = {
     GAS_LIMIT: 'Giới hạn gas',
     SPEED_DESCRIPTION:
       '* Thông thường các giao dịch có giá gas cao hơn sẽ được network ưu tiên xử lý trước. Tuy nhiên điều này còn phụ thuộc vào trạng thái của network tại thời điểm giao dịch.',
+    CONFIRM_TRANSACTION: 'Xác nhận giao dịch của bạn',
+    CONFIRM_KAI_AMOUNT: 'Số lượng',
     // Wallet key
     IMPORT: 'Thêm ví',
     WALLET: 'Ví',
@@ -69,13 +77,21 @@ export const lang: Language = {
     LANGUAGE_MENU: 'Cài đặt ngôn ngữ',
     LANGUAGE_SETTING_TITLE: 'Chọn ngôn ngữ hiển thị',
     SECRET_PHRASE_MENU: 'Chuỗi khóa bí mật',
+    PASSCODE_MENU: 'Cài đặt mật khẩu ví',
     MNEMONIC_SETTING_TITLE: 'Chuỗi khóa bí mật',
     SHOW_SECRET_TEXT: 'Hiển thị chuỗi bí mật',
     ADDRESS_NAME: 'Tên hiển thị',
     ADDRESS_ADDRESS: 'Địa chỉ ví',
+    PASSCODE_SETTING_TITLE: 'Mật khẩu ví',
+    NEW_PASSCODE: 'Nhập mật khẩu ví',
+    CONFIRM_PASSCODE: 'Xác nhận mật khẩu ví',
+    CONFIRM_PASSCODE_NOT_MATCH: 'Xác nhận mật khẩu không đúng',
+    ENTER_PASSCODE: 'Nhập mật khẩu để tíếp tục',
+    INCORRECT_PASSCODE: 'Mật khẩu không đúng',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, có lỗi xảy ra.',
     ERROR_BOUNDARY_DESCRIPTION:
       'Chúng tôi rất xin lỗi vì sự bất tiện này. Lỗi đã được gửi cho admin để xử lý',
+    NOT_ENOUGH_BALANCE: 'Giao dịch vượt quá số tiền trong ví.',
   },
 };

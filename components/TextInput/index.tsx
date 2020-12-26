@@ -18,8 +18,19 @@ const CustomTextInput = ({
   placeholder,
   block,
   icons,
+  message = '',
 }: CustomTextInputProps) => {
   const theme = useContext(ThemeContext);
+
+  const renderMessage = () => {
+    if (!message) {
+      return;
+    }
+    if (typeof message === 'string') {
+      return <Text style={styles.errorMessage}>{message}</Text>;
+    }
+    return message();
+  };
 
   return (
     <>
@@ -29,7 +40,6 @@ const CustomTextInput = ({
         </Text>
       )}
       <View
-        removeClippedSubviews={false}
         style={[
           {flexDirection: 'row', alignItems: 'center'},
           block ? {width: '100%'} : null,
@@ -59,6 +69,7 @@ const CustomTextInput = ({
         )}
         {icons && icons()}
       </View>
+      {renderMessage()}
     </>
   );
 };

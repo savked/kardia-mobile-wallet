@@ -92,4 +92,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 100,
   },
+  confirmText: {
+    fontStyle: 'italic',
+  },
+  confirmContent: {
+    fontWeight: 'bold',
+  },
+  confirmGroup: {
+    flexDirection: 'row',
+    width: '100%',
+  },
+  confirmTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
 });

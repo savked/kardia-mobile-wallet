@@ -42,9 +42,17 @@ const SettingScreen = () => {
       <TouchableOpacity
         style={styles.settingItemContainer}
         onPress={() => navigation.navigate('MnemonicPhraseSetting')}>
-        <Icon name="lock" size={30} color={theme.textColor} />
+        <Icon name="low-vision" size={30} color={theme.textColor} />
         <Text style={[styles.settingTitle, {color: theme.textColor}]}>
           {getLanguageString(language, 'SECRET_PHRASE_MENU')}
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.settingItemContainer}
+        onPress={() => navigation.navigate('SettingPasscode')}>
+        <Icon name="lock" size={30} color={theme.textColor} />
+        <Text style={[styles.settingTitle, {color: theme.textColor}]}>
+          {getLanguageString(language, 'PASSCODE_MENU')}
         </Text>
       </TouchableOpacity>
     </SafeAreaView>

@@ -1,6 +1,7 @@
 import {lang} from '../lang';
 import US_LOCALE from 'date-fns/locale/en-US';
 import VI_LOCALE from 'date-fns/locale/vi';
+import {getErrorKey} from './error';
 
 export const getSupportedLanguage = (): Partial<Language>[] => {
   return Object.values(lang).map((item) => ({
@@ -39,4 +40,16 @@ export const getDateTimeFormat = (langKey: string) => {
   }
   const langObj = (lang as Record<string, any>)[langKey] as Language;
   return langObj.dateTimeFormat;
+};
+
+export const parseError = (errorMessage: string, langKey: string) => {
+  if (!(lang as Record<string, any>)[langKey]) {
+    return errorMessage;
+  }
+  const langObj = (lang as Record<string, any>)[langKey] as Language;
+  const key = getErrorKey(errorMessage);
+  if (!langObj.mapping[key]) {
+    return key;
+  }
+  return langObj.mapping[key];
 };

@@ -23,4 +23,8 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     right: 15,
   },
+  errorMessage: {
+    fontStyle: 'italic',
+    color: 'red',
+  },
 });
