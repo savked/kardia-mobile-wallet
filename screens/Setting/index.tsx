@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -26,34 +27,50 @@ const SettingScreen = () => {
       <TouchableOpacity
         style={styles.settingItemContainer}
         onPress={() => navigation.navigate('AddressBook')}>
-        <Icon name="address-book-o" size={30} color={theme.textColor} />
-        <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-          {getLanguageString(language, 'ADDRESS_BOOK_MENU')}
-        </Text>
+        <View style={{width: '10%', alignItems: 'center'}}>
+          <Icon name="address-book-o" size={30} color={theme.textColor} />
+        </View>
+        <View style={{width: '93%'}}>
+          <Text style={[styles.settingTitle, {color: theme.textColor}]}>
+            {getLanguageString(language, 'ADDRESS_BOOK_MENU')}
+          </Text>
+        </View>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.settingItemContainer}
         onPress={() => navigation.navigate('LanguageSetting')}>
-        <Icon name="language" size={30} color={theme.textColor} />
-        <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-          {getLanguageString(language, 'LANGUAGE_MENU')}
-        </Text>
+        <View style={{width: '10%', alignItems: 'center'}}>
+          <Icon name="language" size={30} color={theme.textColor} />
+        </View>
+        <View style={{width: '93%'}}>
+          <Text style={[styles.settingTitle, {color: theme.textColor}]}>
+            {getLanguageString(language, 'LANGUAGE_MENU')}
+          </Text>
+        </View>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.settingItemContainer}
         onPress={() => navigation.navigate('MnemonicPhraseSetting')}>
-        <Icon name="low-vision" size={30} color={theme.textColor} />
-        <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-          {getLanguageString(language, 'SECRET_PHRASE_MENU')}
-        </Text>
+        <View style={{width: '10%', alignItems: 'center'}}>
+          <Icon name="low-vision" size={27} color={theme.textColor} />
+        </View>
+        <View style={{width: '93%'}}>
+          <Text style={[styles.settingTitle, {color: theme.textColor}]}>
+            {getLanguageString(language, 'SECRET_PHRASE_MENU')}
+          </Text>
+        </View>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.settingItemContainer}
         onPress={() => navigation.navigate('SettingPasscode')}>
-        <Icon name="lock" size={30} color={theme.textColor} />
-        <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-          {getLanguageString(language, 'PASSCODE_MENU')}
-        </Text>
+        <View style={{width: '10%', alignItems: 'center'}}>
+          <Icon name="lock" size={30} color={theme.textColor} />
+        </View>
+        <View style={{width: '93%'}}>
+          <Text style={[styles.settingTitle, {color: theme.textColor}]}>
+            {getLanguageString(language, 'PASSCODE_MENU')}
+          </Text>
+        </View>
       </TouchableOpacity>
     </SafeAreaView>
   );

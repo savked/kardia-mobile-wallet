@@ -132,7 +132,7 @@ const SettingPasscode = () => {
       ]}>
       <View style={styles.settingItemContainer}>
         <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-          {getLanguageString(language, 'ADDRESS_BOOK_MENU')}
+          {getLanguageString(language, 'PASSCODE_SETTING_TRIGGER')}
         </Text>
         <ToggleSwitch
           isOn={enabled}
