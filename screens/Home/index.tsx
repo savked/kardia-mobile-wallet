@@ -94,44 +94,50 @@ const HomeScreen = () => {
     }
   };
 
+  if (showImportModal) {
+    return (
+      <ImportModal
+        onClose={() => setShowImportModal(false)}
+        onSuccessScan={onSuccessScan}
+      />
+    );
+  }
+
+  if (showPasscodeRemindModal) {
+    return (
+      <Modal
+        showCloseButton={false}
+        contentStyle={{flex: 0.3, marginTop: viewportHeight / 3}}
+        visible={true}
+        onClose={() => setShowPasscodeRemindModal(false)}>
+        <Text>{getLanguageString(language, 'NO_PASSCODE')}</Text>
+        <Text>{getLanguageString(language, 'PASSCODE_DESCRIPTION')}</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-evenly',
+          }}>
+          <Button
+            type="ghost"
+            title={getLanguageString(language, 'LATER')}
+            onPress={() => setShowPasscodeRemindModal(false)}
+          />
+          <Button
+            type="primary"
+            title={getLanguageString(language, 'SET_APP_PASSCODE')}
+            onPress={() => {
+              setShowPasscodeRemindModal(false);
+              navigation.navigate('Setting', {screen: 'SettingPasscode'});
+            }}
+          />
+        </View>
+      </Modal>
+    );
+  }
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
-      {showImportModal && (
-        <ImportModal
-          onClose={() => setShowImportModal(false)}
-          onSuccessScan={onSuccessScan}
-        />
-      )}
-      {showPasscodeRemindModal && (
-        <Modal
-          showCloseButton={false}
-          contentStyle={{flex: 0.3, marginTop: viewportHeight / 3}}
-          visible={true}
-          onClose={() => setShowPasscodeRemindModal(false)}>
-          <Text>{getLanguageString(language, 'NO_PASSCODE')}</Text>
-          <Text>{getLanguageString(language, 'PASSCODE_DESCRIPTION')}</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              justifyContent: 'space-evenly',
-            }}>
-            <Button
-              type="ghost"
-              title={getLanguageString(language, 'LATER')}
-              onPress={() => setShowPasscodeRemindModal(false)}
-            />
-            <Button
-              type="primary"
-              title={getLanguageString(language, 'SET_APP_PASSCODE')}
-              onPress={() => {
-                setShowPasscodeRemindModal(false);
-                navigation.navigate('Setting', {screen: 'SettingPasscode'});
-              }}
-            />
-          </View>
-        </Modal>
-      )}
       <HomeHeader />
       <View style={[styles.bodyContainer]}>
         <CardSliderSection
