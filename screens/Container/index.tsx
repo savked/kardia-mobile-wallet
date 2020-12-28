@@ -11,6 +11,7 @@ import NewsScreen from '../News';
 import TransactionStackScreen from '../../TransactionStack';
 import {
   getAddressBook,
+  getAppPasscodeSetting,
   getLanguageSetting,
   getSelectedWallet,
   getWallets,
@@ -94,6 +95,7 @@ const AppContainer = () => {
   );
   const setLanguage = useSetRecoilState(languageAtom);
   const isLocalAuthed = useRecoilValue(localAuthAtom);
+  const [localAuthEnabled, setLocalAuthEnabled] = useState(true);
   const [inited, setInited] = useState(0);
 
   const theme = useContext(ThemeContext);
@@ -109,6 +111,12 @@ const AppContainer = () => {
 
   useEffect(() => {
     (async () => {
+      // Get local auth setting
+      const enabled = await getAppPasscodeSetting();
+      if (!enabled) {
+        setLocalAuthEnabled(false);
+      }
+
       // Get local wallets data
       try {
         let localWallets = await getWallets();
@@ -147,6 +155,7 @@ const AppContainer = () => {
       // Get language setting
       const languageSetting = await getLanguageSetting();
       languageSetting && setLanguage(languageSetting);
+
       setInited(1);
     })();
   }, [
@@ -206,7 +215,7 @@ const AppContainer = () => {
     );
   }
 
-  if (!isLocalAuthed) {
+  if (!isLocalAuthed && localAuthEnabled) {
     return <ConfirmPasscode />;
   }
 
