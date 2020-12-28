@@ -18,7 +18,7 @@ export const lang: Language = {
     COPY_TO_CLIPBOARD: 'Copy to clipboard',
     SECOND: 'sec',
     RESTART_APP_DESCRIPTION:
-      'Kardia Wallet will restart to ensure your wallet is properly imported',
+      'Kardia Wallet will restart to ensure everything works properly',
     ARE_YOU_SURE: 'Are you sure ?',
     SAVE: 'Save',
     CLOSE: 'Close',
@@ -84,6 +84,7 @@ export const lang: Language = {
     ADDRESS_NAME: 'Name',
     ADDRESS_ADDRESS: 'Address',
     PASSCODE_SETTING_TITLE: 'App passcode',
+    PASSCODE_SETTING_TRIGGER: 'Enable app passcode',
     NEW_PASSCODE: 'Enter new passcode',
     CONFIRM_PASSCODE: 'Confirm new passcode',
     CONFIRM_PASSCODE_NOT_MATCH: 'Confirmation passcode does NOT match',

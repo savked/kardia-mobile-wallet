@@ -83,6 +83,7 @@ export const lang: Language = {
     ADDRESS_NAME: 'Tên hiển thị',
     ADDRESS_ADDRESS: 'Địa chỉ ví',
     PASSCODE_SETTING_TITLE: 'Mật khẩu ví',
+    PASSCODE_SETTING_TRIGGER: 'Bật mật khẩu ví',
     NEW_PASSCODE: 'Nhập mật khẩu ví',
     CONFIRM_PASSCODE: 'Xác nhận mật khẩu ví',
     CONFIRM_PASSCODE_NOT_MATCH: 'Xác nhận mật khẩu không đúng',

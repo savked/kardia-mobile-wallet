@@ -209,12 +209,12 @@ const CardSliderSection = ({
           iconSize={90}
           onClose={() => setRemoveIndex(-1)}
           cancelText={getLanguageString(language, 'GO_BACK')}
-          okText={getLanguageString(language, 'SUBMIT')}
+          okText={getLanguageString(language, 'CONFIRM')}
           onOK={removeWallet}>
           <Text style={{textAlign: 'center', fontSize: 22, fontWeight: 'bold'}}>
             {getLanguageString(language, 'ARE_YOU_SURE')}
           </Text>
-          <Text style={{fontStyle: 'italic'}}>
+          <Text style={{fontStyle: 'italic', textAlign: 'center'}}>
             {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
           </Text>
         </AlertModal>
