@@ -45,16 +45,16 @@ const Welcome = () => {
       <View style={{height: 140, justifyContent: 'space-evenly'}}>
         <Button
           size="large"
+          title={getLanguageString(language, 'IMPORT_WALLET')}
+          type="secondary"
+          onPress={() => navigation.navigate('ImportMnemonic')}
+        />
+        <Button
+          size="large"
           title={getLanguageString(language, 'CREATE_NEW_WALLET')}
           type="primary"
           onPress={() => navigation.navigate('CreateWallet')}
           style={{width: 300}}
-        />
-        <Button
-          size="large"
-          title={getLanguageString(language, 'IMPORT_WALLET')}
-          type="secondary"
-          onPress={() => navigation.navigate('ImportMnemonic')}
         />
       </View>
     </SafeAreaView>
