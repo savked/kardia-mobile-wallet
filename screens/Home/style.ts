@@ -126,4 +126,13 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
   },
+  scanContainer: {
+    zIndex: 9999,
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+  },
 });

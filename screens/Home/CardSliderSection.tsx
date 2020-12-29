@@ -44,7 +44,13 @@ const CardSliderSection = ({
   const language = useRecoilValue(languageAtom);
 
   function send() {
-    navigation.navigate('Transaction', {screen: 'CreateTx', initial: false});
+    navigation.navigate('Transaction', {
+      screen: 'CreateTx',
+      initial: false,
+      params: {
+        from: 'Home',
+      },
+    });
   }
 
   const renderWalletItem = ({item: wallet}: any) => {

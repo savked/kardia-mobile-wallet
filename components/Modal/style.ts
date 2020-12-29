@@ -15,9 +15,10 @@ export const styles = StyleSheet.create({
     zIndex: 9999,
   },
   modalView: {
-    marginHorizontal: 20,
+    flex: 1,
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
     padding: 35,
     alignItems: 'center',
     justifyContent: 'space-between',

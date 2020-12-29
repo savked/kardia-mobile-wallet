@@ -5,10 +5,8 @@ import QRCode from 'react-native-qrcode-svg';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import {getLanguageString} from '../../utils/lang';
-import {copyToClipboard} from '../../utils/string';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -20,12 +18,14 @@ const QRModal = ({onClose}: {onClose: () => void}) => {
   return (
     <Modal
       visible={true}
-      showCloseButton={false}
+      showCloseButton={true}
       contentStyle={{
-        paddingHorizontal: 24,
+        paddingHorizontal: 0,
       }}
       onClose={onClose}>
-      <Text>{getLanguageString(language, 'SCAN_QR_FOR_ADDRESS')}</Text>
+      <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+        {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS')}
+      </Text>
       <View style={{paddingVertical: 14}}>
         <QRCode
           size={viewportWidth / 2}
@@ -35,26 +35,6 @@ const QRModal = ({onClose}: {onClose: () => void}) => {
           logoSize={22}
           logoMargin={2}
           logoBorderRadius={20}
-        />
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-          width: '100%',
-        }}>
-        <Button
-          size="large"
-          title={getLanguageString(language, 'COPY_TO_CLIPBOARD')}
-          type="secondary"
-          onPress={() => copyToClipboard(wallets[selectedWallet].address)}
-          iconName="copy"
-        />
-        <Button
-          size="large"
-          title={getLanguageString(language, 'CLOSE')}
-          type="primary"
-          onPress={onClose}
         />
       </View>
     </Modal>

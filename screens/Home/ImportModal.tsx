@@ -28,8 +28,8 @@ const ImportModal = ({
       <Modal
         visible={true}
         onClose={onClose}
-        showCloseButton={false}
-        contentStyle={{justifyContent: 'space-around', flex: 0.5}}>
+        showCloseButton={true}
+        contentStyle={{justifyContent: 'space-around'}}>
         <Text style={{fontSize: 22}}>
           {getLanguageString(language, 'ENTER_SEED_PHRASE')}
         </Text>
@@ -43,7 +43,7 @@ const ImportModal = ({
         <Button
           block
           title={getLanguageString(language, 'SCAN_SEED_PHRASE')}
-          type="ghost"
+          type="secondary"
           iconName="qrcode"
           onPress={() => setShowScanner(true)}
         />
@@ -54,12 +54,7 @@ const ImportModal = ({
             width: '100%',
           }}>
           <Button
-            title={getLanguageString(language, 'GO_BACK')}
-            type="secondary"
-            onPress={onClose}
-            size="large"
-          />
-          <Button
+            block
             title={getLanguageString(language, 'IMPORT')}
             type="primary"
             onPress={onClose}
@@ -71,7 +66,7 @@ const ImportModal = ({
   }
 
   return (
-    <>
+    <View style={styles.scanContainer}>
       <View style={styles.qrScannerHeader}>
         <Text style={styles.centerText}>
           {getLanguageString(language, 'SCAN_SEED_PHRASE')}
@@ -81,7 +76,7 @@ const ImportModal = ({
       <View style={styles.qrScannerFooter}>
         <Button size="large" title="Cancel" onPress={onClose} />
       </View>
-    </>
+    </View>
   );
 };
 
