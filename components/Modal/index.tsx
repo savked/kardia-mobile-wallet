@@ -5,6 +5,7 @@ import {
   Keyboard,
   Modal,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import {BlurView} from '@react-native-community/blur';
@@ -48,29 +49,31 @@ const CustomModal = ({
 
   return (
     <BlurView blurType="dark" blurAmount={50} style={styles.absolute}>
-      <TouchableOpacity onPress={onClose}>
-        <Modal
-          animationType={animationType}
-          transparent={true}
-          visible={visible}
-          onRequestClose={onClose}>
-          <View style={[styles.modalView, {marginTop}, contentStyle]}>
-            {children}
-            {showCloseButton && (
-              <IconButton
-                onPress={onClose}
-                name="close"
-                size={24}
-                style={{
-                  position: 'absolute',
-                  top: 20,
-                  right: 20,
-                }}
-              />
-            )}
-          </View>
-        </Modal>
-      </TouchableOpacity>
+      <Modal
+        animationType={animationType}
+        transparent={true}
+        visible={visible}
+        onRequestClose={onClose}>
+        <TouchableOpacity style={styles.contaner} onPress={onClose}>
+          <TouchableWithoutFeedback onPress={() => {}}>
+            <View style={[styles.modalView, {marginTop}, contentStyle]}>
+              {children}
+              {showCloseButton && (
+                <IconButton
+                  onPress={onClose}
+                  name="close"
+                  size={24}
+                  style={{
+                    position: 'absolute',
+                    top: 20,
+                    right: 20,
+                  }}
+                />
+              )}
+            </View>
+          </TouchableWithoutFeedback>
+        </TouchableOpacity>
+      </Modal>
     </BlurView>
   );
 };

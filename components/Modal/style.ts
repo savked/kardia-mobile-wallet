@@ -14,9 +14,13 @@ export const styles = StyleSheet.create({
     right: 0,
     zIndex: 9999,
   },
+  contaner: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
   modalView: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#FFFFFF',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     padding: 35,
