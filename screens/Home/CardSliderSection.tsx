@@ -217,7 +217,13 @@ const CardSliderSection = ({
           cancelText={getLanguageString(language, 'GO_BACK')}
           okText={getLanguageString(language, 'CONFIRM')}
           onOK={removeWallet}>
-          <Text style={{textAlign: 'center', fontSize: 22, fontWeight: 'bold'}}>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 22,
+              fontWeight: 'bold',
+              marginBottom: 20,
+            }}>
             {getLanguageString(language, 'ARE_YOU_SURE')}
           </Text>
           <Text style={{fontStyle: 'italic', textAlign: 'center'}}>
