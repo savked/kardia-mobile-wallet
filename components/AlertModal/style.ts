@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   },
   modalContent: {
     justifyContent: 'space-around',
-    flex: 0.5,
+    flex: 1,
   },
   buttonGroup: {
     flexDirection: 'row',

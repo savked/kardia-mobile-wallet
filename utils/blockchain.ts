@@ -4,6 +4,7 @@ import * as Bip39 from 'bip39';
 import {hdkey} from 'ethereumjs-wallet';
 import * as Sentry from '@sentry/react-native';
 import EtherWallet from 'ethereumjs-wallet';
+import {ethers} from 'ethers';
 
 export const getWalletFromPK = (privateKey: string) => {
   const privateKeyBuffer = EthUtil.toBuffer(privateKey);
@@ -40,6 +41,6 @@ export const generateWallet = () => {
 };
 
 export const generateMnemonic = () => {
-  const strength = 256;
-  return Bip39.generateMnemonic(strength);
+  const wallet = ethers.Wallet.createRandom();
+  return wallet.mnemonic.phrase;
 };

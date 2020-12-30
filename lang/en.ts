@@ -32,7 +32,7 @@ export const lang: Language = {
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now',
     MNEMONIC_DESCRIPTION:
-      'Above 24 words will be used to recover as well as access your wallet.',
+      'Above 12 words will be used to recover as well as access your wallet.',
     // Import wallet key:
     ENTER_SEED_PHRASE: 'Enter secret phrase',
     SCAN_SEED_PHRASE: 'Scan QR code for mnemonic phrase',
