@@ -4,12 +4,12 @@ import {View, Text, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import Button from '../../components/Button';
 import ErrorMessage from '../../components/ErrorMessage';
 import {useNavigation} from '@react-navigation/native';
+import {ethers} from 'ethers';
 import {styles} from './style';
 import * as Bip39 from 'bip39';
 import {walletsAtom} from '../../atoms/wallets';
 import {saveMnemonic, saveWallets} from '../../utils/local';
 import {useRecoilState, useRecoilValue} from 'recoil';
-import {hdkey} from 'ethereumjs-wallet';
 import CustomTextInput from '../../components/TextInput';
 import {ThemeContext} from '../../App';
 import {languageAtom} from '../../atoms/language';
@@ -34,11 +34,9 @@ const ImportMnemonic = () => {
         setLoading(false);
         return;
       }
-      const seed = await Bip39.mnemonicToSeed(mnemonic.trim());
-      const root = hdkey.fromMasterSeed(seed);
-      const masterWallet = root.getWallet();
-      const privateKey = masterWallet.getPrivateKeyString();
-      const walletAddress = masterWallet.getChecksumAddressString();
+      const _wallet = ethers.Wallet.fromMnemonic(mnemonic.trim());
+      const privateKey = _wallet.privateKey;
+      const walletAddress = _wallet.address;
       const wallet: Wallet = {
         privateKey: privateKey,
         address: walletAddress,

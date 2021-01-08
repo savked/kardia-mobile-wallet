@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {StyleProp, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {styles} from './style';
 
@@ -9,9 +9,10 @@ const IconButton = ({
   color,
   onPress,
   badge = 0,
-}: IconButtonProps) => {
+  style,
+}: IconButtonProps & {style: StyleProp<ViewStyle>}) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} style={style}>
       <Icon name={name} size={size} color={color} />
       {badge !== 0 && badge !== '0' && (
         <View style={styles.badgeContainer}>

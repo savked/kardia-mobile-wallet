@@ -5,12 +5,16 @@ export const styles = StyleSheet.create({
     fontSize: 20,
   },
   modalContent: {
-    justifyContent: 'space-around',
-    flex: 0.5,
+    justifyContent: 'center',
+    flex: 1,
   },
   buttonGroup: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     width: '100%',
+    marginVertical: 24,
+  },
+  iconContainer: {
+    marginBottom: 20,
   },
 });

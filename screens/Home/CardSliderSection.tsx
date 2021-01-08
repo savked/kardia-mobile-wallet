@@ -44,7 +44,13 @@ const CardSliderSection = ({
   const language = useRecoilValue(languageAtom);
 
   function send() {
-    navigation.navigate('Transaction', {screen: 'CreateTx', initial: false});
+    navigation.navigate('Transaction', {
+      screen: 'CreateTx',
+      initial: false,
+      params: {
+        from: 'Home',
+      },
+    });
   }
 
   const renderWalletItem = ({item: wallet}: any) => {
@@ -211,7 +217,13 @@ const CardSliderSection = ({
           cancelText={getLanguageString(language, 'GO_BACK')}
           okText={getLanguageString(language, 'CONFIRM')}
           onOK={removeWallet}>
-          <Text style={{textAlign: 'center', fontSize: 22, fontWeight: 'bold'}}>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 22,
+              fontWeight: 'bold',
+              marginBottom: 20,
+            }}>
             {getLanguageString(language, 'ARE_YOU_SURE')}
           </Text>
           <Text style={{fontStyle: 'italic', textAlign: 'center'}}>

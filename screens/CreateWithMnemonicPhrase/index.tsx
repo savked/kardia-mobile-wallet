@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import {styles} from './style';
 import Button from '../../components/Button';
 import {generateMnemonic, getWalletFromMnemonic} from '../../utils/blockchain';
@@ -94,6 +94,15 @@ const CreateWithMnemonicPhrase = () => {
     }
   };
 
+  if (!mnemonic) {
+    return (
+      <View
+        style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <ActivityIndicator color={theme.textColor} size={40} />
+      </View>
+    );
+  }
+
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <List
@@ -104,7 +113,7 @@ const CreateWithMnemonicPhrase = () => {
           alignItems: 'center',
         }}
         listStyle={{
-          maxHeight: 390,
+          maxHeight: 280,
         }}
         render={(item, index) => {
           return (

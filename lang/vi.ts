@@ -32,7 +32,7 @@ export const lang: Language = {
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
-      '24 từ trên được dùng để  truy cập cũng như khôi phục lại ví của bạn.',
+      '12 từ trên được dùng để  truy cập cũng như khôi phục lại ví của bạn.',
     // Import wallet key:
     ENTER_SEED_PHRASE: 'Nhập chuỗi từ khóa bí mật',
     SCAN_SEED_PHRASE: 'Quét mã QR chứa chuỗi khóa bí mật',

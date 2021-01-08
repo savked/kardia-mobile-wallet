@@ -9,17 +9,39 @@ const getIcon = (type: string, iconSize = 140) => {
   switch (type) {
     case 'success':
       return (
-        <FeatherIcon name={'check-circle'} size={iconSize} color="green" />
+        <FeatherIcon
+          style={styles.iconContainer}
+          name={'check-circle'}
+          size={iconSize}
+          color="green"
+        />
       );
     case 'warning':
       return (
-        <FeatherIcon name={'alert-triangle'} size={iconSize} color="#F8BC87" />
+        <FeatherIcon
+          style={styles.iconContainer}
+          name={'alert-triangle'}
+          size={iconSize}
+          color="#F8BC87"
+        />
       );
     case 'error':
-      return <FeatherIcon name={'x-circle'} size={iconSize} color="red" />;
+      return (
+        <FeatherIcon
+          style={styles.iconContainer}
+          name={'x-circle'}
+          size={iconSize}
+          color="red"
+        />
+      );
     case 'confirm':
       return (
-        <FeatherIcon name={'help-circle'} size={iconSize} color="#868a83" />
+        <FeatherIcon
+          style={styles.iconContainer}
+          name={'help-circle'}
+          size={iconSize}
+          color="#868a83"
+        />
       );
     default:
       return null;
