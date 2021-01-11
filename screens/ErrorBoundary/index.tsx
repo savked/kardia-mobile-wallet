@@ -3,7 +3,6 @@ import React from 'react';
 import {View, Text, SafeAreaView} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/Ionicons';
 import RNRestart from 'react-native-restart';
-import * as Sentry from '@sentry/react-native';
 // some stylesheet
 import {styles} from './style';
 // some button component
@@ -20,7 +19,7 @@ class ErrorBoundary extends React.Component<any, any> {
   };
 
   static getDerivedStateFromError(error: any) {
-    Sentry.captureException(error);
+    console.error(error);
     return {error: true};
   }
 

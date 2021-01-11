@@ -3,7 +3,6 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
 import {formatDistanceToNowStrict, isSameDay, format} from 'date-fns';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
-import * as Sentry from '@sentry/react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import {ThemeContext} from '../../App';
 import List from '../../components/List';
@@ -53,7 +52,7 @@ const TxListSection = () => {
       );
       setTxList(newTxList.map(parseTXForList));
     } catch (error) {
-      Sentry.captureException(error);
+      console.error(error);
     }
   };
 

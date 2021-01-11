@@ -11,7 +11,6 @@ import TextInput from '../../components/TextInput';
 import {truncate} from '../../utils/string';
 import {styles} from './style';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import * as Sentry from '@sentry/react-native';
 import {getTxByAddress} from '../../services/transaction';
 import {parseKaiBalance} from '../../utils/number';
 import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
@@ -62,7 +61,7 @@ const TransactionScreen = () => {
       );
       setTxList(newTxList.map(parseTXForList));
     } catch (error) {
-      Sentry.captureException(error);
+      console.error(error);
     }
   };
 

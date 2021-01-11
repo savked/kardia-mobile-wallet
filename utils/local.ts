@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Sentry from '@sentry/react-native';
 
 export const getWallets = async () => {
   try {
@@ -8,14 +7,14 @@ export const getWallets = async () => {
       // value previously stored
       const wallets = JSON.parse(value);
       if (!Array.isArray(wallets)) {
-        Sentry.captureMessage('Invalid local data');
+        console.log('Invalid local data');
         return [];
       }
       return wallets;
     }
     return [];
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return [];
     // error reading value
   }
@@ -26,7 +25,7 @@ export const saveWallets = async (wallets: Wallet[]) => {
     await AsyncStorage.setItem('@kardia_wallets', JSON.stringify(wallets));
     return true;
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return false;
   }
 };
@@ -36,7 +35,7 @@ export const saveSelectedWallet = async (selectedWallet: number) => {
     await AsyncStorage.setItem('@kardia_selected_wallet', `${selectedWallet}`);
     return true;
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return false;
   }
 };
@@ -50,7 +49,7 @@ export const getSelectedWallet = async () => {
     }
     return 0;
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return 0;
     // error reading value
   }
@@ -61,7 +60,7 @@ export const clearLocalData = async (key: string) => {
     await AsyncStorage.removeItem(key);
     return true;
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return false;
   }
 };
@@ -71,7 +70,7 @@ export const clearLocalWallets = async () => {
     await clearLocalData('@kardia_wallets');
     return true;
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return false;
   }
 };
@@ -84,7 +83,7 @@ export const saveAddressBook = async (addressBook: Address[]) => {
     );
     return true;
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return false;
   }
 };
@@ -96,14 +95,14 @@ export const getAddressBook = async () => {
       // value previously stored
       const addressBook = JSON.parse(value);
       if (!Array.isArray(addressBook)) {
-        Sentry.captureMessage('Invalid local data');
+        console.log('Invalid local data');
         return [];
       }
       return addressBook;
     }
     return [];
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return [];
     // error reading value
   }
@@ -114,7 +113,7 @@ export const saveLanguageSetting = async (lang: string) => {
     await AsyncStorage.setItem('@kardia_language_setting', lang);
     return true;
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return false;
   }
 };
@@ -127,7 +126,7 @@ export const getLanguageSetting = async () => {
     }
     return '';
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return '';
     // error reading value
   }
@@ -138,7 +137,7 @@ export const saveMnemonic = async (address: string, mnemonic: string) => {
     await AsyncStorage.setItem(`@kardia_mnemonic_${address}`, mnemonic);
     return true;
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return false;
   }
 };
@@ -151,7 +150,7 @@ export const getMnemonic = async (address: string) => {
     }
     return '';
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return '';
     // error reading value
   }
@@ -162,7 +161,7 @@ export const saveAppPasscode = async (passcode: string) => {
     await AsyncStorage.setItem('@kardia_app_passcode', passcode);
     return true;
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return false;
   }
 };
@@ -175,7 +174,7 @@ export const getAppPasscode = async () => {
     }
     return '';
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return '';
     // error reading value
   }
@@ -192,7 +191,7 @@ export const getAppPasscodeSetting = async () => {
     }
     return false;
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return false;
     // error reading value
   }
@@ -206,7 +205,7 @@ export const saveAppPasscodeSetting = async (on: boolean) => {
     );
     return true;
   } catch (e) {
-    Sentry.captureException(e);
+    console.error(e);
     return false;
   }
 };

@@ -7,7 +7,6 @@ import HomeHeader from './Header';
 import * as Bip39 from 'bip39';
 import {hdkey} from 'ethereumjs-wallet';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
-import * as Sentry from '@sentry/react-native';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {saveMnemonic, saveSelectedWallet, saveWallets} from '../../utils/local';
 import AlertModal from '../../components/AlertModal';
@@ -90,7 +89,6 @@ const HomeScreen = () => {
       setMnemonic('');
     } catch (error) {
       console.error(error);
-      Sentry.captureException(error);
     }
   };
 
