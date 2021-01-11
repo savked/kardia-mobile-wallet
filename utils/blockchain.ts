@@ -2,7 +2,6 @@ import '@ethersproject/shims';
 import * as EthUtil from 'ethereumjs-util';
 import * as Bip39 from 'bip39';
 import {hdkey} from 'ethereumjs-wallet';
-import * as Sentry from '@sentry/react-native';
 import EtherWallet from 'ethereumjs-wallet';
 import {ethers} from 'ethers';
 
@@ -26,7 +25,7 @@ export const getWalletFromMnemonic = async (
       balance: 0,
     };
   } catch (error) {
-    Sentry.captureException(error);
+    console.error(error);
     return false;
   }
 };

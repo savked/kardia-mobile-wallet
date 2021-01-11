@@ -10,7 +10,6 @@ import {
   Dimensions,
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import * as Sentry from '@sentry/react-native';
 import {styles} from './style';
 import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
@@ -79,7 +78,7 @@ const CreateTxScreen = () => {
       setSuccessHash(txHash);
       setLoading(false);
     } catch (err) {
-      Sentry.captureException(err);
+      console.error(err);
       if (err.message) {
         setError(parseError(err.message, language));
       } else {

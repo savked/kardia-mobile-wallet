@@ -2,7 +2,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import OtpInputs from 'react-native-otp-inputs';
-import * as Sentry from '@sentry/react-native';
 import TouchID from 'react-native-touch-id';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
@@ -62,7 +61,6 @@ const ConfirmPasscode = () => {
       .catch((err: any) => {
         // Failure code
         console.log(err);
-        Sentry.captureException(err);
       });
   };
 

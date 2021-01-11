@@ -10,7 +10,7 @@ const IconButton = ({
   onPress,
   badge = 0,
   style,
-}: IconButtonProps & {style: StyleProp<ViewStyle>}) => {
+}: IconButtonProps & {style?: StyleProp<ViewStyle>}) => {
   return (
     <TouchableOpacity onPress={onPress} style={style}>
       <Icon name={name} size={size} color={color} />
