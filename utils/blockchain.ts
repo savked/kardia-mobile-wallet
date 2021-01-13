@@ -1,7 +1,5 @@
 import '@ethersproject/shims';
 import * as EthUtil from 'ethereumjs-util';
-import * as Bip39 from 'bip39';
-import {hdkey} from 'ethereumjs-wallet';
 import EtherWallet from 'ethereumjs-wallet';
 import {ethers} from 'ethers';
 
@@ -14,11 +12,10 @@ export const getWalletFromMnemonic = async (
   mnemonic: string,
 ): Promise<Wallet | false> => {
   try {
-    const seed = await Bip39.mnemonicToSeed(mnemonic);
-    const root = hdkey.fromMasterSeed(seed);
-    const masterWallet = root.getWallet();
-    const privateKey = masterWallet.getPrivateKeyString();
-    const addressStr = masterWallet.getChecksumAddressString();
+    const wallet = ethers.Wallet.fromMnemonic(mnemonic.trim());
+    const privateKey = wallet.privateKey;
+    const addressStr = wallet.address;
+
     return {
       address: addressStr,
       privateKey,
