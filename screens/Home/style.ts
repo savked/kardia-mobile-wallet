@@ -38,6 +38,7 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
+    marginRight: 8,
   },
   kaiCardBalanceText: {
     fontSize: 18,

@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import Button from '../../components/Button';
 import {parseKaiBalance} from '../../utils/number';
-import {truncate} from '../../utils/string';
+import {copyToClipboard, truncate} from '../../utils/string';
 import {styles} from './style';
 import {saveSelectedWallet, saveWallets} from '../../utils/local';
 import {useNavigation} from '@react-navigation/native';
@@ -23,6 +23,7 @@ import {tokenInfoAtom} from '../../atoms/token';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
 import AlertModal from '../../components/AlertModal';
+import IconButton from '../../components/IconButton';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -52,7 +53,6 @@ const CardSliderSection = ({
       },
     });
   }
-
   const renderWalletItem = ({item: wallet}: any) => {
     return (
       <View style={styles.kaiCardContainer}>
@@ -66,9 +66,21 @@ const CardSliderSection = ({
               <Text style={styles.kaiCardText}>
                 {getLanguageString(language, 'ADDRESS')}:
               </Text>
-              <Text style={styles.kaiCardText}>
-                {truncate(wallet.address, 8, 10)}
-              </Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={styles.kaiCardText}>
+                  {truncate(
+                    wallet.address,
+                    viewportWidth >= 432 ? 14 : 8,
+                    viewportWidth >= 432 ? 14 : 10,
+                  )}
+                </Text>
+                <IconButton
+                  color={'#FFFFFF'}
+                  name="copy"
+                  size={16}
+                  onPress={() => copyToClipboard(wallet.address)}
+                />
+              </View>
             </View>
             <Menu>
               <MenuTrigger
