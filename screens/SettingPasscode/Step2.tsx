@@ -37,12 +37,13 @@ const Step2 = ({
       </Text>
       <View style={{marginBottom: 40}}>
         <OtpInputs
-          keyboardType="phone-pad"
+          keyboardType="numbers-and-punctuation"
           handleChange={setPasscode}
           numberOfInputs={4}
           autofillFromClipboard={false}
           style={styles.otpContainer}
           inputStyles={styles.otpInput}
+          secureTextEntry={true}
         />
         {error !== '' && (
           <Text

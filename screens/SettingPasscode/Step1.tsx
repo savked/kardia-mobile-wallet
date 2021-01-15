@@ -20,12 +20,13 @@ const Step1 = ({onSubmit}: {onSubmit: (passcode: string) => void}) => {
       </Text>
       <View style={{marginBottom: 40}}>
         <OtpInputs
-          keyboardType="phone-pad"
+          keyboardType="numbers-and-punctuation"
           handleChange={setPasscode}
           numberOfInputs={4}
           autofillFromClipboard={false}
           style={styles.otpContainer}
           inputStyles={styles.otpInput}
+          secureTextEntry={true}
         />
       </View>
       <View>
