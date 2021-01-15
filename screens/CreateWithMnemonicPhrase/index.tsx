@@ -29,17 +29,19 @@ const CreateWithMnemonicPhrase = () => {
 
   const handleAccess = async () => {
     setLoading(true);
-    const newWallet = await getWalletFromMnemonic(mnemonic.trim());
-    if (!newWallet) {
-      setMnemonicError('Error happen!');
-      return;
-    }
-    await saveMnemonic(newWallet.address, mnemonic.trim());
-    const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
-    _wallets.push(newWallet as Wallet);
-    await saveWallets(_wallets);
-    setLoading(false);
-    setWallets(_wallets);
+    setTimeout(async () => {
+      const newWallet = await getWalletFromMnemonic(mnemonic.trim());
+      if (!newWallet) {
+        setMnemonicError('Error happen!');
+        return;
+      }
+      await saveMnemonic(newWallet.address, mnemonic.trim());
+      const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
+      _wallets.push(newWallet as Wallet);
+      await saveWallets(_wallets);
+      setLoading(false);
+      setWallets(_wallets);
+    }, 1);
   };
 
   const mnemonicArr = mnemonic.split(' ').map((item) => ({

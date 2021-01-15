@@ -330,7 +330,10 @@ const CreateTxScreen = () => {
             title={getLanguageString(language, 'GO_BACK').toUpperCase()}
             onPress={() => {
               if (params && (params as any).from === 'Home') {
-                navigation.navigate('Home');
+                navigation.reset({
+                  index: 0,
+                  routes: [{name: 'Home'}],
+                });
               } else {
                 navigation.goBack();
               }
