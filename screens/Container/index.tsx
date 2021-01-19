@@ -29,6 +29,8 @@ import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import {localAuthAtom} from '../../atoms/localAuth';
 import ConfirmPasscode from '../ConfirmPasscode';
+// import DAppScreen from '../DApp';
+import StakingScreen from '../Staking';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -51,6 +53,8 @@ const Wrap = () => {
             iconName = 'th-large';
           } else if (route.name === 'Setting') {
             iconName = 'cog';
+          } else if (route.name === 'Staking') {
+            iconName = 'bank';
           }
 
           // You can return any component that you like here!
@@ -79,6 +83,7 @@ const Wrap = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Transaction" component={TransactionStackScreen} />
       {/* <Tab.Screen name="DApp" component={DAppScreen} /> */}
+      <Tab.Screen name="Staking" component={StakingScreen} />
       <Tab.Screen name="News" component={NewsScreen} />
       <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>

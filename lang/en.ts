@@ -76,6 +76,8 @@ export const lang: Language = {
     REMOVE_WALLET: 'Remove wallet',
     // News key
     NEWS_SCREEN_TITLE: 'News',
+    // Staking key
+    STAKING_SCREEN_TITLE: 'Staking',
     // Setting key
     SETTING_SCREEN_TITLE: 'Setting',
     ADDRESS_BOOK_MENU: 'Address book',

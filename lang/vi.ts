@@ -75,6 +75,8 @@ export const lang: Language = {
     REMOVE_WALLET: 'Xóa ví',
     // News key
     NEWS_SCREEN_TITLE: 'Tin tức',
+    // Staking key
+    STAKING_SCREEN_TITLE: 'Staking',
     // Setting key
     SETTING_SCREEN_TITLE: 'Cài đặt',
     ADDRESS_BOOK_MENU: 'Danh bạ ví',
