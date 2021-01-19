@@ -5,7 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
 import * as Bip39 from 'bip39';
-import {hdkey} from 'ethereumjs-wallet';
+import {ethers} from 'ethers';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {saveMnemonic, saveSelectedWallet, saveWallets} from '../../utils/local';
@@ -21,6 +21,7 @@ import Button from '../../components/Button';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
 import {useNavigation} from '@react-navigation/native';
+import {getWalletFromPK} from '../../utils/blockchain';
 
 const {height: viewportHeight} = Dimensions.get('window');
 
@@ -32,7 +33,9 @@ const HomeScreen = () => {
   const [scanMessage, setScanMessage] = useState('');
   const [scanType, setScanType] = useState('warning');
   const [mnemonic, setMnemonic] = useState('');
+  const [privateKey, setPrivateKey] = useState('');
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
+  const [processing, setProcessing] = useState(false);
 
   const setWallets = useSetRecoilState(walletsAtom);
   const setSelectedWallet = useSetRecoilState(selectedWalletAtom);
@@ -41,29 +44,34 @@ const HomeScreen = () => {
   const language = useRecoilValue(languageAtom);
   const navigation = useNavigation();
 
-  const onSuccessScan = (e: any) => {
+  const onSuccessScan = (e: any, type: string) => {
     setShowImportModal(false);
     if (e.data === '') {
       Alert.alert('Invalid QR code');
       return;
     }
-    setMnemonic(e.data);
+    if (type === 'mnemonic') {
+      setPrivateKey('');
+      setMnemonic(e.data);
+    } else {
+      setPrivateKey(e.data);
+      setMnemonic('');
+    }
   };
 
-  const importMnemonic = async () => {
+  const importMnemonic = async (_mnemonic: string) => {
     try {
-      const valid = Bip39.validateMnemonic(mnemonic);
+      const valid = Bip39.validateMnemonic(_mnemonic);
       if (!valid) {
+        setProcessing(false);
         return;
       }
-      const seed = await Bip39.mnemonicToSeed(mnemonic.trim());
-      const root = hdkey.fromMasterSeed(seed);
-      const masterWallet = root.getWallet();
-      const privateKey = masterWallet.getPrivateKeyString();
-      const walletAddress = masterWallet.getChecksumAddressString();
+      const _wallet = ethers.Wallet.fromMnemonic(_mnemonic.trim());
+      const _privateKey = _wallet.privateKey;
+      const walletAddress = _wallet.address;
       const balance = await getBalance(walletAddress);
       const wallet: Wallet = {
-        privateKey: privateKey,
+        privateKey: _privateKey,
         address: walletAddress,
         balance,
       };
@@ -73,13 +81,14 @@ const HomeScreen = () => {
         .includes(wallet.address);
 
       if (walletExisted) {
+        setProcessing(false);
         setScanMessage(getLanguageString(language, 'WALLET_EXISTED'));
         setScanType('warning');
         setShowScanAlert(true);
         return;
       }
 
-      await saveMnemonic(walletAddress, mnemonic.trim());
+      await saveMnemonic(walletAddress, _mnemonic.trim());
       const _wallets = JSON.parse(JSON.stringify(wallets));
       _wallets.push(wallet);
       await saveWallets(_wallets);
@@ -87,7 +96,46 @@ const HomeScreen = () => {
       setWallets(_wallets);
       setSelectedWallet(_wallets.length - 1);
       setMnemonic('');
+      setProcessing(false);
     } catch (error) {
+      setProcessing(false);
+      console.error(error);
+    }
+  };
+
+  const importPrivateKey = async (_privateKey: string) => {
+    try {
+      const _wallet = getWalletFromPK(_privateKey);
+      const walletAddress = _wallet.getChecksumAddressString();
+      const balance = await getBalance(walletAddress);
+      const wallet: Wallet = {
+        privateKey: _privateKey,
+        address: walletAddress,
+        balance,
+      };
+
+      const walletExisted = wallets
+        .map((item) => item.address)
+        .includes(wallet.address);
+
+      if (walletExisted) {
+        setProcessing(false);
+        setScanMessage(getLanguageString(language, 'WALLET_EXISTED'));
+        setScanType('warning');
+        setShowScanAlert(true);
+        return;
+      }
+      await saveMnemonic(walletAddress, 'FROM_PK');
+      const _wallets = JSON.parse(JSON.stringify(wallets));
+      _wallets.push(wallet);
+      await saveWallets(_wallets);
+      await saveSelectedWallet(_wallets.length - 1);
+      setWallets(_wallets);
+      setSelectedWallet(_wallets.length - 1);
+      setPrivateKey('');
+      setProcessing(false);
+    } catch (error) {
+      setProcessing(false);
       console.error(error);
     }
   };
@@ -100,6 +148,8 @@ const HomeScreen = () => {
         <ImportModal
           onClose={() => setShowImportModal(false)}
           onSuccessScan={onSuccessScan}
+          importMnemonic={importMnemonic}
+          importPrivateKey={importPrivateKey}
         />
       )}
       <View style={[styles.bodyContainer]}>
@@ -120,7 +170,14 @@ const HomeScreen = () => {
           <Modal
             showCloseButton={false}
             visible={true}
-            contentStyle={{flex: 0.3, marginTop: viewportHeight / 3}}
+            // contentStyle={{marginTop: viewportHeight / 1.4}}
+            contentStyle={{
+              flex: 0.3,
+              marginTop: viewportHeight / 3,
+              borderBottomRightRadius: 20,
+              borderBottomLeftRadius: 20,
+              marginHorizontal: 14,
+            }}
             onClose={() => setMnemonic('')}>
             <View style={{justifyContent: 'space-between', flex: 1}}>
               <Text style={{textAlign: 'center'}}>
@@ -137,8 +194,54 @@ const HomeScreen = () => {
                   onPress={() => setMnemonic('')}
                 />
                 <Button
+                  loading={processing}
                   title={getLanguageString(language, 'SUBMIT')}
-                  onPress={importMnemonic}
+                  onPress={() => {
+                    setProcessing(true);
+                    setTimeout(() => {
+                      importMnemonic(mnemonic);
+                    }, 100);
+                  }}
+                />
+              </View>
+            </View>
+          </Modal>
+        )}
+        {privateKey !== '' && (
+          <Modal
+            showCloseButton={false}
+            visible={true}
+            contentStyle={{
+              flex: 0.3,
+              marginTop: viewportHeight / 3,
+              borderBottomRightRadius: 20,
+              borderBottomLeftRadius: 20,
+              marginHorizontal: 14,
+            }}
+            onClose={() => setPrivateKey('')}>
+            <View>
+              <Text style={{textAlign: 'center'}}>
+                {getLanguageString(language, 'ARE_YOU_SURE')}
+              </Text>
+              <Text>
+                {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
+              </Text>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                <Button
+                  title={getLanguageString(language, 'GO_BACK')}
+                  type="secondary"
+                  onPress={() => setMnemonic('')}
+                />
+                <Button
+                  loading={processing}
+                  title={getLanguageString(language, 'SUBMIT')}
+                  onPress={() => {
+                    setProcessing(true);
+                    setTimeout(() => {
+                      importPrivateKey(privateKey);
+                    }, 100);
+                  }}
                 />
               </View>
             </View>
@@ -147,7 +250,13 @@ const HomeScreen = () => {
         {showPasscodeRemindModal && (
           <Modal
             showCloseButton={false}
-            contentStyle={{flex: 0.3, marginTop: viewportHeight / 3}}
+            contentStyle={{
+              flex: 0.3,
+              marginTop: viewportHeight / 3,
+              borderBottomRightRadius: 20,
+              borderBottomLeftRadius: 20,
+              marginHorizontal: 14,
+            }}
             visible={true}
             onClose={() => setShowPasscodeRemindModal(false)}>
             <Text>{getLanguageString(language, 'NO_PASSCODE')}</Text>

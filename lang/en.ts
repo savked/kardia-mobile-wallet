@@ -29,13 +29,17 @@ export const lang: Language = {
     NO_PASSCODE: "You haven't set your app passcode yet.",
     PASSCODE_DESCRIPTION:
       "Passcode help increase your wallet's security level.",
+    IMPORT_WITH_PRIVATE_KEY: 'Import with private key',
+    IMPORT_WITH_SEED: 'Import with seed phrase',
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now',
     MNEMONIC_DESCRIPTION:
       'Above 12 words will be used to recover as well as access your wallet.',
     // Import wallet key:
     ENTER_SEED_PHRASE: 'Enter secret phrase',
+    ENTER_PRIVATE_KEY: 'Enter private key',
     SCAN_SEED_PHRASE: 'Scan QR code for mnemonic phrase',
+    SCAN_PRIVATE_KEY: 'Scan QR code for private key',
     WALLET_EXISTED: 'Wallet already existed',
     ERROR_SEED_PHRASE: 'Wrong format seed phrase, please recheck',
     // Transaction key
@@ -77,10 +81,10 @@ export const lang: Language = {
     ADDRESS_BOOK_MENU: 'Address book',
     LANGUAGE_MENU: 'Language setting',
     LANGUAGE_SETTING_TITLE: 'Choose display language',
-    SECRET_PHRASE_MENU: 'Export secret phrase',
+    SECRET_PHRASE_MENU: 'Export secret credential',
     PASSCODE_MENU: 'App passcode setting',
-    MNEMONIC_SETTING_TITLE: 'Secret phrase',
-    SHOW_SECRET_TEXT: 'Show my secret phrase',
+    MNEMONIC_SETTING_TITLE: 'Secret credential',
+    SHOW_SECRET_TEXT: 'Show my credential',
     ADDRESS_NAME: 'Name',
     ADDRESS_ADDRESS: 'Address',
     PASSCODE_SETTING_TITLE: 'App passcode',

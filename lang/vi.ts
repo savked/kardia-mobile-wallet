@@ -29,13 +29,17 @@ export const lang: Language = {
     NO_PASSCODE: 'Bạn chưa cài mật khẩu cho ví',
     PASSCODE_DESCRIPTION:
       'Mật khẩu ví đảm bảo chỉ có bạn là người sử dụng Kardia Wallet',
+    IMPORT_WITH_PRIVATE_KEY: 'Thêm bằng private key',
+    IMPORT_WITH_SEED: 'Thêm bằng seed phrase',
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
       '12 từ trên được dùng để  truy cập cũng như khôi phục lại ví của bạn.',
     // Import wallet key:
     ENTER_SEED_PHRASE: 'Nhập chuỗi từ khóa bí mật',
+    ENTER_PRIVATE_KEY: 'Nhập private key',
     SCAN_SEED_PHRASE: 'Quét mã QR chứa chuỗi khóa bí mật',
+    SCAN_PRIVATE_KEY: 'Quét mã QR chứa private key',
     WALLET_EXISTED: 'Ví đã tồn tại',
     ERROR_SEED_PHRASE: 'Chuỗi khóa bis mật sai, vui lòng thử lại',
     // Transaction key
@@ -76,10 +80,10 @@ export const lang: Language = {
     ADDRESS_BOOK_MENU: 'Danh bạ ví',
     LANGUAGE_MENU: 'Cài đặt ngôn ngữ',
     LANGUAGE_SETTING_TITLE: 'Chọn ngôn ngữ hiển thị',
-    SECRET_PHRASE_MENU: 'Chuỗi khóa bí mật',
+    SECRET_PHRASE_MENU: 'Chuỗi khóa bí mật / private key',
     PASSCODE_MENU: 'Cài đặt mật khẩu ví',
-    MNEMONIC_SETTING_TITLE: 'Chuỗi khóa bí mật',
-    SHOW_SECRET_TEXT: 'Hiển thị chuỗi bí mật',
+    MNEMONIC_SETTING_TITLE: 'Chuỗi khóa bí mật / private key',
+    SHOW_SECRET_TEXT: 'Hiển thị chuỗi bí mật / private key',
     ADDRESS_NAME: 'Tên hiển thị',
     ADDRESS_ADDRESS: 'Địa chỉ ví',
     PASSCODE_SETTING_TITLE: 'Mật khẩu ví',
