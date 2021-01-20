@@ -78,6 +78,7 @@ export const lang: Language = {
     NEWS_SCREEN_TITLE: 'News',
     // Staking key
     STAKING_SCREEN_TITLE: 'Staking',
+    NO_STAKING_ITEM: "You haven't staked for any validator yet",
     // Setting key
     SETTING_SCREEN_TITLE: 'Setting',
     ADDRESS_BOOK_MENU: 'Address book',

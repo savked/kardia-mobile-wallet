@@ -1,20 +1,70 @@
-import React, {useContext} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useContext, useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
+import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
+import IconButton from '../../components/IconButton';
+import List from '../../components/List';
+import {getCurrentStaking, mapValidatorRole} from '../../services/staking';
 import {ThemeContext} from '../../ThemeContext';
 import {getLanguageString} from '../../utils/lang';
 import {styles} from './style';
+import StakingItem from './StakingItem';
 
 const StakingScreen = () => {
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
+  const selectedWallet = useRecoilValue(selectedWalletAtom);
+  const wallets = useRecoilValue(walletsAtom);
+
+  const [currentStaking, setCurrentStaking] = useState<Staking[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const _staking = await getCurrentStaking(wallets[selectedWallet].address);
+      setCurrentStaking(_staking);
+    })();
+  }, [selectedWallet, wallets]);
+
+  const parseStakingItemForList = (item: Staking) => {
+    return {
+      label: item.validatorContractAddr,
+      value: item.validatorContractAddr,
+      name: item.name,
+      claimableRewards: item.claimableRewards,
+      withdrawableAmount: item.withdrawableAmount,
+      unbondedAmount: item.unbondedAmount,
+      role: mapValidatorRole(item.validatorRole),
+    };
+  };
+
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
         <Text style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'STAKING_SCREEN_TITLE')}
         </Text>
+        <IconButton
+          name="plus-circle"
+          color={theme.textColor}
+          size={styles.headline.fontSize}
+        />
+      </View>
+      <View style={{flex: 1}}>
+        <List
+          items={currentStaking.map(parseStakingItemForList)}
+          listStyle={{paddingHorizontal: 15}}
+          ListEmptyComponent={
+            <Text style={[styles.noStakingText, {color: theme.textColor}]}>
+              {getLanguageString(language, 'NO_STAKING_ITEM')}
+            </Text>
+          }
+          render={(item) => {
+            return <StakingItem item={item} />;
+          }}
+          ItemSeprator={() => <View style={{height: 6}} />}
+        />
       </View>
     </View>
   );

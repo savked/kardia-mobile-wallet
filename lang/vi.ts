@@ -77,6 +77,7 @@ export const lang: Language = {
     NEWS_SCREEN_TITLE: 'Tin tức',
     // Staking key
     STAKING_SCREEN_TITLE: 'Staking',
+    NO_STAKING_ITEM: 'Bạn chưa stake cho validator nào',
     // Setting key
     SETTING_SCREEN_TITLE: 'Cài đặt',
     ADDRESS_BOOK_MENU: 'Danh bạ ví',
