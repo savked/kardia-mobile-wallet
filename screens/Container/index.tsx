@@ -6,7 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import HomeScreen from '../Home';
-import NewsScreen from '../News';
+// import NewsScreen from '../News';
 import TransactionStackScreen from '../../TransactionStack';
 import {
   getAddressBook,
@@ -84,7 +84,7 @@ const Wrap = () => {
       <Tab.Screen name="Transaction" component={TransactionStackScreen} />
       {/* <Tab.Screen name="DApp" component={DAppScreen} /> */}
       <Tab.Screen name="Staking" component={StakingScreen} />
-      <Tab.Screen name="News" component={NewsScreen} />
+      {/* <Tab.Screen name="News" component={NewsScreen} /> */}
       <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>
   );

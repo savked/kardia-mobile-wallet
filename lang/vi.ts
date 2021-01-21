@@ -78,6 +78,20 @@ export const lang: Language = {
     // Staking key
     STAKING_SCREEN_TITLE: 'Staking',
     NO_STAKING_ITEM: 'Bạn chưa stake cho validator nào',
+    CLAIMABLE: 'KAI được thưởng',
+    STAKED: 'KAI đã stake',
+    WITHDRAWABLE: 'KAI có thể rút về ví',
+    UNBONDED: 'KAI đang khóa chờ rút',
+    CLAIM_REWARD: 'Rút thưởng',
+    UNDELEGATE: 'Rút tiền stake',
+    WITHDRAW: 'Rút về ví',
+    CLAIM_SUCCESS: '{{KAI_AMOUNT}} KAI đã được rút thành công',
+    WITHDRAW_SUCCESS: '{{KAI_AMOUNT}} KAI đã được rút về ví',
+    UNDELEGATE_SUCCESS:
+      '{{KAI_AMOUNT}} KAI đã được rút. Sau 7 ngày bạn có thể rút số KAI này về ví.',
+    UNDELEGATE_AMOUNT_TOO_MUCH: 'Số KAI rút phải nhỏ hơn số KAI đã stake',
+    UNDELEGATE_AMOUNT_REMAIN_25000:
+      'Cần giữ lại ít nhất 25.000 KAI hoặc rút hết KAI.',
     // Setting key
     SETTING_SCREEN_TITLE: 'Cài đặt',
     ADDRESS_BOOK_MENU: 'Danh bạ ví',
@@ -101,5 +115,6 @@ export const lang: Language = {
     ERROR_BOUNDARY_DESCRIPTION:
       'Chúng tôi rất xin lỗi vì sự bất tiện này. Lỗi đã được gửi cho admin để xử lý',
     NOT_ENOUGH_BALANCE: 'Giao dịch vượt quá số tiền trong ví.',
+    GENERAL_ERROR: 'Có lỗi xảy ra, vui lòng thử lại sau',
   },
 };

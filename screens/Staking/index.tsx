@@ -11,12 +11,16 @@ import {ThemeContext} from '../../ThemeContext';
 import {getLanguageString} from '../../utils/lang';
 import {styles} from './style';
 import StakingItem from './StakingItem';
+import AlertModal from '../../components/AlertModal';
 
 const StakingScreen = () => {
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const wallets = useRecoilValue(walletsAtom);
+
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('success');
 
   const [currentStaking, setCurrentStaking] = useState<Staking[]>([]);
 
@@ -32,6 +36,7 @@ const StakingScreen = () => {
       label: item.validatorContractAddr,
       value: item.validatorContractAddr,
       name: item.name,
+      stakedAmount: item.stakedAmount,
       claimableRewards: item.claimableRewards,
       withdrawableAmount: item.withdrawableAmount,
       unbondedAmount: item.unbondedAmount,
@@ -61,11 +66,34 @@ const StakingScreen = () => {
             </Text>
           }
           render={(item) => {
-            return <StakingItem item={item} />;
+            return (
+              <StakingItem
+                item={item}
+                showModal={(
+                  _message: string,
+                  _messageType: string,
+                  cb: () => void,
+                ) => {
+                  setMessage(_message);
+                  setMessageType(_messageType);
+                  cb();
+                }}
+              />
+            );
           }}
           ItemSeprator={() => <View style={{height: 6}} />}
         />
       </View>
+      {message !== '' && (
+        <AlertModal
+          type={messageType as any}
+          message={message}
+          onClose={() => {
+            setMessage('');
+          }}
+          visible={true}
+        />
+      )}
     </View>
   );
 };

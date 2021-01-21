@@ -31,5 +31,8 @@ export const styles = StyleSheet.create({
   actionContainer: {
     marginTop: 24,
     flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    width: '100%',
   },
 });

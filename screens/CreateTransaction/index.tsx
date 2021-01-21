@@ -262,6 +262,7 @@ const CreateTxScreen = () => {
 
         <View style={{marginBottom: 20}}>
           <TextInput
+            keyboardType="numeric"
             message={errorAmount}
             onChangeText={(newAmount) => {
               const digitOnly = getDigit(newAmount);

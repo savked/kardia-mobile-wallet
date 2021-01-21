@@ -79,6 +79,20 @@ export const lang: Language = {
     // Staking key
     STAKING_SCREEN_TITLE: 'Staking',
     NO_STAKING_ITEM: "You haven't staked for any validator yet",
+    CLAIMABLE: 'Claimable KAI',
+    STAKED: 'Staked KAI',
+    WITHDRAWABLE: 'Withdrawable KAI',
+    UNBONDED: 'Unbonded KAI',
+    CLAIM_REWARD: 'Claim',
+    UNDELEGATE: 'Undelegate',
+    WITHDRAW: 'Withdraw',
+    CLAIM_SUCCESS: '{{KAI_AMOUNT}} KAI is successfully claimed to your wallet',
+    WITHDRAW_SUCCESS: '{{KAI_AMOUNT}} KAI is withdrawned to your wallet',
+    UNDELEGATE_SUCCESS:
+      '{{KAI_AMOUNT}} KAI is undelegated. You will need to wait for 7 days to withdraw back to your wallet.',
+    UNDELEGATE_AMOUNT_TOO_MUCH: 'Must be less than staked KAI amount',
+    UNDELEGATE_AMOUNT_REMAIN_25000:
+      'Must keep at least 25.000 KAI in staking, or undelegate all KAI',
     // Setting key
     SETTING_SCREEN_TITLE: 'Setting',
     ADDRESS_BOOK_MENU: 'Address book',
@@ -102,5 +116,6 @@ export const lang: Language = {
     ERROR_BOUNDARY_DESCRIPTION:
       'The app ran into a problem and could not continue. We apologise for any inconvenience this has caused! Press the button below to restart the app and sign back in. Please contact us if this issue persists.',
     NOT_ENOUGH_BALANCE: 'The amount exceed your wallet balance.',
+    GENERAL_ERROR: 'Something wrong happens, please try again later',
   },
 };
