@@ -92,6 +92,7 @@ export const lang: Language = {
     UNDELEGATE_AMOUNT_TOO_MUCH: 'Số KAI rút phải nhỏ hơn số KAI đã stake',
     UNDELEGATE_AMOUNT_REMAIN_25000:
       'Cần giữ lại ít nhất 25.000 KAI hoặc rút hết KAI.',
+    UNDELEGATE_AMOUNT_PLACEHOLDER: 'Số KAI muốn rút từ stake...',
     // Setting key
     SETTING_SCREEN_TITLE: 'Cài đặt',
     ADDRESS_BOOK_MENU: 'Danh bạ ví',

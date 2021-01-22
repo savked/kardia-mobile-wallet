@@ -30,7 +30,7 @@ import {languageAtom} from '../../atoms/language';
 import {localAuthAtom} from '../../atoms/localAuth';
 import ConfirmPasscode from '../ConfirmPasscode';
 // import DAppScreen from '../DApp';
-import StakingScreen from '../Staking';
+import StakingStackScreen from '../../StakingStack';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -83,7 +83,7 @@ const Wrap = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Transaction" component={TransactionStackScreen} />
       {/* <Tab.Screen name="DApp" component={DAppScreen} /> */}
-      <Tab.Screen name="Staking" component={StakingScreen} />
+      <Tab.Screen name="Staking" component={StakingStackScreen} />
       {/* <Tab.Screen name="News" component={NewsScreen} /> */}
       <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>

@@ -93,6 +93,7 @@ export const lang: Language = {
     UNDELEGATE_AMOUNT_TOO_MUCH: 'Must be less than staked KAI amount',
     UNDELEGATE_AMOUNT_REMAIN_25000:
       'Must keep at least 25.000 KAI in staking, or undelegate all KAI',
+    UNDELEGATE_AMOUNT_PLACEHOLDER: 'Amount to undelegate...',
     // Setting key
     SETTING_SCREEN_TITLE: 'Setting',
     ADDRESS_BOOK_MENU: 'Address book',

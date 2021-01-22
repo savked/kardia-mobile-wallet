@@ -3,3 +3,4 @@ export const SENTRY_DSN =
 
 export const DEFAULT_GAS_PRICE = 2;
 export const DEFAULT_GAS_LIMIT = 500000;
+export const BLOCK_TIME = 5;

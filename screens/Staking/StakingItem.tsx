@@ -206,7 +206,10 @@ const StakingItem = ({
             onBlur={() => setUndelegateAmount(format(Number(undelegateAmount)))}
             value={undelegateAmount}
             block
-            placeholder="Amount to undelegate..."
+            placeholder={getLanguageString(
+              language,
+              'UNDELEGATE_AMOUNT_PLACEHOLDER',
+            )}
           />
         </View>
         <View

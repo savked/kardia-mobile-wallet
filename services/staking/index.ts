@@ -19,6 +19,20 @@ export const mapValidatorRole = (role: number) => {
   }
 };
 
+export const getAllValidator = async () => {
+  const options = {
+    method: 'GET',
+  };
+  const response = await fetch(`${ENDPOINT}validators`, options);
+  const responseJSON = await response.json();
+  return {
+    totalStaked: responseJSON.data.totalStakedAmount,
+    validators: Array.isArray(responseJSON.data.validators)
+      ? responseJSON.data.validators
+      : [],
+  };
+};
+
 export const getCurrentStaking = async (address: string) => {
   const options = {
     method: 'GET',
@@ -91,6 +105,27 @@ export const undelegateAll = async (valSmcAddr: string, wallet: Wallet) => {
       .invokeContract('undelegate', [])
       .send(wallet.privateKey || '', toChecksumAddress(valSmcAddr), {
         from: wallet.address,
+        gas: DEFAULT_GAS_LIMIT,
+        gasPrice: DEFAULT_GAS_PRICE,
+      });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const delegateAction = async (
+  valSmcAddr: string,
+  wallet: Wallet,
+  amountDel: number,
+) => {
+  try {
+    const cellAmountDel = cellValue(amountDel);
+    kardiaContract.updateAbi(VALIDATOR_ABI);
+    return await kardiaContract
+      .invokeContract('delegate', [])
+      .send(wallet.privateKey || '', toChecksumAddress(valSmcAddr), {
+        from: wallet.address,
+        amount: cellAmountDel,
         gas: DEFAULT_GAS_LIMIT,
         gasPrice: DEFAULT_GAS_PRICE,
       });

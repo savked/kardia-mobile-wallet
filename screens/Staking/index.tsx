@@ -12,12 +12,14 @@ import {getLanguageString} from '../../utils/lang';
 import {styles} from './style';
 import StakingItem from './StakingItem';
 import AlertModal from '../../components/AlertModal';
+import {useNavigation} from '@react-navigation/native';
 
 const StakingScreen = () => {
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const wallets = useRecoilValue(walletsAtom);
+  const navigation = useNavigation();
 
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('success');
@@ -54,6 +56,7 @@ const StakingScreen = () => {
           name="plus-circle"
           color={theme.textColor}
           size={styles.headline.fontSize}
+          onPress={() => navigation.navigate('NewStaking')}
         />
       </View>
       <View style={{flex: 1}}>

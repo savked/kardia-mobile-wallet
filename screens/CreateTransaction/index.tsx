@@ -82,7 +82,7 @@ const CreateTxScreen = () => {
       if (err.message) {
         setError(parseError(err.message, language));
       } else {
-        console.log(err);
+        console.error(err);
         setError('Error happen');
       }
       setLoading(false);
