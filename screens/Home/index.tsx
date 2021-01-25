@@ -195,6 +195,7 @@ const HomeScreen = () => {
                 />
                 <Button
                   loading={processing}
+                  disabled={processing}
                   title={getLanguageString(language, 'SUBMIT')}
                   onPress={() => {
                     setProcessing(true);
@@ -235,6 +236,7 @@ const HomeScreen = () => {
                 />
                 <Button
                   loading={processing}
+                  disabled={processing}
                   title={getLanguageString(language, 'SUBMIT')}
                   onPress={() => {
                     setProcessing(true);

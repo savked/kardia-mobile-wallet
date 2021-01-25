@@ -16,6 +16,8 @@ import {getLatestBlock} from '../../services/blockchain';
 import {BLOCK_TIME} from '../../config';
 import AlertModal from '../../components/AlertModal';
 import {useNavigation} from '@react-navigation/native';
+import {getLanguageString} from '../../utils/lang';
+import {languageAtom} from '../../atoms/language';
 
 const parseValidatorItemForList = (item: Validator) => {
   return {
@@ -28,6 +30,7 @@ const NewStaking = () => {
   const theme = useContext(ThemeContext);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const wallets = useRecoilValue(walletsAtom);
+  const language = useRecoilValue(languageAtom);
 
   const [validatorList, setValidatorList] = useState<Validator[]>([]);
   const [totalStakedAmount, setTotalStakedAmount] = useState('');
@@ -158,8 +161,12 @@ const NewStaking = () => {
         )}
         <View style={{marginBottom: 10}}>
           <Picker
-            headline="Choose validator"
+            headline={getLanguageString(language, 'CHOOSE_VALIDATOR')}
             items={validatorList.map(parseValidatorItemForList)}
+            placeholder={{
+              label: getLanguageString(language, 'CHOOSE_VALIDATOR'),
+              value: '',
+            }}
             value={selectedValidatorAddress}
             onChange={(value, _) => {
               if (value) {
@@ -172,7 +179,7 @@ const NewStaking = () => {
         </View>
         <View style={{marginBottom: 30}}>
           <CustomTextInput
-            headline="Amount"
+            headline={getLanguageString(language, 'STAKING_AMOUNT')}
             keyboardType="numeric"
             value={amount}
             onChangeText={(newAmount) => {
@@ -194,7 +201,7 @@ const NewStaking = () => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
-                Commission rate
+                {getLanguageString(language, 'COMMISSION_RATE')}
               </Text>
               <Text style={[{color: theme.textColor}]}>
                 {getSelectedCommission()}
@@ -203,7 +210,7 @@ const NewStaking = () => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
-                Staked amount
+                {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
               </Text>
               <Text style={[{color: theme.textColor}]}>
                 {getSelectedStakedAmount()}
@@ -212,7 +219,7 @@ const NewStaking = () => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
-                Voting power
+                {getLanguageString(language, 'VOTING_POWER')}
               </Text>
               <Text style={[{color: theme.textColor}]}>
                 {getSelectedVotingPower()}
@@ -221,7 +228,7 @@ const NewStaking = () => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
-                Estimated earning in 30 days
+                {getLanguageString(language, 'ESTIMATED_EARNING')}
               </Text>
               <Text style={[{color: theme.textColor}]}>
                 {numeral(estimatedProfit).format('0,0.00')}{' '}
@@ -231,7 +238,7 @@ const NewStaking = () => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
-                Estimated APR
+                {getLanguageString(language, 'ESTIMATED_APR')}
               </Text>
               <Text style={[{color: theme.textColor}]}>
                 {numeral(estimatedAPR).format('0,0.00')}{' '}
@@ -248,16 +255,18 @@ const NewStaking = () => {
           }}>
           <Button
             loading={delegating}
+            disabled={delegating}
             type="primary"
-            title="Delegate"
+            title={getLanguageString(language, 'DELEGATE')}
             size="large"
             onPress={delegateHandler}
           />
           <Button
             type="outline"
-            title="Cancel"
+            title={getLanguageString(language, 'GO_BACK')}
             size="large"
             onPress={() => navigation.goBack()}
+            disabled={delegating}
           />
         </View>
       </View>

@@ -9,8 +9,9 @@ const Picker = ({
   headline,
   items,
   value,
+  placeholder,
   onChange,
-}: PickerProps & {items: Item[]}) => {
+}: PickerProps & {items: Item[], placeholder?: {} | Item}) => {
   const theme = useContext(ThemeContext);
   return (
     <>
@@ -23,6 +24,7 @@ const Picker = ({
         style={pickerSelectStyles}
         value={value}
         onValueChange={onChange}
+        placeholder={placeholder}
         items={items}
         Icon={() => {
           return <Icon name="chevron-down" size={30} />;

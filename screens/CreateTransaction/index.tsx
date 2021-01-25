@@ -326,6 +326,7 @@ const CreateTxScreen = () => {
             type="primary"
             size="large"
             loading={loading}
+            disabled={loading}
           />
           <Button
             title={getLanguageString(language, 'GO_BACK').toUpperCase()}
