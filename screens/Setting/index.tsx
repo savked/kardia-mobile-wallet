@@ -48,7 +48,7 @@ const SettingScreen = () => {
           </Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.settingItemContainer}
         onPress={() => navigation.navigate('MnemonicPhraseSetting')}>
         <View style={{width: '10%', alignItems: 'center'}}>
@@ -59,7 +59,7 @@ const SettingScreen = () => {
             {getLanguageString(language, 'SECRET_PHRASE_MENU')}
           </Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
         style={styles.settingItemContainer}
         onPress={() => navigation.navigate('SettingPasscode')}>

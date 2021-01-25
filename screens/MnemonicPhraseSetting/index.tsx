@@ -96,7 +96,7 @@ const MnemonicPhraseSetting = () => {
           title={getLanguageString(language, 'SHOW_SECRET_TEXT')}
           type="primary"
           onPress={() => setShowMnemonic(true)}
-          style={{width: '50%'}}
+          style={{width: '75%'}}
         />
       )}
     </View>

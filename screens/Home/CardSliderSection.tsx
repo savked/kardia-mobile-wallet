@@ -53,6 +53,16 @@ const CardSliderSection = ({
       },
     });
   }
+
+  function showCredential() {
+    navigation.navigate('Setting', {
+      screen: 'MnemonicPhraseSetting',
+      initial: false,
+      params: {
+        from: 'Home',
+      },
+    });
+  }
   const renderWalletItem = ({item: wallet}: any) => {
     return (
       <View style={styles.kaiCardContainer}>
@@ -105,6 +115,9 @@ const CardSliderSection = ({
                     padding: 12,
                   },
                 }}>
+                <MenuOption onSelect={showCredential}>
+                  <Text>{getLanguageString(language, 'SHOW_SECRET_TEXT')}</Text>
+                </MenuOption>
                 <MenuOption onSelect={() => setRemoveIndex(selectedWallet)}>
                   <Text>{getLanguageString(language, 'REMOVE_WALLET')}</Text>
                 </MenuOption>

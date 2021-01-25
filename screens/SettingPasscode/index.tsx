@@ -149,7 +149,7 @@ const SettingPasscode = () => {
           style={styles.settingItemContainer}
           onPress={() => setPasscode('')}>
           <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-            Change passcode
+            {getLanguageString(language, 'CHANGE_PASSCODE')}
           </Text>
         </TouchableOpacity>
       )}
