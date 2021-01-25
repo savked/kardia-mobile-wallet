@@ -13,6 +13,7 @@ import {styles} from './style';
 import StakingItem from './StakingItem';
 import AlertModal from '../../components/AlertModal';
 import {useNavigation} from '@react-navigation/native';
+import {statusBarColorAtom} from '../../atoms/statusBar';
 
 const StakingScreen = () => {
   const theme = useContext(ThemeContext);
@@ -25,6 +26,17 @@ const StakingScreen = () => {
   const [messageType, setMessageType] = useState('success');
 
   const [currentStaking, setCurrentStaking] = useState<Staking[]>([]);
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
+
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarColor(theme.primaryColor);
+      return () => {
+        setStatusBarColor(theme.backgroundColor);
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   useEffect(() => {
     (async () => {
