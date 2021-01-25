@@ -14,9 +14,9 @@ import {RecoilRoot} from 'recoil';
 import {MenuProvider} from 'react-native-popup-menu';
 import AppContainer from './screens/Container';
 import themes from './theme/index';
-import CustomStatusBar from './components/StatusBar';
 import ErrorBoundary from './screens/ErrorBoundary';
 import {ThemeContext} from './ThemeContext';
+import GlobalStatusBar from './GlobalStatusBar';
 
 declare const global: {HermesInternal: null | {}};
 
@@ -25,21 +25,18 @@ export {ThemeContext};
 
 const App = () => {
   return (
-    <ThemeContext.Provider value={DEFAULT_THEME}>
-      <CustomStatusBar
-        barStyle="light-content"
-        backgroundColor={DEFAULT_THEME.backgroundColor}
-      />
-      <SafeAreaProvider>
-        <RecoilRoot>
+    <RecoilRoot>
+      <ThemeContext.Provider value={DEFAULT_THEME}>
+        <GlobalStatusBar />
+        <SafeAreaProvider>
           <ErrorBoundary>
             <MenuProvider>
               <AppContainer />
             </MenuProvider>
           </ErrorBoundary>
-        </RecoilRoot>
-      </SafeAreaProvider>
-    </ThemeContext.Provider>
+        </SafeAreaProvider>
+      </ThemeContext.Provider>
+    </RecoilRoot>
   );
 };
 

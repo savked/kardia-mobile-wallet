@@ -20,17 +20,38 @@ const MnemonicPhraseSetting = () => {
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
 
+  const privateKey = wallets[selectedWallet].privateKey || '';
+
+  useEffect(() => {
+    return () => {
+      setShowMnemonic(false);
+    };
+  }, []);
+
   useEffect(() => {
     (async () => {
       const mn = await getMnemonic(wallets[selectedWallet].address);
-      setMnemonic(mn);
+      if (mn !== 'FROM_PK') {
+        setMnemonic(mn);
+      }
     })();
   }, [selectedWallet, wallets]);
 
-  const mnemonicArr = mnemonic.split(' ').map((item) => ({
-    label: item,
-    value: item,
-  }));
+  let mnemonicArr: {label: string; value: string}[] = [];
+
+  if (mnemonic) {
+    mnemonicArr = mnemonic.split(' ').map((item) => ({
+      label: item,
+      value: item,
+    }));
+  } else {
+    mnemonicArr = [
+      {
+        label: privateKey,
+        value: privateKey,
+      },
+    ];
+  }
 
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
@@ -66,7 +87,7 @@ const MnemonicPhraseSetting = () => {
           <Button
             title={getLanguageString(language, 'COPY_TO_CLIPBOARD')}
             type="primary"
-            onPress={() => copyToClipboard(mnemonic)}
+            onPress={() => copyToClipboard(mnemonic ? mnemonic : privateKey)}
           />
         </View>
       ) : (
@@ -75,7 +96,7 @@ const MnemonicPhraseSetting = () => {
           title={getLanguageString(language, 'SHOW_SECRET_TEXT')}
           type="primary"
           onPress={() => setShowMnemonic(true)}
-          style={{width: '50%'}}
+          style={{width: '75%'}}
         />
       )}
     </View>

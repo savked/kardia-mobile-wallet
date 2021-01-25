@@ -19,6 +19,7 @@ const CustomTextInput = ({
   block,
   icons,
   message = '',
+  keyboardType = 'default',
 }: CustomTextInputProps) => {
   const theme = useContext(ThemeContext);
 
@@ -50,6 +51,7 @@ const CustomTextInput = ({
             multiline ? styles.multiline : null,
             // block ? {width: '100%'} : null,
           ]}
+          keyboardType={keyboardType as any}
           onChangeText={onChangeText}
           value={value}
           multiline={multiline}

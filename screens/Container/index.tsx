@@ -6,7 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import HomeScreen from '../Home';
-import NewsScreen from '../News';
+// import NewsScreen from '../News';
 import TransactionStackScreen from '../../TransactionStack';
 import {
   getAddressBook,
@@ -29,6 +29,8 @@ import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import {localAuthAtom} from '../../atoms/localAuth';
 import ConfirmPasscode from '../ConfirmPasscode';
+// import DAppScreen from '../DApp';
+import StakingStackScreen from '../../StakingStack';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -51,6 +53,8 @@ const Wrap = () => {
             iconName = 'th-large';
           } else if (route.name === 'Setting') {
             iconName = 'cog';
+          } else if (route.name === 'Staking') {
+            iconName = 'bank';
           }
 
           // You can return any component that you like here!
@@ -79,7 +83,8 @@ const Wrap = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Transaction" component={TransactionStackScreen} />
       {/* <Tab.Screen name="DApp" component={DAppScreen} /> */}
-      <Tab.Screen name="News" component={NewsScreen} />
+      <Tab.Screen name="Staking" component={StakingStackScreen} />
+      {/* <Tab.Screen name="News" component={NewsScreen} /> */}
       <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>
   );

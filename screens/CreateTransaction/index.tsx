@@ -82,7 +82,7 @@ const CreateTxScreen = () => {
       if (err.message) {
         setError(parseError(err.message, language));
       } else {
-        console.log(err);
+        console.error(err);
         setError('Error happen');
       }
       setLoading(false);
@@ -262,6 +262,7 @@ const CreateTxScreen = () => {
 
         <View style={{marginBottom: 20}}>
           <TextInput
+            keyboardType="numeric"
             message={errorAmount}
             onChangeText={(newAmount) => {
               const digitOnly = getDigit(newAmount);
@@ -325,6 +326,7 @@ const CreateTxScreen = () => {
             type="primary"
             size="large"
             loading={loading}
+            disabled={loading}
           />
           <Button
             title={getLanguageString(language, 'GO_BACK').toUpperCase()}

@@ -4,6 +4,7 @@ import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
+import {HeaderBackButton} from '@react-navigation/stack';
 import SettingScreen from './screens/Setting';
 import AddressBookSetting from './screens/AddressBookSetting';
 import {ThemeContext} from './App';
@@ -102,12 +103,30 @@ const SettingStackScreen = () => {
       <SettingStack.Screen
         name="MnemonicPhraseSetting"
         component={MnemonicPhraseSetting}
-        options={{
-          title: getLanguageString(language, 'MNEMONIC_SETTING_TITLE'),
-          headerTitleStyle: {
-            color: theme.textColor,
-          },
-          headerTintColor: theme.textColor,
+        options={({navigation: _navigation, route}) => {
+          return {
+            title: getLanguageString(language, 'MNEMONIC_SETTING_TITLE'),
+            headerTitleStyle: {
+              color: theme.textColor,
+            },
+            headerTintColor: theme.textColor,
+            headerLeft: () => {
+              if (route.params && (route.params as any).from === 'Home') {
+                return (
+                  <HeaderBackButton
+                    tintColor={theme.textColor}
+                    onPress={() => {
+                      _navigation.reset({
+                        index: 0,
+                        routes: [{name: 'Home'}],
+                      });
+                    }}
+                  />
+                );
+              }
+              return <HeaderBackButton tintColor={theme.textColor} />;
+            },
+          };
         }}
       />
       <SettingStack.Screen

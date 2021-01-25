@@ -20,7 +20,9 @@ const Step1 = ({onSubmit}: {onSubmit: (passcode: string) => void}) => {
       </Text>
       <View style={{marginBottom: 40}}>
         <OtpInputs
-          keyboardType="numbers-and-punctuation"
+          // TODO: remove ts-ignore after issue fixed
+          // @ts-ignore
+          keyboardType="decimal-pad"
           handleChange={setPasscode}
           numberOfInputs={4}
           autofillFromClipboard={false}

@@ -69,9 +69,12 @@ const SettingPasscode = () => {
         </Text>
         <View style={{marginBottom: 40}}>
           <OtpInputs
-            keyboardType="phone-pad"
+            // TODO: remove ts-ignore after issue fixed
+            // @ts-ignore
+            keyboardType="decimal-pad"
             handleChange={setVerifyPasscode}
             numberOfInputs={4}
+            secureTextEntry={true}
             autofillFromClipboard={false}
             style={{
               flexDirection: 'row',
@@ -137,7 +140,7 @@ const SettingPasscode = () => {
         <ToggleSwitch
           isOn={enabled}
           onColor="green"
-          offColor="red"
+          offColor="gray"
           onToggle={toggleSetting}
         />
       </View>
@@ -146,7 +149,7 @@ const SettingPasscode = () => {
           style={styles.settingItemContainer}
           onPress={() => setPasscode('')}>
           <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-            Change passcode
+            {getLanguageString(language, 'CHANGE_PASSCODE')}
           </Text>
         </TouchableOpacity>
       )}

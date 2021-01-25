@@ -29,13 +29,17 @@ export const lang: Language = {
     NO_PASSCODE: "You haven't set your app passcode yet.",
     PASSCODE_DESCRIPTION:
       "Passcode help increase your wallet's security level.",
+    IMPORT_WITH_PRIVATE_KEY: 'Import with private key',
+    IMPORT_WITH_SEED: 'Import with seed phrase',
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now',
     MNEMONIC_DESCRIPTION:
       'Above 12 words will be used to recover as well as access your wallet.',
     // Import wallet key:
     ENTER_SEED_PHRASE: 'Enter secret phrase',
+    ENTER_PRIVATE_KEY: 'Enter private key',
     SCAN_SEED_PHRASE: 'Scan QR code for mnemonic phrase',
+    SCAN_PRIVATE_KEY: 'Scan QR code for private key',
     WALLET_EXISTED: 'Wallet already existed',
     ERROR_SEED_PHRASE: 'Wrong format seed phrase, please recheck',
     // Transaction key
@@ -44,8 +48,8 @@ export const lang: Language = {
     SEARCH_TRANSACTION_PLACEHOLDER:
       'Search with address / tx hash / block number / block hash...',
     VIEW_ALL_TRANSACTION: 'View all',
-    SEND: 'Send KAI',
-    RECEIVE: 'Receive KAI',
+    SEND: 'Send',
+    RECEIVE: 'Receive',
     TRANSACTION_HASH: 'Transaction hash',
     TRANSACTION_DETAIL: 'Detail',
     TRANSACTION_AMOUNT: 'Amount',
@@ -72,19 +76,48 @@ export const lang: Language = {
     REMOVE_WALLET: 'Remove wallet',
     // News key
     NEWS_SCREEN_TITLE: 'News',
+    // Staking key
+    NO_STAKING_ITEM: "You haven't staked for any validator yet",
+    CLAIMABLE: 'Claimable KAI',
+    STAKED: 'Staked KAI',
+    WITHDRAWABLE: 'Withdrawable KAI',
+    UNBONDED: 'Unbonded KAI',
+    CLAIM_REWARD: 'Claim',
+    UNDELEGATE: 'Undelegate',
+    WITHDRAW: 'Withdraw',
+    CLAIM_SUCCESS: '{{KAI_AMOUNT}} KAI is successfully claimed to your wallet',
+    WITHDRAW_SUCCESS: '{{KAI_AMOUNT}} KAI is withdrawned to your wallet',
+    UNDELEGATE_SUCCESS:
+      '{{KAI_AMOUNT}} KAI is undelegated. You will need to wait for 7 days to withdraw back to your wallet.',
+    UNDELEGATE_AMOUNT_TOO_MUCH: 'Must be less than staked KAI amount',
+    UNDELEGATE_AMOUNT_REMAIN_25000:
+      'Must keep at least 25.000 KAI in staking, or undelegate all KAI',
+    UNDELEGATE_AMOUNT_PLACEHOLDER: 'Amount to undelegate...',
+    YOUR_INVESTMENTS: 'Your investments',
+    TOTAL_EARNING: 'Your total earning',
+    INVEST: 'Invest',
+    CHOOSE_VALIDATOR: 'Choose validator to stake',
+    STAKING_AMOUNT: 'Amount to stake',
+    DELEGATE: 'Delegate',
+    ESTIMATED_EARNING: 'Estimated earning in 30 days',
+    ESTIMATED_APR: 'Estimated APR',
+    TOTAL_STAKED_AMOUNT: 'Total staked amount',
+    COMMISSION_RATE: 'Commission rate',
+    VOTING_POWER: 'Voting power',
     // Setting key
     SETTING_SCREEN_TITLE: 'Setting',
     ADDRESS_BOOK_MENU: 'Address book',
     LANGUAGE_MENU: 'Language setting',
     LANGUAGE_SETTING_TITLE: 'Choose display language',
-    SECRET_PHRASE_MENU: 'Export secret phrase',
+    SECRET_PHRASE_MENU: 'Export secret credential',
     PASSCODE_MENU: 'App passcode setting',
-    MNEMONIC_SETTING_TITLE: 'Secret phrase',
-    SHOW_SECRET_TEXT: 'Show my secret phrase',
+    MNEMONIC_SETTING_TITLE: 'Secret credential',
+    SHOW_SECRET_TEXT: 'Show my credential',
     ADDRESS_NAME: 'Name',
     ADDRESS_ADDRESS: 'Address',
     PASSCODE_SETTING_TITLE: 'App passcode',
     PASSCODE_SETTING_TRIGGER: 'Enable app passcode',
+    CHANGE_PASSCODE: 'Change passcode',
     NEW_PASSCODE: 'Enter new passcode',
     CONFIRM_PASSCODE: 'Confirm new passcode',
     CONFIRM_PASSCODE_NOT_MATCH: 'Confirmation passcode does NOT match',
@@ -95,5 +128,6 @@ export const lang: Language = {
     ERROR_BOUNDARY_DESCRIPTION:
       'The app ran into a problem and could not continue. We apologise for any inconvenience this has caused! Press the button below to restart the app and sign back in. Please contact us if this issue persists.',
     NOT_ENOUGH_BALANCE: 'The amount exceed your wallet balance.',
+    GENERAL_ERROR: 'Something wrong happens, please try again later',
   },
 };
