@@ -1,10 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
-import {useRecoilValue} from 'recoil';
+import {useFocusEffect} from '@react-navigation/native';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {languageAtom} from '../../atoms/language';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import IconButton from '../../components/IconButton';
+import numeral from 'numeral';
 import List from '../../components/List';
 import {getCurrentStaking, mapValidatorRole} from '../../services/staking';
 import {ThemeContext} from '../../ThemeContext';
@@ -13,6 +14,8 @@ import {styles} from './style';
 import StakingItem from './StakingItem';
 import AlertModal from '../../components/AlertModal';
 import {useNavigation} from '@react-navigation/native';
+import {weiToKAI} from '../../services/transaction/amount';
+import Button from '../../components/Button';
 import {statusBarColorAtom} from '../../atoms/statusBar';
 
 const StakingScreen = () => {
@@ -58,20 +61,54 @@ const StakingScreen = () => {
     };
   };
 
+  const getTotalSaving = () => {
+    return currentStaking.reduce((total, item) => {
+      return total + Number(weiToKAI(item.claimableRewards));
+    }, 0);
+  };
+
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <View style={styles.header}>
-        <Text style={[styles.headline, {color: theme.textColor}]}>
-          {getLanguageString(language, 'STAKING_SCREEN_TITLE')}
-        </Text>
-        <IconButton
-          name="plus-circle"
-          color={theme.textColor}
-          size={styles.headline.fontSize}
-          onPress={() => navigation.navigate('NewStaking')}
-        />
-      </View>
       <View style={{flex: 1}}>
+        <View
+          style={{
+            backgroundColor: theme.primaryColor,
+            borderRadius: 8,
+            padding: 12,
+            paddingTop: 50,
+          }}>
+          <Text
+            style={[
+              styles.sectionTitle,
+              {color: theme.textColor, textAlign: 'center'},
+            ]}>
+            {getLanguageString(language, 'TOTAL_EARNING')}
+          </Text>
+          <Text style={[styles.totalSaving, {color: theme.textColor}]}>
+            {numeral(getTotalSaving()).format('0,0.00')}{' '}
+            <Text style={{fontSize: 14}}>KAI</Text>
+          </Text>
+          <View style={styles.headerButtonGroup}>
+            <Button
+              title={getLanguageString(language, 'INVEST')}
+              iconName="plus"
+              type="outline"
+              textStyle={{color: '#FFFFFF'}}
+              onPress={() => navigation.navigate('NewStaking')}
+            />
+          </View>
+        </View>
+        <Text
+          style={[
+            styles.sectionTitle,
+            {
+              color: theme.textColor,
+              paddingHorizontal: 14,
+              paddingVertical: 20,
+            },
+          ]}>
+          {getLanguageString(language, 'YOUR_INVESTMENTS')}
+        </Text>
         <List
           items={currentStaking.map(parseStakingItemForList)}
           listStyle={{paddingHorizontal: 15}}

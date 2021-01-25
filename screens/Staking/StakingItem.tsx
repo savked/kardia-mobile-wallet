@@ -1,11 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import numeral from 'numeral';
-import {Text, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
 import {styles} from './style';
 import {weiToKAI} from '../../services/transaction/amount';
 import IconButton from '../../components/IconButton';
+import Icon from 'react-native-vector-icons/Feather';
 import Button from '../../components/Button';
 import {
   undelegateAll,
@@ -259,64 +260,86 @@ const StakingItem = ({
     );
   };
 
+  useEffect(() => {
+    if (!showFull) {
+      setUndelegateError('');
+    }
+  }, [showFull]);
+
   return (
     <View
       style={{
         padding: 15,
-        height: showFull ? (undelegateError === '' ? 240 : 270) : 170,
-        marginVertical: 12,
+        // height: showFull ? (undelegateError === '' ? 240 : 270) : 120,
+        marginVertical: 2,
         backgroundColor: theme.secondaryColor,
         borderRadius: 7,
         // flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-      <View
+      <TouchableOpacity
+        onPress={() => setShowFull(!showFull)}
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
           width: '100%',
         }}>
-        <View>
-          <Text style={styles.validatorName}>
-            {item.name} ({item.role})
-          </Text>
-          <Text>
-            {getLanguageString(language, 'STAKED')}:{' '}
-            <Text style={{fontWeight: 'bold'}}>
-              {numeral(stakedAmountInKAI).format('0,0.00')}
+        <View style={{justifyContent: 'center'}}>
+          <Text style={styles.validatorName}>{item.name}</Text>
+          {showFull && (
+            <Text>
+              {getLanguageString(language, 'STAKED')}:{' '}
+              <Text style={{fontWeight: 'bold'}}>
+                {numeral(stakedAmountInKAI).format('0,0.00')}
+              </Text>
             </Text>
-          </Text>
-          <Text>
-            {getLanguageString(language, 'CLAIMABLE')}:{' '}
-            <Text style={{fontWeight: 'bold'}}>
-              {numeral(claimableInKAI).format('0,0.00')}
+          )}
+          {showFull && (
+            <Text>
+              {getLanguageString(language, 'CLAIMABLE')}:{' '}
+              <Text style={{fontWeight: 'bold'}}>
+                {numeral(claimableInKAI).format('0,0.00')}
+              </Text>
             </Text>
-          </Text>
-          <Text>
-            {getLanguageString(language, 'UNBONDED')}:{' '}
-            <Text style={{fontWeight: 'bold'}}>
-              {numeral(unbondedInKAI).format('0,0.00')}
+          )}
+          {showFull && (
+            <Text>
+              {getLanguageString(language, 'UNBONDED')}:{' '}
+              <Text style={{fontWeight: 'bold'}}>
+                {numeral(unbondedInKAI).format('0,0.00')}
+              </Text>
             </Text>
-          </Text>
-          <Text>
-            {getLanguageString(language, 'WITHDRAWABLE')}:{' '}
-            <Text style={{fontWeight: 'bold'}}>
-              {numeral(withDrawbleInKAI).format('0,0.00')}
+          )}
+          {showFull && (
+            <Text>
+              {getLanguageString(language, 'WITHDRAWABLE')}:{' '}
+              <Text style={{fontWeight: 'bold'}}>
+                {numeral(withDrawbleInKAI).format('0,0.00')}
+              </Text>
             </Text>
-          </Text>
+          )}
         </View>
-        <IconButton
-          name={showFull ? 'chevron-up' : 'chevron-down'}
-          size={22}
-          style={{
-            height: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          onPress={() => setShowFull(!showFull)}
-        />
-      </View>
+        <View style={{flexDirection: 'row'}}>
+          {!showFull && (
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{fontWeight: 'bold'}}>
+                {numeral(claimableInKAI).format('0,0.00')} KAI
+              </Text>
+            </View>
+          )}
+          <Icon
+            name={showFull ? 'chevron-up' : 'chevron-down'}
+            size={22}
+            style={{
+              marginLeft: 12,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => setShowFull(!showFull)}
+          />
+        </View>
+      </TouchableOpacity>
       {showFull && renderActionGroup()}
     </View>
   );

@@ -48,8 +48,8 @@ export const lang: Language = {
     SEARCH_TRANSACTION_PLACEHOLDER:
       'Search with address / tx hash / block number / block hash...',
     VIEW_ALL_TRANSACTION: 'View all',
-    SEND: 'Send KAI',
-    RECEIVE: 'Receive KAI',
+    SEND: 'Send',
+    RECEIVE: 'Receive',
     TRANSACTION_HASH: 'Transaction hash',
     TRANSACTION_DETAIL: 'Detail',
     TRANSACTION_AMOUNT: 'Amount',
@@ -77,7 +77,6 @@ export const lang: Language = {
     // News key
     NEWS_SCREEN_TITLE: 'News',
     // Staking key
-    STAKING_SCREEN_TITLE: 'Staking',
     NO_STAKING_ITEM: "You haven't staked for any validator yet",
     CLAIMABLE: 'Claimable KAI',
     STAKED: 'Staked KAI',
@@ -94,6 +93,9 @@ export const lang: Language = {
     UNDELEGATE_AMOUNT_REMAIN_25000:
       'Must keep at least 25.000 KAI in staking, or undelegate all KAI',
     UNDELEGATE_AMOUNT_PLACEHOLDER: 'Amount to undelegate...',
+    YOUR_INVESTMENTS: 'Your investments',
+    TOTAL_EARNING: 'Your total earning',
+    INVEST: 'Invest',
     // Setting key
     SETTING_SCREEN_TITLE: 'Setting',
     ADDRESS_BOOK_MENU: 'Address book',
@@ -107,6 +109,7 @@ export const lang: Language = {
     ADDRESS_ADDRESS: 'Address',
     PASSCODE_SETTING_TITLE: 'App passcode',
     PASSCODE_SETTING_TRIGGER: 'Enable app passcode',
+    CHANGE_PASSCODE: 'Change passcode',
     NEW_PASSCODE: 'Enter new passcode',
     CONFIRM_PASSCODE: 'Confirm new passcode',
     CONFIRM_PASSCODE_NOT_MATCH: 'Confirmation passcode does NOT match',

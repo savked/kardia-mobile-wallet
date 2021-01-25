@@ -4,7 +4,7 @@ import {HEADER_HEIGHT} from '../../theme';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 15,
+    // paddingHorizontal: 15,
   },
   header: {
     height: HEADER_HEIGHT,
@@ -16,7 +16,10 @@ export const styles = StyleSheet.create({
   headline: {
     fontSize: 25,
     fontWeight: 'bold',
-    // marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontStyle: 'italic',
   },
   noStakingText: {
     // padding: 15,
@@ -24,9 +27,10 @@ export const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   validatorName: {
-    fontSize: 20,
+    // fontSize: 20,
+    fontStyle: 'italic',
     fontWeight: 'bold',
-    marginBottom: 18,
+    // marginBottom: 18,
   },
   actionContainer: {
     marginTop: 24,
@@ -34,5 +38,16 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     width: '100%',
+  },
+  totalSaving: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 32,
+    paddingVertical: 14,
+  },
+  headerButtonGroup: {
+    flexDirection: 'row',
+    padding: 20,
+    justifyContent: 'center',
   },
 });

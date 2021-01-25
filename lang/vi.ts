@@ -76,7 +76,6 @@ export const lang: Language = {
     // News key
     NEWS_SCREEN_TITLE: 'Tin tức',
     // Staking key
-    STAKING_SCREEN_TITLE: 'Staking',
     NO_STAKING_ITEM: 'Bạn chưa stake cho validator nào',
     CLAIMABLE: 'KAI được thưởng',
     STAKED: 'KAI đã stake',
@@ -93,6 +92,9 @@ export const lang: Language = {
     UNDELEGATE_AMOUNT_REMAIN_25000:
       'Cần giữ lại ít nhất 25.000 KAI hoặc rút hết KAI.',
     UNDELEGATE_AMOUNT_PLACEHOLDER: 'Số KAI muốn rút từ stake...',
+    YOUR_INVESTMENTS: 'Các khoảng đầu tư của bạn',
+    TOTAL_EARNING: 'Tổng số lợi nhuận',
+    INVEST: 'Đầu tư',
     // Setting key
     SETTING_SCREEN_TITLE: 'Cài đặt',
     ADDRESS_BOOK_MENU: 'Danh bạ ví',
@@ -106,6 +108,7 @@ export const lang: Language = {
     ADDRESS_ADDRESS: 'Địa chỉ ví',
     PASSCODE_SETTING_TITLE: 'Mật khẩu ví',
     PASSCODE_SETTING_TRIGGER: 'Bật mật khẩu ví',
+    CHANGE_PASSCODE: 'Thay đổi mật khẩu ví',
     NEW_PASSCODE: 'Nhập mật khẩu ví',
     CONFIRM_PASSCODE: 'Xác nhận mật khẩu ví',
     CONFIRM_PASSCODE_NOT_MATCH: 'Xác nhận mật khẩu không đúng',
