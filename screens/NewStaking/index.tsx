@@ -36,6 +36,7 @@ const NewStaking = () => {
   const [totalStakedAmount, setTotalStakedAmount] = useState('');
   const [selectedValidatorAddress, setSelectedValidatorAddress] = useState('');
   const [amount, setAmount] = useState('0');
+  const [amountError, setAmountError] = useState('');
   const [estimatedProfit, setEstimatedProfit] = useState('');
   const [estimatedAPR, setEstimatedAPR] = useState('');
   const [delegating, setDelegating] = useState(false);
@@ -124,7 +125,14 @@ const NewStaking = () => {
   };
 
   const delegateHandler = async () => {
+    setAmountError('');
     try {
+      if (Number(getDigit(amount)) > wallets[selectedWallet].balance) {
+        setAmountError(
+          getLanguageString(language, 'STAKING_AMOUNT_NOT_ENOUGHT'),
+        );
+        return;
+      }
       setDelegating(true);
       await delegateAction(
         selectedValidatorAddress,
@@ -179,14 +187,15 @@ const NewStaking = () => {
         </View>
         <View style={{marginBottom: 30}}>
           <CustomTextInput
+            message={amountError}
             headline={getLanguageString(language, 'STAKING_AMOUNT')}
             keyboardType="numeric"
             value={amount}
             onChangeText={(newAmount) => {
               const digitOnly = getDigit(newAmount);
-              if (Number(digitOnly) > wallets[selectedWallet].balance) {
-                return;
-              }
+              // if (Number(digitOnly) > wallets[selectedWallet].balance) {
+              //   return;
+              // }
               if (digitOnly === '') {
                 setAmount('0');
                 return;

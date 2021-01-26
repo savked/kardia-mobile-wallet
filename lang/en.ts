@@ -98,6 +98,7 @@ export const lang: Language = {
     INVEST: 'Invest',
     CHOOSE_VALIDATOR: 'Choose validator to stake',
     STAKING_AMOUNT: 'Amount to stake',
+    STAKING_AMOUNT_NOT_ENOUGHT: 'Not enough KAI to stake',
     DELEGATE: 'Delegate',
     ESTIMATED_EARNING: 'Estimated earning in 30 days',
     ESTIMATED_APR: 'Estimated APR',

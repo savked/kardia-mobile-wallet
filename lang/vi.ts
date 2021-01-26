@@ -97,6 +97,7 @@ export const lang: Language = {
     INVEST: 'Đầu tư',
     CHOOSE_VALIDATOR: 'Chọn validator để đầu tư',
     STAKING_AMOUNT: 'Số KAI đầu tư',
+    STAKING_AMOUNT_NOT_ENOUGHT: 'Ví hiện tại không đủ KAI',
     DELEGATE: 'Đầu tư',
     ESTIMATED_EARNING: 'Thu nhập ước tính trong 30 ngày',
     ESTIMATED_APR: 'APR ước tính',

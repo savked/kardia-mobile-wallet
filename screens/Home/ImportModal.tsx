@@ -16,16 +16,14 @@ const {height: viewportHeight} = Dimensions.get('window');
 const ImportModal = ({
   onClose,
   onSuccessScan,
-  importMnemonic,
-  importPrivateKey,
 }: {
   onClose: () => void;
   onSuccessScan: (e: BarCodeReadEvent, type: string) => void;
-  importMnemonic: (mnemonic: string) => void;
-  importPrivateKey: (privateKey: string) => void;
 }) => {
   const [showScanner, setShowScanner] = useState(false);
-  const [mnemonic, setMnemonic] = useState('');
+  const [mnemonic, setMnemonic] = useState(
+    'suggest update clown inmate wise enlist orange injury follow disagree reform daughter',
+  );
   const [privateKey, setPrivateKey] = useState('');
   const [scanType, setScanType] = useState('mnemonic');
 
@@ -65,7 +63,8 @@ const ImportModal = ({
             <Button
               title={getLanguageString(language, 'IMPORT')}
               type="primary"
-              onPress={() => importMnemonic(mnemonic)}
+              // onPress={() => importMnemonic(mnemonic)}
+              onPress={() => onSuccessScan({data: mnemonic} as any, 'mnemonic')}
               size="large"
             />
             <Button
@@ -111,7 +110,9 @@ const ImportModal = ({
             <Button
               title={getLanguageString(language, 'IMPORT')}
               type="primary"
-              onPress={() => importPrivateKey(privateKey)}
+              onPress={() =>
+                onSuccessScan({data: mnemonic} as any, 'privatekey')
+              }
               size="large"
             />
             <Button

@@ -60,9 +60,14 @@ const HomeScreen = () => {
   };
 
   const importMnemonic = async (_mnemonic: string) => {
+    console.log('here');
+    if (showImportModal) {
+      setShowImportModal(false);
+    }
     try {
       const valid = Bip39.validateMnemonic(_mnemonic);
       if (!valid) {
+        console.log('invalid');
         setProcessing(false);
         return;
       }
@@ -148,8 +153,6 @@ const HomeScreen = () => {
         <ImportModal
           onClose={() => setShowImportModal(false)}
           onSuccessScan={onSuccessScan}
-          importMnemonic={importMnemonic}
-          importPrivateKey={importPrivateKey}
         />
       )}
       <View style={[styles.bodyContainer]}>
@@ -162,11 +165,15 @@ const HomeScreen = () => {
           <AlertModal
             type={scanType as any}
             visible={showScanAlert}
-            onClose={() => setShowScanAlert(false)}
+            onClose={() => {
+              setShowScanAlert(false);
+              setMnemonic('');
+              setPrivateKey('');
+            }}
             message={scanMessage}
           />
         )}
-        {mnemonic !== '' && (
+        {mnemonic !== '' && !showScanAlert && (
           <Modal
             showCloseButton={false}
             visible={true}
@@ -208,7 +215,7 @@ const HomeScreen = () => {
             </View>
           </Modal>
         )}
-        {privateKey !== '' && (
+        {privateKey !== '' && !showScanAlert && (
           <Modal
             showCloseButton={false}
             visible={true}
