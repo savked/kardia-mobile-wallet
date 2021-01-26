@@ -62,7 +62,9 @@ const ImportModal = ({
               title={getLanguageString(language, 'IMPORT')}
               type="primary"
               // onPress={() => importMnemonic(mnemonic)}
-              onPress={() => onSuccessScan({data: mnemonic} as any, 'mnemonic')}
+              onPress={() =>
+                mnemonic && onSuccessScan({data: mnemonic} as any, 'mnemonic')
+              }
               size="large"
             />
             <Button
@@ -109,7 +111,8 @@ const ImportModal = ({
               title={getLanguageString(language, 'IMPORT')}
               type="primary"
               onPress={() =>
-                onSuccessScan({data: mnemonic} as any, 'privatekey')
+                privateKey &&
+                onSuccessScan({data: privateKey} as any, 'privatekey')
               }
               size="large"
             />

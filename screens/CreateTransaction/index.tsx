@@ -306,7 +306,9 @@ const CreateTxScreen = () => {
               <Text style={[{color: theme.textColor}]}>
                 {getLanguageString(language, 'GAS_LIMIT')}
               </Text>
-              <Text style={[{color: theme.textColor}]}>21.000</Text>
+              <Text style={[{color: theme.textColor, textAlign: 'right'}]}>
+                29,000
+              </Text>
             </View>
           </View>
         </View>
@@ -389,17 +391,17 @@ const ListCard = ({
   const data = [
     {
       title: getLanguageString(language, 'SLOW_SPEED'),
-      time: `~30 ${getLanguageString(language, 'SECOND')}`,
+      time: `~5 ${getLanguageString(language, 'SECOND')}`,
       gasPrice: 1,
     },
     {
       title: getLanguageString(language, 'AVERAGE_SPEED'),
-      time: `~20 ${getLanguageString(language, 'SECOND')}`,
+      time: `~3 ${getLanguageString(language, 'SECOND')}`,
       gasPrice: 2,
     },
     {
       title: getLanguageString(language, 'FAST_SPEED'),
-      time: `~10 ${getLanguageString(language, 'SECOND')}`,
+      time: `~1 ${getLanguageString(language, 'SECOND')}`,
       gasPrice: 3,
     },
   ];
