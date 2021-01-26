@@ -13,7 +13,7 @@ import {getDigit, isNumber, format} from '../../utils/number';
 import {styles} from './style';
 import {weiToKAI} from '../../services/transaction/amount';
 import {getLatestBlock} from '../../services/blockchain';
-import {BLOCK_TIME} from '../../config';
+import {BLOCK_TIME, MIN_DELEGATE} from '../../config';
 import AlertModal from '../../components/AlertModal';
 import {useNavigation} from '@react-navigation/native';
 import {getLanguageString} from '../../utils/lang';
@@ -127,8 +127,16 @@ const NewStaking = () => {
   const delegateHandler = async () => {
     setAmountError('');
     try {
-      console.log(Number(getDigit(amount)));
-      console.log(Number(weiToKAI(wallets[selectedWallet].balance)));
+      if (Number(getDigit(amount)) < MIN_DELEGATE) {
+        setAmountError(
+          getLanguageString(language, 'AT_LEAST_MIN_DELEGATE').replace(
+            '{{MIN_KAI}}',
+            MIN_DELEGATE.toString(),
+          ),
+        );
+        return;
+      }
+
       if (
         Number(getDigit(amount)) >
         Number(weiToKAI(wallets[selectedWallet].balance))

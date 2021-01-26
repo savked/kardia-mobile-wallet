@@ -5,6 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
 import * as Bip39 from 'bip39';
+import RNRestart from 'react-native-restart';
 import {ethers} from 'ethers';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
@@ -60,14 +61,12 @@ const HomeScreen = () => {
   };
 
   const importMnemonic = async (_mnemonic: string) => {
-    console.log('here');
     if (showImportModal) {
       setShowImportModal(false);
     }
     try {
       const valid = Bip39.validateMnemonic(_mnemonic);
       if (!valid) {
-        console.log('invalid');
         setProcessing(false);
         return;
       }
@@ -102,6 +101,7 @@ const HomeScreen = () => {
       setSelectedWallet(_wallets.length - 1);
       setMnemonic('');
       setProcessing(false);
+      RNRestart.Restart();
     } catch (error) {
       setProcessing(false);
       console.error(error);
