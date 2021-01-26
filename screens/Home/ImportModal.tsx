@@ -21,9 +21,7 @@ const ImportModal = ({
   onSuccessScan: (e: BarCodeReadEvent, type: string) => void;
 }) => {
   const [showScanner, setShowScanner] = useState(false);
-  const [mnemonic, setMnemonic] = useState(
-    'suggest update clown inmate wise enlist orange injury follow disagree reform daughter',
-  );
+  const [mnemonic, setMnemonic] = useState('');
   const [privateKey, setPrivateKey] = useState('');
   const [scanType, setScanType] = useState('mnemonic');
 
