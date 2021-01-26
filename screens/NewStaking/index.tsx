@@ -127,7 +127,12 @@ const NewStaking = () => {
   const delegateHandler = async () => {
     setAmountError('');
     try {
-      if (Number(getDigit(amount)) > wallets[selectedWallet].balance) {
+      console.log(Number(getDigit(amount)));
+      console.log(Number(weiToKAI(wallets[selectedWallet].balance)));
+      if (
+        Number(getDigit(amount)) >
+        Number(weiToKAI(wallets[selectedWallet].balance))
+      ) {
         setAmountError(
           getLanguageString(language, 'STAKING_AMOUNT_NOT_ENOUGHT'),
         );

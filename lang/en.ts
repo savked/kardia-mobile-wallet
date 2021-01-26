@@ -69,6 +69,7 @@ export const lang: Language = {
       '* Accelerating a transaction by using a higher gas price increases its chances of getting processed by the network faster, but it is not always guaranteed.',
     CONFIRM_TRANSACTION: 'Confirm your transaction',
     CONFIRM_KAI_AMOUNT: 'Amount',
+    NOT_ENOUGH_KAI_FOR_TX: 'Insufficient balance',
     // Wallet key
     IMPORT: 'Import',
     WALLET: 'Wallet',
@@ -105,6 +106,10 @@ export const lang: Language = {
     TOTAL_STAKED_AMOUNT: 'Total staked amount',
     COMMISSION_RATE: 'Commission rate',
     VOTING_POWER: 'Voting power',
+    // Notification Key
+    NOTIFICATION_SCREEN_TITLE: 'Notification',
+    TODAY: 'Today',
+    EARLIER: 'Earlier',
     // Setting key
     SETTING_SCREEN_TITLE: 'Setting',
     ADDRESS_BOOK_MENU: 'Address book',

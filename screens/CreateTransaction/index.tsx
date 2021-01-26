@@ -31,6 +31,7 @@ import TextAvatar from '../../components/TextAvatar';
 import {getLanguageString, parseError} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {weiToKAI} from '../../services/transaction/amount';
 
 const MAX_AMOUNT = 5000000000;
 
@@ -62,12 +63,9 @@ const CreateTxScreen = () => {
     setShowConfirmModal(false);
     setLoading(true);
     const wallet = wallets[selectedWallet];
+    const _txAmount = Number(amount.replace(/,/g, ''));
     try {
-      const txHash = await createTx(
-        wallet,
-        address,
-        Number(amount.replace(/,/, '')),
-      );
+      const txHash = await createTx(wallet, address, _txAmount);
       const newBallance = await getBalance(wallet.address);
       const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
 
@@ -105,6 +103,13 @@ const CreateTxScreen = () => {
     }
     if (amount === '' || amount === '0') {
       setErrorAmount(getLanguageString(language, 'REQUIRED_FIELD'));
+      isValid = false;
+    }
+    const wallet = wallets[selectedWallet];
+    const _txAmount = Number(amount.replace(/,/g, ''));
+    const currentBalance = Number(weiToKAI(wallet.balance));
+    if (_txAmount > currentBalance) {
+      setErrorAmount(getLanguageString(language, 'NOT_ENOUGH_KAI_FOR_TX'));
       isValid = false;
     }
     if (!isValid) {

@@ -6,11 +6,14 @@ import {styles} from './style';
 import {ThemeContext} from '../../App';
 import {useRecoilValue} from 'recoil';
 import {notificationAtom} from '../../atoms/notification';
+import {getLanguageString} from '../../utils/lang';
+import {languageAtom} from '../../atoms/language';
 
 const Notification = () => {
   const theme = useContext(ThemeContext);
 
   const notificationList = useRecoilValue(notificationAtom);
+  const language = useRecoilValue(languageAtom);
 
   function viewDetail() {
     console.log('view detail');
@@ -71,7 +74,9 @@ const Notification = () => {
         flex: 1,
         justifyContent: 'flex-start',
       }}>
-      <Text style={styles.headline}>Today</Text>
+      <Text style={styles.headline}>
+        {getLanguageString(language, 'TODAY')}
+      </Text>
       {todayNotification.length > 0 && (
         <FlatList
           data={todayNotification}
@@ -106,7 +111,9 @@ const Notification = () => {
         />
       )}
 
-      <Text style={styles.headline}>Earlier</Text>
+      <Text style={styles.headline}>
+        {getLanguageString(language, 'EARLIER')}
+      </Text>
       {earlierNotification.length > 0 && (
         <FlatList
           data={earlierNotification}

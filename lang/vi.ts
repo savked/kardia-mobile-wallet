@@ -68,6 +68,7 @@ export const lang: Language = {
       '* Thông thường các giao dịch có giá gas cao hơn sẽ được network ưu tiên xử lý trước. Tuy nhiên điều này còn phụ thuộc vào trạng thái của network tại thời điểm giao dịch.',
     CONFIRM_TRANSACTION: 'Xác nhận giao dịch của bạn',
     CONFIRM_KAI_AMOUNT: 'Số lượng',
+    NOT_ENOUGH_KAI_FOR_TX: 'Ví không đủ KAI',
     // Wallet key
     IMPORT: 'Thêm ví',
     WALLET: 'Ví',
@@ -104,6 +105,10 @@ export const lang: Language = {
     TOTAL_STAKED_AMOUNT: 'Tổng số KAI đã stake',
     COMMISSION_RATE: 'Hoa hồng',
     VOTING_POWER: 'Quyền biểu quyết',
+    // Notification Key
+    NOTIFICATION_SCREEN_TITLE: 'Thông báo',
+    TODAY: 'Hôm nay',
+    EARLIER: 'Lịch sử',
     // Setting key
     SETTING_SCREEN_TITLE: 'Cài đặt',
     ADDRESS_BOOK_MENU: 'Danh bạ ví',

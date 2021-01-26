@@ -31,6 +31,7 @@ import {localAuthAtom} from '../../atoms/localAuth';
 import ConfirmPasscode from '../ConfirmPasscode';
 // import DAppScreen from '../DApp';
 import StakingStackScreen from '../../StakingStack';
+import {getLanguageString} from '../../utils/lang';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -97,7 +98,7 @@ const AppContainer = () => {
   const [selectedWallet, setSelectedWallet] = useRecoilState(
     selectedWalletAtom,
   );
-  const setLanguage = useSetRecoilState(languageAtom);
+  const [language, setLanguage] = useRecoilState(languageAtom);
   const isLocalAuthed = useRecoilValue(localAuthAtom);
   const [localAuthEnabled, setLocalAuthEnabled] = useState(true);
   const [inited, setInited] = useState(0);
@@ -242,6 +243,10 @@ const AppContainer = () => {
               color: theme.textColor,
             },
             headerTintColor: theme.textColor,
+            headerTitle: getLanguageString(
+              language,
+              'NOTIFICATION_SCREEN_TITLE',
+            ),
           }}
         />
       </Stack.Navigator>
