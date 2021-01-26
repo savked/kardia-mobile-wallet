@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import ListItem from './ListItem';
 import {styles} from './style';
@@ -18,7 +18,13 @@ const List = ({
   ListEmptyComponent,
   keyExtractor = (item) => item.value,
   numColumns = 1,
+  loading = false,
+  loadingSize = 'large',
+  loadingColor = '#0000ff',
 }: ListProps) => {
+  if (loading) {
+    return <ActivityIndicator size={loadingSize} color={loadingColor} />;
+  }
   return (
     <>
       {header && <View style={[styles.list, listStyle]}>{header}</View>}

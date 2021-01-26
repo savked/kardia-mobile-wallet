@@ -27,6 +27,7 @@ const StakingScreen = () => {
 
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('success');
+  const [loading, setLoading] = useState(true);
 
   const [currentStaking, setCurrentStaking] = useState<Staking[]>([]);
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
@@ -45,8 +46,11 @@ const StakingScreen = () => {
     (async () => {
       const _staking = await getCurrentStaking(wallets[selectedWallet].address);
       setCurrentStaking(_staking);
+      if (loading === true) {
+        setLoading(false);
+      }
     })();
-  }, [selectedWallet, wallets]);
+  }, [loading, selectedWallet, wallets]);
 
   const parseStakingItemForList = (item: Staking) => {
     return {
@@ -110,6 +114,8 @@ const StakingScreen = () => {
           {getLanguageString(language, 'YOUR_INVESTMENTS')}
         </Text>
         <List
+          loading={loading}
+          loadingColor={theme.primaryColor}
           items={currentStaking.map(parseStakingItemForList)}
           listStyle={{paddingHorizontal: 15}}
           ListEmptyComponent={

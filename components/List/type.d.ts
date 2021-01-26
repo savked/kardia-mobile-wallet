@@ -7,6 +7,9 @@ interface ListItemProps {
 interface ListProps {
   items: ListItemProps[] | any[];
   selectedIndex?: number;
+  loading?: boolean;
+  loadingSize?: number | 'large' | 'small';
+  loadingColor?: string;
   keyExtractor?: (item: any) => string;
   onSelect?: (itemIndex: number) => void;
   render?: (item: any, index: number) => any;
