@@ -156,7 +156,7 @@ const StakingItem = ({
       return (
         <View style={styles.actionContainer}>
           <Button
-            style={{marginRight: 12}}
+            style={{marginRight: 12, paddingVertical: 8}}
             loading={claiming}
             disabled={claiming || undelegating || withDrawing}
             title={getLanguageString(language, 'CLAIM_REWARD')}
@@ -166,6 +166,7 @@ const StakingItem = ({
           />
           {withDrawbleInKAI === '0' && (
             <Button
+              style={{paddingVertical: 8}}
               title={getLanguageString(language, 'UNDELEGATE')}
               loading={undelegating}
               disabled={claiming || undelegating}
@@ -176,6 +177,7 @@ const StakingItem = ({
           )}
           {withDrawbleInKAI !== '0' && (
             <Button
+              style={{paddingVertical: 8}}
               title={getLanguageString(language, 'WITHDRAW')}
               loading={undelegating}
               disabled={claiming || undelegating}
@@ -272,7 +274,7 @@ const StakingItem = ({
         padding: 15,
         // height: showFull ? (undelegateError === '' ? 240 : 270) : 120,
         marginVertical: 2,
-        backgroundColor: theme.secondaryColor,
+        backgroundColor: theme.backgroundFocusColor,
         borderRadius: 7,
         // flexDirection: 'row',
         alignItems: 'center',
@@ -286,35 +288,37 @@ const StakingItem = ({
           width: '100%',
         }}>
         <View style={{justifyContent: 'center'}}>
-          <Text style={styles.validatorName}>{item.name}</Text>
+          <Text style={[styles.validatorName, {color: theme.textColor}]}>
+            {item.name}
+          </Text>
           {showFull && (
-            <Text>
+            <Text style={{color: '#929394'}}>
               {getLanguageString(language, 'STAKED')}:{' '}
-              <Text style={{fontWeight: 'bold'}}>
+              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(stakedAmountInKAI).format('0,0.00')}
               </Text>
             </Text>
           )}
           {showFull && (
-            <Text>
+            <Text style={{color: '#929394'}}>
               {getLanguageString(language, 'CLAIMABLE')}:{' '}
-              <Text style={{fontWeight: 'bold'}}>
+              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(claimableInKAI).format('0,0.00')}
               </Text>
             </Text>
           )}
           {showFull && (
-            <Text>
+            <Text style={{color: '#929394'}}>
               {getLanguageString(language, 'UNBONDED')}:{' '}
-              <Text style={{fontWeight: 'bold'}}>
+              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(unbondedInKAI).format('0,0.00')}
               </Text>
             </Text>
           )}
           {showFull && (
-            <Text>
+            <Text style={{color: '#929394'}}>
               {getLanguageString(language, 'WITHDRAWABLE')}:{' '}
-              <Text style={{fontWeight: 'bold'}}>
+              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(withDrawbleInKAI).format('0,0.00')}
               </Text>
             </Text>
@@ -323,7 +327,7 @@ const StakingItem = ({
         <View style={{flexDirection: 'row'}}>
           {!showFull && (
             <View style={{justifyContent: 'center'}}>
-              <Text style={{fontWeight: 'bold'}}>
+              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(claimableInKAI).format('0,0.00')} KAI
               </Text>
             </View>
@@ -331,6 +335,7 @@ const StakingItem = ({
           <Icon
             name={showFull ? 'chevron-up' : 'chevron-down'}
             size={22}
+            color="#929394"
             style={{
               marginLeft: 12,
               alignItems: 'center',

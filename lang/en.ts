@@ -96,9 +96,9 @@ export const lang: Language = {
     UNDELEGATE_AMOUNT_REMAIN_25000:
       'Must keep at least 25.000 KAI in staking, or undelegate all KAI',
     UNDELEGATE_AMOUNT_PLACEHOLDER: 'Amount to undelegate...',
-    YOUR_INVESTMENTS: 'Your investments',
+    YOUR_INVESTMENTS: 'Your delegations',
     TOTAL_EARNING: 'Your total earning',
-    INVEST: 'Invest',
+    INVEST: 'Stake',
     CHOOSE_VALIDATOR: 'Choose validator to stake',
     STAKING_AMOUNT: 'Amount to stake',
     STAKING_AMOUNT_NOT_ENOUGHT: 'Not enough KAI to stake',

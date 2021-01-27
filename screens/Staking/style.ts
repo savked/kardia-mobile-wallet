@@ -27,13 +27,13 @@ export const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   validatorName: {
-    // fontSize: 20,
+    fontSize: 18,
     fontStyle: 'italic',
     fontWeight: 'bold',
     // marginBottom: 18,
   },
   actionContainer: {
-    marginTop: 24,
+    marginTop: 12,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
