@@ -24,6 +24,7 @@ import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
 import AlertModal from '../../components/AlertModal';
 import IconButton from '../../components/IconButton';
+import NewTxModal from '../common/NewTxModal';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -35,6 +36,7 @@ const CardSliderSection = ({
   showQRModal: () => void;
 }) => {
   const navigation = useNavigation();
+  const [showNewTxModal, setShowNewTxModal] = useState(false);
   const carouselRef = useRef<Carousel<Wallet>>(null);
   const wallets = useRecoilValue(walletsAtom);
   const [tokenInfo] = useRecoilState(tokenInfoAtom);
@@ -45,13 +47,7 @@ const CardSliderSection = ({
   const language = useRecoilValue(languageAtom);
 
   function send() {
-    navigation.navigate('Transaction', {
-      screen: 'CreateTx',
-      initial: false,
-      params: {
-        from: 'Home',
-      },
-    });
+    setShowNewTxModal(true);
   }
 
   function showCredential() {
@@ -174,6 +170,10 @@ const CardSliderSection = ({
 
   return (
     <View style={styles.kaiCardSlider}>
+      <NewTxModal
+        visible={showNewTxModal}
+        onClose={() => setShowNewTxModal(false)}
+      />
       <Carousel
         ref={carouselRef}
         data={wallets}

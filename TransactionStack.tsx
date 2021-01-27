@@ -3,7 +3,7 @@ import {
   createStackNavigator,
   CardStyleInterpolators,
 } from '@react-navigation/stack';
-import CreateTxScreen from './screens/CreateTransaction';
+// import CreateTxScreen from './screens/CreateTransaction';
 import TransactionScreen from './screens/Transactions';
 import TransactionDetail from './screens/TransactionDetail';
 
@@ -22,7 +22,7 @@ const TransactionStackScreen = () => {
         name="TransactionList"
         component={TransactionScreen}
       />
-      <TransactionStack.Screen name="CreateTx" component={CreateTxScreen} />
+      {/* <TransactionStack.Screen name="CreateTx" component={CreateTxScreen} /> */}
       <TransactionStack.Screen
         name="TransactionDetail"
         component={TransactionDetail}

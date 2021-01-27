@@ -22,6 +22,7 @@ import {
   getLanguageString,
 } from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
+import NewTxModal from '../common/NewTxModal';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
@@ -31,6 +32,7 @@ const TransactionScreen = () => {
   const [selectedWallet] = useRecoilState(selectedWalletAtom);
   const [txList, setTxList] = useState([] as any[]);
   const [filterTx, setFilterTx] = useState('');
+  const [showNewTxModal, setShowNewTxModal] = useState(false);
   const addressBook = useRecoilValue(addressBookAtom);
   const language = useRecoilValue(languageAtom);
 
@@ -142,6 +144,10 @@ const TransactionScreen = () => {
   return (
     <SafeAreaView
       style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+      <NewTxModal
+        visible={showNewTxModal}
+        onClose={() => setShowNewTxModal(false)}
+      />
       <View style={styles.header}>
         <Text style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'RECENT_TRANSACTION')}
@@ -150,7 +156,8 @@ const TransactionScreen = () => {
           name="plus-circle"
           color={theme.textColor}
           size={styles.headline.fontSize}
-          onPress={() => navigation.navigate('CreateTx')}
+          // onPress={() => navigation.navigate('CreateTx')}
+          onPress={() => setShowNewTxModal(true)}
         />
       </View>
       <View style={styles.controlContainer}>
@@ -164,12 +171,19 @@ const TransactionScreen = () => {
           onChangeText={setFilterTx}
         />
       </View>
-      <View style={{flex: 1, paddingHorizontal: 7}}>
+      <View style={{flex: 1}}>
         <List
           items={txList.filter(filterTransaction)}
-          render={(item) => {
+          render={(item, index) => {
             return (
-              <View style={[{padding: 15}]}>
+              <View
+                style={{
+                  padding: 15,
+                  backgroundColor:
+                    index % 2 === 0
+                      ? theme.backgroundFocusColor
+                      : theme.backgroundColor,
+                }}>
                 <TouchableOpacity
                   style={{
                     flexDirection: 'row',

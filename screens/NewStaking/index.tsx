@@ -1,6 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {Keyboard, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Keyboard,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import numeral from 'numeral';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
@@ -15,7 +21,7 @@ import {weiToKAI} from '../../services/transaction/amount';
 import {getLatestBlock} from '../../services/blockchain';
 import {BLOCK_TIME, MIN_DELEGATE} from '../../config';
 import AlertModal from '../../components/AlertModal';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 
@@ -27,6 +33,7 @@ const parseValidatorItemForList = (item: Validator) => {
 };
 
 const NewStaking = () => {
+  const {params} = useRoute();
   const theme = useContext(ThemeContext);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const wallets = useRecoilValue(walletsAtom);
@@ -34,7 +41,9 @@ const NewStaking = () => {
 
   const [validatorList, setValidatorList] = useState<Validator[]>([]);
   const [totalStakedAmount, setTotalStakedAmount] = useState('');
-  const [selectedValidatorAddress, setSelectedValidatorAddress] = useState('');
+  const [selectedValidatorAddress, setSelectedValidatorAddress] = useState(
+    (params as any)?.smcAddress || '',
+  );
   const [amount, setAmount] = useState('0');
   const [amountError, setAmountError] = useState('');
   const [estimatedProfit, setEstimatedProfit] = useState('');
@@ -42,6 +51,7 @@ const NewStaking = () => {
   const [delegating, setDelegating] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('success');
+  const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation();
 
@@ -50,6 +60,7 @@ const NewStaking = () => {
       const {totalStaked, validators} = await getAllValidator();
       setTotalStakedAmount(totalStaked);
       setValidatorList(validators);
+      setLoading(false);
     })();
   }, []);
 
@@ -131,7 +142,7 @@ const NewStaking = () => {
         setAmountError(
           getLanguageString(language, 'AT_LEAST_MIN_DELEGATE').replace(
             '{{MIN_KAI}}',
-            MIN_DELEGATE.toString(),
+            numeral(MIN_DELEGATE).format('0,0'),
           ),
         );
         return;
@@ -162,6 +173,22 @@ const NewStaking = () => {
       setMessageType('error');
     }
   };
+
+  if (loading) {
+    return (
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: theme.backgroundColor,
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+        ]}>
+        <ActivityIndicator color={theme.textColor} size="large" />
+      </View>
+    );
+  }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

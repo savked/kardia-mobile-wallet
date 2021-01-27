@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {TextInput, View, Text} from 'react-native';
+import {TextInput, View, Text, StyleProp, TextStyle} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ThemeContext} from '../../App';
 import {styles} from './style';
@@ -20,7 +20,8 @@ const CustomTextInput = ({
   icons,
   message = '',
   keyboardType = 'default',
-}: CustomTextInputProps) => {
+  headlineStyle,
+}: CustomTextInputProps & {headlineStyle?: StyleProp<TextStyle>}) => {
   const theme = useContext(ThemeContext);
 
   const renderMessage = () => {
@@ -36,7 +37,8 @@ const CustomTextInput = ({
   return (
     <>
       {headline && (
-        <Text style={[styles.headline, {color: theme.textColor}]}>
+        <Text
+          style={[styles.headline, {color: theme.textColor}, headlineStyle]}>
           {headline}
         </Text>
       )}

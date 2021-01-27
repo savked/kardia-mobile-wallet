@@ -32,6 +32,7 @@ import ConfirmPasscode from '../ConfirmPasscode';
 // import DAppScreen from '../DApp';
 import StakingStackScreen from '../../StakingStack';
 import {getLanguageString} from '../../utils/lang';
+import Portal from '@burstware/react-native-portal';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -225,32 +226,36 @@ const AppContainer = () => {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          options={{headerShown: false}}
-          name="Wrap"
-          component={Wrap}
-        />
-        <Stack.Screen
-          name="Notification"
-          component={Notification}
-          options={{
-            headerStyle: {
-              backgroundColor: theme.backgroundColor,
-            },
-            headerTitleStyle: {
-              color: theme.textColor,
-            },
-            headerTintColor: theme.textColor,
-            headerTitle: getLanguageString(
-              language,
-              'NOTIFICATION_SCREEN_TITLE',
-            ),
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        <Portal.Host>
+          <Stack.Navigator>
+            <Stack.Screen
+              options={{headerShown: false}}
+              name="Wrap"
+              component={Wrap}
+            />
+            <Stack.Screen
+              name="Notification"
+              component={Notification}
+              options={{
+                headerStyle: {
+                  backgroundColor: theme.backgroundColor,
+                },
+                headerTitleStyle: {
+                  color: theme.textColor,
+                },
+                headerTintColor: theme.textColor,
+                headerTitle: getLanguageString(
+                  language,
+                  'NOTIFICATION_SCREEN_TITLE',
+                ),
+              }}
+            />
+          </Stack.Navigator>
+        </Portal.Host>
+      </NavigationContainer>
+    </>
   );
 };
 

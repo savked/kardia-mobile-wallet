@@ -31,6 +31,8 @@ export const lang: Language = {
       'Mật khẩu ví đảm bảo chỉ có bạn là người sử dụng Kardia Wallet',
     IMPORT_WITH_PRIVATE_KEY: 'Thêm bằng private key',
     IMPORT_WITH_SEED: 'Thêm bằng seed phrase',
+    SELECT_ADDRESS: 'Chọn địa chỉ ví',
+    NO_SAVED_ADDRESS: 'Chưa có địa chỉ ví được lưu',
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
@@ -106,6 +108,9 @@ export const lang: Language = {
     TOTAL_STAKED_AMOUNT: 'Tổng số KAI đã stake',
     COMMISSION_RATE: 'Hoa hồng',
     VOTING_POWER: 'Quyền biểu quyết',
+    VALIDATOR_LIST_TITLE: 'Chọn validator',
+    NEW_STAKING_TITLE: 'Stake & Earn',
+    SEARCH_VALIDATOR_PLACEHOLDER: 'Tìm theo tên / hoa hồng...',
     // Notification Key
     NOTIFICATION_SCREEN_TITLE: 'Thông báo',
     TODAY: 'Hôm nay',

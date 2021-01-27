@@ -48,7 +48,7 @@ const TxListSection = () => {
       const newTxList = await getTxByAddress(
         wallets[selectedWallet].address,
         1,
-        30,
+        7,
       );
       setTxList(newTxList.map(parseTXForList));
     } catch (error) {
@@ -116,10 +116,16 @@ const TxListSection = () => {
     <View style={styles.transactionContainer}>
       <List
         items={txList}
-        listStyle={{paddingHorizontal: 15}}
-        render={(item) => {
+        render={(item, index) => {
           return (
-            <View style={[{padding: 15}]}>
+            <View
+              style={{
+                padding: 15,
+                backgroundColor:
+                  index % 2 === 0
+                    ? theme.backgroundFocusColor
+                    : theme.backgroundColor,
+              }}>
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
@@ -182,6 +188,7 @@ const TxListSection = () => {
               alignItems: 'center',
               flexDirection: 'row',
               justifyContent: 'space-between',
+              paddingHorizontal: 15,
             }}>
             <Text style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
               {getLanguageString(language, 'RECENT_TRANSACTION')}

@@ -10,14 +10,20 @@ import {getLanguageString} from '../../utils/lang';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
-const QRModal = ({onClose}: {onClose: () => void}) => {
+const QRModal = ({
+  onClose,
+  visible,
+}: {
+  visible: boolean;
+  onClose: () => void;
+}) => {
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const language = useRecoilValue(languageAtom);
 
   return (
     <Modal
-      visible={true}
+      visible={visible}
       showCloseButton={true}
       contentStyle={{
         paddingHorizontal: 0,

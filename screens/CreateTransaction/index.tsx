@@ -13,7 +13,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import {styles} from './style';
 import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {truncate} from '../../utils/string';
 import {format, getDigit, isNumber} from '../../utils/number';
 import {ThemeContext} from '../../App';
@@ -56,8 +56,6 @@ const CreateTxScreen = () => {
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
   const language = useRecoilValue(languageAtom);
-
-  const {params} = useRoute();
 
   async function send() {
     setShowConfirmModal(false);
@@ -337,16 +335,7 @@ const CreateTxScreen = () => {
           />
           <Button
             title={getLanguageString(language, 'GO_BACK').toUpperCase()}
-            onPress={() => {
-              if (params && (params as any).from === 'Home') {
-                navigation.reset({
-                  index: 0,
-                  routes: [{name: 'Home'}],
-                });
-              } else {
-                navigation.goBack();
-              }
-            }}
+            onPress={navigation.goBack}
             type="outline"
             size="large"
           />

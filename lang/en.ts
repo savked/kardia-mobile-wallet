@@ -31,6 +31,8 @@ export const lang: Language = {
       "Passcode help increase your wallet's security level.",
     IMPORT_WITH_PRIVATE_KEY: 'Import with private key',
     IMPORT_WITH_SEED: 'Import with seed phrase',
+    SELECT_ADDRESS: 'Select Address',
+    NO_SAVED_ADDRESS: 'No saved address',
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now',
     MNEMONIC_DESCRIPTION:
@@ -107,6 +109,9 @@ export const lang: Language = {
     TOTAL_STAKED_AMOUNT: 'Total staked amount',
     COMMISSION_RATE: 'Commission rate',
     VOTING_POWER: 'Voting power',
+    VALIDATOR_LIST_TITLE: 'Choose validator',
+    NEW_STAKING_TITLE: 'Stake & Earn',
+    SEARCH_VALIDATOR_PLACEHOLDER: 'Search by name / comission...',
     // Notification Key
     NOTIFICATION_SCREEN_TITLE: 'Notification',
     TODAY: 'Today',

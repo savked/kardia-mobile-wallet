@@ -148,7 +148,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
       <HomeHeader />
-      {showQRModal && <QRModal onClose={() => setShowQRModal(false)} />}
+      <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
       {showImportModal && (
         <ImportModal
           onClose={() => setShowImportModal(false)}
@@ -161,137 +161,129 @@ const HomeScreen = () => {
           showQRModal={() => setShowQRModal(true)}
         />
         <TxListSection />
-        {showScanAlert && (
-          <AlertModal
-            type={scanType as any}
-            visible={showScanAlert}
-            onClose={() => {
-              setShowScanAlert(false);
-              setMnemonic('');
-              setPrivateKey('');
-            }}
-            message={scanMessage}
-          />
-        )}
-        {mnemonic !== '' && !showScanAlert && (
-          <Modal
-            showCloseButton={false}
-            visible={true}
-            // contentStyle={{marginTop: viewportHeight / 1.4}}
-            contentStyle={{
-              flex: 0.3,
-              marginTop: viewportHeight / 3,
-              borderBottomRightRadius: 20,
-              borderBottomLeftRadius: 20,
-              marginHorizontal: 14,
-            }}
-            onClose={() => setMnemonic('')}>
-            <View style={{justifyContent: 'space-between', flex: 1}}>
-              <Text style={{textAlign: 'center'}}>
-                {getLanguageString(language, 'ARE_YOU_SURE')}
-              </Text>
-              <Text>
-                {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
-              </Text>
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                <Button
-                  title={getLanguageString(language, 'GO_BACK')}
-                  type="secondary"
-                  onPress={() => setMnemonic('')}
-                />
-                <Button
-                  loading={processing}
-                  disabled={processing}
-                  title={getLanguageString(language, 'SUBMIT')}
-                  onPress={() => {
-                    setProcessing(true);
-                    setTimeout(() => {
-                      importMnemonic(mnemonic);
-                    }, 100);
-                  }}
-                />
-              </View>
-            </View>
-          </Modal>
-        )}
-        {privateKey !== '' && !showScanAlert && (
-          <Modal
-            showCloseButton={false}
-            visible={true}
-            contentStyle={{
-              flex: 0.3,
-              marginTop: viewportHeight / 3,
-              borderBottomRightRadius: 20,
-              borderBottomLeftRadius: 20,
-              marginHorizontal: 14,
-            }}
-            onClose={() => setPrivateKey('')}>
-            <View>
-              <Text style={{textAlign: 'center'}}>
-                {getLanguageString(language, 'ARE_YOU_SURE')}
-              </Text>
-              <Text>
-                {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
-              </Text>
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                <Button
-                  title={getLanguageString(language, 'GO_BACK')}
-                  type="secondary"
-                  onPress={() => setMnemonic('')}
-                />
-                <Button
-                  loading={processing}
-                  disabled={processing}
-                  title={getLanguageString(language, 'SUBMIT')}
-                  onPress={() => {
-                    setProcessing(true);
-                    setTimeout(() => {
-                      importPrivateKey(privateKey);
-                    }, 100);
-                  }}
-                />
-              </View>
-            </View>
-          </Modal>
-        )}
-        {showPasscodeRemindModal && (
-          <Modal
-            showCloseButton={false}
-            contentStyle={{
-              flex: 0.3,
-              marginTop: viewportHeight / 3,
-              borderBottomRightRadius: 20,
-              borderBottomLeftRadius: 20,
-              marginHorizontal: 14,
-            }}
-            visible={true}
-            onClose={() => setShowPasscodeRemindModal(false)}>
-            <Text>{getLanguageString(language, 'NO_PASSCODE')}</Text>
-            <Text>{getLanguageString(language, 'PASSCODE_DESCRIPTION')}</Text>
+        <AlertModal
+          type={scanType as any}
+          visible={showScanAlert}
+          onClose={() => {
+            setShowScanAlert(false);
+            setMnemonic('');
+            setPrivateKey('');
+          }}
+          message={scanMessage}
+        />
+        <Modal
+          showCloseButton={false}
+          visible={mnemonic !== '' && !showScanAlert}
+          // contentStyle={{marginTop: viewportHeight / 1.4}}
+          contentStyle={{
+            flex: 0.3,
+            marginTop: viewportHeight / 3,
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+            marginHorizontal: 14,
+          }}
+          onClose={() => setMnemonic('')}>
+          <View style={{justifyContent: 'space-between', flex: 1}}>
+            <Text style={{textAlign: 'center'}}>
+              {getLanguageString(language, 'ARE_YOU_SURE')}
+            </Text>
+            <Text>
+              {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
+            </Text>
             <View
-              style={{
-                flexDirection: 'row',
-                width: '100%',
-                justifyContent: 'space-evenly',
-              }}>
+              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
               <Button
-                type="ghost"
-                title={getLanguageString(language, 'LATER')}
-                onPress={() => setShowPasscodeRemindModal(false)}
+                title={getLanguageString(language, 'GO_BACK')}
+                type="secondary"
+                onPress={() => setMnemonic('')}
               />
               <Button
-                type="primary"
-                title={getLanguageString(language, 'SET_APP_PASSCODE')}
+                loading={processing}
+                disabled={processing}
+                title={getLanguageString(language, 'SUBMIT')}
                 onPress={() => {
-                  setShowPasscodeRemindModal(false);
-                  navigation.navigate('Setting', {screen: 'SettingPasscode'});
+                  setProcessing(true);
+                  setTimeout(() => {
+                    importMnemonic(mnemonic);
+                  }, 100);
                 }}
               />
             </View>
-          </Modal>
-        )}
+          </View>
+        </Modal>
+        <Modal
+          showCloseButton={false}
+          visible={privateKey !== '' && !showScanAlert}
+          contentStyle={{
+            flex: 0.3,
+            marginTop: viewportHeight / 3,
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+            marginHorizontal: 14,
+          }}
+          onClose={() => setPrivateKey('')}>
+          <View>
+            <Text style={{textAlign: 'center'}}>
+              {getLanguageString(language, 'ARE_YOU_SURE')}
+            </Text>
+            <Text>
+              {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
+            </Text>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+              <Button
+                title={getLanguageString(language, 'GO_BACK')}
+                type="secondary"
+                onPress={() => setMnemonic('')}
+              />
+              <Button
+                loading={processing}
+                disabled={processing}
+                title={getLanguageString(language, 'SUBMIT')}
+                onPress={() => {
+                  setProcessing(true);
+                  setTimeout(() => {
+                    importPrivateKey(privateKey);
+                  }, 100);
+                }}
+              />
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          showCloseButton={false}
+          contentStyle={{
+            flex: 0.3,
+            marginTop: viewportHeight / 3,
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+            marginHorizontal: 14,
+          }}
+          visible={showPasscodeRemindModal}
+          onClose={() => setShowPasscodeRemindModal(false)}>
+          <Text>{getLanguageString(language, 'NO_PASSCODE')}</Text>
+          <Text>{getLanguageString(language, 'PASSCODE_DESCRIPTION')}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'space-evenly',
+            }}>
+            <Button
+              type="ghost"
+              title={getLanguageString(language, 'LATER')}
+              onPress={() => setShowPasscodeRemindModal(false)}
+            />
+            <Button
+              type="primary"
+              title={getLanguageString(language, 'SET_APP_PASSCODE')}
+              onPress={() => {
+                setShowPasscodeRemindModal(false);
+                navigation.navigate('Setting', {screen: 'SettingPasscode'});
+              }}
+            />
+          </View>
+        </Modal>
       </View>
     </SafeAreaView>
   );

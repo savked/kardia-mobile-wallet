@@ -98,7 +98,7 @@ const StakingScreen = () => {
               iconName="plus"
               type="outline"
               textStyle={{color: '#FFFFFF'}}
-              onPress={() => navigation.navigate('NewStaking')}
+              onPress={() => navigation.navigate('ValidatorList')}
             />
           </View>
         </View>

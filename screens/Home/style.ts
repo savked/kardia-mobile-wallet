@@ -13,10 +13,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 15,
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#2A343D',
   },
   bodyContainer: {
-    // flex: 1,
+    flex: 1,
   },
   kaiCardSlider: {
     // backgroundColor: '#2A343D',
@@ -50,7 +49,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   transactionContainer: {
-    height: 445,
+    // height: 445,
+    flex: 1,
     // backgroundColor: '#FFFFFF',
     // backgroundColor: '#171E28',
     borderTopLeftRadius: 22,
@@ -85,7 +85,7 @@ export const styles = StyleSheet.create({
     height: 30,
   },
   noTXText: {
-    // padding: 15,
+    padding: 15,
     fontSize: 16,
     fontStyle: 'italic',
   },

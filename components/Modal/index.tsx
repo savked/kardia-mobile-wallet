@@ -47,6 +47,10 @@ const CustomModal = ({
     setMarginTop(full ? viewportHeight / 12 : viewportHeight / 2);
   };
 
+  if (!visible) {
+    return null;
+  }
+
   return (
     <BlurView blurType="dark" blurAmount={50} style={styles.absolute}>
       <Modal
