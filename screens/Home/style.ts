@@ -72,12 +72,13 @@ export const styles = StyleSheet.create({
   },
 
   cardLogo: {
-    width: 350,
-    height: 50,
+    width: 220,
+    height: 40,
     opacity: 0.25,
     position: 'absolute',
-    left: -20,
-    top: 40,
+    right: 2,
+    bottom: -40,
+    resizeMode: 'contain',
   },
 
   kaiLogo: {
