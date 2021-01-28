@@ -40,7 +40,7 @@ export const lang: Language = {
     // Import wallet key:
     ENTER_SEED_PHRASE: 'Enter your 12-words secret phrase',
     ENTER_PRIVATE_KEY: 'Enter private key',
-    SCAN_SEED_PHRASE: 'Scan QR code for mnemonic phrase',
+    SCAN_SEED_PHRASE: 'Scan QR code for seed phrase',
     SCAN_PRIVATE_KEY: 'Scan QR code for private key',
     WALLET_EXISTED: 'Wallet already existed',
     ERROR_SEED_PHRASE: 'Wrong format seed phrase, please recheck',
@@ -48,7 +48,7 @@ export const lang: Language = {
     RECENT_TRANSACTION: 'Recent transactions',
     NO_TRANSACTION: 'No transaction',
     SEARCH_TRANSACTION_PLACEHOLDER:
-      'Search with address / tx hash / block number / block hash...',
+      'Search with address / hash / block number ...',
     VIEW_ALL_TRANSACTION: 'View all',
     SEND: 'Send',
     RECEIVE: 'Receive',
@@ -111,7 +111,7 @@ export const lang: Language = {
     VOTING_POWER: 'Voting power',
     VALIDATOR_LIST_TITLE: 'Choose validator',
     NEW_STAKING_TITLE: 'Stake & Earn',
-    SEARCH_VALIDATOR_PLACEHOLDER: 'Search by name / comission...',
+    SEARCH_VALIDATOR_PLACEHOLDER: 'Search by validator name ...',
     // Notification Key
     NOTIFICATION_SCREEN_TITLE: 'Notification',
     TODAY: 'Today',

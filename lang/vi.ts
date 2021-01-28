@@ -110,7 +110,7 @@ export const lang: Language = {
     VOTING_POWER: 'Quyền biểu quyết',
     VALIDATOR_LIST_TITLE: 'Chọn validator',
     NEW_STAKING_TITLE: 'Stake & Earn',
-    SEARCH_VALIDATOR_PLACEHOLDER: 'Tìm theo tên / hoa hồng...',
+    SEARCH_VALIDATOR_PLACEHOLDER: 'Tìm theo tên validator ...',
     // Notification Key
     NOTIFICATION_SCREEN_TITLE: 'Thông báo',
     TODAY: 'Hôm nay',

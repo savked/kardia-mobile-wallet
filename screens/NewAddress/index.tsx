@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useContext, useState} from 'react';
 import {
   ImageURISource,
@@ -17,12 +17,17 @@ import {getLanguageString} from '../../utils/lang';
 import {saveAddressBook} from '../../utils/local';
 import ScanQRAddressModal from '../common/ScanQRAddressModal';
 import {styles} from './style';
+import {truncate} from '../../utils/string';
 
 const NewAddress = () => {
+  const {params} = useRoute();
+
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
   const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState(
+    (params as any).address ? (params as any).address : '',
+  );
   const [avatar, setAvatar] = useState<ImageURISource>({uri: ''});
   const [addressBook, setAddressBook] = useRecoilState(addressBookAtom);
   const [showModal, setShowModal] = useState(false);
@@ -71,7 +76,7 @@ const NewAddress = () => {
           <TextInput
             headline={getLanguageString(language, 'ADDRESS_ADDRESS')}
             block
-            value={address}
+            value={truncate(address, 17, 17)}
             onChangeText={setAddress}
             iconName="qrcode"
             onIconPress={showQRScanner}

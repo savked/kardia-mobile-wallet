@@ -29,6 +29,7 @@ import {getLanguageString} from '../../utils/lang';
 import {useNavigation} from '@react-navigation/native';
 import {getWalletFromPK} from '../../utils/blockchain';
 import RemindPasscodeModal from '../common/RemindPasscodeModal';
+import {getStakingAmount} from '../../services/staking';
 
 const {height: viewportHeight} = Dimensions.get('window');
 
@@ -90,10 +91,12 @@ const HomeScreen = () => {
       const _privateKey = _wallet.privateKey;
       const walletAddress = _wallet.address;
       const balance = await getBalance(walletAddress);
+      const staked = await getStakingAmount(walletAddress);
       const wallet: Wallet = {
         privateKey: _privateKey,
         address: walletAddress,
         balance,
+        staked,
       };
 
       const walletExisted = wallets
@@ -129,10 +132,12 @@ const HomeScreen = () => {
       const _wallet = getWalletFromPK(_privateKey);
       const walletAddress = _wallet.getChecksumAddressString();
       const balance = await getBalance(walletAddress);
+      const staked = await getStakingAmount(walletAddress);
       const wallet: Wallet = {
         privateKey: _privateKey,
         address: walletAddress,
         balance,
+        staked,
       };
 
       const walletExisted = wallets

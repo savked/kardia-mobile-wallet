@@ -41,6 +41,7 @@ const ImportMnemonic = () => {
         privateKey: privateKey,
         address: walletAddress,
         balance: 0,
+        staked: 0,
       };
       await saveMnemonic(walletAddress, mnemonic.trim());
       const _wallets = JSON.parse(JSON.stringify(wallets));

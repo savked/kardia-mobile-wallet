@@ -25,6 +25,7 @@ import {getLanguageString} from '../../utils/lang';
 import AlertModal from '../../components/AlertModal';
 import IconButton from '../../components/IconButton';
 import NewTxModal from '../common/NewTxModal';
+import numeral from 'numeral';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -137,7 +138,17 @@ const CardSliderSection = ({
               justifyContent: 'space-between',
             }}>
             <Text style={[styles.kaiCardText, styles.kaiCardBalanceText]}>
-              {parseKaiBalance(wallet.balance)} KAI
+              Balance: {parseKaiBalance(wallet.balance)} KAI
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <Text style={[styles.kaiCardText, styles.kaiCardBalanceText]}>
+              Staked: {numeral(wallet.staked).format('0,0.00 a')} KAI
             </Text>
           </View>
         </LinearGradient>

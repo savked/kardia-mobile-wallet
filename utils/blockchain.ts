@@ -20,6 +20,7 @@ export const getWalletFromMnemonic = async (
       address: addressStr,
       privateKey,
       balance: 0,
+      staked: 0,
     };
   } catch (error) {
     console.error(error);

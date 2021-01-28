@@ -20,6 +20,7 @@ import {
   getDateTimeFormat,
   getLanguageString,
 } from '../../utils/lang';
+import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 
 const TransactionDetail = () => {
   const theme = useContext(ThemeContext);
@@ -31,12 +32,25 @@ const TransactionDetail = () => {
   const language = useRecoilValue(languageAtom);
   const [txData, setTxData] = useState<Transaction>();
 
+  const wallets = useRecoilValue(walletsAtom);
+  const selectedWallet = useRecoilValue(selectedWalletAtom);
+
   useEffect(() => {
     (async () => {
       const data = await getTxDetail(txHash);
       setTxData(data);
     })();
   }, [txHash]);
+
+  const getOtherAddress = () => {
+    if (!txData) {
+      return '';
+    }
+    if (txData.from !== wallets[selectedWallet].address) {
+      return txData.from;
+    }
+    return txData.to;
+  };
 
   const renderStatusIcon = (status?: number) => {
     let iconName, iconColor;
@@ -147,7 +161,22 @@ const TransactionDetail = () => {
                 })}
           </Text>
         </View>
-        <View style={[styles.infoContainer, {marginTop: 15}]}>
+        <View
+          style={{marginTop: 15, paddingHorizontal: 22, paddingVertical: 8}}>
+          {getFromAddressBook(addressBook, getOtherAddress()) ===
+            getOtherAddress() && (
+            <Button
+              title="Save to address book"
+              type="secondary"
+              block
+              style={{marginBottom: 14}}
+              onPress={() => {
+                navigation.navigate('NewAddress', {
+                  address: getOtherAddress(),
+                });
+              }}
+            />
+          )}
           <Button
             title={getLanguageString(language, 'GO_BACK')}
             type="outline"

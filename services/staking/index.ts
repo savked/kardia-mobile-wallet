@@ -3,7 +3,7 @@ import VALIDATOR_ABI from './validatorABI.json';
 import KardiaClient from 'kardia-dx';
 import {toChecksumAddress} from 'ethereumjs-util';
 import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '../../config';
-import {cellValue} from '../transaction/amount';
+import {cellValue, weiToKAI} from '../transaction/amount';
 
 const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
 const kardiaContract = kardiaClient.contract;
@@ -43,6 +43,15 @@ export const getCurrentStaking = async (address: string) => {
   );
   const responseJSON = await response.json();
   return Array.isArray(responseJSON.data) ? responseJSON.data : [];
+};
+
+export const getStakingAmount = async (address: string) => {
+  const _staking: Staking[] = await getCurrentStaking(address);
+  let total = 0;
+  _staking.forEach((item) => {
+    total += Number(weiToKAI(item.stakedAmount));
+  });
+  return total;
 };
 
 export const withdrawReward = async (valSmcAddr: string, wallet: Wallet) => {

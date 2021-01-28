@@ -33,6 +33,7 @@ import ConfirmPasscode from '../ConfirmPasscode';
 import StakingStackScreen from '../../StakingStack';
 import {getLanguageString} from '../../utils/lang';
 import Portal from '@burstware/react-native-portal';
+import {getStakingAmount} from '../../services/staking';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -175,10 +176,12 @@ const AppContainer = () => {
   const updateWalletBalance = async () => {
     try {
       const balance = await getBalance(wallets[selectedWallet].address);
+      const staked = await getStakingAmount(wallets[selectedWallet].address);
       const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
       _wallets.forEach((_wallet, index) => {
         _wallet.address === wallets[selectedWallet].address;
         _wallets[index].balance = balance;
+        _wallets[index].staked = staked;
       });
       setWallets(_wallets);
     } catch (error) {

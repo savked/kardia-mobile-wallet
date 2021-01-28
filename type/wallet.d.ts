@@ -2,6 +2,7 @@ interface Wallet {
   address: string;
   privateKey?: string;
   balance: number;
+  staked: number;
 }
 
 interface Address {
