@@ -8,7 +8,7 @@ import {languageAtom} from '../../atoms/language';
 import Button from '../../components/Button';
 import {getLanguageString} from '../../utils/lang';
 import {styles} from './style';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 
 const Welcome = () => {
   const navigation = useNavigation();

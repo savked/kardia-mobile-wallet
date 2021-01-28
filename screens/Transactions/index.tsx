@@ -4,7 +4,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Alert, Text, TouchableOpacity, View, Image} from 'react-native';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {ThemeContext} from '../../App';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import List from '../../components/List';
 import TextInput from '../../components/TextInput';
@@ -23,6 +22,7 @@ import {
 } from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import NewTxModal from '../common/NewTxModal';
+import {ThemeContext} from '../../ThemeContext';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);

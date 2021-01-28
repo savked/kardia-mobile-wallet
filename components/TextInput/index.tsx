@@ -2,7 +2,7 @@
 import React, {useContext} from 'react';
 import {TextInput, View, Text, StyleProp, TextStyle} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import {styles} from './style';
 
 const CustomTextInput = ({

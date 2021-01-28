@@ -7,7 +7,7 @@ import {
 import {HeaderBackButton} from '@react-navigation/stack';
 import SettingScreen from './screens/Setting';
 import AddressBookSetting from './screens/AddressBookSetting';
-import {ThemeContext} from './App';
+import {ThemeContext} from './ThemeContext';
 import IconButton from './components/IconButton';
 import {View} from 'react-native';
 import NewAddress from './screens/NewAddress';

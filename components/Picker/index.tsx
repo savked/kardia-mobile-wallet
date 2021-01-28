@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import {Text} from 'react-native';
 import RNPickerSelect, {Item} from 'react-native-picker-select';
 import Icon from 'react-native-vector-icons/Feather';
@@ -11,7 +11,7 @@ const Picker = ({
   value,
   placeholder,
   onChange,
-}: PickerProps & {items: Item[], placeholder?: {} | Item}) => {
+}: PickerProps & {items: Item[]; placeholder?: {} | Item}) => {
   const theme = useContext(ThemeContext);
   return (
     <>

@@ -150,7 +150,7 @@ const CardSliderSection = ({
       if (carouselRef.current.currentIndex !== selectedWallet) {
         // react-native-snap-carousel issue. TODO: wait for issue resolved and update
         setTimeout(() => {
-          carouselRef.current!.snapToItem(selectedWallet);
+          carouselRef.current && carouselRef.current.snapToItem(selectedWallet);
         }, 300);
       }
     }

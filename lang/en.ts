@@ -38,7 +38,7 @@ export const lang: Language = {
     MNEMONIC_DESCRIPTION:
       'Above 12 words will be used to recover as well as access your wallet.',
     // Import wallet key:
-    ENTER_SEED_PHRASE: 'Enter secret phrase',
+    ENTER_SEED_PHRASE: 'Enter your 12-words secret phrase',
     ENTER_PRIVATE_KEY: 'Enter private key',
     SCAN_SEED_PHRASE: 'Scan QR code for mnemonic phrase',
     SCAN_PRIVATE_KEY: 'Scan QR code for private key',

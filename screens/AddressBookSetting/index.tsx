@@ -3,7 +3,7 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {useRecoilValue} from 'recoil';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import CustomImagePicker from '../../components/ImagePicker';

@@ -38,7 +38,7 @@ export const lang: Language = {
     MNEMONIC_DESCRIPTION:
       '12 từ trên được dùng để  truy cập cũng như khôi phục lại ví của bạn.',
     // Import wallet key:
-    ENTER_SEED_PHRASE: 'Nhập chuỗi từ khóa bí mật',
+    ENTER_SEED_PHRASE: 'Nhập chuỗi 12 từ khóa bí mật',
     ENTER_PRIVATE_KEY: 'Nhập private key',
     SCAN_SEED_PHRASE: 'Quét mã QR chứa chuỗi khóa bí mật',
     SCAN_PRIVATE_KEY: 'Quét mã QR chứa private key',

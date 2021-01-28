@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, Alert, Text, Dimensions} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
@@ -9,9 +9,14 @@ import RNRestart from 'react-native-restart';
 import {ethers} from 'ethers';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {saveMnemonic, saveSelectedWallet, saveWallets} from '../../utils/local';
+import {
+  getAppPasscodeSetting,
+  saveMnemonic,
+  saveSelectedWallet,
+  saveWallets,
+} from '../../utils/local';
 import AlertModal from '../../components/AlertModal';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
 import ImportModal from './ImportModal';
 import QRModal from './QRModal';
@@ -23,6 +28,7 @@ import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
 import {useNavigation} from '@react-navigation/native';
 import {getWalletFromPK} from '../../utils/blockchain';
+import RemindPasscodeModal from '../common/RemindPasscodeModal';
 
 const {height: viewportHeight} = Dimensions.get('window');
 
@@ -44,6 +50,16 @@ const HomeScreen = () => {
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    (async () => {
+      // Get local auth setting
+      const enabled = await getAppPasscodeSetting();
+      if (!enabled) {
+        setShowPasscodeRemindModal(true);
+      }
+    })();
+  }, []);
 
   const onSuccessScan = (e: any, type: string) => {
     setShowImportModal(false);
@@ -250,40 +266,25 @@ const HomeScreen = () => {
             </View>
           </View>
         </Modal>
-        <Modal
-          showCloseButton={false}
-          contentStyle={{
-            flex: 0.3,
-            marginTop: viewportHeight / 3,
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            marginHorizontal: 14,
-          }}
+        <RemindPasscodeModal
           visible={showPasscodeRemindModal}
-          onClose={() => setShowPasscodeRemindModal(false)}>
-          <Text>{getLanguageString(language, 'NO_PASSCODE')}</Text>
-          <Text>{getLanguageString(language, 'PASSCODE_DESCRIPTION')}</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              justifyContent: 'space-evenly',
-            }}>
-            <Button
-              type="ghost"
-              title={getLanguageString(language, 'LATER')}
-              onPress={() => setShowPasscodeRemindModal(false)}
-            />
-            <Button
-              type="primary"
-              title={getLanguageString(language, 'SET_APP_PASSCODE')}
-              onPress={() => {
-                setShowPasscodeRemindModal(false);
-                navigation.navigate('Setting', {screen: 'SettingPasscode'});
-              }}
-            />
-          </View>
-        </Modal>
+          onClose={() => setShowPasscodeRemindModal(false)}
+          enablePasscode={() => {
+            setShowPasscodeRemindModal(false);
+            navigation.reset({
+              index: 0,
+              routes: [
+                {
+                  name: 'Setting',
+                  state: {
+                    routes: [{name: 'Setting'}, {name: 'SettingPasscode'}],
+                  },
+                },
+              ],
+            });
+            // navigation.navigate('Setting', {screen: 'SettingPasscode'});
+          }}
+        />
       </View>
     </SafeAreaView>
   );

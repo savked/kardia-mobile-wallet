@@ -4,7 +4,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import Flag from 'react-native-flags';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useRecoilState} from 'recoil';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import {languageAtom} from '../../atoms/language';
 import List from '../../components/List';
 import {getSupportedLanguage} from '../../utils/lang';

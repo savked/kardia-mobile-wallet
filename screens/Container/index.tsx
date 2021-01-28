@@ -20,7 +20,7 @@ import {styles} from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
 import {createStackNavigator} from '@react-navigation/stack';
 import Notification from '../Notification';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
 import {tokenInfoAtom} from '../../atoms/token';
 import {getTokenInfo} from '../../services/token';

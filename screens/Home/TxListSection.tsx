@@ -4,7 +4,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {formatDistanceToNowStrict, isSameDay, format} from 'date-fns';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import List from '../../components/List';
 import {truncate} from '../../utils/string';
 import {styles} from './style';

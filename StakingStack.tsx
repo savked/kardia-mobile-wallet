@@ -6,10 +6,10 @@ import {
 import NewStaking from './screens/NewStaking';
 import StakingScreen from './screens/Staking';
 import ValidatorList from './screens/ValidatorList';
-import {ThemeContext} from './ThemeContext';
 import {getLanguageString} from './utils/lang';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from './atoms/language';
+import {ThemeContext} from './ThemeContext';
 
 const StakingStack = createStackNavigator();
 

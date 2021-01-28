@@ -8,7 +8,7 @@ import AlertModal from '../../components/AlertModal';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import {walletsAtom} from '../../atoms/wallets';
 import {saveMnemonic, saveWallets} from '../../utils/local';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import List from '../../components/List';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';

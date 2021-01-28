@@ -2,14 +2,12 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useState} from 'react';
 import {
   ImageURISource,
-  Text,
   View,
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import QRCodeScanner from 'react-native-qrcode-scanner';
 import {useRecoilState, useRecoilValue} from 'recoil';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import Button from '../../components/Button';
@@ -17,6 +15,7 @@ import CustomImagePicker from '../../components/ImagePicker';
 import TextInput from '../../components/TextInput';
 import {getLanguageString} from '../../utils/lang';
 import {saveAddressBook} from '../../utils/local';
+import ScanQRAddressModal from '../common/ScanQRAddressModal';
 import {styles} from './style';
 
 const NewAddress = () => {
@@ -45,36 +44,18 @@ const NewAddress = () => {
     setShowModal(true);
   };
 
-  if (showModal) {
-    return (
-      <>
-        <View style={styles.qrScannerHeader}>
-          <Text style={styles.centerText}>
-            {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS')}
-          </Text>
-        </View>
-        <QRCodeScanner
-          onRead={(e) => {
-            setAddress(e.data);
-            setShowModal(false);
-          }}
-          showMarker={true}
-        />
-        <View style={styles.qrScannerFooter}>
-          <Button
-            size="large"
-            title={getLanguageString(language, 'GO_BACK')}
-            onPress={() => setShowModal(false)}
-          />
-        </View>
-      </>
-    );
-  }
-
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View
         style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <ScanQRAddressModal
+          visible={showModal}
+          onClose={() => setShowModal(false)}
+          onScanned={(_address) => {
+            setAddress(_address);
+            setShowModal(false);
+          }}
+        />
         <View style={styles.avatarPickerContainer}>
           <CustomImagePicker image={avatar} onSelect={setAvatar} />
         </View>

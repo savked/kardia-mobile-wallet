@@ -5,7 +5,7 @@ import {ActivityIndicator, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import numeral from 'numeral';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import Button from '../../components/Button';
 import Divider from '../../components/Divider';
 import {getTxDetail} from '../../services/transaction';

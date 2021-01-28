@@ -2,7 +2,7 @@
 import React, {useContext} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {useRecoilValue} from 'recoil';
-import {ThemeContext} from '../../../App';
+import {ThemeContext} from '../../../ThemeContext';
 import {languageAtom} from '../../../atoms/language';
 import {getLanguageString} from '../../../utils/lang';
 import {styles} from './style';

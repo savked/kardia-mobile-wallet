@@ -4,7 +4,7 @@ import {Text, View} from 'react-native';
 import IconButton from '../../components/IconButton';
 import {styles} from './style';
 import {useNavigation} from '@react-navigation/native';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import {useRecoilValue} from 'recoil';
 import {notificationAtom} from '../../atoms/notification';
 import {getLanguageString} from '../../utils/lang';

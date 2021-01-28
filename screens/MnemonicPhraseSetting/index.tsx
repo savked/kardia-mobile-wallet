@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
 import {View, Text} from 'react-native';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import List from '../../components/List';
 import Button from '../../components/Button';
 import {getMnemonic} from '../../utils/local';

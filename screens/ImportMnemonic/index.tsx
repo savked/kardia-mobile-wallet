@@ -11,7 +11,7 @@ import {walletsAtom} from '../../atoms/wallets';
 import {saveMnemonic, saveWallets} from '../../utils/local';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import CustomTextInput from '../../components/TextInput';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
 

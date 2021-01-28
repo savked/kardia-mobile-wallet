@@ -3,7 +3,7 @@ import React, {useContext} from 'react';
 import {View, Text, Image} from 'react-native';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import {styles} from './style';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import {useRecoilValue} from 'recoil';
 import {notificationAtom} from '../../atoms/notification';
 import {getLanguageString} from '../../utils/lang';

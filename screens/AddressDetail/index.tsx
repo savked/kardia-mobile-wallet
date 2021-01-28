@@ -2,7 +2,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
 import {Alert, Text, TouchableOpacity, View} from 'react-native';
 import {useRecoilState, useRecoilValue} from 'recoil';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import Button from '../../components/Button';

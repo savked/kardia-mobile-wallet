@@ -5,7 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useRecoilValue} from 'recoil';
-import {ThemeContext} from '../../App';
+import {ThemeContext} from '../../ThemeContext';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
 import {styles} from './style';
