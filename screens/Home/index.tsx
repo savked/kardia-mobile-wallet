@@ -243,7 +243,7 @@ const HomeScreen = () => {
             marginHorizontal: 14,
           }}
           onClose={() => setPrivateKey('')}>
-          <View>
+          <View style={{justifyContent: 'space-between', flex: 1}}>
             <Text style={{textAlign: 'center'}}>
               {getLanguageString(language, 'ARE_YOU_SURE')}
             </Text>

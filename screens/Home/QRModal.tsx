@@ -35,7 +35,7 @@ const QRModal = ({
       <View style={{paddingVertical: 14}}>
         <QRCode
           size={viewportWidth / 1.7}
-          value={wallets[selectedWallet].address}
+          value={wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
           logo={require('../../assets/logo.png')}
           logoBackgroundColor="#FFFFFF"
           logoSize={22}

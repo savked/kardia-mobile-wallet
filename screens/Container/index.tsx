@@ -174,6 +174,9 @@ const AppContainer = () => {
   ]);
 
   const updateWalletBalance = async () => {
+    if (!wallets[selectedWallet]) {
+      return;
+    }
     try {
       const balance = await getBalance(wallets[selectedWallet].address);
       const staked = await getStakingAmount(wallets[selectedWallet].address);
