@@ -4,9 +4,11 @@ import {
   Dimensions,
   Keyboard,
   Modal,
+  StyleProp,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  ViewStyle,
 } from 'react-native';
 import {BlurView} from '@react-native-community/blur';
 import {styles} from './style';
@@ -22,7 +24,7 @@ const CustomModal = ({
   full = false,
   showCloseButton = true,
   contentStyle,
-}: CustomModalProps) => {
+}: CustomModalProps & {contentStyle?: StyleProp<ViewStyle>}) => {
   const [marginTop, setMarginTop] = useState(
     full ? viewportHeight / 12 : viewportHeight / 2,
   );

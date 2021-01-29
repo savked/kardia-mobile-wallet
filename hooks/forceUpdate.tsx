@@ -1,9 +1,6 @@
-import {useState, useCallback} from 'react';
+import {useState} from 'react';
 
-export function useForceUpdate() {
-  const [, setTick] = useState(0);
-  const update = useCallback(() => {
-    setTick((tick) => tick + 1);
-  }, []);
-  return update;
-}
+export const useForceUpdate = () => {
+  const set = useState(0)[1];
+  return () => set((s) => s + 1);
+};

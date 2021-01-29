@@ -1,13 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {View, Alert, Text, Dimensions} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
 import * as Bip39 from 'bip39';
-import RNRestart from 'react-native-restart';
 import {ethers} from 'ethers';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {
   getAppPasscodeSetting,
@@ -26,7 +25,7 @@ import Modal from '../../components/Modal';
 import Button from '../../components/Button';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {getWalletFromPK} from '../../utils/blockchain';
 import RemindPasscodeModal from '../common/RemindPasscodeModal';
 import {getStakingAmount} from '../../services/staking';
@@ -46,7 +45,9 @@ const HomeScreen = () => {
   const [processing, setProcessing] = useState(false);
 
   const setWallets = useSetRecoilState(walletsAtom);
-  const setSelectedWallet = useSetRecoilState(selectedWalletAtom);
+  const [selectedWallet, setSelectedWallet] = useRecoilState(
+    selectedWalletAtom,
+  );
 
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
@@ -61,6 +62,37 @@ const HomeScreen = () => {
       }
     })();
   }, []);
+
+  const updateWalletBalance = async () => {
+    if (!wallets[selectedWallet]) {
+      return;
+    }
+    try {
+      const balance = await getBalance(wallets[selectedWallet].address);
+      const staked = await getStakingAmount(wallets[selectedWallet].address);
+      const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
+      _wallets.forEach((_wallet, index) => {
+        _wallet.address === wallets[selectedWallet].address;
+        _wallets[index].balance = balance;
+        _wallets[index].staked = staked;
+      });
+      setWallets(_wallets);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      updateWalletBalance();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+
+  useEffect(() => {
+    updateWalletBalance();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedWallet]);
 
   const onSuccessScan = (e: any, type: string) => {
     setShowImportModal(false);
@@ -120,7 +152,7 @@ const HomeScreen = () => {
       setSelectedWallet(_wallets.length - 1);
       setMnemonic('');
       setProcessing(false);
-      RNRestart.Restart();
+      // RNRestart.Restart();
     } catch (error) {
       setProcessing(false);
       console.error(error);
@@ -197,8 +229,8 @@ const HomeScreen = () => {
           visible={mnemonic !== '' && !showScanAlert}
           // contentStyle={{marginTop: viewportHeight / 1.4}}
           contentStyle={{
-            flex: 0.3,
-            marginTop: viewportHeight / 3,
+            flex: 0.2,
+            marginTop: (viewportHeight * 2) / 5,
             borderBottomRightRadius: 20,
             borderBottomLeftRadius: 20,
             marginHorizontal: 14,
@@ -206,10 +238,7 @@ const HomeScreen = () => {
           onClose={() => setMnemonic('')}>
           <View style={{justifyContent: 'space-between', flex: 1}}>
             <Text style={{textAlign: 'center'}}>
-              {getLanguageString(language, 'ARE_YOU_SURE')}
-            </Text>
-            <Text>
-              {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
+              {getLanguageString(language, 'CONFIRM_IMPORT')}
             </Text>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>

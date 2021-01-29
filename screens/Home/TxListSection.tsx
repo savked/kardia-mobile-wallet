@@ -28,6 +28,7 @@ const TxListSection = () => {
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const language = useRecoilValue(languageAtom);
+  const [loading, setLoading] = useState(true);
 
   const parseTXForList = (tx: Transaction) => {
     return {
@@ -44,6 +45,10 @@ const TxListSection = () => {
   };
 
   const getTX = async () => {
+    if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
+      return;
+    }
+    setLoading(true);
     try {
       const newTxList = await getTxByAddress(
         wallets[selectedWallet].address,
@@ -51,22 +56,15 @@ const TxListSection = () => {
         7,
       );
       setTxList(newTxList.map(parseTXForList));
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error(error);
     }
   };
 
   useEffect(() => {
-    if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
-      return;
-    }
     getTX();
-    const getTxInterval = setInterval(() => {
-      if (wallets[selectedWallet]) {
-        getTX();
-      }
-    }, 3000);
-    return () => clearInterval(getTxInterval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
 
@@ -116,6 +114,8 @@ const TxListSection = () => {
     <View style={styles.transactionContainer}>
       <List
         items={txList}
+        loading={loading}
+        loadingColor={theme.textColor}
         render={(item, index) => {
           return (
             <View

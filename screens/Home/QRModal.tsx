@@ -1,14 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Dimensions, Text, View} from 'react-native';
+import {Dimensions, Text, TouchableOpacity, View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import Modal from '../../components/Modal';
 import {getLanguageString} from '../../utils/lang';
+import {copyToClipboard} from '../../utils/string';
 
-const {width: viewportWidth} = Dimensions.get('window');
+const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window');
 
 const QRModal = ({
   onClose,
@@ -27,11 +28,29 @@ const QRModal = ({
       showCloseButton={true}
       contentStyle={{
         paddingHorizontal: 0,
+        marginTop: viewportHeight / 2.3,
       }}
       onClose={onClose}>
       <Text style={{fontSize: 20, fontWeight: 'bold'}}>
         {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS')}
       </Text>
+      <TouchableOpacity
+        onPress={() =>
+          copyToClipboard(
+            wallets[selectedWallet] ? wallets[selectedWallet].address : '',
+          )
+        }>
+        <Text
+          style={{
+            fontSize: 16,
+            fontStyle: 'italic',
+            paddingHorizontal: 24,
+            textAlign: 'center',
+            textDecorationLine: 'underline',
+          }}>
+          {wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
+        </Text>
+      </TouchableOpacity>
       <View style={{paddingVertical: 14}}>
         <QRCode
           size={viewportWidth / 1.7}

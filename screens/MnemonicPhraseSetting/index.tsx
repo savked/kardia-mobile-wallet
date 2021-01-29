@@ -30,6 +30,9 @@ const MnemonicPhraseSetting = () => {
 
   useEffect(() => {
     (async () => {
+      if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
+        return;
+      }
       const mn = await getMnemonic(wallets[selectedWallet].address);
       if (mn !== 'FROM_PK') {
         setMnemonic(mn);

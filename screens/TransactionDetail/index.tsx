@@ -43,7 +43,7 @@ const TransactionDetail = () => {
   }, [txHash]);
 
   const getOtherAddress = () => {
-    if (!txData) {
+    if (!txData || wallets[selectedWallet] || wallets[selectedWallet].address) {
       return '';
     }
     if (txData.from !== wallets[selectedWallet].address) {

@@ -55,6 +55,9 @@ const TransactionScreen = () => {
   };
 
   const getTX = async () => {
+    if (wallets[selectedWallet] || wallets[selectedWallet].address) {
+      return;
+    }
     try {
       const newTxList = await getTxByAddress(
         wallets[selectedWallet].address,

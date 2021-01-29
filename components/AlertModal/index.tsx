@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {StyleProp, Text, TextStyle, View, ViewStyle} from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {styles} from './style';
 import Modal from '../Modal';
@@ -58,20 +58,42 @@ const AlertModal = ({
   cancelText = 'Cancel',
   okText = 'OK',
   iconSize,
-}: AlertModal) => {
+  messageStyle,
+  modalStyle,
+  okLoading,
+  okDisabled,
+  cancelLoading,
+  cancelDisabled,
+}: AlertModal & {
+  messageStyle?: StyleProp<TextStyle>;
+  modalStyle?: StyleProp<ViewStyle>;
+}) => {
   return (
     <Modal
       visible={visible}
       onClose={onClose}
       showCloseButton={type === 'confirm' ? false : true}
-      contentStyle={styles.modalContent}>
+      contentStyle={[styles.modalContent, modalStyle]}>
       {getIcon(type, iconSize)}
       {children}
-      {!children && <Text style={styles.messageContent}>{message}</Text>}
+      {!children && (
+        <Text style={[styles.messageContent, messageStyle]}>{message}</Text>
+      )}
       {type === 'confirm' && (
         <View style={styles.buttonGroup}>
-          <Button title={cancelText} type="secondary" onPress={onClose} />
-          <Button title={okText} onPress={onOK} />
+          <Button
+            title={cancelText}
+            type="secondary"
+            onPress={onClose}
+            loading={cancelLoading}
+            disabled={cancelDisabled}
+          />
+          <Button
+            title={okText}
+            onPress={onOK}
+            loading={okLoading}
+            disabled={okDisabled}
+          />
         </View>
       )}
     </Modal>

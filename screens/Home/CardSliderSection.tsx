@@ -10,7 +10,6 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
-import RNRestart from 'react-native-restart';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import Button from '../../components/Button';
@@ -19,6 +18,7 @@ import {copyToClipboard, truncate} from '../../utils/string';
 import {styles} from './style';
 import {saveSelectedWallet, saveWallets} from '../../utils/local';
 import {useNavigation} from '@react-navigation/native';
+import RNRestart from 'react-native-restart';
 import {tokenInfoAtom} from '../../atoms/token';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
@@ -26,6 +26,7 @@ import AlertModal from '../../components/AlertModal';
 import IconButton from '../../components/IconButton';
 import NewTxModal from '../common/NewTxModal';
 import numeral from 'numeral';
+import {weiToKAI} from '../../services/transaction/amount';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -39,7 +40,7 @@ const CardSliderSection = ({
   const navigation = useNavigation();
   const [showNewTxModal, setShowNewTxModal] = useState(false);
   const carouselRef = useRef<Carousel<Wallet>>(null);
-  const wallets = useRecoilValue(walletsAtom);
+  const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [tokenInfo] = useRecoilState(tokenInfoAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(
     selectedWalletAtom,
@@ -123,7 +124,11 @@ const CardSliderSection = ({
           </View>
           <View>
             <Text style={{fontSize: 30, color: 'white'}}>
-              ${parseKaiBalance(tokenInfo.price * wallet.balance)}
+              $
+              {numeral(
+                tokenInfo.price *
+                  (Number(weiToKAI(wallet.balance)) + wallet.staked),
+              ).format('0,0.00a')}
             </Text>
             <Image
               style={styles.cardLogo}
@@ -148,7 +153,7 @@ const CardSliderSection = ({
               justifyContent: 'space-between',
             }}>
             <Text style={[styles.kaiCardText, styles.kaiCardBalanceText]}>
-              Staked: {numeral(wallet.staked).format('0,0.00 a')} KAI
+              Staked: {numeral(wallet.staked).format('0,0.00a')} KAI
             </Text>
           </View>
         </LinearGradient>
@@ -158,23 +163,34 @@ const CardSliderSection = ({
 
   useEffect(() => {
     if (carouselRef.current) {
-      if (carouselRef.current.currentIndex !== selectedWallet) {
+      if (removeIndex >= 0) {
+        console.log('go here');
+        carouselRef.current.triggerRenderingHack();
+        setRemoveIndex(-1);
+      } else if (carouselRef.current.currentIndex !== selectedWallet) {
         // react-native-snap-carousel issue. TODO: wait for issue resolved and update
         setTimeout(() => {
-          carouselRef.current && carouselRef.current.snapToItem(selectedWallet);
+          if (carouselRef.current) {
+            carouselRef.current.snapToItem(selectedWallet);
+          }
         }, 300);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
 
   const removeWallet = async () => {
+    // setShouldFetchBalance(false);
     const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
     newWallets.splice(removeIndex, 1);
     await saveWallets(newWallets);
+    setWallets(newWallets);
     if (newWallets.length === 0) {
       await saveSelectedWallet(0);
+      setSelectedWallet(0);
     } else if (selectedWallet > newWallets.length - 1) {
       await saveSelectedWallet(newWallets.length - 1);
+      setSelectedWallet(newWallets.length - 1);
     }
     RNRestart.Restart();
   };
@@ -244,29 +260,27 @@ const CardSliderSection = ({
           textStyle={{color: '#FFFFFF'}}
         />
       </View>
-      {removeIndex >= 0 && (
-        <AlertModal
-          visible={true}
-          type="confirm"
-          iconSize={90}
-          onClose={() => setRemoveIndex(-1)}
-          cancelText={getLanguageString(language, 'GO_BACK')}
-          okText={getLanguageString(language, 'CONFIRM')}
-          onOK={removeWallet}>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 22,
-              fontWeight: 'bold',
-              marginBottom: 20,
-            }}>
-            {getLanguageString(language, 'ARE_YOU_SURE')}
-          </Text>
-          <Text style={{fontStyle: 'italic', textAlign: 'center'}}>
-            {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
-          </Text>
-        </AlertModal>
-      )}
+      <AlertModal
+        visible={removeIndex >= 0}
+        type="confirm"
+        iconSize={90}
+        onClose={() => setRemoveIndex(-1)}
+        cancelText={getLanguageString(language, 'GO_BACK')}
+        okText={getLanguageString(language, 'CONFIRM')}
+        onOK={removeWallet}>
+        <Text
+          style={{
+            textAlign: 'center',
+            fontSize: 22,
+            fontWeight: 'bold',
+            marginBottom: 20,
+          }}>
+          {getLanguageString(language, 'ARE_YOU_SURE')}
+        </Text>
+        <Text style={{fontStyle: 'italic', textAlign: 'center'}}>
+          {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
+        </Text>
+      </AlertModal>
     </View>
   );
 };

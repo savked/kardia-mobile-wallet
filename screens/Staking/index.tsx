@@ -44,6 +44,9 @@ const StakingScreen = () => {
 
   useEffect(() => {
     (async () => {
+      if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
+        return;
+      }
       const _staking = await getCurrentStaking(wallets[selectedWallet].address);
       setCurrentStaking(_staking);
       if (loading === true) {

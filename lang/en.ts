@@ -17,13 +17,14 @@ export const lang: Language = {
     REQUIRED_FIELD: 'This field is required',
     COPY_TO_CLIPBOARD: 'Copy to clipboard',
     SECOND: 'sec',
+    CONFIRM_IMPORT: 'Are you sure you want to import new wallet ?',
     RESTART_APP_DESCRIPTION:
       'Kardia Wallet will restart to ensure everything works properly',
     ARE_YOU_SURE: 'Are you sure ?',
     SAVE: 'Save',
     CLOSE: 'Close',
     CONFIRM: 'Confirm',
-    SCAN_QR_FOR_ADDRESS: 'Scan QR code for address',
+    SCAN_QR_FOR_ADDRESS: 'Your wallet address',
     LATER: 'Later',
     SET_APP_PASSCODE: 'Set passcode',
     NO_PASSCODE: "You haven't set your app passcode yet.",
@@ -44,6 +45,10 @@ export const lang: Language = {
     SCAN_PRIVATE_KEY: 'Scan QR code for private key',
     WALLET_EXISTED: 'Wallet already existed',
     ERROR_SEED_PHRASE: 'Wrong format seed phrase, please recheck',
+    CONFIRM_ENTER_SEED_PHRASE:
+      'Are you sure you have copied the 12 seed phrases ?',
+    SURE: "Yes, I'm sure",
+    NOT_SURE: 'Take me back',
     // Transaction key
     RECENT_TRANSACTION: 'Recent transactions',
     NO_TRANSACTION: 'No transaction',

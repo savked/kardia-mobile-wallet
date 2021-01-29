@@ -33,7 +33,6 @@ import ConfirmPasscode from '../ConfirmPasscode';
 import StakingStackScreen from '../../StakingStack';
 import {getLanguageString} from '../../utils/lang';
 import Portal from '@burstware/react-native-portal';
-import {getStakingAmount} from '../../services/staking';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -172,41 +171,6 @@ const AppContainer = () => {
     setLanguage,
     setSelectedWallet,
   ]);
-
-  const updateWalletBalance = async () => {
-    if (!wallets[selectedWallet]) {
-      return;
-    }
-    try {
-      const balance = await getBalance(wallets[selectedWallet].address);
-      const staked = await getStakingAmount(wallets[selectedWallet].address);
-      const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
-      _wallets.forEach((_wallet, index) => {
-        _wallet.address === wallets[selectedWallet].address;
-        _wallets[index].balance = balance;
-        _wallets[index].staked = staked;
-      });
-      setWallets(_wallets);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    if (!inited) {
-      return;
-    }
-    if (wallets[selectedWallet]) {
-      updateWalletBalance();
-    }
-    const balanceInterval = setInterval(() => {
-      if (wallets[selectedWallet]) {
-        updateWalletBalance();
-      }
-    }, 3000);
-    return () => clearInterval(balanceInterval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inited, selectedWallet, wallets]);
 
   if (!inited) {
     return (

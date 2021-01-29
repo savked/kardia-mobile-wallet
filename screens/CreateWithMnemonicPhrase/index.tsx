@@ -19,6 +19,7 @@ const CreateWithMnemonicPhrase = () => {
   const [mnemonicError, setMnemonicError] = useState('');
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [loading, setLoading] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const language = useRecoilValue(languageAtom);
 
@@ -143,23 +144,33 @@ const CreateWithMnemonicPhrase = () => {
       {renderWarning()}
       <Button
         type="primary"
-        loading={loading}
         disabled={loading}
         title={getLanguageString(language, 'SUBMIT_CREATE')}
-        onPress={handleAccess}
+        onPress={() => setShowConfirm(true)}
         size="large"
         style={{
           width: '100%',
         }}
       />
-      {mnemonicError !== '' && (
-        <AlertModal
-          type="error"
-          visible={mnemonicError !== ''}
-          onClose={() => setMnemonicError('')}
-          message={mnemonicError}
-        />
-      )}
+      <AlertModal
+        type="error"
+        visible={mnemonicError !== ''}
+        onClose={() => setMnemonicError('')}
+        message={mnemonicError}
+      />
+      <AlertModal
+        type="confirm"
+        okText={getLanguageString(language, 'SURE')}
+        cancelText={getLanguageString(language, 'NOT_SURE')}
+        visible={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        onOK={handleAccess}
+        okLoading={loading}
+        okDisabled={loading}
+        cancelDisabled={loading}
+        messageStyle={{textAlign: 'center'}}
+        message={getLanguageString(language, 'CONFIRM_ENTER_SEED_PHRASE')}
+      />
     </View>
   );
 };
