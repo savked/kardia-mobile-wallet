@@ -55,7 +55,7 @@ const TransactionScreen = () => {
   };
 
   const getTX = async () => {
-    if (wallets[selectedWallet] || wallets[selectedWallet].address) {
+    if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
       return;
     }
     try {

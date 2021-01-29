@@ -32,6 +32,17 @@ const StakingScreen = () => {
   const [currentStaking, setCurrentStaking] = useState<Staking[]>([]);
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
+  const getStakingData = async () => {
+    if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
+      return;
+    }
+    const _staking = await getCurrentStaking(wallets[selectedWallet].address);
+    setCurrentStaking(_staking);
+    if (loading === true) {
+      setLoading(false);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       setStatusBarColor(theme.primaryColor);
@@ -43,16 +54,8 @@ const StakingScreen = () => {
   );
 
   useEffect(() => {
-    (async () => {
-      if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
-        return;
-      }
-      const _staking = await getCurrentStaking(wallets[selectedWallet].address);
-      setCurrentStaking(_staking);
-      if (loading === true) {
-        setLoading(false);
-      }
-    })();
+    getStakingData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, selectedWallet, wallets]);
 
   const parseStakingItemForList = (item: Staking) => {
@@ -151,6 +154,9 @@ const StakingScreen = () => {
           message={message}
           onClose={() => {
             setMessage('');
+            if (messageType === 'success') {
+              getStakingData();
+            }
           }}
           visible={true}
         />
