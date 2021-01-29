@@ -45,6 +45,7 @@ const StakingScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
+      getStakingData();
       setStatusBarColor(theme.primaryColor);
       return () => {
         setStatusBarColor(theme.backgroundColor);
