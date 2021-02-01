@@ -137,4 +137,9 @@ export const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
+  selectWalletContainer: {
+    flex: 1,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+  },
 });

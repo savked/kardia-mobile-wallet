@@ -72,6 +72,18 @@ const SettingScreen = () => {
           </Text>
         </View>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.settingItemContainer}
+        onPress={() => navigation.navigate('Info')}>
+        <View style={{width: '10%', alignItems: 'center'}}>
+          <Icon name="info-circle" size={30} color={theme.textColor} />
+        </View>
+        <View style={{width: '93%'}}>
+          <Text style={[styles.settingTitle, {color: theme.textColor}]}>
+            {getLanguageString(language, 'INFO_MENU')}
+          </Text>
+        </View>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

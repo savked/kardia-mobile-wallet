@@ -5,8 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
 import * as Bip39 from 'bip39';
-import {ethers} from 'ethers';
-import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {
   getAppPasscodeSetting,
@@ -15,6 +14,7 @@ import {
   saveWallets,
 } from '../../utils/local';
 import AlertModal from '../../components/AlertModal';
+import RNRestart from 'react-native-restart';
 import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
 import ImportModal from './ImportModal';
@@ -29,6 +29,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {getWalletFromPK} from '../../utils/blockchain';
 import RemindPasscodeModal from '../common/RemindPasscodeModal';
 import {getStakingAmount} from '../../services/staking';
+import SelectWallet from './SelectWallet';
 
 const {height: viewportHeight} = Dimensions.get('window');
 
@@ -43,11 +44,10 @@ const HomeScreen = () => {
   const [privateKey, setPrivateKey] = useState('');
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [selectingWallet, setSelectingWallet] = useState(false);
 
   const setWallets = useSetRecoilState(walletsAtom);
-  const [selectedWallet, setSelectedWallet] = useRecoilState(
-    selectedWalletAtom,
-  );
+  const selectedWallet = useRecoilValue(selectedWalletAtom);
 
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
@@ -94,6 +94,17 @@ const HomeScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
 
+  useEffect(() => {
+    if (mnemonic !== '') {
+      const valid = Bip39.validateMnemonic(mnemonic);
+      if (!valid) {
+        setProcessing(false);
+        return;
+      }
+      setSelectingWallet(true);
+    }
+  }, [mnemonic]);
+
   const onSuccessScan = (e: any, type: string) => {
     setShowImportModal(false);
     if (e.data === '') {
@@ -109,54 +120,46 @@ const HomeScreen = () => {
     }
   };
 
-  const importMnemonic = async (_mnemonic: string) => {
-    if (showImportModal) {
-      setShowImportModal(false);
-    }
-    try {
-      const valid = Bip39.validateMnemonic(_mnemonic);
-      if (!valid) {
-        setProcessing(false);
-        return;
-      }
-      const _wallet = ethers.Wallet.fromMnemonic(_mnemonic.trim());
-      const _privateKey = _wallet.privateKey;
-      const walletAddress = _wallet.address;
-      const balance = await getBalance(walletAddress);
-      const staked = await getStakingAmount(walletAddress);
-      const wallet: Wallet = {
-        privateKey: _privateKey,
-        address: walletAddress,
-        balance,
-        staked,
-      };
+  const saveWallet = async (_wallet: Wallet) => {
+    const _privateKey = _wallet.privateKey;
+    const walletAddress = _wallet.address;
+    const balance = await getBalance(walletAddress);
+    const staked = await getStakingAmount(walletAddress);
 
-      const walletExisted = wallets
-        .map((item) => item.address)
-        .includes(wallet.address);
+    const wallet: Wallet = {
+      privateKey: _privateKey,
+      address: walletAddress,
+      balance,
+      staked,
+    };
 
-      if (walletExisted) {
-        setProcessing(false);
-        setScanMessage(getLanguageString(language, 'WALLET_EXISTED'));
-        setScanType('warning');
-        setShowScanAlert(true);
-        return;
-      }
+    const walletExisted = wallets
+      .map((item) => item.address)
+      .includes(wallet.address);
 
-      await saveMnemonic(walletAddress, _mnemonic.trim());
-      const _wallets = JSON.parse(JSON.stringify(wallets));
-      _wallets.push(wallet);
-      await saveWallets(_wallets);
-      await saveSelectedWallet(_wallets.length - 1);
-      setWallets(_wallets);
-      setSelectedWallet(_wallets.length - 1);
-      setMnemonic('');
+    if (walletExisted) {
       setProcessing(false);
-      // RNRestart.Restart();
-    } catch (error) {
-      setProcessing(false);
-      console.error(error);
+      setScanMessage(getLanguageString(language, 'WALLET_EXISTED'));
+      setScanType('warning');
+      setShowScanAlert(true);
+      return;
     }
+
+    await saveMnemonic(
+      walletAddress,
+      mnemonic !== '' ? mnemonic.trim() : 'FROM_PK',
+    );
+    const _wallets = JSON.parse(JSON.stringify(wallets));
+    _wallets.push(wallet);
+    await saveWallets(_wallets);
+    await saveSelectedWallet(_wallets.length - 1);
+    // setWallets(_wallets);
+    // setSelectedWallet(_wallets.length - 1);
+    // setMnemonic('');
+    // setPrivateKey('');
+    // setProcessing(false);
+    // setSelectingWallet(false);
+    RNRestart.Restart();
   };
 
   const importPrivateKey = async (_privateKey: string) => {
@@ -188,15 +191,31 @@ const HomeScreen = () => {
       _wallets.push(wallet);
       await saveWallets(_wallets);
       await saveSelectedWallet(_wallets.length - 1);
-      setWallets(_wallets);
-      setSelectedWallet(_wallets.length - 1);
-      setPrivateKey('');
-      setProcessing(false);
+      RNRestart.Restart();
+      // setWallets(_wallets);
+      // setSelectedWallet(_wallets.length - 1);
+      // setPrivateKey('');
+      // setProcessing(false);
     } catch (error) {
       setProcessing(false);
       console.error(error);
     }
   };
+
+  if (selectingWallet) {
+    return (
+      <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
+        <SelectWallet
+          mnemonic={mnemonic}
+          onSelect={saveWallet}
+          onCancel={() => {
+            setMnemonic('');
+            setSelectingWallet(false);
+          }}
+        />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
@@ -224,43 +243,6 @@ const HomeScreen = () => {
           }}
           message={scanMessage}
         />
-        <Modal
-          showCloseButton={false}
-          visible={mnemonic !== '' && !showScanAlert}
-          // contentStyle={{marginTop: viewportHeight / 1.4}}
-          contentStyle={{
-            flex: 0.2,
-            marginTop: (viewportHeight * 2) / 5,
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            marginHorizontal: 14,
-          }}
-          onClose={() => setMnemonic('')}>
-          <View style={{justifyContent: 'space-between', flex: 1}}>
-            <Text style={{textAlign: 'center'}}>
-              {getLanguageString(language, 'CONFIRM_IMPORT')}
-            </Text>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-              <Button
-                title={getLanguageString(language, 'GO_BACK')}
-                type="secondary"
-                onPress={() => setMnemonic('')}
-              />
-              <Button
-                loading={processing}
-                disabled={processing}
-                title={getLanguageString(language, 'SUBMIT')}
-                onPress={() => {
-                  setProcessing(true);
-                  setTimeout(() => {
-                    importMnemonic(mnemonic);
-                  }, 100);
-                }}
-              />
-            </View>
-          </View>
-        </Modal>
         <Modal
           showCloseButton={false}
           visible={privateKey !== '' && !showScanAlert}

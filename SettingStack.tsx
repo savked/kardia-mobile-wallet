@@ -19,6 +19,7 @@ import {languageAtom} from './atoms/language';
 import {getLanguageString} from './utils/lang';
 import MnemonicPhraseSetting from './screens/MnemonicPhraseSetting';
 import SettingPasscode from './screens/SettingPasscode';
+import Info from './screens/Info';
 
 const SettingStack = createStackNavigator();
 
@@ -134,6 +135,17 @@ const SettingStackScreen = () => {
         component={SettingPasscode}
         options={{
           title: getLanguageString(language, 'PASSCODE_SETTING_TITLE'),
+          headerTitleStyle: {
+            color: theme.textColor,
+          },
+          headerTintColor: theme.textColor,
+        }}
+      />
+      <SettingStack.Screen
+        name="Info"
+        component={Info}
+        options={{
+          title: getLanguageString(language, 'INFO_MENU'),
           headerTitleStyle: {
             color: theme.textColor,
           },

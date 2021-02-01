@@ -49,6 +49,7 @@ export const lang: Language = {
       'Are you sure you have copied the 12 seed phrases ?',
     SURE: "Yes, I'm sure",
     NOT_SURE: 'Take me back',
+    SELECT_YOUR_WALLET: 'Select your wallet',
     // Transaction key
     RECENT_TRANSACTION: 'Recent transactions',
     NO_TRANSACTION: 'No transaction',
@@ -128,6 +129,7 @@ export const lang: Language = {
     LANGUAGE_SETTING_TITLE: 'Choose display language',
     SECRET_PHRASE_MENU: 'Export secret credential',
     PASSCODE_MENU: 'App passcode setting',
+    INFO_MENU: 'About KardiaChain Wallet',
     MNEMONIC_SETTING_TITLE: 'Secret credential',
     SHOW_SECRET_TEXT: 'Show my credential',
     ADDRESS_NAME: 'Name',

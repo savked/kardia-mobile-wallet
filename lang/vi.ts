@@ -48,6 +48,7 @@ export const lang: Language = {
     CONFIRM_ENTER_SEED_PHRASE: 'Bạn đã ghi lại 12 từ khóa bí mật ?',
     SURE: 'Tôi chắc chắn',
     NOT_SURE: 'Trở lại',
+    SELECT_YOUR_WALLET: 'Chọn ví muốn import',
     // Transaction key
     RECENT_TRANSACTION: 'Giao dịch gần đây',
     NO_TRANSACTION: 'Không có giao dịch',
@@ -126,6 +127,7 @@ export const lang: Language = {
     LANGUAGE_SETTING_TITLE: 'Chọn ngôn ngữ hiển thị',
     SECRET_PHRASE_MENU: 'Chuỗi khóa bí mật / private key',
     PASSCODE_MENU: 'Cài đặt mật khẩu ví',
+    INFO_MENU: 'Về  KardiaChain Wallet',
     MNEMONIC_SETTING_TITLE: 'Chuỗi khóa bí mật / private key',
     SHOW_SECRET_TEXT: 'Hiển thị chuỗi bí mật / private key',
     ADDRESS_NAME: 'Tên hiển thị',
