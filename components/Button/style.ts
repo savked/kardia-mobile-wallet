@@ -61,5 +61,6 @@ export const styles = StyleSheet.create({
   linkButtonText: {
     // color: '#3f70b0',
     fontWeight: 'bold',
+    textDecorationLine: 'underline',
   },
 });
