@@ -9,7 +9,11 @@ import {ThemeContext} from '../../ThemeContext';
 import Button from '../../components/Button';
 import Divider from '../../components/Divider';
 import {getTxDetail} from '../../services/transaction';
-import {getFromAddressBook, truncate} from '../../utils/string';
+import {
+  copyToClipboard,
+  getFromAddressBook,
+  truncate,
+} from '../../utils/string';
 import {styles} from './style';
 import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
 import {useRecoilValue} from 'recoil';
@@ -21,6 +25,7 @@ import {
   getLanguageString,
 } from '../../utils/lang';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
+import IconButton from '../../components/IconButton';
 
 const TransactionDetail = () => {
   const theme = useContext(ThemeContext);
@@ -127,25 +132,49 @@ const TransactionDetail = () => {
           <Text style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'FROM')}
           </Text>
-          <Text style={[styles.infoValue, {color: theme.textColor}]}>
-            {truncate(
-              getFromAddressBook(addressBook, txData?.from || ''),
-              10,
-              15,
-            )}
-          </Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text
+              style={[
+                styles.infoValue,
+                {color: theme.textColor, marginRight: 6},
+              ]}>
+              {truncate(
+                getFromAddressBook(addressBook, txData?.from || ''),
+                10,
+                10,
+              )}
+            </Text>
+            <IconButton
+              color={theme.textColor}
+              name="copy"
+              size={16}
+              onPress={() => copyToClipboard(txData?.from)}
+            />
+          </View>
         </View>
         <View style={styles.infoContainer}>
           <Text style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'TO')}
           </Text>
-          <Text style={[styles.infoValue, {color: theme.textColor}]}>
-            {truncate(
-              getFromAddressBook(addressBook, txData?.to || ''),
-              10,
-              15,
-            )}
-          </Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text
+              style={[
+                styles.infoValue,
+                {color: theme.textColor, marginRight: 6},
+              ]}>
+              {truncate(
+                getFromAddressBook(addressBook, txData?.to || ''),
+                10,
+                10,
+              )}
+            </Text>
+            <IconButton
+              color={theme.textColor}
+              name="copy"
+              size={16}
+              onPress={() => copyToClipboard(txData?.to)}
+            />
+          </View>
         </View>
         <View style={styles.infoContainer}>
           <Text style={[styles.infoTitle, {color: theme.textColor}]}>
