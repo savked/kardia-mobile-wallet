@@ -21,6 +21,7 @@ const CustomTextInput = ({
   message = '',
   keyboardType = 'default',
   headlineStyle,
+  autoCapitalize = 'sentences',
 }: CustomTextInputProps & {headlineStyle?: StyleProp<TextStyle>}) => {
   const theme = useContext(ThemeContext);
 
@@ -61,6 +62,7 @@ const CustomTextInput = ({
           editable={editable}
           placeholder={placeholder}
           onBlur={onBlur}
+          autoCapitalize={autoCapitalize}
         />
         {iconName && (
           <Icon

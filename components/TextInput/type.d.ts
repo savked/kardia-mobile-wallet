@@ -14,4 +14,5 @@ interface CustomTextInputProps {
   icons?: () => any;
   keyboardType?: string;
   message?: string | (() => any);
+  autoCapitalize?: 'characters' | 'words' | 'sentences' | 'none';
 }
