@@ -190,6 +190,22 @@ const NewTxModal = ({
       </Modal>
     );
   }
+
+  if (successTxHash !== '') {
+    return (
+      <AlertModal
+        type="success"
+        // message={`Transaction completed. Hash: ${successTxHash}`}
+        onClose={() => {
+          setSuccessHash('');
+          onClose();
+        }}
+        visible={successTxHash !== ''}>
+        <Text>Transaction completed</Text>
+        <Text>Tx Hash: {truncate(successTxHash, 10, 20)}</Text>
+      </AlertModal>
+    );
+  }
   return (
     <Modal
       visible={visible}
@@ -200,7 +216,7 @@ const NewTxModal = ({
       showCloseButton={true}
       contentStyle={{
         paddingHorizontal: 0,
-        marginTop: viewportHeight / 4,
+        marginTop: viewportHeight / 2.5,
       }}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
@@ -276,9 +292,9 @@ const NewTxModal = ({
             </View>
           </View>
 
-          <Text style={[{marginTop: 20, fontStyle: 'italic'}]}>
+          {/* <Text style={[{marginTop: 20, fontStyle: 'italic'}]}>
             {getLanguageString(language, 'SPEED_DESCRIPTION')}
-          </Text>
+          </Text> */}
           <View
             style={{
               flexDirection: 'row',
@@ -302,17 +318,6 @@ const NewTxModal = ({
             onClose={() => setError('')}
             visible={error !== ''}
           />
-          <AlertModal
-            type="success"
-            // message={`Transaction completed. Hash: ${successTxHash}`}
-            onClose={() => {
-              setSuccessHash('');
-              onClose();
-            }}
-            visible={successTxHash !== ''}>
-            <Text>Transaction completed</Text>
-            <Text>Tx Hash: {truncate(successTxHash, 10, 20)}</Text>
-          </AlertModal>
         </View>
       </TouchableWithoutFeedback>
     </Modal>
