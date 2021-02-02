@@ -4,6 +4,7 @@ import {
   Dimensions,
   Keyboard,
   Modal,
+  Platform,
   StyleProp,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -23,30 +24,51 @@ const CustomModal = ({
   children,
   full = false,
   showCloseButton = true,
-  contentStyle,
+  contentStyle = {
+    marginTop: viewportHeight / 2,
+  } as StyleProp<ViewStyle>,
 }: CustomModalProps & {contentStyle?: StyleProp<ViewStyle>}) => {
+  if (!(contentStyle as any).marginTop) {
+    (contentStyle as any).marginTop = viewportHeight / 2;
+  }
   const [marginTop, setMarginTop] = useState(
-    full ? viewportHeight / 12 : viewportHeight / 2,
+    full ? viewportHeight / 12 : (contentStyle as any).marginTop,
   );
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-    Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    if (contentStyle && (contentStyle as any).marginTop) {
+      setMarginTop((contentStyle as any).marginTop);
+    }
+  }, [contentStyle]);
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
+    } else {
+      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    }
 
     // cleanup function
     return () => {
-      Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+      if (Platform.OS === 'ios') {
+        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
+      } else {
+        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [marginTop]);
 
   const _keyboardDidShow = (e: any) => {
-    setMarginTop(viewportHeight - e.endCoordinates.height - 400);
+    setMarginTop((contentStyle as any).marginTop - e.endCoordinates.height);
   };
 
   const _keyboardDidHide = () => {
-    setMarginTop(full ? viewportHeight / 12 : viewportHeight / 2);
+    setMarginTop(full ? viewportHeight / 12 : (contentStyle as any).marginTop);
   };
 
   if (!visible) {
@@ -62,7 +84,7 @@ const CustomModal = ({
         onRequestClose={onClose}>
         <TouchableOpacity style={styles.contaner} onPress={onClose}>
           <TouchableWithoutFeedback onPress={() => {}}>
-            <View style={[styles.modalView, {marginTop}, contentStyle]}>
+            <View style={[styles.modalView, contentStyle, {marginTop}]}>
               {children}
               {showCloseButton && (
                 <IconButton
