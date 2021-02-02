@@ -7,19 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* KardiaWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* KardiaWalletTests.m */; };
+		00E356F31AD99517003FC87E /* KardiaChainWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* KardiaChainWalletTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2DCD954D1E0B4F2C00145EB5 /* KardiaWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* KardiaWalletTests.m */; };
-		641C5654DD9BD58346C7EFAE /* libPods-KardiaWallet-KardiaWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFD89B467400CABBBD42E63A /* libPods-KardiaWallet-KardiaWalletTests.a */; };
-		6D08BE128E30D1053D9F1ACE /* libPods-KardiaWallet-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AABE70309BD1456DFA6CDA1D /* libPods-KardiaWallet-tvOS.a */; };
-		7EF264FD972C8ECB0CBF3C03 /* libPods-KardiaWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFA8A037F92759AF43117805 /* libPods-KardiaWallet.a */; };
+		2DCD954D1E0B4F2C00145EB5 /* KardiaChainWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* KardiaChainWalletTests.m */; };
+		641C5654DD9BD58346C7EFAE /* libPods-KardiaChainWallet-KardiaChainWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFD89B467400CABBBD42E63A /* libPods-KardiaChainWallet-KardiaChainWalletTests.a */; };
+		6D08BE128E30D1053D9F1ACE /* libPods-KardiaChainWallet-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AABE70309BD1456DFA6CDA1D /* libPods-KardiaChainWallet-tvOS.a */; };
+		7EF264FD972C8ECB0CBF3C03 /* libPods-KardiaChainWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFA8A037F92759AF43117805 /* libPods-KardiaChainWallet.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		8B541B39C312F67F072BBB64 /* libPods-KardiaWallet-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCAC4B8772DD357F18CCA1B5 /* libPods-KardiaWallet-tvOSTests.a */; };
+		8B541B39C312F67F072BBB64 /* libPods-KardiaChainWallet-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCAC4B8772DD357F18CCA1B5 /* libPods-KardiaChainWallet-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,56 +28,56 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = KardiaWallet;
+			remoteInfo = KardiaChainWallet;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
-			remoteInfo = "KardiaWallet-tvOS";
+			remoteInfo = "KardiaChainWallet-tvOS";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* KardiaWalletTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KardiaWalletTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* KardiaChainWalletTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KardiaChainWalletTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* KardiaWalletTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KardiaWalletTests.m; sourceTree = "<group>"; };
-		067AE19D22D5AAF339612981 /* Pods-KardiaWallet-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaWallet-tvOS.release.xcconfig"; path = "Target Support Files/Pods-KardiaWallet-tvOS/Pods-KardiaWallet-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		0717DBC7C93BAC8FF2235AAF /* Pods-KardiaWallet-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaWallet-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-KardiaWallet-tvOSTests/Pods-KardiaWallet-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* Kardia Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kardia Wallet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = KardiaWallet/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = KardiaWallet/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = KardiaWallet/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = KardiaWallet/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = KardiaWallet/main.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* KardiaChainWalletTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KardiaChainWalletTests.m; sourceTree = "<group>"; };
+		067AE19D22D5AAF339612981 /* Pods-KardiaChainWallet-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet-tvOS.release.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet-tvOS/Pods-KardiaChainWallet-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		0717DBC7C93BAC8FF2235AAF /* Pods-KardiaChainWallet-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet-tvOSTests/Pods-KardiaChainWallet-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* KardiaChain Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KardiaChain Wallet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = KardiaChainWallet/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = KardiaChainWallet/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = KardiaChainWallet/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = KardiaChainWallet/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = KardiaChainWallet/main.m; sourceTree = "<group>"; };
 		257A960B7C9D4F5FBCE86A61 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		25B66AA3587047BBAD0B333C /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* KardiaWallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KardiaWallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* KardiaWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KardiaWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E47B1E0B4A5D006451C7 /* KardiaChainWallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KardiaChainWallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E4901E0B4A5D006451C7 /* KardiaChainWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KardiaChainWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C2657719F0041D6A5DAB534 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		53BE24379F13141892B3F960 /* Pods-KardiaWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaWallet.debug.xcconfig"; path = "Target Support Files/Pods-KardiaWallet/Pods-KardiaWallet.debug.xcconfig"; sourceTree = "<group>"; };
+		53BE24379F13141892B3F960 /* Pods-KardiaChainWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet.debug.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet/Pods-KardiaChainWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		5FDEBD9A4A1D423C9F2836AE /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		6ADF746942654BC5AB728F24 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		793C01B173354903B1F3AF47 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = KardiaWallet/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = KardiaChainWallet/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8D470CB135034D73BE75C1E6 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		8F1E501164430AED8C75CB21 /* Pods-KardiaWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaWallet.release.xcconfig"; path = "Target Support Files/Pods-KardiaWallet/Pods-KardiaWallet.release.xcconfig"; sourceTree = "<group>"; };
+		8F1E501164430AED8C75CB21 /* Pods-KardiaChainWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet.release.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet/Pods-KardiaChainWallet.release.xcconfig"; sourceTree = "<group>"; };
 		9C10FA5356E14EC8958126C4 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		A94612FE1748227D40AA22C5 /* Pods-KardiaWallet-KardiaWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaWallet-KardiaWalletTests.debug.xcconfig"; path = "Target Support Files/Pods-KardiaWallet-KardiaWalletTests/Pods-KardiaWallet-KardiaWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
-		AABE70309BD1456DFA6CDA1D /* libPods-KardiaWallet-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KardiaWallet-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		ACC7245D18258B873ED0C5EF /* Pods-KardiaWallet-KardiaWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaWallet-KardiaWalletTests.release.xcconfig"; path = "Target Support Files/Pods-KardiaWallet-KardiaWalletTests/Pods-KardiaWallet-KardiaWalletTests.release.xcconfig"; sourceTree = "<group>"; };
-		BFD89B467400CABBBD42E63A /* libPods-KardiaWallet-KardiaWalletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KardiaWallet-KardiaWalletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A94612FE1748227D40AA22C5 /* Pods-KardiaChainWallet-KardiaChainWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet-KardiaChainWalletTests.debug.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet-KardiaChainWalletTests/Pods-KardiaChainWallet-KardiaChainWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
+		AABE70309BD1456DFA6CDA1D /* libPods-KardiaChainWallet-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KardiaChainWallet-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACC7245D18258B873ED0C5EF /* Pods-KardiaChainWallet-KardiaChainWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet-KardiaChainWalletTests.release.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet-KardiaChainWalletTests/Pods-KardiaChainWallet-KardiaChainWalletTests.release.xcconfig"; sourceTree = "<group>"; };
+		BFD89B467400CABBBD42E63A /* libPods-KardiaChainWallet-KardiaChainWalletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KardiaChainWallet-KardiaChainWalletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C2BF4AA1BE40768755F75E /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		C39C80D834D242559F9F3044 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		C50731AC32DC4EE1B3D7E4AB /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		C7F84764C03DC0E0E7B725EC /* Pods-KardiaWallet-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaWallet-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-KardiaWallet-tvOS/Pods-KardiaWallet-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		CCAC4B8772DD357F18CCA1B5 /* libPods-KardiaWallet-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KardiaWallet-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CF53DD1F9E429800851C8870 /* Pods-KardiaWallet-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaWallet-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-KardiaWallet-tvOSTests/Pods-KardiaWallet-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C7F84764C03DC0E0E7B725EC /* Pods-KardiaChainWallet-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet-tvOS/Pods-KardiaChainWallet-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		CCAC4B8772DD357F18CCA1B5 /* libPods-KardiaChainWallet-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KardiaChainWallet-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF53DD1F9E429800851C8870 /* Pods-KardiaChainWallet-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet-tvOSTests/Pods-KardiaChainWallet-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D1CF2F89CB1C4321B13F063F /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		DBDB0D66810F43F0BB24AF51 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
-		DFA8A037F92759AF43117805 /* libPods-KardiaWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KardiaWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFA8A037F92759AF43117805 /* libPods-KardiaChainWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KardiaChainWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F7C909A7469D4E1782727EAC /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -90,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				641C5654DD9BD58346C7EFAE /* libPods-KardiaWallet-KardiaWalletTests.a in Frameworks */,
+				641C5654DD9BD58346C7EFAE /* libPods-KardiaChainWallet-KardiaChainWalletTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7EF264FD972C8ECB0CBF3C03 /* libPods-KardiaWallet.a in Frameworks */,
+				7EF264FD972C8ECB0CBF3C03 /* libPods-KardiaChainWallet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,7 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6D08BE128E30D1053D9F1ACE /* libPods-KardiaWallet-tvOS.a in Frameworks */,
+				6D08BE128E30D1053D9F1ACE /* libPods-KardiaChainWallet-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,20 +114,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B541B39C312F67F072BBB64 /* libPods-KardiaWallet-tvOSTests.a in Frameworks */,
+				8B541B39C312F67F072BBB64 /* libPods-KardiaChainWallet-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* KardiaWalletTests */ = {
+		00E356EF1AD99517003FC87E /* KardiaChainWalletTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* KardiaWalletTests.m */,
+				00E356F21AD99517003FC87E /* KardiaChainWalletTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = KardiaWalletTests;
+			path = KardiaChainWalletTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -138,7 +138,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* KardiaWallet */ = {
+		13B07FAE1A68108700A75B9A /* KardiaChainWallet */ = {
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -149,7 +149,7 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = KardiaWallet;
+			name = KardiaChainWallet;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -157,10 +157,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				DFA8A037F92759AF43117805 /* libPods-KardiaWallet.a */,
-				BFD89B467400CABBBD42E63A /* libPods-KardiaWallet-KardiaWalletTests.a */,
-				AABE70309BD1456DFA6CDA1D /* libPods-KardiaWallet-tvOS.a */,
-				CCAC4B8772DD357F18CCA1B5 /* libPods-KardiaWallet-tvOSTests.a */,
+				DFA8A037F92759AF43117805 /* libPods-KardiaChainWallet.a */,
+				BFD89B467400CABBBD42E63A /* libPods-KardiaChainWallet-KardiaChainWalletTests.a */,
+				AABE70309BD1456DFA6CDA1D /* libPods-KardiaChainWallet-tvOS.a */,
+				CCAC4B8772DD357F18CCA1B5 /* libPods-KardiaChainWallet-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -198,9 +198,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* KardiaWallet */,
+				13B07FAE1A68108700A75B9A /* KardiaChainWallet */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* KardiaWalletTests */,
+				00E356EF1AD99517003FC87E /* KardiaChainWalletTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				3B2E0477192E4C21A611A1DB /* Resources */,
@@ -214,10 +214,10 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* Kardia Wallet.app */,
-				00E356EE1AD99517003FC87E /* KardiaWalletTests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* KardiaWallet-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* KardiaWallet-tvOSTests.xctest */,
+				13B07F961A680F5B00A75B9A /* KardiaChain Wallet.app */,
+				00E356EE1AD99517003FC87E /* KardiaChainWalletTests.xctest */,
+				2D02E47B1E0B4A5D006451C7 /* KardiaChainWallet-tvOS.app */,
+				2D02E4901E0B4A5D006451C7 /* KardiaChainWallet-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -225,14 +225,14 @@
 		8F8A8799DA8C60E2CD93DD49 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				53BE24379F13141892B3F960 /* Pods-KardiaWallet.debug.xcconfig */,
-				8F1E501164430AED8C75CB21 /* Pods-KardiaWallet.release.xcconfig */,
-				A94612FE1748227D40AA22C5 /* Pods-KardiaWallet-KardiaWalletTests.debug.xcconfig */,
-				ACC7245D18258B873ED0C5EF /* Pods-KardiaWallet-KardiaWalletTests.release.xcconfig */,
-				C7F84764C03DC0E0E7B725EC /* Pods-KardiaWallet-tvOS.debug.xcconfig */,
-				067AE19D22D5AAF339612981 /* Pods-KardiaWallet-tvOS.release.xcconfig */,
-				CF53DD1F9E429800851C8870 /* Pods-KardiaWallet-tvOSTests.debug.xcconfig */,
-				0717DBC7C93BAC8FF2235AAF /* Pods-KardiaWallet-tvOSTests.release.xcconfig */,
+				53BE24379F13141892B3F960 /* Pods-KardiaChainWallet.debug.xcconfig */,
+				8F1E501164430AED8C75CB21 /* Pods-KardiaChainWallet.release.xcconfig */,
+				A94612FE1748227D40AA22C5 /* Pods-KardiaChainWallet-KardiaChainWalletTests.debug.xcconfig */,
+				ACC7245D18258B873ED0C5EF /* Pods-KardiaChainWallet-KardiaChainWalletTests.release.xcconfig */,
+				C7F84764C03DC0E0E7B725EC /* Pods-KardiaChainWallet-tvOS.debug.xcconfig */,
+				067AE19D22D5AAF339612981 /* Pods-KardiaChainWallet-tvOS.release.xcconfig */,
+				CF53DD1F9E429800851C8870 /* Pods-KardiaChainWallet-tvOSTests.debug.xcconfig */,
+				0717DBC7C93BAC8FF2235AAF /* Pods-KardiaChainWallet-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -240,9 +240,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* KardiaWalletTests */ = {
+		00E356ED1AD99517003FC87E /* KardiaChainWalletTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "KardiaWalletTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "KardiaChainWalletTests" */;
 			buildPhases = (
 				758168952F2E6B7400E4A366 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -255,14 +255,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = KardiaWalletTests;
-			productName = KardiaWalletTests;
-			productReference = 00E356EE1AD99517003FC87E /* KardiaWalletTests.xctest */;
+			name = KardiaChainWalletTests;
+			productName = KardiaChainWalletTests;
+			productReference = 00E356EE1AD99517003FC87E /* KardiaChainWalletTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* KardiaWallet */ = {
+		13B07F861A680F5B00A75B9A /* KardiaChainWallet */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "KardiaWallet" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "KardiaChainWallet" */;
 			buildPhases = (
 				82B5DB74B17076104CB2E4A9 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -276,14 +276,14 @@
 			);
 			dependencies = (
 			);
-			name = KardiaWallet;
-			productName = KardiaWallet;
-			productReference = 13B07F961A680F5B00A75B9A /* Kardia Wallet.app */;
+			name = KardiaChainWallet;
+			productName = KardiaChainWallet;
+			productReference = 13B07F961A680F5B00A75B9A /* KardiaChain Wallet.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E47A1E0B4A5D006451C7 /* KardiaWallet-tvOS */ = {
+		2D02E47A1E0B4A5D006451C7 /* KardiaChainWallet-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "KardiaWallet-tvOS" */;
+			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "KardiaChainWallet-tvOS" */;
 			buildPhases = (
 				E7A4137DF6C507D7F30E21AA /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
@@ -296,14 +296,14 @@
 			);
 			dependencies = (
 			);
-			name = "KardiaWallet-tvOS";
-			productName = "KardiaWallet-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* KardiaWallet-tvOS.app */;
+			name = "KardiaChainWallet-tvOS";
+			productName = "KardiaChainWallet-tvOS";
+			productReference = 2D02E47B1E0B4A5D006451C7 /* KardiaChainWallet-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E48F1E0B4A5D006451C7 /* KardiaWallet-tvOSTests */ = {
+		2D02E48F1E0B4A5D006451C7 /* KardiaChainWallet-tvOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "KardiaWallet-tvOSTests" */;
+			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "KardiaChainWallet-tvOSTests" */;
 			buildPhases = (
 				DA203D4CD63DE92F7001CFCE /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
@@ -315,9 +315,9 @@
 			dependencies = (
 				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
 			);
-			name = "KardiaWallet-tvOSTests";
-			productName = "KardiaWallet-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* KardiaWallet-tvOSTests.xctest */;
+			name = "KardiaChainWallet-tvOSTests";
+			productName = "KardiaChainWallet-tvOSTests";
+			productReference = 2D02E4901E0B4A5D006451C7 /* KardiaChainWallet-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -326,10 +326,11 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1140;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = ZALPS8PCP4;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
@@ -350,7 +351,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "KardiaWallet" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "KardiaChainWallet" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -363,10 +364,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* KardiaWallet */,
-				00E356ED1AD99517003FC87E /* KardiaWalletTests */,
-				2D02E47A1E0B4A5D006451C7 /* KardiaWallet-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* KardiaWallet-tvOSTests */,
+				13B07F861A680F5B00A75B9A /* KardiaChainWallet */,
+				00E356ED1AD99517003FC87E /* KardiaChainWalletTests */,
+				2D02E47A1E0B4A5D006451C7 /* KardiaChainWallet-tvOS */,
+				2D02E48F1E0B4A5D006451C7 /* KardiaChainWallet-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -440,7 +441,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-KardiaWallet/Pods-KardiaWallet-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-KardiaChainWallet/Pods-KardiaChainWallet-resources.sh",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -481,7 +482,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KardiaWallet/Pods-KardiaWallet-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KardiaChainWallet/Pods-KardiaChainWallet-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		758168952F2E6B7400E4A366 /* [CP] Check Pods Manifest.lock */ = {
@@ -499,7 +500,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-KardiaWallet-KardiaWalletTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-KardiaChainWallet-KardiaChainWalletTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -521,7 +522,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-KardiaWallet-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-KardiaChainWallet-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -543,7 +544,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-KardiaWallet-tvOSTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-KardiaChainWallet-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -565,7 +566,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-KardiaWallet-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-KardiaChainWallet-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -578,7 +579,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-KardiaWallet-KardiaWalletTests/Pods-KardiaWallet-KardiaWalletTests-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-KardiaChainWallet-KardiaChainWalletTests/Pods-KardiaChainWallet-KardiaChainWalletTests-resources.sh",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -619,7 +620,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KardiaWallet-KardiaWalletTests/Pods-KardiaWallet-KardiaWalletTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KardiaChainWallet-KardiaChainWalletTests/Pods-KardiaChainWallet-KardiaChainWalletTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -667,7 +668,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* KardiaWalletTests.m in Sources */,
+				00E356F31AD99517003FC87E /* KardiaChainWalletTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -693,7 +694,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DCD954D1E0B4F2C00145EB5 /* KardiaWalletTests.m in Sources */,
+				2DCD954D1E0B4F2C00145EB5 /* KardiaChainWalletTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -702,12 +703,12 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* KardiaWallet */;
+			target = 13B07F861A680F5B00A75B9A /* KardiaChainWallet */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* KardiaWallet-tvOS */;
+			target = 2D02E47A1E0B4A5D006451C7 /* KardiaChainWallet-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -715,15 +716,16 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A94612FE1748227D40AA22C5 /* Pods-KardiaWallet-KardiaWalletTests.debug.xcconfig */;
+			baseConfigurationReference = A94612FE1748227D40AA22C5 /* Pods-KardiaChainWallet-KardiaChainWalletTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = ZALPS8PCP4;
+				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = KardiaWalletTests/Info.plist;
+				INFOPLIST_FILE = KardiaChainWalletTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -733,18 +735,19 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaWallet.app/KardiaWallet";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaChainWallet.app/KardiaChainWallet";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ACC7245D18258B873ED0C5EF /* Pods-KardiaWallet-KardiaWalletTests.release.xcconfig */;
+			baseConfigurationReference = ACC7245D18258B873ED0C5EF /* Pods-KardiaChainWallet-KardiaChainWalletTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = ZALPS8PCP4;
-				INFOPLIST_FILE = KardiaWalletTests/Info.plist;
+				DEVELOPMENT_TEAM = 2UXQPMP7YD;
+				INFOPLIST_FILE = KardiaChainWalletTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -754,32 +757,32 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0e554333-2676-4c24-b496-88793a3bdecf";
-				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.masterwallet AppStore";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaWallet.app/KardiaWallet";
+				PROVISIONING_PROFILE = "3b633b5d-a2b7-436f-941b-6d4ab52fad35";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaChainWallet.app/KardiaChainWallet";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 53BE24379F13141892B3F960 /* Pods-KardiaWallet.debug.xcconfig */;
+			baseConfigurationReference = 53BE24379F13141892B3F960 /* Pods-KardiaChainWallet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 20;
-				DEVELOPMENT_TEAM = ZALPS8PCP4;
+				CURRENT_PROJECT_VERSION = 27;
+				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = KardiaWallet/Info.plist;
+				INFOPLIST_FILE = KardiaChainWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kardiachain.masterwallet;
-				PRODUCT_NAME = "Kardia Wallet";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kardiachain.wallet;
+				PRODUCT_NAME = "KardiaChain Wallet";
 				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.masterwallet AppStore";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -789,26 +792,26 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8F1E501164430AED8C75CB21 /* Pods-KardiaWallet.release.xcconfig */;
+			baseConfigurationReference = 8F1E501164430AED8C75CB21 /* Pods-KardiaChainWallet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 20;
-				DEVELOPMENT_TEAM = ZALPS8PCP4;
-				INFOPLIST_FILE = KardiaWallet/Info.plist;
+				CURRENT_PROJECT_VERSION = 27;
+				DEVELOPMENT_TEAM = 2UXQPMP7YD;
+				INFOPLIST_FILE = KardiaChainWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kardiachain.masterwallet;
-				PRODUCT_NAME = "Kardia Wallet";
-				PROVISIONING_PROFILE = "0e554333-2676-4c24-b496-88793a3bdecf";
-				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.masterwallet AppStore";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kardiachain.wallet;
+				PRODUCT_NAME = "KardiaChain Wallet";
+				PROVISIONING_PROFILE = "3b633b5d-a2b7-436f-941b-6d4ab52fad35";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -816,7 +819,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C7F84764C03DC0E0E7B725EC /* Pods-KardiaWallet-tvOS.debug.xcconfig */;
+			baseConfigurationReference = C7F84764C03DC0E0E7B725EC /* Pods-KardiaChainWallet-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -825,17 +828,17 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = ZALPS8PCP4;
+				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "KardiaWallet-tvOS/Info.plist";
+				INFOPLIST_FILE = "KardiaChainWallet-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaWallet-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaChainWallet-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -845,7 +848,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 067AE19D22D5AAF339612981 /* Pods-KardiaWallet-tvOS.release.xcconfig */;
+			baseConfigurationReference = 067AE19D22D5AAF339612981 /* Pods-KardiaChainWallet-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -855,19 +858,19 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = ZALPS8PCP4;
+				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "KardiaWallet-tvOS/Info.plist";
+				INFOPLIST_FILE = "KardiaChainWallet-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaWallet-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaChainWallet-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0e554333-2676-4c24-b496-88793a3bdecf";
-				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.masterwallet AppStore";
+				PROVISIONING_PROFILE = "3b633b5d-a2b7-436f-941b-6d4ab52fad35";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
@@ -876,7 +879,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CF53DD1F9E429800851C8870 /* Pods-KardiaWallet-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = CF53DD1F9E429800851C8870 /* Pods-KardiaChainWallet-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -884,27 +887,27 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = ZALPS8PCP4;
+				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "KardiaWallet-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "KardiaChainWallet-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaWallet-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaChainWallet-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaWallet-tvOS.app/KardiaWallet-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaChainWallet-tvOS.app/KardiaChainWallet-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0717DBC7C93BAC8FF2235AAF /* Pods-KardiaWallet-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 0717DBC7C93BAC8FF2235AAF /* Pods-KardiaChainWallet-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -913,21 +916,21 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = ZALPS8PCP4;
+				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "KardiaWallet-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "KardiaChainWallet-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaWallet-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaChainWallet-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0e554333-2676-4c24-b496-88793a3bdecf";
-				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.masterwallet AppStore";
+				PROVISIONING_PROFILE = "3b633b5d-a2b7-436f-941b-6d4ab52fad35";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaWallet-tvOS.app/KardiaWallet-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaChainWallet-tvOS.app/KardiaChainWallet-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
@@ -988,7 +991,9 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				RESOURCES_TARGETED_DEVICE_FAMILY = "";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1040,7 +1045,9 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				RESOURCES_TARGETED_DEVICE_FAMILY = "";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1048,7 +1055,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "KardiaWalletTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "KardiaChainWalletTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -1057,7 +1064,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "KardiaWallet" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "KardiaChainWallet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -1066,7 +1073,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "KardiaWallet-tvOS" */ = {
+		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "KardiaChainWallet-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
@@ -1075,7 +1082,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "KardiaWallet-tvOSTests" */ = {
+		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "KardiaChainWallet-tvOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
@@ -1084,7 +1091,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "KardiaWallet" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "KardiaChainWallet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

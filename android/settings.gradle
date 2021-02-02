@@ -1,4 +1,4 @@
-rootProject.name = 'KardiaWallet'
+rootProject.name = 'KardiaChainWallet'
 include ':react-native-touch-id'
 project(':react-native-touch-id').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-touch-id/android')
 include ':react-native-svg'

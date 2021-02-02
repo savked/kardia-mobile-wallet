@@ -326,6 +326,8 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
+  - RNCPicker (1.9.10):
+    - React-Core
   - RNGestureHandler (1.9.0):
     - React-Core
   - RNPermissions (3.0.0):
@@ -403,6 +405,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -502,6 +505,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/clipboard"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNCPicker:
+    :path: "../node_modules/@react-native-picker/picker"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNPermissions:
@@ -568,6 +573,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: bc2f81cc1df90c267ce9ed30bb2dbc93b945a8ee
   RNCClipboard: 5e299c6df8e0c98f3d7416b86ae563d3a9f768a3
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
+  RNCPicker: 77183d9b1cd80ae55505322f8ad09ba0036e29ba
   RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
   RNPermissions: 350964d19150b183796a88180fb7ec62a1e41422
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
@@ -578,6 +584,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: a5544d5e5e876694525f840386a41c634bf87fb0
+PODFILE CHECKSUM: 348d466df741ec96f250073937c751d86a8a0014
 
 COCOAPODS: 1.8.4
