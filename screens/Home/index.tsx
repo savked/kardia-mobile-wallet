@@ -95,8 +95,8 @@ const HomeScreen = () => {
   }, [selectedWallet]);
 
   useEffect(() => {
-    if (mnemonic !== '') {
-      const valid = Bip39.validateMnemonic(mnemonic);
+    if (mnemonic.trim() !== '') {
+      const valid = Bip39.validateMnemonic(mnemonic.trim());
       if (!valid) {
         setProcessing(false);
         return;
@@ -153,23 +153,17 @@ const HomeScreen = () => {
     _wallets.push(wallet);
     await saveWallets(_wallets);
     await saveSelectedWallet(_wallets.length - 1);
-    // setWallets(_wallets);
-    // setSelectedWallet(_wallets.length - 1);
-    // setMnemonic('');
-    // setPrivateKey('');
-    // setProcessing(false);
-    // setSelectingWallet(false);
     RNRestart.Restart();
   };
 
   const importPrivateKey = async (_privateKey: string) => {
     try {
-      const _wallet = getWalletFromPK(_privateKey);
+      const _wallet = getWalletFromPK(_privateKey.trim());
       const walletAddress = _wallet.getChecksumAddressString();
       const balance = await getBalance(walletAddress);
       const staked = await getStakingAmount(walletAddress);
       const wallet: Wallet = {
-        privateKey: _privateKey,
+        privateKey: _privateKey.trim(),
         address: walletAddress,
         balance,
         staked,
@@ -192,10 +186,6 @@ const HomeScreen = () => {
       await saveWallets(_wallets);
       await saveSelectedWallet(_wallets.length - 1);
       RNRestart.Restart();
-      // setWallets(_wallets);
-      // setSelectedWallet(_wallets.length - 1);
-      // setPrivateKey('');
-      // setProcessing(false);
     } catch (error) {
       setProcessing(false);
       console.error(error);

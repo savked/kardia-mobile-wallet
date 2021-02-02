@@ -53,11 +53,11 @@ const ImportMnemonic = () => {
   };
 
   function validateSeedPhrase() {
-    if (!mnemonic) {
+    if (!mnemonic.trim()) {
       setError(getLanguageString(language, 'REQUIRED_FIELD'));
       return false;
     }
-    const valid = Bip39.validateMnemonic(mnemonic);
+    const valid = Bip39.validateMnemonic(mnemonic.trim());
     if (!valid) {
       setError(getLanguageString(language, 'ERROR_SEED_PHRASE'));
       return false;
@@ -78,6 +78,7 @@ const ImportMnemonic = () => {
           onChangeText={setMnemonic}
           numberOfLines={5}
           multiline={true}
+          autoCapitalize="none"
         />
         <ErrorMessage message={error} style={{textAlign: 'left'}} />
         <View style={styles.buttonGroup}>
