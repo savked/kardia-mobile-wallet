@@ -116,7 +116,9 @@ const SelectWallet = ({
           fontSize: 22,
           marginBottom: 20,
         }}>
-        {getLanguageString(language, 'SELECT_YOUR_WALLET')}
+        {loading
+          ? getLanguageString(language, 'PROCESSING_YOUR_SEED')
+          : getLanguageString(language, 'SELECT_YOUR_WALLET')}
       </Text>
       <View style={{flex: 0.5, justifyContent: 'center'}}>
         <List

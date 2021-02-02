@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {Dimensions, Text, View} from 'react-native';
+import {Dimensions, Keyboard, Text, View} from 'react-native';
 import {BarCodeReadEvent} from 'react-native-camera';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {styles} from './style';
@@ -44,6 +44,7 @@ const ImportModal = ({
             onChangeText={setMnemonic}
             numberOfLines={5}
             multiline={true}
+            autoCapitalize="none"
           />
           <Button
             block
@@ -69,9 +70,13 @@ const ImportModal = ({
             />
             <Button
               title={getLanguageString(language, 'IMPORT_WITH_PRIVATE_KEY')}
-              type="ghost"
+              type="link"
               size="large"
-              onPress={() => setScanType('privatekey')}
+              textStyle={{color: '#000'}}
+              onPress={() => {
+                Keyboard.dismiss();
+                setScanType('privatekey');
+              }}
             />
           </View>
         </Modal>
@@ -93,6 +98,7 @@ const ImportModal = ({
             style={styles.input}
             value={privateKey}
             onChangeText={setPrivateKey}
+            autoCapitalize="none"
           />
           <Button
             block
@@ -118,9 +124,13 @@ const ImportModal = ({
             />
             <Button
               title={getLanguageString(language, 'IMPORT_WITH_SEED')}
-              type="ghost"
+              type="link"
               size="large"
-              onPress={() => setScanType('mnemonic')}
+              textStyle={{color: '#000'}}
+              onPress={() => {
+                Keyboard.dismiss();
+                setScanType('mnemonic');
+              }}
             />
           </View>
         </Modal>
