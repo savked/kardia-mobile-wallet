@@ -25,15 +25,30 @@ const NewAddress = () => {
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
   const [name, setName] = useState('');
+  const [errName, setErrName] = useState('');
   const [address, setAddress] = useState(
-    (params as any).address ? (params as any).address : '',
+    params && (params as any).address ? (params as any).address : '',
   );
+  const [errAddress, setErrAddress] = useState('');
   const [avatar, setAvatar] = useState<ImageURISource>({uri: ''});
   const [addressBook, setAddressBook] = useRecoilState(addressBookAtom);
   const [showModal, setShowModal] = useState(false);
   const language = useRecoilValue(languageAtom);
 
   const saveAddress = async () => {
+    let isValid = true;
+    if (!name) {
+      setErrName(getLanguageString(language, 'REQUIRED_FIELD'));
+      isValid = false;
+    }
+    if (!address) {
+      setErrAddress(getLanguageString(language, 'REQUIRED_FIELD'));
+      isValid = false;
+    }
+
+    if (!isValid) {
+      return;
+    }
     const currentAB: Address[] = JSON.parse(JSON.stringify(addressBook));
     currentAB.push({
       address,
@@ -66,6 +81,7 @@ const NewAddress = () => {
         </View>
         <View style={styles.formFieldContainer}>
           <TextInput
+            message={errName}
             headline={getLanguageString(language, 'ADDRESS_NAME')}
             block
             value={name}
@@ -74,6 +90,7 @@ const NewAddress = () => {
         </View>
         <View style={styles.formFieldContainer}>
           <TextInput
+            message={errAddress}
             headline={getLanguageString(language, 'ADDRESS_ADDRESS')}
             block
             value={truncate(address, 17, 17)}
