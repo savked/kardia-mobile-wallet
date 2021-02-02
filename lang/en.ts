@@ -50,6 +50,7 @@ export const lang: Language = {
     SURE: "Yes, I'm sure",
     NOT_SURE: 'Take me back',
     SELECT_YOUR_WALLET: 'Select your wallet',
+    PROCESSING_YOUR_SEED: 'Processing your seed phrase...',
     // Transaction key
     RECENT_TRANSACTION: 'Recent transactions',
     NO_TRANSACTION: 'No transaction',

@@ -49,6 +49,7 @@ export const lang: Language = {
     SURE: 'Tôi chắc chắn',
     NOT_SURE: 'Trở lại',
     SELECT_YOUR_WALLET: 'Chọn ví muốn import',
+    PROCESSING_YOUR_SEED: 'Đang xử lý...',
     // Transaction key
     RECENT_TRANSACTION: 'Giao dịch gần đây',
     NO_TRANSACTION: 'Không có giao dịch',
