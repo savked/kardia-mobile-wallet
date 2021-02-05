@@ -98,8 +98,8 @@ export const lang: Language = {
     UNDELEGATE_SUCCESS:
       '{{KAI_AMOUNT}} KAI đã được rút. Sau 7 ngày bạn có thể rút số KAI này về ví.',
     UNDELEGATE_AMOUNT_TOO_MUCH: 'Số KAI rút phải nhỏ hơn số KAI đã stake',
-    UNDELEGATE_AMOUNT_REMAIN_25000:
-      'Cần giữ lại ít nhất 25.000 KAI hoặc rút hết KAI.',
+    UNDELEGATE_AMOUNT_REMAIN_1000:
+      'Cần giữ lại ít nhất 1.000 KAI hoặc rút hết KAI.',
     UNDELEGATE_AMOUNT_PLACEHOLDER: 'Số KAI muốn rút từ stake...',
     YOUR_INVESTMENTS: 'Các khoảng đầu tư của bạn',
     TOTAL_EARNING: 'Tổng số lợi nhuận',

@@ -20,6 +20,7 @@ import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import CustomTextInput from '../../components/TextInput';
+import { MIN_DELEGATE } from '../../config';
 
 const StakingItem = ({
   item,
@@ -112,16 +113,16 @@ const StakingItem = ({
         return;
       }
       if (
-        Number(stakedAmountInKAI) - _undelegateValue < 25000 &&
+        Number(stakedAmountInKAI) - _undelegateValue < MIN_DELEGATE &&
         Number(stakedAmountInKAI) - _undelegateValue > 0
       ) {
         setUndelegateError(
-          getLanguageString(language, 'UNDELEGATE_AMOUNT_REMAIN_25000'),
+          getLanguageString(language, 'UNDELEGATE_AMOUNT_REMAIN_1000'),
         );
         setSubmitting(false);
         return;
       }
-      if (Number(stakedAmountInKAI) - _undelegateValue > 25000) {
+      if (Number(stakedAmountInKAI) - _undelegateValue > MIN_DELEGATE) {
         await undelegateWithAmount(
           item.value,
           _undelegateValue,

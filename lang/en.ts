@@ -100,8 +100,8 @@ export const lang: Language = {
     UNDELEGATE_SUCCESS:
       '{{KAI_AMOUNT}} KAI is undelegated. You will need to wait for 7 days to withdraw back to your wallet.',
     UNDELEGATE_AMOUNT_TOO_MUCH: 'Must be less than staked KAI amount',
-    UNDELEGATE_AMOUNT_REMAIN_25000:
-      'Must keep at least 25.000 KAI in staking, or undelegate all KAI',
+    UNDELEGATE_AMOUNT_REMAIN_1000:
+      'Must keep at least 1.000 KAI in staking, or undelegate all KAI',
     UNDELEGATE_AMOUNT_PLACEHOLDER: 'Amount to undelegate...',
     YOUR_INVESTMENTS: 'Your delegations',
     TOTAL_EARNING: 'Your total earning',
