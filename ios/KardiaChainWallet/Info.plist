@@ -40,15 +40,15 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Allow KardiaChain wallet to access your camera</string>
+	<string>KardiaChain wallet to access your camera for QR code scaning</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Enabling Face ID allows you quick and secure access to your account.</string>
+	<string>Enabling Face ID allows you quick and secure access to your wallet.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Allow KardiaChain wallet to access your microphone</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow KardiaChain wallet to access your photo library</string>
+	<string>KardiaChain wallet to access your camera for QR code uploading</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
