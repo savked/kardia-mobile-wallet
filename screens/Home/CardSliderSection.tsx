@@ -164,7 +164,6 @@ const CardSliderSection = ({
   useEffect(() => {
     if (carouselRef.current) {
       if (removeIndex >= 0) {
-        console.log('go here');
         carouselRef.current.triggerRenderingHack();
         setRemoveIndex(-1);
       } else if (carouselRef.current.currentIndex !== selectedWallet) {

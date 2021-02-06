@@ -144,7 +144,6 @@ const SelectWallet = ({
                 color={theme.textColor}
                 size={20}
                 onPress={() => {
-                  console.log('here');
                   setStartIndex(startIndex + 5);
                 }}
               />
