@@ -57,13 +57,18 @@ export const getStakingAmount = async (address: string) => {
 export const withdrawReward = async (valSmcAddr: string, wallet: Wallet) => {
   try {
     kardiaContract.updateAbi(VALIDATOR_ABI);
-    return await kardiaContract
+    const rs = await kardiaContract
       .invokeContract('withdrawRewards', [])
       .send(wallet.privateKey || '', toChecksumAddress(valSmcAddr), {
         from: wallet.address,
         gas: DEFAULT_GAS_LIMIT,
         gasPrice: DEFAULT_GAS_PRICE,
       });
+    if (rs.status === 0) {
+      throw new Error(`Withdraw reward TX Fail: ${rs.transactionHash}`);
+    } else {
+      return rs;
+    }
   } catch (error) {
     throw error;
   }
@@ -75,13 +80,18 @@ export const withdrawDelegatedAmount = async (
 ) => {
   try {
     kardiaContract.updateAbi(VALIDATOR_ABI);
-    return await kardiaContract
+    const rs = await kardiaContract
       .invokeContract('withdraw', [])
       .send(wallet.privateKey || '', toChecksumAddress(valSmcAddr), {
         from: wallet.address,
         gas: DEFAULT_GAS_LIMIT,
         gasPrice: DEFAULT_GAS_PRICE,
       });
+    if (rs.status === 0) {
+      throw new Error(`Withdraw delegated TX Fail: ${rs.transactionHash}`);
+    } else {
+      return rs;
+    }
   } catch (error) {
     throw error;
   }
@@ -95,13 +105,18 @@ export const undelegateWithAmount = async (
   try {
     const amountUndelDec = cellValue(amountUndel);
     kardiaContract.updateAbi(VALIDATOR_ABI);
-    return await kardiaContract
+    const rs = await kardiaContract
       .invokeContract('undelegateWithAmount', [amountUndelDec])
       .send(wallet.privateKey || '', toChecksumAddress(valSmcAddr), {
         from: wallet.address,
         gas: DEFAULT_GAS_LIMIT,
         gasPrice: DEFAULT_GAS_PRICE,
       });
+    if (rs.status === 0) {
+      throw new Error(`Undelegate TX Fail: ${rs.transactionHash}`);
+    } else {
+      return rs;
+    }
   } catch (error) {
     throw error;
   }
@@ -110,13 +125,18 @@ export const undelegateWithAmount = async (
 export const undelegateAll = async (valSmcAddr: string, wallet: Wallet) => {
   try {
     kardiaContract.updateAbi(VALIDATOR_ABI);
-    return await kardiaContract
+    const rs = await kardiaContract
       .invokeContract('undelegate', [])
       .send(wallet.privateKey || '', toChecksumAddress(valSmcAddr), {
         from: wallet.address,
         gas: DEFAULT_GAS_LIMIT,
         gasPrice: DEFAULT_GAS_PRICE,
       });
+    if (rs.status === 0) {
+      throw new Error(`Undelegate TX Fail: ${rs.transactionHash}`);
+    } else {
+      return rs;
+    }
   } catch (error) {
     throw error;
   }
@@ -130,7 +150,7 @@ export const delegateAction = async (
   try {
     const cellAmountDel = cellValue(amountDel);
     kardiaContract.updateAbi(VALIDATOR_ABI);
-    return await kardiaContract
+    const rs = await kardiaContract
       .invokeContract('delegate', [])
       .send(wallet.privateKey || '', toChecksumAddress(valSmcAddr), {
         from: wallet.address,
@@ -138,6 +158,11 @@ export const delegateAction = async (
         gas: DEFAULT_GAS_LIMIT,
         gasPrice: DEFAULT_GAS_PRICE,
       });
+    if (rs.status === 0) {
+      throw new Error(`Delegate TX Fail: ${rs.transactionHash}`);
+    } else {
+      return rs;
+    }
   } catch (error) {
     throw error;
   }

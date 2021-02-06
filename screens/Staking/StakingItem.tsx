@@ -20,7 +20,7 @@ import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import CustomTextInput from '../../components/TextInput';
-import { MIN_DELEGATE } from '../../config';
+import {MIN_DELEGATE} from '../../config';
 
 const StakingItem = ({
   item,

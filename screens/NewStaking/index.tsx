@@ -158,14 +158,21 @@ const NewStaking = () => {
         return;
       }
       setDelegating(true);
-      await delegateAction(
+      const rs = await delegateAction(
         selectedValidatorAddress,
         wallets[selectedWallet],
         Number(getDigit(amount)),
       );
-      setDelegating(false);
-      setMessage('Delegation success');
-      setMessageType('success');
+      if (rs.status === 0) {
+        console.error('Delegate Tx Fail ', rs.transactionHash);
+        setDelegating(false);
+        setMessage('Delegation fail');
+        setMessageType('error');
+      } else {
+        setDelegating(false);
+        setMessage('Delegation success');
+        setMessageType('success');
+      }
     } catch (err) {
       console.error(err);
       setDelegating(false);
