@@ -45,6 +45,7 @@ export const lang: Language = {
     SCAN_PRIVATE_KEY: 'Scan QR code for private key',
     WALLET_EXISTED: 'Wallet already existed',
     ERROR_SEED_PHRASE: 'Wrong format seed phrase, please recheck',
+    ERROR_PRIVATE_KEY: 'Invalid private key. Please recheck.',
     CONFIRM_ENTER_SEED_PHRASE:
       'Are you sure you have copied the 12 seed phrases ?',
     SURE: "Yes, I'm sure",

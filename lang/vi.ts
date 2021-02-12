@@ -45,6 +45,7 @@ export const lang: Language = {
     SCAN_PRIVATE_KEY: 'Quét mã QR chứa private key',
     WALLET_EXISTED: 'Ví đã tồn tại',
     ERROR_SEED_PHRASE: 'Chuỗi khóa bis mật sai, vui lòng thử lại',
+    ERROR_PRIVATE_KEY: 'Private key không hợp lệ, vui lòng kiểm tra lại',
     CONFIRM_ENTER_SEED_PHRASE: 'Bạn đã ghi lại 12 từ khóa bí mật ?',
     SURE: 'Tôi chắc chắn',
     NOT_SURE: 'Trở lại',
