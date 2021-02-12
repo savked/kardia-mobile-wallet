@@ -19,6 +19,7 @@ import {
   getLanguageString,
 } from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
+import {getSelectedWallet, getWallets} from '../../utils/local';
 
 const TxListSection = () => {
   const navigation = useNavigation();
@@ -29,6 +30,7 @@ const TxListSection = () => {
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const language = useRecoilValue(languageAtom);
   const [loading, setLoading] = useState(true);
+  const [cachedAddress, setCachedAddress] = useState('');
 
   const parseTXForList = (tx: Transaction) => {
     return {
@@ -45,13 +47,20 @@ const TxListSection = () => {
   };
 
   const getTX = async () => {
-    if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
+    const localWallets = await getWallets();
+    const localSelectedWallet = await getSelectedWallet();
+    if (
+      !localWallets[localSelectedWallet] ||
+      !localWallets[localSelectedWallet].address
+    ) {
       return;
     }
     setLoading(true);
+    setCachedAddress(localWallets[localSelectedWallet].address);
+    console.log('address ', localWallets[localSelectedWallet].address);
     try {
       const newTxList = await getTxByAddress(
-        wallets[selectedWallet].address,
+        localWallets[localSelectedWallet].address,
         1,
         7,
       );
@@ -64,9 +73,11 @@ const TxListSection = () => {
   };
 
   useEffect(() => {
-    getTX();
+    if (cachedAddress !== wallets[selectedWallet].address) {
+      getTX();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedWallet]);
+  }, [selectedWallet, wallets]);
 
   const renderIcon = (status: number) => {
     return (

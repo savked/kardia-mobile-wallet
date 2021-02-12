@@ -16,9 +16,13 @@ import Button from '../../components/Button';
 import {parseKaiBalance} from '../../utils/number';
 import {copyToClipboard, truncate} from '../../utils/string';
 import {styles} from './style';
-import {getWallets, saveSelectedWallet, saveWallets} from '../../utils/local';
+import {
+  getSelectedWallet,
+  getWallets,
+  saveSelectedWallet,
+  saveWallets,
+} from '../../utils/local';
 import {useNavigation} from '@react-navigation/native';
-// import RNRestart from 'react-native-restart';
 import {tokenInfoAtom} from '../../atoms/token';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
@@ -162,6 +166,7 @@ const CardSliderSection = ({
   };
 
   useEffect(() => {
+    saveSelectedWallet(selectedWallet);
     if (carouselRef.current) {
       if (removeIndex >= 0) {
         carouselRef.current.triggerRenderingHack();
@@ -181,6 +186,7 @@ const CardSliderSection = ({
   const removeWallet = async () => {
     // setShouldFetchBalance(false);
     const localWallets = await getWallets();
+    const localSelectedWallet = await getSelectedWallet();
     const newWallets: Wallet[] = JSON.parse(JSON.stringify(localWallets));
     newWallets.splice(removeIndex, 1);
     await saveWallets(newWallets);
@@ -188,9 +194,12 @@ const CardSliderSection = ({
     if (newWallets.length === 0) {
       await saveSelectedWallet(0);
       setSelectedWallet(0);
-    } else if (selectedWallet > newWallets.length - 1) {
+    } else if (localSelectedWallet > newWallets.length - 1) {
       await saveSelectedWallet(newWallets.length - 1);
       setSelectedWallet(newWallets.length - 1);
+    } else {
+      await saveSelectedWallet(selectedWallet);
+      setRemoveIndex(-1);
     }
     // RNRestart.Restart();
   };
