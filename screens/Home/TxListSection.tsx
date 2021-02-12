@@ -57,7 +57,6 @@ const TxListSection = () => {
     }
     setLoading(true);
     setCachedAddress(localWallets[localSelectedWallet].address);
-    console.log('address ', localWallets[localSelectedWallet].address);
     try {
       const newTxList = await getTxByAddress(
         localWallets[localSelectedWallet].address,
