@@ -22,9 +22,11 @@ const SelectWallet = ({
   mnemonic,
   onSelect,
   onCancel,
+  onError,
 }: {
   mnemonic: string;
   onSelect: (wallet: Wallet) => void;
+  onError?: (error: any) => void;
   onCancel: () => void;
 }) => {
   const [startIndex, setStartIndex] = useState(0);
@@ -35,31 +37,36 @@ const SelectWallet = ({
   const theme = useContext(ThemeContext);
 
   const handler = async () => {
-    let newWalletList = [];
-    for (let index = startIndex; index < startIndex + 5; index++) {
-      const promise = new Promise<Wallet>(async (resolve) => {
-        const ethWallet = ethers.Wallet.fromMnemonic(
-          mnemonic.trim(),
-          `m/44'/60'/0'/0/${index}`,
-        );
-        const walletAddress = ethWallet.address;
-        const _privateKey = ethWallet.privateKey;
-        const balance = await getBalance(walletAddress);
-        const staked = await getStakingAmount(walletAddress);
-        const wallet: Wallet = {
-          privateKey: _privateKey,
-          address: walletAddress,
-          balance,
-          staked,
-        };
-        resolve(wallet);
-      });
+    try {
+      let newWalletList = [];
+      for (let index = startIndex; index < startIndex + 5; index++) {
+        const promise = new Promise<Wallet>(async (resolve) => {
+          const ethWallet = ethers.Wallet.fromMnemonic(
+            mnemonic.trim(),
+            `m/44'/60'/0'/0/${index}`,
+          );
+          const walletAddress = ethWallet.address;
+          const _privateKey = ethWallet.privateKey;
+          const balance = await getBalance(walletAddress);
+          const staked = await getStakingAmount(walletAddress);
+          const wallet: Wallet = {
+            privateKey: _privateKey,
+            address: walletAddress,
+            balance,
+            staked,
+          };
+          resolve(wallet);
+        });
 
-      newWalletList.push(promise);
+        newWalletList.push(promise);
+      }
+      newWalletList = await Promise.all(newWalletList);
+      setWalletList(newWalletList);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      onError && onError(error);
     }
-    newWalletList = await Promise.all(newWalletList);
-    setWalletList(newWalletList);
-    setLoading(false);
   };
 
   useEffect(() => {

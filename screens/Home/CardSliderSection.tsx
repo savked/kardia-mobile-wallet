@@ -16,9 +16,9 @@ import Button from '../../components/Button';
 import {parseKaiBalance} from '../../utils/number';
 import {copyToClipboard, truncate} from '../../utils/string';
 import {styles} from './style';
-import {saveSelectedWallet, saveWallets} from '../../utils/local';
+import {getWallets, saveSelectedWallet, saveWallets} from '../../utils/local';
 import {useNavigation} from '@react-navigation/native';
-import RNRestart from 'react-native-restart';
+// import RNRestart from 'react-native-restart';
 import {tokenInfoAtom} from '../../atoms/token';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
@@ -180,7 +180,8 @@ const CardSliderSection = ({
 
   const removeWallet = async () => {
     // setShouldFetchBalance(false);
-    const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
+    const localWallets = await getWallets();
+    const newWallets: Wallet[] = JSON.parse(JSON.stringify(localWallets));
     newWallets.splice(removeIndex, 1);
     await saveWallets(newWallets);
     setWallets(newWallets);
@@ -191,7 +192,7 @@ const CardSliderSection = ({
       await saveSelectedWallet(newWallets.length - 1);
       setSelectedWallet(newWallets.length - 1);
     }
-    RNRestart.Restart();
+    // RNRestart.Restart();
   };
 
   return (

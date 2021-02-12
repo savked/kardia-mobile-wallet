@@ -5,16 +5,17 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
 import * as Bip39 from 'bip39';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {
   getAppPasscodeSetting,
+  getSelectedWallet,
+  getWallets,
   saveMnemonic,
   saveSelectedWallet,
   saveWallets,
 } from '../../utils/local';
 import AlertModal from '../../components/AlertModal';
-import RNRestart from 'react-native-restart';
 import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
 import ImportModal from './ImportModal';
@@ -47,7 +48,9 @@ const HomeScreen = () => {
   const [selectingWallet, setSelectingWallet] = useState(false);
 
   const setWallets = useSetRecoilState(walletsAtom);
-  const selectedWallet = useRecoilValue(selectedWalletAtom);
+  const [selectedWallet, setSelectedWallet] = useRecoilState(
+    selectedWalletAtom,
+  );
 
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
@@ -63,20 +66,26 @@ const HomeScreen = () => {
     })();
   }, []);
 
-  const updateWalletBalance = async () => {
-    if (!wallets[selectedWallet]) {
+  const updateWalletBalance = async (newSelectedWallet?: number) => {
+    const _wallets = await getWallets();
+    const _selectedWallet =
+      newSelectedWallet !== undefined
+        ? newSelectedWallet
+        : await getSelectedWallet();
+    if (!_wallets[_selectedWallet]) {
       return;
     }
     try {
-      const balance = await getBalance(wallets[selectedWallet].address);
-      const staked = await getStakingAmount(wallets[selectedWallet].address);
-      const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
-      _wallets.forEach((_wallet, index) => {
-        _wallet.address === wallets[selectedWallet].address;
-        _wallets[index].balance = balance;
-        _wallets[index].staked = staked;
+      const balance = await getBalance(_wallets[_selectedWallet].address);
+      const staked = await getStakingAmount(_wallets[_selectedWallet].address);
+      const newWallets: Wallet[] = JSON.parse(JSON.stringify(_wallets));
+      newWallets.forEach((walletItem, index) => {
+        walletItem.address === _wallets[_selectedWallet].address;
+        newWallets[index].balance = balance;
+        newWallets[index].staked = staked;
       });
-      setWallets(_wallets);
+      setWallets(newWallets);
+      _selectedWallet !== selectedWallet && setSelectedWallet(_selectedWallet);
     } catch (error) {
       console.error(error);
     }
@@ -90,7 +99,7 @@ const HomeScreen = () => {
   );
 
   useEffect(() => {
-    updateWalletBalance();
+    updateWalletBalance(selectedWallet);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
 
@@ -121,6 +130,7 @@ const HomeScreen = () => {
   };
 
   const saveWallet = async (_wallet: Wallet) => {
+    const localWallets = await getWallets();
     const _privateKey = _wallet.privateKey;
     const walletAddress = _wallet.address;
     const balance = await getBalance(walletAddress);
@@ -133,7 +143,7 @@ const HomeScreen = () => {
       staked,
     };
 
-    const walletExisted = wallets
+    const walletExisted = localWallets
       .map((item) => item.address)
       .includes(wallet.address);
 
@@ -149,14 +159,22 @@ const HomeScreen = () => {
       walletAddress,
       mnemonic !== '' ? mnemonic.trim() : 'FROM_PK',
     );
-    const _wallets = JSON.parse(JSON.stringify(wallets));
+    const _wallets = JSON.parse(JSON.stringify(localWallets));
     _wallets.push(wallet);
     await saveWallets(_wallets);
     await saveSelectedWallet(_wallets.length - 1);
-    RNRestart.Restart();
+    setWallets(_wallets);
+    setProcessing(false);
+    setSelectedWallet(_wallets.length - 1);
+    setMnemonic('');
+    setSelectingWallet(false);
+    // RNRestart.Restart();
   };
 
   const importPrivateKey = async (_privateKey: string) => {
+    if (!_privateKey.includes('0x')) {
+      _privateKey = '0x' + _privateKey;
+    }
     try {
       const _wallet = getWalletFromPK(_privateKey.trim());
       const walletAddress = _wallet.getChecksumAddressString();
@@ -185,10 +203,19 @@ const HomeScreen = () => {
       _wallets.push(wallet);
       await saveWallets(_wallets);
       await saveSelectedWallet(_wallets.length - 1);
-      RNRestart.Restart();
+      setWallets((_) => {
+        return _wallets;
+      });
+      setProcessing(false);
+      setSelectedWallet(_wallets.length - 1);
+      setPrivateKey('');
+      // RNRestart.Restart();
     } catch (error) {
       setProcessing(false);
       console.error(error);
+      setScanMessage(getLanguageString(language, 'ERROR_PRIVATE_KEY'));
+      setScanType('warning');
+      setShowScanAlert(true);
     }
   };
 
@@ -201,6 +228,15 @@ const HomeScreen = () => {
           onCancel={() => {
             setMnemonic('');
             setSelectingWallet(false);
+          }}
+          onError={(err) => {
+            let message = getLanguageString(language, 'GENERAL_ERROR');
+            if (err.message) {
+              message = err.message;
+            }
+            setScanMessage(message);
+            setScanType('warning');
+            setShowScanAlert(true);
           }}
         />
       </SafeAreaView>
