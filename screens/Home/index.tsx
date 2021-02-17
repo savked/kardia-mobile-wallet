@@ -99,7 +99,6 @@ const HomeScreen = () => {
   );
 
   useEffect(() => {
-    console.log('triggered here', selectedWallet);
     updateWalletBalance(selectedWallet);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
