@@ -48,7 +48,11 @@ const TransactionDetail = () => {
   }, [txHash]);
 
   const getOtherAddress = () => {
-    if (!txData || wallets[selectedWallet] || wallets[selectedWallet].address) {
+    if (
+      !txData ||
+      !wallets[selectedWallet] ||
+      !wallets[selectedWallet].address
+    ) {
       return '';
     }
     if (txData.from !== wallets[selectedWallet].address) {
@@ -200,8 +204,24 @@ const TransactionDetail = () => {
               block
               style={{marginBottom: 14}}
               onPress={() => {
-                navigation.navigate('NewAddress', {
-                  address: getOtherAddress(),
+                navigation.reset({
+                  index: 0,
+                  routes: [
+                    {
+                      name: 'Setting',
+                      state: {
+                        routes: [
+                          {name: 'Setting'},
+                          {
+                            name: 'NewAddress',
+                            params: {
+                              address: getOtherAddress(),
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
                 });
               }}
             />
