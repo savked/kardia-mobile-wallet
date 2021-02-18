@@ -1,6 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {View, Text, Keyboard, TouchableWithoutFeedback} from 'react-native';
+import {
+  View,
+  Text,
+  Keyboard,
+  TouchableWithoutFeedback,
+  InteractionManager,
+} from 'react-native';
 import Button from '../../components/Button';
 import ErrorMessage from '../../components/ErrorMessage';
 import {useNavigation} from '@react-navigation/native';
@@ -28,7 +34,7 @@ const ImportMnemonic = () => {
   const accessWalletByMnemonic = async () => {
     setLoading(true);
     setError('');
-    setTimeout(async () => {
+    InteractionManager.runAfterInteractions(async () => {
       const valid = validateSeedPhrase();
       if (!valid) {
         setLoading(false);
@@ -49,7 +55,29 @@ const ImportMnemonic = () => {
       await saveWallets(_wallets);
       setLoading(false);
       setWallets(_wallets);
-    }, 10);
+    });
+    // setTimeout(async () => {
+    //   const valid = validateSeedPhrase();
+    //   if (!valid) {
+    //     setLoading(false);
+    //     return;
+    //   }
+    //   const _wallet = ethers.Wallet.fromMnemonic(mnemonic.trim());
+    //   const privateKey = _wallet.privateKey;
+    //   const walletAddress = _wallet.address;
+    //   const wallet: Wallet = {
+    //     privateKey: privateKey,
+    //     address: walletAddress,
+    //     balance: 0,
+    //     staked: 0,
+    //   };
+    //   await saveMnemonic(walletAddress, mnemonic.trim());
+    //   const _wallets = JSON.parse(JSON.stringify(wallets));
+    //   _wallets.push(wallet);
+    //   await saveWallets(_wallets);
+    //   setLoading(false);
+    //   setWallets(_wallets);
+    // }, 10);
   };
 
   function validateSeedPhrase() {

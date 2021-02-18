@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {View, Alert, Text, Dimensions} from 'react-native';
+import {View, Alert, Text, Dimensions, InteractionManager} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
@@ -300,9 +300,9 @@ const HomeScreen = () => {
                 title={getLanguageString(language, 'SUBMIT')}
                 onPress={() => {
                   setProcessing(true);
-                  setTimeout(() => {
+                  InteractionManager.runAfterInteractions(async () => {
                     importPrivateKey(privateKey);
-                  }, 100);
+                  });
                 }}
               />
             </View>

@@ -1,6 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {Dimensions, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Dimensions,
+  InteractionManager,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {ethers} from 'ethers';
 import {getBalance} from '../../services/account';
 import {getStakingAmount} from '../../services/staking';
@@ -64,7 +70,6 @@ const SelectWallet = ({
 
         newWalletList.push(promise);
       }
-      console.log('here');
       newWalletList = await Promise.all(newWalletList);
       setWalletList(newWalletList);
       setLoading(false);
@@ -112,10 +117,10 @@ const SelectWallet = ({
               title={getLanguageString(language, 'SUBMIT')}
               onPress={() => {
                 setLoading(true);
-                setTimeout(() => {
+                InteractionManager.runAfterInteractions(async () => {
                   const wallet = walletList[selectedIndex];
                   onSelect(wallet);
-                }, 100);
+                });
               }}
             />
           </View>

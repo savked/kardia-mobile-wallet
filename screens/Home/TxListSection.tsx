@@ -72,7 +72,10 @@ const TxListSection = () => {
   };
 
   useEffect(() => {
-    if (cachedAddress !== wallets[selectedWallet].address) {
+    if (
+      wallets[selectedWallet] &&
+      cachedAddress !== wallets[selectedWallet].address
+    ) {
       getTX();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
