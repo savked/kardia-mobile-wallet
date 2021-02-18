@@ -49,8 +49,8 @@ const NewTxModal = ({
   const [successTxHash, setSuccessHash] = useState('');
   const [loading, setLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [errorAddress, setErrorAddress] = useState('');
-  const [errorAmount, setErrorAmount] = useState('');
+  const [errorAddress, setErrorAddress] = useState(' ');
+  const [errorAmount, setErrorAmount] = useState(' ');
 
   const language = useRecoilValue(languageAtom);
 
@@ -91,6 +91,8 @@ const NewTxModal = ({
   };
 
   const showConfirm = () => {
+    setErrorAddress(' ');
+    setErrorAmount(' ');
     let isValid = true;
     if (address === '') {
       setErrorAddress(getLanguageString(language, 'REQUIRED_FIELD'));
@@ -116,6 +118,8 @@ const NewTxModal = ({
   const resetState = () => {
     setAddress('');
     setAmount('0');
+    setErrorAddress(' ');
+    setErrorAmount(' ');
   };
 
   if (showQRModal) {
@@ -216,7 +220,7 @@ const NewTxModal = ({
       showCloseButton={true}
       contentStyle={{
         paddingHorizontal: 0,
-        marginTop: viewportHeight / 2.5,
+        marginTop: viewportHeight / 3,
       }}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
