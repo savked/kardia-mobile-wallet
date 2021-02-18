@@ -41,9 +41,13 @@ export const getCurrentStaking = async (address: string) => {
   const options = {
     method: 'GET',
   };
-  const response = await requestWithTimeOut(
-    fetch(`${ENDPOINT}delegators/${address}/validators`, options),
-    10 * 1000,
+  // const response = await requestWithTimeOut(
+  //   fetch(`${ENDPOINT}delegators/${address}/validators`, options),
+  //   90 * 1000,
+  // );
+  const response = await fetch(
+    `${ENDPOINT}delegators/${address}/validators`,
+    options,
   );
   const responseJSON = await response.json();
   return Array.isArray(responseJSON.data) ? responseJSON.data : [];
