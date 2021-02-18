@@ -40,26 +40,31 @@ const SelectWallet = ({
     try {
       let newWalletList = [];
       for (let index = startIndex; index < startIndex + 5; index++) {
-        const promise = new Promise<Wallet>(async (resolve) => {
+        const promise = new Promise<Wallet>(async (resolve, reject) => {
           const ethWallet = ethers.Wallet.fromMnemonic(
             mnemonic.trim(),
             `m/44'/60'/0'/0/${index}`,
           );
           const walletAddress = ethWallet.address;
           const _privateKey = ethWallet.privateKey;
-          const balance = await getBalance(walletAddress);
-          const staked = await getStakingAmount(walletAddress);
-          const wallet: Wallet = {
-            privateKey: _privateKey,
-            address: walletAddress,
-            balance,
-            staked,
-          };
-          resolve(wallet);
+          try {
+            const balance = await getBalance(walletAddress);
+            const staked = await getStakingAmount(walletAddress);
+            const wallet: Wallet = {
+              privateKey: _privateKey,
+              address: walletAddress,
+              balance,
+              staked,
+            };
+            resolve(wallet);
+          } catch (error) {
+            reject(error);
+          }
         });
 
         newWalletList.push(promise);
       }
+      console.log('here');
       newWalletList = await Promise.all(newWalletList);
       setWalletList(newWalletList);
       setLoading(false);
