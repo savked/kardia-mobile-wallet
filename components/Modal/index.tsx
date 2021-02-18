@@ -35,11 +35,23 @@ const CustomModal = ({
     full ? viewportHeight / 12 : (contentStyle as any).marginTop,
   );
 
+  const [keyboardShown, setKeyboardShown] = useState(false);
+
   useEffect(() => {
     if (contentStyle && (contentStyle as any).marginTop) {
-      setMarginTop((contentStyle as any).marginTop);
+      if (
+        (contentStyle as any).marginTop < marginTop &&
+        keyboardShown === true
+      ) {
+        setMarginTop((contentStyle as any).marginTop);
+      } else if (
+        (contentStyle as any).marginTop > marginTop &&
+        keyboardShown === false
+      ) {
+        setMarginTop((contentStyle as any).marginTop);
+      }
     }
-  }, [contentStyle]);
+  }, [contentStyle, keyboardShown, marginTop]);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -64,10 +76,12 @@ const CustomModal = ({
   }, [marginTop]);
 
   const _keyboardDidShow = (e: any) => {
+    setKeyboardShown(true);
     setMarginTop((contentStyle as any).marginTop - e.endCoordinates.height);
   };
 
   const _keyboardDidHide = () => {
+    setKeyboardShown(false);
     setMarginTop(full ? viewportHeight / 12 : (contentStyle as any).marginTop);
   };
 
