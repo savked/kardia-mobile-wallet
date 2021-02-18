@@ -36,10 +36,17 @@ const StakingScreen = () => {
     if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
       return;
     }
-    const _staking = await getCurrentStaking(wallets[selectedWallet].address);
-    setCurrentStaking(_staking);
-    if (loading === true) {
-      setLoading(false);
+    try {
+      const _staking = await getCurrentStaking(wallets[selectedWallet].address);
+      setCurrentStaking(_staking);
+      if (loading === true) {
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error(error);
+      if (loading === true) {
+        setLoading(false);
+      }
     }
   };
 

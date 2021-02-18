@@ -4,6 +4,7 @@ import KardiaClient from 'kardia-dx';
 import {toChecksumAddress} from 'ethereumjs-util';
 import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '../../config';
 import {cellValue, weiToKAI} from '../transaction/amount';
+import {requestWithTimeOut} from '../util';
 
 const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
 const kardiaContract = kardiaClient.contract;
@@ -23,7 +24,10 @@ export const getAllValidator = async () => {
   const options = {
     method: 'GET',
   };
-  const response = await fetch(`${ENDPOINT}validators`, options);
+  const response = await requestWithTimeOut(
+    fetch(`${ENDPOINT}validators`, options),
+    10 * 1000,
+  );
   const responseJSON = await response.json();
   return {
     totalStaked: responseJSON.data.totalStakedAmount,
@@ -37,9 +41,9 @@ export const getCurrentStaking = async (address: string) => {
   const options = {
     method: 'GET',
   };
-  const response = await fetch(
-    `${ENDPOINT}delegators/${address}/validators`,
-    options,
+  const response = await requestWithTimeOut(
+    fetch(`${ENDPOINT}delegators/${address}/validators`, options),
+    10 * 1000,
   );
   const responseJSON = await response.json();
   return Array.isArray(responseJSON.data) ? responseJSON.data : [];

@@ -6,6 +6,8 @@ export const lang: Language = {
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:
+    BALANCE: 'Số dư hiện tại',
+    STAKED_AMOUNT: 'Số KAI đã đầu tư',
     AGO: 'trước',
     GO_BACK: 'Trở lại',
     CREATE_NEW_WALLET: 'Tạo ví mới',
@@ -86,7 +88,7 @@ export const lang: Language = {
     // News key
     NEWS_SCREEN_TITLE: 'Tin tức',
     // Staking key
-    NO_STAKING_ITEM: 'Bạn chưa stake cho validator nào',
+    NO_STAKING_ITEM: 'Không có khoản đầu tư',
     CLAIMABLE: 'KAI được thưởng',
     STAKED: 'KAI đã stake',
     WITHDRAWABLE: 'KAI có thể rút về ví',
@@ -102,7 +104,7 @@ export const lang: Language = {
     UNDELEGATE_AMOUNT_REMAIN_1000:
       'Cần giữ lại ít nhất 1.000 KAI hoặc rút hết KAI.',
     UNDELEGATE_AMOUNT_PLACEHOLDER: 'Số KAI muốn rút từ stake...',
-    YOUR_INVESTMENTS: 'Các khoảng đầu tư của bạn',
+    YOUR_INVESTMENTS: 'Các khoản đầu tư của bạn',
     TOTAL_EARNING: 'Tổng số lợi nhuận',
     INVEST: 'Đầu tư',
     CHOOSE_VALIDATOR: 'Chọn validator để đầu tư',

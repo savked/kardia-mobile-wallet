@@ -147,7 +147,8 @@ const CardSliderSection = ({
               justifyContent: 'space-between',
             }}>
             <Text style={[styles.kaiCardText, styles.kaiCardBalanceText]}>
-              Balance: {parseKaiBalance(wallet.balance)} KAI
+              {getLanguageString(language, 'BALANCE')}:{' '}
+              {parseKaiBalance(wallet.balance)} KAI
             </Text>
           </View>
           <View
@@ -157,7 +158,8 @@ const CardSliderSection = ({
               justifyContent: 'space-between',
             }}>
             <Text style={[styles.kaiCardText, styles.kaiCardBalanceText]}>
-              Staked: {numeral(wallet.staked).format('0,0.00a')} KAI
+              {getLanguageString(language, 'STAKED_AMOUNT')}:{' '}
+              {numeral(wallet.staked).format('0,0.00a')} KAI
             </Text>
           </View>
         </LinearGradient>

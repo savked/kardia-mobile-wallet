@@ -1,10 +1,14 @@
 import {ENDPOINT} from '../config';
+import {requestWithTimeOut} from '../util';
 
 export const getLatestBlock = async () => {
   const options = {
     method: 'GET',
   };
-  const response = await fetch(`${ENDPOINT}blocks?page=0&limit=1`, options);
+  const response = await requestWithTimeOut(
+    fetch(`${ENDPOINT}blocks?page=0&limit=1`, options),
+    10 * 1000,
+  );
   const responseJSON = await response.json();
   const rawBlockList = responseJSON.data.data || [];
 

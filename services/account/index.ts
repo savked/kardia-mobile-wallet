@@ -1,4 +1,5 @@
 import {ENDPOINT_GATEWAY, ENDPOINT} from '../config';
+import {requestWithTimeOut} from '../util';
 
 export const getBalance = async (address: string): Promise<number> => {
   const options = {
@@ -10,7 +11,10 @@ export const getBalance = async (address: string): Promise<number> => {
   // );
   // const responseJSON = await response.json();
   // return responseJSON.data || 0;
-  const response = await fetch(`${ENDPOINT}addresses/${address}`, options);
+  const response = await requestWithTimeOut(
+    fetch(`${ENDPOINT}addresses/${address}`, options),
+    10 * 1000,
+  );
   const responseJSON = await response.json();
   return responseJSON.data ? responseJSON.data.balance : 0;
 };

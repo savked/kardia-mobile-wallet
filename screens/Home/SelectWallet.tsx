@@ -73,7 +73,7 @@ const SelectWallet = ({
     setLoading(true);
     setTimeout(() => {
       handler();
-    }, 300);
+    }, 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startIndex]);
 

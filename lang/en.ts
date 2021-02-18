@@ -6,6 +6,8 @@ export const lang: Language = {
   tag: ['en_US', 'US', 'en', 'US English'],
   mapping: {
     // Common key:
+    BALANCE: 'Balance',
+    STAKED_AMOUNT: 'Staked',
     AGO: 'ago',
     GO_BACK: 'Go back',
     CREATE_NEW_WALLET: 'Create new wallet',

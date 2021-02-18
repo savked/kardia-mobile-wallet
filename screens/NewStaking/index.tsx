@@ -57,10 +57,15 @@ const NewStaking = () => {
 
   useEffect(() => {
     (async () => {
-      const {totalStaked, validators} = await getAllValidator();
-      setTotalStakedAmount(totalStaked);
-      setValidatorList(validators);
-      setLoading(false);
+      try {
+        const {totalStaked, validators} = await getAllValidator();
+        setTotalStakedAmount(totalStaked);
+        setValidatorList(validators);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -71,31 +76,35 @@ const NewStaking = () => {
     if (!selectedValidator) {
       return;
     }
-    const newTotalStaked =
-      Number(weiToKAI(totalStakedAmount)) + Number(getDigit(amount));
-    const validatorNewTotalStaked =
-      Number(weiToKAI(selectedValidator.stakedAmount)) +
-      Number(getDigit(amount));
+    try {
+      const newTotalStaked =
+        Number(weiToKAI(totalStakedAmount)) + Number(getDigit(amount));
+      const validatorNewTotalStaked =
+        Number(weiToKAI(selectedValidator.stakedAmount)) +
+        Number(getDigit(amount));
 
-    const commission = Number(selectedValidator.commissionRate) / 100;
-    const votingPower = validatorNewTotalStaked / newTotalStaked;
+      const commission = Number(selectedValidator.commissionRate) / 100;
+      const votingPower = validatorNewTotalStaked / newTotalStaked;
 
-    const block = await getLatestBlock();
-    const blockReward = Number(weiToKAI(block.rewards));
-    const delegatorsReward = blockReward * (1 - commission) * votingPower;
+      const block = await getLatestBlock();
+      const blockReward = Number(weiToKAI(block.rewards));
+      const delegatorsReward = blockReward * (1 - commission) * votingPower;
 
-    const yourReward =
-      (Number(getDigit(amount)) / validatorNewTotalStaked) * delegatorsReward;
+      const yourReward =
+        (Number(getDigit(amount)) / validatorNewTotalStaked) * delegatorsReward;
 
-    setEstimatedProfit(`${(yourReward * (30 * 24 * 3600)) / BLOCK_TIME}`);
-    setEstimatedAPR(
-      `${
-        ((yourReward * (365 * 24 * 3600)) /
-          BLOCK_TIME /
-          Number(getDigit(amount))) *
-        100
-      }`,
-    );
+      setEstimatedProfit(`${(yourReward * (30 * 24 * 3600)) / BLOCK_TIME}`);
+      setEstimatedAPR(
+        `${
+          ((yourReward * (365 * 24 * 3600)) /
+            BLOCK_TIME /
+            Number(getDigit(amount))) *
+          100
+        }`,
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
