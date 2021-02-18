@@ -50,7 +50,18 @@ export const getCurrentStaking = async (address: string) => {
     options,
   );
   const responseJSON = await response.json();
-  return Array.isArray(responseJSON.data) ? responseJSON.data : [];
+  const responseData = Array.isArray(responseJSON.data)
+    ? responseJSON.data
+    : [];
+  return responseData.map((item: Record<string, any>) => {
+    if (item.unbondedAmount) {
+      return item;
+    }
+    if (!item.unbondedRecords || !Array.isArray(item.unbondedRecords)) {
+      item.unbondedAmount = '0';
+      return item;
+    }
+  });
 };
 
 export const getStakingAmount = async (address: string) => {

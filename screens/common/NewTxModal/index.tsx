@@ -60,7 +60,7 @@ const NewTxModal = ({
     const wallet = wallets[selectedWallet];
     const _txAmount = Number(amount.replace(/,/g, ''));
     try {
-      const txHash = await createTx(wallet, address, _txAmount);
+      const txHash = await createTx(wallet, address.trim(), _txAmount);
       const newBallance = await getBalance(wallet.address);
       const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
 

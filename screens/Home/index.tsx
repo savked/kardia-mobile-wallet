@@ -108,11 +108,14 @@ const HomeScreen = () => {
       const valid = Bip39.validateMnemonic(mnemonic.trim());
       if (!valid) {
         setProcessing(false);
+        setScanMessage(getLanguageString(language, 'ERROR_SEED_PHRASE'));
+        setScanType('warning');
+        setShowScanAlert(true);
         return;
       }
       setSelectingWallet(true);
     }
-  }, [mnemonic]);
+  }, [mnemonic, language]);
 
   const onSuccessScan = (e: any, type: string) => {
     setShowImportModal(false);

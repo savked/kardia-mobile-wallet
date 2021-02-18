@@ -156,16 +156,18 @@ const StakingItem = ({
     if (!undelegating) {
       return (
         <View style={styles.actionContainer}>
-          <Button
-            style={{marginRight: 12, paddingVertical: 8}}
-            loading={claiming}
-            disabled={claiming || undelegating || withDrawing}
-            title={getLanguageString(language, 'CLAIM_REWARD')}
-            type="primary"
-            size="small"
-            onPress={claimHandler}
-          />
-          {withDrawbleInKAI === '0' && (
+          {claimableInKAI !== '0' && (
+            <Button
+              style={{marginRight: 12, paddingVertical: 8}}
+              loading={claiming}
+              disabled={claiming || undelegating || withDrawing}
+              title={getLanguageString(language, 'CLAIM_REWARD')}
+              type="primary"
+              size="small"
+              onPress={claimHandler}
+            />
+          )}
+          {stakedAmountInKAI !== '0' && (
             <Button
               style={{paddingVertical: 8}}
               title={getLanguageString(language, 'UNDELEGATE')}
