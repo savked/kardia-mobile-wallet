@@ -13,7 +13,7 @@ export const getBalance = async (address: string): Promise<number> => {
   // return responseJSON.data || 0;
   const response = await requestWithTimeOut(
     fetch(`${ENDPOINT}addresses/${address}`, options),
-    30 * 1000,
+    50 * 1000,
   );
   const responseJSON = await response.json();
   return responseJSON.data ? responseJSON.data.balance : 0;
