@@ -35,23 +35,23 @@ const CustomModal = ({
     full ? viewportHeight / 12 : (contentStyle as any).marginTop,
   );
 
-  const [keyboardShown, setKeyboardShown] = useState(false);
+  // const [keyboardShown, setKeyboardShown] = useState(false);
 
-  useEffect(() => {
-    if (contentStyle && (contentStyle as any).marginTop) {
-      if (
-        (contentStyle as any).marginTop < marginTop &&
-        keyboardShown === true
-      ) {
-        setMarginTop((contentStyle as any).marginTop);
-      } else if (
-        (contentStyle as any).marginTop > marginTop &&
-        keyboardShown === false
-      ) {
-        setMarginTop((contentStyle as any).marginTop);
-      }
-    }
-  }, [contentStyle, keyboardShown, marginTop]);
+  // useEffect(() => {
+  //   if (contentStyle && (contentStyle as any).marginTop) {
+  //     if (
+  //       (contentStyle as any).marginTop < marginTop &&
+  //       keyboardShown === true
+  //     ) {
+  //       setMarginTop((contentStyle as any).marginTop);
+  //     } else if (
+  //       (contentStyle as any).marginTop > marginTop &&
+  //       keyboardShown === false
+  //     ) {
+  //       setMarginTop((contentStyle as any).marginTop);
+  //     }
+  //   }
+  // }, [contentStyle, keyboardShown, marginTop]);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -73,15 +73,15 @@ const CustomModal = ({
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [marginTop]);
+  }, []);
 
   const _keyboardDidShow = (e: any) => {
-    setKeyboardShown(true);
+    // setKeyboardShown(true);
     setMarginTop((contentStyle as any).marginTop - e.endCoordinates.height);
   };
 
   const _keyboardDidHide = () => {
-    setKeyboardShown(false);
+    // setKeyboardShown(false);
     setMarginTop(full ? viewportHeight / 12 : (contentStyle as any).marginTop);
   };
 
