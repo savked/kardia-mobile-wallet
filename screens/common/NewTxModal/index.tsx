@@ -60,7 +60,12 @@ const NewTxModal = ({
     const wallet = wallets[selectedWallet];
     const _txAmount = Number(amount.replace(/,/g, ''));
     try {
-      const txHash = await createTx(wallet, address.trim(), _txAmount);
+      const txHash = await createTx(
+        wallet,
+        address.trim(),
+        _txAmount,
+        gasPrice,
+      );
       const newBallance = await getBalance(wallet.address);
       const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
 
@@ -220,7 +225,7 @@ const NewTxModal = ({
       showCloseButton={true}
       contentStyle={{
         paddingHorizontal: 0,
-        marginTop: viewportHeight / 3,
+        marginTop: viewportHeight / 4,
       }}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>

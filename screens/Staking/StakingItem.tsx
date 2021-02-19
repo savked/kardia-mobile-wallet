@@ -156,7 +156,7 @@ const StakingItem = ({
     if (!undelegating) {
       return (
         <View style={styles.actionContainer}>
-          {claimableInKAI !== '0' && (
+          {numeral(claimableInKAI).format('0,0.00') !== '0.00' && (
             <Button
               style={{marginRight: 12, paddingVertical: 8}}
               loading={claiming}
@@ -167,7 +167,7 @@ const StakingItem = ({
               onPress={claimHandler}
             />
           )}
-          {stakedAmountInKAI !== '0' && (
+          {numeral(stakedAmountInKAI).format('0,0.00') !== '0.00' && (
             <Button
               style={{paddingVertical: 8}}
               title={getLanguageString(language, 'UNDELEGATE')}
@@ -178,7 +178,7 @@ const StakingItem = ({
               onPress={undelegateHandler}
             />
           )}
-          {withDrawbleInKAI !== '0' && (
+          {numeral(withDrawbleInKAI).format('0,0.00') !== '0.00' && (
             <Button
               style={{paddingVertical: 8}}
               title={getLanguageString(language, 'WITHDRAW')}
