@@ -39,10 +39,9 @@ export const createTx = async (
     receiver,
     gas: 50000,
     nonce,
-    gasPrice,
+    gasPrice: gasPrice * 10 ** 9,
     amount: cellValue(amount),
   };
-
   if (!wallet.privateKey) {
     throw new Error('Invalid wallet: No private key found');
   }
