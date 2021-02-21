@@ -54,13 +54,25 @@ export const getCurrentStaking = async (address: string) => {
     ? responseJSON.data
     : [];
   return responseData.map((item: Record<string, any>) => {
-    if (item.unbondedAmount) {
-      return item;
+    // Parse unbonedAmount
+    if (!item.unbondedAmount) {
+      if (item.totalUnbondedAmount) {
+        item.unbondedAmount = item.totalUnbondedAmount;
+      } else if (
+        !item.unbondedRecords ||
+        !Array.isArray(item.unbondedRecords)
+      ) {
+        item.unbondedAmount = '0';
+      }
     }
-    if (!item.unbondedRecords || !Array.isArray(item.unbondedRecords)) {
-      item.unbondedAmount = '0';
-      return item;
+
+    // Parse withdrawable amount
+    if (!item.withdrawableAmount) {
+      if (item.totalWithdrawableAmount) {
+        item.withdrawableAmount = item.totalWithdrawableAmount;
+      }
     }
+    return item;
   });
 };
 
