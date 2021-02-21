@@ -17,6 +17,7 @@ import {useNavigation} from '@react-navigation/native';
 import {weiToKAI} from '../../services/transaction/amount';
 import Button from '../../components/Button';
 import {statusBarColorAtom} from '../../atoms/statusBar';
+import {getSelectedWallet, getWallets} from '../../utils/local';
 
 const StakingScreen = () => {
   const theme = useContext(ThemeContext);
@@ -30,14 +31,22 @@ const StakingScreen = () => {
   const [loading, setLoading] = useState(true);
 
   const [currentStaking, setCurrentStaking] = useState<Staking[]>([]);
+  const [focusingItem, setFocusingItem] = useState(-1);
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   const getStakingData = async () => {
-    if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
+    const localWallets = await getWallets();
+    const localSelectedWallet = await getSelectedWallet();
+    if (
+      !localWallets[localSelectedWallet] ||
+      !localWallets[localSelectedWallet].address
+    ) {
       return;
     }
     try {
-      const _staking = await getCurrentStaking(wallets[selectedWallet].address);
+      const _staking = await getCurrentStaking(
+        localWallets[localSelectedWallet].address,
+      );
       setCurrentStaking(_staking);
       if (loading === true) {
         setLoading(false);
@@ -130,17 +139,23 @@ const StakingScreen = () => {
         <List
           loading={loading}
           loadingColor={theme.primaryColor}
-          items={currentStaking.map(parseStakingItemForList)}
+          items={
+            focusingItem >= 0
+              ? [currentStaking[focusingItem]].map(parseStakingItemForList)
+              : currentStaking.map(parseStakingItemForList)
+          }
           listStyle={{paddingHorizontal: 15}}
           ListEmptyComponent={
             <Text style={[styles.noStakingText, {color: theme.textColor}]}>
               {getLanguageString(language, 'NO_STAKING_ITEM')}
             </Text>
           }
-          render={(item) => {
+          render={(item, index) => {
             return (
               <StakingItem
                 item={item}
+                onFocus={() => setFocusingItem(index)}
+                onUnfocus={() => setFocusingItem(-1)}
                 showModal={(
                   _message: string,
                   _messageType: string,

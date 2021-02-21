@@ -25,6 +25,8 @@ import {MIN_DELEGATE} from '../../config';
 const StakingItem = ({
   item,
   showModal,
+  onFocus,
+  onUnfocus,
 }: {
   item: any;
   showModal: (
@@ -32,6 +34,8 @@ const StakingItem = ({
     messageType: string,
     callback: () => void,
   ) => void;
+  onFocus?: () => void;
+  onUnfocus?: () => void;
 }) => {
   const [showFull, setShowFull] = useState(false);
   const [claiming, setClaiming] = useState(false);
@@ -52,6 +56,7 @@ const StakingItem = ({
   const selectedWallet = useRecoilValue(selectedWalletAtom);
 
   const claimHandler = async () => {
+    console.log('start claim');
     try {
       setClaiming(true);
       await withdrawReward(item.value, wallets[selectedWallet]);
@@ -90,6 +95,7 @@ const StakingItem = ({
         ),
         'success',
         () => {
+          onUnfocus && onUnfocus();
           setWithDrawing(false);
         },
       );
@@ -138,6 +144,7 @@ const StakingItem = ({
         ),
         'success',
         () => {
+          onUnfocus && onUnfocus();
           setUndelegateAmount('');
           setUndelegating(false);
           setSubmitting(false);
@@ -169,10 +176,16 @@ const StakingItem = ({
           )}
           {numeral(stakedAmountInKAI).format('0,0.00') !== '0.00' && (
             <Button
-              style={{paddingVertical: 8}}
+              style={{
+                paddingVertical: 8,
+                marginRight:
+                  numeral(withDrawbleInKAI).format('0,0.00') !== '0.00'
+                    ? 12
+                    : 0,
+              }}
               title={getLanguageString(language, 'UNDELEGATE')}
               loading={undelegating}
-              disabled={claiming || undelegating}
+              disabled={claiming || undelegating || withDrawing}
               type="ghost"
               size="small"
               onPress={undelegateHandler}
@@ -182,8 +195,8 @@ const StakingItem = ({
             <Button
               style={{paddingVertical: 8}}
               title={getLanguageString(language, 'WITHDRAW')}
-              loading={undelegating}
-              disabled={claiming || undelegating}
+              loading={withDrawing}
+              disabled={claiming || undelegating || withDrawing}
               type="ghost"
               size="small"
               onPress={withdrawHandler}
@@ -209,7 +222,9 @@ const StakingItem = ({
               }
               isNumber(digitOnly) && setUndelegateAmount(digitOnly);
             }}
-            onBlur={() => setUndelegateAmount(format(Number(undelegateAmount)))}
+            onBlur={() => {
+              setUndelegateAmount(format(Number(undelegateAmount)));
+            }}
             value={undelegateAmount}
             block
             placeholder={getLanguageString(
@@ -257,6 +272,7 @@ const StakingItem = ({
             onPress={() => {
               setUndelegateAmount('');
               setUndelegateError('');
+              onUnfocus && onUnfocus();
               setUndelegating(false);
             }}
           />
@@ -268,7 +284,11 @@ const StakingItem = ({
   useEffect(() => {
     if (!showFull) {
       setUndelegateError('');
+      onUnfocus && onUnfocus();
+    } else {
+      onFocus && onFocus();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showFull]);
 
   return (
