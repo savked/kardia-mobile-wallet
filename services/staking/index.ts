@@ -77,12 +77,17 @@ export const getCurrentStaking = async (address: string) => {
 };
 
 export const getStakingAmount = async (address: string) => {
-  const _staking: Staking[] = await getCurrentStaking(address);
-  let total = 0;
-  _staking.forEach((item) => {
-    total += Number(weiToKAI(item.stakedAmount));
-  });
-  return total;
+  try {
+    const _staking: Staking[] = await getCurrentStaking(address);
+    let total = 0;
+    _staking.forEach((item) => {
+      total += Number(weiToKAI(item.stakedAmount));
+    });
+    return total;
+  } catch (error) {
+    console.error('Get staking amount error for address ', address);
+    throw error;
+  }
 };
 
 export const withdrawReward = async (valSmcAddr: string, wallet: Wallet) => {
