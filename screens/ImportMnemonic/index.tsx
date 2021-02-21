@@ -5,7 +5,7 @@ import {
   Text,
   Keyboard,
   TouchableWithoutFeedback,
-  InteractionManager,
+  // InteractionManager,
 } from 'react-native';
 import Button from '../../components/Button';
 import ErrorMessage from '../../components/ErrorMessage';
@@ -20,6 +20,10 @@ import CustomTextInput from '../../components/TextInput';
 import {ThemeContext} from '../../ThemeContext';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import SelectWallet from '../Home/SelectWallet';
+import {getBalance} from '../../services/account';
+import {getStakingAmount} from '../../services/staking';
 
 const ImportMnemonic = () => {
   const theme = useContext(ThemeContext);
@@ -28,56 +32,19 @@ const ImportMnemonic = () => {
   const [error, setError] = useState('');
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [loading, setLoading] = useState(false);
+  const [selectingWallet, setSelectingWallet] = useState(false);
 
   const language = useRecoilValue(languageAtom);
 
   const accessWalletByMnemonic = async () => {
     setLoading(true);
     setError('');
-    InteractionManager.runAfterInteractions(async () => {
-      const valid = validateSeedPhrase();
-      if (!valid) {
-        setLoading(false);
-        return;
-      }
-      const _wallet = ethers.Wallet.fromMnemonic(mnemonic.trim());
-      const privateKey = _wallet.privateKey;
-      const walletAddress = _wallet.address;
-      const wallet: Wallet = {
-        privateKey: privateKey,
-        address: walletAddress,
-        balance: 0,
-        staked: 0,
-      };
-      await saveMnemonic(walletAddress, mnemonic.trim());
-      const _wallets = JSON.parse(JSON.stringify(wallets));
-      _wallets.push(wallet);
-      await saveWallets(_wallets);
+    const valid = validateSeedPhrase();
+    if (!valid) {
       setLoading(false);
-      setWallets(_wallets);
-    });
-    // setTimeout(async () => {
-    //   const valid = validateSeedPhrase();
-    //   if (!valid) {
-    //     setLoading(false);
-    //     return;
-    //   }
-    //   const _wallet = ethers.Wallet.fromMnemonic(mnemonic.trim());
-    //   const privateKey = _wallet.privateKey;
-    //   const walletAddress = _wallet.address;
-    //   const wallet: Wallet = {
-    //     privateKey: privateKey,
-    //     address: walletAddress,
-    //     balance: 0,
-    //     staked: 0,
-    //   };
-    //   await saveMnemonic(walletAddress, mnemonic.trim());
-    //   const _wallets = JSON.parse(JSON.stringify(wallets));
-    //   _wallets.push(wallet);
-    //   await saveWallets(_wallets);
-    //   setLoading(false);
-    //   setWallets(_wallets);
-    // }, 10);
+      return;
+    }
+    setSelectingWallet(true);
   };
 
   function validateSeedPhrase() {
@@ -91,6 +58,56 @@ const ImportMnemonic = () => {
       return false;
     }
     return true;
+  }
+
+  const saveWallet = async (_wallet: Wallet) => {
+    const _privateKey = _wallet.privateKey;
+    const walletAddress = _wallet.address;
+    const balance = await getBalance(walletAddress);
+    const staked = await getStakingAmount(walletAddress);
+
+    const wallet: Wallet = {
+      privateKey: _privateKey,
+      address: walletAddress,
+      balance,
+      staked,
+    };
+
+    await saveMnemonic(
+      walletAddress,
+      mnemonic !== '' ? mnemonic.trim() : 'FROM_PK',
+    );
+    const _wallets = JSON.parse(JSON.stringify(wallets));
+    _wallets.push(wallet);
+    await saveWallets(_wallets);
+    setLoading(false);
+    setWallets(_wallets);
+    setSelectingWallet(false);
+    // RNRestart.Restart();
+  };
+
+  if (selectingWallet) {
+    return (
+      <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
+        <SelectWallet
+          mnemonic={mnemonic}
+          onSelect={saveWallet}
+          onCancel={() => {
+            setMnemonic('');
+            setSelectingWallet(false);
+          }}
+          // onError={(err) => {
+          //   let message = getLanguageString(language, 'GENERAL_ERROR');
+          //   if (err.message) {
+          //     message = err.message;
+          //   }
+          //   setScanMessage(message);
+          //   setScanType('warning');
+          //   setShowScanAlert(true);
+          // }}
+        />
+      </SafeAreaView>
+    );
   }
 
   return (
