@@ -8,6 +8,7 @@ import {styles} from './style';
 const CustomTextInput = ({
   onChangeText,
   onBlur,
+  onFocus,
   value,
   iconName,
   onIconPress,
@@ -63,6 +64,7 @@ const CustomTextInput = ({
           placeholder={placeholder}
           onBlur={onBlur}
           autoCapitalize={autoCapitalize}
+          onFocus={onFocus}
         />
         {iconName && (
           <Icon
