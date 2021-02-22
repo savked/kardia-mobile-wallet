@@ -120,15 +120,15 @@ const UndelegateModal = ({
 
   const getContentStyle = () => {
     if (Platform.OS === 'android') {
-      return {flex: keyboardShown ? 0.3 : 0.2}
+      return {flex: keyboardShown ? 0.3 : 0.2};
     } else {
       return {
         flex: 0.2,
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,
-      }
+      };
     }
-  }
+  };
 
   return (
     <CustomModal
@@ -138,7 +138,7 @@ const UndelegateModal = ({
           setUndelegateAmount('');
           setUndelegateError('');
           setSubmitting(false);
-          onClose()
+          onClose();
         }
       }}
       contentStyle={getContentStyle() as any}>

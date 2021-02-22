@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {Keyboard, Platform, Text, View, KeyboardAvoidingView} from 'react-native';
+import {Keyboard, Platform, Text, View} from 'react-native';
 import {BarCodeReadEvent} from 'react-native-camera';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {styles} from './style';
@@ -63,32 +63,32 @@ const ImportModal = ({
       return {
         justifyContent: 'space-around',
         flex: keyboardShown ? 0.7 : 0.4,
-      }
+      };
     } else {
       return {
         justifyContent: 'space-around',
         flex: 0.4,
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,
-      }
+      };
     }
-  }
+  };
 
   const getPrivateKeyModalContentStyle = () => {
     if (Platform.OS === 'android') {
       return {
         justifyContent: 'space-around',
         flex: keyboardShown ? 0.5 : 0.3,
-      }
+      };
     } else {
       return {
         justifyContent: 'space-around',
         flex: 0.3,
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,
-      }
+      };
     }
-  }
+  };
 
   if (!showScanner) {
     if (scanType === 'mnemonic') {
