@@ -18,6 +18,7 @@ import {weiToKAI} from '../../services/transaction/amount';
 import Button from '../../components/Button';
 import {statusBarColorAtom} from '../../atoms/statusBar';
 import {getSelectedWallet, getWallets} from '../../utils/local';
+import UndelegateModal from './UndelegateModal';
 
 const StakingScreen = () => {
   const theme = useContext(ThemeContext);
@@ -31,7 +32,8 @@ const StakingScreen = () => {
   const [loading, setLoading] = useState(true);
 
   const [currentStaking, setCurrentStaking] = useState<Staking[]>([]);
-  const [focusingItem, setFocusingItem] = useState(-1);
+  const [undelegatingIndex, setUndelegatingIndex] = useState(-1);
+  // const [focusingItem, setFocusingItem] = useState(-1);
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   const getStakingData = async () => {
@@ -69,6 +71,15 @@ const StakingScreen = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
+
+  useEffect(() => {
+    if (message !== '' || undelegatingIndex >= 0) {
+      setStatusBarColor(theme.backgroundColor);
+    } else {
+      setStatusBarColor(theme.primaryColor);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [undelegatingIndex, message]);
 
   useEffect(() => {
     getStakingData();
@@ -139,11 +150,7 @@ const StakingScreen = () => {
         <List
           loading={loading}
           loadingColor={theme.primaryColor}
-          items={
-            focusingItem >= 0
-              ? [currentStaking[focusingItem]].map(parseStakingItemForList)
-              : currentStaking.map(parseStakingItemForList)
-          }
+          items={currentStaking.map(parseStakingItemForList)}
           listStyle={{paddingHorizontal: 15}}
           ListEmptyComponent={
             <Text style={[styles.noStakingText, {color: theme.textColor}]}>
@@ -154,8 +161,8 @@ const StakingScreen = () => {
             return (
               <StakingItem
                 item={item}
-                onFocus={() => setFocusingItem(index)}
-                onUnfocus={() => setFocusingItem(-1)}
+                // onFocus={() => setFocusingItem(index)}
+                // onUnfocus={() => setFocusingItem(-1)}
                 showModal={(
                   _message: string,
                   _messageType: string,
@@ -165,6 +172,7 @@ const StakingScreen = () => {
                   setMessageType(_messageType);
                   cb();
                 }}
+                triggerUndelegate={() => setUndelegatingIndex(index)}
               />
             );
           }}
@@ -184,6 +192,20 @@ const StakingScreen = () => {
           visible={true}
         />
       )}
+      <UndelegateModal
+        item={
+          undelegatingIndex >= 0
+            ? currentStaking.map(parseStakingItemForList)[undelegatingIndex]
+            : {}
+        }
+        showModal={(_message: string, _messageType: string) => {
+          setUndelegatingIndex(-1);
+          setMessage(_message);
+          setMessageType(_messageType);
+        }}
+        visible={undelegatingIndex >= 0}
+        onClose={() => setUndelegatingIndex(-1)}
+      />
     </View>
   );
 };

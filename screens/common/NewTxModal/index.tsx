@@ -1,12 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   TouchableWithoutFeedback,
   View,
   Text,
   Keyboard,
   Dimensions,
-  Platform,
 } from 'react-native';
 import {styles} from './style';
 import AlertModal from '../../../components/AlertModal';
@@ -52,38 +51,8 @@ const NewTxModal = ({
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [errorAddress, setErrorAddress] = useState(' ');
   const [errorAmount, setErrorAmount] = useState(' ');
-  const [keyboardShown, setKeyboardShown] = useState(false);
 
   const language = useRecoilValue(languageAtom);
-
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
-    } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    }
-
-    // cleanup function
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
-    };
-  }, []);
-
-  const _keyboardDidShow = () => {
-    setKeyboardShown(true);
-  };
-
-  const _keyboardDidHide = () => {
-    setKeyboardShown(false);
-  };
 
   async function send() {
     setShowConfirmModal(false);
@@ -250,14 +219,15 @@ const NewTxModal = ({
     <Modal
       visible={visible}
       onClose={() => {
-        resetState();
-        onClose();
+        if (!loading) {
+          resetState();
+          onClose();
+        }
       }}
       showCloseButton={true}
       contentStyle={{
         paddingHorizontal: 0,
         flex: 0.6,
-        // marginTop: keyboardShown ? viewportHeight / 4 : viewportHeight / 3,
       }}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>

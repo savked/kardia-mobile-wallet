@@ -1,32 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import numeral from 'numeral';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
 import {styles} from './style';
 import {weiToKAI} from '../../services/transaction/amount';
-import IconButton from '../../components/IconButton';
 import Icon from 'react-native-vector-icons/Feather';
 import Button from '../../components/Button';
-import {
-  undelegateAll,
-  undelegateWithAmount,
-  withdrawDelegatedAmount,
-  withdrawReward,
-} from '../../services/staking';
+import {withdrawDelegatedAmount, withdrawReward} from '../../services/staking';
 import {useRecoilValue} from 'recoil';
-import {format, getDigit, isNumber} from '../../utils/number';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
-import CustomTextInput from '../../components/TextInput';
-import {MIN_DELEGATE} from '../../config';
 
 const StakingItem = ({
   item,
   showModal,
-  onFocus,
-  onUnfocus,
+  triggerUndelegate,
 }: {
   item: any;
   showModal: (
@@ -34,16 +24,11 @@ const StakingItem = ({
     messageType: string,
     callback: () => void,
   ) => void;
-  onFocus?: () => void;
-  onUnfocus?: () => void;
+  triggerUndelegate: (contractAddress: string) => void;
 }) => {
   const [showFull, setShowFull] = useState(false);
   const [claiming, setClaiming] = useState(false);
-  const [undelegating, setUndelegating] = useState(false);
   const [withDrawing, setWithDrawing] = useState(false);
-  const [undelegateAmount, setUndelegateAmount] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const [undelegateError, setUndelegateError] = useState('');
   const theme = useContext(ThemeContext);
 
   const claimableInKAI = weiToKAI(item.claimableRewards);
@@ -56,7 +41,6 @@ const StakingItem = ({
   const selectedWallet = useRecoilValue(selectedWalletAtom);
 
   const claimHandler = async () => {
-    console.log('start claim');
     try {
       setClaiming(true);
       await withdrawReward(item.value, wallets[selectedWallet]);
@@ -80,7 +64,7 @@ const StakingItem = ({
 
   const undelegateHandler = () => {
     try {
-      setUndelegating(true);
+      triggerUndelegate(item.value);
     } catch (error) {}
   };
 
@@ -95,7 +79,6 @@ const StakingItem = ({
         ),
         'success',
         () => {
-          onUnfocus && onUnfocus();
           setWithDrawing(false);
         },
       );
@@ -107,189 +90,47 @@ const StakingItem = ({
     }
   };
 
-  const submitUndelegate = async () => {
-    try {
-      setSubmitting(true);
-      const _undelegateValue = Number(getDigit(undelegateAmount));
-      if (Number(stakedAmountInKAI) < _undelegateValue) {
-        setUndelegateError(
-          getLanguageString(language, 'UNDELEGATE_AMOUNT_TOO_MUCH'),
-        );
-        setSubmitting(false);
-        return;
-      }
-      if (
-        Number(stakedAmountInKAI) - _undelegateValue < MIN_DELEGATE &&
-        Number(stakedAmountInKAI) - _undelegateValue > 0
-      ) {
-        setUndelegateError(
-          getLanguageString(language, 'UNDELEGATE_AMOUNT_REMAIN_1000'),
-        );
-        setSubmitting(false);
-        return;
-      }
-      if (Number(stakedAmountInKAI) - _undelegateValue > MIN_DELEGATE) {
-        await undelegateWithAmount(
-          item.value,
-          _undelegateValue,
-          wallets[selectedWallet],
-        );
-      } else {
-        await undelegateAll(item.value, wallets[selectedWallet]);
-      }
-      showModal(
-        getLanguageString(language, 'UNDELEGATE_SUCCESS').replace(
-          '{{KAI_AMOUNT}}',
-          numeral(_undelegateValue).format('0,0.00'),
-        ),
-        'success',
-        () => {
-          onUnfocus && onUnfocus();
-          setUndelegateAmount('');
-          setUndelegating(false);
-          setSubmitting(false);
-        },
-      );
-    } catch (err) {
-      console.error(err);
-      showModal(getLanguageString(language, 'GENERAL_ERROR'), 'error', () => {
-        setUndelegateAmount('');
-        setSubmitting(false);
-      });
-    }
-  };
-
   const renderActionGroup = () => {
-    if (!undelegating) {
-      return (
-        <View style={styles.actionContainer}>
-          {numeral(claimableInKAI).format('0,0.00') !== '0.00' && (
-            <Button
-              style={{marginRight: 12, paddingVertical: 8}}
-              loading={claiming}
-              disabled={claiming || undelegating || withDrawing}
-              title={getLanguageString(language, 'CLAIM_REWARD')}
-              type="primary"
-              size="small"
-              onPress={claimHandler}
-            />
-          )}
-          {numeral(stakedAmountInKAI).format('0,0.00') !== '0.00' && (
-            <Button
-              style={{
-                paddingVertical: 8,
-                marginRight:
-                  numeral(withDrawbleInKAI).format('0,0.00') !== '0.00'
-                    ? 12
-                    : 0,
-              }}
-              title={getLanguageString(language, 'UNDELEGATE')}
-              loading={undelegating}
-              disabled={claiming || undelegating || withDrawing}
-              type="ghost"
-              size="small"
-              onPress={undelegateHandler}
-            />
-          )}
-          {numeral(withDrawbleInKAI).format('0,0.00') !== '0.00' && (
-            <Button
-              style={{paddingVertical: 8}}
-              title={getLanguageString(language, 'WITHDRAW')}
-              loading={withDrawing}
-              disabled={claiming || undelegating || withDrawing}
-              type="ghost"
-              size="small"
-              onPress={withdrawHandler}
-            />
-          )}
-        </View>
-      );
-    }
     return (
       <View style={styles.actionContainer}>
-        <View style={{flex: 2.4, paddingRight: 4}}>
-          <CustomTextInput
-            keyboardType="numeric"
-            message={undelegateError}
-            onChangeText={(newAmount) => {
-              const digitOnly = getDigit(newAmount);
-              if (Number(digitOnly) > Number(stakedAmountInKAI)) {
-                return;
-              }
-              if (digitOnly === '') {
-                setUndelegateAmount('0');
-                return;
-              }
-              isNumber(digitOnly) && setUndelegateAmount(digitOnly);
-            }}
-            onBlur={() => {
-              setUndelegateAmount(format(Number(undelegateAmount)));
-            }}
-            value={undelegateAmount}
-            block
-            placeholder={getLanguageString(
-              language,
-              'UNDELEGATE_AMOUNT_PLACEHOLDER',
-            )}
+        {numeral(claimableInKAI).format('0,0.00') !== '0.00' && (
+          <Button
+            style={{marginRight: 12, paddingVertical: 8}}
+            loading={claiming}
+            disabled={claiming || withDrawing}
+            title={getLanguageString(language, 'CLAIM_REWARD')}
+            type="primary"
+            size="small"
+            onPress={claimHandler}
           />
-        </View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-          }}>
-          <IconButton
-            disabled={submitting}
-            loading={submitting}
+        )}
+        {numeral(stakedAmountInKAI).format('0,0.00') !== '0.00' && (
+          <Button
             style={{
-              backgroundColor: theme.successColor,
-              width: 42,
-              height: 42,
-              borderRadius: 6,
-              alignItems: 'center',
-              justifyContent: 'center',
+              paddingVertical: 8,
+              marginRight:
+                numeral(withDrawbleInKAI).format('0,0.00') !== '0.00' ? 12 : 0,
             }}
-            name="check"
-            color="#fff"
-            size={20}
-            onPress={submitUndelegate}
+            title={getLanguageString(language, 'UNDELEGATE')}
+            type="ghost"
+            size="small"
+            onPress={undelegateHandler}
           />
-          <IconButton
-            disabled={submitting}
-            style={{
-              backgroundColor: theme.outlineBorderColor,
-              width: 42,
-              height: 42,
-              borderRadius: 6,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            name="close"
-            color="#fff"
-            size={20}
-            onPress={() => {
-              setUndelegateAmount('');
-              setUndelegateError('');
-              onUnfocus && onUnfocus();
-              setUndelegating(false);
-            }}
+        )}
+        {numeral(withDrawbleInKAI).format('0,0.00') !== '0.00' && (
+          <Button
+            style={{paddingVertical: 8}}
+            title={getLanguageString(language, 'WITHDRAW')}
+            loading={withDrawing}
+            disabled={claiming || withDrawing}
+            type="ghost"
+            size="small"
+            onPress={withdrawHandler}
           />
-        </View>
+        )}
       </View>
     );
   };
-
-  useEffect(() => {
-    if (!showFull) {
-      setUndelegateError('');
-      onUnfocus && onUnfocus();
-    } else {
-      onFocus && onFocus();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showFull]);
 
   return (
     <View
