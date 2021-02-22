@@ -1,10 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   Dimensions,
-  Keyboard,
   Modal,
-  Platform,
   StyleProp,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -27,64 +25,9 @@ const CustomModal = ({
   contentStyle = {
     marginTop: viewportHeight / 2,
   } as StyleProp<ViewStyle>,
-}: CustomModalProps & {contentStyle?: StyleProp<ViewStyle>}) => {
-  if (!(contentStyle as any).marginTop) {
-    (contentStyle as any).marginTop = viewportHeight / 2;
-  }
-  const [marginTop, setMarginTop] = useState(
-    full ? viewportHeight / 12 : (contentStyle as any).marginTop,
-  );
-
-  // const [keyboardShown, setKeyboardShown] = useState(false);
-
-  // useEffect(() => {
-  //   if (contentStyle && (contentStyle as any).marginTop) {
-  //     if (
-  //       (contentStyle as any).marginTop < marginTop &&
-  //       keyboardShown === true
-  //     ) {
-  //       setMarginTop((contentStyle as any).marginTop);
-  //     } else if (
-  //       (contentStyle as any).marginTop > marginTop &&
-  //       keyboardShown === false
-  //     ) {
-  //       setMarginTop((contentStyle as any).marginTop);
-  //     }
-  //   }
-  // }, [contentStyle, keyboardShown, marginTop]);
-
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
-    } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    }
-
-    // cleanup function
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const _keyboardDidShow = (e: any) => {
-    // setKeyboardShown(true);
-    setMarginTop((contentStyle as any).marginTop - e.endCoordinates.height);
-  };
-
-  const _keyboardDidHide = () => {
-    // setKeyboardShown(false);
-    setMarginTop(full ? viewportHeight / 12 : (contentStyle as any).marginTop);
-  };
-
+}: CustomModalProps & {
+  contentStyle?: StyleProp<ViewStyle>;
+}) => {
   if (!visible) {
     return null;
   }
@@ -98,7 +41,12 @@ const CustomModal = ({
         onRequestClose={onClose}>
         <TouchableOpacity style={styles.contaner} onPress={onClose}>
           <TouchableWithoutFeedback onPress={() => {}}>
-            <View style={[styles.modalView, contentStyle, {marginTop}]}>
+            <View
+              style={[
+                styles.modalView,
+                {flex: full ? 0.9 : undefined},
+                contentStyle,
+              ]}>
               {children}
               {showCloseButton && (
                 <IconButton

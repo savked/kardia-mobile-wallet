@@ -13,13 +13,14 @@ export const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     zIndex: 9999,
+    justifyContent: 'flex-end',
   },
   contaner: {
     flex: 1,
     backgroundColor: 'transparent',
+    justifyContent: 'flex-end',
   },
   modalView: {
-    flex: 1,
     backgroundColor: '#FFFFFF',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
