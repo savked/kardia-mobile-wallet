@@ -54,10 +54,11 @@ const ImportModal = ({
   };
 
   const _keyboardDidHide = () => {
+    setKeyboardOffset(0);
     setKeyboardShown(false);
   };
 
-  const getModalContentStyle = () => {
+  const getMnemonicModalContentStyle = () => {
     if (Platform.OS === 'android') {
       return {
         justifyContent: 'space-around',
@@ -73,6 +74,22 @@ const ImportModal = ({
     }
   }
 
+  const getPrivateKeyModalContentStyle = () => {
+    if (Platform.OS === 'android') {
+      return {
+        justifyContent: 'space-around',
+        flex: keyboardShown ? 0.5 : 0.3,
+      }
+    } else {
+      return {
+        justifyContent: 'space-around',
+        flex: 0.3,
+        marginBottom: keyboardOffset,
+        marginTop: -keyboardOffset,
+      }
+    }
+  }
+
   if (!showScanner) {
     if (scanType === 'mnemonic') {
       return (
@@ -80,7 +97,7 @@ const ImportModal = ({
           visible={true}
           onClose={onClose}
           showCloseButton={true}
-          contentStyle={getModalContentStyle() as any}>
+          contentStyle={getMnemonicModalContentStyle() as any}>
           <Text style={{fontSize: 22}}>
             {getLanguageString(language, 'ENTER_SEED_PHRASE')}
           </Text>
@@ -133,10 +150,7 @@ const ImportModal = ({
           visible={true}
           onClose={onClose}
           showCloseButton={true}
-          contentStyle={{
-            justifyContent: 'space-around',
-            flex: keyboardShown ? 0.5 : 0.3,
-          }}>
+          contentStyle={getPrivateKeyModalContentStyle() as any}>
           <Text style={{fontSize: 22}}>
             {getLanguageString(language, 'ENTER_PRIVATE_KEY')}
           </Text>

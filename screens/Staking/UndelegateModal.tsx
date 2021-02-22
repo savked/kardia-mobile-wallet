@@ -34,6 +34,7 @@ const UndelegateModal = ({
   const [undelegateError, setUndelegateError] = useState('');
   const stakedAmountInKAI = weiToKAI(item.stakedAmount);
   const [keyboardShown, setKeyboardShown] = useState(false);
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const language = useRecoilValue(languageAtom);
 
@@ -58,11 +59,13 @@ const UndelegateModal = ({
     };
   }, []);
 
-  const _keyboardDidShow = () => {
+  const _keyboardDidShow = (e: any) => {
+    setKeyboardOffset(e.endCoordinates.height);
     setKeyboardShown(true);
   };
 
   const _keyboardDidHide = () => {
+    setKeyboardOffset(0);
     setKeyboardShown(false);
   };
 
@@ -114,11 +117,31 @@ const UndelegateModal = ({
       });
     }
   };
+
+  const getContentStyle = () => {
+    if (Platform.OS === 'android') {
+      return {flex: keyboardShown ? 0.3 : 0.2}
+    } else {
+      return {
+        flex: 0.2,
+        marginBottom: keyboardOffset,
+        marginTop: -keyboardOffset,
+      }
+    }
+  }
+
   return (
     <CustomModal
       visible={visible}
-      onClose={() => !submitting && onClose()}
-      contentStyle={{flex: keyboardShown ? 0.3 : 0.2}}>
+      onClose={() => {
+        if (!submitting) {
+          setUndelegateAmount('');
+          setUndelegateError('');
+          setSubmitting(false);
+          onClose()
+        }
+      }}
+      contentStyle={getContentStyle() as any}>
       <View>
         <CustomTextInput
           keyboardType="numeric"
@@ -155,22 +178,11 @@ const UndelegateModal = ({
           justifyContent: 'space-between',
         }}>
         <Button
-          disabled={submitting}
-          title="Cancel"
-          type="ghost"
-          size="large"
-          onPress={() => {
-            setUndelegateAmount('');
-            setUndelegateError('');
-            setSubmitting(false);
-            onClose();
-          }}
-        />
-        <Button
+          block
           loading={submitting}
           disabled={submitting}
           size="large"
-          title="Submit"
+          title={getLanguageString(language, 'UNDELEGATE')}
           type="primary"
           onPress={submitUndelegate}
         />
