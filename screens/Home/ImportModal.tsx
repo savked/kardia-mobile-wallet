@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {Keyboard, Platform, Text, View} from 'react-native';
+import {Keyboard, Platform, Text, View, KeyboardAvoidingView} from 'react-native';
 import {BarCodeReadEvent} from 'react-native-camera';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {styles} from './style';
@@ -23,6 +23,7 @@ const ImportModal = ({
   const [privateKey, setPrivateKey] = useState('');
   const [scanType, setScanType] = useState('mnemonic');
   const [keyboardShown, setKeyboardShown] = useState(false);
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const language = useRecoilValue(languageAtom);
 
@@ -47,13 +48,30 @@ const ImportModal = ({
     };
   }, []);
 
-  const _keyboardDidShow = () => {
+  const _keyboardDidShow = (e: any) => {
+    setKeyboardOffset(e.endCoordinates.height);
     setKeyboardShown(true);
   };
 
   const _keyboardDidHide = () => {
     setKeyboardShown(false);
   };
+
+  const getModalContentStyle = () => {
+    if (Platform.OS === 'android') {
+      return {
+        justifyContent: 'space-around',
+        flex: keyboardShown ? 0.7 : 0.4,
+      }
+    } else {
+      return {
+        justifyContent: 'space-around',
+        flex: 0.4,
+        marginBottom: keyboardOffset,
+        marginTop: -keyboardOffset,
+      }
+    }
+  }
 
   if (!showScanner) {
     if (scanType === 'mnemonic') {
@@ -62,10 +80,7 @@ const ImportModal = ({
           visible={true}
           onClose={onClose}
           showCloseButton={true}
-          contentStyle={{
-            justifyContent: 'space-around',
-            flex: keyboardShown ? 0.7 : 0.4,
-          }}>
+          contentStyle={getModalContentStyle() as any}>
           <Text style={{fontSize: 22}}>
             {getLanguageString(language, 'ENTER_SEED_PHRASE')}
           </Text>
