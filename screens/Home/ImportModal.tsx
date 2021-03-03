@@ -14,8 +14,10 @@ import CustomTextInput from '../../components/TextInput';
 const ImportModal = ({
   onClose,
   onSuccessScan,
+  loading = false,
 }: {
   onClose: () => void;
+  loading?: boolean;
   onSuccessScan: (e: BarCodeReadEvent, type: string) => void;
 }) => {
   const [showScanner, setShowScanner] = useState(false);
@@ -162,6 +164,7 @@ const ImportModal = ({
           />
           <Button
             block
+            disabled={loading}
             title={getLanguageString(language, 'SCAN_PRIVATE_KEY')}
             type="secondary"
             iconName="qrcode"
@@ -181,6 +184,8 @@ const ImportModal = ({
                 onSuccessScan({data: privateKey} as any, 'privatekey')
               }
               size="large"
+              disabled={loading}
+              loading={loading}
             />
             <Button
               title={getLanguageString(language, 'IMPORT_WITH_SEED')}
@@ -191,6 +196,7 @@ const ImportModal = ({
                 Keyboard.dismiss();
                 setScanType('mnemonic');
               }}
+              disabled={loading}
             />
           </View>
         </Modal>
