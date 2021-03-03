@@ -36,6 +36,7 @@ export const lang: Language = {
     IMPORT_WITH_SEED: 'Thêm bằng seed phrase',
     SELECT_ADDRESS: 'Chọn địa chỉ ví',
     NO_SAVED_ADDRESS: 'Chưa có địa chỉ ví được lưu',
+    SAVE_TO_ADDRESS_BOOK: 'Lưu ví vào sổ danh bạ',
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
