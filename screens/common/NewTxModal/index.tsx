@@ -227,7 +227,7 @@ const NewTxModal = ({
       showCloseButton={true}
       contentStyle={{
         paddingHorizontal: 0,
-        flex: 0.6,
+        flex: 0.65,
       }}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
@@ -236,7 +236,8 @@ const NewTxModal = ({
               headlineStyle={{color: 'black'}}
               onChangeText={setAddress}
               message={errorAddress}
-              value={truncate(address, 10, 20)}
+              value={address}
+              inputStyle={{paddingRight: 70}}
               headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
               icons={() => {
                 return (

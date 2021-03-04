@@ -36,6 +36,7 @@ export const lang: Language = {
     IMPORT_WITH_SEED: 'Import with seed phrase',
     SELECT_ADDRESS: 'Select Address',
     NO_SAVED_ADDRESS: 'No saved address',
+    SAVE_TO_ADDRESS_BOOK: 'Save to address book',
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now',
     MNEMONIC_DESCRIPTION:
