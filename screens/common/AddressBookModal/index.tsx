@@ -23,7 +23,14 @@ const AddressBookModal = ({
   const addressBook = useRecoilValue(addressBookAtom);
   const language = useRecoilValue(languageAtom);
   return (
-    <Modal full visible={visible} onClose={onClose}>
+    <Modal 
+      visible={visible} 
+      onClose={onClose} 
+      contentStyle={{
+        paddingHorizontal: 0,
+        flex: 0.65,
+      }}
+    >
       <Text>{getLanguageString(language, 'SELECT_ADDRESS')}</Text>
       <List
         items={addressBook}
