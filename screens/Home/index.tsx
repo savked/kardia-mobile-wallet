@@ -117,18 +117,22 @@ const HomeScreen = () => {
     }
   }, [mnemonic, language]);
 
-  const onSuccessScan = (e: any, type: string) => {
-    setShowImportModal(false);
+  const onSuccessScan = async (e: any, type: string) => {
     if (e.data === '') {
+      setShowImportModal(false);
       Alert.alert('Invalid QR code');
       return;
     }
     if (type === 'mnemonic') {
+      setShowImportModal(false);
       setPrivateKey('');
       setMnemonic(e.data);
     } else {
-      setPrivateKey(e.data);
+      setProcessing(true)
       setMnemonic('');
+      // setPrivateKey(e.data);
+      await importPrivateKey(e.data);
+      setShowImportModal(false);
     }
   };
 
@@ -178,6 +182,7 @@ const HomeScreen = () => {
     if (!_privateKey.includes('0x')) {
       _privateKey = '0x' + _privateKey;
     }
+
     try {
       const _wallet = getWalletFromPK(_privateKey.trim());
       const walletAddress = _wallet.getChecksumAddressString();
@@ -245,13 +250,14 @@ const HomeScreen = () => {
       </SafeAreaView>
     );
   }
-
+  
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
       <HomeHeader />
       <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
       {showImportModal && (
         <ImportModal
+          loading={processing}
           onClose={() => setShowImportModal(false)}
           onSuccessScan={onSuccessScan}
         />
@@ -272,45 +278,6 @@ const HomeScreen = () => {
           }}
           message={scanMessage}
         />
-        <Modal
-          showCloseButton={false}
-          visible={privateKey !== '' && !showScanAlert}
-          contentStyle={{
-            flex: 0.3,
-            marginTop: viewportHeight / 3,
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            marginHorizontal: 14,
-          }}
-          onClose={() => setPrivateKey('')}>
-          <View style={{justifyContent: 'space-between', flex: 1}}>
-            <Text style={{textAlign: 'center'}}>
-              {getLanguageString(language, 'ARE_YOU_SURE')}
-            </Text>
-            <Text>
-              {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
-            </Text>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-              <Button
-                title={getLanguageString(language, 'GO_BACK')}
-                type="secondary"
-                onPress={() => setMnemonic('')}
-              />
-              <Button
-                loading={processing}
-                disabled={processing}
-                title={getLanguageString(language, 'SUBMIT')}
-                onPress={() => {
-                  setProcessing(true);
-                  InteractionManager.runAfterInteractions(async () => {
-                    importPrivateKey(privateKey);
-                  });
-                }}
-              />
-            </View>
-          </View>
-        </Modal>
         <RemindPasscodeModal
           visible={showPasscodeRemindModal}
           onClose={() => setShowPasscodeRemindModal(false)}
@@ -327,7 +294,6 @@ const HomeScreen = () => {
                 },
               ],
             });
-            // navigation.navigate('Setting', {screen: 'SettingPasscode'});
           }}
         />
       </View>

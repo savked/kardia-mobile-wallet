@@ -1,5 +1,6 @@
 import Clipboard from '@react-native-community/clipboard';
 import {keccak256} from 'js-sha3';
+import {EXPLORER_URL} from '../config';
 
 export const truncate = (str: string, n: number, e: number) => {
   if (n > str.length - e) {
@@ -73,4 +74,8 @@ export const isChecksumAddress = (address: string) => {
     }
   }
   return true;
+};
+
+export const getTxURL = (txHash: string) => {
+  return `${EXPLORER_URL}/tx/${txHash}`;
 };

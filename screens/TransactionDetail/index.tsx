@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Text, View} from 'react-native';
+import {ActivityIndicator, Linking, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import numeral from 'numeral';
@@ -12,6 +12,7 @@ import {getTxDetail} from '../../services/transaction';
 import {
   copyToClipboard,
   getFromAddressBook,
+  getTxURL,
   truncate,
 } from '../../utils/string';
 import {styles} from './style';
@@ -61,6 +62,16 @@ const TransactionDetail = () => {
     return txData.to;
   };
 
+  const handleClickLink = (url: string) => {
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        console.error("Don't know how to open URI: " + url);
+      }
+    });
+  };
+
   const renderStatusIcon = (status?: number) => {
     let iconName, iconColor;
 
@@ -94,17 +105,27 @@ const TransactionDetail = () => {
       <View style={styles.txMeta}>
         {renderStatusIcon(txData?.status)}
         <View style={{justifyContent: 'space-between', paddingTop: 10}}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={[{fontSize: 18}, {color: theme.textColor}]}>
               {getLanguageString(language, 'TRANSACTION_HASH')}:{' '}
             </Text>
-            <Text
+            <Button
+              type="link"
+              onPress={() => handleClickLink(getTxURL(txHash))}
+              title={truncate(txHash, 10, 10)}
+              textStyle={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                color: theme.textColor,
+              }}
+            />
+            {/* <Text
               style={[
                 {fontSize: 18, fontWeight: 'bold'},
                 {color: theme.textColor},
               ]}>
               {truncate(txHash, 7, 7)}
-            </Text>
+            </Text> */}
           </View>
         </View>
       </View>
@@ -199,7 +220,7 @@ const TransactionDetail = () => {
           {getFromAddressBook(addressBook, getOtherAddress()) ===
             getOtherAddress() && (
             <Button
-              title="Save to address book"
+              title={getLanguageString(language, 'SAVE_TO_ADDRESS_BOOK')}
               type="secondary"
               block
               style={{marginBottom: 14}}
