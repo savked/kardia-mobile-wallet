@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, InteractionManager, Text, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import {styles} from './style';
 import Button from '../../components/Button';
 import {generateMnemonic, getWalletFromMnemonic} from '../../utils/blockchain';
