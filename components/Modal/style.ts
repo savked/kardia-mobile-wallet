@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     zIndex: 9999,
     justifyContent: 'flex-end',
   },
-  contaner: {
+  container: {
     flex: 1,
     backgroundColor: 'transparent',
     justifyContent: 'flex-end',

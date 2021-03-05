@@ -186,7 +186,9 @@ const AppContainer = () => {
   if (wallets.length === 0) {
     return (
       <NavigationContainer>
-        <NoWalletStackScreen />
+        <Portal.Host>
+          <NoWalletStackScreen />
+        </Portal.Host>
       </NavigationContainer>
     );
   }
