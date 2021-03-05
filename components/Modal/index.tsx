@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useRef } from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   Animated,
   StyleProp,
@@ -15,7 +15,7 @@ import IconButton from '../IconButton';
 const DEFAULT_HEIGHT_MODAL = 0.5;
 
 const CustomModal = ({
-  animationType = 'slide',
+  // animationType = 'slide',
   visible,
   onClose,
   children,
@@ -27,9 +27,9 @@ const CustomModal = ({
 }: CustomModalProps & {
   contentStyle?: any;
 }) => {
-  let endFlex = DEFAULT_HEIGHT_MODAL
+  let endFlex = DEFAULT_HEIGHT_MODAL;
   if (full) {
-    endFlex = 0.9
+    endFlex = 0.9;
   } else if (contentStyle && contentStyle.flex) {
     endFlex = contentStyle.flex;
   }
@@ -40,10 +40,10 @@ const CustomModal = ({
       Animated.timing(slideAnim, {
         toValue: endFlex,
         duration: 270,
-        useNativeDriver: false
+        useNativeDriver: false,
       }).start();
     }
-  }, [visible])
+  }, [endFlex, slideAnim, visible]);
 
   if (!visible) {
     return null;
@@ -59,7 +59,7 @@ const CustomModal = ({
                 styles.modalView,
                 // {flex: full ? 0.9 : undefined},
                 contentStyle,
-                {flex: slideAnim}
+                {flex: slideAnim},
               ]}>
               {children}
               {showCloseButton && (
