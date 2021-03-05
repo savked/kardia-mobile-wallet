@@ -39,7 +39,7 @@ const CustomModal = ({
     if (visible) {
       Animated.timing(slideAnim, {
         toValue: endFlex,
-        duration: 270,
+        duration: 170,
         useNativeDriver: false,
       }).start();
     }
