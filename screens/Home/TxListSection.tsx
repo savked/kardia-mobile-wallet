@@ -32,17 +32,14 @@ const TxListSection = () => {
   const [loading, setLoading] = useState(true);
   const [cachedAddress, setCachedAddress] = useState('');
 
-  const parseTXForList = (tx: Transaction) => {
+  const parseTXForList = (tx: Transaction, currentWalletAddress: string) => {
     return {
       label: tx.hash,
       value: tx.hash,
       amount: tx.amount,
       date: tx.date,
       status: tx.status,
-      type:
-        wallets[selectedWallet] && tx.from === wallets[selectedWallet].address
-          ? 'OUT'
-          : 'IN',
+      type: tx.from === currentWalletAddress ? 'OUT' : 'IN',
     };
   };
 
@@ -55,7 +52,6 @@ const TxListSection = () => {
     ) {
       return;
     }
-    setLoading(true);
     setCachedAddress(localWallets[localSelectedWallet].address);
     try {
       const newTxList = await getTxByAddress(
@@ -63,7 +59,10 @@ const TxListSection = () => {
         1,
         7,
       );
-      setTxList(newTxList.map(parseTXForList));
+      const parsedTxList = newTxList.map((tx: any) => {
+        return parseTXForList(tx, localWallets[localSelectedWallet].address);
+      });
+      setTxList(parsedTxList);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -76,10 +75,19 @@ const TxListSection = () => {
       wallets[selectedWallet] &&
       cachedAddress !== wallets[selectedWallet].address
     ) {
+      setLoading(true);
       getTX();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet, wallets]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      getTX();
+    }, 2000);
+    return () => clearInterval(intervalId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const renderIcon = (status: number) => {
     return (

@@ -3,6 +3,9 @@ import {keccak256} from 'js-sha3';
 import {EXPLORER_URL} from '../config';
 
 export const truncate = (str: string, n: number, e: number) => {
+  if (!str) {
+    return '';
+  }
   if (n > str.length - e) {
     return str;
   }

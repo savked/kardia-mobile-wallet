@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {View, Alert, Text, Dimensions, InteractionManager} from 'react-native';
+import {View, Alert} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
@@ -22,8 +22,6 @@ import ImportModal from './ImportModal';
 import QRModal from './QRModal';
 import TxListSection from './TxListSection';
 import CardSliderSection from './CardSliderSection';
-import Modal from '../../components/Modal';
-import Button from '../../components/Button';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
@@ -31,8 +29,6 @@ import {getWalletFromPK} from '../../utils/blockchain';
 import RemindPasscodeModal from '../common/RemindPasscodeModal';
 import {getStakingAmount} from '../../services/staking';
 import SelectWallet from './SelectWallet';
-
-const {height: viewportHeight} = Dimensions.get('window');
 
 const HomeScreen = () => {
   const [showQRModal, setShowQRModal] = useState(false);
@@ -42,7 +38,6 @@ const HomeScreen = () => {
   const [scanMessage, setScanMessage] = useState('');
   const [scanType, setScanType] = useState('warning');
   const [mnemonic, setMnemonic] = useState('');
-  const [privateKey, setPrivateKey] = useState('');
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [selectingWallet, setSelectingWallet] = useState(false);
@@ -125,10 +120,9 @@ const HomeScreen = () => {
     }
     if (type === 'mnemonic') {
       setShowImportModal(false);
-      setPrivateKey('');
       setMnemonic(e.data);
     } else {
-      setProcessing(true)
+      setProcessing(true);
       setMnemonic('');
       // setPrivateKey(e.data);
       await importPrivateKey(e.data);
@@ -216,8 +210,6 @@ const HomeScreen = () => {
       });
       setProcessing(false);
       setSelectedWallet(_wallets.length - 1);
-      setPrivateKey('');
-      // RNRestart.Restart();
     } catch (error) {
       setProcessing(false);
       console.error(error);
@@ -250,7 +242,7 @@ const HomeScreen = () => {
       </SafeAreaView>
     );
   }
-  
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
       <HomeHeader />
@@ -274,7 +266,6 @@ const HomeScreen = () => {
           onClose={() => {
             setShowScanAlert(false);
             setMnemonic('');
-            setPrivateKey('');
           }}
           message={scanMessage}
         />
