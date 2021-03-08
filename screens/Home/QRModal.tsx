@@ -9,7 +9,7 @@ import Modal from '../../components/Modal';
 import {getLanguageString} from '../../utils/lang';
 import {copyToClipboard} from '../../utils/string';
 
-const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window');
+const {width: viewportWidth} = Dimensions.get('window');
 
 const QRModal = ({
   onClose,
@@ -28,7 +28,7 @@ const QRModal = ({
       showCloseButton={true}
       contentStyle={{
         paddingHorizontal: 0,
-        marginTop: viewportHeight / 2.3,
+        flex: 0.5,
       }}
       onClose={onClose}>
       <Text style={{fontSize: 20, fontWeight: 'bold'}}>

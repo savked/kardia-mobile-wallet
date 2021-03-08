@@ -23,6 +23,7 @@ import {
 import {languageAtom} from '../../atoms/language';
 import NewTxModal from '../common/NewTxModal';
 import {ThemeContext} from '../../ThemeContext';
+import {getSelectedWallet, getWallets} from '../../utils/local';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
@@ -55,12 +56,20 @@ const TransactionScreen = () => {
   };
 
   const getTX = async () => {
-    if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
+    const localWallets = await getWallets();
+    const localSelectedWallet = await getSelectedWallet();
+    if (
+      !localWallets[localSelectedWallet] ||
+      !localWallets[localSelectedWallet].address
+    ) {
       return;
     }
+    // if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
+    //   return;
+    // }
     try {
       const newTxList = await getTxByAddress(
-        wallets[selectedWallet].address,
+        localWallets[localSelectedWallet].address,
         1,
         30,
       );
@@ -136,13 +145,11 @@ const TransactionScreen = () => {
   useEffect(() => {
     getTX();
     const getTxInterval = setInterval(() => {
-      if (wallets[selectedWallet]) {
-        getTX();
-      }
+      getTX();
     }, 3000);
     return () => clearInterval(getTxInterval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedWallet]);
+  }, []);
 
   return (
     <SafeAreaView
