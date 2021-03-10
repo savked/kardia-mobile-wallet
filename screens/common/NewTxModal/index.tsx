@@ -228,7 +228,7 @@ const NewTxModal = ({
       contentStyle={{
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: 500
+        height: 520,
       }}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
