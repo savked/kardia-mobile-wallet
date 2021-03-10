@@ -47,6 +47,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
   transactionContainer: {
     // height: 445,
@@ -84,6 +85,10 @@ export const styles = StyleSheet.create({
   kaiLogo: {
     width: 30,
     height: 30,
+  },
+  tokenLogo: {
+    width: 50,
+    height: 50,
   },
   noTXText: {
     padding: 15,
@@ -141,5 +146,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     justifyContent: 'center',
+  },
+  tokenListContainer: {
+    flex: 1,
   },
 });

@@ -151,5 +151,8 @@ export const lang: Language = {
       'Chúng tôi rất xin lỗi vì sự bất tiện này. Lỗi đã được gửi cho admin để xử lý',
     NOT_ENOUGH_BALANCE: 'Giao dịch vượt quá số tiền trong ví.',
     GENERAL_ERROR: 'Có lỗi xảy ra, vui lòng thử lại sau',
+    // KRC20 key
+    KRC20_TOKENS_SECTION_TITLE: 'Token của bạn',
+    ADD_TOKEN: 'Thêm token',
   },
 };
