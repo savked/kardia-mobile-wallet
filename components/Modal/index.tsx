@@ -6,13 +6,17 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   ViewStyle,
+  Dimensions
 } from 'react-native';
 import {BlurView} from '@react-native-community/blur';
 import Portal from '@burstware/react-native-portal';
 import {styles} from './style';
 import IconButton from '../IconButton';
 
+const {height: viewportHeight} = Dimensions.get('window')
+
 const DEFAULT_HEIGHT_MODAL = 0.5;
+const DEFAULT_HEIGHT_MODAL_IN_PIXEL = viewportHeight / 2;
 
 const CustomModal = ({
   // animationType = 'slide',
@@ -28,22 +32,38 @@ const CustomModal = ({
   contentStyle?: any;
 }) => {
   let endFlex = DEFAULT_HEIGHT_MODAL;
+  let endHeight = DEFAULT_HEIGHT_MODAL_IN_PIXEL;
   if (full) {
     endFlex = 0.9;
+    endHeight = 11 * viewportHeight / 12
   } else if (contentStyle && contentStyle.flex) {
     endFlex = contentStyle.flex;
+  } else if (contentStyle && contentStyle.height) {
+    endHeight = contentStyle.height
   }
 
   const slideAnim = useRef(new Animated.Value(0)).current;
   useEffect(() => {
+    let endValue = endFlex
+    if (contentStyle && contentStyle.height) {
+      console.log('use height')
+      endValue = endHeight
+    } 
     if (visible) {
       Animated.timing(slideAnim, {
-        toValue: endFlex,
+        toValue: endValue,
         duration: 170,
         useNativeDriver: false,
       }).start();
     }
-  }, [endFlex, slideAnim, visible]);
+  }, [endFlex, endHeight, slideAnim, visible]);
+
+  const getAnimationStyle = () => {
+    if (contentStyle && contentStyle.height) {
+      return {height: slideAnim}
+    }
+    return {flex: slideAnim}
+  };
 
   if (!visible) {
     return null;
@@ -59,7 +79,7 @@ const CustomModal = ({
                 styles.modalView,
                 // {flex: full ? 0.9 : undefined},
                 contentStyle,
-                {flex: slideAnim},
+                getAnimationStyle(),
               ]}>
               {children}
               {showCloseButton && (
