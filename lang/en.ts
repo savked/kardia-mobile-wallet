@@ -37,6 +37,8 @@ export const lang: Language = {
     SELECT_ADDRESS: 'Select Address',
     NO_SAVED_ADDRESS: 'No Saved Address',
     SAVE_TO_ADDRESS_BOOK: 'Save to address book',
+    INVALID_ADDRESS: 'Invalid address',
+    TOKEN_EXISTS: 'Token already exists.',
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now.',
     MNEMONIC_DESCRIPTION:
@@ -159,5 +161,8 @@ export const lang: Language = {
     // KRC20 key
     KRC20_TOKENS_SECTION_TITLE: 'Your assets',
     ADD_TOKEN: 'Add token',
+    TOKEN_ADDRESS: 'Token address',
+    SEND_TOKEN: 'Send {{TOKEN_SYMBOL}}',
+    RECEIVE_TOKEN: 'Receive {{TOKEN_SYMBOL}}',
   },
 };

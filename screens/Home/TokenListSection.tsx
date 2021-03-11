@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-// import {useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
@@ -11,25 +11,37 @@ import {useRecoilValue} from 'recoil';
 import numeral from 'numeral';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
-import {getTokenList} from '../../utils/local';
+// import {getTokenList} from '../../utils/local';
 import NewTokenModal from '../common/NewTokenModal';
+import {krc20ListAtom} from '../../atoms/krc20';
+import {getBalance} from '../../services/krc20';
+import {getSelectedWallet, getWallets} from '../../utils/local';
+import {selectedWalletAtom} from '../../atoms/wallets';
 
 const TokenListSection = () => {
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
   const theme = useContext(ThemeContext);
-  const [tokenList, setTokenList] = useState([] as KRC20[]);
+  const selectedWallet = useRecoilValue(selectedWalletAtom);
 
   const language = useRecoilValue(languageAtom);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [balance, setBalance] = useState<number[]>([]);
+  const tokenList = useRecoilValue(krc20ListAtom);
 
   useEffect(() => {
     (async () => {
-      const localTokenList = await getTokenList();
-      setTokenList(localTokenList);
+      setLoading(true);
+      const _wallets = await getWallets();
+      const _selectedWallet = await getSelectedWallet();
+      const promiseArr = tokenList.map((i) => {
+        return getBalance(i.address, _wallets[_selectedWallet].address);
+      });
+      const balanceArr = await Promise.all(promiseArr);
+      setBalance(balanceArr);
       setLoading(false);
     })();
-  }, []);
+  }, [tokenList, selectedWallet]);
 
   const renderIcon = (avatar: string) => {
     return (
@@ -69,7 +81,7 @@ const TokenListSection = () => {
         items={tokenList}
         loading={loading}
         loadingColor={theme.textColor}
-        keyExtractor={(item) => item.name}
+        keyExtractor={(item) => item.id}
         render={(item, index) => {
           return (
             <View
@@ -88,11 +100,17 @@ const TokenListSection = () => {
                   flex: 1,
                 }}
                 onPress={() => {
-                  // navigation.navigate('Transaction', {
-                  //   screen: 'TransactionDetail',
-                  //   initial: false,
-                  //   params: {txHash: item.label},
-                  // });
+                  navigation.navigate('Home', {
+                    screen: 'TokenDetail',
+                    initial: false,
+                    params: {
+                      tokenAddress: item.address,
+                      name: item.name,
+                      symbol: item.symbol,
+                      avatar: item.avatar,
+                      balance: balance[index],
+                    },
+                  });
                 }}>
                 {renderIcon(item.avatar)}
                 <View
@@ -121,7 +139,7 @@ const TokenListSection = () => {
                     justifyContent: 'flex-end',
                   }}>
                   <Text style={[styles.kaiAmount, {color: theme.textColor}]}>
-                    {parseKaiBalance(item.amount)} {item.symbol}
+                    {parseKaiBalance(balance[index])} {item.symbol}
                   </Text>
                 </View>
               </TouchableOpacity>

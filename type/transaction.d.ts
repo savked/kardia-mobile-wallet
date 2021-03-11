@@ -13,3 +13,22 @@ interface Transaction {
   gasUsed?: number;
   gasLimit?: number;
 }
+
+interface KRC20Transaction {
+  address: string;
+  methodName: string;
+  argumentsName: string;
+  arguments: {
+    from: string;
+    to: string;
+    value: string;
+  };
+  topics: string[];
+  data: string;
+  blockHeight: number;
+  transactionHash: string;
+  transactionIndex: number;
+  blockHash: string;
+  logIndex: number;
+  removed: boolean;
+}

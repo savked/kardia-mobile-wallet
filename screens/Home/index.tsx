@@ -19,7 +19,7 @@ import AlertModal from '../../components/AlertModal';
 import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
 import ImportModal from './ImportModal';
-import QRModal from './QRModal';
+import QRModal from '../common/AddressQRCode';
 import CardSliderSection from './CardSliderSection';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';

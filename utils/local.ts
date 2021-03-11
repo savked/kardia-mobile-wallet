@@ -229,3 +229,16 @@ export const getTokenList = async () => {
     return DEFAULT_KRC20_TOKENS;
   }
 };
+
+export const saveTokenList = async (tokenList: KRC20[]) => {
+  try {
+    await AsyncStorage.setItem(
+      '@kardia_app_token_list',
+      JSON.stringify(tokenList),
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};

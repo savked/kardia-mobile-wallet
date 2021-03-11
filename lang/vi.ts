@@ -37,6 +37,8 @@ export const lang: Language = {
     SELECT_ADDRESS: 'Chọn địa chỉ ví',
     NO_SAVED_ADDRESS: 'Chưa có địa chỉ ví được lưu',
     SAVE_TO_ADDRESS_BOOK: 'Lưu ví vào sổ danh bạ',
+    INVALID_ADDRESS: 'Địa chỉ không hợp lệ',
+    TOKEN_EXISTS: 'Token đã tồn tại',
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
@@ -154,5 +156,8 @@ export const lang: Language = {
     // KRC20 key
     KRC20_TOKENS_SECTION_TITLE: 'Token của bạn',
     ADD_TOKEN: 'Thêm token',
+    TOKEN_ADDRESS: 'Địa chỉ token',
+    SEND_TOKEN: 'Gửi {{TOKEN_SYMBOL}}',
+    RECEIVE_TOKEN: 'Nhận {{TOKEN_SYMBOL}}',
   },
 };

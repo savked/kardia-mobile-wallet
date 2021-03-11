@@ -5,14 +5,13 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import HomeScreen from '../Home';
-// import NewsScreen from '../News';
 import TransactionStackScreen from '../../TransactionStack';
 import {
   getAddressBook,
   getAppPasscodeSetting,
   getLanguageSetting,
   getSelectedWallet,
+  getTokenList,
   getWallets,
   saveSelectedWallet,
 } from '../../utils/local';
@@ -29,10 +28,11 @@ import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import {localAuthAtom} from '../../atoms/localAuth';
 import ConfirmPasscode from '../ConfirmPasscode';
-// import DAppScreen from '../DApp';
 import StakingStackScreen from '../../StakingStack';
 import {getLanguageString} from '../../utils/lang';
 import Portal from '@burstware/react-native-portal';
+import {krc20ListAtom} from '../../atoms/krc20';
+import HomeStackScreen from '../../HomeStack';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -82,7 +82,8 @@ const Wrap = () => {
         },
         showLabel: false,
       }}>
-      <Tab.Screen name="Home" component={HomeScreen} />
+      {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
+      <Tab.Screen name="Home" component={HomeStackScreen} />
       <Tab.Screen name="Transaction" component={TransactionStackScreen} />
       {/* <Tab.Screen name="DApp" component={DAppScreen} /> */}
       <Tab.Screen name="Staking" component={StakingStackScreen} />
@@ -96,6 +97,7 @@ const AppContainer = () => {
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const setTokenInfo = useSetRecoilState(tokenInfoAtom);
   const setAddressBook = useSetRecoilState(addressBookAtom);
+  const setKRC20TokenList = useSetRecoilState(krc20ListAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(
     selectedWalletAtom,
   );
@@ -162,6 +164,10 @@ const AppContainer = () => {
       const languageSetting = await getLanguageSetting();
       languageSetting && setLanguage(languageSetting);
 
+      // Get local KRC20 list
+      const krc20List = await getTokenList();
+      setKRC20TokenList(krc20List);
+
       setInited(1);
     })();
   }, [
@@ -170,6 +176,7 @@ const AppContainer = () => {
     setAddressBook,
     setLanguage,
     setSelectedWallet,
+    setKRC20TokenList,
   ]);
 
   if (!inited) {

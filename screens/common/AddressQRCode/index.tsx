@@ -3,11 +3,11 @@ import React from 'react';
 import {Dimensions, Text, TouchableOpacity, View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {useRecoilValue} from 'recoil';
-import {languageAtom} from '../../atoms/language';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import Modal from '../../components/Modal';
-import {getLanguageString} from '../../utils/lang';
-import {copyToClipboard} from '../../utils/string';
+import {languageAtom} from '../../../atoms/language';
+import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
+import Modal from '../../../components/Modal';
+import {getLanguageString} from '../../../utils/lang';
+import {copyToClipboard} from '../../../utils/string';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -55,7 +55,7 @@ const QRModal = ({
         <QRCode
           size={viewportWidth / 1.7}
           value={wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
-          logo={require('../../assets/logo.png')}
+          logo={require('../../../assets/logo.png')}
           logoBackgroundColor="#FFFFFF"
           logoSize={22}
           logoMargin={2}

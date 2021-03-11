@@ -10,6 +10,7 @@ export const EXPLORER_URL = 'https://explorer.kardiachain.io';
 
 export const DEFAULT_KRC20_TOKENS: KRC20[] = [
   {
+    id: '0',
     name: 'SampleToken',
     address: '0xae67DeAb9ff650862fD9CAC1127bad2132e8408a',
     symbol: 'TOK1',

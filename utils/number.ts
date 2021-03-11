@@ -34,9 +34,12 @@ export const format = (val: number, options?: Intl.NumberFormatOptions) => {
   return new Intl.NumberFormat('en-US', defaultOption).format(val);
 };
 
-export const parseKaiBalance = (kaiAmount: number) => {
+export const parseKaiBalance = (
+  kaiAmount: number,
+  showFull: boolean = false,
+) => {
   if (kaiAmount < 10 ** 13) {
     return '0';
   }
-  return numeral(kaiAmount / 10 ** 18).format('0,0.00a');
+  return numeral(kaiAmount / 10 ** 18).format(showFull ? '0,0.00' : '0,0.00a');
 };
