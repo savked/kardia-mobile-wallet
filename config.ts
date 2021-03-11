@@ -11,9 +11,9 @@ export const EXPLORER_URL = 'https://explorer.kardiachain.io';
 export const DEFAULT_KRC20_TOKENS: KRC20[] = [
   {
     id: '0',
-    name: 'SampleToken',
-    address: '0xae67DeAb9ff650862fD9CAC1127bad2132e8408a',
-    symbol: 'TOK1',
+    name: 'Vinh Fuckboi (VFB) Token Contract',
+    address: '0xf768D5B8e82a524e695ffd3EA146f089D2295c4f',
+    symbol: 'VFB',
     decimals: 18,
     // price: 1200,
     // avatar:

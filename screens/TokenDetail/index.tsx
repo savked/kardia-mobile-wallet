@@ -81,7 +81,7 @@ const TokenDetail = () => {
             type="outline"
             onPress={() => {}}
             iconName="paper-plane"
-            size="small"
+            // size="small"
             textStyle={{color: '#FFFFFF'}}
             style={{marginRight: 5}}
           />
@@ -92,7 +92,7 @@ const TokenDetail = () => {
               '{{TOKEN_SYMBOL}}',
               tokenSymbol,
             )}
-            size="small"
+            // size="small"
             type="outline"
             iconName="download"
             style={{marginLeft: 5, marginRight: 5}}

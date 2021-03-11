@@ -31,4 +31,11 @@ interface KRC20Transaction {
   blockHash: string;
   logIndex: number;
   removed: boolean;
+  time: string;
+  logo: string;
+  decimals: number;
+  tokenName: string;
+  tokenType: string;
+  tokenSymbol: string;
+  totalSupply: string;
 }

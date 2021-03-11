@@ -119,20 +119,32 @@ const TokenTxList = ({
                 flex: 1,
               }}
               onPress={() => {
+                const _item = JSON.parse(JSON.stringify(item));
+                delete _item.date;
                 navigation.navigate('Home', {
                   screen: 'TokenTxDetail',
                   initial: false,
-                  params: {txData: item},
+                  params: {
+                    txData: _item,
+                    tokenInfo: {
+                      id: tokenAddress,
+                      address: tokenAddress,
+                      symbol: tokenSymbol,
+                      avatar: tokenAvatar,
+                    },
+                  },
                 });
               }}>
-              {renderIcon(item.status)}
+              {/** TODO: Uncomment below code after backend updated */}
+              {/* {renderIcon(item.status)} */}
+              {renderIcon(1)}
               <View
                 style={{
                   flex: 2.5,
                   flexDirection: 'column',
                 }}>
                 <Text style={{color: '#FFFFFF'}}>
-                  {truncate(item.txHash, 6, 8)}
+                  {truncate(item.transactionHash, 6, 8)}
                 </Text>
                 <Text style={{color: 'gray'}}>
                   {isSameDay(item.date, new Date())
@@ -156,7 +168,7 @@ const TokenTxList = ({
                     item.type === 'IN' ? {color: '#61b15a'} : {color: 'red'},
                   ]}>
                   {item.type === 'IN' ? '+' : '-'}
-                  {parseKaiBalance(item.amount)} {tokenSymbol}
+                  {parseKaiBalance(item.arguments.value)} {tokenSymbol}
                 </Text>
               </View>
             </TouchableOpacity>
