@@ -70,8 +70,10 @@ export const lang: Language = {
     FROM: 'Ví gửi',
     TO: 'Ví nhận',
     TRANSACTION_DATE: 'Ngày giao dịch',
-    CREATE_TX_ADDRESS: 'Địa chỉ ví nhận KAI',
+    CREATE_TX_ADDRESS: 'Địa chỉ ví nhận',
+    CREATE_KRC20_TX_ADDRESS: 'Địa chỉ ví nhận',
     CREATE_TX_KAI_AMOUNT: 'Số lượng (tối đa: 5,000,000,000)',
+    CREATE_TX_KRC20_AMOUNT: 'Số lượng',
     TRANSACTION_SPEED: 'Chọn độ ưu tiên',
     SLOW_SPEED: 'Chậm',
     AVERAGE_SPEED: 'Trung bình',
@@ -159,5 +161,6 @@ export const lang: Language = {
     TOKEN_ADDRESS: 'Địa chỉ token',
     SEND_TOKEN: 'Gửi {{TOKEN_SYMBOL}}',
     RECEIVE_TOKEN: 'Nhận {{TOKEN_SYMBOL}}',
+    REMOVE_TOKEN: 'Xóa token',
   },
 };

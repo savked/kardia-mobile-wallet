@@ -7,6 +7,7 @@ import HomeScreen from './screens/Home';
 import TokenDetail from './screens/TokenDetail';
 import {ThemeContext} from './ThemeContext';
 import TokenTxDetail from './screens/TokenTxDetail';
+import CreateKRC20TxScreen from './screens/CreateKRC20Transaction';
 
 const HomeStack = createStackNavigator();
 
@@ -49,6 +50,11 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name="TokenTxDetail"
         component={TokenTxDetail}
+        options={{headerShown: false}}
+      />
+      <HomeStack.Screen
+        name="NewKRC20Tx"
+        component={CreateKRC20TxScreen}
         options={{headerShown: false}}
       />
     </HomeStack.Navigator>

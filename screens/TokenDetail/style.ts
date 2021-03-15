@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
   tokenLogo: {
     width: 60,
     height: 60,
+    borderRadius: 30,
   },
   kaiLogo: {
     width: 40,

@@ -36,18 +36,28 @@ const TokenTxList = ({
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
 
+  const fetchTxList = async () => {
+    const _wallets = await getWallets();
+    const _selectedWallet = await getSelectedWallet();
+    const _txList = await getTx(
+      tokenAddress,
+      _wallets[_selectedWallet].address,
+    );
+    setTxList(_txList);
+  };
+
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const _wallets = await getWallets();
-      const _selectedWallet = await getSelectedWallet();
-      const _txList = await getTx(
-        tokenAddress,
-        _wallets[_selectedWallet].address,
-      );
-      setTxList(_txList);
+      await fetchTxList();
       setLoading(false);
+
+      const intervalId = setInterval(() => {
+        fetchTxList();
+      }, 2000);
+      return () => clearInterval(intervalId);
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet, tokenAddress]);
 
   const renderIcon = (status: number) => {
@@ -69,7 +79,14 @@ const TokenTxList = ({
             borderColor: 'gray',
           }}>
           {tokenAvatar ? (
-            <Image source={{uri: tokenAvatar}} style={styles.tokenLogo} />
+            <Image
+              source={{uri: tokenAvatar}}
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: 15,
+              }}
+            />
           ) : (
             <Image
               source={require('../../assets/logo.png')}
@@ -101,8 +118,8 @@ const TokenTxList = ({
       items={txList}
       loading={loading}
       loadingColor={theme.textColor}
-      keyExtractor={(item) => item.txHash}
-      render={(item, index) => {
+      keyExtractor={(item) => item.transactionHash}
+      render={(item: KRC20Transaction, index) => {
         return (
           <View
             style={{
@@ -125,7 +142,7 @@ const TokenTxList = ({
                   screen: 'TokenTxDetail',
                   initial: false,
                   params: {
-                    txData: _item,
+                    txData: JSON.stringify(_item),
                     tokenInfo: {
                       id: tokenAddress,
                       address: tokenAddress,
@@ -168,7 +185,7 @@ const TokenTxList = ({
                     item.type === 'IN' ? {color: '#61b15a'} : {color: 'red'},
                   ]}>
                   {item.type === 'IN' ? '+' : '-'}
-                  {parseKaiBalance(item.arguments.value)} {tokenSymbol}
+                  {parseKaiBalance(Number(item.value))} {tokenSymbol}
                 </Text>
               </View>
             </TouchableOpacity>

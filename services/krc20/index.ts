@@ -7,12 +7,23 @@ export const getKRC20TokenInfo = async (address: string) => {
   const krc20 = client.krc20;
   krc20.address = address;
 
-  return {
+  const requestOptions = {
+    method: 'GET',
+    redirect: 'follow',
+  };
+  const response = await requestWithTimeOut(
+    fetch(`${ENDPOINT}contracts/${address}`, requestOptions),
+    50 * 1000,
+  );
+  const responseJSON = await response.json();
+  const info = {
     name: await krc20.getName(true),
     symbol: await krc20.getSymbol(true),
     decimals: await krc20.getDecimals(),
     totalSupply: await krc20.getTotalSupply(),
+    avatar: responseJSON.data.logo || '',
   };
+  return info;
 };
 
 export const getBalance = async (tokenAddress: string, userAddress: string) => {
@@ -29,25 +40,44 @@ export const getTx = async (tokenAddress: string, userAddress: string) => {
     method: 'GET',
     redirect: 'follow',
   };
-
   const response = await requestWithTimeOut(
     fetch(
-      `${ENDPOINT}contracts/events?page=0&limit=10&methodName=Transfer&contractAddress=${tokenAddress}`,
+      // `${ENDPOINT}contracts/events?page=0&limit=10&methodName=Transfer&contractAddress=${tokenAddress}`,
+      `${ENDPOINT}token/txs?page=0&limit=100&address=${userAddress}&contractAddress=${tokenAddress}`,
       requestOptions,
     ),
     50 * 1000,
   );
   const responseJSON = await response.json();
   return responseJSON.data
-    ? responseJSON.data.data
-        .filter(
-          (item: KRC20Transaction) =>
-            item.arguments.from === userAddress ||
-            item.arguments.to === userAddress,
-        )
-        .map((i: any) => {
-          i.date = new Date(i.time);
-          return i;
-        })
+    ? responseJSON.data.data.map((i: any) => {
+        i.date = new Date(i.time);
+        i.time = new Date(i.time);
+        i.status = 1;
+        i.type = i.from === userAddress ? 'OUT' : 'IN';
+        return i;
+      })
     : [];
+};
+
+export const estimateKRC20Gas = async (to: string, amount: number) => {
+  const client = new KardiaClient({endpoint: RPC_ENDPOINT});
+  const krc20 = client.krc20;
+
+  const estimatedGas = krc20.estimateGas(to, amount);
+  return estimatedGas;
+};
+
+export const transferKRC20 = async (
+  tokenAddress: string,
+  privateKey: string,
+  to: string,
+  amount: number,
+  transferPayload: Record<string, any> = {},
+) => {
+  const client = new KardiaClient({endpoint: RPC_ENDPOINT});
+  const krc20 = client.krc20;
+  krc20.address = tokenAddress;
+
+  return krc20.transfer(privateKey, to, amount, transferPayload);
 };

@@ -25,8 +25,8 @@ import Button from '../../components/Button';
 
 const TokenTxDetail = () => {
   const navigation = useNavigation();
-  const {params} = useRoute();
-  const txData: KRC20Transaction = params ? (params as any).txData : {};
+  const {params}: any = useRoute();
+  const txData: KRC20Transaction = params ? JSON.parse(params.txData) : {};
   const tokenInfo: Partial<KRC20> = params ? (params as any).tokenInfo : {};
   const theme = useContext(ThemeContext);
   const avatar = tokenInfo.avatar || '';
@@ -44,10 +44,10 @@ const TokenTxDetail = () => {
     ) {
       return '';
     }
-    if (txData.arguments.from !== wallets[selectedWallet].address) {
-      return txData.arguments.from;
+    if (txData.from !== wallets[selectedWallet].address) {
+      return txData.from;
     }
-    return txData.arguments.to;
+    return txData.to;
   };
 
   if (!txData) {
@@ -92,8 +92,7 @@ const TokenTxDetail = () => {
           )}
         </View>
         <Text style={[styles.tokenBalance, {color: theme.textColor}]}>
-          {parseKaiBalance(Number(txData.arguments.value), true)}{' '}
-          {tokenInfo.symbol}
+          {parseKaiBalance(Number(txData.value), true)} {tokenInfo.symbol}
         </Text>
         {/* <Divider /> */}
       </View>
@@ -108,7 +107,7 @@ const TokenTxDetail = () => {
               {color: theme.textColor, marginRight: 6},
             ]}>
             {truncate(
-              getFromAddressBook(addressBook, txData.arguments.from || ''),
+              getFromAddressBook(addressBook, txData.from || ''),
               10,
               10,
             )}
@@ -117,7 +116,7 @@ const TokenTxDetail = () => {
             color={theme.textColor}
             name="copy"
             size={16}
-            onPress={() => copyToClipboard(txData.arguments.from)}
+            onPress={() => copyToClipboard(txData.from)}
           />
         </View>
       </View>
@@ -131,17 +130,13 @@ const TokenTxDetail = () => {
               styles.infoValue,
               {color: theme.textColor, marginRight: 6},
             ]}>
-            {truncate(
-              getFromAddressBook(addressBook, txData.arguments.to || ''),
-              10,
-              10,
-            )}
+            {truncate(getFromAddressBook(addressBook, txData.to || ''), 10, 10)}
           </Text>
           <IconButton
             color={theme.textColor}
             name="copy"
             size={16}
-            onPress={() => copyToClipboard(txData.arguments.to)}
+            onPress={() => copyToClipboard(txData.to)}
           />
         </View>
       </View>

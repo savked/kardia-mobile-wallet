@@ -104,7 +104,7 @@ const UndelegateModal = ({
       setUndelegateAmount('');
       showModal(
         getLanguageString(language, 'UNDELEGATE_SUCCESS').replace(
-          '{{KAI_AMOUNT}}',
+          /{{KAI_AMOUNT}}/g,
           numeral(_undelegateValue).format('0,0.00'),
         ),
         'success',

@@ -32,6 +32,7 @@ const NewTokenModal = ({
   const [symbol, setSymbol] = useState('');
   const [decimals, setDecimals] = useState(-1);
   const [totalSupply, setTotalSupply] = useState('');
+  const [avatar, setAvatar] = useState('');
 
   const setKRC20List = useSetRecoilState(krc20ListAtom);
 
@@ -47,6 +48,7 @@ const NewTokenModal = ({
       setSymbol(info.symbol);
       setDecimals(info.decimals);
       setTotalSupply(info.totalSupply);
+      setAvatar(info.avatar);
     })();
   }, [tokenAddress]);
 
@@ -81,6 +83,7 @@ const NewTokenModal = ({
       name,
       symbol,
       decimals,
+      avatar,
       id: `${Date.now()}`,
     });
 

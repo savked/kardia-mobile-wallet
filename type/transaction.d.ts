@@ -18,11 +18,14 @@ interface KRC20Transaction {
   address: string;
   methodName: string;
   argumentsName: string;
-  arguments: {
-    from: string;
-    to: string;
-    value: string;
-  };
+  // arguments: {
+  //   from: string;
+  //   to: string;
+  //   value: string;
+  // };
+  from: string;
+  to: string;
+  value: string;
   topics: string[];
   data: string;
   blockHeight: number;
@@ -38,4 +41,7 @@ interface KRC20Transaction {
   tokenType: string;
   tokenSymbol: string;
   totalSupply: string;
+  status: number;
+  date: Date;
+  type: 'IN' | 'OUT';
 }

@@ -108,7 +108,7 @@ const TokenListSection = () => {
                       name: item.name,
                       symbol: item.symbol,
                       avatar: item.avatar,
-                      balance: balance[index],
+                      // balance: balance[index],
                     },
                   });
                 }}>

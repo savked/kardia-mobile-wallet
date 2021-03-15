@@ -2,6 +2,11 @@ import {ENDPOINT, RPC_ENDPOINT} from '../config';
 import KardiaClient from 'kardia-js-sdk';
 import {cellValue, weiToKAI} from './amount';
 
+export const estimateGas = async (payload: Record<string, any>, data = '') => {
+  const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
+  return kardiaClient.transaction.estimateGas(payload, data);
+};
+
 export const getTxByAddress = async (address: string, page = 1, size = 10) => {
   const options = {
     method: 'GET',
