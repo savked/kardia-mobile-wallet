@@ -148,7 +148,7 @@ const TokenListSection = () => {
         }}
         ListEmptyComponent={
           <Text style={[styles.noTXText, {color: theme.textColor}]}>
-            {getLanguageString(language, 'NO_TRANSACTION')}
+            {getLanguageString(language, 'NO_TOKENS')}
           </Text>
         }
         header={

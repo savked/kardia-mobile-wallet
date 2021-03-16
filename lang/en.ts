@@ -168,5 +168,6 @@ export const lang: Language = {
     SEND_TOKEN: 'Send {{TOKEN_SYMBOL}}',
     RECEIVE_TOKEN: 'Receive {{TOKEN_SYMBOL}}',
     REMOVE_TOKEN: 'Remove token',
+    NO_TOKENS: 'No KRC20 tokens',
   },
 };
