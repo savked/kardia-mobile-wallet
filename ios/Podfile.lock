@@ -72,7 +72,7 @@ PODS:
   - OpenSSL-Universal (1.0.2.20):
     - OpenSSL-Universal/Static (= 1.0.2.20)
   - OpenSSL-Universal/Static (1.0.2.20)
-  - Permission-Camera (3.0.0):
+  - Permission-Camera (3.0.1):
     - RNPermissions
   - RCTRequired (0.63.3)
   - RCTTypeSafety (0.63.3):
@@ -242,23 +242,23 @@ PODS:
   - React-jsinspector (0.63.3)
   - react-native-blur (0.8.0):
     - React
-  - react-native-camera (3.40.0):
+  - react-native-camera (3.43.0):
     - React-Core
-    - react-native-camera/RCT (= 3.40.0)
-    - react-native-camera/RN (= 3.40.0)
-  - react-native-camera/RCT (3.40.0):
+    - react-native-camera/RCT (= 3.43.0)
+    - react-native-camera/RN (= 3.43.0)
+  - react-native-camera/RCT (3.43.0):
     - React-Core
-  - react-native-camera/RN (3.40.0):
+  - react-native-camera/RN (3.43.0):
     - React-Core
-  - react-native-get-random-values (1.5.0):
-    - React
-  - react-native-image-picker (3.1.2):
-    - React
+  - react-native-get-random-values (1.6.0):
+    - React-Core
+  - react-native-image-picker (3.3.2):
+    - React-Core
   - react-native-randombytes (3.6.0):
     - React-Core
   - react-native-restart (0.0.20):
     - React-Core
-  - react-native-safe-area-context (3.1.9):
+  - react-native-safe-area-context (3.2.0):
     - React-Core
   - React-RCTActionSheet (0.63.3):
     - React-Core/RCTActionSheetHeaders (= 0.63.3)
@@ -320,21 +320,21 @@ PODS:
     - React-Core (= 0.63.3)
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
-  - RNCAsyncStorage (1.13.2):
-    - React
+  - RNCAsyncStorage (1.14.1):
+    - React-Core
   - RNCClipboard (1.5.1):
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
-  - RNCPicker (1.9.10):
+  - RNCPicker (1.9.12):
     - React-Core
-  - RNGestureHandler (1.9.0):
+  - RNGestureHandler (1.10.3):
     - React-Core
-  - RNPermissions (3.0.0):
+  - RNPermissions (3.0.1):
     - React-Core
   - RNReanimated (1.13.2):
     - React-Core
-  - RNScreens (2.16.1):
+  - RNScreens (2.18.1):
     - React-Core
   - RNSVG (12.1.0):
     - React
@@ -542,7 +542,7 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   OpenSSL-Universal: ff34003318d5e1163e9529b08470708e389ffcdd
-  Permission-Camera: 358081c7b8210849958af181ce9ddeb11932aa82
+  Permission-Camera: 0d2d15352e9c54c3ea8686c8c21fb1a9edf3431b
   RCTRequired: 48884c74035a0b5b76dbb7a998bd93bcfc5f2047
   RCTTypeSafety: edf4b618033c2f1c5b7bc3d90d8e085ed95ba2ab
   React: f36e90f3ceb976546e97df3403e37d226f79d0e3
@@ -554,12 +554,12 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b56c03e61c0dd5f5801255f2160a815f4a53d451
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
-  react-native-camera: 5c1fbfecf63b802b8ca4a71c60d30a71550fb348
-  react-native-get-random-values: 1404bd5cc0ab0e287f75ee1c489555688fc65f89
-  react-native-image-picker: 8b4ccafb47395aabe98d3af89f089e020cacd6d1
+  react-native-camera: c2cb270b2546bb6d99352455676cd01a1cbeb1d5
+  react-native-get-random-values: f0fc24a5887a3341589515a86282a574407b59e4
+  react-native-image-picker: 5b2f1ea1f9230b131abbfb8a4aa1eb209aba9ed9
   react-native-randombytes: 45ae693012df24c9a07a5e578b3b567c01468581
   react-native-restart: 6cc683e208c080581c147d0875609e64572a9443
-  react-native-safe-area-context: 86612d2c9a9e94e288319262d10b5f93f0b395f5
+  react-native-safe-area-context: e471852c5ed67eea4b10c5d9d43c1cebae3b231d
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
   React-RCTAnimation: 1befece0b5183c22ae01b966f5583f42e69a83c2
   React-RCTBlob: 0b284339cbe4b15705a05e2313a51c6d8b51fa40
@@ -570,14 +570,14 @@ SPEC CHECKSUMS:
   React-RCTText: 65a6de06a7389098ce24340d1d3556015c38f746
   React-RCTVibration: 8e9fb25724a0805107fc1acc9075e26f814df454
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
-  RNCAsyncStorage: bc2f81cc1df90c267ce9ed30bb2dbc93b945a8ee
+  RNCAsyncStorage: 1ab3f6ec0bc2c676dad4a00471d4c9d1a2cf68a2
   RNCClipboard: 5e299c6df8e0c98f3d7416b86ae563d3a9f768a3
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
-  RNCPicker: 77183d9b1cd80ae55505322f8ad09ba0036e29ba
-  RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
-  RNPermissions: 350964d19150b183796a88180fb7ec62a1e41422
+  RNCPicker: b1e22287e5feb38fb10cac877753b924ba1c05d1
+  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNPermissions: eb94f9fdc0a8ecd02fcce0676d56ffb1395d41e1
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
-  RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
+  RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   TouchID: ba4c656d849cceabc2e4eef722dea5e55959ecf4
