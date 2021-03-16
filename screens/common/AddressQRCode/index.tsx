@@ -1,11 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useContext } from 'react';
 import {Dimensions, Text, TouchableOpacity, View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import Modal from '../../../components/Modal';
+import theme from '../../../theme';
+import { ThemeContext } from '../../../ThemeContext';
 import {getLanguageString} from '../../../utils/lang';
 import {copyToClipboard} from '../../../utils/string';
 
@@ -21,6 +23,8 @@ const QRModal = ({
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const language = useRecoilValue(languageAtom);
+
+  const theme = useContext(ThemeContext);
 
   return (
     <Modal
@@ -51,9 +55,19 @@ const QRModal = ({
           {wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
         </Text>
       </TouchableOpacity>
+      <Text
+        style={{
+          fontStyle: 'italic',
+          fontWeight: 'bold',
+          paddingHorizontal: 12,
+          color: theme.primaryColor
+        }}
+      >
+        {getLanguageString(language, 'ERC20_WARNING')}
+      </Text>
       <View style={{paddingVertical: 14}}>
         <QRCode
-          size={viewportWidth / 1.7}
+          size={viewportWidth / 1.75}
           value={wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
           logo={require('../../../assets/logo.png')}
           logoBackgroundColor="#FFFFFF"

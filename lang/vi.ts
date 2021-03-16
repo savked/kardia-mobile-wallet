@@ -27,6 +27,7 @@ export const lang: Language = {
     CLOSE: 'Đóng',
     CONFIRM: 'Xác nhận',
     SCAN_QR_FOR_ADDRESS: 'Địa chỉ ví của bạn',
+    ERC20_WARNING: 'Lưu ý: KHÔNG gửi KAI Token từ ví ERC20 wallet đến ví này.',
     LATER: 'Để sau',
     SET_APP_PASSCODE: 'Cài đặt mật khẩu',
     NO_PASSCODE: 'Bạn chưa cài mật khẩu cho ví',
