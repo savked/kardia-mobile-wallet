@@ -1,13 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import {Dimensions, Text, TouchableOpacity, View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import Modal from '../../../components/Modal';
-import theme from '../../../theme';
-import { ThemeContext } from '../../../ThemeContext';
+import {ThemeContext} from '../../../ThemeContext';
 import {getLanguageString} from '../../../utils/lang';
 import {copyToClipboard} from '../../../utils/string';
 
@@ -60,14 +59,14 @@ const QRModal = ({
           fontStyle: 'italic',
           fontWeight: 'bold',
           paddingHorizontal: 12,
-          color: theme.primaryColor
-        }}
-      >
+          paddingVertical: 16,
+          color: theme.primaryColor,
+        }}>
         {getLanguageString(language, 'ERC20_WARNING')}
       </Text>
       <View style={{paddingVertical: 14}}>
         <QRCode
-          size={viewportWidth / 1.75}
+          size={viewportWidth / 1.8}
           value={wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
           logo={require('../../../assets/logo.png')}
           logoBackgroundColor="#FFFFFF"
