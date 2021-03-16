@@ -1,6 +1,6 @@
 import {ENDPOINT, RPC_ENDPOINT} from '../config';
 import VALIDATOR_ABI from './validatorABI.json';
-import KardiaClient from 'kardia-dx';
+import KardiaClient from 'kardia-js-sdk';
 import {toChecksumAddress} from 'ethereumjs-util';
 import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '../../config';
 import {cellValue, weiToKAI} from '../transaction/amount';

@@ -1,4 +1,4 @@
-import {ENDPOINT_GATEWAY} from '../config';
+import {ENDPOINT} from '../config';
 import {requestWithTimeOut} from '../util';
 
 export const getNews = async (): Promise<News[]> => {
@@ -6,7 +6,7 @@ export const getNews = async (): Promise<News[]> => {
     method: 'GET',
   };
   const response = await requestWithTimeOut(
-    fetch(`${ENDPOINT_GATEWAY}news`, options),
+    fetch(`${ENDPOINT}news`, options),
     10 * 1000,
   );
   const responseJSON = await response.json();

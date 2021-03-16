@@ -27,6 +27,7 @@ export const lang: Language = {
     CLOSE: 'Close',
     CONFIRM: 'Confirm',
     SCAN_QR_FOR_ADDRESS: 'Your Wallet Address',
+    ERC20_WARNING: 'Please DO NOT send KAI Token from ERC20 wallet to this wallet.',
     LATER: 'Later',
     SET_APP_PASSCODE: 'Set Passcode',
     NO_PASSCODE: "You haven't set your app passcode yet.",
@@ -37,6 +38,8 @@ export const lang: Language = {
     SELECT_ADDRESS: 'Select Address',
     NO_SAVED_ADDRESS: 'No Saved Address',
     SAVE_TO_ADDRESS_BOOK: 'Save to address book',
+    INVALID_ADDRESS: 'Invalid address',
+    TOKEN_EXISTS: 'Token already exists.',
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now.',
     MNEMONIC_DESCRIPTION:
@@ -47,7 +50,8 @@ export const lang: Language = {
     SCAN_SEED_PHRASE: 'Scan QR code for seed phrase.',
     SCAN_PRIVATE_KEY: 'Scan QR code for private key.',
     WALLET_EXISTED: 'Wallet already exists.',
-    ERROR_SEED_PHRASE: 'The format for your seed phrase is incorrect, please recheck.',
+    ERROR_SEED_PHRASE:
+      'The format for your seed phrase is incorrect, please recheck.',
     ERROR_PRIVATE_KEY: 'Invalid private key provided, please recheck.',
     CONFIRM_ENTER_SEED_PHRASE:
       'Are you sure you have copied the 12 seed phrases correctly?',
@@ -71,7 +75,9 @@ export const lang: Language = {
     TO: 'To',
     TRANSACTION_DATE: 'Transaction Date',
     CREATE_TX_ADDRESS: 'Send to Address',
+    CREATE_KRC20_TX_ADDRESS: 'Send to Address',
     CREATE_TX_KAI_AMOUNT: 'Amount (maximum: 5,000,000,000)',
+    CREATE_TX_KRC20_AMOUNT: 'Amount',
     TRANSACTION_SPEED: 'Choose Transaction Speed',
     SLOW_SPEED: 'Slow',
     AVERAGE_SPEED: 'Average',
@@ -100,7 +106,8 @@ export const lang: Language = {
     UNDELEGATE: 'Undelegate',
     WITHDRAW: 'Withdraw',
     CLAIM_SUCCESS: '{{KAI_AMOUNT}} KAI successfully claimed to your wallet.',
-    WITHDRAW_SUCCESS: '{{KAI_AMOUNT}} KAI successfully withdrawn to your wallet.',
+    WITHDRAW_SUCCESS:
+      '{{KAI_AMOUNT}} KAI successfully withdrawn to your wallet.',
     UNDELEGATE_SUCCESS:
       '{{KAI_AMOUNT}} KAI is undelegated. You will need to wait 7 days to withdraw {{KAI_AMOUNT}} KAI back to your wallet.',
     UNDELEGATE_AMOUNT_TOO_MUCH: 'Must be less than your staked KAI amount.',
@@ -151,7 +158,17 @@ export const lang: Language = {
     ERROR_BOUNDARY_TITLE: 'Oops, Something Went Wrong',
     ERROR_BOUNDARY_DESCRIPTION:
       'The app ran into a problem and could not continue. We apologise for any inconvenience this may have caused. Press the button below to restart the app and sign back in. Please contact us if this issue persists.',
-    NOT_ENOUGH_BALANCE: 'The amount requested exceeds your current wallet balance.',
+    NOT_ENOUGH_BALANCE:
+      'The amount requested exceeds your current wallet balance.',
     GENERAL_ERROR: 'An error occured. Please try again later.',
+    // KRC20 key
+    KRC20_TOKENS_SECTION_TITLE: 'Your assets',
+    ADD_TOKEN: 'Add token',
+    TOKEN_ADDRESS: 'Token address',
+    SEND_TOKEN: 'Send {{TOKEN_SYMBOL}}',
+    RECEIVE_TOKEN: 'Receive {{TOKEN_SYMBOL}}',
+    REMOVE_TOKEN: 'Remove token',
+    NO_TOKENS: 'No KRC20 tokens',
+    ERROR_FETCH_KRC20_DATA: "Couldn't get tokens data.",
   },
 };

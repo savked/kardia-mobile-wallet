@@ -1,30 +1,38 @@
-import {ENDPOINT, RPC_ENDPOINT, ENDPOINT_GATEWAY} from '../config';
-import KardiaClient from 'kardia-dx';
+import {ENDPOINT, RPC_ENDPOINT} from '../config';
+import KardiaClient from 'kardia-js-sdk';
 import {cellValue, weiToKAI} from './amount';
+
+export const estimateGas = async (payload: Record<string, any>, data = '') => {
+  const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
+  return kardiaClient.transaction.estimateGas(payload, data);
+};
 
 export const getTxByAddress = async (address: string, page = 1, size = 10) => {
   const options = {
     method: 'GET',
   };
   const response = await fetch(
-    `${ENDPOINT_GATEWAY}addresses/${address}/txs?page=${
-      page - 1
-    }&limit=${size}`,
+    `${ENDPOINT}addresses/${address}/txs?page=${page - 1}&limit=${size}`,
     options,
   );
-  const responseJSON = await response.json();
-  const rawTxs = responseJSON?.data?.data || [];
-  return rawTxs.map((item: Record<string, any>) => {
-    return {
-      from: item.from,
-      to: item.to,
-      hash: item.hash,
-      amount: item.value,
-      date: new Date(item.time),
-      txFee: item.txFee,
-      status: item.status,
-    };
-  });
+  try {
+    const responseJSON = await response.json();
+    const rawTxs = responseJSON?.data?.data || [];
+    return rawTxs.map((item: Record<string, any>) => {
+      return {
+        from: item.from,
+        to: item.to,
+        hash: item.hash,
+        amount: item.value,
+        date: new Date(item.time),
+        txFee: item.txFee,
+        status: item.status,
+      };
+    });
+  } catch (error) {
+    console.error('Error getting TX from backend');
+    throw error;
+  }
 };
 
 export const createTx = async (

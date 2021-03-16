@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {DEFAULT_KRC20_TOKENS} from '../config';
 
 export const getWallets = async () => {
   try {
@@ -202,6 +203,38 @@ export const saveAppPasscodeSetting = async (on: boolean) => {
     await AsyncStorage.setItem(
       '@kardia_app_passcode_setting',
       on ? 'enabled' : 'disabled',
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};
+
+export const getTokenList = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@kardia_app_token_list');
+    if (value !== null) {
+      // value previously stored
+      const tokenList = JSON.parse(value);
+      if (!Array.isArray(tokenList)) {
+        console.log('Invalid local data');
+        return DEFAULT_KRC20_TOKENS;
+      }
+      return DEFAULT_KRC20_TOKENS.concat(tokenList);
+    }
+    return DEFAULT_KRC20_TOKENS;
+  } catch (e) {
+    console.error(e);
+    return DEFAULT_KRC20_TOKENS;
+  }
+};
+
+export const saveTokenList = async (tokenList: KRC20[]) => {
+  try {
+    await AsyncStorage.setItem(
+      '@kardia_app_token_list',
+      JSON.stringify(tokenList),
     );
     return true;
   } catch (e) {
