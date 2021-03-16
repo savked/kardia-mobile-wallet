@@ -19,7 +19,7 @@ export const getKRC20TokenInfo = async (address: string) => {
   const info = {
     name: await krc20.getName(true),
     symbol: await krc20.getSymbol(true),
-    decimals: await krc20.getDecimals(),
+    decimals: await krc20.getDecimals(true),
     totalSupply: await krc20.getTotalSupply(),
     avatar: responseJSON.data.logo || '',
   };
@@ -42,8 +42,7 @@ export const getTx = async (tokenAddress: string, userAddress: string) => {
   };
   const response = await requestWithTimeOut(
     fetch(
-      // `${ENDPOINT}contracts/events?page=0&limit=10&methodName=Transfer&contractAddress=${tokenAddress}`,
-      `${ENDPOINT}token/txs?page=0&limit=100&address=${userAddress}&contractAddress=${tokenAddress}`,
+      `${ENDPOINT}token/txs?page=1&limit=100&address=${userAddress}&contractAddress=${tokenAddress}`,
       requestOptions,
     ),
     50 * 1000,

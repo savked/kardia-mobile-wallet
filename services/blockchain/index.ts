@@ -6,7 +6,7 @@ export const getLatestBlock = async () => {
     method: 'GET',
   };
   const response = await requestWithTimeOut(
-    fetch(`${ENDPOINT}blocks?page=0&limit=1`, options),
+    fetch(`${ENDPOINT}blocks?page=1&limit=1`, options),
     10 * 1000,
   );
   const responseJSON = await response.json();

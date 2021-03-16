@@ -43,3 +43,7 @@ export const parseKaiBalance = (
   }
   return numeral(kaiAmount / 10 ** 18).format(showFull ? '0,0.00' : '0,0.00a');
 };
+
+export const parseDecimals = (kaiAmount: number, decimals: number) => {
+  return kaiAmount / 10 ** decimals;
+};

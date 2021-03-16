@@ -14,7 +14,8 @@ import {getTokenList, saveTokenList} from '../../../utils/local';
 import {krc20ListAtom} from '../../../atoms/krc20';
 import Button from '../../../components/Button';
 import {DEFAULT_KRC20_TOKENS} from '../../../config';
-import {parseKaiBalance} from '../../../utils/number';
+import {parseDecimals, parseKaiBalance} from '../../../utils/number';
+import numeral from 'numeral';
 
 const NewTokenModal = ({
   visible,
@@ -176,7 +177,7 @@ const NewTokenModal = ({
               <Text>
                 Token supply:{' '}
                 <Text style={{fontWeight: 'bold'}}>
-                  {parseKaiBalance(Number(totalSupply), true)}
+                  {numeral(parseDecimals(Number(totalSupply), decimals)).format('0,0.00')}
                 </Text>
               </Text>
             </View>
