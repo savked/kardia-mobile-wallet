@@ -87,8 +87,8 @@ export const styles = StyleSheet.create({
     height: 30,
   },
   tokenLogo: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     borderRadius: 25,
   },
   noTXText: {

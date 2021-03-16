@@ -169,5 +169,6 @@ export const lang: Language = {
     RECEIVE_TOKEN: 'Receive {{TOKEN_SYMBOL}}',
     REMOVE_TOKEN: 'Remove token',
     NO_TOKENS: 'No KRC20 tokens',
+    ERROR_FETCH_KRC20_DATA: "Couldn't get tokens data.",
   },
 };

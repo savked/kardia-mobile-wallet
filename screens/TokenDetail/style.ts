@@ -7,9 +7,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tokenLogo: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
   kaiLogo: {
     width: 40,

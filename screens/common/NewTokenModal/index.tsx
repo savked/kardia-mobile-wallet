@@ -61,9 +61,19 @@ const NewTokenModal = ({
     setTotalSupply('');
   };
 
+  const showTokenData = () => {
+    const rs =
+      name !== '' && symbol !== '' && totalSupply !== '' && decimals >= 0;
+    return rs;
+  };
+
   const handleImport = async () => {
     if (tokenAddress.length !== 42 && tokenAddress.length !== 40) {
       setErrorAddress(getLanguageString(language, 'INVALID_ADDRESS'));
+      return;
+    }
+    if (name === '' || symbol === '' || totalSupply === '') {
+      setErrorAddress(getLanguageString(language, 'ERROR_FETCH_KRC20_DATA'));
       return;
     }
     const _tokenAddress =
@@ -115,7 +125,7 @@ const NewTokenModal = ({
         clearState();
         onClose();
       }}
-      contentStyle={{height: name === '' ? 200 : 320}}>
+      contentStyle={{height: !showTokenData() ? 210 : 320}}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
           <View style={{marginBottom: 10}}>
@@ -139,21 +149,21 @@ const NewTokenModal = ({
               }}
             />
           </View>
-          {name !== '' && (
+          {showTokenData() && (
             <View style={{marginBottom: 10}}>
               <Text>
                 Token name: <Text style={{fontWeight: 'bold'}}>{name}</Text>
               </Text>
             </View>
           )}
-          {symbol !== '' && (
+          {showTokenData() && (
             <View style={{marginBottom: 10}}>
               <Text>
                 Token symbol: <Text style={{fontWeight: 'bold'}}>{symbol}</Text>
               </Text>
             </View>
           )}
-          {decimals >= 0 && (
+          {showTokenData() && (
             <View style={{marginBottom: 10}}>
               <Text>
                 Token decimals:{' '}
@@ -161,7 +171,7 @@ const NewTokenModal = ({
               </Text>
             </View>
           )}
-          {totalSupply !== '' && (
+          {showTokenData() && (
             <View style={{marginBottom: 10}}>
               <Text>
                 Token supply:{' '}

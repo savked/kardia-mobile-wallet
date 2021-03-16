@@ -164,5 +164,6 @@ export const lang: Language = {
     RECEIVE_TOKEN: 'Nhận {{TOKEN_SYMBOL}}',
     REMOVE_TOKEN: 'Xóa token',
     NO_TOKENS: 'Không có tokens KRC20',
+    ERROR_FETCH_KRC20_DATA: 'Không lấy được dữ liệu tokens.',
   },
 };
