@@ -27,6 +27,7 @@ export const lang: Language = {
     CLOSE: 'Đóng',
     CONFIRM: 'Xác nhận',
     SCAN_QR_FOR_ADDRESS: 'Địa chỉ ví của bạn',
+    ERC20_WARNING: 'Lưu ý: KHÔNG gửi KAI Token từ ví ERC20 wallet đến ví này.',
     LATER: 'Để sau',
     SET_APP_PASSCODE: 'Cài đặt mật khẩu',
     NO_PASSCODE: 'Bạn chưa cài mật khẩu cho ví',
@@ -37,6 +38,8 @@ export const lang: Language = {
     SELECT_ADDRESS: 'Chọn địa chỉ ví',
     NO_SAVED_ADDRESS: 'Chưa có địa chỉ ví được lưu',
     SAVE_TO_ADDRESS_BOOK: 'Lưu ví vào sổ danh bạ',
+    INVALID_ADDRESS: 'Địa chỉ không hợp lệ',
+    TOKEN_EXISTS: 'Token đã tồn tại',
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
@@ -68,8 +71,10 @@ export const lang: Language = {
     FROM: 'Ví gửi',
     TO: 'Ví nhận',
     TRANSACTION_DATE: 'Ngày giao dịch',
-    CREATE_TX_ADDRESS: 'Địa chỉ ví nhận KAI',
+    CREATE_TX_ADDRESS: 'Địa chỉ ví nhận',
+    CREATE_KRC20_TX_ADDRESS: 'Địa chỉ ví nhận',
     CREATE_TX_KAI_AMOUNT: 'Số lượng (tối đa: 5,000,000,000)',
+    CREATE_TX_KRC20_AMOUNT: 'Số lượng',
     TRANSACTION_SPEED: 'Chọn độ ưu tiên',
     SLOW_SPEED: 'Chậm',
     AVERAGE_SPEED: 'Trung bình',
@@ -151,5 +156,14 @@ export const lang: Language = {
       'Chúng tôi rất xin lỗi vì sự bất tiện này. Lỗi đã được gửi cho admin để xử lý',
     NOT_ENOUGH_BALANCE: 'Giao dịch vượt quá số tiền trong ví.',
     GENERAL_ERROR: 'Có lỗi xảy ra, vui lòng thử lại sau',
+    // KRC20 key
+    KRC20_TOKENS_SECTION_TITLE: 'Token của bạn',
+    ADD_TOKEN: 'Thêm token',
+    TOKEN_ADDRESS: 'Địa chỉ token',
+    SEND_TOKEN: 'Gửi {{TOKEN_SYMBOL}}',
+    RECEIVE_TOKEN: 'Nhận {{TOKEN_SYMBOL}}',
+    REMOVE_TOKEN: 'Xóa token',
+    NO_TOKENS: 'Không có tokens KRC20',
+    ERROR_FETCH_KRC20_DATA: 'Không lấy được dữ liệu tokens.',
   },
 };

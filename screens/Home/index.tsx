@@ -19,8 +19,7 @@ import AlertModal from '../../components/AlertModal';
 import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
 import ImportModal from './ImportModal';
-import QRModal from './QRModal';
-import TxListSection from './TxListSection';
+import QRModal from '../common/AddressQRCode';
 import CardSliderSection from './CardSliderSection';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
@@ -29,6 +28,7 @@ import {getWalletFromPK} from '../../utils/blockchain';
 import RemindPasscodeModal from '../common/RemindPasscodeModal';
 import {getStakingAmount} from '../../services/staking';
 import SelectWallet from './SelectWallet';
+import TokenListSection from './TokenListSection';
 
 const HomeScreen = () => {
   const [showQRModal, setShowQRModal] = useState(false);
@@ -259,7 +259,8 @@ const HomeScreen = () => {
           importWallet={() => setShowImportModal(true)}
           showQRModal={() => setShowQRModal(true)}
         />
-        <TxListSection />
+        {/* <TxListSection /> */}
+        <TokenListSection />
         <AlertModal
           type={scanType as any}
           visible={showScanAlert}

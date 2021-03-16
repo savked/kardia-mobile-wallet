@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,16 +13,14 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import {styles} from './style';
 import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {truncate} from '../../utils/string';
 import {format, getDigit, isNumber} from '../../utils/number';
 import {ThemeContext} from '../../App';
-import {useRecoilState, useRecoilValue} from 'recoil';
+import {useRecoilValue} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {createTx} from '../../services/transaction';
 import AlertModal from '../../components/AlertModal';
-import {getBalance} from '../../services/account';
-import {saveWallets} from '../../utils/local';
+import {getSelectedWallet, getWallets} from '../../utils/local';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Modal from '../../components/Modal';
 import List from '../../components/List';
@@ -32,13 +30,19 @@ import {getLanguageString, parseError} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {weiToKAI} from '../../services/transaction/amount';
+import numeral from 'numeral';
+import {estimateKRC20Gas, transferKRC20} from '../../services/krc20';
 
-const MAX_AMOUNT = 5000000000;
+// const MAX_AMOUNT = 5000000000;
 
 const {height: viewportHeight} = Dimensions.get('window');
 
-const CreateTxScreen = () => {
-  const [wallets, setWallets] = useRecoilState(walletsAtom);
+const CreateKRC20TxScreen = () => {
+  const {params}: any = useRoute();
+  const tokenAddress = params ? params.tokenAddress : '';
+  const tokenSymbol = params ? params.tokenSymbol : '';
+
+  const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const addressBook = useRecoilValue(addressBookAtom);
   const [address, setAddress] = useState('');
@@ -46,6 +50,7 @@ const CreateTxScreen = () => {
   const [showQRModal, setShowQRModal] = useState(false);
   const [showAddressBookModal, setShowAddressBookModal] = useState(false);
   const [gasPrice, setGasPrice] = useState(1);
+  const [gasLimit, setGasLimit] = useState(-1);
   const [error, setError] = useState('');
   const [successTxHash, setSuccessHash] = useState('');
   const [loading, setLoading] = useState(false);
@@ -57,21 +62,32 @@ const CreateTxScreen = () => {
   const navigation = useNavigation();
   const language = useRecoilValue(languageAtom);
 
+  useEffect(() => {
+    (async () => {
+      const _txAmount = Number(amount.replace(/,/g, ''));
+      if (_txAmount <= 0) {
+        return;
+      }
+      const estimatedGas = await estimateKRC20Gas(address, _txAmount);
+      setGasLimit(estimatedGas);
+    })();
+  }, [amount, address]);
+
   async function send() {
     setShowConfirmModal(false);
     setLoading(true);
-    const wallet = wallets[selectedWallet];
+    const _wallets = await getWallets();
+    const _selectedWallet = await getSelectedWallet();
+    const wallet: Wallet = _wallets[_selectedWallet];
     const _txAmount = Number(amount.replace(/,/g, ''));
     try {
-      const txHash = await createTx(wallet, address, _txAmount);
-      const newBallance = await getBalance(wallet.address);
-      const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
-
-      newWallets[selectedWallet].balance = newBallance;
-      setWallets(newWallets);
-      saveWallets(newWallets);
-
-      setSuccessHash(txHash);
+      const txResult = await transferKRC20(
+        tokenAddress,
+        wallet.privateKey || '',
+        address,
+        _txAmount,
+      );
+      setSuccessHash(txResult.transactionHash);
       setLoading(false);
     } catch (err) {
       console.error(err);
@@ -206,7 +222,9 @@ const CreateTxScreen = () => {
             <Text style={styles.confirmText}>
               {getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:{' '}
             </Text>
-            <Text style={styles.confirmContent}>{amount} KAI</Text>
+            <Text style={styles.confirmContent}>
+              {amount} {tokenSymbol}
+            </Text>
           </View>
         </View>
         <View
@@ -239,7 +257,7 @@ const CreateTxScreen = () => {
             onChangeText={setAddress}
             message={errorAddress}
             value={truncate(address, 10, 20)}
-            headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
+            headline={getLanguageString(language, 'CREATE_KRC20_TX_ADDRESS')}
             icons={() => {
               return (
                 <>
@@ -269,9 +287,9 @@ const CreateTxScreen = () => {
             message={errorAmount}
             onChangeText={(newAmount) => {
               const digitOnly = getDigit(newAmount);
-              if (Number(digitOnly) > MAX_AMOUNT) {
-                return;
-              }
+              // if (Number(digitOnly) > MAX_AMOUNT) {
+              //   return;
+              // }
               if (digitOnly === '') {
                 setAmount('0');
                 return;
@@ -280,7 +298,7 @@ const CreateTxScreen = () => {
             }}
             onBlur={() => setAmount(format(Number(amount)))}
             value={amount}
-            headline={getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}
+            headline={getLanguageString(language, 'CREATE_TX_KRC20_AMOUNT')}
           />
         </View>
 
@@ -305,7 +323,7 @@ const CreateTxScreen = () => {
                 {getLanguageString(language, 'GAS_LIMIT')}
               </Text>
               <Text style={[{color: theme.textColor, textAlign: 'right'}]}>
-                29,000
+                {gasLimit > 0 && numeral(gasLimit).format('0,0')}
               </Text>
             </View>
           </View>
@@ -429,4 +447,4 @@ const ListCard = ({
     </View>
   );
 };
-export default CreateTxScreen;
+export default CreateKRC20TxScreen;
