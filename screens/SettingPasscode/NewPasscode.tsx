@@ -1,6 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useState} from 'react';
 import {View} from 'react-native';
+import {useSetRecoilState} from 'recoil';
+import {localAuthAtom, localAuthEnabledAtom} from '../../atoms/localAuth';
 import {ThemeContext} from '../../ThemeContext';
 import {saveAppPasscode} from '../../utils/local';
 import Step1 from './Step1';
@@ -13,8 +15,13 @@ const NewPasscode = () => {
   const [step, setStep] = useState(1);
   const navigation = useNavigation();
 
+  const setLocalAuthEnabled = useSetRecoilState(localAuthEnabledAtom);
+  const setIsLocalAuthed = useSetRecoilState(localAuthAtom);
+
   const savePasscode = async () => {
     await saveAppPasscode(passcode);
+    setIsLocalAuthed(true);
+    setLocalAuthEnabled(true);
     setStep(1);
     navigation.navigate('Setting');
   };
