@@ -5,7 +5,7 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
 import List from '../../components/List';
 import {styles} from './style';
-import {parseKaiBalance} from '../../utils/number';
+import {parseDecimals} from '../../utils/number';
 import Button from '../../components/Button';
 import {useRecoilValue} from 'recoil';
 import numeral from 'numeral';
@@ -115,7 +115,7 @@ const TokenListSection = () => {
                 {renderIcon(item.avatar)}
                 <View
                   style={{
-                    flex: 2.5,
+                    flex: 1,
                     flexDirection: 'column',
                     justifyContent: 'space-between',
                     height: '100%',
@@ -139,7 +139,10 @@ const TokenListSection = () => {
                     justifyContent: 'flex-end',
                   }}>
                   <Text style={[styles.kaiAmount, {color: theme.textColor}]}>
-                    {parseKaiBalance(balance[index])} {item.symbol}
+                    {numeral(
+                      parseDecimals(balance[index], item.decimals),
+                    ).format('0,0.00')}{' '}
+                    {item.symbol}
                   </Text>
                 </View>
               </TouchableOpacity>
