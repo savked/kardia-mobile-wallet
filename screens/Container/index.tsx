@@ -1,6 +1,6 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {View, Image} from 'react-native';
-import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {View, Image, AppState} from 'react-native';
+import {useRecoilState, useSetRecoilState} from 'recoil';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -26,7 +26,7 @@ import {getTokenInfo} from '../../services/token';
 import SettingStackScreen from '../../SettingStack';
 import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
-import {localAuthAtom} from '../../atoms/localAuth';
+import {localAuthAtom, localAuthEnabledAtom} from '../../atoms/localAuth';
 import ConfirmPasscode from '../ConfirmPasscode';
 import StakingStackScreen from '../../StakingStack';
 import {getLanguageString} from '../../utils/lang';
@@ -102,8 +102,10 @@ const AppContainer = () => {
     selectedWalletAtom,
   );
   const [language, setLanguage] = useRecoilState(languageAtom);
-  const isLocalAuthed = useRecoilValue(localAuthAtom);
-  const [localAuthEnabled, setLocalAuthEnabled] = useState(true);
+  const [isLocalAuthed, setIsLocalAuthed] = useRecoilState(localAuthAtom);
+  const [localAuthEnabled, setLocalAuthEnabled] = useRecoilState(
+    localAuthEnabledAtom,
+  );
   const [inited, setInited] = useState(0);
 
   const theme = useContext(ThemeContext);
@@ -117,13 +119,30 @@ const AppContainer = () => {
     })();
   }, [selectedWallet, inited]);
 
+  const handleAppStateChange = useCallback(
+    (state: string) => {
+      console.log('state', state);
+      if (state === 'background' && localAuthEnabled) {
+        setIsLocalAuthed(false);
+      }
+    },
+    [localAuthEnabled, setIsLocalAuthed],
+  );
+
+  useEffect(() => {
+    AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      AppState.removeEventListener('change', handleAppStateChange);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inited]);
+
   useEffect(() => {
     (async () => {
       // Get local auth setting
       const enabled = await getAppPasscodeSetting();
-      if (!enabled) {
-        setLocalAuthEnabled(false);
-      }
+      setLocalAuthEnabled(enabled);
 
       // Get local wallets data
       try {
@@ -177,6 +196,7 @@ const AppContainer = () => {
     setLanguage,
     setSelectedWallet,
     setKRC20TokenList,
+    setLocalAuthEnabled,
   ]);
 
   if (!inited) {
