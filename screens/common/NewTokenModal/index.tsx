@@ -14,7 +14,7 @@ import {getTokenList, saveTokenList} from '../../../utils/local';
 import {krc20ListAtom} from '../../../atoms/krc20';
 import Button from '../../../components/Button';
 import {DEFAULT_KRC20_TOKENS} from '../../../config';
-import {parseDecimals, parseKaiBalance} from '../../../utils/number';
+import {parseDecimals} from '../../../utils/number';
 import numeral from 'numeral';
 
 const NewTokenModal = ({
@@ -34,6 +34,7 @@ const NewTokenModal = ({
   const [decimals, setDecimals] = useState(-1);
   const [totalSupply, setTotalSupply] = useState('');
   const [avatar, setAvatar] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const setKRC20List = useSetRecoilState(krc20ListAtom);
 
@@ -42,6 +43,7 @@ const NewTokenModal = ({
       if (tokenAddress.length !== 42 && tokenAddress.length !== 40) {
         return;
       }
+      setLoading(true);
       const _tokenAddress =
         tokenAddress.length === 42 ? tokenAddress : `0x${tokenAddress}`;
       const info = await getKRC20TokenInfo(_tokenAddress);
@@ -50,6 +52,7 @@ const NewTokenModal = ({
       setDecimals(info.decimals);
       setTotalSupply(info.totalSupply);
       setAvatar(info.avatar);
+      setLoading(false);
     })();
   }, [tokenAddress]);
 
@@ -177,13 +180,20 @@ const NewTokenModal = ({
               <Text>
                 Token supply:{' '}
                 <Text style={{fontWeight: 'bold'}}>
-                  {numeral(parseDecimals(Number(totalSupply), decimals)).format('0,0.00')}
+                  {numeral(parseDecimals(Number(totalSupply), decimals)).format(
+                    '0,0.00',
+                  )}
                 </Text>
               </Text>
             </View>
           )}
           <View>
-            <Button title="Add token" onPress={handleImport} />
+            <Button
+              title="Add token"
+              onPress={handleImport}
+              loading={loading}
+              disabled={loading}
+            />
           </View>
         </View>
       </TouchableWithoutFeedback>

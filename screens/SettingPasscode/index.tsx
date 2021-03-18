@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, Text, TouchableOpacity, View} from 'react-native';
 import ToggleSwitch from 'toggle-switch-react-native';
 import OtpInputs from 'react-native-otp-inputs';
-import {useRecoilValue} from 'recoil';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {languageAtom} from '../../atoms/language';
 import Button from '../../components/Button';
 import {ThemeContext} from '../../ThemeContext';
@@ -16,6 +16,7 @@ import {
 } from '../../utils/local';
 import NewPasscode from './NewPasscode';
 import {styles} from './style';
+import {localAuthEnabledAtom} from '../../atoms/localAuth';
 
 const SettingPasscode = () => {
   const theme = useContext(ThemeContext);
@@ -27,6 +28,7 @@ const SettingPasscode = () => {
   const [verified, setVerified] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+  const setLocalAuthEnabled = useSetRecoilState(localAuthEnabledAtom);
 
   useEffect(() => {
     (async () => {
@@ -117,6 +119,7 @@ const SettingPasscode = () => {
       setPasscode('');
       setVerified(false);
       await saveAppPasscode('');
+      setLocalAuthEnabled(false);
     }
     setEnabled(isOn);
     setLoading(false);
