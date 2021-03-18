@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import Modal from '../../../components/Modal';
-import {Keyboard, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {Keyboard, Platform, Text, TouchableWithoutFeedback, View} from 'react-native';
 import TextInput from '../../../components/TextInput';
 import {styles} from './style';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
@@ -36,6 +36,9 @@ const NewTokenModal = ({
   const [avatar, setAvatar] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const [keyboardShown, setKeyboardShown] = useState(false);
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
+
   const setKRC20List = useSetRecoilState(krc20ListAtom);
 
   useEffect(() => {
@@ -55,6 +58,27 @@ const NewTokenModal = ({
       setLoading(false);
     })();
   }, [tokenAddress]);
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
+    } else {
+      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    }
+
+    // cleanup function
+    return () => {
+      if (Platform.OS === 'ios') {
+        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
+      } else {
+        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+      }
+    };
+  }, []);
 
   const clearState = () => {
     setTokenAddress('');
@@ -122,6 +146,30 @@ const NewTokenModal = ({
     );
   }
 
+  const _keyboardDidShow = (e: any) => {
+    setKeyboardOffset(e.endCoordinates.height);
+    setKeyboardShown(true);
+  };
+
+  const _keyboardDidHide = () => {
+    setKeyboardOffset(0);
+    setKeyboardShown(false);
+  };
+
+  const getModalStyle = () => {
+    if (Platform.OS === 'android') {
+      return {
+        height: !showTokenData() ? 210 : 320
+      };
+    } else {
+      return {
+        height: !showTokenData() ? 210 : 320,
+        marginBottom: keyboardOffset,
+        marginTop: -keyboardOffset,
+      };
+    }
+  };
+
   return (
     <Modal
       visible={visible}
@@ -129,7 +177,7 @@ const NewTokenModal = ({
         clearState();
         onClose();
       }}
-      contentStyle={{height: !showTokenData() ? 210 : 320}}>
+      contentStyle={getModalStyle() as any}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
           <View style={{marginBottom: 10}}>
