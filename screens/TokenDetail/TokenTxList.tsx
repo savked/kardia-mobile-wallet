@@ -16,18 +16,21 @@ import {
   getLanguageString,
 } from '../../utils/lang';
 import {getSelectedWallet, getWallets} from '../../utils/local';
-import {parseKaiBalance} from '../../utils/number';
+import {parseDecimals} from '../../utils/number';
 import {truncate} from '../../utils/string';
+import numeral from 'numeral';
 import {styles} from './style';
 
 const TokenTxList = ({
   tokenAddress,
   tokenAvatar,
   tokenSymbol,
+  tokenDecimals,
 }: {
   tokenAddress: string;
   tokenAvatar: string;
   tokenSymbol: string;
+  tokenDecimals: number;
 }) => {
   const navigation = useNavigation();
   const selectedWallet = useRecoilValue(selectedWalletAtom);
@@ -148,6 +151,7 @@ const TokenTxList = ({
                       address: tokenAddress,
                       symbol: tokenSymbol,
                       avatar: tokenAvatar,
+                      decimals: tokenDecimals,
                     },
                   },
                 });
@@ -185,7 +189,10 @@ const TokenTxList = ({
                     item.type === 'IN' ? {color: '#61b15a'} : {color: 'red'},
                   ]}>
                   {item.type === 'IN' ? '+' : '-'}
-                  {parseKaiBalance(Number(item.value))} {tokenSymbol}
+                  {numeral(
+                    parseDecimals(Number(item.value), tokenDecimals),
+                  ).format('0,0.00')}{' '}
+                  {tokenSymbol}
                 </Text>
               </View>
             </TouchableOpacity>

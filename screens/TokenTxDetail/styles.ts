@@ -7,8 +7,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tokenLogo: {
-    width: 90,
-    height: 90,
+    width: 65,
+    height: 65,
   },
   kaiLogo: {
     width: 65,

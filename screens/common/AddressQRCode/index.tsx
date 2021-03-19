@@ -47,7 +47,7 @@ const QRModal = ({
           style={{
             fontSize: 16,
             fontStyle: 'italic',
-            paddingHorizontal: 24,
+            paddingHorizontal: 18,
             textAlign: 'center',
             textDecorationLine: 'underline',
           }}>
@@ -61,12 +61,13 @@ const QRModal = ({
           paddingHorizontal: 12,
           paddingVertical: 16,
           color: theme.primaryColor,
+          textAlign: 'center',
         }}>
         {getLanguageString(language, 'ERC20_WARNING')}
       </Text>
       <View style={{paddingVertical: 14}}>
         <QRCode
-          size={viewportWidth / 1.8}
+          size={viewportWidth / 2}
           value={wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
           logo={require('../../../assets/logo.png')}
           logoBackgroundColor="#FFFFFF"

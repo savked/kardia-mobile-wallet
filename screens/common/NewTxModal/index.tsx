@@ -1,11 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   TouchableWithoutFeedback,
   View,
   Text,
   Keyboard,
   Dimensions,
+  Platform,
 } from 'react-native';
 import {styles} from './style';
 import AlertModal from '../../../components/AlertModal';
@@ -51,8 +52,41 @@ const NewTxModal = ({
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [errorAddress, setErrorAddress] = useState(' ');
   const [errorAmount, setErrorAmount] = useState(' ');
+  const [keyboardShown, setKeyboardShown] = useState(false);
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const language = useRecoilValue(languageAtom);
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
+    } else {
+      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    }
+
+    // cleanup function
+    return () => {
+      if (Platform.OS === 'ios') {
+        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
+      } else {
+        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+      }
+    };
+  }, []);
+
+  const _keyboardDidShow = (e: any) => {
+    setKeyboardOffset(e.endCoordinates.height);
+    setKeyboardShown(true);
+  };
+
+  const _keyboardDidHide = () => {
+    setKeyboardOffset(0);
+    setKeyboardShown(false);
+  };
 
   async function send() {
     setShowConfirmModal(false);
@@ -125,6 +159,23 @@ const NewTxModal = ({
     setAmount('0');
     setErrorAddress(' ');
     setErrorAmount(' ');
+  };
+
+  const getModalStyle = () => {
+    if (Platform.OS === 'android') {
+      return {
+        paddingHorizontal: 0,
+        // flex: 0.65,
+        height: 520,
+      };
+    } else {
+      return {
+        justifyContent: 'space-around',
+        flex: 0.4,
+        marginBottom: keyboardOffset,
+        marginTop: -keyboardOffset,
+      };
+    }
   };
 
   if (showQRModal) {
@@ -225,11 +276,7 @@ const NewTxModal = ({
         }
       }}
       showCloseButton={true}
-      contentStyle={{
-        paddingHorizontal: 0,
-        // flex: 0.65,
-        height: 520,
-      }}>
+      contentStyle={getModalStyle()}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
           <View style={{marginBottom: 10}}>

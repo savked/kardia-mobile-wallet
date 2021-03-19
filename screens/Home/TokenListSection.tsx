@@ -45,7 +45,7 @@ const TokenListSection = () => {
 
   const renderIcon = (avatar: string) => {
     return (
-      <View style={{flex: 1, marginRight: 18}}>
+      <View style={{flex: 0.5, marginRight: 18}}>
         <View
           style={{
             width: 50,
@@ -108,6 +108,7 @@ const TokenListSection = () => {
                       name: item.name,
                       symbol: item.symbol,
                       avatar: item.avatar,
+                      decimals: item.decimals,
                       // balance: balance[index],
                     },
                   });
@@ -118,6 +119,7 @@ const TokenListSection = () => {
                     flex: 1,
                     flexDirection: 'column',
                     justifyContent: 'space-between',
+                    alignItems: 'flex-start',
                     height: '100%',
                   }}>
                   <Text
@@ -134,7 +136,7 @@ const TokenListSection = () => {
                 </View>
                 <View
                   style={{
-                    flex: 2.5,
+                    flex: 1.5,
                     flexDirection: 'row',
                     justifyContent: 'flex-end',
                   }}>

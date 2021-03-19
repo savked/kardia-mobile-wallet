@@ -13,13 +13,14 @@ import {
   getDateTimeFormat,
   getLanguageString,
 } from '../../utils/lang';
-import {parseKaiBalance} from '../../utils/number';
+import {parseDecimals} from '../../utils/number';
 import {
   copyToClipboard,
   getFromAddressBook,
   truncate,
 } from '../../utils/string';
 import {styles} from './styles';
+import numeral from 'numeral';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import Button from '../../components/Button';
 
@@ -92,7 +93,10 @@ const TokenTxDetail = () => {
           )}
         </View>
         <Text style={[styles.tokenBalance, {color: theme.textColor}]}>
-          {parseKaiBalance(Number(txData.value), true)} {tokenInfo.symbol}
+          {numeral(
+            parseDecimals(Number(txData.value), tokenInfo.decimals || 18),
+          ).format('0,0.00')}{' '}
+          {tokenInfo.symbol}
         </Text>
         {/* <Divider /> */}
       </View>

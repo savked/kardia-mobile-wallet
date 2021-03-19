@@ -23,10 +23,11 @@ import {
   getWallets,
   saveTokenList,
 } from '../../utils/local';
-import {parseKaiBalance} from '../../utils/number';
+import {parseDecimals} from '../../utils/number';
 import AddressQRModal from '../common/AddressQRCode';
 import {styles} from './style';
 import TokenTxList from './TokenTxList';
+import numeral from 'numeral';
 
 const TokenDetail = () => {
   const theme = useContext(ThemeContext);
@@ -38,6 +39,7 @@ const TokenDetail = () => {
   const tokenAddress = params
     ? (params as Record<string, any>).tokenAddress
     : '';
+  const tokenDecimals = params ? (params as Record<string, any>).decimals : 18;
 
   const language = useRecoilValue(languageAtom);
 
@@ -162,7 +164,8 @@ const TokenDetail = () => {
         }}>
         {renderIcon(tokenAvatar)}
         <Text style={{fontSize: 20, color: theme.textColor}}>
-          {parseKaiBalance(tokenBalance, true)} {tokenSymbol}
+          {numeral(parseDecimals(tokenBalance, tokenDecimals)).format('0,0.00')}{' '}
+          {tokenSymbol}
         </Text>
         <View style={styles.buttonGroupContainer}>
           <Button
@@ -205,6 +208,7 @@ const TokenDetail = () => {
           tokenAddress={tokenAddress}
           tokenAvatar={tokenAvatar}
           tokenSymbol={tokenSymbol}
+          tokenDecimals={tokenDecimals}
         />
       </View>
     </View>
