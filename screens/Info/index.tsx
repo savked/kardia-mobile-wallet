@@ -7,7 +7,7 @@ import {styles} from './style';
 const INFO_DATA = [
   {
     label: 'Version',
-    value: '1.2.2',
+    value: '1.2.3',
   },
 ];
 
