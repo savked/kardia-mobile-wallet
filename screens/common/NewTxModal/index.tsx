@@ -170,8 +170,9 @@ const NewTxModal = ({
       };
     } else {
       return {
-        justifyContent: 'space-around',
-        flex: 0.4,
+        paddingHorizontal: 0,
+        // flex: 0.65,
+        height: 520,
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,
       };
