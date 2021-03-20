@@ -121,7 +121,6 @@ const AppContainer = () => {
 
   const handleAppStateChange = useCallback(
     (state: string) => {
-      console.log('state', state);
       if (state === 'background' && localAuthEnabled) {
         setIsLocalAuthed(false);
       }

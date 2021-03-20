@@ -78,5 +78,7 @@ export const transferKRC20 = async (
   const krc20 = client.krc20;
   krc20.address = tokenAddress;
 
+  await krc20.getDecimals(true);
+
   return krc20.transfer(privateKey, to, amount, transferPayload);
 };

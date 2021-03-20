@@ -180,6 +180,7 @@ const TokenDetail = () => {
                 params: {
                   tokenAddress,
                   tokenSymbol,
+                  tokenDecimals,
                 },
               });
             }}

@@ -18,7 +18,7 @@ import {truncate} from '../../utils/string';
 import {format, getDigit, isNumber} from '../../utils/number';
 import {ThemeContext} from '../../App';
 import {useRecoilValue} from 'recoil';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
+// import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import AlertModal from '../../components/AlertModal';
 import {getSelectedWallet, getWallets} from '../../utils/local';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -29,9 +29,13 @@ import TextAvatar from '../../components/TextAvatar';
 import {getLanguageString, parseError} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {weiToKAI} from '../../services/transaction/amount';
+// import {weiToKAI} from '../../services/transaction/amount';
 import numeral from 'numeral';
-import {estimateKRC20Gas, transferKRC20} from '../../services/krc20';
+import {
+  estimateKRC20Gas,
+  getBalance,
+  transferKRC20,
+} from '../../services/krc20';
 
 // const MAX_AMOUNT = 5000000000;
 
@@ -41,9 +45,10 @@ const CreateKRC20TxScreen = () => {
   const {params}: any = useRoute();
   const tokenAddress = params ? params.tokenAddress : '';
   const tokenSymbol = params ? params.tokenSymbol : '';
+  const tokenDecimals = params ? params.tokenDecimals : 18;
 
-  const wallets = useRecoilValue(walletsAtom);
-  const selectedWallet = useRecoilValue(selectedWalletAtom);
+  // const wallets = useRecoilValue(walletsAtom);
+  // const selectedWallet = useRecoilValue(selectedWalletAtom);
   const addressBook = useRecoilValue(addressBookAtom);
   const [address, setAddress] = useState('');
   const [amount, setAmount] = useState('0');
@@ -109,7 +114,7 @@ const CreateKRC20TxScreen = () => {
     setShowAddressBookModal(true);
   };
 
-  const showConfirm = () => {
+  const showConfirm = async () => {
     let isValid = true;
     if (address === '') {
       setErrorAddress(getLanguageString(language, 'REQUIRED_FIELD'));
@@ -119,10 +124,13 @@ const CreateKRC20TxScreen = () => {
       setErrorAmount(getLanguageString(language, 'REQUIRED_FIELD'));
       isValid = false;
     }
-    const wallet = wallets[selectedWallet];
+    const _wallets = await getWallets();
+    const _selectedWallet = await getSelectedWallet();
+    const wallet: Wallet = _wallets[_selectedWallet];
     const _txAmount = Number(amount.replace(/,/g, ''));
-    const currentBalance = Number(weiToKAI(wallet.balance));
-    if (_txAmount > currentBalance) {
+    const currentBalance = await getBalance(tokenAddress, wallet.address);
+    console.log('currentBalance', currentBalance);
+    if (_txAmount * 10 ** tokenDecimals > currentBalance) {
       setErrorAmount(getLanguageString(language, 'NOT_ENOUGH_KAI_FOR_TX'));
       isValid = false;
     }
