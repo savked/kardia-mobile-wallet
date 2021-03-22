@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View, Image} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {ThemeContext} from '../../../ThemeContext';
 import {languageAtom} from '../../../atoms/language';
@@ -22,16 +22,19 @@ const ListCard = ({
       title: getLanguageString(language, 'SLOW_SPEED'),
       time: `~5 ${getLanguageString(language, 'SECOND')}`,
       gasPrice: 1,
+      image: require('../../../assets/icon/speed_slow_dark.png'),
     },
     {
       title: getLanguageString(language, 'AVERAGE_SPEED'),
       time: `~3 ${getLanguageString(language, 'SECOND')}`,
       gasPrice: 2,
+      image: require('../../../assets/icon/speed_average_dark.png'),
     },
     {
       title: getLanguageString(language, 'FAST_SPEED'),
       time: `~1 ${getLanguageString(language, 'SECOND')}`,
       gasPrice: 3,
+      image: require('../../../assets/icon/speed_fast_dark.png'),
     },
   ];
 
@@ -44,27 +47,52 @@ const ListCard = ({
             key={`tx-speed-${index}`}
             onPress={() => selectGasPrice(item.gasPrice)}
             style={{
-              backgroundColor: active ? theme.primaryColor : '#dbdbdb',
-              padding: 20,
+              backgroundColor: active
+                ? 'rgba(20, 72, 255, 1)'
+                : theme.backgroundColor,
+              paddingVertical: 8,
+              paddingHorizontal: 12,
               borderRadius: 8,
-              width: '30%',
+              width: '32%',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 5,
+              },
+              shadowOpacity: 0.36,
+              shadowRadius: 6.68,
+
+              elevation: 11,
             }}>
-            <Text
+            <View
               style={{
-                textAlign: 'center',
-                color: active ? theme.primaryTextColor : theme.ghostTextColor,
+                borderRadius: 8,
+                padding: 8,
+                backgroundColor: active
+                  ? 'rgba(51, 96, 255, 1)'
+                  : 'rgba(58, 59, 60, 1)',
               }}>
-              {item.title}
-            </Text>
-            <Text
-              style={{
-                textAlign: 'center',
-                color: active ? theme.primaryTextColor : theme.ghostTextColor,
-              }}>
-              {item.time}
-            </Text>
+              <Image source={item.image} />
+            </View>
+            <View style={{alignItems: 'flex-start'}}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: active ? theme.textColor : theme.ghostTextColor,
+                }}>
+                {item.title}
+              </Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: active ? theme.textColor : theme.ghostTextColor,
+                }}>
+                {item.time}
+              </Text>
+            </View>
           </TouchableOpacity>
         );
       })}

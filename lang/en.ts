@@ -27,7 +27,8 @@ export const lang: Language = {
     CLOSE: 'Close',
     CONFIRM: 'Confirm',
     SCAN_QR_FOR_ADDRESS: 'Your Wallet Address',
-    ERC20_WARNING: 'Please DO NOT send KAI Token from ERC20 wallet to this wallet.',
+    ERC20_WARNING:
+      'Please DO NOT send KAI Token from ERC20 wallet to this wallet.',
     LATER: 'Later',
     SET_APP_PASSCODE: 'Set Passcode',
     NO_PASSCODE: "You haven't set your app passcode yet.",
@@ -66,6 +67,7 @@ export const lang: Language = {
       'Search with address / hash / block number...',
     VIEW_ALL_TRANSACTION: 'View All',
     SEND: 'Send',
+    CANCEL: 'Cancel',
     RECEIVE: 'Receive',
     TRANSACTION_HASH: 'Transaction Hash',
     TRANSACTION_DETAIL: 'Detail',

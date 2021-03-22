@@ -7,7 +7,10 @@ import {
   Keyboard,
   Dimensions,
   Platform,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import {styles} from './style';
 import AlertModal from '../../../components/AlertModal';
 import Modal from '../../../components/Modal';
@@ -23,10 +26,11 @@ import {createTx} from '../../../services/transaction';
 import {saveWallets} from '../../../utils/local';
 import {weiToKAI} from '../../../services/transaction/amount';
 import ListCard from './ListCard';
-import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 import {getDigit, isNumber, format} from '../../../utils/number';
 import AddressBookModal from '../AddressBookModal';
 import ScanQRAddressModal from '../ScanQRAddressModal';
+import {theme} from '../../../theme/dark';
 
 const MAX_AMOUNT = 5000000000;
 
@@ -50,7 +54,7 @@ const NewTxModal = ({
   const [successTxHash, setSuccessHash] = useState('');
   const [loading, setLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [errorAddress, setErrorAddress] = useState(' ');
+  const [errorAddress, setErrorAddress] = useState('');
   const [errorAmount, setErrorAmount] = useState(' ');
   const [keyboardShown, setKeyboardShown] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
@@ -157,8 +161,8 @@ const NewTxModal = ({
   const resetState = () => {
     setAddress('');
     setAmount('0');
-    setErrorAddress(' ');
-    setErrorAmount(' ');
+    setErrorAddress('');
+    setErrorAmount('');
   };
 
   const getModalStyle = () => {
@@ -167,12 +171,14 @@ const NewTxModal = ({
         paddingHorizontal: 0,
         // flex: 0.65,
         height: 520,
+        backgroundColor: 'rgba(58, 59, 60, 1)',
       };
     } else {
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
         height: 520,
+        backgroundColor: 'rgba(58, 59, 60, 1)',
         marginBottom: keyboardOffset - (keyboardShown ? 100 : 0),
         marginTop: -keyboardOffset - (keyboardShown ? 100 : 0),
       };
@@ -276,46 +282,74 @@ const NewTxModal = ({
           onClose();
         }
       }}
-      showCloseButton={true}
+      showCloseButton={false}
       contentStyle={getModalStyle()}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
-          <View style={{marginBottom: 10}}>
-            <TextInput
-              headlineStyle={{color: 'black'}}
-              onChangeText={setAddress}
-              message={errorAddress}
-              value={address}
-              inputStyle={{paddingRight: 70}}
-              headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
-              icons={() => {
-                return (
-                  <>
-                    <Icon
-                      onPress={showQRScanner}
-                      name="qrcode"
-                      size={25}
-                      color={'black'}
-                      style={[styles.textIcon, {right: 45}]}
-                    />
-                    <Icon
-                      onPress={showAddressBookSelector}
-                      name="address-book"
-                      size={25}
-                      color={'black'}
-                      style={[styles.textIcon, {right: 15}]}
-                    />
-                  </>
-                );
-              }}
-            />
+          <View
+            style={{
+              marginBottom: 10,
+              flexDirection: 'row',
+              alignItems: 'flex-end',
+            }}>
+            <View style={{flex: 3}}>
+              <TextInput
+                // headlineStyle={{color: 'black'}}
+                onChangeText={setAddress}
+                message={errorAddress}
+                value={address}
+                inputStyle={{
+                  backgroundColor: 'rgba(96, 99, 108, 1)',
+                }}
+                headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
+              />
+            </View>
+            <TouchableOpacity
+              onPress={showQRScanner}
+              style={{
+                // flex: 1,
+                padding: 15,
+                borderColor: 'rgba(255, 255, 255, 0.1)',
+                height: 44,
+                width: 44,
+                borderWidth: 1.5,
+                borderRadius: 8,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginHorizontal: 8,
+              }}>
+              <Image
+                source={require('../../../assets/icon/scan_qr_dark.png')}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={showAddressBookSelector}
+              style={{
+                // flex: 1,
+                padding: 15,
+                borderColor: 'rgba(255, 255, 255, 0.1)',
+                height: 44,
+                width: 44,
+                borderWidth: 1.5,
+                borderRadius: 8,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Image
+                source={require('../../../assets/icon/address_book_dark.png')}
+              />
+            </TouchableOpacity>
           </View>
 
           <View style={{marginBottom: 10}}>
             <TextInput
-              headlineStyle={{color: 'black'}}
+              // headlineStyle={{color: 'black'}}
               keyboardType="numeric"
               message={errorAmount}
+              inputStyle={{
+                backgroundColor: 'rgba(96, 99, 108, 1)',
+                color: theme.textColor,
+              }}
               onChangeText={(newAmount) => {
                 const digitOnly = getDigit(newAmount);
                 if (Number(digitOnly) > MAX_AMOUNT) {
@@ -333,42 +367,59 @@ const NewTxModal = ({
             />
           </View>
 
-          <Text style={[styles.title, {marginBottom: 12}]}>
+          <Text
+            style={[styles.title, {marginBottom: 12, color: theme.textColor}]}>
             {getLanguageString(language, 'TRANSACTION_SPEED')}
           </Text>
           <View style={{marginBottom: 20}}>
             <ListCard gasPrice={gasPrice} selectGasPrice={setGasPrice} />
           </View>
 
-          <View>
-            <View style={styles.wrap}>
-              <View>
-                <Text>{getLanguageString(language, 'GAS_PRICE')}</Text>
-                <Text>{gasPrice} Oxy</Text>
-              </View>
-              <View>
-                <Text>{getLanguageString(language, 'GAS_LIMIT')}</Text>
-                <Text style={{textAlign: 'right'}}>29,000</Text>
-              </View>
-            </View>
-          </View>
-
           <View
             style={{
-              flexDirection: 'row',
+              // flexDirection: 'row',
               marginTop: 20,
-              justifyContent: 'space-around',
+              justifyContent: 'center',
             }}>
             <Button
-              title={getLanguageString(language, 'SEND').toUpperCase()}
-              onPress={showConfirm}
-              iconName="paper-plane"
+              title={getLanguageString(language, 'CANCEL')}
+              onPress={() => {
+                resetState();
+                onClose();
+              }}
               block
-              type="primary"
-              size="large"
+              type="outline"
+              style={{marginBottom: 12}}
+              // size="large"
               loading={loading}
               disabled={loading}
             />
+            <TouchableOpacity style={{height: 44, borderRadius: 8}}>
+              <LinearGradient
+                start={{x: 0, y: 0}}
+                locations={[0, 0.2, 0.4, 0.6, 0.8]}
+                end={{x: 1, y: 1}}
+                style={{height: 44, borderRadius: 8}}
+                colors={[
+                  'rgba(126, 219, 220, 0.3)',
+                  'rgba(228, 175, 203, 0.3)',
+                  'rgba(226, 194, 139, 0.3)',
+                  'rgba(255, 255, 255, 0.3)',
+                  'rgba(255, 255, 255, 1)',
+                ]}>
+                <Text>{getLanguageString(language, 'SEND')}</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+            {/* <Button
+              title={getLanguageString(language, 'SEND')}
+              onPress={showConfirm}
+              // iconName="paper-plane"
+              block
+              type="primary"
+              // size="large"
+              loading={loading}
+              disabled={loading}
+            /> */}
           </View>
           <AlertModal
             type="error"

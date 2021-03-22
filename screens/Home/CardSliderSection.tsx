@@ -3,7 +3,6 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Dimensions, Image, Text, TouchableOpacity, View} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {useRecoilState, useRecoilValue} from 'recoil';
-import LinearGradient from 'react-native-linear-gradient';
 import {
   Menu,
   MenuOptions,
@@ -52,9 +51,9 @@ const CardSliderSection = ({
   const [removeIndex, setRemoveIndex] = useState(-1);
   const language = useRecoilValue(languageAtom);
 
-  function send() {
-    setShowNewTxModal(true);
-  }
+  // function send() {
+  //   setShowNewTxModal(true);
+  // }
 
   function showCredential() {
     navigation.navigate('Setting', {
@@ -68,11 +67,12 @@ const CardSliderSection = ({
   const renderWalletItem = ({item: wallet}: any) => {
     return (
       <View style={styles.kaiCardContainer}>
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 1}}
-          colors={['#623555', '#e62c2c']}
-          style={styles.kaiCard}>
+        <View style={styles.kaiCard}>
+          <Image
+            style={styles.cardBackground}
+            source={require('../../assets/card_background.png')}
+            // source={require('../../assets/test.jpg')}
+          />
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{paddingRight: 8, flex: 10}}>
               <Text style={styles.kaiCardText}>
@@ -109,7 +109,7 @@ const CardSliderSection = ({
                     alignItems: 'flex-end',
                   },
                 }}>
-                <Icon name="cog" color="#FFFFFF" size={27} />
+                <Icon name="ellipsis-h" color="#FFFFFF" size={27} />
               </MenuTrigger>
               <MenuOptions
                 customStyles={{
@@ -134,10 +134,10 @@ const CardSliderSection = ({
                   (Number(weiToKAI(wallet.balance)) + wallet.staked),
               ).format('0,0.00a')}
             </Text>
-            <Image
+            {/* <Image
               style={styles.cardLogo}
               source={require('../../assets/kar1.png')}
-            />
+            /> */}
           </View>
 
           <View
@@ -162,7 +162,7 @@ const CardSliderSection = ({
               {numeral(wallet.staked).format('0,0.00a')} KAI
             </Text>
           </View>
-        </LinearGradient>
+        </View>
       </View>
     );
   };
@@ -240,7 +240,7 @@ const CardSliderSection = ({
         inactiveDotScale={0.6}
       />
 
-      <View style={styles.buttonGroupContainer}>
+      {/* <View style={styles.buttonGroupContainer}>
         <Button
           title={getLanguageString(language, 'SEND')}
           type="outline"
@@ -270,7 +270,7 @@ const CardSliderSection = ({
           style={{marginLeft: 5}}
           textStyle={{color: '#FFFFFF'}}
         />
-      </View>
+      </View> */}
       <AlertModal
         visible={removeIndex >= 0}
         type="confirm"

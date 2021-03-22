@@ -45,13 +45,13 @@ const TokenListSection = () => {
 
   const renderIcon = (avatar: string) => {
     return (
-      <View style={{flex: 0.5, marginRight: 18}}>
+      <View style={{flex: 0.3, marginRight: 18}}>
         <View
           style={{
-            width: 50,
-            height: 50,
+            width: 30,
+            height: 30,
 
-            borderRadius: 25,
+            borderRadius: 15,
             backgroundColor: 'white',
 
             flexDirection: 'row',
@@ -88,10 +88,10 @@ const TokenListSection = () => {
               key={item.name}
               style={{
                 padding: 15,
-                backgroundColor:
-                  index % 2 === 0
-                    ? theme.backgroundFocusColor
-                    : theme.backgroundColor,
+                marginHorizontal: 20,
+                borderRadius: 8,
+                marginVertical: 6,
+                backgroundColor: theme.backgroundFocusColor,
               }}>
               <TouchableOpacity
                 style={{
@@ -118,7 +118,7 @@ const TokenListSection = () => {
                   style={{
                     flex: 1,
                     flexDirection: 'column',
-                    justifyContent: 'space-between',
+                    justifyContent: 'center',
                     alignItems: 'flex-start',
                     height: '100%',
                   }}>
@@ -130,20 +130,23 @@ const TokenListSection = () => {
                     }}>
                     {item.name}
                   </Text>
-                  <Text style={{color: 'gray'}}>
+                  {/* <Text style={{color: 'gray'}}>
                     $ {numeral(item.price).format('0,0.00')}
-                  </Text>
+                  </Text> */}
                 </View>
                 <View
                   style={{
-                    flex: 1.5,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
+                    flex: 1,
+                    // flexDirection: 'row',
+                    alignItems: 'flex-end',
+                    justifyContent: 'center',
                   }}>
                   <Text style={[styles.kaiAmount, {color: theme.textColor}]}>
                     {numeral(
                       parseDecimals(balance[index], item.decimals),
-                    ).format('0,0.00')}{' '}
+                    ).format('0,0.00')}
+                  </Text>
+                  <Text style={{color: theme.ghostTextColor}}>
                     {item.symbol}
                   </Text>
                 </View>

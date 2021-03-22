@@ -46,15 +46,23 @@ const Wrap = () => {
           let iconName = '';
 
           if (route.name === 'Home') {
-            iconName = 'home';
+            return (
+              <Image source={require('../../assets/icon/home_dark.png')} />
+            );
           } else if (route.name === 'News') {
             iconName = 'newspaper-o';
           } else if (route.name === 'Transaction') {
-            iconName = 'exchange';
+            return (
+              <Image
+                source={require('../../assets/icon/transaction_dark.png')}
+              />
+            );
           } else if (route.name === 'DApp') {
             iconName = 'th-large';
           } else if (route.name === 'Setting') {
-            iconName = 'cog';
+            return (
+              <Image source={require('../../assets/icon/setting_dark.png')} />
+            );
           } else if (route.name === 'Staking') {
             iconName = 'bank';
           }
@@ -64,7 +72,7 @@ const Wrap = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: theme.primaryTextColor,
+        activeTintColor: theme.primaryColor,
         inactiveTintColor: '#7A859A',
         inactiveBackgroundColor: theme.backgroundColor,
         activeBackgroundColor: theme.backgroundColor,
@@ -75,12 +83,13 @@ const Wrap = () => {
         },
         labelStyle: {
           fontWeight: 'bold',
+          marginBottom: 4,
         },
         style: {
           backgroundColor: theme.backgroundFocusColor,
           borderTopColor: theme.backgroundFocusColor,
         },
-        showLabel: false,
+        // showLabel: false,
       }}>
       {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
       <Tab.Screen name="Home" component={HomeStackScreen} />

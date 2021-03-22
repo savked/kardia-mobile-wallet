@@ -63,6 +63,7 @@ export const lang: Language = {
     SEARCH_TRANSACTION_PLACEHOLDER: 'Tìm kiếm...',
     VIEW_ALL_TRANSACTION: 'Tất cả',
     SEND: 'Gửi KAI',
+    CANCEL: 'Hủy',
     RECEIVE: 'Nhận KAI',
     TRANSACTION_HASH: 'Mã giao dịch',
     TRANSACTION_DETAIL: 'Chi tiết',

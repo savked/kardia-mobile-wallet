@@ -22,13 +22,12 @@ export const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   kaiCardContainer: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
     paddingVertical: 10,
     height: 240,
   },
   kaiCard: {
     borderRadius: 8,
-    backgroundColor: '#AD182A',
     padding: 25,
     flex: 1,
     justifyContent: 'space-between',
@@ -82,13 +81,20 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 
+  cardBackground: {
+    flex: 1,
+    resizeMode: 'contain',
+    position: 'absolute',
+    borderRadius: 8,
+  },
+
   kaiLogo: {
     width: 30,
     height: 30,
   },
   tokenLogo: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
     borderRadius: 25,
   },
   noTXText: {
