@@ -173,8 +173,8 @@ const NewTxModal = ({
         paddingHorizontal: 0,
         // flex: 0.65,
         height: 520,
-        marginBottom: keyboardOffset,
-        marginTop: -keyboardOffset,
+        marginBottom: keyboardOffset - (keyboardShown ? 100 : 0),
+        marginTop: -keyboardOffset - (keyboardShown ? 100 : 0),
       };
     }
   };
