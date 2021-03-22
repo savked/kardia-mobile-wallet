@@ -129,7 +129,6 @@ const CreateKRC20TxScreen = () => {
     const wallet: Wallet = _wallets[_selectedWallet];
     const _txAmount = Number(amount.replace(/,/g, ''));
     const currentBalance = await getBalance(tokenAddress, wallet.address);
-    console.log('currentBalance', currentBalance);
     if (_txAmount * 10 ** tokenDecimals > currentBalance) {
       setErrorAmount(getLanguageString(language, 'NOT_ENOUGH_KAI_FOR_TX'));
       isValid = false;
