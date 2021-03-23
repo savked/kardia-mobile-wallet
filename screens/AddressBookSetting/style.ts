@@ -28,7 +28,14 @@ export const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   emptyAddressBook: {
-    fontSize: 16,
+    fontSize: 24,
+    fontWeight: 'bold',
     padding: 15,
+  },
+  noAddressContainer: {
+    flex: 1,
+    paddingHorizontal: 83,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

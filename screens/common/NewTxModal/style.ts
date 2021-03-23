@@ -85,4 +85,8 @@ export const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
   },
+  headline: {
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
 });

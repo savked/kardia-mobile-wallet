@@ -64,7 +64,8 @@ const StakingScreen = () => {
   useFocusEffect(
     useCallback(() => {
       getStakingData();
-      setStatusBarColor(theme.primaryColor);
+      // TODO: Update after designer finish
+      setStatusBarColor(theme.backgroundColor);
       return () => {
         setStatusBarColor(theme.backgroundColor);
       };
@@ -76,7 +77,7 @@ const StakingScreen = () => {
     if (message !== '' || undelegatingIndex >= 0) {
       setStatusBarColor(theme.backgroundColor);
     } else {
-      setStatusBarColor(theme.primaryColor);
+      setStatusBarColor(theme.backgroundFocusColor);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [undelegatingIndex, message]);
@@ -110,7 +111,7 @@ const StakingScreen = () => {
       <View style={{flex: 1}}>
         <View
           style={{
-            backgroundColor: theme.primaryColor,
+            backgroundColor: theme.backgroundFocusColor,
             borderRadius: 8,
             padding: 12,
             paddingTop: 50,
@@ -130,9 +131,10 @@ const StakingScreen = () => {
             <Button
               title={getLanguageString(language, 'INVEST')}
               iconName="plus"
-              type="outline"
-              textStyle={{color: '#FFFFFF'}}
+              type="primary"
+              // textStyle={{color: '#FFFFFF'}}
               onPress={() => navigation.navigate('ValidatorList')}
+              style={{width: '30%'}}
             />
           </View>
         </View>

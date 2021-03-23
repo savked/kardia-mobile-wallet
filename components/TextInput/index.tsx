@@ -24,7 +24,10 @@ const CustomTextInput = ({
   headlineStyle,
   autoCapitalize = 'sentences',
   inputStyle,
-}: CustomTextInputProps & {headlineStyle?: StyleProp<TextStyle>, inputStyle?: StyleProp<TextStyle>}) => {
+}: CustomTextInputProps & {
+  headlineStyle?: StyleProp<TextStyle>;
+  inputStyle?: StyleProp<TextStyle>;
+}) => {
   const theme = useContext(ThemeContext);
 
   const renderMessage = () => {
@@ -55,7 +58,7 @@ const CustomTextInput = ({
             styles.input,
             multiline ? styles.multiline : null,
             // block ? {width: '100%'} : null,
-            inputStyle
+            inputStyle,
           ]}
           keyboardType={keyboardType as any}
           onChangeText={onChangeText}

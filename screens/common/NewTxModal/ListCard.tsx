@@ -75,7 +75,7 @@ const ListCard = ({
                   ? 'rgba(51, 96, 255, 1)'
                   : 'rgba(58, 59, 60, 1)',
               }}>
-              <Image source={item.image} />
+              <Image source={item.image} style={{width: 20, height: 20}} />
             </View>
             <View style={{alignItems: 'flex-start'}}>
               <Text

@@ -48,6 +48,7 @@ export const styles = StyleSheet.create({
   headerButtonGroup: {
     flexDirection: 'row',
     padding: 20,
+    width: '100%',
     justifyContent: 'center',
   },
 });

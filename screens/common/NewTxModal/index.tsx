@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import {styles} from './style';
 import AlertModal from '../../../components/AlertModal';
 import Modal from '../../../components/Modal';
@@ -54,7 +53,7 @@ const NewTxModal = ({
   const [successTxHash, setSuccessHash] = useState('');
   const [loading, setLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [errorAddress, setErrorAddress] = useState('');
+  const [errorAddress, setErrorAddress] = useState(' ');
   const [errorAmount, setErrorAmount] = useState(' ');
   const [keyboardShown, setKeyboardShown] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
@@ -170,14 +169,14 @@ const NewTxModal = ({
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: 520,
+        height: 480,
         backgroundColor: 'rgba(58, 59, 60, 1)',
       };
     } else {
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: 520,
+        height: 480,
         backgroundColor: 'rgba(58, 59, 60, 1)',
         marginBottom: keyboardOffset - (keyboardShown ? 100 : 0),
         marginTop: -keyboardOffset - (keyboardShown ? 100 : 0),
@@ -286,11 +285,16 @@ const NewTxModal = ({
       contentStyle={getModalStyle()}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
+          <View>
+            <Text style={[styles.headline, {color: theme.textColor}]}>
+              {getLanguageString(language, 'CREATE_TX_ADDRESS')}
+            </Text>
+          </View>
           <View
             style={{
               marginBottom: 10,
               flexDirection: 'row',
-              alignItems: 'flex-end',
+              alignItems: 'flex-start',
             }}>
             <View style={{flex: 3}}>
               <TextInput
@@ -301,7 +305,7 @@ const NewTxModal = ({
                 inputStyle={{
                   backgroundColor: 'rgba(96, 99, 108, 1)',
                 }}
-                headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
+                // headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
               />
             </View>
             <TouchableOpacity
@@ -320,6 +324,7 @@ const NewTxModal = ({
               }}>
               <Image
                 source={require('../../../assets/icon/scan_qr_dark.png')}
+                style={{width: 18, height: 18}}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -337,6 +342,7 @@ const NewTxModal = ({
               }}>
               <Image
                 source={require('../../../assets/icon/address_book_dark.png')}
+                style={{width: 18, height: 18}}
               />
             </TouchableOpacity>
           </View>
@@ -394,24 +400,8 @@ const NewTxModal = ({
               loading={loading}
               disabled={loading}
             />
-            <TouchableOpacity style={{height: 44, borderRadius: 8}}>
-              <LinearGradient
-                start={{x: 0, y: 0}}
-                locations={[0, 0.2, 0.4, 0.6, 0.8]}
-                end={{x: 1, y: 1}}
-                style={{height: 44, borderRadius: 8}}
-                colors={[
-                  'rgba(126, 219, 220, 0.3)',
-                  'rgba(228, 175, 203, 0.3)',
-                  'rgba(226, 194, 139, 0.3)',
-                  'rgba(255, 255, 255, 0.3)',
-                  'rgba(255, 255, 255, 1)',
-                ]}>
-                <Text>{getLanguageString(language, 'SEND')}</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-            {/* <Button
-              title={getLanguageString(language, 'SEND')}
+            <Button
+              title={getLanguageString(language, 'SEND_NOW')}
               onPress={showConfirm}
               // iconName="paper-plane"
               block
@@ -419,7 +409,7 @@ const NewTxModal = ({
               // size="large"
               loading={loading}
               disabled={loading}
-            /> */}
+            />
           </View>
           <AlertModal
             type="error"

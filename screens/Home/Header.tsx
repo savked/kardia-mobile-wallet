@@ -45,14 +45,14 @@ const HomeHeader = () => {
         <IconButton
           style={{marginRight: 20}}
           name="bell-o"
-          size={24}
+          size={18}
           color={theme.textColor}
           badge={newNotiCount}
           onPress={navigateNotiScreen}
         />
         <IconButton
           name="plus"
-          size={24}
+          size={18}
           color={theme.textColor}
           onPress={send}
         />

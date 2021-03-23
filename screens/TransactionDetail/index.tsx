@@ -229,10 +229,10 @@ const TransactionDetail = () => {
                   index: 0,
                   routes: [
                     {
-                      name: 'Setting',
+                      name: 'Address',
                       state: {
                         routes: [
-                          {name: 'Setting'},
+                          {name: 'AddressBook'},
                           {
                             name: 'NewAddress',
                             params: {

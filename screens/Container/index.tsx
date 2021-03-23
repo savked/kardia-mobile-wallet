@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {View, Image, AppState} from 'react-native';
 import {useRecoilState, useSetRecoilState} from 'recoil';
@@ -33,6 +34,7 @@ import {getLanguageString} from '../../utils/lang';
 import Portal from '@burstware/react-native-portal';
 import {krc20ListAtom} from '../../atoms/krc20';
 import HomeStackScreen from '../../HomeStack';
+import AddressStackScreen from '../../AddressStack';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -42,29 +44,68 @@ const Wrap = () => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        tabBarIcon: ({color, size}) => {
+        tabBarIcon: ({color, size, focused}) => {
           let iconName = '';
 
           if (route.name === 'Home') {
             return (
-              <Image source={require('../../assets/icon/home_dark.png')} />
+              <Image
+                style={{width: 24, height: 24}}
+                source={
+                  focused
+                    ? require('../../assets/icon/home_dark.png')
+                    : require('../../assets/icon/home_dark_inactive.png')
+                }
+              />
             );
           } else if (route.name === 'News') {
             iconName = 'newspaper-o';
           } else if (route.name === 'Transaction') {
             return (
               <Image
-                source={require('../../assets/icon/transaction_dark.png')}
+                style={{width: 24, height: 24}}
+                source={
+                  focused
+                    ? require('../../assets/icon/transaction_dark.png')
+                    : require('../../assets/icon/transaction_dark_inactive.png')
+                }
               />
             );
           } else if (route.name === 'DApp') {
             iconName = 'th-large';
           } else if (route.name === 'Setting') {
             return (
-              <Image source={require('../../assets/icon/setting_dark.png')} />
+              <Image
+                style={{width: 24, height: 24}}
+                source={
+                  focused
+                    ? require('../../assets/icon/setting_dark.png')
+                    : require('../../assets/icon/setting_dark_inactive.png')
+                }
+              />
             );
           } else if (route.name === 'Staking') {
-            iconName = 'bank';
+            return (
+              <Image
+                style={{width: 24, height: 24}}
+                source={
+                  focused
+                    ? require('../../assets/icon/staking_dark.png')
+                    : require('../../assets/icon/staking_dark_inactive.png')
+                }
+              />
+            );
+          } else if (route.name === 'Address') {
+            return (
+              <Image
+                style={{width: 24, height: 24}}
+                source={
+                  focused
+                    ? require('../../assets/icon/address_book_dark.png')
+                    : require('../../assets/icon/address_book_dark_inactive.png')
+                }
+              />
+            );
           }
 
           // You can return any component that you like here!
@@ -96,6 +137,7 @@ const Wrap = () => {
       <Tab.Screen name="Transaction" component={TransactionStackScreen} />
       {/* <Tab.Screen name="DApp" component={DAppScreen} /> */}
       <Tab.Screen name="Staking" component={StakingStackScreen} />
+      <Tab.Screen name="Address" component={AddressStackScreen} />
       {/* <Tab.Screen name="News" component={NewsScreen} /> */}
       <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>
