@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   header: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 12,
     height: HEADER_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',

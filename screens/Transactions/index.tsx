@@ -13,7 +13,6 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import {getTxByAddress} from '../../services/transaction';
 import {parseKaiBalance} from '../../utils/number';
 import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
-import {addressBookAtom} from '../../atoms/addressBook';
 import IconButton from '../../components/IconButton';
 import {
   getDateFNSLocale,
@@ -25,6 +24,8 @@ import NewTxModal from '../common/NewTxModal';
 import {ThemeContext} from '../../ThemeContext';
 import {getSelectedWallet, getWallets} from '../../utils/local';
 import Button from '../../components/Button';
+import {groupByDate} from '../../utils/date';
+import TxDetailModal from '../common/TxDetailModal';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
@@ -33,10 +34,12 @@ const TransactionScreen = () => {
   const [wallets] = useRecoilState(walletsAtom);
   const [selectedWallet] = useRecoilState(selectedWalletAtom);
   const [txList, setTxList] = useState([] as any[]);
-  const [filterTx, setFilterTx] = useState('');
+  // const [filterTx, setFilterTx] = useState('');
   const [showNewTxModal, setShowNewTxModal] = useState(false);
-  const addressBook = useRecoilValue(addressBookAtom);
   const language = useRecoilValue(languageAtom);
+
+  const [showTxDetail, setShowTxDetail] = useState(false);
+  const [txObjForDetail, setTxObjForDetail] = useState();
 
   const parseTXForList = (tx: Transaction) => {
     return {
@@ -46,6 +49,7 @@ const TransactionScreen = () => {
       date: tx.date,
       from: tx.from,
       to: tx.to,
+      hash: tx.hash,
       blockHash: tx.blockHash || '',
       blockNumber: tx.blockNumber || '',
       status: tx.status,
@@ -72,7 +76,7 @@ const TransactionScreen = () => {
       const newTxList = await getTxByAddress(
         localWallets[localSelectedWallet].address,
         1,
-        30,
+        1000,
       );
       setTxList(newTxList.map(parseTXForList));
     } catch (error) {
@@ -80,63 +84,70 @@ const TransactionScreen = () => {
     }
   };
 
-  const filterTransaction = (tx: any) => {
-    if (filterTx.length < 3) {
-      return true;
-    }
-    if (
-      tx.label.toUpperCase().includes(filterTx.toUpperCase()) ||
-      tx.blockHash.toUpperCase().includes(filterTx.toUpperCase()) ||
-      tx.blockNumber.includes(filterTx)
-    ) {
-      return true;
-    }
-    const posibleAddress = addressBook.filter((item) =>
-      item.name.toUpperCase().includes(filterTx.toUpperCase()),
-    );
-    const existed = posibleAddress.find((item) => item.address === tx.from);
-    if (existed) {
-      return true;
-    }
-    return false;
-  };
+  // const filterTransaction = (tx: any) => {
+  //   if (filterTx.length < 3) {
+  //     return true;
+  //   }
+  //   if (
+  //     tx.label.toUpperCase().includes(filterTx.toUpperCase()) ||
+  //     tx.blockHash.toUpperCase().includes(filterTx.toUpperCase()) ||
+  //     tx.blockNumber.includes(filterTx)
+  //   ) {
+  //     return true;
+  //   }
+  //   const posibleAddress = addressBook.filter((item) =>
+  //     item.name.toUpperCase().includes(filterTx.toUpperCase()),
+  //   );
+  //   const existed = posibleAddress.find((item) => item.address === tx.from);
+  //   if (existed) {
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
-  const renderIcon = (status: number) => {
+  const renderIcon = (status: number, type: 'IN' | 'OUT') => {
     return (
       <View style={{flex: 1}}>
         <View
           style={{
-            width: 50,
-            height: 50,
+            width: 32,
+            height: 32,
 
-            borderRadius: 25,
-            backgroundColor: 'white',
+            borderRadius: 12,
+            backgroundColor: theme.backgroundColor,
 
-            flexDirection: 'row',
+            // flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
 
-            borderWidth: 1,
-            borderColor: 'gray',
+            // borderWidth: 1,
+            // borderColor: 'gray',
           }}>
-          <Image
-            source={require('../../assets/logo.png')}
-            style={styles.kaiLogo}
-          />
+          {type === 'IN' ? (
+            <Image
+              source={require('../../assets/icon/receive.png')}
+              style={styles.kaiLogo}
+            />
+          ) : (
+            <Image
+              source={require('../../assets/icon/send.png')}
+              style={styles.kaiLogo}
+            />
+          )}
         </View>
         {status ? (
           <AntIcon
             name="checkcircle"
-            size={20}
+            size={14}
             color={'green'}
-            style={{position: 'absolute', right: -7, bottom: 0}}
+            style={{position: 'absolute', right: 0, bottom: 0}}
           />
         ) : (
           <AntIcon
             name="closecircle"
-            size={20}
+            size={14}
             color={'red'}
-            style={{position: 'absolute', right: -7, bottom: 0}}
+            style={{position: 'absolute', right: 0, bottom: 0}}
           />
         )}
       </View>
@@ -159,6 +170,11 @@ const TransactionScreen = () => {
         visible={showNewTxModal}
         onClose={() => setShowNewTxModal(false)}
       />
+      <TxDetailModal
+        visible={showTxDetail}
+        onClose={() => setShowTxDetail(false)}
+        txObj={txObjForDetail}
+      />
       <View style={styles.header}>
         <Text style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'RECENT_TRANSACTION')}
@@ -168,7 +184,6 @@ const TransactionScreen = () => {
           color={theme.textColor}
           size={18}
           onPress={() => navigation.navigate('Notification')}
-          // onPress={() => setShowNewTxModal(true)}
         />
       </View>
       {/* <View style={styles.controlContainer}>
@@ -182,103 +197,139 @@ const TransactionScreen = () => {
           onChangeText={setFilterTx}
         />
       </View> */}
-      <List
-        containerStyle={{flex: 1}}
-        items={txList.filter(filterTransaction)}
-        render={(item, index) => {
-          return (
-            <View
+      {/* {groupByDate(txList.filter(filterTransaction), 'date').map( */}
+      {groupByDate(txList, 'date').map((txsByDate) => {
+        const dateLocale = getDateFNSLocale(language);
+        return (
+          <React.Fragment key={`transaction-by-${txsByDate.date.getTime()}`}>
+            <Text
               style={{
-                padding: 15,
-                backgroundColor:
-                  index % 2 === 0
-                    ? theme.backgroundFocusColor
-                    : theme.backgroundColor,
+                marginHorizontal: 20,
+                color: theme.textColor,
               }}>
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-                onPress={() =>
-                  navigation.navigate('Transaction', {
-                    screen: 'TransactionDetail',
-                    initial: false,
-                    params: {txHash: item.label},
-                  })
-                }>
-                {renderIcon(item.status)}
-                <View
-                  style={{
-                    flexDirection: 'column',
-                    flex: 4,
-                    paddingHorizontal: 14,
-                  }}>
-                  <Text style={{color: '#FFFFFF'}}>
-                    {truncate(item.label, 8, 10)}
-                  </Text>
-                  <Text style={{color: 'gray'}}>
-                    {isSameDay(item.date, new Date())
-                      ? `${formatDistanceToNowStrict(item.date, {
-                          locale: getDateFNSLocale(language),
-                        })} ${getLanguageString(language, 'AGO')}`
-                      : format(item.date, getDateTimeFormat(language), {
-                          locale: getDateFNSLocale(language),
-                        })}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flex: 3,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                  }}>
-                  <Text
-                    style={[
-                      styles.kaiAmount,
-                      item.type === 'IN' ? {color: '#53B680'} : {color: 'red'},
-                    ]}>
-                    {item.type === 'IN' ? '+' : '-'}
-                    {parseKaiBalance(item.amount)} KAI
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          );
-        }}
-        onSelect={(itemIndex) => {
-          Alert.alert(`${itemIndex}`);
-        }}
-        ListEmptyComponent={
-          <View style={styles.noTXContainer}>
-            <Image
-              style={{width: 87, height: 66, marginBottom: 23}}
-              source={require('../../assets/no_tx_butterfly.png')}
-            />
-            <Image
-              style={{width: 170, height: 140}}
-              source={require('../../assets/no_tx_box.png')}
-            />
-            <Text style={[styles.noTXText, {color: theme.textColor}]}>
-              {getLanguageString(language, 'NO_TRANSACTION')}
+              {format(txsByDate.date, 'E, dd/MM/yyyy', {locale: dateLocale})}
             </Text>
-            <Button
-              type="primary"
-              onPress={() => setShowNewTxModal(true)}
-              title={getLanguageString(language, 'SEND_NOW')}
-              block={true}
-              icon={
-                <AntIcon
-                  name="plus"
-                  size={20}
-                  color={'#000000'}
-                  style={{marginRight: 8}}
-                />
+            <List
+              // containerStyle={{flex: 1}}
+              items={txsByDate.items}
+              render={(item) => {
+                return (
+                  <View
+                    style={{
+                      paddingVertical: 12,
+                      paddingHorizontal: 16,
+                      marginHorizontal: 20,
+                      marginVertical: 8,
+                      borderRadius: 8,
+                      backgroundColor: theme.backgroundFocusColor,
+                    }}>
+                    <TouchableOpacity
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                      onPress={() => {
+                        setTxObjForDetail(item);
+                        setShowTxDetail(true);
+                      }}>
+                      {renderIcon(item.status, item.type)}
+                      <View
+                        style={{
+                          flexDirection: 'column',
+                          flex: 4,
+                          paddingHorizontal: 14,
+                        }}>
+                        <Text style={{color: '#FFFFFF'}}>
+                          {item.type === 'IN'
+                            ? getLanguageString(language, 'TX_TYPE_RECEIVED')
+                            : getLanguageString(language, 'TX_TYPE_SEND')}
+                        </Text>
+                        <Text style={{color: '#DBDBDB', fontSize: 12}}>
+                          {truncate(item.label, 8, 10)}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flex: 3,
+                          alignItems: 'flex-end',
+                        }}>
+                        <Text
+                          style={[
+                            styles.kaiAmount,
+                            item.type === 'IN'
+                              ? {color: '#53B680'}
+                              : {color: 'red'},
+                          ]}>
+                          {item.type === 'IN' ? '+' : '-'}
+                          {parseKaiBalance(item.amount, true)} KAI
+                        </Text>
+                        <Text style={{color: '#DBDBDB', fontSize: 12}}>
+                          {isSameDay(item.date, new Date())
+                            ? `${formatDistanceToNowStrict(item.date, {
+                                locale: getDateFNSLocale(language),
+                              })} ${getLanguageString(language, 'AGO')}`
+                            : format(item.date, getDateTimeFormat(language), {
+                                locale: getDateFNSLocale(language),
+                              })}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }}
+              onSelect={(itemIndex) => {
+                Alert.alert(`${itemIndex}`);
+              }}
+              ListEmptyComponent={
+                <View style={styles.noTXContainer}>
+                  <Image
+                    style={{width: 87, height: 66, marginBottom: 23}}
+                    source={require('../../assets/no_tx_butterfly.png')}
+                  />
+                  <Image
+                    style={{width: 170, height: 140}}
+                    source={require('../../assets/no_tx_box.png')}
+                  />
+                  <Text style={[styles.noTXText, {color: theme.textColor}]}>
+                    {getLanguageString(language, 'NO_TRANSACTION')}
+                  </Text>
+                  <Button
+                    type="primary"
+                    onPress={() => setShowNewTxModal(true)}
+                    title={getLanguageString(language, 'SEND_NOW')}
+                    block={true}
+                    icon={
+                      <AntIcon
+                        name="plus"
+                        size={20}
+                        color={'#000000'}
+                        style={{marginRight: 8}}
+                      />
+                    }
+                  />
+                </View>
               }
             />
-          </View>
-        }
+          </React.Fragment>
+        );
+      })}
+      <Button
+        type="primary"
+        icon={<AntIcon name="plus" size={24} />}
+        size="small"
+        onPress={() => setShowNewTxModal(true)}
+        style={{
+          position: 'absolute',
+          right: 20,
+          bottom: 52,
+          minWidth: 52,
+          width: 52,
+          minHeight: 52,
+          height: 52,
+          borderRadius: 26,
+          paddingVertical: 0,
+        }}
       />
     </SafeAreaView>
   );

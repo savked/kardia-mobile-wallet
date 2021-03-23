@@ -71,6 +71,8 @@ export const lang: Language = {
     SEND_NOW: 'Send Now',
     CANCEL: 'Cancel',
     RECEIVE: 'Receive',
+    TX_TYPE_RECEIVED: 'Received',
+    TX_TYPE_SEND: 'Send',
     TRANSACTION_HASH: 'Transaction Hash',
     TRANSACTION_DETAIL: 'Detail',
     TRANSACTION_AMOUNT: 'Amount',

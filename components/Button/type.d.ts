@@ -2,7 +2,7 @@ interface ButtonProps {
   onPress: () => void;
   title?: string;
   icon?: any;
-  style?: any;
+  // style?: any;
   textStyle?: any;
   iconName?: string;
   iconSize?: number;

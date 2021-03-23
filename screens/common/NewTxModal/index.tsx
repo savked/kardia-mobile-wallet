@@ -304,6 +304,7 @@ const NewTxModal = ({
                 value={address}
                 inputStyle={{
                   backgroundColor: 'rgba(96, 99, 108, 1)',
+                  color: theme.textColor,
                 }}
                 // headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
               />
@@ -397,7 +398,6 @@ const NewTxModal = ({
               type="outline"
               style={{marginBottom: 12}}
               // size="large"
-              loading={loading}
               disabled={loading}
             />
             <Button

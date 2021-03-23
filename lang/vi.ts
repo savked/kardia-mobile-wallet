@@ -67,6 +67,8 @@ export const lang: Language = {
     SEND_NOW: 'Gửi KAI',
     CANCEL: 'Hủy',
     RECEIVE: 'Nhận KAI',
+    TX_TYPE_RECEIVED: 'Nhận',
+    TX_TYPE_SEND: 'Gửi',
     TRANSACTION_HASH: 'Mã giao dịch',
     TRANSACTION_DETAIL: 'Chi tiết',
     TRANSACTION_AMOUNT: 'Số lượng',
