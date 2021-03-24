@@ -8,5 +8,7 @@ export const styles = StyleSheet.create({
   textStyle: {
     fontSize: 22,
     fontWeight: 'bold',
+    textAlign: 'center',
+    textAlignVertical: 'center',
   },
 });

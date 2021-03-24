@@ -50,6 +50,7 @@ const TransactionScreen = () => {
       from: tx.from,
       to: tx.to,
       hash: tx.hash,
+      txFee: tx.fee,
       blockHash: tx.blockHash || '',
       blockNumber: tx.blockNumber || '',
       status: tx.status,
@@ -198,6 +199,35 @@ const TransactionScreen = () => {
         />
       </View> */}
       {/* {groupByDate(txList.filter(filterTransaction), 'date').map( */}
+      {groupByDate(txList, 'date').length === 0 && (
+        <View style={styles.noTXContainer}>
+          <Image
+            style={{width: 87, height: 66, marginBottom: 23}}
+            source={require('../../assets/no_tx_butterfly.png')}
+          />
+          <Image
+            style={{width: 170, height: 140}}
+            source={require('../../assets/no_tx_box.png')}
+          />
+          <Text style={[styles.noTXText, {color: theme.textColor}]}>
+            {getLanguageString(language, 'NO_TRANSACTION')}
+          </Text>
+          <Button
+            type="primary"
+            onPress={() => setShowNewTxModal(true)}
+            title={getLanguageString(language, 'SEND_NOW')}
+            block={true}
+            icon={
+              <AntIcon
+                name="plus"
+                size={20}
+                color={'#000000'}
+                style={{marginRight: 8}}
+              />
+            }
+          />
+        </View>
+      )}
       {groupByDate(txList, 'date').map((txsByDate) => {
         const dateLocale = getDateFNSLocale(language);
         return (
@@ -281,35 +311,6 @@ const TransactionScreen = () => {
               onSelect={(itemIndex) => {
                 Alert.alert(`${itemIndex}`);
               }}
-              ListEmptyComponent={
-                <View style={styles.noTXContainer}>
-                  <Image
-                    style={{width: 87, height: 66, marginBottom: 23}}
-                    source={require('../../assets/no_tx_butterfly.png')}
-                  />
-                  <Image
-                    style={{width: 170, height: 140}}
-                    source={require('../../assets/no_tx_box.png')}
-                  />
-                  <Text style={[styles.noTXText, {color: theme.textColor}]}>
-                    {getLanguageString(language, 'NO_TRANSACTION')}
-                  </Text>
-                  <Button
-                    type="primary"
-                    onPress={() => setShowNewTxModal(true)}
-                    title={getLanguageString(language, 'SEND_NOW')}
-                    block={true}
-                    icon={
-                      <AntIcon
-                        name="plus"
-                        size={20}
-                        color={'#000000'}
-                        style={{marginRight: 8}}
-                      />
-                    }
-                  />
-                </View>
-              }
             />
           </React.Fragment>
         );
@@ -319,17 +320,7 @@ const TransactionScreen = () => {
         icon={<AntIcon name="plus" size={24} />}
         size="small"
         onPress={() => setShowNewTxModal(true)}
-        style={{
-          position: 'absolute',
-          right: 20,
-          bottom: 52,
-          minWidth: 52,
-          width: 52,
-          minHeight: 52,
-          height: 52,
-          borderRadius: 26,
-          paddingVertical: 0,
-        }}
+        style={styles.addTXButton}
       />
     </SafeAreaView>
   );

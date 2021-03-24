@@ -1,10 +1,26 @@
+import {format} from 'date-fns';
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
 import {View, Text, Image} from 'react-native';
+import {useRecoilValue} from 'recoil';
+import {addressBookAtom} from '../../../atoms/addressBook';
+import {languageAtom} from '../../../atoms/language';
+import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
+import Button from '../../../components/Button';
+import Divider from '../../../components/Divider';
 import Modal from '../../../components/Modal';
 import {ThemeContext} from '../../../ThemeContext';
+import {
+  getDateFNSLocale,
+  getLanguageString,
+  parseCardAvatar,
+} from '../../../utils/lang';
 import {parseKaiBalance} from '../../../utils/number';
-import { truncate } from '../../../utils/string';
+import {
+  getFromAddressBook,
+  getAddressAvatar,
+  truncate,
+} from '../../../utils/string';
 import {styles} from './style';
 
 export default ({
@@ -17,6 +33,119 @@ export default ({
   onClose: () => void;
 }) => {
   const theme = useContext(ThemeContext);
+  const language = useRecoilValue(languageAtom);
+  const dateLocale = getDateFNSLocale(language);
+
+  const wallets = useRecoilValue(walletsAtom);
+  const selectedWallet = useRecoilValue(selectedWalletAtom);
+  const addressBook = useRecoilValue(addressBookAtom);
+
+  const isNewContact = () => {
+    return (
+      getFromAddressBook(addressBook, getOtherAddress()) === getOtherAddress()
+    );
+  };
+
+  const getOtherAddress = () => {
+    if (
+      !txObj ||
+      !wallets[selectedWallet] ||
+      !wallets[selectedWallet].address
+    ) {
+      return '';
+    }
+    if (txObj.from !== wallets[selectedWallet].address) {
+      return txObj.from;
+    }
+    return txObj.to;
+  };
+
+  const renderOwnAddress = (address: string) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          padding: 12,
+          marginTop: 4,
+          backgroundColor: theme.backgroundColor,
+          borderRadius: 8,
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+        }}>
+        <Image
+          style={{width: 52, height: 32, marginRight: 12}}
+          source={parseCardAvatar(wallets[selectedWallet].cardAvatarID || 0)}
+        />
+        <View>
+          <Text style={{color: '#FFFFFF', fontWeight: 'bold'}}>
+            {wallets[selectedWallet].name}
+          </Text>
+          <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+            {truncate(address, 10, 10)}
+          </Text>
+        </View>
+      </View>
+    );
+  };
+
+  const renderOtherAddress = (address: string) => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          padding: 12,
+          marginTop: 4,
+          backgroundColor: theme.backgroundColor,
+          borderRadius: 8,
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+        }}>
+        {isNewContact() || getAddressAvatar(addressBook, address) === '' ? (
+          <View
+            style={{
+              width: 52,
+              height: 32,
+              marginRight: 12,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <View style={styles.newContactAvatarContainer}>
+              <Image
+                style={{width: 20, height: 20}}
+                source={require('../../../assets/icon/user.png')}
+              />
+            </View>
+          </View>
+        ) : (
+          <Image
+            style={{width: 20, height: 20}}
+            source={{uri: getAddressAvatar(addressBook, address)}}
+          />
+        )}
+        <View>
+          <Text style={{color: '#FFFFFF', fontWeight: 'bold'}}>
+            {isNewContact()
+              ? getLanguageString(language, 'NEW_CONTACT')
+              : getFromAddressBook(addressBook, address)}
+          </Text>
+          <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+            {truncate(address, 10, 10)}
+          </Text>
+        </View>
+        {isNewContact() && (
+          <View style={{alignItems: 'flex-end', flex: 1}}>
+            <Button
+              title="Save Address"
+              onPress={() => {}}
+              type="link"
+              textStyle={{textDecorationLine: 'none', fontSize: 12}}
+            />
+          </View>
+        )}
+      </View>
+    );
+  };
+
   if (!txObj) {
     return null;
   }
@@ -25,7 +154,7 @@ export default ({
       visible={visible}
       onClose={onClose}
       showCloseButton={false}
-      contentStyle={{backgroundColor: theme.backgroundFocusColor}}>
+      contentStyle={{backgroundColor: theme.backgroundFocusColor, height: 520}}>
       <View style={[styles.container]}>
         <View
           style={{
@@ -68,6 +197,62 @@ export default ({
           <Text style={{color: theme.textColor, fontSize: 18}}>KAI</Text>
         </View>
         <Text style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</Text>
+        <View>
+          <View
+            style={{
+              backgroundColor: theme.backgroundColor,
+              borderRadius: 4,
+              paddingVertical: 9,
+              paddingHorizontal: 12,
+              marginTop: 12,
+              flexDirection: 'row',
+            }}>
+            <Image
+              style={{width: 16, height: 16, marginRight: 8}}
+              source={require('../../../assets/icon/calendar.png')}
+            />
+            <Text style={{fontSize: 12, color: theme.textColor}}>
+              {format(txObj.date, 'hh:mm aa, E dd/MM/yyyy', {
+                locale: dateLocale,
+              })}
+            </Text>
+          </View>
+        </View>
+        <Divider />
+        <View style={{justifyContent: 'flex-start', width: '100%'}}>
+          <Text style={{color: theme.mutedTextColor, fontSize: 12}}>
+            {getLanguageString(language, 'FROM')}
+          </Text>
+          {txObj.from !== getOtherAddress()
+            ? renderOwnAddress(txObj.from)
+            : renderOtherAddress(txObj.from)}
+        </View>
+        <View
+          style={{justifyContent: 'flex-start', width: '100%', marginTop: 12}}>
+          <Text style={{color: theme.mutedTextColor, fontSize: 12}}>
+            {getLanguageString(language, 'TO')}
+          </Text>
+          {txObj.to !== getOtherAddress()
+            ? renderOwnAddress(txObj.to)
+            : renderOtherAddress(txObj.to)}
+        </View>
+        <Divider />
+        <View style={{justifyContent: 'flex-start', width: '100%'}}>
+          <Text style={{color: theme.mutedTextColor, fontSize: 12}}>
+            {getLanguageString(language, 'TRANSACTION_FEE')}
+          </Text>
+          <Text style={{color: theme.textColor, fontSize: 15}}>
+            {parseKaiBalance(txObj.txFee, true)} KAI
+          </Text>
+        </View>
+        <Divider />
+        <Button
+          title={getLanguageString(language, 'OK_TEXT')}
+          type="primary"
+          block={true}
+          onPress={onClose}
+          textStyle={{fontWeight: 'bold'}}
+        />
       </View>
     </Modal>
   );

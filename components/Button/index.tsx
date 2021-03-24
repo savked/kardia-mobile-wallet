@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   StyleProp,
   Text,
+  TextStyle,
   TouchableOpacity,
   ViewStyle,
 } from 'react-native';
@@ -15,10 +16,10 @@ import {styles} from './style';
 const Button = ({
   title,
   style,
-  textStyle,
   onPress,
   icon,
   iconName,
+  textStyle,
   block,
   size = 'medium',
   type = 'primary',
@@ -26,7 +27,10 @@ const Button = ({
   iconColor,
   disabled,
   loading = false,
-}: ButtonProps & {style?: StyleProp<ViewStyle>}) => {
+}: ButtonProps & {
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
+}) => {
   const theme = useContext(ThemeContext);
 
   const parseSize = () => {
@@ -99,8 +103,8 @@ const Button = ({
         default:
           break;
       }
-      if (textStyle && textStyle.color) {
-        _iconColor = textStyle.color;
+      if (textStyle && (textStyle as any).color) {
+        _iconColor = (textStyle as any).color;
       }
       if (iconColor) {
         _iconColor = iconColor;

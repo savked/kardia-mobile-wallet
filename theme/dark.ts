@@ -13,6 +13,8 @@ export const theme = {
   backgroundColor: '#181818',
   backgroundFocusColor: 'rgba(58, 59, 60, 1)',
   textColor: '#F7F7F7',
+  mutedTextColor: '#DBDBDB',
   successColor: '#52c93a',
   failColor: '#db4537',
+  defaultFontSize: 12,
 };

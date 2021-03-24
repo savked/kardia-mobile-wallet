@@ -53,3 +53,13 @@ export const parseError = (errorMessage: string, langKey: string) => {
   }
   return langObj.mapping[key];
 };
+
+export const parseCardAvatar = (cardAvatarID: number) => {
+  const cardAvatar = require('../assets/card_background.png');
+  switch (cardAvatarID) {
+    case 1:
+      return cardAvatar;
+    default:
+      return cardAvatar;
+  }
+};

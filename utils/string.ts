@@ -20,11 +20,30 @@ export const addZero = (value: number) => {
 };
 
 export const getFromAddressBook = (addressBook: Address[], address: string) => {
-  const result = addressBook.find((item) => item.address === address);
+  const result = getObjFromAddressBook(addressBook, address);
   if (!result) {
     return address;
   }
   return result.name;
+};
+
+export const getObjFromAddressBook = (
+  addressBook: Address[],
+  address: string,
+) => {
+  const result = addressBook.find((item) => item.address === address);
+  if (!result) {
+    return null;
+  }
+  return result;
+};
+
+export const getAddressAvatar = (addressBook: Address[], address: string) => {
+  const addressObj = getObjFromAddressBook(addressBook, address);
+  if (!addressObj) {
+    return '';
+  }
+  return addressObj.avatar;
 };
 
 export const copyToClipboard = (str: string) => {
@@ -81,4 +100,25 @@ export const isChecksumAddress = (address: string) => {
 
 export const getTxURL = (txHash: string) => {
   return `${EXPLORER_URL}/tx/${txHash}`;
+};
+
+export const groupByAlphabet = (
+  data: Record<string, any>[],
+  keyField: string,
+) => {
+  const groups = data.reduce((_groups, item) => {
+    const groupString = item[keyField][0];
+    if (!_groups[groupString]) {
+      _groups[groupString] = [];
+    }
+    _groups[groupString].push(item);
+    return _groups;
+  }, {});
+
+  return Object.keys(groups).map((char) => {
+    return {
+      char: groups[char][0][keyField][0].toUpperCase(),
+      items: groups[char],
+    };
+  });
 };

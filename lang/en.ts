@@ -6,6 +6,7 @@ export const lang: Language = {
   tag: ['en_US', 'US', 'en', 'US English'],
   mapping: {
     // Common key:
+    OK_TEXT: 'Ok! Got it',
     BALANCE: 'Balance',
     STAKED_AMOUNT: 'Staked',
     AGO: 'ago',
@@ -17,6 +18,8 @@ export const lang: Language = {
       'To get started, choose one of the following options',
     SUBMIT: 'Submit',
     REQUIRED_FIELD: 'This field is required.',
+    ADDRESS_NOT_FOUND: 'Address not found',
+    ADDRESS_EXISTS: 'Address already exists.',
     COPY_TO_CLIPBOARD: 'Copy to Clipboard',
     SECOND: 'sec',
     CONFIRM_IMPORT: 'Are you sure you want to import a new wallet?',
@@ -90,6 +93,7 @@ export const lang: Language = {
     FAST_SPEED: 'Fast',
     GAS_PRICE: 'Gas price',
     GAS_LIMIT: 'Gas limit',
+    NEW_CONTACT: 'New Contact',
     SPEED_DESCRIPTION:
       '* Accelerating a transaction by using a higher gas price increases its chances of getting processed by the network faster but, it is not always guaranteed.',
     CONFIRM_TRANSACTION: 'Confirm your Transaction',
@@ -160,6 +164,7 @@ export const lang: Language = {
     CONFIRM_PASSCODE_NOT_MATCH: 'Confirmation passcode does NOT match',
     ENTER_PASSCODE: 'Enter passcode to continue.',
     INCORRECT_PASSCODE: 'Incorrect Passcode',
+    AVATAR: 'Avatar',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, Something Went Wrong',
     ERROR_BOUNDARY_DESCRIPTION:

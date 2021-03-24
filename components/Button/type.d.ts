@@ -3,7 +3,7 @@ interface ButtonProps {
   title?: string;
   icon?: any;
   // style?: any;
-  textStyle?: any;
+  // textStyle?: any;
   iconName?: string;
   iconSize?: number;
   iconColor?: string;

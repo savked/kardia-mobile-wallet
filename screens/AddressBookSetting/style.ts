@@ -9,23 +9,25 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 16,
     alignItems: 'center',
+    marginHorizontal: 20,
+    borderRadius: 8,
   },
   addressAvatarContainer: {
-    width: 60,
-    height: 60,
+    width: 32,
+    height: 32,
     marginRight: 12,
   },
   addressAvatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 32,
+    height: 32,
+    borderRadius: 12,
   },
   addressName: {
-    fontSize: 16,
+    fontWeight: 'bold',
   },
   addressHash: {
-    fontSize: 13,
-    fontStyle: 'italic',
+    // fontSize: 13,
+    // fontStyle: 'italic',
   },
   emptyAddressBook: {
     fontSize: 24,
@@ -35,6 +37,14 @@ export const styles = StyleSheet.create({
   noAddressContainer: {
     flex: 1,
     paddingHorizontal: 83,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noAvatarContainer: {
+    width: 32,
+    height: 32,
+    marginRight: 12,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },

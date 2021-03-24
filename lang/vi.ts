@@ -6,6 +6,7 @@ export const lang: Language = {
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:
+    OK_TEXT: 'OK',
     BALANCE: 'Số dư hiện tại',
     STAKED_AMOUNT: 'Số KAI đã đầu tư',
     AGO: 'trước',
@@ -17,6 +18,8 @@ export const lang: Language = {
       'Để  bắt đầu, chọn 1 trong các lựa chọn sau đây',
     SUBMIT: 'Xác nhận',
     REQUIRED_FIELD: 'Vui lòng nhập thông tin',
+    ADDRESS_NOT_FOUND: 'Không tìm thấy địa chỉ trong danh bạ',
+    ADDRESS_EXISTS: 'Địa chỉ đã tồn tại trong danh bạ.',
     COPY_TO_CLIPBOARD: 'Copy vào bộ nhớ tạm',
     SECOND: 'giây',
     CONFIRM_IMPORT: 'Bạn chắc chắn muốn thêm ví mới ?',
@@ -86,6 +89,7 @@ export const lang: Language = {
     FAST_SPEED: 'Nhanh',
     GAS_PRICE: 'Giá gas',
     GAS_LIMIT: 'Giới hạn gas',
+    NEW_CONTACT: 'Địa chỉ chưa có trong danh bạ',
     SPEED_DESCRIPTION:
       '* Thông thường các giao dịch có giá gas cao hơn sẽ được network ưu tiên xử lý trước. Tuy nhiên điều này còn phụ thuộc vào trạng thái của network tại thời điểm giao dịch.',
     CONFIRM_TRANSACTION: 'Xác nhận giao dịch của bạn',
@@ -155,6 +159,7 @@ export const lang: Language = {
     CONFIRM_PASSCODE_NOT_MATCH: 'Xác nhận mật khẩu không đúng',
     ENTER_PASSCODE: 'Nhập mật khẩu để tíếp tục',
     INCORRECT_PASSCODE: 'Mật khẩu không đúng',
+    AVATAR: 'Ảnh đại diện',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, có lỗi xảy ra.',
     ERROR_BOUNDARY_DESCRIPTION:

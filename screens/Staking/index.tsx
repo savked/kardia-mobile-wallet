@@ -108,79 +108,77 @@ const StakingScreen = () => {
 
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <View style={{flex: 1}}>
-        <View
-          style={{
-            backgroundColor: theme.backgroundFocusColor,
-            borderRadius: 8,
-            padding: 12,
-            paddingTop: 50,
-          }}>
-          <Text
-            style={[
-              styles.sectionTitle,
-              {color: theme.textColor, textAlign: 'center'},
-            ]}>
-            {getLanguageString(language, 'TOTAL_EARNING')}
-          </Text>
-          <Text style={[styles.totalSaving, {color: theme.textColor}]}>
-            {numeral(getTotalSaving()).format('0,0.00')}{' '}
-            <Text style={{fontSize: 14}}>KAI</Text>
-          </Text>
-          <View style={styles.headerButtonGroup}>
-            <Button
-              title={getLanguageString(language, 'INVEST')}
-              iconName="plus"
-              type="primary"
-              // textStyle={{color: '#FFFFFF'}}
-              onPress={() => navigation.navigate('ValidatorList')}
-              style={{width: '30%'}}
-            />
-          </View>
-        </View>
+      <View
+        style={{
+          backgroundColor: theme.backgroundFocusColor,
+          borderRadius: 8,
+          padding: 12,
+          paddingTop: 50,
+        }}>
         <Text
           style={[
             styles.sectionTitle,
-            {
-              color: theme.textColor,
-              paddingHorizontal: 14,
-              paddingVertical: 20,
-            },
+            {color: theme.textColor, textAlign: 'center'},
           ]}>
-          {getLanguageString(language, 'YOUR_INVESTMENTS')}
+          {getLanguageString(language, 'TOTAL_EARNING')}
         </Text>
-        <List
-          loading={loading}
-          loadingColor={theme.primaryColor}
-          items={currentStaking.map(parseStakingItemForList)}
-          listStyle={{paddingHorizontal: 15}}
-          ListEmptyComponent={
-            <Text style={[styles.noStakingText, {color: theme.textColor}]}>
-              {getLanguageString(language, 'NO_STAKING_ITEM')}
-            </Text>
-          }
-          render={(item, index) => {
-            return (
-              <StakingItem
-                item={item}
-                // onFocus={() => setFocusingItem(index)}
-                // onUnfocus={() => setFocusingItem(-1)}
-                showModal={(
-                  _message: string,
-                  _messageType: string,
-                  cb: () => void,
-                ) => {
-                  setMessage(_message);
-                  setMessageType(_messageType);
-                  cb();
-                }}
-                triggerUndelegate={() => setUndelegatingIndex(index)}
-              />
-            );
-          }}
-          ItemSeprator={() => <View style={{height: 6}} />}
-        />
+        <Text style={[styles.totalSaving, {color: theme.textColor}]}>
+          {numeral(getTotalSaving()).format('0,0.00')}{' '}
+          <Text style={{fontSize: 14}}>KAI</Text>
+        </Text>
+        <View style={styles.headerButtonGroup}>
+          <Button
+            title={getLanguageString(language, 'INVEST')}
+            iconName="plus"
+            type="primary"
+            // textStyle={{color: '#FFFFFF'}}
+            onPress={() => navigation.navigate('ValidatorList')}
+            style={{width: '30%'}}
+          />
+        </View>
       </View>
+      <Text
+        style={[
+          styles.sectionTitle,
+          {
+            color: theme.textColor,
+            paddingHorizontal: 14,
+            paddingVertical: 20,
+          },
+        ]}>
+        {getLanguageString(language, 'YOUR_INVESTMENTS')}
+      </Text>
+      <List
+        loading={loading}
+        loadingColor={theme.primaryColor}
+        items={currentStaking.map(parseStakingItemForList)}
+        listStyle={{paddingHorizontal: 15}}
+        ListEmptyComponent={
+          <Text style={[styles.noStakingText, {color: theme.textColor}]}>
+            {getLanguageString(language, 'NO_STAKING_ITEM')}
+          </Text>
+        }
+        render={(item, index) => {
+          return (
+            <StakingItem
+              item={item}
+              // onFocus={() => setFocusingItem(index)}
+              // onUnfocus={() => setFocusingItem(-1)}
+              showModal={(
+                _message: string,
+                _messageType: string,
+                cb: () => void,
+              ) => {
+                setMessage(_message);
+                setMessageType(_messageType);
+                cb();
+              }}
+              triggerUndelegate={() => setUndelegatingIndex(index)}
+            />
+          );
+        }}
+        ItemSeprator={() => <View style={{height: 6}} />}
+      />
       {message !== '' && (
         <AlertModal
           type={messageType as any}

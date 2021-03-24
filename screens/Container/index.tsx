@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {View, Image, AppState} from 'react-native';
-import {useRecoilState, useSetRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -35,12 +35,18 @@ import Portal from '@burstware/react-native-portal';
 import {krc20ListAtom} from '../../atoms/krc20';
 import HomeStackScreen from '../../HomeStack';
 import AddressStackScreen from '../../AddressStack';
+import { showTabBarAtom } from '../../atoms/showTabBar';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+let lastTimestamp = 0;
+
 const Wrap = () => {
   const theme = useContext(ThemeContext);
+
+  const showTabBar = useRecoilValue(showTabBarAtom);
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -111,6 +117,7 @@ const Wrap = () => {
           // You can return any component that you like here!
           return <Icon name={iconName} size={size} color={color} />;
         },
+        tabBarVisible: showTabBar,
       })}
       tabBarOptions={{
         activeTintColor: theme.primaryColor,
@@ -130,6 +137,7 @@ const Wrap = () => {
           backgroundColor: theme.backgroundFocusColor,
           borderTopColor: theme.backgroundFocusColor,
         },
+        
         // showLabel: false,
       }}>
       {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
@@ -172,8 +180,14 @@ const AppContainer = () => {
 
   const handleAppStateChange = useCallback(
     (state: string) => {
-      if (state === 'background' && localAuthEnabled) {
-        setIsLocalAuthed(false);
+      if (state === 'background') {
+        // Store current time
+        lastTimestamp = Date.now();
+      } else if (state === 'active' && localAuthEnabled) {
+        // Lock app if unfocused in 1 minute
+        if (Date.now() - lastTimestamp > 1 * 60 * 1000) {
+          setIsLocalAuthed(false);
+        }
       }
     },
     [localAuthEnabled, setIsLocalAuthed],

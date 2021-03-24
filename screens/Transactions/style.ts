@@ -42,4 +42,15 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  addTXButton: {
+    position: 'absolute',
+    right: 20,
+    bottom: 52,
+    minWidth: 52,
+    width: 52,
+    minHeight: 52,
+    height: 52,
+    borderRadius: 26,
+    paddingVertical: 0,
+  },
 });

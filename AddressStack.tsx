@@ -48,17 +48,8 @@ const AddressStackScreen = () => {
                   name="bell-o"
                   size={20}
                   color={theme.textColor}
-                  style={{marginRight: 20}}
                   onPress={() => {
                     navigation.navigate('Notification');
-                  }}
-                />
-                <IconButton
-                  name="plus"
-                  size={20}
-                  color={theme.textColor}
-                  onPress={() => {
-                    navigation.navigate('NewAddress');
                   }}
                 />
               </View>
@@ -81,11 +72,7 @@ const AddressStackScreen = () => {
         name="AddressDetail"
         component={AddressDetail}
         options={{
-          title: 'Detail',
-          headerTitleStyle: {
-            color: theme.textColor,
-          },
-          headerTintColor: theme.textColor,
+          headerShown: false,
         }}
       />
     </AddressStack.Navigator>
