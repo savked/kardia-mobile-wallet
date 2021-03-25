@@ -13,7 +13,7 @@ export default function Divider({
         {
           height: height || 1,
           backgroundColor: color || 'rgba(255, 255, 255 ,0.3)',
-          alignSelf: 'stretch',
+          // alignSelf: 'stretch',
           marginVertical: 14,
         },
         style,

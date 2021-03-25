@@ -26,11 +26,13 @@ import {saveAddressBook} from '../../../utils/local';
 export default ({
   name = '',
   address = '',
+  avatar = '',
   visible,
   isUpdate = false,
   onClose,
 }: {
   name?: string;
+  avatar?: string;
   address?: string;
   isUpdate?: boolean;
   visible: boolean;
@@ -38,7 +40,7 @@ export default ({
 }) => {
   const [abName, setABName] = useState(name);
   const [errName, setErrName] = useState(' ');
-  const [avatar, setAvatar] = useState<ImageURISource>({uri: ''});
+  const [abAvatar, setABAvatar] = useState<ImageURISource>({uri: avatar});
   const [abAddress, setABAddress] = useState(address);
   const [errAddress, setErrAddress] = useState(' ');
   const [showQRModal, setShowQRModal] = useState(false);
@@ -81,8 +83,9 @@ export default ({
   };
 
   const resetState = () => {
-    setABName('');
-    setABAddress('');
+    setABName(name);
+    setABAddress(address);
+    setABAvatar({uri: avatar});
     setErrAddress(' ');
     setErrName(' ');
   };
@@ -120,9 +123,9 @@ export default ({
       }
       currentAB[index].address = abAddress;
       currentAB[index].name = abName;
-      currentAB[index].avatar = avatar.uri ? avatar.uri : '';
+      currentAB[index].avatar = abAvatar.uri ? abAvatar.uri : '';
     } else {
-      const index = currentAB.findIndex((i) => i.address === address);
+      const index = currentAB.findIndex((i) => i.address === abAddress);
       if (index >= 0) {
         setErrAddress(getLanguageString(language, 'ADDRESS_EXISTS'));
         return;
@@ -130,7 +133,7 @@ export default ({
       currentAB.push({
         address: abAddress,
         name: abName,
-        avatar: avatar.uri ? avatar.uri : '',
+        avatar: abAvatar.uri ? abAvatar.uri : '',
       });
     }
 
@@ -146,15 +149,15 @@ export default ({
       return {
         height: 440,
         backgroundColor: theme.backgroundFocusColor,
-        marginBottom: keyboardShown ? -70 : 0,
-        marginTop: keyboardShown ? 70 : 0,
+        // marginBottom: keyboardShown ? -70 : 0,
+        // marginTop: keyboardShown ? 70 : 0,
       };
     } else {
       return {
         height: 440,
         backgroundColor: theme.backgroundFocusColor,
-        marginBottom: keyboardOffset - (keyboardShown ? 70 : 0),
-        marginTop: -keyboardOffset - (keyboardShown ? 70 : 0),
+        marginBottom: keyboardOffset,
+        marginTop: -keyboardOffset,
       };
     }
   };
@@ -180,7 +183,7 @@ export default ({
       contentStyle={getModalStyle()}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
-          <CustomImagePicker image={avatar} onSelect={setAvatar} />
+          <CustomImagePicker image={abAvatar} onSelect={setABAvatar} />
           <View
             style={{
               justifyContent: 'flex-start',

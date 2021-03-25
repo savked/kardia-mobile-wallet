@@ -11,7 +11,6 @@ import {
 } from 'react-native-popup-menu';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import Button from '../../components/Button';
 import {parseKaiBalance} from '../../utils/number';
 import {copyToClipboard, truncate} from '../../utils/string';
 import {styles} from './style';
@@ -33,13 +32,7 @@ import {weiToKAI} from '../../services/transaction/amount';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
-const CardSliderSection = ({
-  importWallet,
-  showQRModal,
-}: {
-  importWallet: () => void;
-  showQRModal: () => void;
-}) => {
+const CardSliderSection = () => {
   const navigation = useNavigation();
   const [showNewTxModal, setShowNewTxModal] = useState(false);
   const carouselRef = useRef<Carousel<Wallet>>(null);
@@ -50,10 +43,6 @@ const CardSliderSection = ({
   );
   const [removeIndex, setRemoveIndex] = useState(-1);
   const language = useRecoilValue(languageAtom);
-
-  // function send() {
-  //   setShowNewTxModal(true);
-  // }
 
   function showCredential() {
     navigation.navigate('Setting', {
@@ -239,38 +228,6 @@ const CardSliderSection = ({
         inactiveDotOpacity={0.4}
         inactiveDotScale={0.6}
       />
-
-      {/* <View style={styles.buttonGroupContainer}>
-        <Button
-          title={getLanguageString(language, 'SEND')}
-          type="outline"
-          onPress={send}
-          iconName="paper-plane"
-          size="small"
-          textStyle={{color: '#FFFFFF'}}
-          style={{marginRight: 5}}
-        />
-
-        <Button
-          onPress={showQRModal}
-          title={getLanguageString(language, 'RECEIVE')}
-          size="small"
-          type="outline"
-          iconName="download"
-          style={{marginLeft: 5, marginRight: 5}}
-          textStyle={{color: '#FFFFFF'}}
-        />
-
-        <Button
-          title={getLanguageString(language, 'IMPORT')}
-          onPress={importWallet}
-          type="outline"
-          iconName="plus"
-          size="small"
-          style={{marginLeft: 5}}
-          textStyle={{color: '#FFFFFF'}}
-        />
-      </View> */}
       <AlertModal
         visible={removeIndex >= 0}
         type="confirm"

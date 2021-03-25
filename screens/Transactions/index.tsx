@@ -1,24 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
-import {Alert, Text, TouchableOpacity, View, Image} from 'react-native';
+import {Text, TouchableOpacity, View, Image} from 'react-native';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import List from '../../components/List';
-// import TextInput from '../../components/TextInput';
 import {truncate} from '../../utils/string';
 import {styles} from './style';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import {getTxByAddress} from '../../services/transaction';
 import {parseKaiBalance} from '../../utils/number';
-import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
+import {format} from 'date-fns';
 import IconButton from '../../components/IconButton';
-import {
-  getDateFNSLocale,
-  getDateTimeFormat,
-  getLanguageString,
-} from '../../utils/lang';
+import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import NewTxModal from '../common/NewTxModal';
 import {ThemeContext} from '../../ThemeContext';
@@ -26,6 +20,7 @@ import {getSelectedWallet, getWallets} from '../../utils/local';
 import Button from '../../components/Button';
 import {groupByDate} from '../../utils/date';
 import TxDetailModal from '../common/TxDetailModal';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
@@ -34,7 +29,6 @@ const TransactionScreen = () => {
   const [wallets] = useRecoilState(walletsAtom);
   const [selectedWallet] = useRecoilState(selectedWalletAtom);
   const [txList, setTxList] = useState([] as any[]);
-  // const [filterTx, setFilterTx] = useState('');
   const [showNewTxModal, setShowNewTxModal] = useState(false);
   const language = useRecoilValue(languageAtom);
 
@@ -70,9 +64,6 @@ const TransactionScreen = () => {
     ) {
       return;
     }
-    // if (!wallets[selectedWallet] || !wallets[selectedWallet].address) {
-    //   return;
-    // }
     try {
       const newTxList = await getTxByAddress(
         localWallets[localSelectedWallet].address,
@@ -84,27 +75,6 @@ const TransactionScreen = () => {
       console.error(error);
     }
   };
-
-  // const filterTransaction = (tx: any) => {
-  //   if (filterTx.length < 3) {
-  //     return true;
-  //   }
-  //   if (
-  //     tx.label.toUpperCase().includes(filterTx.toUpperCase()) ||
-  //     tx.blockHash.toUpperCase().includes(filterTx.toUpperCase()) ||
-  //     tx.blockNumber.includes(filterTx)
-  //   ) {
-  //     return true;
-  //   }
-  //   const posibleAddress = addressBook.filter((item) =>
-  //     item.name.toUpperCase().includes(filterTx.toUpperCase()),
-  //   );
-  //   const existed = posibleAddress.find((item) => item.address === tx.from);
-  //   if (existed) {
-  //     return true;
-  //   }
-  //   return false;
-  // };
 
   const renderIcon = (status: number, type: 'IN' | 'OUT') => {
     return (
@@ -187,18 +157,6 @@ const TransactionScreen = () => {
           onPress={() => navigation.navigate('Notification')}
         />
       </View>
-      {/* <View style={styles.controlContainer}>
-        <TextInput
-          block={true}
-          placeholder={getLanguageString(
-            language,
-            'SEARCH_TRANSACTION_PLACEHOLDER',
-          )}
-          value={filterTx}
-          onChangeText={setFilterTx}
-        />
-      </View> */}
-      {/* {groupByDate(txList.filter(filterTransaction), 'date').map( */}
       {groupByDate(txList, 'date').length === 0 && (
         <View style={styles.noTXContainer}>
           <Image
@@ -228,23 +186,22 @@ const TransactionScreen = () => {
           />
         </View>
       )}
-      {groupByDate(txList, 'date').map((txsByDate) => {
-        const dateLocale = getDateFNSLocale(language);
-        return (
-          <React.Fragment key={`transaction-by-${txsByDate.date.getTime()}`}>
-            <Text
-              style={{
-                marginHorizontal: 20,
-                color: theme.textColor,
-              }}>
-              {format(txsByDate.date, 'E, dd/MM/yyyy', {locale: dateLocale})}
-            </Text>
-            <List
-              // containerStyle={{flex: 1}}
-              items={txsByDate.items}
-              render={(item) => {
+      <ScrollView>
+        {groupByDate(txList, 'date').map((txsByDate) => {
+          const dateLocale = getDateFNSLocale(language);
+          return (
+            <React.Fragment key={`transaction-by-${txsByDate.date.getTime()}`}>
+              <Text
+                style={{
+                  marginHorizontal: 20,
+                  color: theme.textColor,
+                }}>
+                {format(txsByDate.date, 'E, dd/MM/yyyy', {locale: dateLocale})}
+              </Text>
+              {txsByDate.items.map((item: any, index: number) => {
                 return (
                   <View
+                    key={`tx-item-${index}`}
                     style={{
                       paddingVertical: 12,
                       paddingHorizontal: 16,
@@ -295,32 +252,23 @@ const TransactionScreen = () => {
                           {parseKaiBalance(item.amount, true)} KAI
                         </Text>
                         <Text style={{color: '#DBDBDB', fontSize: 12}}>
-                          {isSameDay(item.date, new Date())
-                            ? `${formatDistanceToNowStrict(item.date, {
-                                locale: getDateFNSLocale(language),
-                              })} ${getLanguageString(language, 'AGO')}`
-                            : format(item.date, getDateTimeFormat(language), {
-                                locale: getDateFNSLocale(language),
-                              })}
+                          {format(item.date, 'hh:mm aa')}
                         </Text>
                       </View>
                     </TouchableOpacity>
                   </View>
                 );
-              }}
-              onSelect={(itemIndex) => {
-                Alert.alert(`${itemIndex}`);
-              }}
-            />
-          </React.Fragment>
-        );
-      })}
+              })}
+            </React.Fragment>
+          );
+        })}
+      </ScrollView>
       <Button
         type="primary"
         icon={<AntIcon name="plus" size={24} />}
         size="small"
         onPress={() => setShowNewTxModal(true)}
-        style={styles.addTXButton}
+        style={styles.floatingButton}
       />
     </SafeAreaView>
   );

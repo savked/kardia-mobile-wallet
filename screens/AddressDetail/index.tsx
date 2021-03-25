@@ -11,11 +11,7 @@ import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {ThemeContext} from '../../ThemeContext';
 import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
-import {
-  getDateFNSLocale,
-  getDateTimeFormat,
-  getLanguageString,
-} from '../../utils/lang';
+import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
 import {
   getSelectedWallet,
   getWallets,
@@ -29,9 +25,12 @@ import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {getTxByAddress} from '../../services/transaction';
 import {groupByDate} from '../../utils/date';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
+import {format} from 'date-fns';
 import List from '../../components/List';
 import {parseKaiBalance} from '../../utils/number';
+import TxDetailModal from '../common/TxDetailModal';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import NewAddressModal from '../common/NewAddressModal';
 
 const AddressDetail = () => {
   const {params} = useRoute();
@@ -49,14 +48,16 @@ const AddressDetail = () => {
   const [showTxDetail, setShowTxDetail] = useState(false);
   const [txObjForDetail, setTxObjForDetail] = useState();
 
+  const [showUpdateAddressModal, setShowUpdateAddressModal] = useState(false);
+
   const removeAddress = () => {
-    Alert.alert('', 'Are you sure you want to delete this address ?', [
+    Alert.alert('', getLanguageString(language, 'CONFIRM_REMOVE_ADDRESS'), [
       {
-        text: 'Cancel',
+        text: getLanguageString(language, 'CANCEL'),
         style: 'cancel',
       },
       {
-        text: "Yes I'm sure",
+        text: getLanguageString(language, 'CONFIRM'),
         onPress: () => {
           const _addressBook: Address[] = JSON.parse(
             JSON.stringify(addressBook),
@@ -113,12 +114,12 @@ const AddressDetail = () => {
       );
       setTxList(
         newTxList
-          .filter((txItem: Transaction) => {
-            return (
-              txItem.from === addressData?.address ||
-              txItem.to === addressData?.address
-            );
-          })
+          // .filter((txItem: Transaction) => {
+          //   return (
+          //     txItem.from === addressData?.address ||
+          //     txItem.to === addressData?.address
+          //   );
+          // })
           .map(parseTXForList),
       );
     } catch (error) {
@@ -214,8 +215,28 @@ const AddressDetail = () => {
     );
   }
 
+  const filteredList = txList.filter((txItem: Transaction) => {
+    return (
+      txItem.from === addressData?.address || txItem.to === addressData?.address
+    );
+  });
+
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView
+      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+      <TxDetailModal
+        visible={showTxDetail}
+        onClose={() => setShowTxDetail(false)}
+        txObj={txObjForDetail}
+      />
+      <NewAddressModal
+        visible={showUpdateAddressModal}
+        onClose={() => setShowUpdateAddressModal(false)}
+        isUpdate={true}
+        name={addressData.name}
+        address={addressData.address}
+        avatar={addressData.avatar}
+      />
       <View
         style={{
           backgroundColor: theme.backgroundFocusColor,
@@ -235,11 +256,18 @@ const AddressDetail = () => {
             onPress={() => navigation.goBack()}
             backgroundColor="transparent"
           />
-          <Icon.Button
-            name="edit"
-            onPress={() => navigation.goBack()}
-            backgroundColor="transparent"
-          />
+          <View style={{flexDirection: 'row'}}>
+            <Icon.Button
+              name="edit"
+              onPress={() => setShowUpdateAddressModal(true)}
+              backgroundColor="transparent"
+            />
+            <Icon.Button
+              name="trash"
+              onPress={removeAddress}
+              backgroundColor="transparent"
+            />
+          </View>
         </View>
         {addressData.avatar ? (
           <Image source={{uri: addressData.avatar}} />
@@ -306,7 +334,7 @@ const AddressDetail = () => {
           }}>
           {getLanguageString(language, 'RECENT_TRANSACTION')}
         </Text>
-        {groupByDate(txList, 'date').length === 0 && (
+        {groupByDate(filteredList, 'date').length === 0 && (
           <Text
             style={[
               styles.noTXText,
@@ -315,7 +343,7 @@ const AddressDetail = () => {
             {getLanguageString(language, 'NO_TRANSACTION')}
           </Text>
         )}
-        {groupByDate(txList, 'date').map((txsByDate) => {
+        {groupByDate(filteredList, 'date').map((txsByDate) => {
           const dateLocale = getDateFNSLocale(language);
           return (
             <React.Fragment key={`transaction-by-${txsByDate.date.getTime()}`}>
@@ -381,13 +409,7 @@ const AddressDetail = () => {
                             {parseKaiBalance(item.amount, true)} KAI
                           </Text>
                           <Text style={{color: '#DBDBDB', fontSize: 12}}>
-                            {isSameDay(item.date, new Date())
-                              ? `${formatDistanceToNowStrict(item.date, {
-                                  locale: getDateFNSLocale(language),
-                                })} ${getLanguageString(language, 'AGO')}`
-                              : format(item.date, getDateTimeFormat(language), {
-                                  locale: getDateFNSLocale(language),
-                                })}
+                            {format(item.date, 'hh:mm aa')}
                           </Text>
                         </View>
                       </TouchableOpacity>
@@ -402,7 +424,7 @@ const AddressDetail = () => {
           );
         })}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

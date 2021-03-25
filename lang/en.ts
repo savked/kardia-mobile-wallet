@@ -13,6 +13,8 @@ export const lang: Language = {
     GO_BACK: 'Go back',
     CREATE_NEW_WALLET: 'Create New Wallet',
     IMPORT_WALLET: 'Access Your Wallet',
+    IMPORT_WALLET_DESCRIPTION:
+      'Import your wallets to start sending & receiving digital currency',
     WELCOME: 'Welcome to Kardia Wallet',
     GETTING_STARTED_DESCRIPTION:
       'To get started, choose one of the following options',
@@ -29,6 +31,7 @@ export const lang: Language = {
     SAVE: 'Save',
     CLOSE: 'Close',
     CONFIRM: 'Confirm',
+    CONFIRM_REMOVE_ADDRESS: 'Are you sure you want to delete this address?',
     SCAN_QR_FOR_ADDRESS: 'Your Wallet Address',
     ERC20_WARNING:
       'Please DO NOT send KAI Token from ERC20 wallet to this wallet.',
@@ -181,5 +184,8 @@ export const lang: Language = {
     REMOVE_TOKEN: 'Remove token',
     NO_TOKENS: 'No KRC20 tokens',
     ERROR_FETCH_KRC20_DATA: "Couldn't get tokens data.",
+    // Auth modal key
+    ENTER_PIN_CODE: 'Enter your PIN to process',
+    WRONG_PIN: 'Incorrect PIN',
   },
 };

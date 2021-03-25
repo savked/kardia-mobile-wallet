@@ -1,6 +1,6 @@
 import {format} from 'date-fns';
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {View, Text, Image} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {addressBookAtom} from '../../../atoms/addressBook';
@@ -21,6 +21,7 @@ import {
   getAddressAvatar,
   truncate,
 } from '../../../utils/string';
+import NewAddressModal from '../NewAddressModal';
 import {styles} from './style';
 
 export default ({
@@ -39,6 +40,8 @@ export default ({
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const addressBook = useRecoilValue(addressBookAtom);
+
+  const [showAddAddressModal, setShowAddAddressModal] = useState(false);
 
   const isNewContact = () => {
     return (
@@ -136,7 +139,7 @@ export default ({
           <View style={{alignItems: 'flex-end', flex: 1}}>
             <Button
               title="Save Address"
-              onPress={() => {}}
+              onPress={() => setShowAddAddressModal(true)}
               type="link"
               textStyle={{textDecorationLine: 'none', fontSize: 12}}
             />
@@ -149,6 +152,19 @@ export default ({
   if (!txObj) {
     return null;
   }
+
+  if (showAddAddressModal) {
+    return (
+      <NewAddressModal
+        address={getOtherAddress()}
+        visible={true}
+        onClose={() => {
+          setShowAddAddressModal(false);
+        }}
+      />
+    );
+  }
+
   return (
     <Modal
       visible={visible}

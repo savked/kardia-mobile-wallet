@@ -29,6 +29,7 @@ import RemindPasscodeModal from '../common/RemindPasscodeModal';
 import {getStakingAmount} from '../../services/staking';
 import SelectWallet from './SelectWallet';
 import TokenListSection from './TokenListSection';
+import {showTabBarAtom} from '../../atoms/showTabBar';
 
 const HomeScreen = () => {
   const [showQRModal, setShowQRModal] = useState(false);
@@ -46,6 +47,8 @@ const HomeScreen = () => {
   const [selectedWallet, setSelectedWallet] = useRecoilState(
     selectedWalletAtom,
   );
+
+  const setTabBarVisible = useSetRecoilState(showTabBarAtom);
 
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
@@ -89,6 +92,7 @@ const HomeScreen = () => {
   useFocusEffect(
     useCallback(() => {
       updateWalletBalance();
+      setTabBarVisible(true);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
@@ -255,11 +259,7 @@ const HomeScreen = () => {
         />
       )}
       <View style={[styles.bodyContainer]}>
-        <CardSliderSection
-          importWallet={() => setShowImportModal(true)}
-          showQRModal={() => setShowQRModal(true)}
-        />
-        {/* <TxListSection /> */}
+        <CardSliderSection />
         <TokenListSection />
         <AlertModal
           type={scanType as any}

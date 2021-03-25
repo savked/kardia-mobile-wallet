@@ -21,10 +21,6 @@ const HomeHeader = () => {
     navigation.navigate('Notification');
   }
 
-  function send() {
-    setShowNewTxModal(true);
-  }
-
   const notificationList = useRecoilValue(notificationAtom);
   const newNotiCount = notificationList.filter((item) => item.status === 0)
     .length;
@@ -54,7 +50,7 @@ const HomeHeader = () => {
           name="plus"
           size={18}
           color={theme.textColor}
-          onPress={send}
+          onPress={() => navigation.navigate('ImportWallet')}
         />
       </View>
     </View>

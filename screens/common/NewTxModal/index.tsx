@@ -5,7 +5,6 @@ import {
   View,
   Text,
   Keyboard,
-  Dimensions,
   Platform,
   TouchableOpacity,
   Image,
@@ -30,10 +29,9 @@ import {getDigit, isNumber, format} from '../../../utils/number';
 import AddressBookModal from '../AddressBookModal';
 import ScanQRAddressModal from '../ScanQRAddressModal';
 import {theme} from '../../../theme/dark';
+import AuthModal from '../AuthModal';
 
 const MAX_AMOUNT = 5000000000;
-
-const {height: viewportHeight} = Dimensions.get('window');
 
 const NewTxModal = ({
   visible,
@@ -57,6 +55,8 @@ const NewTxModal = ({
   const [errorAmount, setErrorAmount] = useState(' ');
   const [keyboardShown, setKeyboardShown] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
+
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   const language = useRecoilValue(languageAtom);
 
@@ -210,46 +210,62 @@ const NewTxModal = ({
     );
   }
 
+  if (showAuthModal) {
+    return (
+      <AuthModal
+        visible={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={send}
+      />
+    );
+  }
+
   if (showConfirmModal) {
     return (
       <Modal
         showCloseButton={false}
         visible={showConfirmModal}
-        contentStyle={{flex: 0.3, marginTop: viewportHeight / 3}}
+        contentStyle={{
+          height: 300,
+          backgroundColor: theme.backgroundFocusColor,
+        }}
         onClose={() => setShowConfirmModal(false)}>
-        <Text style={styles.confirmTitle}>
+        <Text style={[styles.confirmTitle, {color: theme.textColor}]}>
           {getLanguageString(language, 'CONFIRM_TRANSACTION')}
         </Text>
-        <View>
+        <View style={{width: '100%'}}>
           <View style={styles.confirmGroup}>
-            <Text style={styles.confirmText}>
+            <Text style={[styles.confirmText, {color: theme.textColor}]}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}:{' '}
             </Text>
-            <Text style={styles.confirmContent}>
+            <Text style={[styles.confirmContent, {color: theme.textColor}]}>
               {truncate(address, 10, 10)}
             </Text>
           </View>
           <View style={styles.confirmGroup}>
-            <Text style={styles.confirmText}>
+            <Text style={[styles.confirmText, {color: theme.textColor}]}>
               {getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:{' '}
             </Text>
-            <Text style={styles.confirmContent}>{amount} KAI</Text>
+            <Text style={[styles.confirmContent, {color: theme.textColor}]}>
+              {amount} KAI
+            </Text>
           </View>
         </View>
         <View
           style={{
-            flexDirection: 'row',
+            // flexDirection: 'row',
             justifyContent: 'space-evenly',
             width: '100%',
           }}>
           <Button
             title={getLanguageString(language, 'GO_BACK')}
             onPress={() => setShowConfirmModal(false)}
-            type="ghost"
+            type="outline"
+            style={{marginBottom: 12}}
           />
           <Button
             title={getLanguageString(language, 'CONFIRM')}
-            onPress={send}
+            onPress={() => setShowAuthModal(true)}
             type="primary"
           />
         </View>
@@ -264,6 +280,7 @@ const NewTxModal = ({
         // message={`Transaction completed. Hash: ${successTxHash}`}
         onClose={() => {
           setSuccessHash('');
+          resetState();
           onClose();
         }}
         visible={successTxHash !== ''}>

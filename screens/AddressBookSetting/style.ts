@@ -3,6 +3,7 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'flex-start',
   },
   addressContainer: {
     flexDirection: 'row',
@@ -11,6 +12,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 20,
     borderRadius: 8,
+    marginBottom: 16,
   },
   addressAvatarContainer: {
     width: 32,
@@ -47,5 +49,16 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  floatingButton: {
+    position: 'absolute',
+    right: 20,
+    bottom: 52,
+    minWidth: 52,
+    width: 52,
+    minHeight: 52,
+    height: 52,
+    borderRadius: 26,
+    paddingVertical: 0,
   },
 });

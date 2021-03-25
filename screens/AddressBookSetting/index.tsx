@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useContext, useLayoutEffect, useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {ThemeContext} from '../../ThemeContext';
@@ -8,13 +8,13 @@ import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import CustomImagePicker from '../../components/ImagePicker';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import List from '../../components/List';
 import {getLanguageString} from '../../utils/lang';
 import {groupByAlphabet, truncate} from '../../utils/string';
 import {styles} from './style';
 import Button from '../../components/Button';
 import NewAddressModal from '../common/NewAddressModal';
 import {showTabBarAtom} from '../../atoms/showTabBar';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const AddressBookSetting = () => {
   const theme = useContext(ThemeContext);
@@ -65,24 +65,22 @@ const AddressBookSetting = () => {
           />
         </View>
       )}
-      {groupByAlphabet(addressBook, 'name').map((group) => {
-        return (
-          <React.Fragment key={`address-group-${group.char}`}>
-            <Text
-              style={{
-                marginHorizontal: 20,
-                marginBottom: 8,
-                color: theme.textColor,
-              }}>
-              {group.char}
-            </Text>
-            <List
-              items={group.items}
-              keyExtractor={(item) => item.address}
-              containerStyle={{flex: 1}}
-              render={(address: Address) => {
+      <ScrollView>
+        {groupByAlphabet(addressBook, 'name').map((group) => {
+          return (
+            <React.Fragment key={`address-group-${group.char}`}>
+              <Text
+                style={{
+                  marginHorizontal: 20,
+                  marginBottom: 8,
+                  color: theme.textColor,
+                }}>
+                {group.char}
+              </Text>
+              {group.items.map((address: Address) => {
                 return (
                   <TouchableOpacity
+                    key={address.address}
                     style={[
                       styles.addressContainer,
                       {backgroundColor: theme.backgroundFocusColor},
@@ -134,11 +132,18 @@ const AddressBookSetting = () => {
                     </View>
                   </TouchableOpacity>
                 );
-              }}
-            />
-          </React.Fragment>
-        );
-      })}
+              })}
+            </React.Fragment>
+          );
+        })}
+      </ScrollView>
+      <Button
+        type="primary"
+        icon={<AntIcon name="plus" size={24} />}
+        size="small"
+        onPress={() => setShowNewAddressModal(true)}
+        style={styles.floatingButton}
+      />
     </View>
   );
 };

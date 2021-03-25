@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  addTXButton: {
+  floatingButton: {
     position: 'absolute',
     right: 20,
     bottom: 52,

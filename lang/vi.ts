@@ -13,6 +13,8 @@ export const lang: Language = {
     GO_BACK: 'Trở lại',
     CREATE_NEW_WALLET: 'Tạo ví mới',
     IMPORT_WALLET: 'Truy cập ví',
+    IMPORT_WALLET_DESCRIPTION:
+      'Import your wallets to start sending & receiving digital currency',
     WELCOME: 'Chào mừng đến với Kardia Wallet',
     GETTING_STARTED_DESCRIPTION:
       'Để  bắt đầu, chọn 1 trong các lựa chọn sau đây',
@@ -29,6 +31,7 @@ export const lang: Language = {
     SAVE: 'Lưu',
     CLOSE: 'Đóng',
     CONFIRM: 'Xác nhận',
+    CONFIRM_REMOVE_ADDRESS: 'Bạn chắc chắn muốn xóa địa chỉ này khỏi danh bạ?',
     SCAN_QR_FOR_ADDRESS: 'Địa chỉ ví của bạn',
     ERC20_WARNING: 'Lưu ý: KHÔNG gửi KAI Token từ ví ERC20 wallet đến ví này.',
     LATER: 'Để sau',
@@ -175,5 +178,8 @@ export const lang: Language = {
     REMOVE_TOKEN: 'Xóa token',
     NO_TOKENS: 'Không có tokens KRC20',
     ERROR_FETCH_KRC20_DATA: 'Không lấy được dữ liệu tokens.',
+    // Auth modal key
+    ENTER_PIN_CODE: 'Nhập mã PIN để tiếp tục',
+    WRONG_PIN: 'Mã PIN không đúng',
   },
 };

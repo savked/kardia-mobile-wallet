@@ -1,0 +1,85 @@
+/* eslint-disable react-native/no-inline-styles */
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import React, {useCallback, useContext} from 'react';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
+import Icon from 'react-native-vector-icons/Entypo';
+import {showTabBarAtom} from '../../atoms/showTabBar';
+import {ThemeContext} from '../../ThemeContext';
+import {styles} from './style';
+import {getLanguageString} from '../../utils/lang';
+import {languageAtom} from '../../atoms/language';
+
+export default () => {
+  const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+  const theme = useContext(ThemeContext);
+  const navigation = useNavigation();
+  const language = useRecoilValue(languageAtom);
+
+  useFocusEffect(
+    useCallback(() => {
+      setTabBarVisible(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+  return (
+    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+      <Icon.Button
+        style={{paddingLeft: 0}}
+        name="chevron-left"
+        onPress={() => navigation.goBack()}
+        backgroundColor="transparent"
+      />
+      <Text style={[styles.title, {color: theme.textColor}]}>
+        {getLanguageString(language, 'IMPORT_WALLET')}
+      </Text>
+      <Text
+        style={{
+          fontSize: 15,
+          color: 'rgba(252, 252, 252, 0.54)',
+          marginTop: 6,
+        }}>
+        {getLanguageString(language, 'IMPORT_WALLET_DESCRIPTION')}
+      </Text>
+      <TouchableOpacity
+        style={[
+          styles.cardWrapper,
+          {backgroundColor: theme.backgroundFocusColor},
+        ]}>
+        <Image
+          style={{width: 185, height: 162}}
+          source={require('../../assets/import_private_key.png')}
+        />
+        <View style={{marginBottom: 24, marginLeft: 18}}>
+          <Text
+            style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
+            Import
+          </Text>
+          <Text style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+            by Private Key
+          </Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('ImportMnemonic')}
+        style={[
+          styles.cardWrapper,
+          {backgroundColor: theme.backgroundFocusColor},
+        ]}>
+        <Image
+          style={{width: 185, height: 162}}
+          source={require('../../assets/import_seed_phrase.png')}
+        />
+        <View style={{marginBottom: 24, marginLeft: 18}}>
+          <Text
+            style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
+            Import
+          </Text>
+          <Text style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+            by Seed Phrase
+          </Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+};

@@ -80,6 +80,7 @@ export const styles = StyleSheet.create({
   confirmGroup: {
     flexDirection: 'row',
     width: '100%',
+    justifyContent: 'space-between',
   },
   confirmTitle: {
     fontSize: 22,
