@@ -29,6 +29,7 @@ import IconButton from '../../components/IconButton';
 import NewTxModal from '../common/NewTxModal';
 import numeral from 'numeral';
 import {weiToKAI} from '../../services/transaction/amount';
+import { theme } from '../../theme/dark';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -62,8 +63,8 @@ const CardSliderSection = () => {
             source={require('../../assets/card_background.png')}
             // source={require('../../assets/test.jpg')}
           />
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <View style={{paddingRight: 8, flex: 10}}>
+          {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}> */}
+            {/* <View style={{paddingRight: 8, flex: 10}}>
               <Text style={styles.kaiCardText}>
                 {getLanguageString(language, 'ADDRESS')}:
               </Text>
@@ -82,8 +83,8 @@ const CardSliderSection = () => {
                   onPress={() => copyToClipboard(wallet.address)}
                 />
               </View>
-            </View>
-            <Menu>
+            </View> */}
+            {/* <Menu>
               <MenuTrigger
                 customStyles={{
                   triggerOuterWrapper: {
@@ -113,9 +114,12 @@ const CardSliderSection = () => {
                   <Text>{getLanguageString(language, 'REMOVE_WALLET')}</Text>
                 </MenuOption>
               </MenuOptions>
-            </Menu>
-          </View>
+            </Menu> */}
+          {/* </View> */}
           <View>
+            <Text style={{color: 'rgba(252, 252, 252, 0.54)'}}>
+              CURRENT BALANCE
+            </Text>
             <Text style={{fontSize: 30, color: 'white'}}>
               $
               {numeral(
@@ -129,7 +133,17 @@ const CardSliderSection = () => {
             /> */}
           </View>
 
-          <View
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={styles.kaiCardText}>
+              {truncate(
+                wallet.address,
+                viewportWidth >= 432 ? 14 : 10,
+                viewportWidth >= 432 ? 14 : 12,
+              )}
+            </Text>
+          </View>
+
+          {/* <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -139,8 +153,8 @@ const CardSliderSection = () => {
               {getLanguageString(language, 'BALANCE')}:{' '}
               {parseKaiBalance(wallet.balance)} KAI
             </Text>
-          </View>
-          <View
+          </View> */}
+          {/* <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -150,7 +164,7 @@ const CardSliderSection = () => {
               {getLanguageString(language, 'STAKED_AMOUNT')}:{' '}
               {numeral(wallet.staked).format('0,0.00a')} KAI
             </Text>
-          </View>
+          </View> */}
         </View>
       </View>
     );
@@ -232,6 +246,10 @@ const CardSliderSection = () => {
         visible={removeIndex >= 0}
         type="confirm"
         iconSize={90}
+        iconColor={theme.textColor}
+        modalStyle={{
+          backgroundColor: theme.backgroundFocusColor,
+        }}
         onClose={() => setRemoveIndex(-1)}
         cancelText={getLanguageString(language, 'GO_BACK')}
         okText={getLanguageString(language, 'CONFIRM')}
@@ -242,10 +260,16 @@ const CardSliderSection = () => {
             fontSize: 22,
             fontWeight: 'bold',
             marginBottom: 20,
+            color: theme.textColor,
           }}>
           {getLanguageString(language, 'ARE_YOU_SURE')}
         </Text>
-        <Text style={{fontStyle: 'italic', textAlign: 'center'}}>
+        <Text
+          style={{
+            fontStyle: 'italic',
+            textAlign: 'center',
+            color: theme.textColor,
+          }}>
           {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
         </Text>
       </AlertModal>

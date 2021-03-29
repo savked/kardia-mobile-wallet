@@ -27,7 +27,6 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {getWalletFromPK} from '../../utils/blockchain';
 import RemindPasscodeModal from '../common/RemindPasscodeModal';
 import {getStakingAmount} from '../../services/staking';
-import SelectWallet from './SelectWallet';
 import TokenListSection from './TokenListSection';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 
@@ -41,7 +40,6 @@ const HomeScreen = () => {
   const [mnemonic, setMnemonic] = useState('');
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [selectingWallet, setSelectingWallet] = useState(false);
 
   const setWallets = useSetRecoilState(walletsAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(
@@ -112,7 +110,6 @@ const HomeScreen = () => {
         setShowScanAlert(true);
         return;
       }
-      setSelectingWallet(true);
     }
   }, [mnemonic, language]);
 
@@ -132,48 +129,6 @@ const HomeScreen = () => {
       await importPrivateKey(e.data);
       setShowImportModal(false);
     }
-  };
-
-  const saveWallet = async (_wallet: Wallet) => {
-    const localWallets = await getWallets();
-    const _privateKey = _wallet.privateKey;
-    const walletAddress = _wallet.address;
-    const balance = await getBalance(walletAddress);
-    const staked = await getStakingAmount(walletAddress);
-
-    const wallet: Wallet = {
-      privateKey: _privateKey,
-      address: walletAddress,
-      balance,
-      staked,
-    };
-
-    const walletExisted = localWallets
-      .map((item) => item.address)
-      .includes(wallet.address);
-
-    if (walletExisted) {
-      setProcessing(false);
-      setScanMessage(getLanguageString(language, 'WALLET_EXISTED'));
-      setScanType('warning');
-      setShowScanAlert(true);
-      return;
-    }
-
-    await saveMnemonic(
-      walletAddress,
-      mnemonic !== '' ? mnemonic.trim() : 'FROM_PK',
-    );
-    const _wallets = JSON.parse(JSON.stringify(localWallets));
-    _wallets.push(wallet);
-    await saveWallets(_wallets);
-    await saveSelectedWallet(_wallets.length - 1);
-    setWallets(_wallets);
-    setProcessing(false);
-    setSelectedWallet(_wallets.length - 1);
-    setMnemonic('');
-    setSelectingWallet(false);
-    // RNRestart.Restart();
   };
 
   const importPrivateKey = async (_privateKey: string) => {
@@ -222,30 +177,6 @@ const HomeScreen = () => {
       setShowScanAlert(true);
     }
   };
-
-  if (selectingWallet) {
-    return (
-      <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
-        <SelectWallet
-          mnemonic={mnemonic}
-          onSelect={saveWallet}
-          onCancel={() => {
-            setMnemonic('');
-            setSelectingWallet(false);
-          }}
-          onError={(err) => {
-            let message = getLanguageString(language, 'GENERAL_ERROR');
-            if (err.message) {
-              message = err.message;
-            }
-            setScanMessage(message);
-            setScanType('warning');
-            setShowScanAlert(true);
-          }}
-        />
-      </SafeAreaView>
-    );
-  }
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>

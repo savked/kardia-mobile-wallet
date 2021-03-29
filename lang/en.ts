@@ -53,7 +53,7 @@ export const lang: Language = {
     MNEMONIC_DESCRIPTION:
       'The above 12 words will be used to recover, as well as access, your wallet.',
     // Import wallet key:
-    ENTER_SEED_PHRASE: 'Enter your 12-words secret seed phrase.',
+    ENTER_SEED_PHRASE: 'Enter your Seed Phrase.',
     ENTER_PRIVATE_KEY: 'Enter private key.',
     SCAN_SEED_PHRASE: 'Scan QR code for seed phrase.',
     SCAN_PRIVATE_KEY: 'Scan QR code for private key.',
@@ -187,5 +187,9 @@ export const lang: Language = {
     // Auth modal key
     ENTER_PIN_CODE: 'Enter your PIN to process',
     WRONG_PIN: 'Incorrect PIN',
+    // Scan QR screen
+    SCAN_QR_TITLE: 'Scan QR Code',
+    LOAD_MORE_WALLET: 'Load more Wallet (+5)',
+    INVALID_PHRASE: 'Invalid seed phrase',
   },
 };

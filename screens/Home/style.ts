@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
   kaiCardText: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     marginRight: 8,
   },
   kaiCardBalanceText: {

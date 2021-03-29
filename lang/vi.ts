@@ -181,5 +181,9 @@ export const lang: Language = {
     // Auth modal key
     ENTER_PIN_CODE: 'Nhập mã PIN để tiếp tục',
     WRONG_PIN: 'Mã PIN không đúng',
+    // Scan QR screen
+    SCAN_QR_TITLE: 'Quét QR code',
+    LOAD_MORE_WALLET: 'Xem thêm (+5)',
+    INVALID_PHRASE: 'Chuỗi khóa không chính xác',
   },
 };

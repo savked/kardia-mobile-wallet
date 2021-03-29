@@ -10,6 +10,7 @@ import TokenTxDetail from './screens/TokenTxDetail';
 import CreateKRC20TxScreen from './screens/CreateKRC20Transaction';
 import ImportWallet from './screens/ImportWallet';
 import ImportMnemonic from './screens/ImportMnemonic';
+import SelectWallet from './screens/SelectWallet';
 
 const HomeStack = createStackNavigator();
 
@@ -67,6 +68,11 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name="ImportMnemonic"
         component={ImportMnemonic}
+        options={{headerShown: false}}
+      />
+      <HomeStack.Screen
+        name="SelectWallet"
+        component={SelectWallet}
         options={{headerShown: false}}
       />
     </HomeStack.Navigator>

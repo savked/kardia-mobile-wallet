@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {TextInput, View, Text, StyleProp, TextStyle} from 'react-native';
+import {TextInput, View, Text, StyleProp, TextStyle, ViewStyle} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ThemeContext} from '../../ThemeContext';
 import {styles} from './style';
@@ -24,9 +24,14 @@ const CustomTextInput = ({
   headlineStyle,
   autoCapitalize = 'sentences',
   inputStyle,
+  placeholderTextColor,
+  inputRef,
+  containerStyle,
 }: CustomTextInputProps & {
   headlineStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<TextStyle>;
+  inputRef?: React.RefObject<TextInput>;
 }) => {
   const theme = useContext(ThemeContext);
 
@@ -52,6 +57,7 @@ const CustomTextInput = ({
         style={[
           {flexDirection: 'row', alignItems: 'center'},
           block ? {width: '100%'} : null,
+          containerStyle,
         ]}>
         <TextInput
           style={[
@@ -60,6 +66,7 @@ const CustomTextInput = ({
             // block ? {width: '100%'} : null,
             inputStyle,
           ]}
+          ref={inputRef}
           keyboardType={keyboardType as any}
           onChangeText={onChangeText}
           value={value}
@@ -70,6 +77,7 @@ const CustomTextInput = ({
           onBlur={onBlur}
           autoCapitalize={autoCapitalize}
           onFocus={onFocus}
+          placeholderTextColor={placeholderTextColor}
         />
         {iconName && (
           <Icon

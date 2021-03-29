@@ -9,8 +9,8 @@ export const styles = StyleSheet.create({
     flex: 0.5,
   },
   buttonGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    // flexDirection: 'row',
+    // justifyContent: 'space-evenly',
     width: '100%',
     marginVertical: 24,
   },

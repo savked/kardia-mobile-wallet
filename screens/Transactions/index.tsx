@@ -263,13 +263,15 @@ const TransactionScreen = () => {
           );
         })}
       </ScrollView>
-      <Button
-        type="primary"
-        icon={<AntIcon name="plus" size={24} />}
-        size="small"
-        onPress={() => setShowNewTxModal(true)}
-        style={styles.floatingButton}
-      />
+      {txList.length > 0 && (
+        <Button
+          type="primary"
+          icon={<AntIcon name="plus" size={24} />}
+          size="small"
+          onPress={() => setShowNewTxModal(true)}
+          style={styles.floatingButton}
+        />
+      )}
     </SafeAreaView>
   );
 };

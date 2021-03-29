@@ -8,6 +8,7 @@ interface AlertModal {
   onClose: () => void;
   children?: any;
   iconSize?: number;
+  iconColor?: string;
   okLoading?: boolean;
   okDisabled?: boolean;
   cancelLoading?: boolean;
