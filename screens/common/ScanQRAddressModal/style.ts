@@ -28,4 +28,12 @@ export const styles = StyleSheet.create({
     color: '#000000',
     fontWeight: 'bold',
   },
+  closeIcon: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

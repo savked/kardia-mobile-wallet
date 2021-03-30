@@ -17,4 +17,5 @@ export const theme = {
   successColor: '#52c93a',
   failColor: '#db4537',
   defaultFontSize: 12,
+  inputBackgroundColor: 'rgba(96, 99, 108, 1)',
 };

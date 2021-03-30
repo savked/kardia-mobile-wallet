@@ -25,6 +25,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     height: 240,
+    marginBottom: 16,
   },
   kaiCard: {
     borderRadius: 8,
@@ -35,7 +36,6 @@ export const styles = StyleSheet.create({
   kaiCardText: {
     color: '#FFFFFF',
     fontSize: 16,
-    // fontWeight: 'bold',
     marginRight: 8,
   },
   kaiCardBalanceText: {
@@ -49,10 +49,7 @@ export const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   transactionContainer: {
-    // height: 445,
     flex: 1,
-    // backgroundColor: '#FFFFFF',
-    // backgroundColor: '#171E28',
     borderTopLeftRadius: 22,
     borderTopRightRadius: 22,
   },
@@ -83,14 +80,17 @@ export const styles = StyleSheet.create({
 
   cardBackground: {
     flex: 1,
-    resizeMode: 'contain',
+    top: 0,
+    left: 0,
+    height: 230,
+    resizeMode: 'cover',
     position: 'absolute',
     borderRadius: 8,
   },
 
   kaiLogo: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
   tokenLogo: {
     width: 30,
@@ -99,8 +99,8 @@ export const styles = StyleSheet.create({
   },
   noTXText: {
     padding: 15,
-    fontSize: 16,
-    fontStyle: 'italic',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   centerText: {
     flex: 1,

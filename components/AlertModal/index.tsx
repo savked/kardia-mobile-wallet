@@ -75,7 +75,7 @@ const AlertModal = ({
       visible={visible}
       onClose={onClose}
       showCloseButton={type === 'confirm' ? false : true}
-      contentStyle={[styles.modalContent, modalStyle]}>
+      contentStyle={{...styles.modalContent, ...(modalStyle as any)}}>
       {getIcon(type, iconSize, iconColor)}
       {children}
       {!children && (

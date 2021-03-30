@@ -11,6 +11,7 @@ import CreateKRC20TxScreen from './screens/CreateKRC20Transaction';
 import ImportWallet from './screens/ImportWallet';
 import ImportMnemonic from './screens/ImportMnemonic';
 import SelectWallet from './screens/SelectWallet';
+import ImportPrivateKey from './screens/ImportPrivateKey';
 
 const HomeStack = createStackNavigator();
 
@@ -34,21 +35,22 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name="TokenDetail"
         component={TokenDetail}
-        options={({route}) => {
-          let title = '';
-          if (route && route.params && (route.params as any).name) {
-            title = `${(route.params as any).name} (${
-              (route.params as any).symbol
-            })`;
-          }
-          return {
-            title,
-            headerTitleStyle: {
-              color: theme.textColor,
-            },
-            headerTintColor: theme.textColor,
-          };
-        }}
+        // options={({route}) => {
+        //   let title = '';
+        //   if (route && route.params && (route.params as any).name) {
+        //     title = `${(route.params as any).name} (${
+        //       (route.params as any).symbol
+        //     })`;
+        //   }
+        //   return {
+        //     title,
+        //     headerTitleStyle: {
+        //       color: theme.textColor,
+        //     },
+        //     headerTintColor: theme.textColor,
+        //   };
+        // }}
+        options={{headerShown: false}}
       />
       <HomeStack.Screen
         name="TokenTxDetail"
@@ -73,6 +75,11 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name="SelectWallet"
         component={SelectWallet}
+        options={{headerShown: false}}
+      />
+      <HomeStack.Screen
+        name="ImportPrivateKey"
+        component={ImportPrivateKey}
         options={{headerShown: false}}
       />
     </HomeStack.Navigator>

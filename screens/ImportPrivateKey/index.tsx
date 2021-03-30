@@ -71,7 +71,7 @@ export default () => {
               </Text>
               <Text
                 style={{textAlign: 'center', color: '#FFFFFF', fontSize: 15}}>
-                Scan your seed phrase QR code, then we will do the rest
+                Scan your private key QR code, then we will do the rest
               </Text>
             </View>
           </View>
@@ -90,12 +90,11 @@ export default () => {
                   fontSize: 24,
                   marginBottom: 4,
                 }}>
-                {getLanguageString(language, 'ENTER_SEED_PHRASE')}
+                {getLanguageString(language, 'ENTER_PRIVATE_KEY')}
               </Text>
               <Text
                 style={{textAlign: 'center', color: '#FFFFFF', fontSize: 15}}>
-                Input your 12-words secret seed pharse manually, or just scan
-                the QR code.
+                Input your private key manually, or just scan the QR code.
               </Text>
             </View>
             <View style={{width: 320}}>

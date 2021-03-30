@@ -5,6 +5,7 @@ import QRCode from 'react-native-qrcode-svg';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
+import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
 import {ThemeContext} from '../../../ThemeContext';
 import {getLanguageString} from '../../../utils/lang';
@@ -28,13 +29,14 @@ const QRModal = ({
   return (
     <Modal
       visible={visible}
-      showCloseButton={true}
+      showCloseButton={false}
       contentStyle={{
         paddingHorizontal: 0,
-        flex: 0.5,
+        backgroundColor: theme.backgroundFocusColor,
+        height: 500,
       }}
       onClose={onClose}>
-      <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+      <Text style={{fontSize: 20, fontWeight: 'bold', color: theme.textColor}}>
         {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS')}
       </Text>
       <TouchableOpacity
@@ -50,6 +52,7 @@ const QRModal = ({
             paddingHorizontal: 18,
             textAlign: 'center',
             textDecorationLine: 'underline',
+            color: theme.textColor,
           }}>
           {wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
         </Text>
@@ -65,7 +68,12 @@ const QRModal = ({
         }}>
         {getLanguageString(language, 'ERC20_WARNING')}
       </Text>
-      <View style={{paddingVertical: 14}}>
+      <View
+        style={{
+          padding: 32,
+          backgroundColor: theme.backgroundColor,
+          borderRadius: 12,
+        }}>
         <QRCode
           size={viewportWidth / 2}
           value={wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
@@ -74,8 +82,15 @@ const QRModal = ({
           logoSize={22}
           logoMargin={2}
           logoBorderRadius={20}
+          color={theme.textColor}
+          backgroundColor={theme.backgroundColor}
         />
       </View>
+      <Button
+        title={getLanguageString(language, 'CLOSE')}
+        onPress={onClose}
+        style={{marginTop: 32, marginHorizontal: 20}}
+      />
     </Modal>
   );
 };

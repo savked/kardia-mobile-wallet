@@ -56,7 +56,7 @@ export default () => {
     };
   }, []);
 
-  const _keyboardDidShow = (e: any) => {
+  const _keyboardDidShow = () => {
     // setKeyboardOffset(e.endCoordinates.height);
     setKeyboardShown(true);
   };

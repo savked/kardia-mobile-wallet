@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useRef} from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 import {
   Animated,
   StyleProp,
@@ -12,6 +12,7 @@ import {BlurView} from '@react-native-community/blur';
 import Portal from '@burstware/react-native-portal';
 import {styles} from './style';
 import IconButton from '../IconButton';
+import {ThemeContext} from '../../ThemeContext';
 
 const {height: viewportHeight} = Dimensions.get('window');
 
@@ -31,6 +32,7 @@ const CustomModal = ({
 }: CustomModalProps & {
   contentStyle?: any;
 }) => {
+  const theme = useContext(ThemeContext);
   let endFlex = DEFAULT_HEIGHT_MODAL;
   let endHeight = DEFAULT_HEIGHT_MODAL_IN_PIXEL;
   if (full) {
@@ -91,6 +93,7 @@ const CustomModal = ({
                     top: 20,
                     right: 20,
                   }}
+                  color={theme.textColor}
                 />
               )}
             </Animated.View>

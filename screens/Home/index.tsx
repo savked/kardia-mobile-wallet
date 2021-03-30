@@ -1,47 +1,39 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {View, Alert} from 'react-native';
+import {Image, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
-import * as Bip39 from 'bip39';
+import QRModal from '../common/AddressQRCode';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {
   getAppPasscodeSetting,
   getSelectedWallet,
   getWallets,
-  saveMnemonic,
-  saveSelectedWallet,
-  saveWallets,
 } from '../../utils/local';
-import AlertModal from '../../components/AlertModal';
 import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
-import ImportModal from './ImportModal';
-import QRModal from '../common/AddressQRCode';
 import CardSliderSection from './CardSliderSection';
 import {languageAtom} from '../../atoms/language';
+import numeral from 'numeral';
 import {getLanguageString} from '../../utils/lang';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import {getWalletFromPK} from '../../utils/blockchain';
 import RemindPasscodeModal from '../common/RemindPasscodeModal';
 import {getStakingAmount} from '../../services/staking';
 import TokenListSection from './TokenListSection';
 import {showTabBarAtom} from '../../atoms/showTabBar';
+import {parseKaiBalance} from '../../utils/number';
+import {tokenInfoAtom} from '../../atoms/token';
+import {weiToKAI} from '../../services/transaction/amount';
+import Button from '../../components/Button';
 
 const HomeScreen = () => {
   const [showQRModal, setShowQRModal] = useState(false);
-  const wallets = useRecoilValue(walletsAtom);
-  const [showImportModal, setShowImportModal] = useState(false);
-  const [showScanAlert, setShowScanAlert] = useState(false);
-  const [scanMessage, setScanMessage] = useState('');
-  const [scanType, setScanType] = useState('warning');
-  const [mnemonic, setMnemonic] = useState('');
+  const tokenInfo = useRecoilValue(tokenInfoAtom);
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
-  const [processing, setProcessing] = useState(false);
 
-  const setWallets = useSetRecoilState(walletsAtom);
+  const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(
     selectedWalletAtom,
   );
@@ -100,107 +92,61 @@ const HomeScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
 
-  useEffect(() => {
-    if (mnemonic.trim() !== '') {
-      const valid = Bip39.validateMnemonic(mnemonic.trim());
-      if (!valid) {
-        setProcessing(false);
-        setScanMessage(getLanguageString(language, 'ERROR_SEED_PHRASE'));
-        setScanType('warning');
-        setShowScanAlert(true);
-        return;
-      }
-    }
-  }, [mnemonic, language]);
-
-  const onSuccessScan = async (e: any, type: string) => {
-    if (e.data === '') {
-      setShowImportModal(false);
-      Alert.alert('Invalid QR code');
-      return;
-    }
-    if (type === 'mnemonic') {
-      setShowImportModal(false);
-      setMnemonic(e.data);
-    } else {
-      setProcessing(true);
-      setMnemonic('');
-      // setPrivateKey(e.data);
-      await importPrivateKey(e.data);
-      setShowImportModal(false);
-    }
-  };
-
-  const importPrivateKey = async (_privateKey: string) => {
-    if (!_privateKey.includes('0x')) {
-      _privateKey = '0x' + _privateKey;
-    }
-
-    try {
-      const _wallet = getWalletFromPK(_privateKey.trim());
-      const walletAddress = _wallet.getChecksumAddressString();
-      const balance = await getBalance(walletAddress);
-      const staked = await getStakingAmount(walletAddress);
-      const wallet: Wallet = {
-        privateKey: _privateKey.trim(),
-        address: walletAddress,
-        balance,
-        staked,
-      };
-
-      const walletExisted = wallets
-        .map((item) => item.address)
-        .includes(wallet.address);
-
-      if (walletExisted) {
-        setProcessing(false);
-        setScanMessage(getLanguageString(language, 'WALLET_EXISTED'));
-        setScanType('warning');
-        setShowScanAlert(true);
-        return;
-      }
-      await saveMnemonic(walletAddress, 'FROM_PK');
-      const _wallets = JSON.parse(JSON.stringify(wallets));
-      _wallets.push(wallet);
-      await saveWallets(_wallets);
-      await saveSelectedWallet(_wallets.length - 1);
-      setWallets((_) => {
-        return _wallets;
-      });
-      setProcessing(false);
-      setSelectedWallet(_wallets.length - 1);
-    } catch (error) {
-      setProcessing(false);
-      console.error(error);
-      setScanMessage(getLanguageString(language, 'ERROR_PRIVATE_KEY'));
-      setScanType('warning');
-      setShowScanAlert(true);
-    }
-  };
-
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
       <HomeHeader />
       <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
-      {showImportModal && (
-        <ImportModal
-          loading={processing}
-          onClose={() => setShowImportModal(false)}
-          onSuccessScan={onSuccessScan}
-        />
-      )}
       <View style={[styles.bodyContainer]}>
-        <CardSliderSection />
+        <CardSliderSection showQRModal={() => setShowQRModal(true)} />
+        <View
+          style={{
+            paddingVertical: 24,
+            paddingHorizontal: 16,
+            backgroundColor: 'rgba(58, 59, 60, 0.42)',
+            borderRadius: 12,
+            marginHorizontal: 20,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+            }}>
+            <Image
+              style={{width: 32, height: 32, marginRight: 12}}
+              source={require('../../assets/logo_dark.png')}
+            />
+            <View>
+              <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+                {getLanguageString(language, 'BALANCE')}
+              </Text>
+              <Text style={{color: theme.textColor, fontSize: 18}}>
+                {parseKaiBalance(wallets[selectedWallet].balance, true)}{' '}
+                <Text style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</Text>
+              </Text>
+              <Text style={{color: '#FFFFFF'}}>
+                ~${' '}
+                {numeral(
+                  tokenInfo.price *
+                    (Number(weiToKAI(wallets[selectedWallet].balance)) +
+                      wallets[selectedWallet].staked),
+                ).format('0,0.00a')}
+              </Text>
+            </View>
+          </View>
+          <Button
+            title="Buy KAI"
+            onPress={() => {}}
+            type="ghost"
+            size="small"
+            textStyle={{color: '#000000', fontWeight: 'bold'}}
+            style={{paddingHorizontal: 16, paddingVertical: 8}}
+          />
+        </View>
         <TokenListSection />
-        <AlertModal
-          type={scanType as any}
-          visible={showScanAlert}
-          onClose={() => {
-            setShowScanAlert(false);
-            setMnemonic('');
-          }}
-          message={scanMessage}
-        />
         <RemindPasscodeModal
           visible={showPasscodeRemindModal}
           onClose={() => setShowPasscodeRemindModal(false)}

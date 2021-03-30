@@ -33,6 +33,8 @@ export const lang: Language = {
     CONFIRM: 'Confirm',
     CONFIRM_REMOVE_ADDRESS: 'Are you sure you want to delete this address?',
     SCAN_QR_FOR_ADDRESS: 'Your Wallet Address',
+    SCAN_QR_FOR_ADDRESS_DESCRIPTION:
+      'Scan QR code containing address to import',
     ERC20_WARNING:
       'Please DO NOT send KAI Token from ERC20 wallet to this wallet.',
     LATER: 'Later',
@@ -52,6 +54,7 @@ export const lang: Language = {
     SUBMIT_CREATE: 'Understood. Access my wallet now.',
     MNEMONIC_DESCRIPTION:
       'The above 12 words will be used to recover, as well as access, your wallet.',
+    CARD_NAME: 'CARD NAME',
     // Import wallet key:
     ENTER_SEED_PHRASE: 'Enter your Seed Phrase.',
     ENTER_PRIVATE_KEY: 'Enter private key.',
@@ -67,6 +70,8 @@ export const lang: Language = {
     NOT_SURE: 'Take me back.',
     SELECT_YOUR_WALLET: 'Select your wallet.',
     PROCESSING_YOUR_SEED: 'Processing your seed phrase...',
+    BY_PRIVATE_KEY: 'by Private Key',
+    BY_SEED_PHRASE: 'by Seed Phrase',
     // Transaction key
     RECENT_TRANSACTION: 'Recent Transactions',
     NO_TRANSACTION: 'No transaction',
@@ -182,7 +187,7 @@ export const lang: Language = {
     SEND_TOKEN: 'Send {{TOKEN_SYMBOL}}',
     RECEIVE_TOKEN: 'Receive {{TOKEN_SYMBOL}}',
     REMOVE_TOKEN: 'Remove token',
-    NO_TOKENS: 'No KRC20 tokens',
+    NO_TOKENS: 'No Tokens',
     ERROR_FETCH_KRC20_DATA: "Couldn't get tokens data.",
     // Auth modal key
     ENTER_PIN_CODE: 'Enter your PIN to process',
@@ -190,6 +195,7 @@ export const lang: Language = {
     // Scan QR screen
     SCAN_QR_TITLE: 'Scan QR Code',
     LOAD_MORE_WALLET: 'Load more Wallet (+5)',
-    INVALID_PHRASE: 'Invalid seed phrase',
+    INVALID_PHRASE: 'Invalid Seed Phrase',
+    INVALID_PRIVATE_KEY: 'Invalid Private Key',
   },
 };

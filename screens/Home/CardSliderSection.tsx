@@ -1,18 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Dimensions, Image, Text, TouchableOpacity, View} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {useRecoilState, useRecoilValue} from 'recoil';
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from 'react-native-popup-menu';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {parseKaiBalance} from '../../utils/number';
-import {copyToClipboard, truncate} from '../../utils/string';
+import {truncate} from '../../utils/string';
 import {styles} from './style';
 import {
   getSelectedWallet,
@@ -20,21 +13,22 @@ import {
   saveSelectedWallet,
   saveWallets,
 } from '../../utils/local';
-import {useNavigation} from '@react-navigation/native';
 import {tokenInfoAtom} from '../../atoms/token';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
-import AlertModal from '../../components/AlertModal';
-import IconButton from '../../components/IconButton';
+import Modal from '../../components/Modal';
 import NewTxModal from '../common/NewTxModal';
 import numeral from 'numeral';
 import {weiToKAI} from '../../services/transaction/amount';
-import { theme } from '../../theme/dark';
+import {ThemeContext} from '../../ThemeContext';
+import IconButton from '../../components/IconButton';
+import Button from '../../components/Button';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
-const CardSliderSection = () => {
-  const navigation = useNavigation();
+const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
+  // const navigation = useNavigation();
+  const theme = useContext(ThemeContext);
   const [showNewTxModal, setShowNewTxModal] = useState(false);
   const carouselRef = useRef<Carousel<Wallet>>(null);
   const [wallets, setWallets] = useRecoilState(walletsAtom);
@@ -45,92 +39,48 @@ const CardSliderSection = () => {
   const [removeIndex, setRemoveIndex] = useState(-1);
   const language = useRecoilValue(languageAtom);
 
-  function showCredential() {
-    navigation.navigate('Setting', {
-      screen: 'MnemonicPhraseSetting',
-      initial: false,
-      params: {
-        from: 'Home',
-      },
-    });
-  }
+  // function showCredential() {
+  //   navigation.navigate('Setting', {
+  //     screen: 'MnemonicPhraseSetting',
+  //     initial: false,
+  //     params: {
+  //       from: 'Home',
+  //     },
+  //   });
+  // }
   const renderWalletItem = ({item: wallet}: any) => {
     return (
       <View style={styles.kaiCardContainer}>
         <View style={styles.kaiCard}>
           <Image
-            style={styles.cardBackground}
+            style={[styles.cardBackground, {width: viewportWidth - 40}]}
             source={require('../../assets/card_background.png')}
             // source={require('../../assets/test.jpg')}
           />
-          {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}> */}
-            {/* <View style={{paddingRight: 8, flex: 10}}>
-              <Text style={styles.kaiCardText}>
-                {getLanguageString(language, 'ADDRESS')}:
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+            <View>
+              <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+                {getLanguageString(language, 'BALANCE')}
               </Text>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={styles.kaiCardText}>
-                  {truncate(
-                    wallet.address,
-                    viewportWidth >= 432 ? 14 : 8,
-                    viewportWidth >= 432 ? 14 : 10,
-                  )}
-                </Text>
-                <IconButton
-                  color={'#FFFFFF'}
-                  name="copy"
-                  size={16}
-                  onPress={() => copyToClipboard(wallet.address)}
-                />
-              </View>
-            </View> */}
-            {/* <Menu>
-              <MenuTrigger
-                customStyles={{
-                  triggerOuterWrapper: {
-                    width: 27,
-                    height: 27,
-                    alignItems: 'flex-end',
-                  },
-                  TriggerTouchableComponent: TouchableOpacity,
-                  triggerWrapper: {
-                    width: 27,
-                    height: 27,
-                    alignItems: 'flex-end',
-                  },
-                }}>
-                <Icon name="ellipsis-h" color="#FFFFFF" size={27} />
-              </MenuTrigger>
-              <MenuOptions
-                customStyles={{
-                  optionWrapper: {
-                    padding: 12,
-                  },
-                }}>
-                <MenuOption onSelect={showCredential}>
-                  <Text>{getLanguageString(language, 'SHOW_SECRET_TEXT')}</Text>
-                </MenuOption>
-                <MenuOption onSelect={() => setRemoveIndex(selectedWallet)}>
-                  <Text>{getLanguageString(language, 'REMOVE_WALLET')}</Text>
-                </MenuOption>
-              </MenuOptions>
-            </Menu> */}
-          {/* </View> */}
-          <View>
-            <Text style={{color: 'rgba(252, 252, 252, 0.54)'}}>
-              CURRENT BALANCE
-            </Text>
-            <Text style={{fontSize: 30, color: 'white'}}>
-              $
-              {numeral(
-                tokenInfo.price *
-                  (Number(weiToKAI(wallet.balance)) + wallet.staked),
-              ).format('0,0.00a')}
-            </Text>
-            {/* <Image
-              style={styles.cardLogo}
-              source={require('../../assets/kar1.png')}
-            /> */}
+              <Text style={{fontSize: 30, color: 'white'}}>
+                $
+                {numeral(
+                  tokenInfo.price *
+                    (Number(weiToKAI(wallet.balance)) + wallet.staked),
+                ).format('0,0.00a')}
+              </Text>
+            </View>
+            <IconButton
+              onPress={() => setRemoveIndex(selectedWallet)}
+              name="trash"
+              color={theme.textColor}
+              size={20}
+            />
           </View>
 
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -143,28 +93,28 @@ const CardSliderSection = () => {
             </Text>
           </View>
 
-          {/* <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <Text style={[styles.kaiCardText, styles.kaiCardBalanceText]}>
-              {getLanguageString(language, 'BALANCE')}:{' '}
-              {parseKaiBalance(wallet.balance)} KAI
-            </Text>
-          </View> */}
-          {/* <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <Text style={[styles.kaiCardText, styles.kaiCardBalanceText]}>
-              {getLanguageString(language, 'STAKED_AMOUNT')}:{' '}
-              {numeral(wallet.staked).format('0,0.00a')} KAI
-            </Text>
-          </View> */}
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View>
+              <Text style={{fontSize: 10, color: 'rgba(252, 252, 252, 0.54)'}}>
+                {getLanguageString(language, 'CARD_NAME')}
+              </Text>
+              <Text style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.87)'}}>
+                {wallet.name}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => showQRModal()}
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 22,
+                backgroundColor: '#FFFFFF',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Icon size={20} name="qrcode" />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -206,7 +156,6 @@ const CardSliderSection = () => {
       await saveSelectedWallet(selectedWallet);
       setRemoveIndex(-1);
     }
-    // RNRestart.Restart();
   };
 
   return (
@@ -229,7 +178,8 @@ const CardSliderSection = () => {
         activeDotIndex={selectedWallet}
         containerStyle={{
           paddingVertical: 0,
-          height: 20,
+          height: 12,
+          alignItems: 'center',
           justifyContent: 'center',
         }}
         dotStyle={{
@@ -242,37 +192,53 @@ const CardSliderSection = () => {
         inactiveDotOpacity={0.4}
         inactiveDotScale={0.6}
       />
-      <AlertModal
+      <Modal
         visible={removeIndex >= 0}
-        type="confirm"
-        iconSize={90}
-        iconColor={theme.textColor}
-        modalStyle={{
-          backgroundColor: theme.backgroundFocusColor,
-        }}
+        showCloseButton={false}
         onClose={() => setRemoveIndex(-1)}
-        cancelText={getLanguageString(language, 'GO_BACK')}
-        okText={getLanguageString(language, 'CONFIRM')}
-        onOK={removeWallet}>
+        contentStyle={{
+          backgroundColor: theme.backgroundFocusColor,
+          height: 450,
+          justifyContent: 'center',
+        }}>
+        <Image
+          style={{width: 101, height: 152}}
+          source={require('../../assets/trash_dark.png')}
+        />
         <Text
           style={{
             textAlign: 'center',
             fontSize: 22,
             fontWeight: 'bold',
-            marginBottom: 20,
+            marginVertical: 20,
             color: theme.textColor,
           }}>
           {getLanguageString(language, 'ARE_YOU_SURE')}
         </Text>
-        <Text
+        <Button
+          block
+          title={getLanguageString(language, 'CANCEL')}
+          type="outline"
+          textStyle={{
+            fontWeight: 'bold',
+          }}
+          onPress={() => setRemoveIndex(-1)}
+        />
+        <Button
+          block
+          title={getLanguageString(language, 'CONFIRM')}
+          type="ghost"
           style={{
-            fontStyle: 'italic',
-            textAlign: 'center',
-            color: theme.textColor,
-          }}>
-          {getLanguageString(language, 'RESTART_APP_DESCRIPTION')}
-        </Text>
-      </AlertModal>
+            marginTop: 12,
+            backgroundColor: 'rgba(208, 37, 38, 1)',
+          }}
+          textStyle={{
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+          }}
+          onPress={removeWallet}
+        />
+      </Modal>
     </View>
   );
 };

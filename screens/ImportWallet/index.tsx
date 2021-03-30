@@ -42,6 +42,7 @@ export default () => {
         {getLanguageString(language, 'IMPORT_WALLET_DESCRIPTION')}
       </Text>
       <TouchableOpacity
+        onPress={() => navigation.navigate('ImportPrivateKey')}
         style={[
           styles.cardWrapper,
           {backgroundColor: theme.backgroundFocusColor},
@@ -56,7 +57,7 @@ export default () => {
             Import
           </Text>
           <Text style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
-            by Private Key
+            {getLanguageString(language, 'BY_PRIVATE_KEY')}
           </Text>
         </View>
       </TouchableOpacity>
@@ -76,7 +77,7 @@ export default () => {
             Import
           </Text>
           <Text style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
-            by Seed Phrase
+            {getLanguageString(language, 'BY_SEED_PHRASE')}
           </Text>
         </View>
       </TouchableOpacity>

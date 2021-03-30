@@ -130,9 +130,6 @@ const TokenListSection = () => {
                     }}>
                     {item.name}
                   </Text>
-                  {/* <Text style={{color: 'gray'}}>
-                    $ {numeral(item.price).format('0,0.00')}
-                  </Text> */}
                 </View>
                 <View
                   style={{
@@ -155,9 +152,22 @@ const TokenListSection = () => {
           );
         }}
         ListEmptyComponent={
-          <Text style={[styles.noTXText, {color: theme.textColor}]}>
-            {getLanguageString(language, 'NO_TOKENS')}
-          </Text>
+          <View style={{alignItems: 'center'}}>
+            <Image
+              style={{width: 111, height: 52}}
+              source={require('../../assets/no_tokens_dark.png')}
+            />
+            <Text style={[styles.noTXText, {color: theme.textColor}]}>
+              {getLanguageString(language, 'NO_TOKENS')}
+            </Text>
+            <Button
+              type="outline"
+              textStyle={{fontWeight: 'bold', fontSize: 12}}
+              style={{paddingVertical: 8, paddingHorizontal: 16}}
+              onPress={() => setShowModal(true)}
+              title={`+ ${getLanguageString(language, 'ADD_TOKEN')}`}
+            />
+          </View>
         }
         header={
           <View
@@ -165,16 +175,11 @@ const TokenListSection = () => {
               alignItems: 'center',
               flexDirection: 'row',
               justifyContent: 'space-between',
-              paddingHorizontal: 15,
+              padding: 20,
             }}>
             <Text style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
               {getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}
             </Text>
-            <Button
-              type="link"
-              onPress={() => setShowModal(true)}
-              title={`+ ${getLanguageString(language, 'ADD_TOKEN')}`}
-            />
           </View>
         }
       />

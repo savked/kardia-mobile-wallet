@@ -12,9 +12,9 @@ export const lang: Language = {
     AGO: 'trước',
     GO_BACK: 'Trở lại',
     CREATE_NEW_WALLET: 'Tạo ví mới',
-    IMPORT_WALLET: 'Truy cập ví',
+    IMPORT_WALLET: 'Import ví',
     IMPORT_WALLET_DESCRIPTION:
-      'Import your wallets to start sending & receiving digital currency',
+      'Import ví của bạn để  sử dụng và quản lý KAI và các đồng chạy trên KardiaChain',
     WELCOME: 'Chào mừng đến với Kardia Wallet',
     GETTING_STARTED_DESCRIPTION:
       'Để  bắt đầu, chọn 1 trong các lựa chọn sau đây',
@@ -33,6 +33,7 @@ export const lang: Language = {
     CONFIRM: 'Xác nhận',
     CONFIRM_REMOVE_ADDRESS: 'Bạn chắc chắn muốn xóa địa chỉ này khỏi danh bạ?',
     SCAN_QR_FOR_ADDRESS: 'Địa chỉ ví của bạn',
+    SCAN_QR_FOR_ADDRESS_DESCRIPTION: 'Quét mã QR code chứa địa chỉ',
     ERC20_WARNING: 'Lưu ý: KHÔNG gửi KAI Token từ ví ERC20 wallet đến ví này.',
     LATER: 'Để sau',
     SET_APP_PASSCODE: 'Cài đặt mật khẩu',
@@ -51,6 +52,7 @@ export const lang: Language = {
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
       '12 từ trên được dùng để  truy cập cũng như khôi phục lại ví của bạn.',
+    CARD_NAME: 'CARD NAME',
     // Import wallet key:
     ENTER_SEED_PHRASE: 'Nhập chuỗi 12 từ khóa bí mật',
     ENTER_PRIVATE_KEY: 'Nhập private key',
@@ -64,13 +66,15 @@ export const lang: Language = {
     NOT_SURE: 'Trở lại',
     SELECT_YOUR_WALLET: 'Chọn ví muốn import',
     PROCESSING_YOUR_SEED: 'Đang xử lý...',
+    BY_PRIVATE_KEY: 'bằng Private Key',
+    BY_SEED_PHRASE: 'bằng chuỗi khóa',
     // Transaction key
     RECENT_TRANSACTION: 'Giao dịch gần đây',
     NO_TRANSACTION: 'Không có giao dịch',
     SEARCH_TRANSACTION_PLACEHOLDER: 'Tìm kiếm...',
     VIEW_ALL_TRANSACTION: 'Tất cả',
     SEND: 'Gửi KAI',
-    SEND_NOW: 'Gửi KAI',
+    SEND_NOW: 'Gửi ngay',
     CANCEL: 'Hủy',
     RECEIVE: 'Nhận KAI',
     TX_TYPE_RECEIVED: 'Nhận',
@@ -176,7 +180,7 @@ export const lang: Language = {
     SEND_TOKEN: 'Gửi {{TOKEN_SYMBOL}}',
     RECEIVE_TOKEN: 'Nhận {{TOKEN_SYMBOL}}',
     REMOVE_TOKEN: 'Xóa token',
-    NO_TOKENS: 'Không có tokens KRC20',
+    NO_TOKENS: 'Chưa có tokens',
     ERROR_FETCH_KRC20_DATA: 'Không lấy được dữ liệu tokens.',
     // Auth modal key
     ENTER_PIN_CODE: 'Nhập mã PIN để tiếp tục',
@@ -184,6 +188,7 @@ export const lang: Language = {
     // Scan QR screen
     SCAN_QR_TITLE: 'Quét QR code',
     LOAD_MORE_WALLET: 'Xem thêm (+5)',
-    INVALID_PHRASE: 'Chuỗi khóa không chính xác',
+    INVALID_PHRASE: 'Chuỗi khóa không hợp lệ',
+    INVALID_PRIVATE_KEY: 'Private Key không hợp lệ',
   },
 };

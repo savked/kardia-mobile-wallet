@@ -22,6 +22,7 @@ export const getKRC20TokenInfo = async (address: string) => {
     decimals: await krc20.getDecimals(true),
     totalSupply: await krc20.getTotalSupply(),
     avatar: responseJSON.data.logo || '',
+    // avatar: '',
   };
   return info;
 };

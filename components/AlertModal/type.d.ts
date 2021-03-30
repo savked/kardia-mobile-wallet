@@ -1,5 +1,5 @@
 interface AlertModal {
-  type: 'success' | 'error' | 'warning' | 'confirm';
+  type: 'success' | 'error' | 'warning' | 'confirm' | 'none';
   message?: string;
   onOK?: () => void;
   cancelText?: string;
