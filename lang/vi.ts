@@ -45,7 +45,7 @@ export const lang: Language = {
     SELECT_ADDRESS: 'Chọn địa chỉ ví',
     NO_SAVED_ADDRESS: 'Chưa có địa chỉ ví được lưu',
     ADD_NEW_ADDRESS: 'Thêm địa chỉ ví',
-    SAVE_TO_ADDRESS_BOOK: 'Lưu ví vào sổ danh bạ',
+    SAVE_TO_ADDRESS_BOOK: 'Lưu ví',
     INVALID_ADDRESS: 'Địa chỉ không hợp lệ',
     TOKEN_EXISTS: 'Token đã tồn tại',
     // Create wallet key:
@@ -96,7 +96,7 @@ export const lang: Language = {
     FAST_SPEED: 'Nhanh',
     GAS_PRICE: 'Giá gas',
     GAS_LIMIT: 'Giới hạn gas',
-    NEW_CONTACT: 'Địa chỉ chưa có trong danh bạ',
+    NEW_CONTACT: 'Địa chỉ mới',
     SPEED_DESCRIPTION:
       '* Thông thường các giao dịch có giá gas cao hơn sẽ được network ưu tiên xử lý trước. Tuy nhiên điều này còn phụ thuộc vào trạng thái của network tại thời điểm giao dịch.',
     CONFIRM_TRANSACTION: 'Xác nhận giao dịch của bạn',
@@ -110,6 +110,7 @@ export const lang: Language = {
     // News key
     NEWS_SCREEN_TITLE: 'Tin tức',
     // Staking key
+    STAKING_TITLE: 'Đầu tư',
     NO_STAKING_ITEM: 'Không có khoản đầu tư',
     CLAIMABLE: 'KAI được thưởng',
     STAKED: 'KAI đã stake',

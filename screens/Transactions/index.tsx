@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useNavigation} from '@react-navigation/native';
-import React, {useContext, useEffect, useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {Text, TouchableOpacity, View, Image} from 'react-native';
-import {useRecoilState, useRecoilValue} from 'recoil';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {truncate} from '../../utils/string';
@@ -21,6 +21,7 @@ import Button from '../../components/Button';
 import {groupByDate} from '../../utils/date';
 import TxDetailModal from '../common/TxDetailModal';
 import {ScrollView} from 'react-native-gesture-handler';
+import {showTabBarAtom} from '../../atoms/showTabBar';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
@@ -34,6 +35,15 @@ const TransactionScreen = () => {
 
   const [showTxDetail, setShowTxDetail] = useState(false);
   const [txObjForDetail, setTxObjForDetail] = useState();
+
+  const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+
+  useFocusEffect(
+    useCallback(() => {
+      setTabBarVisible(true);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   const parseTXForList = (tx: Transaction) => {
     return {

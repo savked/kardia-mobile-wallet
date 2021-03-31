@@ -35,7 +35,7 @@ import Portal from '@burstware/react-native-portal';
 import {krc20ListAtom} from '../../atoms/krc20';
 import HomeStackScreen from '../../HomeStack';
 import AddressStackScreen from '../../AddressStack';
-import { showTabBarAtom } from '../../atoms/showTabBar';
+import {showTabBarAtom} from '../../atoms/showTabBar';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -137,7 +137,7 @@ const Wrap = () => {
           backgroundColor: theme.backgroundFocusColor,
           borderTopColor: theme.backgroundFocusColor,
         },
-        
+
         // showLabel: false,
       }}>
       {/* <Tab.Screen name="Home" component={HomeScreen} /> */}

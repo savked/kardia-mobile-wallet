@@ -1,6 +1,6 @@
 import {format} from 'date-fns';
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, Image} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {addressBookAtom} from '../../../atoms/addressBook';
@@ -10,12 +10,13 @@ import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
 import Modal from '../../../components/Modal';
 import {ThemeContext} from '../../../ThemeContext';
+import numeral from 'numeral';
 import {
   getDateFNSLocale,
   getLanguageString,
   parseCardAvatar,
 } from '../../../utils/lang';
-import {parseKaiBalance} from '../../../utils/number';
+import {parseDecimals} from '../../../utils/number';
 import {
   getFromAddressBook,
   getAddressAvatar,
@@ -23,6 +24,7 @@ import {
 } from '../../../utils/string';
 import NewAddressModal from '../NewAddressModal';
 import {styles} from './style';
+import {getTxDetail} from '../../../services/transaction';
 
 export default ({
   txObj,
@@ -42,6 +44,18 @@ export default ({
   const addressBook = useRecoilValue(addressBookAtom);
 
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
+
+  const [txFee, setTxFee] = useState(0);
+
+  useEffect(() => {
+    (async () => {
+      if (!txObj) {
+        return;
+      }
+      const tx = await getTxDetail(txObj.transactionHash);
+      setTxFee(Number(tx.fee));
+    })();
+  }, [txObj]);
 
   const isNewContact = () => {
     return (
@@ -208,9 +222,13 @@ export default ({
               styles.amountText,
               {color: theme.textColor, marginRight: 12},
             ]}>
-            {parseKaiBalance(txObj.amount, true)}
+            {numeral(parseDecimals(txObj.value, txObj.decimals)).format(
+              '0,0.00',
+            )}
           </Text>
-          <Text style={{color: theme.textColor, fontSize: 18}}>KAI</Text>
+          <Text style={{color: theme.textColor, fontSize: 18}}>
+            {txObj.tokenSymbol}
+          </Text>
         </View>
         <Text style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</Text>
         <View>
@@ -258,7 +276,7 @@ export default ({
             {getLanguageString(language, 'TRANSACTION_FEE')}
           </Text>
           <Text style={{color: theme.textColor, fontSize: 15}}>
-            {parseKaiBalance(txObj.txFee, true)} KAI
+            {txFee} KAI
           </Text>
         </View>
         <Divider />

@@ -30,6 +30,7 @@ import AddressBookModal from '../AddressBookModal';
 import ScanQRAddressModal from '../ScanQRAddressModal';
 import {theme} from '../../../theme/dark';
 import AuthModal from '../AuthModal';
+import {useNavigation} from '@react-navigation/native';
 
 const MAX_AMOUNT = 5000000000;
 
@@ -40,6 +41,7 @@ const NewTxModal = ({
   visible: boolean;
   onClose: () => void;
 }) => {
+  const navigation = useNavigation();
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const [address, setAddress] = useState('');
@@ -48,7 +50,6 @@ const NewTxModal = ({
   const [showAddressBookModal, setShowAddressBookModal] = useState(false);
   const [gasPrice, setGasPrice] = useState(1);
   const [error, setError] = useState('');
-  const [successTxHash, setSuccessHash] = useState('');
   const [loading, setLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [errorAddress, setErrorAddress] = useState(' ');
@@ -110,8 +111,11 @@ const NewTxModal = ({
       setWallets(newWallets);
       saveWallets(newWallets);
 
-      setSuccessHash(txHash);
       setLoading(false);
+      navigation.navigate('SuccessTx', {txHash: txHash});
+      resetState();
+      onClose();
+      // setSuccessHash(txHash);
     } catch (err) {
       console.error(err);
       if (err.message) {
@@ -169,14 +173,14 @@ const NewTxModal = ({
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: 520,
+        height: 480,
         backgroundColor: 'rgba(58, 59, 60, 1)',
       };
     } else {
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: 520,
+        height: 480,
         backgroundColor: 'rgba(58, 59, 60, 1)',
         marginBottom: keyboardOffset - (keyboardShown ? 100 : 0),
         marginTop: -keyboardOffset - (keyboardShown ? 100 : 0),
@@ -273,22 +277,6 @@ const NewTxModal = ({
     );
   }
 
-  if (successTxHash !== '') {
-    return (
-      <AlertModal
-        type="success"
-        // message={`Transaction completed. Hash: ${successTxHash}`}
-        onClose={() => {
-          setSuccessHash('');
-          resetState();
-          onClose();
-        }}
-        visible={successTxHash !== ''}>
-        <Text>Transaction completed</Text>
-        <Text>Tx Hash: {truncate(successTxHash, 10, 20)}</Text>
-      </AlertModal>
-    );
-  }
   return (
     <Modal
       visible={visible}
@@ -426,6 +414,7 @@ const NewTxModal = ({
               // size="large"
               loading={loading}
               disabled={loading}
+              textStyle={{fontWeight: 'bold'}}
             />
           </View>
           <AlertModal

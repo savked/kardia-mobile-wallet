@@ -5,12 +5,13 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     // paddingHorizontal: 15,
+    paddingHorizontal: 20,
   },
   header: {
     height: HEADER_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    // marginBottom: 20,
     justifyContent: 'space-between',
   },
   headline: {
@@ -19,7 +20,7 @@ export const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    fontStyle: 'italic',
+    fontWeight: 'bold',
   },
   noStakingText: {
     // padding: 15,
@@ -44,11 +45,23 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 32,
     paddingVertical: 14,
+    marginRight: 12,
   },
   headerButtonGroup: {
     flexDirection: 'row',
     padding: 20,
     width: '100%',
     justifyContent: 'center',
+  },
+  floatingButton: {
+    position: 'absolute',
+    right: 20,
+    bottom: 52,
+    minWidth: 52,
+    width: 52,
+    minHeight: 52,
+    height: 52,
+    borderRadius: 26,
+    paddingVertical: 0,
   },
 });

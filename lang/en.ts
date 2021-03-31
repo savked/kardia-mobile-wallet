@@ -47,7 +47,7 @@ export const lang: Language = {
     SELECT_ADDRESS: 'Select Address',
     NO_SAVED_ADDRESS: 'No Contact',
     ADD_NEW_ADDRESS: 'Add new',
-    SAVE_TO_ADDRESS_BOOK: 'Save to address book',
+    SAVE_TO_ADDRESS_BOOK: 'Save address',
     INVALID_ADDRESS: 'Invalid address',
     TOKEN_EXISTS: 'Token already exists.',
     // Create wallet key:
@@ -115,6 +115,7 @@ export const lang: Language = {
     // News key
     NEWS_SCREEN_TITLE: 'News',
     // Staking key
+    STAKING_TITLE: 'Staking',
     NO_STAKING_ITEM: "You haven't staked for any validator yet.",
     CLAIMABLE: 'Claimable KAI',
     STAKED: 'Staked KAI',

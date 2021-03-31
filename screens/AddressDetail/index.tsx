@@ -5,7 +5,15 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Alert, Image, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  Image,
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {ThemeContext} from '../../ThemeContext';
@@ -31,6 +39,9 @@ import {parseKaiBalance} from '../../utils/number';
 import TxDetailModal from '../common/TxDetailModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import NewAddressModal from '../common/NewAddressModal';
+import IconButton from '../../components/IconButton';
+
+const {width: viewportWidth} = Dimensions.get('window');
 
 const AddressDetail = () => {
   const {params} = useRoute();
@@ -193,8 +204,8 @@ const AddressDetail = () => {
   );
 
   useEffect(() => {
-    setStatusBarColor(theme.backgroundFocusColor);
-  }, [setStatusBarColor, theme.backgroundFocusColor]);
+    setStatusBarColor(theme.backgroundColor);
+  }, [setStatusBarColor, theme.backgroundColor]);
 
   useEffect(() => {
     const addressItem = addressBook.find(
@@ -239,9 +250,7 @@ const AddressDetail = () => {
       />
       <View
         style={{
-          backgroundColor: theme.backgroundFocusColor,
-          borderBottomLeftRadius: 8,
-          borderBottomRightRadius: 8,
+          // backgroundColor: theme.backgroundFocusColor,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
@@ -249,80 +258,109 @@ const AddressDetail = () => {
           style={{
             flexDirection: 'row',
             width: '100%',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-start',
           }}>
           <Icon.Button
+            style={{paddingLeft: 20}}
             name="chevron-left"
             onPress={() => navigation.goBack()}
             backgroundColor="transparent"
           />
-          <View style={{flexDirection: 'row'}}>
-            <Icon.Button
-              name="edit"
-              onPress={() => setShowUpdateAddressModal(true)}
-              backgroundColor="transparent"
-            />
-            <Icon.Button
-              name="trash"
-              onPress={removeAddress}
-              backgroundColor="transparent"
-            />
-          </View>
         </View>
-        {addressData.avatar ? (
-          <Image source={{uri: addressData.avatar}} />
-        ) : (
-          <View
-            style={{
-              backgroundColor: theme.backgroundColor,
-              width: 80,
-              height: 80,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 24,
-            }}>
-            <Image
-              style={{width: 48, height: 48}}
-              source={require('../../assets/icon/user_dark.png')}
-            />
-          </View>
-        )}
-        <Text
+        <ImageBackground
+          imageStyle={{
+            resizeMode: 'cover',
+            width: viewportWidth - 40,
+            height: 210,
+            borderRadius: 12,
+          }}
           style={{
-            color: theme.textColor,
-            textAlign: 'center',
-            fontSize: 24,
-            fontWeight: 'bold',
-            marginVertical: 16,
-          }}>
-          {addressData.name}
-        </Text>
-        <View style={{marginBottom: 24, flexDirection: 'row'}}>
+            width: viewportWidth - 40,
+            height: 210,
+            borderRadius: 12,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          source={require('../../assets/address_detail_background.jpg')}>
+          {addressData.avatar ? (
+            <Image source={{uri: addressData.avatar}} />
+          ) : (
+            <View
+              style={{
+                backgroundColor: theme.backgroundColor,
+                width: 80,
+                height: 80,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 24,
+              }}>
+              <Image
+                style={{width: 48, height: 48}}
+                source={require('../../assets/icon/user_dark.png')}
+              />
+            </View>
+          )}
           <Text
             style={{
-              color: 'rgba(252, 252, 252, 0.54)',
+              color: theme.textColor,
               textAlign: 'center',
-              fontSize: 15,
-              marginRight: 8,
+              fontSize: 24,
+              fontWeight: 'bold',
+              marginVertical: 16,
             }}>
-            {truncate(addressData.address, 10, 10)}
+            {addressData.name}
           </Text>
-          <TouchableOpacity
+          <View style={{flexDirection: 'row'}}>
+            <Text
+              style={{
+                color: 'rgba(252, 252, 252, 0.54)',
+                textAlign: 'center',
+                fontSize: 15,
+                marginRight: 8,
+              }}>
+              {truncate(addressData.address, 10, 10)}
+            </Text>
+            <TouchableOpacity
+              style={{
+                width: 24,
+                height: 24,
+                backgroundColor: 'rgba(249, 249, 249, 1)',
+                borderRadius: 12,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() => copyToClipboard(addressData.address)}>
+              <Image
+                style={{width: 20, height: 20}}
+                source={require('../../assets/icon/copy_dark.png')}
+              />
+            </TouchableOpacity>
+          </View>
+          <View
             style={{
-              width: 24,
-              height: 24,
-              backgroundColor: 'rgba(249, 249, 249, 1)',
-              borderRadius: 4,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => copyToClipboard(addressData.address)}>
-            <Image
-              style={{width: 20, height: 20}}
-              source={require('../../assets/icon/copy_dark.png')}
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              position: 'absolute',
+              top: 24,
+              right: 20,
+            }}>
+            <Icon.Button
+              name="edit"
+              size={18}
+              onPress={() => setShowUpdateAddressModal(true)}
+              backgroundColor="transparent"
+              color="rgba(128, 128, 128, 1)"
+              style={{justifyContent: 'center'}}
             />
-          </TouchableOpacity>
-        </View>
+            <IconButton
+              name="trash"
+              size={18}
+              onPress={removeAddress}
+              color="rgba(128, 128, 128, 1)"
+              style={{justifyContent: 'center'}}
+            />
+          </View>
+        </ImageBackground>
       </View>
       <View style={{padding: 20}}>
         <Text

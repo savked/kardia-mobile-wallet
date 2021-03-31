@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     height: 240,
-    marginBottom: 16,
+    // marginBottom: 16,
   },
   kaiCard: {
     borderRadius: 8,
@@ -68,5 +68,11 @@ export const styles = StyleSheet.create({
     height: 52,
     borderRadius: 26,
     paddingVertical: 0,
+  },
+  noTXContainer: {
+    // flex: 1,
+    paddingHorizontal: 83,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

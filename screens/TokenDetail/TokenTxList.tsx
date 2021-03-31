@@ -24,6 +24,7 @@ import {styles} from './style';
 import {groupByDate} from '../../utils/date';
 import Button from '../../components/Button';
 import NewKRC20TxModal from '../common/NewKRC20TxModal';
+import KRC20TxDetailModal from '../common/KRC20TxDetailModal';
 
 const TokenTxList = ({
   tokenAddress,
@@ -134,6 +135,40 @@ const TokenTxList = ({
         tokenSymbol={tokenSymbol}
         tokenDecimals={tokenDecimals}
       />
+      <KRC20TxDetailModal
+        visible={showTxDetail}
+        onClose={() => setShowTxDetail(false)}
+        txObj={txObjForDetail}
+      />
+      {groupByDate(txList, 'date').length === 0 && (
+        <View style={styles.noTXContainer}>
+          <Image
+            style={{width: 66, height: 49, marginBottom: 17.5}}
+            source={require('../../assets/no_tx_butterfly.png')}
+          />
+          <Image
+            style={{width: 128, height: 105}}
+            source={require('../../assets/no_tx_box.png')}
+          />
+          <Text style={[styles.noTXText, {color: theme.textColor}]}>
+            {getLanguageString(language, 'NO_TRANSACTION')}
+          </Text>
+          <Button
+            type="primary"
+            onPress={() => setShowNewTxModal(true)}
+            title={getLanguageString(language, 'SEND_NOW')}
+            block={true}
+            icon={
+              <AntIcon
+                name="plus"
+                size={20}
+                color={'#000000'}
+                style={{marginRight: 8}}
+              />
+            }
+          />
+        </View>
+      )}
       <ScrollView>
         {groupByDate(txList, 'date').map((txsByDate) => {
           const dateLocale = getDateFNSLocale(language);

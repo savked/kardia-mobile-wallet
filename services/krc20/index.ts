@@ -36,6 +36,35 @@ export const getBalance = async (tokenAddress: string, userAddress: string) => {
   return balance;
 };
 
+export const getTxDetail = async (
+  tokenAddress: string,
+  userAddress: string,
+  transactionHash: string,
+) => {
+  const requestOptions = {
+    method: 'GET',
+    redirect: 'follow',
+  };
+  const response = await requestWithTimeOut(
+    fetch(
+      `${ENDPOINT}token/txs?page=1&limit=1&txHash=${transactionHash}&address=${userAddress}&contractAddress=${tokenAddress}`,
+      requestOptions,
+    ),
+    50 * 1000,
+  );
+  const responseJSON = await response.json();
+  return responseJSON.data
+    ? responseJSON.data.data.map((i: any) => {
+        i.hash = i.transactionHash;
+        i.date = new Date(i.time);
+        i.time = new Date(i.time);
+        i.status = 1;
+        i.type = i.from === userAddress ? 'OUT' : 'IN';
+        return i;
+      })[0]
+    : {};
+};
+
 export const getTx = async (tokenAddress: string, userAddress: string) => {
   const requestOptions = {
     method: 'GET',

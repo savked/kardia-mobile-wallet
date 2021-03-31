@@ -37,13 +37,14 @@ const StakingStackScreen = () => {
       <StakingStack.Screen
         name="ValidatorList"
         component={ValidatorList}
-        options={{
-          title: getLanguageString(language, 'VALIDATOR_LIST_TITLE'),
-          headerTitleStyle: {
-            color: theme.textColor,
-          },
-          headerTintColor: theme.textColor,
-        }}
+        options={{headerShown: false}}
+        // options={{
+        //   title: getLanguageString(language, 'VALIDATOR_LIST_TITLE'),
+        //   headerTitleStyle: {
+        //     color: theme.textColor,
+        //   },
+        //   headerTintColor: theme.textColor,
+        // }}
       />
       <StakingStack.Screen
         name="NewStaking"

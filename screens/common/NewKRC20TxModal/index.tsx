@@ -31,6 +31,7 @@ import AddressBookModal from '../AddressBookModal';
 import ScanQRAddressModal from '../ScanQRAddressModal';
 import {theme} from '../../../theme/dark';
 import AuthModal from '../AuthModal';
+import {useNavigation} from '@react-navigation/native';
 
 const MAX_AMOUNT = 5000000000;
 
@@ -47,6 +48,7 @@ const NewKRC20TxModal = ({
   tokenSymbol: string;
   tokenDecimals: number;
 }) => {
+  const navigation = useNavigation();
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const [address, setAddress] = useState('');
@@ -112,8 +114,20 @@ const NewKRC20TxModal = ({
         address,
         _txAmount,
       );
-      setSuccessHash(txResult.transactionHash);
       setLoading(false);
+      navigation.navigate('Transaction', {
+        screen: 'SuccessTx',
+        params: {
+          txHash: txResult.transactionHash,
+          type: 'krc20',
+          tokenAddress: tokenAddress,
+          tokenDecimals: tokenDecimals,
+          userAddress: _wallets[_selectedWallet].address,
+          tokenSymbol: tokenSymbol,
+        },
+      });
+      resetState();
+      onClose();
     } catch (err) {
       console.error(err);
       if (err.message) {

@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import {Dimensions, ImageBackground, Text, View, Image} from 'react-native';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 import {useFocusEffect} from '@react-navigation/native';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {languageAtom} from '../../atoms/language';
@@ -19,6 +20,9 @@ import Button from '../../components/Button';
 import {statusBarColorAtom} from '../../atoms/statusBar';
 import {getSelectedWallet, getWallets} from '../../utils/local';
 import UndelegateModal from './UndelegateModal';
+import IconButton from '../../components/IconButton';
+
+const {width: viewportWidth} = Dimensions.get('window');
 
 const StakingScreen = () => {
   const theme = useContext(ThemeContext);
@@ -77,7 +81,7 @@ const StakingScreen = () => {
     if (message !== '' || undelegatingIndex >= 0) {
       setStatusBarColor(theme.backgroundColor);
     } else {
-      setStatusBarColor(theme.backgroundFocusColor);
+      setStatusBarColor(theme.backgroundColor);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [undelegatingIndex, message]);
@@ -108,12 +112,32 @@ const StakingScreen = () => {
 
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <View
+      <View style={styles.header}>
+        <Text style={[styles.headline, {color: theme.textColor}]}>
+          {getLanguageString(language, 'STAKING_TITLE')}
+        </Text>
+        <IconButton
+          name="bell-o"
+          color={theme.textColor}
+          size={18}
+          onPress={() => navigation.navigate('Notification')}
+        />
+      </View>
+      <ImageBackground
+        source={require('../../assets/address_detail_background.jpg')}
+        imageStyle={{
+          resizeMode: 'cover',
+          width: viewportWidth - 40,
+          height: 210,
+          borderRadius: 12,
+        }}
         style={{
-          backgroundColor: theme.backgroundFocusColor,
-          borderRadius: 8,
-          padding: 12,
-          paddingTop: 50,
+          width: viewportWidth - 40,
+          height: 210,
+          borderRadius: 12,
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          paddingVertical: 32,
         }}>
         <Text
           style={[
@@ -122,11 +146,15 @@ const StakingScreen = () => {
           ]}>
           {getLanguageString(language, 'TOTAL_EARNING')}
         </Text>
-        <Text style={[styles.totalSaving, {color: theme.textColor}]}>
-          {numeral(getTotalSaving()).format('0,0.00')}{' '}
-          <Text style={{fontSize: 14}}>KAI</Text>
-        </Text>
-        <View style={styles.headerButtonGroup}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={[styles.totalSaving, {color: theme.textColor}]}>
+            {numeral(getTotalSaving()).format('0,0.00')}
+          </Text>
+          <Text style={{fontSize: 14, color: 'rgba(252, 252, 252, 0.54)'}}>
+            KAI
+          </Text>
+        </View>
+        {/* <View style={styles.headerButtonGroup}>
           <Button
             title={getLanguageString(language, 'INVEST')}
             iconName="plus"
@@ -135,28 +163,35 @@ const StakingScreen = () => {
             onPress={() => navigation.navigate('ValidatorList')}
             style={{width: '30%'}}
           />
-        </View>
-      </View>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: theme.textColor,
-            paddingHorizontal: 14,
-            paddingVertical: 20,
-          },
-        ]}>
-        {getLanguageString(language, 'YOUR_INVESTMENTS')}
-      </Text>
+        </View> */}
+      </ImageBackground>
+      {currentStaking.length > 0 && (
+        <Text
+          style={[
+            styles.sectionTitle,
+            {
+              color: theme.textColor,
+              // paddingHorizontal: 14,
+              paddingVertical: 20,
+            },
+          ]}>
+          {getLanguageString(language, 'YOUR_INVESTMENTS')}
+        </Text>
+      )}
       <List
         loading={loading}
         loadingColor={theme.primaryColor}
         items={currentStaking.map(parseStakingItemForList)}
-        listStyle={{paddingHorizontal: 15}}
         ListEmptyComponent={
-          <Text style={[styles.noStakingText, {color: theme.textColor}]}>
-            {getLanguageString(language, 'NO_STAKING_ITEM')}
-          </Text>
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <Image
+              style={{width: 200, height: 172}}
+              source={require('../../assets/icon/no_staking.png')}
+            />
+            <Text style={[styles.noStakingText, {color: theme.textColor}]}>
+              {getLanguageString(language, 'NO_STAKING_ITEM')}
+            </Text>
+          </View>
         }
         render={(item, index) => {
           return (
@@ -178,6 +213,13 @@ const StakingScreen = () => {
           );
         }}
         ItemSeprator={() => <View style={{height: 6}} />}
+      />
+      <Button
+        type="primary"
+        icon={<AntIcon name="plus" size={24} />}
+        size="small"
+        onPress={() => navigation.navigate('ValidatorList')}
+        style={styles.floatingButton}
       />
       {message !== '' && (
         <AlertModal

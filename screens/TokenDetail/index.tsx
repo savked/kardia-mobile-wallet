@@ -1,6 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import {Image, Text, TouchableOpacity, View, Dimensions} from 'react-native';
 import {
   Menu,
@@ -29,6 +39,7 @@ import {styles} from './style';
 import TokenTxList from './TokenTxList';
 import numeral from 'numeral';
 import IconButton from '../../components/IconButton';
+import {showTabBarAtom} from '../../atoms/showTabBar';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -49,6 +60,15 @@ const TokenDetail = () => {
   const [showAddressQR, setShowAddressQR] = useState(false);
   const [tokenBalance, setTokenBalance] = useState(0);
   const setTokenList = useSetRecoilState(krc20ListAtom);
+
+  const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+
+  useFocusEffect(
+    useCallback(() => {
+      setTabBarVisible(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   const fetchBalance = async () => {
     const _wallets = await getWallets();
