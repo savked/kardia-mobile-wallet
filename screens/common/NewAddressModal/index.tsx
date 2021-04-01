@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import {useRecoilState, useRecoilValue} from 'recoil';
+import {} from 'ethereumjs-util';
 import {languageAtom} from '../../../atoms/language';
 import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
@@ -22,6 +23,7 @@ import CustomImagePicker from '../../../components/ImagePicker';
 import {styles} from './style';
 import {addressBookAtom} from '../../../atoms/addressBook';
 import {saveAddressBook} from '../../../utils/local';
+import {toChecksum} from '../../../utils/string';
 
 export default ({
   name = '',
@@ -121,7 +123,7 @@ export default ({
         setErrAddress(getLanguageString(language, 'ADDRESS_NOT_FOUND'));
         return;
       }
-      currentAB[index].address = abAddress;
+      currentAB[index].address = toChecksum(abAddress);
       currentAB[index].name = abName;
       currentAB[index].avatar = abAvatar.uri ? abAvatar.uri : '';
     } else {

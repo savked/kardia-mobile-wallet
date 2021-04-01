@@ -26,6 +26,8 @@ import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
 import {truncate} from '../../utils/string';
 import {styles} from './style';
 import {parseDecimals} from '../../utils/number';
+import numeral from 'numeral';
+import TextAvatar from '../../components/TextAvatar';
 
 export default () => {
   const {params} = useRoute();
@@ -37,6 +39,7 @@ export default () => {
   const tokenAddress = params ? (params as any).tokenAddress : '';
   const tokenSymbol = params ? (params as any).tokenSymbol : '';
   const tokenDecimals = params ? (params as any).tokenDecimals : -1;
+  const validatorItem: Validator = params ? (params as any).validatorItem : {};
 
   const theme = useContext(ThemeContext);
 
@@ -67,7 +70,7 @@ export default () => {
         } else {
           tx = await getTxDetail(txHash);
         }
-        if (tx.hash) {
+        if (tx && tx.hash) {
           const rs = addressBook.filter((item) => item.address === tx.to);
           setAddress(rs[0] || {});
           setTxObj(tx);
@@ -90,7 +93,7 @@ export default () => {
             }}>
             <Text
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {txObj.amount}
+              {numeral(txObj.amount).format('0,0.00')}
             </Text>
             <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
@@ -114,6 +117,23 @@ export default () => {
             </Text>
           </View>
         );
+      case 'delegate':
+        return (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+            }}>
+            <Text
+              style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
+              {numeral(txObj.amount).format('0,0.00')}
+            </Text>
+            <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+              KAI
+            </Text>
+          </View>
+        );
       default:
         return (
           <View
@@ -124,13 +144,155 @@ export default () => {
             }}>
             <Text
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {txObj.amount}
+              {numeral(txObj.amount).format('0,0.00')}
             </Text>
             <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
             </Text>
           </View>
         );
+    }
+  };
+
+  const renderReceiver = () => {
+    switch (type) {
+      case 'normal':
+        return (
+          <View style={styles.addressContainer}>
+            <View
+              style={{
+                width: 48,
+                height: 48,
+                marginRight: 12,
+                borderRadius: 12,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: theme.backgroundColor,
+              }}>
+              <Image
+                style={{width: 20, height: 20}}
+                source={
+                  address.avatar
+                    ? {uri: address.avatar}
+                    : require('../../assets/icon/user.png')
+                }
+              />
+            </View>
+            <View>
+              <Text
+                style={[
+                  styles.addressName,
+                  {color: theme.textColor, fontSize: 13},
+                ]}>
+                {address.name
+                  ? address.name
+                  : getLanguageString(language, 'NEW_CONTACT')}
+              </Text>
+              <Text
+                style={[
+                  styles.addressHash,
+                  {
+                    color: 'rgba(252, 252, 252, 0.54)',
+                    fontSize: theme.defaultFontSize,
+                  },
+                ]}>
+                {truncate(address.address, 15, 15)}
+              </Text>
+            </View>
+          </View>
+        );
+      case 'delegate':
+        return (
+          <View style={styles.addressContainer}>
+            <TextAvatar
+              text={validatorItem.name}
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: 12,
+                marginRight: 12,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              textStyle={{fontSize: 16}}
+            />
+            <View style={{justifyContent: 'space-between'}}>
+              <Text
+                style={[
+                  styles.addressName,
+                  {color: theme.textColor, fontSize: 13},
+                ]}>
+                {validatorItem.name}
+              </Text>
+              <Text
+                style={[
+                  styles.commissionRateText,
+                  {
+                    color: 'rgba(252, 252, 252, 0.54)',
+                    fontSize: theme.defaultFontSize,
+                  },
+                ]}>
+                Rate: {validatorItem.commissionRate} %
+              </Text>
+            </View>
+          </View>
+        );
+      default:
+        return (
+          <View style={styles.addressContainer}>
+            <View
+              style={{
+                width: 48,
+                height: 48,
+                marginRight: 12,
+                borderRadius: 12,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: theme.backgroundColor,
+              }}>
+              <Image
+                style={{width: 20, height: 20}}
+                source={
+                  address.avatar
+                    ? {uri: address.avatar}
+                    : require('../../assets/icon/user.png')
+                }
+              />
+            </View>
+            <View>
+              <Text
+                style={[
+                  styles.addressName,
+                  {color: theme.textColor, fontSize: 13},
+                ]}>
+                {address.name
+                  ? address.name
+                  : getLanguageString(language, 'NEW_CONTACT')}
+              </Text>
+              <Text
+                style={[
+                  styles.addressHash,
+                  {
+                    color: 'rgba(252, 252, 252, 0.54)',
+                    fontSize: theme.defaultFontSize,
+                  },
+                ]}>
+                {truncate(address.address, 15, 15)}
+              </Text>
+            </View>
+          </View>
+        );
+    }
+  };
+
+  const renderSuccessDesc = () => {
+    switch (type) {
+      case 'normal':
+        return getLanguageString(language, 'TX_SUCCESS');
+      case 'delegate':
+        return getLanguageString(language, 'DELEGATE_SUCCESS');
+      default:
+        return getLanguageString(language, 'TX_SUCCESS');
     }
   };
 
@@ -168,60 +330,19 @@ export default () => {
           />
           <Text
             style={{color: theme.textColor, fontSize: 32, fontWeight: 'bold'}}>
-            Success
+            {getLanguageString(language, 'SUCCESS')}
           </Text>
           <Text style={{color: theme.textColor, fontSize: 15, marginTop: 8}}>
-            You have just sent to
+            {renderSuccessDesc()}
           </Text>
         </ImageBackground>
       </View>
-      <View style={styles.addressContainer}>
-        <View
-          style={{
-            width: 48,
-            height: 48,
-            marginRight: 12,
-            borderRadius: 12,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: theme.backgroundColor,
-          }}>
-          <Image
-            style={{width: 20, height: 20}}
-            source={
-              address.avatar
-                ? {uri: address.avatar}
-                : require('../../assets/icon/user.png')
-            }
-          />
-        </View>
-        <View>
-          <Text
-            style={[
-              styles.addressName,
-              {color: theme.textColor, fontSize: 13},
-            ]}>
-            {address.name
-              ? address.name
-              : getLanguageString(language, 'NEW_CONTACT')}
-          </Text>
-          <Text
-            style={[
-              styles.addressHash,
-              {
-                color: 'rgba(252, 252, 252, 0.54)',
-                fontSize: theme.defaultFontSize,
-              },
-            ]}>
-            {truncate(address.address, 15, 15)}
-          </Text>
-        </View>
-      </View>
+      {renderReceiver()}
       <Divider
         style={{width: 280, backgroundColor: '#60636C', marginVertical: 32}}
       />
       <Text style={{textAlign: 'center', color: theme.textColor, fontSize: 15}}>
-        Sent
+        {getLanguageString(language, 'TRANSACTION_AMOUNT')}
       </Text>
       {renderAmount()}
       <Text style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>

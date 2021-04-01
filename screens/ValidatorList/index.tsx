@@ -4,6 +4,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, Text, TouchableOpacity, View} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
+import ENIcon from 'react-native-vector-icons/Entypo';
 import List from '../../components/List';
 import TextInput from '../../components/TextInput';
 import {getAllValidator} from '../../services/staking';
@@ -11,13 +12,17 @@ import {ThemeContext} from '../../ThemeContext';
 import {getLanguageString} from '../../utils/lang';
 import {getDigit, isNumber} from '../../utils/number';
 import {styles} from './style';
+import TextAvatar from '../../components/TextAvatar';
+import NewStakingModal from '../common/NewStakingModal';
 
 const ValidatorList = () => {
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
-  const [filterValidator, setFilterValidator] = useState('');
+  // const [filterValidator, setFilterValidator] = useState('');
   const [validatorList, setValidatorList] = useState<Validator[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [validatorItem, setValidatorItem] = useState<Validator>();
 
   const navigation = useNavigation();
 
@@ -34,23 +39,36 @@ const ValidatorList = () => {
     })();
   }, []);
 
-  const filter = (validator: Validator) => {
-    if (filterValidator.length < 1) {
-      return true;
-    }
-    if (validator.name.toLowerCase().includes(filterValidator.toLowerCase())) {
-      return true;
-    }
-    if (isNumber(filterValidator)) {
-      const _minCom = Number(getDigit(filterValidator));
-      return Number(validator.commissionRate) >= _minCom;
-    }
-    return false;
-  };
+  // const filter = (validator: Validator) => {
+  //   if (filterValidator.length < 1) {
+  //     return true;
+  //   }
+  //   if (validator.name.toLowerCase().includes(filterValidator.toLowerCase())) {
+  //     return true;
+  //   }
+  //   if (isNumber(filterValidator)) {
+  //     const _minCom = Number(getDigit(filterValidator));
+  //     return Number(validator.commissionRate) >= _minCom;
+  //   }
+  //   return false;
+  // };
 
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <View style={styles.controlContainer}>
+      <NewStakingModal
+        validatorItem={validatorItem}
+        visible={validatorItem !== undefined && validatorItem.smcAddress !== ''}
+        onClose={() => {
+          setValidatorItem(undefined);
+        }}
+      />
+      <ENIcon.Button
+        style={{paddingHorizontal: 20}}
+        name="chevron-left"
+        onPress={() => navigation.goBack()}
+        backgroundColor="transparent"
+      />
+      {/* <View style={styles.controlContainer}>
         <TextInput
           block={true}
           placeholder={getLanguageString(
@@ -60,52 +78,67 @@ const ValidatorList = () => {
           value={filterValidator}
           onChangeText={setFilterValidator}
         />
-      </View>
+      </View> */}
+      <Text
+        style={{color: theme.textColor, paddingHorizontal: 20, fontSize: 36}}>
+        {getLanguageString(language, 'CHOOSE_VALIDATOR')}
+      </Text>
       <View style={{flex: 1}}>
-        {loading ? (
-          <ActivityIndicator color={theme.textColor} size="large" />
-        ) : (
-          <List
-            keyExtractor={(item) => item.smcAddress}
-            items={validatorList.filter(filter)}
-            render={(item: Validator, index) => {
-              return (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('NewStaking', {
-                      smcAddress: item.smcAddress,
-                    })
-                  }
-                  style={[
-                    styles.validatorItemContainer,
-                    {
-                      backgroundColor:
-                        index % 2 === 0
-                          ? theme.backgroundFocusColor
-                          : theme.backgroundColor,
-                    },
-                  ]}>
+        <List
+          keyExtractor={(item) => item.smcAddress}
+          // items={validatorList.filter(filter)}
+          items={validatorList}
+          loading={loading}
+          loadingSize="large"
+          loadingColor={theme.textColor}
+          render={(item: Validator) => {
+            return (
+              <TouchableOpacity
+                onPress={() =>
+                  // navigation.navigate('NewStaking', {
+                  //   smcAddress: item.smcAddress,
+                  // })
+                  setValidatorItem(item)
+                }
+                style={[
+                  styles.validatorItemContainer,
+                  {
+                    backgroundColor: theme.backgroundFocusColor,
+                  },
+                ]}>
+                <TextAvatar
+                  text={item.name}
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 12,
+                    marginRight: 12,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  textStyle={{fontSize: 16}}
+                />
+                <View style={{justifyContent: 'space-between'}}>
                   <Text
                     style={{
                       color: theme.textColor,
-                      fontSize: 16,
+                      fontSize: 13,
                       fontWeight: 'bold',
                     }}>
                     {item.name}
                   </Text>
                   <Text
                     style={{
-                      color: theme.textColor,
-                      fontSize: 16,
-                      fontStyle: 'italic',
+                      color: 'rgba(252, 252, 252, 0.54)',
+                      fontSize: theme.defaultFontSize,
                     }}>
                     {item.commissionRate} %
                   </Text>
-                </TouchableOpacity>
-              );
-            }}
-          />
-        )}
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+        />
       </View>
     </View>
   );

@@ -17,7 +17,7 @@ import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
 import Button from '../../../components/Button';
 import {getLanguageString, parseError} from '../../../utils/lang';
-import {truncate} from '../../../utils/string';
+import {toChecksum, truncate} from '../../../utils/string';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import {
   getBalance as getKRC20Balance,
@@ -57,7 +57,6 @@ const NewKRC20TxModal = ({
   const [showAddressBookModal, setShowAddressBookModal] = useState(false);
   const [gasPrice, setGasPrice] = useState(1);
   const [error, setError] = useState('');
-  const [successTxHash, setSuccessHash] = useState('');
   const [loading, setLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [errorAddress, setErrorAddress] = useState(' ');
@@ -111,7 +110,7 @@ const NewKRC20TxModal = ({
       const txResult = await transferKRC20(
         tokenAddress,
         wallet.privateKey || '',
-        address,
+        toChecksum(address),
         _txAmount,
       );
       setLoading(false);
@@ -186,14 +185,14 @@ const NewKRC20TxModal = ({
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: 520,
+        height: 480,
         backgroundColor: 'rgba(58, 59, 60, 1)',
       };
     } else {
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: 520,
+        height: 480,
         backgroundColor: 'rgba(58, 59, 60, 1)',
         marginBottom: keyboardOffset - (keyboardShown ? 100 : 0),
         marginTop: -keyboardOffset - (keyboardShown ? 100 : 0),
@@ -290,22 +289,6 @@ const NewKRC20TxModal = ({
     );
   }
 
-  if (successTxHash !== '') {
-    return (
-      <AlertModal
-        type="success"
-        // message={`Transaction completed. Hash: ${successTxHash}`}
-        onClose={() => {
-          setSuccessHash('');
-          resetState();
-          onClose();
-        }}
-        visible={successTxHash !== ''}>
-        <Text>Transaction completed</Text>
-        <Text>Tx Hash: {truncate(successTxHash, 10, 20)}</Text>
-      </AlertModal>
-    );
-  }
   return (
     <Modal
       visible={visible}

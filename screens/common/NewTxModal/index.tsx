@@ -17,7 +17,7 @@ import {useRecoilState, useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
 import Button from '../../../components/Button';
 import {getLanguageString, parseError} from '../../../utils/lang';
-import {truncate} from '../../../utils/string';
+import {toChecksum, truncate} from '../../../utils/string';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import {getBalance} from '../../../services/account';
 import {createTx} from '../../../services/transaction';
@@ -100,7 +100,7 @@ const NewTxModal = ({
     try {
       const txHash = await createTx(
         wallet,
-        address.trim(),
+        toChecksum(address.trim()),
         _txAmount,
         gasPrice,
       );

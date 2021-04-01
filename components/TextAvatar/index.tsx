@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleProp, Text, TextStyle, View} from 'react-native';
+import {StyleProp, Text, TextStyle, View, ViewStyle} from 'react-native';
 import {styles} from './style';
 
 const TextAvatar = ({
@@ -9,7 +9,10 @@ const TextAvatar = ({
   size = 50,
   style,
   textStyle,
-}: TextAvatarProps & {textStyle?: StyleProp<TextStyle>}) => {
+}: TextAvatarProps & {
+  textStyle?: StyleProp<TextStyle>;
+  style?: StyleProp<ViewStyle>;
+}) => {
   const containerStyle = {
     backgroundColor,
     width: size,

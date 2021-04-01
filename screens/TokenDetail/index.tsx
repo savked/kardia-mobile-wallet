@@ -4,20 +4,8 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {Image, Text, TouchableOpacity, View, Dimensions} from 'react-native';
-import {
-  Menu,
-  MenuOption,
-  MenuOptions,
-  MenuTrigger,
-} from 'react-native-popup-menu';
 import ENIcon from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
@@ -90,44 +78,6 @@ const TokenDetail = () => {
     setTokenList(newLocalTokens);
     navigation.goBack();
   };
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Menu>
-          <MenuTrigger
-            customStyles={{
-              triggerOuterWrapper: {
-                width: 40,
-                height: 40,
-                alignItems: 'center',
-                justifyContent: 'center',
-              },
-              TriggerTouchableComponent: TouchableOpacity,
-              triggerWrapper: {
-                width: 27,
-                height: 27,
-                alignItems: 'center',
-                justifyContent: 'center',
-              },
-            }}>
-            <Icon name="cog" color="#FFFFFF" size={27} />
-          </MenuTrigger>
-          <MenuOptions
-            customStyles={{
-              optionWrapper: {
-                padding: 12,
-              },
-            }}>
-            <MenuOption onSelect={() => removeToken(tokenAddress)}>
-              <Text>{getLanguageString(language, 'REMOVE_TOKEN')}</Text>
-            </MenuOption>
-          </MenuOptions>
-        </Menu>
-      ),
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language, navigation, tokenAddress]);
 
   useEffect(() => {
     (async () => {

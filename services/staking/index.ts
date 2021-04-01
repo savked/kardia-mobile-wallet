@@ -37,6 +37,22 @@ export const getAllValidator = async () => {
   };
 };
 
+export const getValidatorCommissionRate = async (smcAddress: string) => {
+  try {
+    kardiaContract.updateAbi(VALIDATOR_ABI);
+    const rs = await kardiaContract
+      .invokeContract('commission', [])
+      .call(smcAddress);
+    if (rs.status === 0) {
+      throw new Error(`Withdraw reward TX Fail: ${rs.transactionHash}`);
+    } else {
+      return weiToKAI(rs.rate);
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getCurrentStaking = async (address: string) => {
   const options = {
     method: 'GET',

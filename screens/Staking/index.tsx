@@ -183,7 +183,12 @@ const StakingScreen = () => {
         loadingColor={theme.primaryColor}
         items={currentStaking.map(parseStakingItemForList)}
         ListEmptyComponent={
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 40,
+            }}>
             <Image
               style={{width: 200, height: 172}}
               source={require('../../assets/icon/no_staking.png')}

@@ -107,6 +107,7 @@ export const lang: Language = {
     CONFIRM_TRANSACTION: 'Confirm your Transaction',
     CONFIRM_KAI_AMOUNT: 'Amount',
     NOT_ENOUGH_KAI_FOR_TX: 'Insufficient Balance',
+    TX_SUCCESS: 'You have just sent to',
     // Wallet key
     IMPORT: 'Import',
     WALLET: 'Wallet',
@@ -124,6 +125,8 @@ export const lang: Language = {
     CLAIM_REWARD: 'Claim',
     UNDELEGATE: 'Undelegate',
     WITHDRAW: 'Withdraw',
+    SUCCESS: 'Success',
+    DELEGATE_SUCCESS: 'You have just delegated to',
     CLAIM_SUCCESS: '{{KAI_AMOUNT}} KAI successfully claimed to your wallet.',
     WITHDRAW_SUCCESS:
       '{{KAI_AMOUNT}} KAI successfully withdrawn to your wallet.',
@@ -136,10 +139,10 @@ export const lang: Language = {
     YOUR_INVESTMENTS: 'Your Delegated Investments',
     TOTAL_EARNING: 'Your Total Earnings', // Your Total Return?
     INVEST: 'Stake Now',
-    CHOOSE_VALIDATOR: 'Choose Validator to Stake',
+    CHOOSE_VALIDATOR: 'Choose Validator',
     STAKING_AMOUNT: 'Amount to Stake',
     STAKING_AMOUNT_NOT_ENOUGHT: 'Not enough KAI to stake.',
-    AT_LEAST_MIN_DELEGATE: 'Must delegate at least {{MIN_KAI}}',
+    AT_LEAST_MIN_DELEGATE: 'Must delegate at least {{MIN_KAI}} KAI',
     DELEGATE: 'Delegate',
     ESTIMATED_EARNING: 'Estimated return in 30 days',
     ESTIMATED_APR: 'Estimated APR',

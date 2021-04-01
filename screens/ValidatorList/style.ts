@@ -13,8 +13,11 @@ export const styles = StyleSheet.create({
   },
   validatorItemContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     paddingHorizontal: 16,
-    paddingVertical: 20,
+    paddingVertical: 12,
+    marginTop: 16,
+    marginHorizontal: 20,
+    borderRadius: 8,
   },
 });

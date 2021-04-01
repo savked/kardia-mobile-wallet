@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
     color: '#AD182A',
   },
   outlineButton: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderColor: '#C9CED6',
     borderWidth: 1,
   },

@@ -98,6 +98,27 @@ export const isChecksumAddress = (address: string) => {
   return true;
 };
 
+export const toChecksum = (address: string) => {
+  if (typeof address === 'undefined') {
+    return '';
+  }
+
+  if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+    throw new Error(
+      'Given address "' + address + '" is not a valid Kardiachain address.',
+    );
+  }
+
+  address = address.toLowerCase().replace(/^0x/i, '');
+  const addressHash = keccak256(address).replace(/^0x/i, '');
+  let checksumAddress = '0x';
+  for (let i = 0; i < address.length; i++) {
+    checksumAddress +=
+      parseInt(addressHash[i], 16) > 7 ? address[i].toUpperCase() : address[i];
+  }
+  return checksumAddress;
+};
+
 export const getTxURL = (txHash: string) => {
   return `${EXPLORER_URL}/tx/${txHash}`;
 };
