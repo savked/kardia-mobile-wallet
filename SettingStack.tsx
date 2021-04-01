@@ -18,8 +18,9 @@ import {useRecoilValue} from 'recoil';
 import {languageAtom} from './atoms/language';
 import {getLanguageString} from './utils/lang';
 import MnemonicPhraseSetting from './screens/MnemonicPhraseSetting';
-import SettingPasscode from './screens/SettingPasscode';
+// import SettingPasscode from './screens/SettingPasscode';
 import Info from './screens/Info';
+import NewPasscode from './screens/SettingPasscode/NewPasscode';
 
 const SettingStack = createStackNavigator();
 
@@ -130,7 +131,7 @@ const SettingStackScreen = () => {
           };
         }}
       />
-      <SettingStack.Screen
+      {/* <SettingStack.Screen
         name="SettingPasscode"
         component={SettingPasscode}
         options={{
@@ -140,6 +141,17 @@ const SettingStackScreen = () => {
           },
           headerTintColor: theme.textColor,
         }}
+      /> */}
+      <SettingStack.Screen
+        name="NewPasscode"
+        component={NewPasscode}
+        // options={{
+        //   title: getLanguageString(language, 'PASSCODE_SETTING_TITLE'),
+        //   headerTitleStyle: {
+        //     color: theme.textColor,
+        //   },
+        //   headerTintColor: theme.textColor,
+        // }}
       />
       <SettingStack.Screen
         name="Info"

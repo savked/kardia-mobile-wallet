@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Image, Text, View} from 'react-native';
+import {ActivityIndicator, Image, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
@@ -32,6 +32,7 @@ const HomeScreen = () => {
   const [showQRModal, setShowQRModal] = useState(false);
   const tokenInfo = useRecoilValue(tokenInfoAtom);
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
+  const [inited, setInited] = useState(false);
 
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(
@@ -48,8 +49,13 @@ const HomeScreen = () => {
     (async () => {
       // Get local auth setting
       const enabled = await getAppPasscodeSetting();
+      console.log('enabled', enabled);
       if (!enabled) {
+        setInited(true);
         setShowPasscodeRemindModal(true);
+      } else {
+        setInited(true);
+        setShowPasscodeRemindModal(false);
       }
     })();
   }, []);
@@ -88,9 +94,35 @@ const HomeScreen = () => {
   );
 
   useEffect(() => {
+    if (!inited) {
+      return;
+    }
     updateWalletBalance(selectedWallet);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
+
+  if (!inited) {
+    return (
+      <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
+        <ActivityIndicator color={theme.textColor} size="large" />
+      </SafeAreaView>
+    );
+  }
+
+  if (showPasscodeRemindModal) {
+    setShowPasscodeRemindModal(false);
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'Setting',
+          state: {
+            routes: [{name: 'Setting'}, {name: 'NewPasscode'}],
+          },
+        },
+      ],
+    });
+  }
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>

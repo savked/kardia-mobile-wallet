@@ -1,10 +1,11 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useContext, useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import React, {useCallback, useContext, useState} from 'react';
 import {View} from 'react-native';
 import {useSetRecoilState} from 'recoil';
 import {localAuthAtom, localAuthEnabledAtom} from '../../atoms/localAuth';
+import {showTabBarAtom} from '../../atoms/showTabBar';
 import {ThemeContext} from '../../ThemeContext';
-import {saveAppPasscode} from '../../utils/local';
+import {saveAppPasscode, saveAppPasscodeSetting} from '../../utils/local';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import {styles} from './style';
@@ -18,8 +19,18 @@ const NewPasscode = () => {
   const setLocalAuthEnabled = useSetRecoilState(localAuthEnabledAtom);
   const setIsLocalAuthed = useSetRecoilState(localAuthAtom);
 
+  const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+
+  useFocusEffect(
+    useCallback(() => {
+      setTabBarVisible(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+
   const savePasscode = async () => {
     await saveAppPasscode(passcode);
+    await saveAppPasscodeSetting(true);
     setIsLocalAuthed(true);
     setLocalAuthEnabled(true);
     setStep(1);

@@ -4,8 +4,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 30,
@@ -15,7 +14,8 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   paragraph: {
-    marginVertical: 10,
+    marginBottom: 10,
+    paddingHorizontal: 20,
     textAlign: 'justify',
   },
   description: {
@@ -24,9 +24,11 @@ export const styles = StyleSheet.create({
   },
   buttonGroupContainer: {
     width: '100%',
-    paddingVertical: 15,
+    paddingVertical: 8,
+    borderRadius: 8,
   },
   phraseItemContainer: {
+    borderRadius: 8,
     // flex: 1,
     padding: 10,
     margin: 5,

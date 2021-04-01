@@ -4,12 +4,12 @@ export const styles = StyleSheet.create({
   noWalletContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     padding: 25,
   },
   noWalletLogo: {
-    width: 100,
-    height: 100,
+    width: 188,
+    height: 188,
     resizeMode: 'contain',
   },
 });

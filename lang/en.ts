@@ -12,7 +12,7 @@ export const lang: Language = {
     AGO: 'ago',
     GO_BACK: 'Go back',
     CREATE_NEW_WALLET: 'Create New Wallet',
-    IMPORT_WALLET: 'Access Your Wallet',
+    IMPORT_WALLET: 'Access My Wallet',
     IMPORT_WALLET_DESCRIPTION:
       'Import your wallets to start sending & receiving digital currency',
     WELCOME: 'Welcome to Kardia Wallet',
