@@ -34,7 +34,8 @@ const NewPasscode = () => {
     setIsLocalAuthed(true);
     setLocalAuthEnabled(true);
     setStep(1);
-    navigation.navigate('Home');
+    // navigation.navigate('Home');
+    navigation.goBack();
   };
 
   return (

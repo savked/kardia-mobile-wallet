@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
 import {
   CardStyleInterpolators,
@@ -8,10 +7,10 @@ import {HeaderBackButton} from '@react-navigation/stack';
 import SettingScreen from './screens/Setting';
 import AddressBookSetting from './screens/AddressBookSetting';
 import {ThemeContext} from './ThemeContext';
-import IconButton from './components/IconButton';
-import {View} from 'react-native';
+// import IconButton from './components/IconButton';
+// import {View} from 'react-native';
 import NewAddress from './screens/NewAddress';
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
 import AddressDetail from './screens/AddressDetail';
 import LanguageSetting from './screens/LanguageSetting';
 import {useRecoilValue} from 'recoil';
@@ -21,12 +20,13 @@ import MnemonicPhraseSetting from './screens/MnemonicPhraseSetting';
 import SettingPasscode from './screens/SettingPasscode';
 import Info from './screens/Info';
 import NewPasscode from './screens/SettingPasscode/NewPasscode';
+import WalletManagement from './screens/WalletManagement';
 
 const SettingStack = createStackNavigator();
 
 const SettingStackScreen = () => {
   const theme = useContext(ThemeContext);
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const language = useRecoilValue(languageAtom);
   return (
     <SettingStack.Navigator
@@ -48,7 +48,14 @@ const SettingStackScreen = () => {
         name="AddressBook"
         component={AddressBookSetting}
         options={{
-          headerShown: false
+          headerShown: false,
+        }}
+      />
+      <SettingStack.Screen
+        name="WalletManagement"
+        component={WalletManagement}
+        options={{
+          headerShown: false,
         }}
       />
       <SettingStack.Screen
@@ -118,16 +125,22 @@ const SettingStackScreen = () => {
         name="SettingPasscode"
         component={SettingPasscode}
         options={{
-          title: getLanguageString(language, 'PASSCODE_SETTING_TITLE'),
-          headerTitleStyle: {
-            color: theme.textColor,
-          },
-          headerTintColor: theme.textColor,
+          headerShown: false,
         }}
+        // options={{
+        //   title: getLanguageString(language, 'PASSCODE_SETTING_TITLE'),
+        //   headerTitleStyle: {
+        //     color: theme.textColor,
+        //   },
+        //   headerTintColor: theme.textColor,
+        // }}
       />
       <SettingStack.Screen
         name="NewPasscode"
         component={NewPasscode}
+        options={{
+          headerShown: false,
+        }}
         // options={{
         //   title: getLanguageString(language, 'PASSCODE_SETTING_TITLE'),
         //   headerTitleStyle: {

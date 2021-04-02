@@ -1,6 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Image, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 // import ToggleSwitch from 'toggle-switch-react-native';
 import OtpInputs from 'react-native-otp-inputs';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
@@ -10,18 +16,20 @@ import {ThemeContext} from '../../ThemeContext';
 import {getLanguageString} from '../../utils/lang';
 import {
   getAppPasscode,
-  getAppPasscodeSetting,
+  // getAppPasscodeSetting,
   // saveAppPasscode,
   // saveAppPasscodeSetting,
 } from '../../utils/local';
 import NewPasscode from './NewPasscode';
 import {styles} from './style';
-import {localAuthEnabledAtom} from '../../atoms/localAuth';
-import { useFocusEffect } from '@react-navigation/native';
-import { showTabBarAtom } from '../../atoms/showTabBar';
+// import {localAuthEnabledAtom} from '../../atoms/localAuth';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {showTabBarAtom} from '../../atoms/showTabBar';
 import Divider from '../../components/Divider';
 import TouchID from 'react-native-touch-id';
 import Icon from 'react-native-vector-icons/Ionicons';
+import ENIcon from 'react-native-vector-icons/Entypo';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const optionalConfigObject = {
   unifiedErrors: false, // use unified error messages (default false)
@@ -29,18 +37,19 @@ const optionalConfigObject = {
 };
 
 const SettingPasscode = () => {
+  const navigation = useNavigation();
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
 
   const [passcode, setPasscode] = useState('');
-  const [enabled, setEnabled] = useState(false);
+  // const [enabled, setEnabled] = useState(false);
   const [verifyPasscode, setVerifyPasscode] = useState('');
   const [verified, setVerified] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [touchSupported, setTouchSupported] = useState(false);
   const [touchType, setTouchType] = useState('');
-  const setLocalAuthEnabled = useSetRecoilState(localAuthEnabledAtom);
+  // const setLocalAuthEnabled = useSetRecoilState(localAuthEnabledAtom);
 
   useEffect(() => {
     TouchID.isSupported(optionalConfigObject)
@@ -64,8 +73,6 @@ const SettingPasscode = () => {
   useEffect(() => {
     (async () => {
       const localPasscode = await getAppPasscode();
-      const isEnabled = await getAppPasscodeSetting();
-      setEnabled(isEnabled);
       setPasscode(localPasscode);
       setLoading(false);
     })();
@@ -89,7 +96,7 @@ const SettingPasscode = () => {
     );
   }
 
-  if (!passcode && enabled) {
+  if (verified) {
     return <NewPasscode />;
   }
 
@@ -113,11 +120,28 @@ const SettingPasscode = () => {
       });
   };
 
-  if (!verified && enabled) {
-    return (
+  return (
+    <SafeAreaView
+      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View
-        style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-        <Text style={[styles.title, {color: theme.textColor, fontSize: 18}]}>
+        style={{
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'flex-start',
+          marginBottom: 114,
+        }}>
+        <ENIcon.Button
+          name="chevron-left"
+          onPress={() => navigation.goBack()}
+          backgroundColor="transparent"
+        />
+      </View>
+      <View style={{flex: 1, width: '100%', alignItems: 'center'}}>
+        <Text
+          style={[
+            styles.title,
+            {color: 'rgba(252, 252, 252, 0.54)', fontSize: 15},
+          ]}>
           {getLanguageString(language, 'ENTER_PASSCODE')}
         </Text>
         <View style={{marginBottom: 32, width: '100%'}}>
@@ -143,7 +167,7 @@ const SettingPasscode = () => {
               backgroundColor: theme.backgroundFocusColor,
               borderRadius: 8,
               color: theme.textColor,
-              fontSize: 30
+              fontSize: 30,
             }}
           />
           {error !== '' && (
@@ -180,60 +204,13 @@ const SettingPasscode = () => {
             </Text>
           </TouchableOpacity>
         )}
-        <Button
-          style={{marginHorizontal: 20}}
-          title={getLanguageString(language, 'CONFIRM')}
-          onPress={verify}
-        />
       </View>
-    );
-  }
-
-  // const toggleSetting = async (isOn: boolean) => {
-  //   setLoading(true);
-  //   await saveAppPasscodeSetting(isOn);
-  //   if (!isOn) {
-  //     setPasscode('');
-  //     setVerified(false);
-  //     await saveAppPasscode('');
-  //     setLocalAuthEnabled(false);
-  //   }
-  //   setEnabled(isOn);
-  //   setLoading(false);
-  // };
-
-  return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: theme.backgroundColor,
-          justifyContent: 'flex-start',
-          paddingHorizontal: 0,
-          paddingTop: 15,
-        },
-      ]}>
-      {/* <View style={styles.settingItemContainer}>
-        <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-          {getLanguageString(language, 'PASSCODE_SETTING_TRIGGER')}
-        </Text>
-        <ToggleSwitch
-          isOn={enabled}
-          onColor="green"
-          offColor="gray"
-          onToggle={toggleSetting}
-        />
-      </View> */}
-      {enabled && (
-        <TouchableOpacity
-          style={styles.settingItemContainer}
-          onPress={() => setPasscode('')}>
-          <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-            {getLanguageString(language, 'CHANGE_PASSCODE')}
-          </Text>
-        </TouchableOpacity>
-      )}
-    </View>
+      <Button
+        style={{marginHorizontal: 20, marginVertical: 24}}
+        title={getLanguageString(language, 'CONFIRM')}
+        onPress={verify}
+      />
+    </SafeAreaView>
   );
 };
 

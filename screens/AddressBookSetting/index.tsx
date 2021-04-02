@@ -16,7 +16,7 @@ import Button from '../../components/Button';
 import NewAddressModal from '../common/NewAddressModal';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import {ScrollView} from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const AddressBookSetting = () => {
   const theme = useContext(ThemeContext);
@@ -36,7 +36,8 @@ const AddressBookSetting = () => {
   );
 
   return (
-    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView
+      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <NewAddressModal
         visible={showNewAddressModal}
         onClose={() => setShowNewAddressModal(false)}
