@@ -29,6 +29,7 @@ import {
   saveWallets,
 } from '../../utils/local';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SelectWallet = () => {
   const [startIndex, setStartIndex] = useState(0);
@@ -77,6 +78,9 @@ const SelectWallet = () => {
     await saveSelectedWallet(_wallets.length - 1);
     setWallets(_wallets);
     setSelectedWallet(_wallets.length - 1);
+    if (params && (params as any).fromNoWallet) {
+      return;
+    } 
     navigation.reset({
       index: 0,
       routes: [{name: 'Home'}],
@@ -134,7 +138,7 @@ const SelectWallet = () => {
   }, [startIndex]);
 
   return (
-    <View
+    <SafeAreaView
       style={[
         styles.selectWalletContainer,
         {backgroundColor: theme.backgroundColor},
@@ -230,7 +234,7 @@ const SelectWallet = () => {
           style={{marginTop: 12}}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

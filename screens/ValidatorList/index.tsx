@@ -14,6 +14,7 @@ import {getDigit, isNumber} from '../../utils/number';
 import {styles} from './style';
 import TextAvatar from '../../components/TextAvatar';
 import NewStakingModal from '../common/NewStakingModal';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ValidatorList = () => {
   const theme = useContext(ThemeContext);
@@ -54,7 +55,7 @@ const ValidatorList = () => {
   // };
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <NewStakingModal
         validatorItem={validatorItem}
         visible={validatorItem !== undefined && validatorItem.smcAddress !== ''}
@@ -140,7 +141,7 @@ const ValidatorList = () => {
           }}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

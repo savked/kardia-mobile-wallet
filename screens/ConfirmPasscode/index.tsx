@@ -84,7 +84,7 @@ const ConfirmPasscode = () => {
           style={styles.otpContainer}
           inputStyles={{
             ...styles.otpInput,
-            ...{backgroundColor: theme.backgroundFocusColor},
+            ...{backgroundColor: theme.backgroundFocusColor, color: theme.textColor},
           }}
           secureTextEntry={true}
         />

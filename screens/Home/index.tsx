@@ -49,7 +49,6 @@ const HomeScreen = () => {
     (async () => {
       // Get local auth setting
       const enabled = await getAppPasscodeSetting();
-      console.log('enabled', enabled);
       if (!enabled) {
         setInited(true);
         setShowPasscodeRemindModal(true);

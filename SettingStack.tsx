@@ -48,25 +48,7 @@ const SettingStackScreen = () => {
         name="AddressBook"
         component={AddressBookSetting}
         options={{
-          title: getLanguageString(language, 'ADDRESS_BOOK_MENU'),
-          headerTitleStyle: {
-            color: theme.textColor,
-          },
-          headerTintColor: theme.textColor,
-          headerRight: () => {
-            return (
-              <View style={{paddingRight: 12}}>
-                <IconButton
-                  name="plus"
-                  size={20}
-                  color={theme.textColor}
-                  onPress={() => {
-                    navigation.navigate('NewAddress');
-                  }}
-                />
-              </View>
-            );
-          },
+          headerShown: false
         }}
       />
       <SettingStack.Screen
@@ -95,6 +77,7 @@ const SettingStackScreen = () => {
         name="LanguageSetting"
         component={LanguageSetting}
         options={{
+          headerShown: false,
           title: getLanguageString(language, 'LANGUAGE_SETTING_TITLE'),
           headerTitleStyle: {
             color: theme.textColor,

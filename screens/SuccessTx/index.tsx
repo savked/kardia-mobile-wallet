@@ -38,8 +38,11 @@ export default () => {
   const userAddress = params ? (params as any).userAddress : '';
   const tokenAddress = params ? (params as any).tokenAddress : '';
   const tokenSymbol = params ? (params as any).tokenSymbol : '';
+  const tokenAvatar = params ? (params as any).tokenAvatarß : '';
   const tokenDecimals = params ? (params as any).tokenDecimals : -1;
   const validatorItem: Validator = params ? (params as any).validatorItem : {};
+  const claimAmount = params ? (params as any).claimAmount : '';
+  const undelegateAmount = params ? (params as any).undelegateAmount : '';
 
   const theme = useContext(ThemeContext);
 
@@ -84,6 +87,7 @@ export default () => {
   const renderAmount = () => {
     switch (type) {
       case 'normal':
+      case 'delegate':
         return (
           <View
             style={{
@@ -117,7 +121,7 @@ export default () => {
             </Text>
           </View>
         );
-      case 'delegate':
+      case 'claim':
         return (
           <View
             style={{
@@ -127,7 +131,24 @@ export default () => {
             }}>
             <Text
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {numeral(txObj.amount).format('0,0.00')}
+              {numeral(claimAmount).format('0,0.00')}
+            </Text>
+            <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+              KAI
+            </Text>
+          </View>
+        );
+      case 'undelegate':
+        return (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+            }}>
+            <Text
+              style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
+              {numeral(undelegateAmount).format('0,0.00')}
             </Text>
             <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
@@ -202,6 +223,8 @@ export default () => {
           </View>
         );
       case 'delegate':
+      case 'claim':
+      case 'undelegate':
         return (
           <View style={styles.addressContainer}>
             <TextAvatar
@@ -296,6 +319,43 @@ export default () => {
     }
   };
 
+  const handleBack = () => {
+    switch (type) {
+      case 'normal':
+        navigation.goBack()
+        break;
+      case 'delegate':
+      case 'claim':
+      case 'undelegate':
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Staking'}],
+        });
+        break;
+      case 'krc20':
+        navigation.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'Home',
+              state: {
+                routes: [{name: 'TokenDetail', params: {
+                  tokenSymbol,
+                  tokenAddress,
+                  tokenDecimals,
+                  tokenAvatar,
+                }}],
+              }
+            }
+          ],
+        });
+        break;
+      default:
+        navigation.goBack()
+        break;
+    }
+  }
+
   if (loading) {
     return (
       <View
@@ -353,7 +413,7 @@ export default () => {
       </Text>
       <Button
         title={getLanguageString(language, 'OK_TEXT')}
-        onPress={() => navigation.goBack()}
+        onPress={handleBack}
         style={{marginTop: 95}}
         textStyle={{fontWeight: 'bold'}}
       />

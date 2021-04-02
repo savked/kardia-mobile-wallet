@@ -28,6 +28,7 @@ import TokenTxList from './TokenTxList';
 import numeral from 'numeral';
 import IconButton from '../../components/IconButton';
 import {showTabBarAtom} from '../../atoms/showTabBar';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -121,7 +122,7 @@ const TokenDetail = () => {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <AddressQRModal
         visible={showAddressQR}
         onClose={() => setShowAddressQR(false)}
@@ -204,7 +205,7 @@ const TokenDetail = () => {
           tokenDecimals={tokenDecimals}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -2,14 +2,21 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ENIcon from 'react-native-vector-icons/Entypo';
+import IconButton from '../../components/IconButton';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {ThemeContext} from '../../ThemeContext';
 import {languageAtom} from '../../atoms/language';
-import {getLanguageString} from '../../utils/lang';
+import {getLanguageName, getLanguageString} from '../../utils/lang';
 import {styles} from './style';
 import {showTabBarAtom} from '../../atoms/showTabBar';
+import { walletsAtom } from '../../atoms/wallets';
+
+const INFO_DATA = {
+  version: '1.2.3'
+};
 
 const SettingScreen = () => {
   const theme = useContext(ThemeContext);
@@ -18,6 +25,8 @@ const SettingScreen = () => {
   const language = useRecoilValue(languageAtom);
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+
+  const wallets = useRecoilValue(walletsAtom);
 
   useFocusEffect(
     useCallback(() => {
@@ -33,67 +42,63 @@ const SettingScreen = () => {
         <Text style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'SETTING_SCREEN_TITLE')}
         </Text>
+        <IconButton
+          name="bell-o"
+          color={theme.textColor}
+          size={18}
+          onPress={() => navigation.navigate('Notification')}
+        />
       </View>
-      <TouchableOpacity
-        style={styles.settingItemContainer}
-        onPress={() => navigation.navigate('AddressBook')}>
-        <View style={{width: '10%', alignItems: 'center'}}>
-          <Icon name="address-book-o" size={30} color={theme.textColor} />
+      <View style={{flex: 1}}>
+        <Text style={{color: theme.textColor, marginHorizontal: 20, fontSize: 12}}>{getLanguageString(language, 'GENERAL_GROUP')}</Text>
+        <View style={{backgroundColor: theme.backgroundFocusColor, marginHorizontal: 20, marginVertical: 8, padding: 16, borderRadius: 8}}>
+          <TouchableOpacity
+            style={styles.settingItemContainer}
+            onPress={() => navigation.navigate('LanguageSetting')}>
+            <View style={{width: 32, height: 32, alignItems: 'center', justifyContent: 'center', backgroundColor: '#809CFF', borderRadius: 12}}>
+              <Image source={require('../../assets/icon/language.png')} style={{width: 20, height: 20, resizeMode: 'contain'}} />
+            </View>
+            <View style={{alignItems: 'flex-start', flex: 1}}>
+              <Text style={[styles.settingTitle, {color: theme.textColor}]}>
+                {getLanguageString(language, 'LANGUAGE_MENU')}
+              </Text>
+            </View>
+            <Text style={{color: theme.mutedTextColor}}>{getLanguageName(language)}</Text>
+            <ENIcon name="chevron-right" color={theme.textColor} size={20} />
+          </TouchableOpacity>
         </View>
-        <View style={{width: '93%'}}>
-          <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-            {getLanguageString(language, 'ADDRESS_BOOK_MENU')}
-          </Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.settingItemContainer}
-        onPress={() => navigation.navigate('LanguageSetting')}>
-        <View style={{width: '10%', alignItems: 'center'}}>
-          <Icon name="language" size={30} color={theme.textColor} />
-        </View>
-        <View style={{width: '93%'}}>
-          <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-            {getLanguageString(language, 'LANGUAGE_MENU')}
-          </Text>
-        </View>
-      </TouchableOpacity>
-      {/* <TouchableOpacity
-        style={styles.settingItemContainer}
-        onPress={() => navigation.navigate('MnemonicPhraseSetting')}>
-        <View style={{width: '10%', alignItems: 'center'}}>
-          <Icon name="low-vision" size={27} color={theme.textColor} />
-        </View>
-        <View style={{width: '93%'}}>
-          <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-            {getLanguageString(language, 'SECRET_PHRASE_MENU')}
-          </Text>
-        </View>
-      </TouchableOpacity> */}
-      <TouchableOpacity
-        style={styles.settingItemContainer}
-        onPress={() => navigation.navigate('SettingPasscode')}>
-        <View style={{width: '10%', alignItems: 'center'}}>
-          <Icon name="lock" size={30} color={theme.textColor} />
-        </View>
-        <View style={{width: '93%'}}>
-          <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-            {getLanguageString(language, 'PASSCODE_MENU')}
-          </Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.settingItemContainer}
-        onPress={() => navigation.navigate('Info')}>
-        <View style={{width: '10%', alignItems: 'center'}}>
-          <Icon name="info-circle" size={30} color={theme.textColor} />
-        </View>
-        <View style={{width: '93%'}}>
-          <Text style={[styles.settingTitle, {color: theme.textColor}]}>
-            {getLanguageString(language, 'INFO_MENU')}
-          </Text>
-        </View>
-      </TouchableOpacity>
+        <Text style={{color: theme.textColor, marginHorizontal: 20, fontSize: 12}}>{getLanguageString(language, 'SECURITY_GROUP')}</Text>
+        <View style={{backgroundColor: theme.backgroundFocusColor, marginHorizontal: 20, marginVertical: 8, padding: 16, borderRadius: 8}}>
+        <TouchableOpacity
+          style={styles.settingItemContainer}
+          onPress={() => navigation.navigate('SettingPasscode')}>
+          <View style={{width: 32, height: 32, alignItems: 'center', justifyContent: 'center', backgroundColor: '#3360FF', borderRadius: 12}}>
+            <Image source={require('../../assets/icon/passcode.png')} style={{width: 20, height: 20, resizeMode: 'contain'}} />
+          </View>
+          <View style={{alignItems: 'flex-start', flex: 1}}>
+            <Text style={[styles.settingTitle, {color: theme.textColor}]}>
+              {getLanguageString(language, 'PASSCODE_MENU')}
+            </Text>
+          </View>
+          <ENIcon name="chevron-right" color={theme.textColor} size={20} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.settingItemContainer, {marginTop: 28}]}
+          onPress={() => navigation.navigate('SettingPasscode')}>
+          <View style={{width: 32, height: 32, alignItems: 'center', justifyContent: 'center', backgroundColor: '#809CFF', borderRadius: 12}}>
+            <Image source={require('../../assets/icon/wallet_management.png')} style={{width: 28, height: 28, resizeMode: 'contain'}} />
+          </View>
+          <View style={{alignItems: 'flex-start', flex: 1}}>
+            <Text style={[styles.settingTitle, {color: theme.textColor}]}>
+              {getLanguageString(language, 'WALLET_MANAGEMENT')}
+            </Text>
+          </View>
+          <Text style={{color: theme.mutedTextColor}}>({wallets.length})</Text>
+          <ENIcon name="chevron-right" color={theme.textColor} size={20} />
+        </TouchableOpacity>
+      </View>
+      </View>
+      <Text style={{textAlign: 'center', color: 'rgba(252, 252, 252, 0.26)', fontSize: theme.defaultFontSize}}>Kardiachain©2020 - Version {INFO_DATA.version}</Text>
     </SafeAreaView>
   );
 };

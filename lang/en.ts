@@ -160,7 +160,7 @@ export const lang: Language = {
     SETTING_SCREEN_TITLE: 'Setting',
     ADDRESS_BOOK_MENU: 'Address Book',
     LANGUAGE_MENU: 'Language Setting',
-    LANGUAGE_SETTING_TITLE: 'Choose Display Language',
+    LANGUAGE_SETTING_TITLE: 'Languages',
     SECRET_PHRASE_MENU: 'Export Secret Credential',
     PASSCODE_MENU: 'App Passcode Setting',
     INFO_MENU: 'About KardiaChain Wallet',
@@ -177,6 +177,9 @@ export const lang: Language = {
     ENTER_PASSCODE: 'Enter passcode to continue.',
     INCORRECT_PASSCODE: 'Incorrect Passcode',
     AVATAR: 'Avatar',
+    WALLET_MANAGEMENT: 'Wallet Management',
+    GENERAL_GROUP: 'General',
+    SECURITY_GROUP: 'Security',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, Something Went Wrong',
     ERROR_BOUNDARY_DESCRIPTION:

@@ -6,21 +6,13 @@ import {
 } from '@react-navigation/stack';
 import AddressBookSetting from './screens/AddressBookSetting';
 import {ThemeContext} from './ThemeContext';
-import IconButton from './components/IconButton';
-import {View} from 'react-native';
 import NewAddress from './screens/NewAddress';
-import {useNavigation} from '@react-navigation/native';
 import AddressDetail from './screens/AddressDetail';
-import {useRecoilValue} from 'recoil';
-import {languageAtom} from './atoms/language';
-import {getLanguageString} from './utils/lang';
 
 const AddressStack = createStackNavigator();
 
 const AddressStackScreen = () => {
   const theme = useContext(ThemeContext);
-  const navigation = useNavigation();
-  const language = useRecoilValue(languageAtom);
   return (
     <AddressStack.Navigator
       initialRouteName="AddressBook"
@@ -36,25 +28,7 @@ const AddressStackScreen = () => {
         name="AddressBook"
         component={AddressBookSetting}
         options={{
-          title: getLanguageString(language, 'ADDRESS_BOOK_MENU'),
-          headerTitleStyle: {
-            color: theme.textColor,
-          },
-          headerTintColor: theme.textColor,
-          headerRight: () => {
-            return (
-              <View style={{paddingRight: 12, flexDirection: 'row'}}>
-                <IconButton
-                  name="bell-o"
-                  size={20}
-                  color={theme.textColor}
-                  onPress={() => {
-                    navigation.navigate('Notification');
-                  }}
-                />
-              </View>
-            );
-          },
+          headerShown: false
         }}
       />
       <AddressStack.Screen

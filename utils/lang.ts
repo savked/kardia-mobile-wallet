@@ -23,6 +23,14 @@ export const getLanguageString = (langKey: string, key: string) => {
   return langObj.mapping[key];
 };
 
+export const getLanguageName = (langKey: string) => {
+  if (!(lang as Record<string, any>)[langKey]) {
+    return langKey;
+  }
+  const langObj = (lang as Record<string, any>)[langKey] as Language;
+  return langObj.name;
+};
+
 export const getDateFNSLocale = (langKey: string) => {
   switch (langKey) {
     case 'en_US':

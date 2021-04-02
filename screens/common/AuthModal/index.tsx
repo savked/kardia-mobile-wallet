@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {Image} from 'react-native';
+import {Image, Keyboard, Platform} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Text, TouchableOpacity, View} from 'react-native';
 import OtpInputs, {OtpInputsRef} from 'react-native-otp-inputs';
@@ -42,6 +42,18 @@ export default ({
   const [error, setError] = useState('');
   const [touchSupported, setTouchSupported] = useState(false);
   const [touchType, setTouchType] = useState('');
+  const [keyboardShown, setKeyboardShown] = useState(false);
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
+
+  const _keyboardDidShow = (e: any) => {
+    setKeyboardOffset(e.endCoordinates.height);
+    setKeyboardShown(true);
+  };
+
+  const _keyboardDidHide = () => {
+    setKeyboardOffset(0);
+    setKeyboardShown(false);
+  };
 
   useEffect(() => {
     TouchID.isSupported(optionalConfigObject)
@@ -60,6 +72,25 @@ export default ({
         // Failure code
         console.log(err);
       });
+
+    if (Platform.OS === 'ios') {
+      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
+    } else {
+      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    }
+
+    // cleanup function
+    return () => {
+      if (Platform.OS === 'ios') {
+        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
+      } else {
+        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+      }
+    };
   }, []);
 
   const resetOTP = useCallback(() => {
@@ -96,16 +127,30 @@ export default ({
     onClose();
   };
 
+  const getModalStyle = () => {
+    if (Platform.OS === 'android') {
+      return {
+        height: 350,
+        backgroundColor: theme.backgroundFocusColor,
+        alignItems: 'center',
+      };
+    } else {
+      return {
+        height: 350,
+        backgroundColor: theme.backgroundFocusColor,
+        alignItems: 'center',
+        marginBottom: keyboardOffset,
+        marginTop: -keyboardOffset,
+      };
+    }
+  };
+
   return (
     <Modal
       visible={visible}
       showCloseButton={false}
       onClose={closeAuthModal}
-      contentStyle={{
-        height: 350,
-        backgroundColor: theme.backgroundFocusColor,
-        alignItems: 'center',
-      }}>
+      contentStyle={getModalStyle()}>
       <Text
         style={{
           textAlign: 'center',

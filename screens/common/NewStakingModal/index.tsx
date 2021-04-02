@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import {Keyboard, Platform, Text, View} from 'react-native';
 import numeral from 'numeral';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
@@ -55,6 +55,40 @@ export default ({
       }
     })();
   }, []);
+
+  const [keyboardShown, setKeyboardShown] = useState(false);
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
+    } else {
+      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    }
+
+    // cleanup function
+    return () => {
+      if (Platform.OS === 'ios') {
+        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
+      } else {
+        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+      }
+    };
+  }, []);
+
+  const _keyboardDidShow = (e: any) => {
+    setKeyboardOffset(e.endCoordinates.height);
+    setKeyboardShown(true);
+  };
+
+  const _keyboardDidHide = () => {
+    setKeyboardOffset(0);
+    setKeyboardShown(false);
+  };
 
   const resetState = () => {
     setAmount('0');
@@ -218,6 +252,24 @@ export default ({
     );
   }
 
+  const getModalStyle = () => {
+    if (Platform.OS === 'android') {
+      return {
+        backgroundColor: theme.backgroundFocusColor,
+        justifyContent: 'flex-start',
+        height: 530,
+      };
+    } else {
+      return {
+        backgroundColor: theme.backgroundFocusColor,
+        justifyContent: 'flex-start',
+        height: 530,
+        marginBottom: keyboardOffset,
+        marginTop: -keyboardOffset,
+      };
+    }
+  };
+
   return (
     <Modal
       visible={visible}
@@ -226,11 +278,7 @@ export default ({
         resetState();
         onClose();
       }}
-      contentStyle={{
-        backgroundColor: theme.backgroundFocusColor,
-        justifyContent: 'flex-start',
-        height: 530,
-      }}>
+      contentStyle={getModalStyle()}>
       <View style={{width: '100%'}}>
         <TextInput
           message={amountError}

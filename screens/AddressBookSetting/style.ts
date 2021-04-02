@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { HEADER_HEIGHT } from '../../theme';
 
 export const styles = StyleSheet.create({
   container: {
@@ -18,6 +19,17 @@ export const styles = StyleSheet.create({
     width: 32,
     height: 32,
     marginRight: 12,
+  },
+  headline: {
+    fontSize: 25,
+    fontWeight: 'bold',
+  },
+  header: {
+    paddingHorizontal: 20,
+    height: HEADER_HEIGHT,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   addressAvatar: {
     width: 32,

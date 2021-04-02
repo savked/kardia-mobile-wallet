@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
     height: 64,
     padding: 0,
     borderRadius: 8,
-    color: '#FFFFFF',
     fontSize: 30,
   },
   otpContainer: {

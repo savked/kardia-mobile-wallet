@@ -154,7 +154,7 @@ export const lang: Language = {
     SETTING_SCREEN_TITLE: 'Cài đặt',
     ADDRESS_BOOK_MENU: 'Danh bạ ví',
     LANGUAGE_MENU: 'Cài đặt ngôn ngữ',
-    LANGUAGE_SETTING_TITLE: 'Chọn ngôn ngữ hiển thị',
+    LANGUAGE_SETTING_TITLE: 'Chọn ngôn ngữ',
     SECRET_PHRASE_MENU: 'Chuỗi khóa bí mật / private key',
     PASSCODE_MENU: 'Cài đặt mật khẩu ví',
     INFO_MENU: 'Về  KardiaChain Wallet',
@@ -171,6 +171,9 @@ export const lang: Language = {
     ENTER_PASSCODE: 'Nhập mật khẩu để tíếp tục',
     INCORRECT_PASSCODE: 'Mật khẩu không đúng',
     AVATAR: 'Ảnh đại diện',
+    WALLET_MANAGEMENT: 'Quản lý ví',
+    GENERAL_GROUP: 'Cài đặt chung',
+    SECURITY_GROUP: 'Bảo mật',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, có lỗi xảy ra.',
     ERROR_BOUNDARY_DESCRIPTION:

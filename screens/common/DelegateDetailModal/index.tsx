@@ -14,6 +14,8 @@ import {weiToKAI} from '../../../services/transaction/amount';
 import Button from '../../../components/Button';
 import {getSelectedWallet, getWallets} from '../../../utils/local';
 import {withdrawReward} from '../../../services/staking';
+import { useNavigation } from '@react-navigation/native';
+import UndelegateModal from '../UndelegateModal';
 
 export default ({
   validatorItem,
@@ -24,10 +26,12 @@ export default ({
   onClose: () => void;
   validatorItem: any;
 }) => {
+  const navigation = useNavigation();
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
 
   const [claiming, setClaiming] = useState(false);
+  const [showUndelegateModal, setShowUndelegateModal] = useState(false);
   const [withdrawing, setWithdrawing] = useState(false);
 
   const getSelectedCommission = () => {
@@ -42,24 +46,30 @@ export default ({
     return formatted === 'NaN' ? '0 KAI' : `${formatted} KAI`;
   };
 
+  const handleClose = () => {
+    if (claiming || withdrawing) {
+      return;
+    }
+    onClose();
+  }
+
   const claimHandler = async () => {
     try {
       setClaiming(true);
       const wallets = await getWallets();
       const selectedWallet = await getSelectedWallet();
-      await withdrawReward(validatorItem.value, wallets[selectedWallet]);
+      const rs = await withdrawReward(validatorItem.value, wallets[selectedWallet]);
       setClaiming(false);
+      navigation.navigate('Transaction', {
+        screen: 'SuccessTx',
+        params: {
+          type: 'claim',
+          txHash: rs.transactionHash,
+          validatorItem: validatorItem,
+          claimAmount: weiToKAI(validatorItem.claimableRewards),
+        },
+      });
       onClose();
-      // showModal(
-      //   getLanguageString(language, 'CLAIM_SUCCESS').replace(
-      //     '{{KAI_AMOUNT}}',
-      //     numeral(claimableInKAI).format('0,0.00'),
-      //   ),
-      //   'success',
-      //   () => {
-      //     setClaiming(false);
-      //   },
-      // );
     } catch (err) {
       console.error(err);
       // showModal(getLanguageString(language, 'GENERAL_ERROR'), 'error', () => {
@@ -68,11 +78,31 @@ export default ({
     }
   };
 
+  if (!visible) {
+    return null;
+  }
+
+  if (showUndelegateModal) {
+    return (
+      <UndelegateModal
+        visible={showUndelegateModal}
+        onClose={() => {
+          setShowUndelegateModal(false);
+        }}
+        onSuccess={() => {
+          // setShowUndelegateModal(false);
+          onClose();
+        }}
+        validatorItem={validatorItem}
+      />
+    );
+  }
+
   return (
     <Modal
       visible={visible}
       showCloseButton={false}
-      onClose={onClose}
+      onClose={handleClose}
       contentStyle={{
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
@@ -158,12 +188,18 @@ export default ({
       <Divider style={{width: '100%'}} color="#60636C" />
       <Button
         title={getLanguageString(language, 'CANCEL')}
-        onPress={onClose}
+        onPress={handleClose}
         type="outline"
         style={{width: '100%'}}
       />
       <Button
+        title={getLanguageString(language, 'UNDELEGATE')}
+        onPress={() => setShowUndelegateModal(true)}
+        type="secondary"
         style={{width: '100%', marginVertical: 12}}
+      />
+      <Button
+        style={{width: '100%'}}
         loading={claiming}
         disabled={claiming || withdrawing}
         title={getLanguageString(language, 'CLAIM_REWARD')}

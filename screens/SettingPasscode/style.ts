@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     // flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 40,
   },
   title: {

@@ -17,7 +17,8 @@ import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
 import {useNavigation} from '@react-navigation/native';
 
-export default () => {
+export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
+
   const [mnemonic, setMnemonic] = useState<string[]>(Array(12).fill(''));
   const [keyboardShown, setKeyboardShown] = useState(false);
   // const [keyboardOffset, setKeyboardOffset] = useState(0);
@@ -84,6 +85,7 @@ export default () => {
   };
 
   const handleImport = () => {
+    console.log('here');
     const emptyExists = mnemonic.some((item) => item === '');
     if (emptyExists) {
       Alert.alert(getLanguageString(language, 'INVALID_PHRASE'));
@@ -94,8 +96,10 @@ export default () => {
       Alert.alert(getLanguageString(language, 'INVALID_PHRASE'));
       return;
     }
+    console.log('fromNoWallet', fromNoWallet)
     navigation.navigate('SelectWallet', {
-      mnemonic: mnemonic.join(' '),
+      mnemonic: mnemonic.join(' ').toLowerCase(),
+      fromNoWallet
       // 'display advice bean return exact whisper twelve segment eight elegant arrest cat',
     });
   };
@@ -111,6 +115,7 @@ export default () => {
         {mnemonic.slice(0, 4).map((word, index) => {
           return (
             <TextInput
+              autoCapitalize="none"
               key={`word-${index}`}
               value={word}
               onChangeText={(newText) => {
@@ -142,6 +147,7 @@ export default () => {
         {mnemonic.slice(4, 8).map((word, index) => {
           return (
             <TextInput
+              autoCapitalize="none"
               key={`word-${index}`}
               value={word}
               onChangeText={(newText) => {
@@ -173,6 +179,7 @@ export default () => {
         {mnemonic.slice(8, 12).map((word, index) => {
           return (
             <TextInput
+              autoCapitalize="none"
               key={`word-${index}`}
               value={word}
               onChangeText={(newText) => {

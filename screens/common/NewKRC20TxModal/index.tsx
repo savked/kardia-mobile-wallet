@@ -41,12 +41,14 @@ const NewKRC20TxModal = ({
   tokenAddress,
   tokenSymbol,
   tokenDecimals,
+  tokenAvatar,
 }: {
   visible: boolean;
   onClose: () => void;
   tokenAddress: string;
   tokenSymbol: string;
   tokenDecimals: number;
+  tokenAvatar: string;
 }) => {
   const navigation = useNavigation();
   const wallets = useRecoilValue(walletsAtom);
@@ -121,6 +123,7 @@ const NewKRC20TxModal = ({
           type: 'krc20',
           tokenAddress: tokenAddress,
           tokenDecimals: tokenDecimals,
+          tokenAvatar: tokenAvatar,
           userAddress: _wallets[_selectedWallet].address,
           tokenSymbol: tokenSymbol,
         },

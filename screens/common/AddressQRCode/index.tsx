@@ -33,7 +33,7 @@ const QRModal = ({
       contentStyle={{
         paddingHorizontal: 0,
         backgroundColor: theme.backgroundFocusColor,
-        height: 500,
+        height: 550,
       }}
       onClose={onClose}>
       <Text style={{fontSize: 20, fontWeight: 'bold', color: theme.textColor}}>

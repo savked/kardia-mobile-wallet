@@ -28,7 +28,7 @@ import KRC20TxDetailModal from '../common/KRC20TxDetailModal';
 
 const TokenTxList = ({
   tokenAddress,
-  // tokenAvatar,
+  tokenAvatar,
   tokenSymbol,
   tokenDecimals,
 }: {
@@ -128,6 +128,7 @@ const TokenTxList = ({
     <>
       <NewKRC20TxModal
         visible={showNewTxModal}
+        tokenAvatar={tokenAvatar}
         onClose={() => {
           setShowNewTxModal(false);
         }}

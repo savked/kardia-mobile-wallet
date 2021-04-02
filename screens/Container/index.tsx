@@ -56,7 +56,7 @@ const Wrap = () => {
           if (route.name === 'Home') {
             return (
               <Image
-                style={{width: 24, height: 24}}
+                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
                 source={
                   focused
                     ? require('../../assets/icon/home_dark.png')
@@ -69,7 +69,7 @@ const Wrap = () => {
           } else if (route.name === 'Transaction') {
             return (
               <Image
-                style={{width: 24, height: 24}}
+                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
                 source={
                   focused
                     ? require('../../assets/icon/transaction_dark.png')
@@ -82,7 +82,7 @@ const Wrap = () => {
           } else if (route.name === 'Setting') {
             return (
               <Image
-                style={{width: 24, height: 24}}
+                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
                 source={
                   focused
                     ? require('../../assets/icon/setting_dark.png')
@@ -93,7 +93,7 @@ const Wrap = () => {
           } else if (route.name === 'Staking') {
             return (
               <Image
-                style={{width: 24, height: 24}}
+                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
                 source={
                   focused
                     ? require('../../assets/icon/staking_dark.png')
@@ -104,7 +104,7 @@ const Wrap = () => {
           } else if (route.name === 'Address') {
             return (
               <Image
-                style={{width: 24, height: 24}}
+                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
                 source={
                   focused
                     ? require('../../assets/icon/address_book_dark.png')
@@ -309,6 +309,7 @@ const AppContainer = () => {
                   color: theme.textColor,
                 },
                 headerTintColor: theme.textColor,
+                headerBackTitleVisible: false,
                 headerTitle: getLanguageString(
                   language,
                   'NOTIFICATION_SCREEN_TITLE',

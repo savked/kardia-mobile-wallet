@@ -9,6 +9,7 @@ import {ThemeContext} from '../../ThemeContext';
 import {styles} from './style';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default () => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
@@ -23,7 +24,7 @@ export default () => {
     }, []),
   );
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <Icon.Button
         style={{paddingLeft: 0}}
         name="chevron-left"
@@ -81,6 +82,6 @@ export default () => {
           </Text>
         </View>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };

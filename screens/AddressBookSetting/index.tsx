@@ -8,6 +8,7 @@ import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import CustomImagePicker from '../../components/ImagePicker';
 import AntIcon from 'react-native-vector-icons/AntDesign';
+import IconButton from '../../components/IconButton';
 import {getLanguageString} from '../../utils/lang';
 import {groupByAlphabet, truncate} from '../../utils/string';
 import {styles} from './style';
@@ -15,6 +16,7 @@ import Button from '../../components/Button';
 import NewAddressModal from '../common/NewAddressModal';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import {ScrollView} from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const AddressBookSetting = () => {
   const theme = useContext(ThemeContext);
@@ -34,11 +36,22 @@ const AddressBookSetting = () => {
   );
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <NewAddressModal
         visible={showNewAddressModal}
         onClose={() => setShowNewAddressModal(false)}
       />
+      <View style={styles.header}>
+        <Text style={[styles.headline, {color: theme.textColor}]}>
+          {getLanguageString(language, 'ADDRESS_BOOK_MENU')}
+        </Text>
+        <IconButton
+          name="bell-o"
+          color={theme.textColor}
+          size={18}
+          onPress={() => navigation.navigate('Notification')}
+        />
+      </View>
       {groupByAlphabet(addressBook, 'name').length === 0 && (
         <View style={styles.noAddressContainer}>
           <Image
@@ -144,7 +157,7 @@ const AddressBookSetting = () => {
         onPress={() => setShowNewAddressModal(true)}
         style={styles.floatingButton}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

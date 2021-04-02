@@ -1,6 +1,6 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, Image, Text, TouchableOpacity, View} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
@@ -10,15 +10,27 @@ import {getLanguageString} from '../../utils/lang';
 import {styles} from './style';
 import ScanMode from './ScanMode';
 import InputMode from './InputMode';
+import { saveAppPasscodeSetting } from '../../utils/local';
 // import {RNCamera} from 'react-native-camera';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window');
 
 export default () => {
+  const {params} = useRoute();
+
   const navigation = useNavigation();
   const language = useRecoilValue(languageAtom);
 
   const [mode, setMode] = useState('scan');
+
+  useEffect(() => {
+    (async () => {
+      const fromNoWallet = params && (params as any).fromNoWallet === true ? true : false;
+      if (fromNoWallet) {
+        await saveAppPasscodeSetting(false);
+      }
+    })()
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -99,7 +111,7 @@ export default () => {
               </Text>
             </View>
             <View style={{width: 320}}>
-              <InputMode />
+              <InputMode fromNoWallet={params && (params as any).fromNoWallet === true ? true : false} />
             </View>
           </View>
         )}

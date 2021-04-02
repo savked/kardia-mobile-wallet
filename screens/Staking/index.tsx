@@ -21,6 +21,8 @@ import {statusBarColorAtom} from '../../atoms/statusBar';
 import {getSelectedWallet, getWallets} from '../../utils/local';
 import UndelegateModal from './UndelegateModal';
 import IconButton from '../../components/IconButton';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { showTabBarAtom } from '../../atoms/showTabBar';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -39,6 +41,7 @@ const StakingScreen = () => {
   const [undelegatingIndex, setUndelegatingIndex] = useState(-1);
   // const [focusingItem, setFocusingItem] = useState(-1);
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
+  const setTabBarVisible = useSetRecoilState(showTabBarAtom);
 
   const getStakingData = async () => {
     const localWallets = await getWallets();
@@ -67,7 +70,9 @@ const StakingScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
+      console.log('fired');
       getStakingData();
+      setTabBarVisible(true);
       // TODO: Update after designer finish
       setStatusBarColor(theme.backgroundColor);
       return () => {
@@ -111,7 +116,7 @@ const StakingScreen = () => {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
         <Text style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'STAKING_TITLE')}
@@ -253,7 +258,7 @@ const StakingScreen = () => {
         visible={undelegatingIndex >= 0}
         onClose={() => setUndelegatingIndex(-1)}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

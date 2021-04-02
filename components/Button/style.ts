@@ -36,10 +36,10 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   secondaryButton: {
-    backgroundColor: '#FADACF',
+    backgroundColor: '#FFFFFF',
   },
   secondaryButtonText: {
-    color: '#AD182A',
+    color: '#000000',
   },
   outlineButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',

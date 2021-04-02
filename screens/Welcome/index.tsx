@@ -22,7 +22,7 @@ const Welcome = () => {
         {backgroundColor: theme.backgroundColor},
       ]}>
       <View style={{flex: 4, alignItems: 'center', justifyContent: 'center'}}>
-        <View style={{width: 188, height: 188}}>
+        <View style={{width: 188, height: 188, marginBottom: 58}}>
           <Image
             style={styles.noWalletLogo}
             source={require('../../assets/welcome_background.png')}
@@ -34,7 +34,7 @@ const Welcome = () => {
               fontSize: 24,
               textAlign: 'center',
               fontWeight: 'bold',
-              marginBottom: 36,
+              marginBottom: 4,
               color: '#B4BDC9',
             }}>
             {getLanguageString(language, 'WELCOME')}
@@ -54,7 +54,7 @@ const Welcome = () => {
         <Button
           title={getLanguageString(language, 'IMPORT_WALLET')}
           type="primary"
-          onPress={() => navigation.navigate('ImportMnemonic')}
+          onPress={() => navigation.navigate('ImportMnemonic', {fromNoWallet: true})}
         />
       </View>
     </SafeAreaView>

@@ -6,24 +6,26 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    paddingHorizontal: 20,
     height: HEADER_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    justifyContent: 'space-between',
   },
   headline: {
     fontSize: 25,
     fontWeight: 'bold',
-    paddingHorizontal: 15,
+    // paddingHorizontal: 15,
   },
   settingItemContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 15,
-    paddingVertical: 15,
+    // paddingHorizontal: 15,
+    // paddingVertical: 15,
     alignItems: 'center',
+    justifyContent: 'space-between'
   },
   settingTitle: {
     marginLeft: 15,
-    fontSize: 18,
+    fontSize: 15,
   },
 });

@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
   },
   validatorName: {
     fontSize: 18,
-    fontStyle: 'italic',
+    // fontStyle: 'italic',
     fontWeight: 'bold',
     // marginBottom: 18,
   },
