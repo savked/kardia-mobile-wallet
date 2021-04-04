@@ -22,6 +22,7 @@ import {useNavigation} from '@react-navigation/native';
 export default () => {
   const navigation = useNavigation();
   const [privateKey, setPrivateKey] = useState('');
+  const [loading, setLoading] = useState(false);
   const [keyboardShown, setKeyboardShown] = useState(false);
   // const [keyboardOffset, setKeyboardOffset] = useState(0);
 
@@ -62,6 +63,7 @@ export default () => {
   };
 
   const importPrivateKey = async () => {
+    setLoading(true)
     let _privateKey = privateKey;
     if (!_privateKey.includes('0x')) {
       _privateKey = '0x' + _privateKey;
@@ -85,6 +87,8 @@ export default () => {
         .includes(wallet.address);
 
       if (walletExisted) {
+        Alert.alert(getLanguageString(language, 'WALLET_EXISTED'));
+        setLoading(false);
         return;
       }
       await saveMnemonic(walletAddress, 'FROM_PK');
@@ -96,12 +100,14 @@ export default () => {
         return _wallets;
       });
       setSelectedWallet(_wallets.length - 1);
+      setLoading(false)
       navigation.reset({
         index: 0,
         routes: [{name: 'Home'}],
       });
     } catch (error) {
       console.error(error);
+      setLoading(false);
       Alert.alert(getLanguageString(language, 'INVALID_PRIVATE_KEY'));
     }
   };
@@ -124,6 +130,8 @@ export default () => {
       />
       <Button
         style={{marginTop: 12}}
+        loading={loading}
+        disabled={loading}
         title={getLanguageString(language, 'IMPORT')}
         onPress={importPrivateKey}
       />

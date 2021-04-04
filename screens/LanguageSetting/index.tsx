@@ -53,7 +53,7 @@ const LanguageSetting = () => {
           backgroundColor="transparent"
         />
       </View>
-      <Text style={{color: theme.textColor, marginHorizontal: 20, marginVertical: 18, fontSize: 36}}>{getLanguageString(language, 'LANGUAGE_SETTING_TITLE')}</Text>
+      <Text allowFontScaling={false} style={{color: theme.textColor, marginHorizontal: 20, marginVertical: 18, fontSize: 36}}>{getLanguageString(language, 'LANGUAGE_SETTING_TITLE')}</Text>
       <List
         items={languageList}
         keyExtractor={(item) => item.flag}
@@ -65,7 +65,7 @@ const LanguageSetting = () => {
               onPress={() => selectLanguage(item.key || '')}>
               <View style={styles.itemContainer}>
                 <Flag code={item.flag} size={48} style={{marginRight: 14}} />
-                <Text style={{color: theme.textColor}}>{item.name}</Text>
+                <Text allowFontScaling={false} style={{color: theme.textColor}}>{item.name}</Text>
               </View>
               <View>
                 {active && (

@@ -79,7 +79,7 @@ const AlertModal = ({
       {getIcon(type, iconSize, iconColor)}
       {children}
       {!children && (
-        <Text style={[styles.messageContent, messageStyle]}>{message}</Text>
+        <Text allowFontScaling={false} style={[styles.messageContent, messageStyle]}>{message}</Text>
       )}
       {type === 'confirm' && (
         <View style={styles.buttonGroup}>

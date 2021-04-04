@@ -138,6 +138,7 @@ const SettingPasscode = () => {
       </View>
       <View style={{flex: 1, width: '100%', alignItems: 'center'}}>
         <Text
+          allowFontScaling={false}
           style={[
             styles.title,
             {color: 'rgba(252, 252, 252, 0.54)', fontSize: 15},
@@ -172,6 +173,7 @@ const SettingPasscode = () => {
           />
           {error !== '' && (
             <Text
+              allowFontScaling={false}
               style={{
                 color: 'red',
                 paddingHorizontal: 20,
@@ -199,7 +201,7 @@ const SettingPasscode = () => {
             ) : (
               <Icon name="finger-print" color={theme.textColor} size={30} />
             )}
-            <Text style={{color: theme.textColor}}>
+            <Text allowFontScaling={false} style={{color: theme.textColor}}>
               Authenticate by {touchType}
             </Text>
           </TouchableOpacity>

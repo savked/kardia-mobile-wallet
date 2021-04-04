@@ -81,6 +81,7 @@ const ValidatorList = () => {
         />
       </View> */}
       <Text
+        allowFontScaling={false}
         style={{color: theme.textColor, paddingHorizontal: 20, fontSize: 36}}>
         {getLanguageString(language, 'CHOOSE_VALIDATOR')}
       </Text>
@@ -121,6 +122,7 @@ const ValidatorList = () => {
                 />
                 <View style={{justifyContent: 'space-between'}}>
                   <Text
+                    allowFontScaling={false}
                     style={{
                       color: theme.textColor,
                       fontSize: 13,
@@ -129,6 +131,7 @@ const ValidatorList = () => {
                     {item.name}
                   </Text>
                   <Text
+                    allowFontScaling={false}
                     style={{
                       color: 'rgba(252, 252, 252, 0.54)',
                       fontSize: theme.defaultFontSize,

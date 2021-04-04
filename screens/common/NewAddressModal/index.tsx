@@ -193,6 +193,7 @@ export default ({
               marginBottom: 12,
             }}>
             <Text
+              allowFontScaling={false}
               style={{
                 color: theme.mutedTextColor,
                 fontSize: 12,
@@ -218,6 +219,7 @@ export default ({
               marginBottom: 12,
             }}>
             <Text
+              allowFontScaling={false}
               style={{
                 color: theme.mutedTextColor,
                 fontSize: 12,

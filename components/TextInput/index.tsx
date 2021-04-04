@@ -40,7 +40,7 @@ const CustomTextInput = ({
       return;
     }
     if (typeof message === 'string') {
-      return <Text style={styles.errorMessage}>{message}</Text>;
+      return <Text allowFontScaling={false} style={styles.errorMessage}>{message}</Text>;
     }
     return message();
   };
@@ -49,6 +49,7 @@ const CustomTextInput = ({
     <>
       {headline && (
         <Text
+          allowFontScaling={false}
           style={[styles.headline, {color: theme.textColor}, headlineStyle]}>
           {headline}
         </Text>

@@ -1,6 +1,7 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useContext, useState} from 'react';
 import {View} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {useSetRecoilState} from 'recoil';
 import {localAuthAtom, localAuthEnabledAtom} from '../../atoms/localAuth';
 import {showTabBarAtom} from '../../atoms/showTabBar';
@@ -39,7 +40,7 @@ const NewPasscode = () => {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       {step === 1 ? (
         <Step1
           onSubmit={(newPasscode) => {
@@ -50,7 +51,7 @@ const NewPasscode = () => {
       ) : (
         <Step2 step1Passcode={passcode} onConfirm={savePasscode} />
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

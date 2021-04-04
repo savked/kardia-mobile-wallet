@@ -43,7 +43,7 @@ const AddressBookSetting = () => {
         onClose={() => setShowNewAddressModal(false)}
       />
       <View style={styles.header}>
-        <Text style={[styles.headline, {color: theme.textColor}]}>
+        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'ADDRESS_BOOK_MENU')}
         </Text>
         <IconButton
@@ -59,7 +59,7 @@ const AddressBookSetting = () => {
             style={{width: 170, height: 156, marginBottom: 23}}
             source={require('../../assets/no_address_dark.png')}
           />
-          <Text style={[styles.emptyAddressBook, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[styles.emptyAddressBook, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS')}
           </Text>
           <Button
@@ -84,6 +84,7 @@ const AddressBookSetting = () => {
           return (
             <React.Fragment key={`address-group-${group.char}`}>
               <Text
+                allowFontScaling={false}
                 style={{
                   marginHorizontal: 20,
                   marginBottom: 8,
@@ -127,6 +128,7 @@ const AddressBookSetting = () => {
                     )}
                     <View>
                       <Text
+                        allowFontScaling={false}
                         style={[
                           styles.addressName,
                           {color: theme.textColor, fontSize: 13},
@@ -134,6 +136,7 @@ const AddressBookSetting = () => {
                         {address.name}
                       </Text>
                       <Text
+                        allowFontScaling={false}
                         style={[
                           styles.addressHash,
                           {

@@ -60,6 +60,7 @@ export default () => {
             }}>
             <View style={{width: 250}}>
               <Text
+                allowFontScaling={false}
                 style={{
                   textAlign: 'center',
                   color: '#FFFFFF',
@@ -70,8 +71,9 @@ export default () => {
                 {getLanguageString(language, 'SCAN_QR_TITLE')}
               </Text>
               <Text
+                allowFontScaling={false}
                 style={{textAlign: 'center', color: '#FFFFFF', fontSize: 15}}>
-                Scan your private key QR code, then we will do the rest
+                {getLanguageString(language, 'SCAN_QR_PRIVATE_KEY')}
               </Text>
             </View>
           </View>
@@ -83,6 +85,7 @@ export default () => {
             }}>
             <View style={{width: 320, marginBottom: 24}}>
               <Text
+                allowFontScaling={false}
                 style={{
                   textAlign: 'center',
                   color: '#FFFFFF',
@@ -93,8 +96,9 @@ export default () => {
                 {getLanguageString(language, 'ENTER_PRIVATE_KEY')}
               </Text>
               <Text
+                allowFontScaling={false}
                 style={{textAlign: 'center', color: '#FFFFFF', fontSize: 15}}>
-                Input your private key manually, or just scan the QR code.
+                {getLanguageString(language, 'ENTER_QR_PRIVATE_KEY')}
               </Text>
             </View>
             <View style={{width: 320}}>
@@ -123,7 +127,7 @@ export default () => {
               borderRadius: 12,
               alignItems: 'center',
             }}>
-            <Text style={{color: theme.textColor}}>Scan code</Text>
+            <Text allowFontScaling={false} style={{color: theme.textColor}}>{getLanguageString(language, 'SCAN_MODE')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setMode('enter')}
@@ -135,7 +139,7 @@ export default () => {
               borderRadius: 12,
               alignItems: 'center',
             }}>
-            <Text style={{color: theme.textColor}}>Enter code</Text>
+            <Text allowFontScaling={false} style={{color: theme.textColor}}>{getLanguageString(language, 'INPUT_MODE')}</Text>
           </TouchableOpacity>
         </View>
       </View>

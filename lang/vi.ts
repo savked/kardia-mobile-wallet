@@ -52,7 +52,7 @@ export const lang: Language = {
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
       '12 từ trên được dùng để  truy cập cũng như khôi phục lại ví của bạn.',
-    CARD_NAME: 'CARD NAME',
+    WALLET_CARD_NAME: 'Tên',
     // Import wallet key:
     ENTER_SEED_PHRASE: 'Nhập chuỗi 12 từ khóa bí mật',
     ENTER_PRIVATE_KEY: 'Nhập private key',
@@ -125,7 +125,7 @@ export const lang: Language = {
     CLAIM_SUCCESS: '{{KAI_AMOUNT}} KAI đã được rút thành công',
     WITHDRAW_SUCCESS: '{{KAI_AMOUNT}} KAI đã được rút về ví',
     UNDELEGATE_SUCCESS:
-      '{{KAI_AMOUNT}} KAI đã được rút. Sau 7 ngày bạn có thể rút số KAI này về ví.',
+      'KAI đã được rút. Sau 7 ngày bạn có thể rút số KAI này về ví.',
     UNDELEGATE_AMOUNT_TOO_MUCH: 'Số KAI rút phải nhỏ hơn số KAI đã stake',
     UNDELEGATE_AMOUNT_REMAIN_1000:
       'Cần giữ lại ít nhất 1.000 KAI hoặc rút hết KAI.',
@@ -176,6 +176,8 @@ export const lang: Language = {
     SECURITY_GROUP: 'Bảo mật',
     SET_NEW_PIN: 'Nhập PIN mới',
     CONFIRM_PIN: 'Xác nhận PIN',
+    WALLET_DETAILS: 'Thông tin ví',
+    WALLET_CARD_TYPE: 'Thẻ',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, có lỗi xảy ra.',
     ERROR_BOUNDARY_DESCRIPTION:
@@ -199,5 +201,17 @@ export const lang: Language = {
     LOAD_MORE_WALLET: 'Xem thêm (+5)',
     INVALID_PHRASE: 'Chuỗi khóa không hợp lệ',
     INVALID_PRIVATE_KEY: 'Private Key không hợp lệ',
+    SCAN_QR_MNEMONIC: 'Quét QR code chứa chuỗi từ khoá bí mật để tiếp tục.',
+    ENTER_QR_MNEMONIC: 'Nhập 12 từ khoá bí mật, hoặc quét mã QR để tránh sai sót',
+    SCAN_QR_PRIVATE_KEY: 'Quét QR code chứa private key để tiếp tục.',
+    ENTER_QR_PRIVATE_KEY: 'Nhập private key để tiếp tục, hoặc quét mã QR để tránh sai sót',
+    SCAN_MODE: 'Quét QR code',
+    INPUT_MODE: 'Nhập thủ công',
+    // Tab nav:
+    HOME: 'Trang chủ',
+    TRANSACTIONS: 'Giao dịch',
+    STAKING: 'Đầu tư',
+    ADDRESS_BOOK: 'Danh bạ ví',
+    SETTING: 'Cài đặt',
   },
 };

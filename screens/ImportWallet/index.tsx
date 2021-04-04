@@ -31,10 +31,11 @@ export default () => {
         onPress={() => navigation.goBack()}
         backgroundColor="transparent"
       />
-      <Text style={[styles.title, {color: theme.textColor}]}>
+      <Text allowFontScaling={false} style={[styles.title, {color: theme.textColor}]}>
         {getLanguageString(language, 'IMPORT_WALLET')}
       </Text>
       <Text
+        allowFontScaling={false}
         style={{
           fontSize: 15,
           color: 'rgba(252, 252, 252, 0.54)',
@@ -54,10 +55,11 @@ export default () => {
         />
         <View style={{marginBottom: 24, marginLeft: 18}}>
           <Text
+            allowFontScaling={false}
             style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
             Import
           </Text>
-          <Text style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+          <Text allowFontScaling={false} style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
             {getLanguageString(language, 'BY_PRIVATE_KEY')}
           </Text>
         </View>
@@ -74,10 +76,11 @@ export default () => {
         />
         <View style={{marginBottom: 24, marginLeft: 18}}>
           <Text
+            allowFontScaling={false}
             style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
             Import
           </Text>
-          <Text style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+          <Text allowFontScaling={false} style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
             {getLanguageString(language, 'BY_SEED_PHRASE')}
           </Text>
         </View>

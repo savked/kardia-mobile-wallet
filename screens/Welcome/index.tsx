@@ -30,6 +30,7 @@ const Welcome = () => {
         </View>
         <View>
           <Text
+            allowFontScaling={false}
             style={{
               fontSize: 24,
               textAlign: 'center',
@@ -39,7 +40,7 @@ const Welcome = () => {
             }}>
             {getLanguageString(language, 'WELCOME')}
           </Text>
-          <Text style={{fontSize: 14, color: '#B4BDC9', textAlign: 'center'}}>
+          <Text allowFontScaling={false} style={{fontSize: 14, color: '#B4BDC9', textAlign: 'center'}}>
             {getLanguageString(language, 'GETTING_STARTED_DESCRIPTION')}
           </Text>
         </View>
@@ -54,7 +55,7 @@ const Welcome = () => {
         <Button
           title={getLanguageString(language, 'IMPORT_WALLET')}
           type="primary"
-          onPress={() => navigation.navigate('ImportMnemonic', {fromNoWallet: true})}
+          onPress={() => navigation.navigate('ImportWallet')}
         />
       </View>
     </SafeAreaView>

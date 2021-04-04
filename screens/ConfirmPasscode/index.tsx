@@ -70,7 +70,7 @@ const ConfirmPasscode = () => {
 
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <Text style={[styles.title, {color: theme.textColor}]}>
+      <Text allowFontScaling={false} style={[styles.title, {color: theme.textColor}]}>
         {getLanguageString(language, 'ENTER_PIN_CODE')}
       </Text>
       <View style={{marginVertical: 24, width: '100%'}}>
@@ -90,6 +90,7 @@ const ConfirmPasscode = () => {
         />
         {error !== '' && (
           <Text
+            allowFontScaling={false}
             style={{color: 'red', paddingHorizontal: 20, fontStyle: 'italic'}}>
             {error}
           </Text>
@@ -113,7 +114,7 @@ const ConfirmPasscode = () => {
           ) : (
             <Icon name="finger-print" color={theme.textColor} size={30} />
           )}
-          <Text style={{color: theme.textColor}}>
+          <Text allowFontScaling={false} style={{color: theme.textColor}}>
             Authenticate by {touchType}
           </Text>
         </TouchableOpacity>

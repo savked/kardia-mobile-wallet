@@ -21,6 +21,8 @@ import SettingPasscode from './screens/SettingPasscode';
 import Info from './screens/Info';
 import NewPasscode from './screens/SettingPasscode/NewPasscode';
 import WalletManagement from './screens/WalletManagement';
+import ImportWallet from './screens/ImportWallet';
+import WalletDetail from './screens/WalletDetail';
 
 const SettingStack = createStackNavigator();
 
@@ -52,8 +54,22 @@ const SettingStackScreen = () => {
         }}
       />
       <SettingStack.Screen
+        name="ImportWallet"
+        component={ImportWallet}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <SettingStack.Screen
         name="WalletManagement"
         component={WalletManagement}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <SettingStack.Screen
+        name="WalletDetail"
+        component={WalletDetail}
         options={{
           headerShown: false,
         }}

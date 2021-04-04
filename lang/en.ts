@@ -54,7 +54,7 @@ export const lang: Language = {
     SUBMIT_CREATE: 'Understood. Access my wallet now.',
     MNEMONIC_DESCRIPTION:
       'The above 12 words will be used to recover, as well as access, your wallet.',
-    CARD_NAME: 'CARD NAME',
+    WALLET_CARD_NAME: 'Name',
     // Import wallet key:
     ENTER_SEED_PHRASE: 'Enter your Seed Phrase.',
     ENTER_PRIVATE_KEY: 'Enter private key.',
@@ -182,6 +182,8 @@ export const lang: Language = {
     SECURITY_GROUP: 'Security',
     SET_NEW_PIN: 'Set new PIN',
     CONFIRM_PIN: 'Confirm PIN',
+    WALLET_DETAILS: 'Wallet Details',
+    WALLET_CARD_TYPE: 'Card Type',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, Something Went Wrong',
     ERROR_BOUNDARY_DESCRIPTION:
@@ -206,5 +208,17 @@ export const lang: Language = {
     LOAD_MORE_WALLET: 'Load more Wallet (+5)',
     INVALID_PHRASE: 'Invalid Seed Phrase',
     INVALID_PRIVATE_KEY: 'Invalid Private Key',
+    SCAN_QR_MNEMONIC: 'Scan your seed phrase QR code, then we will do the rest',
+    ENTER_QR_MNEMONIC: 'Input your 12-words secret seed pharse manually, or just scan the QR code.',
+    SCAN_QR_PRIVATE_KEY: 'Scan QR code containing wallet\'s private key to import.',
+    ENTER_QR_PRIVATE_KEY: 'Input your private key manually, or just scan the QR code.',
+    SCAN_MODE: 'Scan QR code',
+    INPUT_MODE: 'Enter manually',
+    // Tab nav:
+    HOME: 'Home',
+    TRANSACTIONS: 'Transactions',
+    STAKING: 'Staking',
+    ADDRESS_BOOK: 'Address',
+    SETTING: 'Setting',
   },
 };

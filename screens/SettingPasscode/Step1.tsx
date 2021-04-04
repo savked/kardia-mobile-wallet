@@ -31,12 +31,12 @@ const Step1 = ({onSubmit}: {onSubmit: (passcode: string) => void}) => {
           backgroundColor="transparent"
           style={{padding: 0, marginBottom: 18}}
         />
-        <Text style={{color: theme.textColor, fontSize: 36}}>
+        <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 36}}>
           {getLanguageString(language, 'SET_NEW_PIN')}
         </Text>
       </View>
       <View style={{flex: 1, width: '100%'}}>
-        <Text style={[styles.title, {color: 'rgba(252, 252, 252, 0.54)'}]}>
+        <Text allowFontScaling={false} style={[styles.title, {color: 'rgba(252, 252, 252, 0.54)'}]}>
           {getLanguageString(language, 'NEW_PASSCODE')}
         </Text>
         <View style={{marginBottom: 40, width: '100%'}}>

@@ -39,7 +39,7 @@ const SettingScreen = () => {
     <SafeAreaView
       style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
-        <Text style={[styles.headline, {color: theme.textColor}]}>
+        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'SETTING_SCREEN_TITLE')}
         </Text>
         <IconButton
@@ -52,6 +52,7 @@ const SettingScreen = () => {
       <ScrollView>
         <View style={{flex: 1}}>
           <Text
+            allowFontScaling={false}
             style={{
               color: theme.textColor,
               marginHorizontal: 20,
@@ -85,17 +86,18 @@ const SettingScreen = () => {
                 />
               </View>
               <View style={{alignItems: 'flex-start', flex: 1}}>
-                <Text style={[styles.settingTitle, {color: theme.textColor}]}>
+                <Text allowFontScaling={false} style={[styles.settingTitle, {color: theme.textColor}]}>
                   {getLanguageString(language, 'LANGUAGE_MENU')}
                 </Text>
               </View>
-              <Text style={{color: theme.mutedTextColor}}>
+              <Text allowFontScaling={false} style={{color: theme.mutedTextColor}}>
                 {getLanguageName(language)}
               </Text>
               <ENIcon name="chevron-right" color={theme.textColor} size={20} />
             </TouchableOpacity>
           </View>
           <Text
+            allowFontScaling={false}
             style={{
               color: theme.textColor,
               marginHorizontal: 20,
@@ -129,7 +131,7 @@ const SettingScreen = () => {
                 />
               </View>
               <View style={{alignItems: 'flex-start', flex: 1}}>
-                <Text style={[styles.settingTitle, {color: theme.textColor}]}>
+                <Text allowFontScaling={false} style={[styles.settingTitle, {color: theme.textColor}]}>
                   {getLanguageString(language, 'PASSCODE_MENU')}
                 </Text>
               </View>
@@ -153,11 +155,11 @@ const SettingScreen = () => {
                 />
               </View>
               <View style={{alignItems: 'flex-start', flex: 1}}>
-                <Text style={[styles.settingTitle, {color: theme.textColor}]}>
+                <Text allowFontScaling={false} style={[styles.settingTitle, {color: theme.textColor}]}>
                   {getLanguageString(language, 'WALLET_MANAGEMENT')}
                 </Text>
               </View>
-              <Text style={{color: theme.mutedTextColor}}>
+              <Text allowFontScaling={false} style={{color: theme.mutedTextColor}}>
                 ({wallets.length})
               </Text>
               <ENIcon name="chevron-right" color={theme.textColor} size={20} />
@@ -166,6 +168,7 @@ const SettingScreen = () => {
         </View>
       </ScrollView>
       <Text
+        allowFontScaling={false}
         style={{
           textAlign: 'center',
           color: 'rgba(252, 252, 252, 0.26)',

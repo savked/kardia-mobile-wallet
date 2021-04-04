@@ -194,7 +194,7 @@ const NewTokenModal = ({
         <View style={[styles.container]}>
           <View style={{marginBottom: 10}}>
             <View>
-              <Text style={[styles.headline, {color: theme.textColor}]}>
+              <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
                 {getLanguageString(language, 'TOKEN_ADDRESS')}
               </Text>
             </View>
@@ -239,31 +239,31 @@ const NewTokenModal = ({
           </View>
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <Text style={{color: theme.textColor}}>
-                Token name: <Text style={{fontWeight: 'bold'}}>{name}</Text>
+              <Text allowFontScaling={false} style={{color: theme.textColor}}>
+                Token name: <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>{name}</Text>
               </Text>
             </View>
           )}
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <Text style={{color: theme.textColor}}>
-                Token symbol: <Text style={{fontWeight: 'bold'}}>{symbol}</Text>
+              <Text allowFontScaling={false} style={{color: theme.textColor}}>
+                Token symbol: <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>{symbol}</Text>
               </Text>
             </View>
           )}
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <Text style={{color: theme.textColor}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor}}>
                 Token decimals:{' '}
-                <Text style={{fontWeight: 'bold'}}>{decimals}</Text>
+                <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>{decimals}</Text>
               </Text>
             </View>
           )}
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <Text style={{color: theme.textColor}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor}}>
                 Token supply:{' '}
-                <Text style={{fontWeight: 'bold', color: theme.textColor}}>
+                <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
                   {numeral(parseDecimals(Number(totalSupply), decimals)).format(
                     '0,0.00',
                   )}

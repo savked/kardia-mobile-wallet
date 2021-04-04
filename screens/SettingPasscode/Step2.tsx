@@ -48,11 +48,11 @@ const Step2 = ({
           backgroundColor="transparent"
           style={{padding: 0, marginBottom: 18}}
         />
-        <Text style={{color: theme.textColor, fontSize: 36}}>
+        <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 36}}>
           {getLanguageString(language, 'CONFIRM_PIN')}
         </Text>
       </View>
-      <Text style={[styles.title, {color: theme.textColor}]}>
+      <Text allowFontScaling={false} style={[styles.title, {color: theme.textColor}]}>
         {getLanguageString(language, 'CONFIRM_PASSCODE')}
       </Text>
       <View style={{flex: 1, width: '100%'}}>
@@ -75,6 +75,7 @@ const Step2 = ({
         />
         {error !== '' && (
           <Text
+            allowFontScaling={false}
             style={{color: 'red', paddingHorizontal: 20, fontStyle: 'italic'}}>
             {error}
           </Text>

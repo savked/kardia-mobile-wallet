@@ -152,6 +152,7 @@ export default ({
       onClose={closeAuthModal}
       contentStyle={getModalStyle()}>
       <Text
+        allowFontScaling={false}
         style={{
           textAlign: 'center',
           color: theme.mutedTextColor,
@@ -177,6 +178,7 @@ export default ({
       />
       {error !== '' && (
         <Text
+          allowFontScaling={false}
           style={{color: 'red', paddingHorizontal: 20, fontStyle: 'italic'}}>
           {error}
         </Text>
@@ -204,7 +206,7 @@ export default ({
               size={24}
             />
           )}
-          <Text style={{color: theme.textColor, fontSize: 15}}>
+          <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 15}}>
             Authenticate by {touchType}
           </Text>
         </TouchableOpacity>

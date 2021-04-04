@@ -123,6 +123,7 @@ const TokenListSection = () => {
                     height: '100%',
                   }}>
                   <Text
+                    allowFontScaling={false}
                     style={{
                       color: '#FFFFFF',
                       fontWeight: 'bold',
@@ -138,12 +139,12 @@ const TokenListSection = () => {
                     alignItems: 'flex-end',
                     justifyContent: 'center',
                   }}>
-                  <Text style={[styles.kaiAmount, {color: theme.textColor}]}>
+                  <Text allowFontScaling={false} style={[styles.kaiAmount, {color: theme.textColor}]}>
                     {numeral(
                       parseDecimals(balance[index], item.decimals),
                     ).format('0,0.00')}
                   </Text>
-                  <Text style={{color: theme.ghostTextColor}}>
+                  <Text allowFontScaling={false} style={{color: theme.ghostTextColor}}>
                     {item.symbol}
                   </Text>
                 </View>
@@ -157,7 +158,7 @@ const TokenListSection = () => {
               style={{width: 111, height: 52}}
               source={require('../../assets/no_tokens_dark.png')}
             />
-            <Text style={[styles.noTXText, {color: theme.textColor}]}>
+            <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
               {getLanguageString(language, 'NO_TOKENS')}
             </Text>
             <Button
@@ -177,7 +178,7 @@ const TokenListSection = () => {
               justifyContent: 'space-between',
               padding: 20,
             }}>
-            <Text style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
+            <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
               {getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}
             </Text>
           </View>

@@ -20,10 +20,10 @@ const Info = () => {
         render={(item) => {
           return (
             <View style={styles.settingItem}>
-              <Text style={[styles.settingItemTitle, {color: theme.textColor}]}>
+              <Text allowFontScaling={false} style={[styles.settingItemTitle, {color: theme.textColor}]}>
                 {item.label}
               </Text>
-              <Text style={[styles.settingItemTitle, {color: theme.textColor}]}>
+              <Text allowFontScaling={false} style={[styles.settingItemTitle, {color: theme.textColor}]}>
                 {item.value}
               </Text>
             </View>

@@ -94,10 +94,10 @@ export default ({
           source={parseCardAvatar(wallets[selectedWallet].cardAvatarID || 0)}
         />
         <View>
-          <Text style={{color: '#FFFFFF', fontWeight: 'bold'}}>
+          <Text allowFontScaling={false} style={{color: '#FFFFFF', fontWeight: 'bold'}}>
             {wallets[selectedWallet].name}
           </Text>
-          <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+          <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
             {truncate(address, 10, 10)}
           </Text>
         </View>
@@ -140,12 +140,12 @@ export default ({
           />
         )}
         <View>
-          <Text style={{color: '#FFFFFF', fontWeight: 'bold'}}>
+          <Text allowFontScaling={false} style={{color: '#FFFFFF', fontWeight: 'bold'}}>
             {isNewContact()
               ? getLanguageString(language, 'NEW_CONTACT')
               : getFromAddressBook(addressBook, address)}
           </Text>
-          <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+          <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
             {truncate(address, 10, 10)}
           </Text>
         </View>
@@ -218,6 +218,7 @@ export default ({
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text
+            allowFontScaling={false}
             style={[
               styles.amountText,
               {color: theme.textColor, marginRight: 12},
@@ -226,11 +227,11 @@ export default ({
               '0,0.00',
             )}
           </Text>
-          <Text style={{color: theme.textColor, fontSize: 18}}>
+          <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 18}}>
             {txObj.tokenSymbol}
           </Text>
         </View>
-        <Text style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</Text>
+        <Text allowFontScaling={false} style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</Text>
         <View>
           <View
             style={{
@@ -245,7 +246,7 @@ export default ({
               style={{width: 16, height: 16, marginRight: 8}}
               source={require('../../../assets/icon/calendar.png')}
             />
-            <Text style={{fontSize: 12, color: theme.textColor}}>
+            <Text allowFontScaling={false} style={{fontSize: 12, color: theme.textColor}}>
               {format(txObj.date, 'hh:mm aa, E dd/MM/yyyy', {
                 locale: dateLocale,
               })}
@@ -254,7 +255,7 @@ export default ({
         </View>
         <Divider />
         <View style={{justifyContent: 'flex-start', width: '100%'}}>
-          <Text style={{color: theme.mutedTextColor, fontSize: 12}}>
+          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'FROM')}
           </Text>
           {txObj.from !== getOtherAddress()
@@ -263,7 +264,7 @@ export default ({
         </View>
         <View
           style={{justifyContent: 'flex-start', width: '100%', marginTop: 12}}>
-          <Text style={{color: theme.mutedTextColor, fontSize: 12}}>
+          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'TO')}
           </Text>
           {txObj.to !== getOtherAddress()
@@ -272,10 +273,10 @@ export default ({
         </View>
         <Divider />
         <View style={{justifyContent: 'flex-start', width: '100%'}}>
-          <Text style={{color: theme.mutedTextColor, fontSize: 12}}>
+          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'TRANSACTION_FEE')}
           </Text>
-          <Text style={{color: theme.textColor, fontSize: 15}}>
+          <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 15}}>
             {txFee} KAI
           </Text>
         </View>

@@ -36,7 +36,7 @@ const QRModal = ({
         height: 550,
       }}
       onClose={onClose}>
-      <Text style={{fontSize: 20, fontWeight: 'bold', color: theme.textColor}}>
+      <Text allowFontScaling={false} style={{fontSize: 20, fontWeight: 'bold', color: theme.textColor}}>
         {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS')}
       </Text>
       <TouchableOpacity
@@ -46,8 +46,9 @@ const QRModal = ({
           )
         }>
         <Text
+          allowFontScaling={false}
           style={{
-            fontSize: 16,
+            fontSize: 14,
             fontStyle: 'italic',
             paddingHorizontal: 18,
             textAlign: 'center',
@@ -58,6 +59,7 @@ const QRModal = ({
         </Text>
       </TouchableOpacity>
       <Text
+        allowFontScaling={false}
         style={{
           fontStyle: 'italic',
           fontWeight: 'bold',
@@ -65,6 +67,7 @@ const QRModal = ({
           paddingVertical: 16,
           color: theme.primaryColor,
           textAlign: 'center',
+          fontSize: theme.defaultFontSize
         }}>
         {getLanguageString(language, 'ERC20_WARNING')}
       </Text>

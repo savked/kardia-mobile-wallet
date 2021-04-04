@@ -118,7 +118,7 @@ const StakingScreen = () => {
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
-        <Text style={[styles.headline, {color: theme.textColor}]}>
+        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'STAKING_TITLE')}
         </Text>
         <IconButton
@@ -145,6 +145,7 @@ const StakingScreen = () => {
           paddingVertical: 32,
         }}>
         <Text
+          allowFontScaling={false}
           style={[
             styles.sectionTitle,
             {color: theme.textColor, textAlign: 'center'},
@@ -152,10 +153,10 @@ const StakingScreen = () => {
           {getLanguageString(language, 'TOTAL_EARNING')}
         </Text>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={[styles.totalSaving, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[styles.totalSaving, {color: theme.textColor}]}>
             {numeral(getTotalSaving()).format('0,0.00')}
           </Text>
-          <Text style={{fontSize: 14, color: 'rgba(252, 252, 252, 0.54)'}}>
+          <Text allowFontScaling={false} style={{fontSize: 14, color: 'rgba(252, 252, 252, 0.54)'}}>
             KAI
           </Text>
         </View>
@@ -172,6 +173,7 @@ const StakingScreen = () => {
       </ImageBackground>
       {currentStaking.length > 0 && (
         <Text
+          allowFontScaling={false}
           style={[
             styles.sectionTitle,
             {
@@ -198,7 +200,7 @@ const StakingScreen = () => {
               style={{width: 200, height: 172}}
               source={require('../../assets/icon/no_staking.png')}
             />
-            <Text style={[styles.noStakingText, {color: theme.textColor}]}>
+            <Text allowFontScaling={false} style={[styles.noStakingText, {color: theme.textColor}]}>
               {getLanguageString(language, 'NO_STAKING_ITEM')}
             </Text>
           </View>

@@ -106,7 +106,7 @@ const TransactionDetail = () => {
         {renderStatusIcon(txData?.status)}
         <View style={{justifyContent: 'space-between', paddingTop: 10}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={[{fontSize: 18}, {color: theme.textColor}]}>
+            <Text allowFontScaling={false} style={[{fontSize: 18}, {color: theme.textColor}]}>
               {getLanguageString(language, 'TRANSACTION_HASH')}:{' '}
             </Text>
             <Button
@@ -120,6 +120,7 @@ const TransactionDetail = () => {
               }}
             />
             {/* <Text
+              allowFontScaling={false}
               style={[
                 {fontSize: 18, fontWeight: 'bold'},
                 {color: theme.textColor},
@@ -132,33 +133,35 @@ const TransactionDetail = () => {
       <View style={{width: '100%'}}>
         <View style={{width: '100%', paddingHorizontal: 22}}>
           <Text
+            allowFontScaling={false}
             style={{color: theme.textColor, fontSize: 18, fontStyle: 'italic'}}>
             {getLanguageString(language, 'TRANSACTION_DETAIL')}
           </Text>
           <Divider />
         </View>
         <View style={styles.infoContainer}>
-          <Text style={[styles.infoTitle, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'TRANSACTION_AMOUNT')}
           </Text>
-          <Text style={[styles.infoValue, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[styles.infoValue, {color: theme.textColor}]}>
             {numeral(txData?.amount).format('0,0.00')} KAI
           </Text>
         </View>
         <View style={styles.infoContainer}>
-          <Text style={[styles.infoTitle, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'TRANSACTION_FEE')}
           </Text>
-          <Text style={[styles.infoValue, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[styles.infoValue, {color: theme.textColor}]}>
             {txData.fee} KAI
           </Text>
         </View>
         <View style={styles.infoContainer}>
-          <Text style={[styles.infoTitle, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'FROM')}
           </Text>
           <View style={{flexDirection: 'row'}}>
             <Text
+              allowFontScaling={false}
               style={[
                 styles.infoValue,
                 {color: theme.textColor, marginRight: 6},
@@ -178,11 +181,12 @@ const TransactionDetail = () => {
           </View>
         </View>
         <View style={styles.infoContainer}>
-          <Text style={[styles.infoTitle, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'TO')}
           </Text>
           <View style={{flexDirection: 'row'}}>
             <Text
+              allowFontScaling={false}
               style={[
                 styles.infoValue,
                 {color: theme.textColor, marginRight: 6},
@@ -202,10 +206,10 @@ const TransactionDetail = () => {
           </View>
         </View>
         <View style={styles.infoContainer}>
-          <Text style={[styles.infoTitle, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'TRANSACTION_DATE')}
           </Text>
-          <Text style={[styles.infoValue, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[styles.infoValue, {color: theme.textColor}]}>
             {isSameDay(txData.date, new Date())
               ? `${formatDistanceToNowStrict(txData.date, {
                   locale: getDateFNSLocale(language),

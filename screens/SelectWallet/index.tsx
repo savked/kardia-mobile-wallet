@@ -150,6 +150,7 @@ const SelectWallet = () => {
         backgroundColor="transparent"
       />
       <Text
+        allowFontScaling={false}
         style={{
           color: theme.textColor,
           // textAlign: 'center',
@@ -158,7 +159,7 @@ const SelectWallet = () => {
         }}>
         {getLanguageString(language, 'SELECT_YOUR_WALLET')}
       </Text>
-      {/* <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 16}}>
+      {/* <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 16}}>
         {getLanguageString(language, 'SELECT_YOUR_WALLET_DESCRIPTION')}
       </Text> */}
       <View style={{flex: 0.8, justifyContent: 'center', marginTop: 36}}>
@@ -202,15 +203,16 @@ const SelectWallet = () => {
                     />
                   </View>
                   <View>
-                    <Text style={{color: theme.textColor, fontSize: 13}}>
+                    <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 13}}>
                       {truncate(item.address, 10, 10)}
                     </Text>
                     <Text
+                      allowFontScaling={false}
                       style={{
                         color: theme.textColor,
                         fontSize: theme.defaultFontSize,
                       }}>
-                      <Text style={{color: theme.mutedTextColor}}>
+                      <Text allowFontScaling={false} style={{color: theme.mutedTextColor}}>
                         Balance:
                       </Text>{' '}
                       {parseKaiBalance(item.balance)} KAI

@@ -24,7 +24,7 @@ const TextAvatar = ({
   };
   return (
     <View style={[styles.containerStyle, containerStyle, style]}>
-      <Text style={[styles.textStyle, _textStyle, textStyle]}>{text[0]}</Text>
+      <Text allowFontScaling={false} style={[styles.textStyle, _textStyle, textStyle]}>{text[0]}</Text>
     </View>
   );
 };

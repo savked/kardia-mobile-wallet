@@ -300,7 +300,7 @@ export default ({
         />
       </View>
       <View style={{width: '100%', marginTop: 12}}>
-        <Text style={{color: theme.textColor}}>Validator</Text>
+        <Text allowFontScaling={false} style={{color: theme.textColor}}>Validator</Text>
         <View
           style={[
             styles.validatorItemContainer,
@@ -322,6 +322,7 @@ export default ({
           />
           <View style={{justifyContent: 'space-between'}}>
             <Text
+              allowFontScaling={false}
               style={{
                 color: theme.textColor,
                 fontSize: 13,
@@ -330,6 +331,7 @@ export default ({
               {validatorItem.name}
             </Text>
             <Text
+              allowFontScaling={false}
               style={{
                 color: 'rgba(252, 252, 252, 0.54)',
                 fontSize: theme.defaultFontSize,
@@ -342,43 +344,43 @@ export default ({
       <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
       <View style={{width: '100%'}}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'COMMISSION_RATE')}
           </Text>
-          <Text style={[{color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
             {getSelectedCommission()}
           </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
           </Text>
-          <Text style={[{color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
             {getSelectedStakedAmount()}
           </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'VOTING_POWER')}
           </Text>
-          <Text style={[{color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
             {getSelectedVotingPower()}
           </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'ESTIMATED_EARNING')}
           </Text>
-          <Text style={[{color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
             {numeral(estimatedProfit).format('0,0.00')}{' '}
             {estimatedProfit ? 'KAI' : ''}
           </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'ESTIMATED_APR')}
           </Text>
-          <Text style={[{color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
             {numeral(estimatedAPR).format('0,0.00')}{' '}
             {estimatedProfit ? '%' : ''}
           </Text>

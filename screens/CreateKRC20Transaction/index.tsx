@@ -143,7 +143,7 @@ const CreateKRC20TxScreen = () => {
     return (
       <>
         <View style={styles.qrScannerHeader}>
-          <Text style={styles.centerText}>Scan address QR code</Text>
+          <Text allowFontScaling={false} style={styles.centerText}>Scan address QR code</Text>
         </View>
         <QRCodeScanner
           onRead={(e) => {
@@ -186,10 +186,10 @@ const CreateKRC20TxScreen = () => {
                   )}
                 </View>
                 <View>
-                  <Text style={[styles.addressName, {color: '#000000'}]}>
+                  <Text allowFontScaling={false} style={[styles.addressName, {color: '#000000'}]}>
                     {_address.name}
                   </Text>
-                  <Text style={[styles.addressHash, {color: '#000000'}]}>
+                  <Text allowFontScaling={false} style={[styles.addressHash, {color: '#000000'}]}>
                     {truncate(_address.address, 20, 20)}
                   </Text>
                 </View>
@@ -197,7 +197,7 @@ const CreateKRC20TxScreen = () => {
             );
           }}
           ListEmptyComponent={
-            <Text style={[styles.emptyAddressBook, {color: theme.textColor}]}>
+            <Text allowFontScaling={false} style={[styles.emptyAddressBook, {color: theme.textColor}]}>
               No saved address
             </Text>
           }
@@ -213,23 +213,23 @@ const CreateKRC20TxScreen = () => {
         visible={true}
         contentStyle={{flex: 0.3, marginTop: viewportHeight / 3}}
         onClose={() => setShowConfirmModal(false)}>
-        <Text style={styles.confirmTitle}>
+        <Text allowFontScaling={false} style={styles.confirmTitle}>
           {getLanguageString(language, 'CONFIRM_TRANSACTION')}
         </Text>
         <View>
           <View style={styles.confirmGroup}>
-            <Text style={styles.confirmText}>
+            <Text allowFontScaling={false} style={styles.confirmText}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}:{' '}
             </Text>
-            <Text style={styles.confirmContent}>
+            <Text allowFontScaling={false} style={styles.confirmContent}>
               {truncate(address, 10, 10)}
             </Text>
           </View>
           <View style={styles.confirmGroup}>
-            <Text style={styles.confirmText}>
+            <Text allowFontScaling={false} style={styles.confirmText}>
               {getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:{' '}
             </Text>
-            <Text style={styles.confirmContent}>
+            <Text allowFontScaling={false} style={styles.confirmContent}>
               {amount} {tokenSymbol}
             </Text>
           </View>
@@ -310,6 +310,7 @@ const CreateKRC20TxScreen = () => {
         </View>
 
         <Text
+          allowFontScaling={false}
           style={[styles.title, {color: theme.textColor, marginBottom: 12}]}>
           {getLanguageString(language, 'TRANSACTION_SPEED')}
         </Text>
@@ -320,16 +321,16 @@ const CreateKRC20TxScreen = () => {
         <View>
           <View style={styles.wrap}>
             <View>
-              <Text style={[{color: theme.textColor}]}>
+              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
                 {getLanguageString(language, 'GAS_PRICE')}
               </Text>
-              <Text style={[{color: theme.textColor}]}>{gasPrice} Oxy</Text>
+              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>{gasPrice} Oxy</Text>
             </View>
             <View>
-              <Text style={[{color: theme.textColor}]}>
+              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
                 {getLanguageString(language, 'GAS_LIMIT')}
               </Text>
-              <Text style={[{color: theme.textColor, textAlign: 'right'}]}>
+              <Text allowFontScaling={false} style={[{color: theme.textColor, textAlign: 'right'}]}>
                 {gasLimit > 0 && numeral(gasLimit).format('0,0')}
               </Text>
             </View>
@@ -337,6 +338,7 @@ const CreateKRC20TxScreen = () => {
         </View>
 
         <Text
+          allowFontScaling={false}
           style={[
             {marginTop: 20, fontStyle: 'italic'},
             {color: theme.textColor},
@@ -435,6 +437,7 @@ const ListCard = ({
               width: '30%',
             }}>
             <Text
+              allowFontScaling={false}
               style={{
                 textAlign: 'center',
                 color: active ? theme.primaryTextColor : theme.ghostTextColor,
@@ -442,6 +445,7 @@ const ListCard = ({
               {item.title}
             </Text>
             <Text
+              allowFontScaling={false}
               style={{
                 textAlign: 'center',
                 color: active ? theme.primaryTextColor : theme.ghostTextColor,

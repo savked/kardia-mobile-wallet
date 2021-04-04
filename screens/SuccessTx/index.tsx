@@ -96,10 +96,11 @@ export default () => {
               marginVertical: 10,
             }}>
             <Text
+              allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(txObj.amount).format('0,0.00')}
             </Text>
-            <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
             </Text>
           </View>
@@ -113,10 +114,11 @@ export default () => {
               marginVertical: 10,
             }}>
             <Text
+              allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {parseDecimals(txObj.value, tokenDecimals)}
             </Text>
-            <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               {tokenSymbol}
             </Text>
           </View>
@@ -130,10 +132,11 @@ export default () => {
               marginVertical: 10,
             }}>
             <Text
+              allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(claimAmount).format('0,0.00')}
             </Text>
-            <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
             </Text>
           </View>
@@ -147,10 +150,11 @@ export default () => {
               marginVertical: 10,
             }}>
             <Text
+              allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(undelegateAmount).format('0,0.00')}
             </Text>
-            <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
             </Text>
           </View>
@@ -164,10 +168,11 @@ export default () => {
               marginVertical: 10,
             }}>
             <Text
+              allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(txObj.amount).format('0,0.00')}
             </Text>
-            <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
             </Text>
           </View>
@@ -201,6 +206,7 @@ export default () => {
             </View>
             <View>
               <Text
+                allowFontScaling={false}
                 style={[
                   styles.addressName,
                   {color: theme.textColor, fontSize: 13},
@@ -210,6 +216,7 @@ export default () => {
                   : getLanguageString(language, 'NEW_CONTACT')}
               </Text>
               <Text
+                allowFontScaling={false}
                 style={[
                   styles.addressHash,
                   {
@@ -241,6 +248,7 @@ export default () => {
             />
             <View style={{justifyContent: 'space-between'}}>
               <Text
+                allowFontScaling={false}
                 style={[
                   styles.addressName,
                   {color: theme.textColor, fontSize: 13},
@@ -248,6 +256,7 @@ export default () => {
                 {validatorItem.name}
               </Text>
               <Text
+                allowFontScaling={false}
                 style={[
                   styles.commissionRateText,
                   {
@@ -284,6 +293,7 @@ export default () => {
             </View>
             <View>
               <Text
+                allowFontScaling={false}
                 style={[
                   styles.addressName,
                   {color: theme.textColor, fontSize: 13},
@@ -293,6 +303,7 @@ export default () => {
                   : getLanguageString(language, 'NEW_CONTACT')}
               </Text>
               <Text
+                allowFontScaling={false}
                 style={[
                   styles.addressHash,
                   {
@@ -314,6 +325,8 @@ export default () => {
         return getLanguageString(language, 'TX_SUCCESS');
       case 'delegate':
         return getLanguageString(language, 'DELEGATE_SUCCESS');
+      case 'undelegate':
+        return getLanguageString(language, 'UNDELEGATE_SUCCESS');
       default:
         return getLanguageString(language, 'TX_SUCCESS');
     }
@@ -389,10 +402,11 @@ export default () => {
             source={require('../../assets/icon/success_tx_icon.png')}
           />
           <Text
+            allowFontScaling={false}
             style={{color: theme.textColor, fontSize: 32, fontWeight: 'bold'}}>
             {getLanguageString(language, 'SUCCESS')}
           </Text>
-          <Text style={{color: theme.textColor, fontSize: 15, marginTop: 8}}>
+          <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 15, marginTop: 8, textAlign: 'center', paddingHorizontal: 18}}>
             {renderSuccessDesc()}
           </Text>
         </ImageBackground>
@@ -401,11 +415,11 @@ export default () => {
       <Divider
         style={{width: 280, backgroundColor: '#60636C', marginVertical: 32}}
       />
-      <Text style={{textAlign: 'center', color: theme.textColor, fontSize: 15}}>
+      <Text allowFontScaling={false} style={{textAlign: 'center', color: theme.textColor, fontSize: 15}}>
         {getLanguageString(language, 'TRANSACTION_AMOUNT')}
       </Text>
       {renderAmount()}
-      <Text style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+      <Text allowFontScaling={false} style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
         {txObj.date &&
           format(txObj.date, 'MMM dd, yyyy - hh:mm aa', {
             locale: dateLocale,

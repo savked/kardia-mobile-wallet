@@ -74,27 +74,29 @@ const CreateWithMnemonicPhrase = () => {
       case 'en_US':
         return (
           <Text
+            allowFontScaling={false}
             style={[
               styles.description,
               styles.paragraph,
               {color: theme.textColor},
             ]}>
             Please make sure you
-            <Text style={{fontWeight: 'bold'}}> WRITE DOWN</Text> and{' '}
-            <Text style={{fontWeight: 'bold'}}>SAVE</Text> your mnemonic phrase.
+            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}> WRITE DOWN</Text> and{' '}
+            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>SAVE</Text> your mnemonic phrase.
             You will need it to access or recover your wallet.
           </Text>
         );
       case 'vi_VI':
         return (
           <Text
+            allowFontScaling={false}
             style={[
               styles.description,
               styles.paragraph,
               {color: theme.textColor},
             ]}>
             Hãy đảm bảo bạn đã
-            <Text style={{fontWeight: 'bold'}}> GHI LẠI</Text> 24 từ này. 24 từ
+            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}> GHI LẠI</Text> 24 từ này. 24 từ
             này không thể thay đổi và sẽ được sử dụng để truy cập và khôi phục
             ví.
           </Text>
@@ -102,14 +104,15 @@ const CreateWithMnemonicPhrase = () => {
       default:
         return (
           <Text
+            allowFontScaling={false}
             style={[
               styles.description,
               styles.paragraph,
               {color: theme.textColor},
             ]}>
             Please make sure you
-            <Text style={{fontWeight: 'bold'}}> WRITE DOWN</Text> and{' '}
-            <Text style={{fontWeight: 'bold'}}>SAVE</Text> your mnemonic phrase.
+            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}> WRITE DOWN</Text> and{' '}
+            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>SAVE</Text> your mnemonic phrase.
             You will need it to access or recover your wallet.
           </Text>
         );
@@ -162,7 +165,7 @@ const CreateWithMnemonicPhrase = () => {
                 styles.phraseItemContainer,
                 {backgroundColor: theme.backgroundFocusColor},
               ]}>
-              <Text style={[styles.phraseItemText, {color: theme.textColor}]}>
+              <Text allowFontScaling={false} style={[styles.phraseItemText, {color: theme.textColor}]}>
                 {item.label}
               </Text>
             </View>
@@ -170,6 +173,7 @@ const CreateWithMnemonicPhrase = () => {
         }}
       />
       <Text
+        allowFontScaling={false}
         style={[
           styles.description,
           styles.paragraph,

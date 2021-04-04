@@ -187,10 +187,11 @@ const StakingItem = ({
             textStyle={{fontSize: 16}}
           />
           <View>
-            <Text style={[styles.validatorName, {color: theme.textColor}]}>
+            <Text allowFontScaling={false} style={[styles.validatorName, {color: theme.textColor}]}>
               {item.name}
             </Text>
             <Text
+              allowFontScaling={false}
               style={{
                 fontSize: theme.defaultFontSize,
                 color: 'rgba(252, 252, 252, 0.54)',
@@ -199,33 +200,33 @@ const StakingItem = ({
             </Text>
           </View>
           {/* {showFull && (
-            <Text style={{color: '#929394'}}>
+            <Text allowFontScaling={false} style={{color: '#929394'}}>
               {getLanguageString(language, 'STAKED')}:{' '}
-              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
+              <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(stakedAmountInKAI).format('0,0.00')}
               </Text>
             </Text>
           )}
           {showFull && (
-            <Text style={{color: '#929394'}}>
+            <Text allowFontScaling={false} style={{color: '#929394'}}>
               {getLanguageString(language, 'CLAIMABLE')}:{' '}
-              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
+              <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(claimableInKAI).format('0,0.00')}
               </Text>
             </Text>
           )}
           {showFull && (
-            <Text style={{color: '#929394'}}>
+            <Text allowFontScaling={false} style={{color: '#929394'}}>
               {getLanguageString(language, 'UNBONDED')}:{' '}
-              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
+              <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(unbondedInKAI).format('0,0.00')}
               </Text>
             </Text>
           )}
           {showFull && (
-            <Text style={{color: '#929394'}}>
+            <Text allowFontScaling={false} style={{color: '#929394'}}>
               {getLanguageString(language, 'WITHDRAWABLE')}:{' '}
-              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
+              <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(withDrawbleInKAI).format('0,0.00')}
               </Text>
             </Text>
@@ -234,6 +235,7 @@ const StakingItem = ({
         <View style={{alignItems: 'flex-end', justifyContent: 'space-between'}}>
           <View style={{justifyContent: 'center'}}>
             <Text
+              allowFontScaling={false}
               style={{
                 fontWeight: 'bold',
                 color: theme.textColor,
@@ -244,6 +246,7 @@ const StakingItem = ({
           </View>
           <View style={{justifyContent: 'center'}}>
             <Text
+              allowFontScaling={false}
               style={{
                 color: 'rgba(252, 252, 252, 0.54)',
                 fontSize: theme.defaultFontSize,

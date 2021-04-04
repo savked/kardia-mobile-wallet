@@ -151,7 +151,7 @@ const TokenTxList = ({
             style={{width: 128, height: 105}}
             source={require('../../assets/no_tx_box.png')}
           />
-          <Text style={[styles.noTXText, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
           </Text>
           <Button
@@ -176,6 +176,7 @@ const TokenTxList = ({
           return (
             <React.Fragment key={`transaction-by-${txsByDate.date.getTime()}`}>
               <Text
+                allowFontScaling={false}
                 style={{
                   marginHorizontal: 20,
                   color: theme.textColor,
@@ -211,12 +212,12 @@ const TokenTxList = ({
                           flex: 4,
                           paddingHorizontal: 14,
                         }}>
-                        <Text style={{color: '#FFFFFF'}}>
+                        <Text allowFontScaling={false} style={{color: '#FFFFFF'}}>
                           {item.type === 'IN'
                             ? getLanguageString(language, 'TX_TYPE_RECEIVED')
                             : getLanguageString(language, 'TX_TYPE_SEND')}
                         </Text>
-                        <Text style={{color: '#DBDBDB', fontSize: 12}}>
+                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
                           {truncate(item.transactionHash, 8, 10)}
                         </Text>
                       </View>
@@ -226,6 +227,7 @@ const TokenTxList = ({
                           alignItems: 'flex-end',
                         }}>
                         <Text
+                          allowFontScaling={false}
                           style={[
                             styles.kaiAmount,
                             item.type === 'IN'
@@ -238,7 +240,7 @@ const TokenTxList = ({
                           ).format('0,0.00')}{' '}
                           {tokenSymbol}
                         </Text>
-                        <Text style={{color: '#DBDBDB', fontSize: 12}}>
+                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
                           {format(item.date, 'hh:mm aa')}
                         </Text>
                       </View>

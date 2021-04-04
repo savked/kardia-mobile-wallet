@@ -161,7 +161,7 @@ const Button = ({
           {loading && <ActivityIndicator color={textTypeStyle.color} />}
           {!loading && renderIcon()}
           {!loading && title && (
-            <Text style={[styles.title, textTypeStyle, textStyle]}>
+            <Text allowFontScaling={false} style={[styles.title, textTypeStyle, textStyle]}>
               {title}
             </Text>
           )}
@@ -188,7 +188,7 @@ const Button = ({
       {!loading && renderIcon()}
       {/* <Icon name={iconName} size={size} color={color} style={{marginRight:8}}/> */}
       {!loading && title && (
-        <Text style={[styles.title, textTypeStyle, textStyle]}>{title}</Text>
+        <Text allowFontScaling={false} style={[styles.title, textTypeStyle, textStyle]}>{title}</Text>
       )}
     </TouchableOpacity>
   );

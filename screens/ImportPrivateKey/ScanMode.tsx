@@ -46,9 +46,10 @@ export default () => {
         .map((item) => item.address)
         .includes(wallet.address);
 
-      if (walletExisted) {
-        return;
-      }
+        if (walletExisted) {
+          Alert.alert(getLanguageString(language, 'WALLET_EXISTED'));
+          return;
+        }
       await saveMnemonic(walletAddress, 'FROM_PK');
       const _wallets = JSON.parse(JSON.stringify(wallets));
       _wallets.push(wallet);

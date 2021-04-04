@@ -234,23 +234,23 @@ const NewTxModal = ({
           backgroundColor: theme.backgroundFocusColor,
         }}
         onClose={() => setShowConfirmModal(false)}>
-        <Text style={[styles.confirmTitle, {color: theme.textColor}]}>
+        <Text allowFontScaling={false} style={[styles.confirmTitle, {color: theme.textColor}]}>
           {getLanguageString(language, 'CONFIRM_TRANSACTION')}
         </Text>
         <View style={{width: '100%'}}>
           <View style={styles.confirmGroup}>
-            <Text style={[styles.confirmText, {color: theme.textColor}]}>
+            <Text allowFontScaling={false} style={[styles.confirmText, {color: theme.textColor}]}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}:{' '}
             </Text>
-            <Text style={[styles.confirmContent, {color: theme.textColor}]}>
+            <Text allowFontScaling={false} style={[styles.confirmContent, {color: theme.textColor}]}>
               {truncate(address, 10, 10)}
             </Text>
           </View>
           <View style={styles.confirmGroup}>
-            <Text style={[styles.confirmText, {color: theme.textColor}]}>
+            <Text allowFontScaling={false} style={[styles.confirmText, {color: theme.textColor}]}>
               {getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:{' '}
             </Text>
-            <Text style={[styles.confirmContent, {color: theme.textColor}]}>
+            <Text allowFontScaling={false} style={[styles.confirmContent, {color: theme.textColor}]}>
               {amount} KAI
             </Text>
           </View>
@@ -291,7 +291,7 @@ const NewTxModal = ({
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
           <View>
-            <Text style={[styles.headline, {color: theme.textColor}]}>
+            <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}
             </Text>
           </View>
@@ -380,6 +380,7 @@ const NewTxModal = ({
           </View>
 
           <Text
+            allowFontScaling={false}
             style={[styles.title, {marginBottom: 12, color: theme.textColor}]}>
             {getLanguageString(language, 'TRANSACTION_SPEED')}
           </Text>

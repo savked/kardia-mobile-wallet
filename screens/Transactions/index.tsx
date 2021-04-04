@@ -157,7 +157,7 @@ const TransactionScreen = () => {
         txObj={txObjForDetail}
       />
       <View style={styles.header}>
-        <Text style={[styles.headline, {color: theme.textColor}]}>
+        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'RECENT_TRANSACTION')}
         </Text>
         <IconButton
@@ -177,7 +177,7 @@ const TransactionScreen = () => {
             style={{width: 170, height: 140}}
             source={require('../../assets/no_tx_box.png')}
           />
-          <Text style={[styles.noTXText, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
           </Text>
           <Button
@@ -202,6 +202,7 @@ const TransactionScreen = () => {
           return (
             <React.Fragment key={`transaction-by-${txsByDate.date.getTime()}`}>
               <Text
+                allowFontScaling={false}
                 style={{
                   marginHorizontal: 20,
                   color: theme.textColor,
@@ -237,12 +238,12 @@ const TransactionScreen = () => {
                           flex: 4,
                           paddingHorizontal: 14,
                         }}>
-                        <Text style={{color: '#FFFFFF'}}>
+                        <Text allowFontScaling={false} style={{color: '#FFFFFF'}}>
                           {item.type === 'IN'
                             ? getLanguageString(language, 'TX_TYPE_RECEIVED')
                             : getLanguageString(language, 'TX_TYPE_SEND')}
                         </Text>
-                        <Text style={{color: '#DBDBDB', fontSize: 12}}>
+                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
                           {truncate(item.label, 8, 10)}
                         </Text>
                       </View>
@@ -252,6 +253,7 @@ const TransactionScreen = () => {
                           alignItems: 'flex-end',
                         }}>
                         <Text
+                          allowFontScaling={false}
                           style={[
                             styles.kaiAmount,
                             item.type === 'IN'
@@ -261,7 +263,7 @@ const TransactionScreen = () => {
                           {item.type === 'IN' ? '+' : '-'}
                           {parseKaiBalance(item.amount, true)} KAI
                         </Text>
-                        <Text style={{color: '#DBDBDB', fontSize: 12}}>
+                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
                           {format(item.date, 'hh:mm aa')}
                         </Text>
                       </View>

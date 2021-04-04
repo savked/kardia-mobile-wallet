@@ -79,6 +79,7 @@ const ListCard = ({
             </View>
             <View style={{alignItems: 'flex-start'}}>
               <Text
+                allowFontScaling={false}
                 style={{
                   textAlign: 'center',
                   color: active ? theme.textColor : theme.ghostTextColor,
@@ -86,6 +87,7 @@ const ListCard = ({
                 {item.title}
               </Text>
               <Text
+                allowFontScaling={false}
                 style={{
                   textAlign: 'center',
                   color: active ? theme.textColor : theme.ghostTextColor,

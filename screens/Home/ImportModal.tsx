@@ -100,7 +100,7 @@ const ImportModal = ({
           onClose={onClose}
           showCloseButton={true}
           contentStyle={getMnemonicModalContentStyle() as any}>
-          <Text style={{fontSize: 22}}>
+          <Text allowFontScaling={false} style={{fontSize: 22}}>
             {getLanguageString(language, 'ENTER_SEED_PHRASE')}
           </Text>
           <CustomTextInput
@@ -153,7 +153,7 @@ const ImportModal = ({
           onClose={onClose}
           showCloseButton={true}
           contentStyle={getPrivateKeyModalContentStyle() as any}>
-          <Text style={{fontSize: 22}}>
+          <Text allowFontScaling={false} style={{fontSize: 22}}>
             {getLanguageString(language, 'ENTER_PRIVATE_KEY')}
           </Text>
           <CustomTextInput
@@ -207,7 +207,7 @@ const ImportModal = ({
   return (
     <View style={styles.scanContainer}>
       <View style={styles.qrScannerHeader}>
-        <Text style={styles.centerText}>
+        <Text allowFontScaling={false} style={styles.centerText}>
           {getLanguageString(
             language,
             scanType === 'mnemonic' ? 'SCAN_SEED_PHRASE' : 'SCAN_PRIVATE_KEY',

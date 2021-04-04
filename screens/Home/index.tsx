@@ -73,9 +73,10 @@ const HomeScreen = () => {
       const staked = await getStakingAmount(_wallets[_selectedWallet].address);
       const newWallets: Wallet[] = JSON.parse(JSON.stringify(_wallets));
       newWallets.forEach((walletItem, index) => {
-        walletItem.address === _wallets[_selectedWallet].address;
-        newWallets[index].balance = balance;
-        newWallets[index].staked = staked;
+        if (walletItem.address === _wallets[_selectedWallet].address) {
+          newWallets[index].balance = balance;
+          newWallets[index].staked = staked;
+        }
       });
       setWallets(newWallets);
       _selectedWallet !== selectedWallet && setSelectedWallet(_selectedWallet);
@@ -123,6 +124,16 @@ const HomeScreen = () => {
     });
   }
 
+  const _getBalance = () => {
+    if (!wallets[selectedWallet]) return 0;
+    return wallets[selectedWallet].balance;
+  }
+
+  const _getStaked = () => {
+    if (!wallets[selectedWallet]) return 0;
+    return wallets[selectedWallet].staked;
+  }
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
       <HomeHeader />
@@ -151,19 +162,19 @@ const HomeScreen = () => {
               source={require('../../assets/logo_dark.png')}
             />
             <View>
-              <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+              <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
                 {getLanguageString(language, 'BALANCE')}
               </Text>
-              <Text style={{color: theme.textColor, fontSize: 18}}>
-                {parseKaiBalance(wallets[selectedWallet].balance, true)}{' '}
-                <Text style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</Text>
+              <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 18}}>
+                {parseKaiBalance(_getBalance(), true)}{' '}
+                <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</Text>
               </Text>
-              <Text style={{color: '#FFFFFF'}}>
+              <Text allowFontScaling={false} style={{color: '#FFFFFF'}}>
                 ~${' '}
                 {numeral(
                   tokenInfo.price *
-                    (Number(weiToKAI(wallets[selectedWallet].balance)) +
-                      wallets[selectedWallet].staked),
+                    (Number(weiToKAI(_getBalance())) +
+                    _getStaked()),
                 ).format('0,0.00a')}
               </Text>
             </View>

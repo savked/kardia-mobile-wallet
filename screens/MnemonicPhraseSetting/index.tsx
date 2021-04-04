@@ -80,6 +80,7 @@ const MnemonicPhraseSetting = () => {
                     {backgroundColor: theme.backgroundFocusColor},
                   ]}>
                   <Text
+                    allowFontScaling={false}
                     style={[styles.phraseItemText, {color: theme.textColor}]}>
                     {item.label}
                   </Text>

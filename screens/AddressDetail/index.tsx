@@ -221,7 +221,7 @@ const AddressDetail = () => {
   if (!addressData) {
     return (
       <View>
-        <Text>Invalid address</Text>
+        <Text allowFontScaling={false}>Invalid address</Text>
       </View>
     );
   }
@@ -301,6 +301,7 @@ const AddressDetail = () => {
             </View>
           )}
           <Text
+            allowFontScaling={false}
             style={{
               color: theme.textColor,
               textAlign: 'center',
@@ -312,6 +313,7 @@ const AddressDetail = () => {
           </Text>
           <View style={{flexDirection: 'row'}}>
             <Text
+              allowFontScaling={false}
               style={{
                 color: 'rgba(252, 252, 252, 0.54)',
                 textAlign: 'center',
@@ -364,6 +366,7 @@ const AddressDetail = () => {
       </View>
       <View style={{padding: 20}}>
         <Text
+          allowFontScaling={false}
           style={{
             color: theme.textColor,
             fontSize: 20,
@@ -374,6 +377,7 @@ const AddressDetail = () => {
         </Text>
         {groupByDate(filteredList, 'date').length === 0 && (
           <Text
+            allowFontScaling={false}
             style={[
               styles.noTXText,
               {color: theme.textColor, fontSize: theme.defaultFontSize},
@@ -386,6 +390,7 @@ const AddressDetail = () => {
           return (
             <React.Fragment key={`transaction-by-${txsByDate.date.getTime()}`}>
               <Text
+                allowFontScaling={false}
                 style={{
                   color: theme.textColor,
                 }}>
@@ -422,12 +427,12 @@ const AddressDetail = () => {
                             flex: 4,
                             paddingHorizontal: 14,
                           }}>
-                          <Text style={{color: '#FFFFFF'}}>
+                          <Text allowFontScaling={false} style={{color: '#FFFFFF'}}>
                             {item.type === 'IN'
                               ? getLanguageString(language, 'TX_TYPE_RECEIVED')
                               : getLanguageString(language, 'TX_TYPE_SEND')}
                           </Text>
-                          <Text style={{color: '#DBDBDB', fontSize: 12}}>
+                          <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
                             {truncate(item.label, 8, 10)}
                           </Text>
                         </View>
@@ -437,6 +442,7 @@ const AddressDetail = () => {
                             alignItems: 'flex-end',
                           }}>
                           <Text
+                            allowFontScaling={false}
                             style={[
                               styles.kaiAmount,
                               item.type === 'IN'
@@ -446,7 +452,7 @@ const AddressDetail = () => {
                             {item.type === 'IN' ? '+' : '-'}
                             {parseKaiBalance(item.amount, true)} KAI
                           </Text>
-                          <Text style={{color: '#DBDBDB', fontSize: 12}}>
+                          <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
                             {format(item.date, 'hh:mm aa')}
                           </Text>
                         </View>

@@ -15,7 +15,7 @@ import {
 } from '../../utils/local';
 import {tokenInfoAtom} from '../../atoms/token';
 import {languageAtom} from '../../atoms/language';
-import {getLanguageString} from '../../utils/lang';
+import {getLanguageString, parseCardAvatar} from '../../utils/lang';
 import Modal from '../../components/Modal';
 import NewTxModal from '../common/NewTxModal';
 import numeral from 'numeral';
@@ -54,7 +54,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
         <View style={styles.kaiCard}>
           <Image
             style={[styles.cardBackground, {width: viewportWidth - 40}]}
-            source={require('../../assets/card_background.png')}
+            source={parseCardAvatar(wallet.cardAvatarID)}
             // source={require('../../assets/test.jpg')}
           />
           <View
@@ -64,10 +64,10 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
               alignItems: 'center',
             }}>
             <View>
-              <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+              <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
                 {getLanguageString(language, 'BALANCE')}
               </Text>
-              <Text style={{fontSize: 30, color: 'white'}}>
+              <Text allowFontScaling={false} style={{fontSize: 30, color: 'white'}}>
                 $
                 {numeral(
                   tokenInfo.price *
@@ -84,7 +84,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
           </View>
 
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.kaiCardText}>
+            <Text allowFontScaling={false} style={styles.kaiCardText}>
               {truncate(
                 wallet.address,
                 viewportWidth >= 432 ? 14 : 10,
@@ -95,10 +95,10 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
 
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View>
-              <Text style={{fontSize: 10, color: 'rgba(252, 252, 252, 0.54)'}}>
-                {getLanguageString(language, 'CARD_NAME')}
+              <Text allowFontScaling={false} style={{fontSize: 10, color: 'rgba(252, 252, 252, 0.54)'}}>
+                {getLanguageString(language, 'WALLET_CARD_NAME')}
               </Text>
-              <Text style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.87)'}}>
+              <Text allowFontScaling={false} style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.87)'}}>
                 {wallet.name}
               </Text>
             </View>
@@ -206,6 +206,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
           source={require('../../assets/trash_dark.png')}
         />
         <Text
+          allowFontScaling={false}
           style={{
             textAlign: 'center',
             fontSize: 22,

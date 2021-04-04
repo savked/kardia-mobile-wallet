@@ -64,10 +64,30 @@ export const parseError = (errorMessage: string, langKey: string) => {
 
 export const parseCardAvatar = (cardAvatarID: number) => {
   const cardAvatar = require('../assets/card_background.png');
+  const cardAvatar1 = require('../assets/card_background_1.png');
+  const cardAvatar2 = require('../assets/card_background_2.png');
+  const cardAvatar3 = require('../assets/card_background_3.png');
   switch (cardAvatarID) {
     case 1:
-      return cardAvatar;
+      return cardAvatar1;
+    case 2:
+      return cardAvatar2;
+    case 3:
+      return cardAvatar3;
     default:
       return cardAvatar;
+  }
+};
+
+export const parseCardAvatarColor = (cardAvatarID: number) => {
+  switch (cardAvatarID) {
+    case 1:
+      return 'Blue Ocean';
+    case 2:
+      return 'Purple Night';
+    case 3:
+      return 'Mystery';
+    default:
+      return 'Dark Galaxy';
   }
 };

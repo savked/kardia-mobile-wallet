@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {View, Image, AppState} from 'react-native';
+import {View, Image, AppState, Text} from 'react-native';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -44,12 +44,46 @@ let lastTimestamp = 0;
 
 const Wrap = () => {
   const theme = useContext(ThemeContext);
+  const language = useRecoilValue(languageAtom);
 
   const showTabBar = useRecoilValue(showTabBarAtom);
 
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
+        tabBarLabel: ({focused, color, position}) => {
+          if (route.name === 'Home') {
+            return (
+              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+                {getLanguageString(language, 'HOME')}
+              </Text>
+            )
+          } else if (route.name === 'Transaction') {
+            return (
+              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+                {getLanguageString(language, 'TRANSACTIONS')}
+              </Text>
+            )
+          } else if (route.name === 'Staking') {
+            return (
+              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+                {getLanguageString(language, 'STAKING')}
+              </Text>
+            )
+          } else if (route.name === 'Address') {
+            return (
+              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+                {getLanguageString(language, 'ADDRESS_BOOK')}
+              </Text>
+            )
+          } else if (route.name === 'Setting') {
+            return (
+              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+                {getLanguageString(language, 'SETTING')}
+              </Text>
+            )
+          }
+        },
         tabBarIcon: ({color, size, focused}) => {
           let iconName = '';
 
