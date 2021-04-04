@@ -21,40 +21,41 @@ const Welcome = () => {
         styles.noWalletContainer,
         {backgroundColor: theme.backgroundColor},
       ]}>
-      <View>
-        <Image
-          style={styles.noWalletLogo}
-          source={require('../../assets/logo.png')}
-        />
+      <View style={{flex: 4, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{width: 188, height: 188, marginBottom: 58}}>
+          <Image
+            style={styles.noWalletLogo}
+            source={require('../../assets/welcome_background.png')}
+          />
+        </View>
+        <View>
+          <Text
+            allowFontScaling={false}
+            style={{
+              fontSize: 24,
+              textAlign: 'center',
+              fontWeight: 'bold',
+              marginBottom: 4,
+              color: '#B4BDC9',
+            }}>
+            {getLanguageString(language, 'WELCOME')}
+          </Text>
+          <Text allowFontScaling={false} style={{fontSize: 14, color: '#B4BDC9', textAlign: 'center'}}>
+            {getLanguageString(language, 'GETTING_STARTED_DESCRIPTION')}
+          </Text>
+        </View>
       </View>
-      <View>
-        <Text
-          style={{
-            fontSize: 24,
-            textAlign: 'center',
-            fontWeight: 'bold',
-            marginBottom: 36,
-            color: '#B4BDC9',
-          }}>
-          {getLanguageString(language, 'WELCOME')}
-        </Text>
-        <Text style={{fontSize: 14, color: '#B4BDC9', textAlign: 'center'}}>
-          {getLanguageString(language, 'GETTING_STARTED_DESCRIPTION')}
-        </Text>
-      </View>
-      <View style={{height: 140, justifyContent: 'space-evenly'}}>
+      <View style={{flex: 1, justifyContent: 'space-evenly'}}>
         <Button
-          size="large"
-          title={getLanguageString(language, 'IMPORT_WALLET')}
-          type="secondary"
-          onPress={() => navigation.navigate('ImportMnemonic')}
-        />
-        <Button
-          size="large"
           title={getLanguageString(language, 'CREATE_NEW_WALLET')}
-          type="primary"
+          type="outline"
           onPress={() => navigation.navigate('CreateWallet')}
           style={{width: 300}}
+        />
+        <Button
+          title={getLanguageString(language, 'IMPORT_WALLET')}
+          type="primary"
+          onPress={() => navigation.navigate('ImportWallet')}
         />
       </View>
     </SafeAreaView>

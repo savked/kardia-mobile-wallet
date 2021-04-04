@@ -265,47 +265,47 @@ const NewStaking = () => {
           <View style={{marginBottom: 20}}>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'COMMISSION_RATE')}
               </Text>
-              <Text style={[{color: theme.textColor}]}>
+              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
                 {getSelectedCommission()}
               </Text>
             </View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
               </Text>
-              <Text style={[{color: theme.textColor}]}>
+              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
                 {getSelectedStakedAmount()}
               </Text>
             </View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'VOTING_POWER')}
               </Text>
-              <Text style={[{color: theme.textColor}]}>
+              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
                 {getSelectedVotingPower()}
               </Text>
             </View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'ESTIMATED_EARNING')}
               </Text>
-              <Text style={[{color: theme.textColor}]}>
+              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
                 {numeral(estimatedProfit).format('0,0.00')}{' '}
                 {estimatedProfit ? 'KAI' : ''}
               </Text>
             </View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'ESTIMATED_APR')}
               </Text>
-              <Text style={[{color: theme.textColor}]}>
+              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
                 {numeral(estimatedAPR).format('0,0.00')}{' '}
                 {estimatedProfit ? '%' : ''}
               </Text>

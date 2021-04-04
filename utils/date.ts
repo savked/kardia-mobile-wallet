@@ -1,3 +1,5 @@
+import {format} from 'date-fns';
+
 export const getMonthName = (month: number) => {
   switch (month) {
     case 1:
@@ -27,4 +29,22 @@ export const getMonthName = (month: number) => {
     default:
       return '';
   }
+};
+
+export const groupByDate = (data: Record<string, any>[], dateField: string) => {
+  const groups = data.reduce((_groups, item) => {
+    const dateString = format(item[dateField], 'dd/MM/yyyy');
+    if (!_groups[dateString]) {
+      _groups[dateString] = [];
+    }
+    _groups[dateString].push(item);
+    return _groups;
+  }, {});
+
+  return Object.keys(groups).map((date) => {
+    return {
+      date: groups[date][0][dateField],
+      items: groups[date],
+    };
+  });
 };

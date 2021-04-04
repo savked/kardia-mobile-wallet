@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   header: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 12,
     height: HEADER_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
@@ -33,7 +33,24 @@ export const styles = StyleSheet.create({
   },
   noTXText: {
     padding: 15,
-    fontSize: 16,
-    fontStyle: 'italic',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  noTXContainer: {
+    flex: 1,
+    paddingHorizontal: 83,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  floatingButton: {
+    position: 'absolute',
+    right: 20,
+    bottom: 52,
+    minWidth: 52,
+    width: 52,
+    minHeight: 52,
+    height: 52,
+    borderRadius: 26,
+    paddingVertical: 0,
   },
 });

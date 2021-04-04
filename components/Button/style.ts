@@ -16,18 +16,18 @@ export const styles = StyleSheet.create({
   },
   mediumButton: {
     paddingVertical: 13,
-    minWidth: 118,
-    minHeight: 44,
+    // minWidth: 118,
+    // minHeight: 44,
   },
   smallButton: {
     paddingVertical: 12,
-    minWidth: 109,
-    minHeight: 32,
+    // minWidth: 109,
+    // minHeight: 32,
   },
   largeButton: {
     paddingVertical: 6,
-    minWidth: 150,
-    minHeight: 52,
+    // minWidth: 150,
+    // minHeight: 52,
   },
   primaryButton: {
     backgroundColor: '#AD182A',
@@ -36,13 +36,13 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   secondaryButton: {
-    backgroundColor: '#FADACF',
+    backgroundColor: '#FFFFFF',
   },
   secondaryButtonText: {
-    color: '#AD182A',
+    color: '#000000',
   },
   outlineButton: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderColor: '#C9CED6',
     borderWidth: 1,
   },

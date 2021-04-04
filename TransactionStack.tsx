@@ -6,6 +6,7 @@ import {
 // import CreateTxScreen from './screens/CreateTransaction';
 import TransactionScreen from './screens/Transactions';
 import TransactionDetail from './screens/TransactionDetail';
+import SuccessTx from './screens/SuccessTx';
 
 const TransactionStack = createStackNavigator();
 
@@ -27,6 +28,7 @@ const TransactionStackScreen = () => {
         name="TransactionDetail"
         component={TransactionDetail}
       />
+      <TransactionStack.Screen name="SuccessTx" component={SuccessTx} />
     </TransactionStack.Navigator>
   );
 };

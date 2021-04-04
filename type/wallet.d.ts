@@ -1,8 +1,11 @@
 interface Wallet {
+  name?: string;
+  mnemonic?: string;
   address: string;
   privateKey?: string;
   balance: number;
   staked: number;
+  cardAvatarID?: number;
 }
 
 interface Address {

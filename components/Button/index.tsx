@@ -1,6 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {ActivityIndicator, Text, TouchableOpacity} from 'react-native';
+import {
+  ActivityIndicator,
+  StyleProp,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ThemeContext} from '../../ThemeContext';
 import {styles} from './style';
@@ -8,10 +16,10 @@ import {styles} from './style';
 const Button = ({
   title,
   style,
-  textStyle,
   onPress,
   icon,
   iconName,
+  textStyle,
   block,
   size = 'medium',
   type = 'primary',
@@ -19,7 +27,10 @@ const Button = ({
   iconColor,
   disabled,
   loading = false,
-}: ButtonProps) => {
+}: ButtonProps & {
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
+}) => {
   const theme = useContext(ThemeContext);
 
   const parseSize = () => {
@@ -78,7 +89,7 @@ const Button = ({
       return icon;
     }
     if (iconName) {
-      let _iconColor = '#FFFFFF';
+      let _iconColor = '#000000';
       switch (type) {
         case 'secondary':
           _iconColor = '#AD182A';
@@ -92,15 +103,18 @@ const Button = ({
         default:
           break;
       }
-      if (textStyle && textStyle.color) {
-        _iconColor = textStyle.color;
+      if (textStyle && (textStyle as any).color) {
+        _iconColor = (textStyle as any).color;
       }
       if (iconColor) {
         _iconColor = iconColor;
       }
       return (
         <Icon
-          style={styles.icon}
+          style={[
+            styles.icon,
+            title ? {marginRight: styles.icon.marginRight} : {marginRight: 0},
+          ]}
           name={iconName}
           color={_iconColor}
           size={iconSize}
@@ -112,6 +126,50 @@ const Button = ({
 
   const {typeStyle, textTypeStyle} = parseType();
 
+  if (type === 'primary') {
+    return (
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        locations={[0, 0.2, 0.4, 0.6, 0.8]}
+        end={{x: 1, y: 1}}
+        // style={{flex: 1}}
+        style={[
+          styles.button,
+          parseSize(),
+          typeStyle,
+          block ? {width: '100%'} : null,
+          style,
+        ]}
+        colors={[
+          'rgba(126, 219, 220, 0.3)',
+          'rgba(228, 175, 203, 0.3)',
+          'rgba(226, 194, 139, 0.3)',
+          'rgba(255, 255, 255, 0.3)',
+          'rgba(255, 255, 255, 1)',
+        ]}>
+        <TouchableOpacity
+          onPress={() => {
+            !loading && onPress();
+          }}
+          disabled={disabled}
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+            flexDirection: 'row',
+          }}>
+          {loading && <ActivityIndicator color={textTypeStyle.color} />}
+          {!loading && renderIcon()}
+          {!loading && title && (
+            <Text allowFontScaling={false} style={[styles.title, textTypeStyle, textStyle]}>
+              {title}
+            </Text>
+          )}
+        </TouchableOpacity>
+      </LinearGradient>
+    );
+  }
+
   return (
     <TouchableOpacity
       onPress={() => {
@@ -122,15 +180,15 @@ const Button = ({
         styles.button,
         parseSize(),
         typeStyle,
-        style,
         type === 'link' ? {padding: 0, minWidth: 0} : null,
         block ? {width: '100%'} : null,
+        style,
       ]}>
       {loading && <ActivityIndicator color={textTypeStyle.color} />}
       {!loading && renderIcon()}
       {/* <Icon name={iconName} size={size} color={color} style={{marginRight:8}}/> */}
-      {!loading && (
-        <Text style={[styles.title, textTypeStyle, textStyle]}>{title}</Text>
+      {!loading && title && (
+        <Text allowFontScaling={false} style={[styles.title, textTypeStyle, textStyle]}>{title}</Text>
       )}
     </TouchableOpacity>
   );

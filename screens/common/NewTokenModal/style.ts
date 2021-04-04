@@ -10,4 +10,8 @@ export const styles = StyleSheet.create({
   textIcon: {
     position: 'absolute',
   },
+  headline: {
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
 });

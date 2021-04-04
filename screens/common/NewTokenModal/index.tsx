@@ -1,13 +1,20 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Modal from '../../../components/Modal';
-import {Keyboard, Platform, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  Image,
+  Keyboard,
+  Platform,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import TextInput from '../../../components/TextInput';
 import {styles} from './style';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
 import {getLanguageString} from '../../../utils/lang';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import ScanQRAddressModal from '../ScanQRAddressModal';
 import {getKRC20TokenInfo} from '../../../services/krc20';
 import {getTokenList, saveTokenList} from '../../../utils/local';
@@ -16,6 +23,7 @@ import Button from '../../../components/Button';
 import {DEFAULT_KRC20_TOKENS} from '../../../config';
 import {parseDecimals} from '../../../utils/number';
 import numeral from 'numeral';
+import {ThemeContext} from '../../../ThemeContext';
 
 const NewTokenModal = ({
   visible,
@@ -24,6 +32,7 @@ const NewTokenModal = ({
   visible: boolean;
   onClose: () => void;
 }) => {
+  const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
   const [tokenAddress, setTokenAddress] = useState('');
   const [errorAddress, setErrorAddress] = useState('');
@@ -159,13 +168,15 @@ const NewTokenModal = ({
   const getModalStyle = () => {
     if (Platform.OS === 'android') {
       return {
-        height: !showTokenData() ? 210 : 320
+        height: !showTokenData() ? 300 : 400,
+        backgroundColor: theme.backgroundFocusColor,
       };
     } else {
       return {
-        height: !showTokenData() ? 210 : 320,
+        height: !showTokenData() ? 300 : 400,
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,
+        backgroundColor: theme.backgroundFocusColor,
       };
     }
   };
@@ -173,6 +184,7 @@ const NewTokenModal = ({
   return (
     <Modal
       visible={visible}
+      showCloseButton={false}
       onClose={() => {
         clearState();
         onClose();
@@ -181,53 +193,77 @@ const NewTokenModal = ({
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
           <View style={{marginBottom: 10}}>
-            <TextInput
-              headlineStyle={{color: 'black'}}
-              onChangeText={setTokenAddress}
-              message={errorAddress}
-              value={tokenAddress}
-              inputStyle={{paddingRight: 50}}
-              headline={getLanguageString(language, 'TOKEN_ADDRESS')}
-              icons={() => {
-                return (
-                  <Icon
-                    onPress={() => setShowQRModal(true)}
-                    name="qrcode"
-                    size={25}
-                    color={'black'}
-                    style={[styles.textIcon, {right: 18}]}
-                  />
-                );
-              }}
-            />
+            <View>
+              <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
+                {getLanguageString(language, 'TOKEN_ADDRESS')}
+              </Text>
+            </View>
+            <View
+              style={{
+                width: '100%',
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+                justifyContent: 'space-between',
+              }}>
+              <View style={{flex: 3}}>
+                <TextInput
+                  onChangeText={setTokenAddress}
+                  message={errorAddress}
+                  value={tokenAddress}
+                  inputStyle={{
+                    backgroundColor: 'rgba(96, 99, 108, 1)',
+                    color: theme.textColor,
+                  }}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={() => setShowQRModal(true)}
+                style={{
+                  // flex: 1,
+                  padding: 15,
+                  borderColor: 'rgba(255, 255, 255, 0.1)',
+                  height: 44,
+                  width: 44,
+                  borderWidth: 1.5,
+                  borderRadius: 8,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: 8,
+                }}>
+                <Image
+                  source={require('../../../assets/icon/scan_qr_dark.png')}
+                  style={{width: 18, height: 18}}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <Text>
-                Token name: <Text style={{fontWeight: 'bold'}}>{name}</Text>
+              <Text allowFontScaling={false} style={{color: theme.textColor}}>
+                Token name: <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>{name}</Text>
               </Text>
             </View>
           )}
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <Text>
-                Token symbol: <Text style={{fontWeight: 'bold'}}>{symbol}</Text>
+              <Text allowFontScaling={false} style={{color: theme.textColor}}>
+                Token symbol: <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>{symbol}</Text>
               </Text>
             </View>
           )}
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <Text>
+              <Text allowFontScaling={false} style={{color: theme.textColor}}>
                 Token decimals:{' '}
-                <Text style={{fontWeight: 'bold'}}>{decimals}</Text>
+                <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>{decimals}</Text>
               </Text>
             </View>
           )}
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <Text>
+              <Text allowFontScaling={false} style={{color: theme.textColor}}>
                 Token supply:{' '}
-                <Text style={{fontWeight: 'bold'}}>
+                <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
                   {numeral(parseDecimals(Number(totalSupply), decimals)).format(
                     '0,0.00',
                   )}
@@ -237,7 +273,16 @@ const NewTokenModal = ({
           )}
           <View>
             <Button
-              title="Add token"
+              title={getLanguageString(language, 'CANCEL')}
+              style={{marginBottom: 8, marginTop: showTokenData() ? 12 : 36}}
+              textStyle={{fontWeight: 'bold'}}
+              type="outline"
+              onPress={onClose}
+              disabled={loading}
+            />
+            <Button
+              title={getLanguageString(language, 'ADD_TOKEN')}
+              textStyle={{fontWeight: 'bold'}}
               onPress={handleImport}
               loading={loading}
               disabled={loading}
