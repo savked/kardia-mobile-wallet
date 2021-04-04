@@ -61,6 +61,7 @@ const CustomTextInput = ({
           containerStyle,
         ]}>
         <TextInput
+          allowFontScaling={false}
           style={[
             styles.input,
             multiline ? styles.multiline : null,
