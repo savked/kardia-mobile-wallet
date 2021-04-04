@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Image, Text, View} from 'react-native';
+import {ActivityIndicator, Alert, Image, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
@@ -180,8 +180,8 @@ const HomeScreen = () => {
             </View>
           </View>
           <Button
-            title="Buy KAI"
-            onPress={() => {}}
+            title={getLanguageString(language, 'BUY_KAI')}
+            onPress={() => Alert.alert('Coming soon')}
             type="ghost"
             size="small"
             textStyle={{color: '#000000', fontWeight: 'bold'}}

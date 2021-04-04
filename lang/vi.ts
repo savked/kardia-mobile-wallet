@@ -6,6 +6,7 @@ export const lang: Language = {
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:
+    BUY_KAI: 'Mua KAI',
     OK_TEXT: 'OK',
     BALANCE: 'Số dư hiện tại',
     STAKED_AMOUNT: 'Số KAI đã đầu tư',

@@ -6,6 +6,7 @@ export const lang: Language = {
   tag: ['en_US', 'US', 'en', 'US English'],
   mapping: {
     // Common key:
+    BUY_KAI: 'Buy KAI',
     OK_TEXT: 'Ok! Got it',
     BALANCE: 'Balance',
     STAKED_AMOUNT: 'Staked',
