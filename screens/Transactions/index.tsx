@@ -22,6 +22,7 @@ import {groupByDate} from '../../utils/date';
 import TxDetailModal from '../common/TxDetailModal';
 import {ScrollView} from 'react-native-gesture-handler';
 import {showTabBarAtom} from '../../atoms/showTabBar';
+import { HEADER_HEIGHT } from '../../theme';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);

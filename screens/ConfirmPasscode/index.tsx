@@ -54,13 +54,14 @@ const ConfirmPasscode = () => {
       setError(getLanguageString(language, 'WRONG_PIN'));
       return;
     }
-    await setLocalAuth(true);
+    setLocalAuth(true);
   };
 
   const authByTouchID = async () => {
     TouchID.authenticate('Use touch ID to access wallet', optionalConfigObject)
       .then(async () => {
-        await setLocalAuth(true);
+        console.log('here')
+        setLocalAuth(true);
       })
       .catch((err: any) => {
         // Failure code

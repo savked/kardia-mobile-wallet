@@ -222,7 +222,7 @@ const TxListSection = () => {
                   screen: 'TransactionList',
                 })
               }
-              title={`${getLanguageString(language, 'VIEW_ALL_TRANSACTION')} >`}
+              title={`${getLanguageString(language, 'VIEW_ALL')} >`}
             />
           </View>
         }

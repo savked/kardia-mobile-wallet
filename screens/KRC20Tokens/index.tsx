@@ -1,33 +1,46 @@
-/* eslint-disable react-native/no-inline-styles */
-import {useNavigation} from '@react-navigation/native';
-import React, {useContext, useEffect, useState} from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
-import {ThemeContext} from '../../ThemeContext';
-import List from '../../components/List';
-import {styles} from './style';
-import {parseDecimals} from '../../utils/number';
-import Button from '../../components/Button';
-import {useRecoilValue} from 'recoil';
+import { useNavigation } from '@react-navigation/core';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import AntIcon from 'react-native-vector-icons/AntDesign';
+import ENIcon from 'react-native-vector-icons/Entypo';
 import numeral from 'numeral';
-import {getLanguageString} from '../../utils/lang';
-import {languageAtom} from '../../atoms/language';
-// import {getTokenList} from '../../utils/local';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { krc20ListAtom } from '../../atoms/krc20';
+import { languageAtom } from '../../atoms/language';
+import { showTabBarAtom } from '../../atoms/showTabBar';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import List from '../../components/List';
+import { getBalance } from '../../services/krc20';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { getSelectedWallet, getWallets } from '../../utils/local';
+import { parseDecimals } from '../../utils/number';
+import {styles} from './style';
 import NewTokenModal from '../common/NewTokenModal';
-import {krc20ListAtom} from '../../atoms/krc20';
-import {getBalance} from '../../services/krc20';
-import {getSelectedWallet, getWallets} from '../../utils/local';
-import {selectedWalletAtom} from '../../atoms/wallets';
+import Button from '../../components/Button';
 
-const TokenListSection = () => {
-  const navigation = useNavigation();
+export default () => {
   const theme = useContext(ThemeContext);
-  const selectedWallet = useRecoilValue(selectedWalletAtom);
+  const navigation = useNavigation();
+  const language = useRecoilValue(languageAtom)
 
-  const language = useRecoilValue(languageAtom);
-  const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [balance, setBalance] = useState<number[]>([]);
+  const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+  const selectedWallet = useRecoilValue(selectedWalletAtom);
+  const wallets = useRecoilValue(walletsAtom);
   const tokenList = useRecoilValue(krc20ListAtom);
+
+  const [loading, setLoading] = useState(false);
+  const [balance, setBalance] = useState<number[]>([]);
+  const [showModal, setShowModal] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      setTabBarVisible(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   useEffect(() => {
     (async () => {
@@ -41,7 +54,7 @@ const TokenListSection = () => {
       setBalance(balanceArr);
       setLoading(false);
     })();
-  }, [tokenList, selectedWallet]);
+  }, [tokenList, wallets, selectedWallet]);
 
   const renderIcon = (avatar: string) => {
     return (
@@ -75,42 +88,22 @@ const TokenListSection = () => {
   };
 
   return (
-    <View style={styles.tokenListContainer}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <NewTokenModal visible={showModal} onClose={() => setShowModal(false)} />
       <View
         style={{
-          alignItems: 'center',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          padding: 20,
+          width: '100%',
+          marginBottom: 19,
+          paddingHorizontal: 20,
         }}>
-        <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: 'bold', color: theme.textColor}}>
-          {getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}
-        </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('KRC20Tokens')}>
-          <Text allowFontScaling={false} style={{fontSize: theme.defaultFontSize, color: theme.textColor}}>
-            {getLanguageString(language, 'VIEW_ALL')} ({tokenList.length})
-          </Text>
-        </TouchableOpacity>
+        <ENIcon.Button
+          name="chevron-left"
+          onPress={() => navigation.goBack()}
+          backgroundColor="transparent"
+          style={{ padding: 0 }}
+        />
       </View>
-      {tokenList.length === 0 && !loading && (
-        <View style={{alignItems: 'center', marginTop: 45}}>
-          <Image
-            style={{width: 111, height: 52}}
-            source={require('../../assets/no_tokens_dark.png')}
-          />
-          <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
-            {getLanguageString(language, 'NO_TOKENS')}
-          </Text>
-          <Button
-            type="outline"
-            textStyle={{fontWeight: 'bold', fontSize: 12}}
-            style={{paddingVertical: 8, paddingHorizontal: 16}}
-            onPress={() => setShowModal(true)}
-            title={`+ ${getLanguageString(language, 'ADD_TOKEN')}`}
-          />
-        </View>
-      )}
+      <Text allowFontScaling={false} style={{fontSize: 36, paddingHorizontal: 20, color: theme.textColor}}>{getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}</Text>
       <List
         items={tokenList}
         loading={loading}
@@ -124,7 +117,7 @@ const TokenListSection = () => {
                 padding: 15,
                 marginHorizontal: 20,
                 borderRadius: 8,
-                marginVertical: 6,
+                marginTop: 12,
                 backgroundColor: theme.backgroundFocusColor,
               }}>
               <TouchableOpacity
@@ -188,8 +181,15 @@ const TokenListSection = () => {
         }}
         ListEmptyComponent={null}
       />
-    </View>
+      {tokenList.length > 0 && (
+        <Button
+          type="primary"
+          icon={<AntIcon name="plus" size={24} />}
+          size="small"
+          onPress={() => setShowModal(true)}
+          style={styles.floatingButton}
+        />
+      )}
+    </SafeAreaView>
   );
 };
-
-export default TokenListSection;

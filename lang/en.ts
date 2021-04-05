@@ -78,7 +78,7 @@ export const lang: Language = {
     NO_TRANSACTION: 'No transaction',
     SEARCH_TRANSACTION_PLACEHOLDER:
       'Search with address / hash / block number...',
-    VIEW_ALL_TRANSACTION: 'View All',
+    VIEW_ALL: 'View All',
     SEND: 'Send',
     SEND_NOW: 'Send Now',
     CANCEL: 'Cancel',
@@ -193,7 +193,7 @@ export const lang: Language = {
       'The amount requested exceeds your current wallet balance.',
     GENERAL_ERROR: 'An error occured. Please try again later.',
     // KRC20 key
-    KRC20_TOKENS_SECTION_TITLE: 'Your assets',
+    KRC20_TOKENS_SECTION_TITLE: 'My assets',
     ADD_TOKEN: 'Add token',
     TOKEN_ADDRESS: 'Token address',
     SEND_TOKEN: 'Send {{TOKEN_SYMBOL}}',

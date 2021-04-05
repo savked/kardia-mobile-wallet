@@ -192,7 +192,7 @@ const NewTokenModal = ({
       contentStyle={getModalStyle() as any}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
-          <View style={{marginBottom: 10}}>
+          <View style={{marginBottom: 0}}>
             <View>
               <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
                 {getLanguageString(language, 'TOKEN_ADDRESS')}

@@ -111,31 +111,34 @@ const SettingStackScreen = () => {
       <SettingStack.Screen
         name="MnemonicPhraseSetting"
         component={MnemonicPhraseSetting}
-        options={({navigation: _navigation, route}) => {
-          return {
-            title: getLanguageString(language, 'MNEMONIC_SETTING_TITLE'),
-            headerTitleStyle: {
-              color: theme.textColor,
-            },
-            headerTintColor: theme.textColor,
-            headerLeft: () => {
-              if (route.params && (route.params as any).from === 'Home') {
-                return (
-                  <HeaderBackButton
-                    tintColor={theme.textColor}
-                    onPress={() => {
-                      _navigation.reset({
-                        index: 0,
-                        routes: [{name: 'Home'}],
-                      });
-                    }}
-                  />
-                );
-              }
-              return <HeaderBackButton tintColor={theme.textColor} />;
-            },
-          };
+        options={{
+          headerShown: false,
         }}
+        // options={({navigation: _navigation, route}) => {
+        //   return {
+        //     title: getLanguageString(language, 'MNEMONIC_SETTING_TITLE'),
+        //     headerTitleStyle: {
+        //       color: theme.textColor,
+        //     },
+        //     headerTintColor: theme.textColor,
+        //     headerLeft: () => {
+        //       if (route.params && (route.params as any).from === 'Home') {
+        //         return (
+        //           <HeaderBackButton
+        //             tintColor={theme.textColor}
+        //             onPress={() => {
+        //               _navigation.reset({
+        //                 index: 0,
+        //                 routes: [{name: 'Home'}],
+        //               });
+        //             }}
+        //           />
+        //         );
+        //       }
+        //       return <HeaderBackButton tintColor={theme.textColor} />;
+        //     },
+        //   };
+        // }}
       />
       <SettingStack.Screen
         name="SettingPasscode"

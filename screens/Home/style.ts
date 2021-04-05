@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   kaiCardContainer: {
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
     paddingVertical: 10,
     height: 240,
     marginBottom: 16,

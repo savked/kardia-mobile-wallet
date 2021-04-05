@@ -49,7 +49,7 @@ const List = ({
         }}
         keyExtractor={keyExtractor}
         ItemSeparatorComponent={ItemSeprator || null}
-        ListEmptyComponent={ListEmptyComponent || <Text allowFontScaling={false}>No data</Text>}
+        ListEmptyComponent={ListEmptyComponent}
         initialNumToRender={initialNumToRender || 5}
         numColumns={numColumns}
         // ListHeaderComponent={header}

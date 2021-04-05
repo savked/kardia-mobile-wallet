@@ -73,7 +73,7 @@ export const lang: Language = {
     RECENT_TRANSACTION: 'Giao dịch gần đây',
     NO_TRANSACTION: 'Không có giao dịch',
     SEARCH_TRANSACTION_PLACEHOLDER: 'Tìm kiếm...',
-    VIEW_ALL_TRANSACTION: 'Tất cả',
+    VIEW_ALL: 'Tất cả',
     SEND: 'Gửi KAI',
     SEND_NOW: 'Gửi ngay',
     CANCEL: 'Hủy',

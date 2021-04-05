@@ -19,7 +19,7 @@ import {languageAtom} from '../../atoms/language';
 import numeral from 'numeral';
 import {getLanguageString} from '../../utils/lang';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import RemindPasscodeModal from '../common/RemindPasscodeModal';
+// import RemindPasscodeModal from '../common/RemindPasscodeModal';
 import {getStakingAmount} from '../../services/staking';
 import TokenListSection from './TokenListSection';
 import {showTabBarAtom} from '../../atoms/showTabBar';
@@ -169,7 +169,7 @@ const HomeScreen = () => {
                 {parseKaiBalance(_getBalance(), true)}{' '}
                 <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</Text>
               </Text>
-              <Text allowFontScaling={false} style={{color: '#FFFFFF'}}>
+              <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
                 ~${' '}
                 {numeral(
                   tokenInfo.price *
@@ -189,7 +189,7 @@ const HomeScreen = () => {
           />
         </View>
         <TokenListSection />
-        <RemindPasscodeModal
+        {/* <RemindPasscodeModal
           visible={showPasscodeRemindModal}
           onClose={() => setShowPasscodeRemindModal(false)}
           enablePasscode={() => {
@@ -206,7 +206,7 @@ const HomeScreen = () => {
               ],
             });
           }}
-        />
+        /> */}
       </View>
     </SafeAreaView>
   );

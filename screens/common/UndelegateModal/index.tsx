@@ -1,12 +1,13 @@
 import { useNavigation } from '@react-navigation/core';
 import React, { useContext, useEffect, useState } from 'react';
-import { Keyboard, Platform, TouchableWithoutFeedback, View } from 'react-native';
+import { Keyboard, Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../../atoms/language';
 import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
 import Modal from '../../../components/Modal';
 import CustomTextInput from '../../../components/TextInput';
+import numeral from 'numeral';
 import { MIN_DELEGATE } from '../../../config';
 import { undelegateAll, undelegateWithAmount } from '../../../services/staking';
 import { weiToKAI } from '../../../services/transaction/amount';
@@ -149,6 +150,17 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{flex: 1, width: '100%', padding: 35}}>
           <View style={{width: '100%'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8}}>
+              <Text style={{fontSize: theme.defaultFontSize, color: theme.textColor}} allowFontScaling={false}>
+                {getLanguageString(
+                  language,
+                  'UNDELEGATE_AMOUNT_PLACEHOLDER',
+                )}
+              </Text>
+              <TouchableOpacity onPress={() => setUndelegateAmount(format(Number(stakedAmountInKAI)))}>
+                <Text style={{fontSize: theme.defaultFontSize, color: theme.urlColor}} allowFontScaling={false}>{numeral(stakedAmountInKAI).format('0,0.00')} KAI</Text>
+              </TouchableOpacity>
+            </View>
             <CustomTextInput
               keyboardType="numeric"
               message={undelegateError}
@@ -167,10 +179,10 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
                 setUndelegateAmount(format(Number(undelegateAmount)));
               }}
               value={undelegateAmount}
-              headline={getLanguageString(
-                language,
-                'UNDELEGATE_AMOUNT_PLACEHOLDER',
-              )}
+              // headline={getLanguageString(
+              //   language,
+              //   'UNDELEGATE_AMOUNT_PLACEHOLDER',
+              // )}
             />
           </View>
           <Divider style={{width: '100%'}} />

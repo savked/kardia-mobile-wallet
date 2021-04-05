@@ -53,7 +53,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
       <View style={styles.kaiCardContainer}>
         <View style={styles.kaiCard}>
           <Image
-            style={[styles.cardBackground, {width: viewportWidth - 40}]}
+            style={[styles.cardBackground, {width: viewportWidth - 50}]}
             source={parseCardAvatar(wallet.cardAvatarID)}
             // source={require('../../assets/test.jpg')}
           />
@@ -65,7 +65,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
             }}>
             <View>
               <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
-                {getLanguageString(language, 'BALANCE')}
+                {getLanguageString(language, 'BALANCE').toUpperCase()}
               </Text>
               <Text allowFontScaling={false} style={{fontSize: 30, color: 'white'}}>
                 $
@@ -96,10 +96,10 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View>
               <Text allowFontScaling={false} style={{fontSize: 10, color: 'rgba(252, 252, 252, 0.54)'}}>
-                {getLanguageString(language, 'WALLET_CARD_NAME')}
+                {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
               </Text>
               <Text allowFontScaling={false} style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.87)'}}>
-                {wallet.name}
+                {wallet.name || 'WALLET'}
               </Text>
             </View>
             <TouchableOpacity
@@ -170,7 +170,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
         enableSnap={true}
         renderItem={renderWalletItem}
         sliderWidth={viewportWidth}
-        itemWidth={viewportWidth}
+        itemWidth={viewportWidth - 50}
         onSnapToItem={setSelectedWallet}
       />
       <Pagination
@@ -178,19 +178,19 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
         activeDotIndex={selectedWallet}
         containerStyle={{
           paddingVertical: 0,
-          height: 12,
+          height: 6,
           alignItems: 'center',
           justifyContent: 'center',
         }}
         dotStyle={{
-          width: 10,
-          height: 10,
-          borderRadius: 5,
-          marginHorizontal: 8,
+          width: 6,
+          height: 6,
+          borderRadius: 3,
+          marginHorizontal: 2,
           backgroundColor: 'rgba(255, 255, 255, 0.92)',
         }}
         inactiveDotOpacity={0.4}
-        inactiveDotScale={0.6}
+        inactiveDotScale={1}
       />
       <Modal
         visible={removeIndex >= 0}

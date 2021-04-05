@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {Keyboard, Platform, Text, View} from 'react-native';
+import {Keyboard, Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
 import numeral from 'numeral';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
@@ -10,7 +10,7 @@ import TextAvatar from '../../../components/TextAvatar';
 import TextInput from '../../../components/TextInput';
 import {ThemeContext} from '../../../ThemeContext';
 import {getLanguageString} from '../../../utils/lang';
-import {getDigit, isNumber, format} from '../../../utils/number';
+import {getDigit, isNumber, format, parseKaiBalance, parseDecimals} from '../../../utils/number';
 import {styles} from './style';
 import {weiToKAI} from '../../../services/transaction/amount';
 import Button from '../../../components/Button';
@@ -20,6 +20,8 @@ import {delegateAction, getAllValidator} from '../../../services/staking';
 import {getLatestBlock} from '../../../services/blockchain';
 import AuthModal from '../AuthModal';
 import {useNavigation} from '@react-navigation/native';
+import { getBalance } from '../../../services/account';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 
 export default ({
   validatorItem,
@@ -41,6 +43,9 @@ export default ({
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   const theme = useContext(ThemeContext);
+
+  const wallets = useRecoilValue(walletsAtom);
+  const selectedWallet = useRecoilValue(selectedWalletAtom);
 
   useEffect(() => {
     (async () => {
@@ -178,9 +183,10 @@ export default ({
 
     const wallets = await getWallets();
     const selectedWallet = await getSelectedWallet();
+    const balance = await getBalance(wallets[selectedWallet].address)
     if (
       Number(getDigit(amount)) >
-      Number(weiToKAI(wallets[selectedWallet].balance))
+      Number(weiToKAI(balance))
     ) {
       setAmountError(getLanguageString(language, 'STAKING_AMOUNT_NOT_ENOUGHT'));
       return false;
@@ -204,10 +210,10 @@ export default ({
 
       const wallets = await getWallets();
       const selectedWallet = await getSelectedWallet();
-
+      const balance = await getBalance(wallets[selectedWallet].address)
       if (
         Number(getDigit(amount)) >
-        Number(weiToKAI(wallets[selectedWallet].balance))
+        Number(weiToKAI(balance))
       ) {
         setAmountError(
           getLanguageString(language, 'STAKING_AMOUNT_NOT_ENOUGHT'),
@@ -279,138 +285,153 @@ export default ({
         onClose();
       }}
       contentStyle={getModalStyle()}>
-      <View style={{width: '100%'}}>
-        <TextInput
-          message={amountError}
-          headline={getLanguageString(language, 'STAKING_AMOUNT')}
-          keyboardType="numeric"
-          value={amount}
-          onChangeText={(newAmount) => {
-            const digitOnly = getDigit(newAmount);
-            // if (Number(digitOnly) > wallets[selectedWallet].balance) {
-            //   return;
-            // }
-            if (digitOnly === '') {
-              setAmount('0');
-              return;
-            }
-            isNumber(digitOnly) && setAmount(digitOnly);
-          }}
-          onBlur={() => setAmount(format(Number(amount)))}
-        />
-      </View>
-      <View style={{width: '100%', marginTop: 12}}>
-        <Text allowFontScaling={false} style={{color: theme.textColor}}>Validator</Text>
-        <View
-          style={[
-            styles.validatorItemContainer,
-            {
-              backgroundColor: theme.backgroundColor,
-            },
-          ]}>
-          <TextAvatar
-            text={validatorItem.name}
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: 12,
-              marginRight: 12,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            textStyle={{fontSize: 16}}
-          />
-          <View style={{justifyContent: 'space-between'}}>
-            <Text
-              allowFontScaling={false}
-              style={{
-                color: theme.textColor,
-                fontSize: 13,
-                fontWeight: 'bold',
-              }}>
-              {validatorItem.name}
-            </Text>
-            <Text
-              allowFontScaling={false}
-              style={{
-                color: 'rgba(252, 252, 252, 0.54)',
-                fontSize: theme.defaultFontSize,
-              }}>
-              {validatorItem.commissionRate} %
-            </Text>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={{flex: 1, width: '100%'}}>
+          <View style={{width: '100%'}}>
+            <View style={{marginBottom: 4, flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={{color: theme.textColor}}>
+                {getLanguageString(language, 'STAKING_AMOUNT')}
+              </Text>
+              <TouchableOpacity onPress={() => setAmount(parseDecimals(wallets[selectedWallet].balance, 18).toString())}>
+                <Text style={{color: theme.urlColor}}>
+                  {parseKaiBalance(wallets[selectedWallet].balance)} KAI
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <TextInput
+              message={amountError}
+              // headline={getLanguageString(language, 'STAKING_AMOUNT')}
+              headlineStyle={{fontWeight: 'normal'}}
+              keyboardType="numeric"
+              value={amount}
+              onChangeText={(newAmount) => {
+                const digitOnly = getDigit(newAmount);
+                // if (Number(digitOnly) > wallets[selectedWallet].balance) {
+                //   return;
+                // }
+                if (digitOnly === '') {
+                  setAmount('0');
+                  return;
+                }
+                isNumber(digitOnly) && setAmount(digitOnly);
+              }}
+              onBlur={() => setAmount(format(Number(amount)))}
+            />
+          </View>
+          <View style={{width: '100%', marginTop: 12}}>
+            <Text allowFontScaling={false} style={{color: theme.textColor}}>Validator</Text>
+            <View
+              style={[
+                styles.validatorItemContainer,
+                {
+                  backgroundColor: theme.backgroundColor,
+                },
+              ]}>
+              <TextAvatar
+                text={validatorItem.name}
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 12,
+                  marginRight: 12,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                textStyle={{fontSize: 16}}
+              />
+              <View style={{justifyContent: 'space-between'}}>
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    color: theme.textColor,
+                    fontSize: 13,
+                    fontWeight: 'bold',
+                  }}>
+                  {validatorItem.name}
+                </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    color: 'rgba(252, 252, 252, 0.54)',
+                    fontSize: theme.defaultFontSize,
+                  }}>
+                  {validatorItem.commissionRate} %
+                </Text>
+              </View>
+            </View>
+          </View>
+          <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
+          <View style={{width: '100%'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+                {getLanguageString(language, 'COMMISSION_RATE')}
+              </Text>
+              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+                {getSelectedCommission()}
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+                {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
+              </Text>
+              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+                {getSelectedStakedAmount()}
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+                {getLanguageString(language, 'VOTING_POWER')}
+              </Text>
+              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+                {getSelectedVotingPower()}
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+                {getLanguageString(language, 'ESTIMATED_EARNING')}
+              </Text>
+              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+                {numeral(estimatedProfit).format('0,0.00')}{' '}
+                {estimatedProfit ? 'KAI' : ''}
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+                {getLanguageString(language, 'ESTIMATED_APR')}
+              </Text>
+              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+                {numeral(estimatedAPR).format('0,0.00')}{' '}
+                {estimatedProfit ? '%' : ''}
+              </Text>
+            </View>
+          </View>
+          <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
+          <View style={{width: '100%'}}>
+            <Button
+              type="outline"
+              title={getLanguageString(language, 'GO_BACK')}
+              onPress={() => {
+                resetState();
+                onClose();
+              }}
+              disabled={delegating}
+              style={{marginBottom: 12, marginTop: 36}}
+            />
+            <Button
+              loading={delegating}
+              disabled={delegating}
+              type="primary"
+              title={getLanguageString(language, 'DELEGATE')}
+              onPress={async () => {
+                if (await validate()) {
+                  setShowAuthModal(true);
+                }
+              }}
+              textStyle={{fontWeight: 'bold'}}
+            />
           </View>
         </View>
-      </View>
-      <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
-      <View style={{width: '100%'}}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
-            {getLanguageString(language, 'COMMISSION_RATE')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
-            {getSelectedCommission()}
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
-            {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
-            {getSelectedStakedAmount()}
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
-            {getLanguageString(language, 'VOTING_POWER')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
-            {getSelectedVotingPower()}
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
-            {getLanguageString(language, 'ESTIMATED_EARNING')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
-            {numeral(estimatedProfit).format('0,0.00')}{' '}
-            {estimatedProfit ? 'KAI' : ''}
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
-            {getLanguageString(language, 'ESTIMATED_APR')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
-            {numeral(estimatedAPR).format('0,0.00')}{' '}
-            {estimatedProfit ? '%' : ''}
-          </Text>
-        </View>
-      </View>
-      <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
-      <View style={{width: '100%'}}>
-        <Button
-          type="outline"
-          title={getLanguageString(language, 'GO_BACK')}
-          onPress={() => {
-            resetState();
-            onClose();
-          }}
-          disabled={delegating}
-          style={{marginBottom: 12, marginTop: 36}}
-        />
-        <Button
-          loading={delegating}
-          disabled={delegating}
-          type="primary"
-          title={getLanguageString(language, 'DELEGATE')}
-          onPress={async () => {
-            if (await validate()) {
-              setShowAuthModal(true);
-            }
-          }}
-          textStyle={{fontWeight: 'bold'}}
-        />
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };

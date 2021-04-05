@@ -141,5 +141,9 @@ export const groupByAlphabet = (
       char: groups[char][0][keyField][0].toUpperCase(),
       items: groups[char],
     };
+  }).sort((a, b) => {
+    if (a.char > b.char) return 1;
+    if (a.char < b.char) return -1;
+    return 0
   });
 };

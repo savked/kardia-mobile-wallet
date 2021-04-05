@@ -162,6 +162,7 @@ const Wrap = () => {
         tabStyle: {
           backgroundColor: theme.backgroundFocusColor,
           borderTopColor: theme.backgroundFocusColor,
+          paddingBottom: 4,
         },
         labelStyle: {
           fontWeight: 'bold',
@@ -219,12 +220,12 @@ const AppContainer = () => {
         lastTimestamp = Date.now();
       } else if (state === 'active' && localAuthEnabled) {
         // Lock app if unfocused in 1 minute
-        if (Date.now() - lastTimestamp > 1 * 60 * 1000) {
+        if (Date.now() - lastTimestamp > 2 * 60 * 1000) {
           setIsLocalAuthed(false);
         }
       }
     },
-    [localAuthEnabled, setIsLocalAuthed],
+    [],
   );
 
   useEffect(() => {
