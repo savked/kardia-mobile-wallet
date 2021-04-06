@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useRef} from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 import {
   Animated,
   StyleProp,
@@ -7,11 +7,14 @@ import {
   TouchableWithoutFeedback,
   ViewStyle,
   Dimensions,
+  View,
+  Text,
 } from 'react-native';
 import {BlurView} from '@react-native-community/blur';
 import Portal from '@burstware/react-native-portal';
 import {styles} from './style';
 import IconButton from '../IconButton';
+import {ThemeContext} from '../../ThemeContext';
 
 const {height: viewportHeight} = Dimensions.get('window');
 
@@ -19,7 +22,7 @@ const DEFAULT_HEIGHT_MODAL = 0.5;
 const DEFAULT_HEIGHT_MODAL_IN_PIXEL = viewportHeight / 2;
 
 const CustomModal = ({
-  // animationType = 'slide',
+  animationType = 'slide',
   visible,
   onClose,
   children,
@@ -31,6 +34,7 @@ const CustomModal = ({
 }: CustomModalProps & {
   contentStyle?: any;
 }) => {
+  const theme = useContext(ThemeContext);
   let endFlex = DEFAULT_HEIGHT_MODAL;
   let endHeight = DEFAULT_HEIGHT_MODAL_IN_PIXEL;
   if (full) {
@@ -68,32 +72,64 @@ const CustomModal = ({
     return null;
   }
 
+  const renderContent = () => {
+    if (animationType === 'none') {
+      return (
+        <View style={[
+          styles.modalView,
+          // {flex: full ? 0.9 : undefined},
+          contentStyle,
+        ]}>
+          {children}
+          {showCloseButton && (
+            <IconButton
+              onPress={onClose}
+              name="close"
+              size={24}
+              style={{
+                position: 'absolute',
+                top: 20,
+                right: 20,
+              }}
+              color={theme.textColor}
+            />
+          )}
+        </View>
+      );
+    } else {
+      return (
+        <Animated.View
+          style={[
+            styles.modalView,
+            // {flex: full ? 0.9 : undefined},
+            contentStyle,
+            getAnimationStyle(),
+          ]}>
+          {children}
+          {showCloseButton && (
+            <IconButton
+              onPress={onClose}
+              name="close"
+              size={24}
+              style={{
+                position: 'absolute',
+                top: 20,
+                right: 20,
+              }}
+              color={theme.textColor}
+            />
+          )}
+        </Animated.View>
+      );
+    }
+  }
+
   return (
     <Portal>
       <BlurView blurType="dark" blurAmount={50} style={styles.absolute}>
         <TouchableOpacity style={styles.container} onPress={onClose}>
           <TouchableWithoutFeedback onPress={() => {}}>
-            <Animated.View
-              style={[
-                styles.modalView,
-                // {flex: full ? 0.9 : undefined},
-                contentStyle,
-                getAnimationStyle(),
-              ]}>
-              {children}
-              {showCloseButton && (
-                <IconButton
-                  onPress={onClose}
-                  name="close"
-                  size={24}
-                  style={{
-                    position: 'absolute',
-                    top: 20,
-                    right: 20,
-                  }}
-                />
-              )}
-            </Animated.View>
+            {renderContent()}
           </TouchableWithoutFeedback>
         </TouchableOpacity>
       </BlurView>

@@ -20,11 +20,30 @@ export const addZero = (value: number) => {
 };
 
 export const getFromAddressBook = (addressBook: Address[], address: string) => {
-  const result = addressBook.find((item) => item.address === address);
+  const result = getObjFromAddressBook(addressBook, address);
   if (!result) {
     return address;
   }
   return result.name;
+};
+
+export const getObjFromAddressBook = (
+  addressBook: Address[],
+  address: string,
+) => {
+  const result = addressBook.find((item) => item.address === address);
+  if (!result) {
+    return null;
+  }
+  return result;
+};
+
+export const getAddressAvatar = (addressBook: Address[], address: string) => {
+  const addressObj = getObjFromAddressBook(addressBook, address);
+  if (!addressObj) {
+    return '';
+  }
+  return addressObj.avatar;
 };
 
 export const copyToClipboard = (str: string) => {
@@ -79,6 +98,52 @@ export const isChecksumAddress = (address: string) => {
   return true;
 };
 
+export const toChecksum = (address: string) => {
+  if (typeof address === 'undefined') {
+    return '';
+  }
+
+  if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+    throw new Error(
+      'Given address "' + address + '" is not a valid Kardiachain address.',
+    );
+  }
+
+  address = address.toLowerCase().replace(/^0x/i, '');
+  const addressHash = keccak256(address).replace(/^0x/i, '');
+  let checksumAddress = '0x';
+  for (let i = 0; i < address.length; i++) {
+    checksumAddress +=
+      parseInt(addressHash[i], 16) > 7 ? address[i].toUpperCase() : address[i];
+  }
+  return checksumAddress;
+};
+
 export const getTxURL = (txHash: string) => {
   return `${EXPLORER_URL}/tx/${txHash}`;
+};
+
+export const groupByAlphabet = (
+  data: Record<string, any>[],
+  keyField: string,
+) => {
+  const groups = data.reduce((_groups, item) => {
+    const groupString = item[keyField][0];
+    if (!_groups[groupString]) {
+      _groups[groupString] = [];
+    }
+    _groups[groupString].push(item);
+    return _groups;
+  }, {});
+
+  return Object.keys(groups).map((char) => {
+    return {
+      char: groups[char][0][keyField][0].toUpperCase(),
+      items: groups[char],
+    };
+  }).sort((a, b) => {
+    if (a.char > b.char) return 1;
+    if (a.char < b.char) return -1;
+    return 0
+  });
 };

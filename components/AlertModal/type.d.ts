@@ -1,5 +1,5 @@
 interface AlertModal {
-  type: 'success' | 'error' | 'warning' | 'confirm';
+  type: 'success' | 'error' | 'warning' | 'confirm' | 'none';
   message?: string;
   onOK?: () => void;
   cancelText?: string;
@@ -8,6 +8,7 @@ interface AlertModal {
   onClose: () => void;
   children?: any;
   iconSize?: number;
+  iconColor?: string;
   okLoading?: boolean;
   okDisabled?: boolean;
   cancelLoading?: boolean;

@@ -1,6 +1,7 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {View, Image, AppState} from 'react-native';
-import {useRecoilState, useSetRecoilState} from 'recoil';
+import {View, Image, AppState, Text} from 'react-native';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -33,38 +34,127 @@ import {getLanguageString} from '../../utils/lang';
 import Portal from '@burstware/react-native-portal';
 import {krc20ListAtom} from '../../atoms/krc20';
 import HomeStackScreen from '../../HomeStack';
+import AddressStackScreen from '../../AddressStack';
+import {showTabBarAtom} from '../../atoms/showTabBar';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+let lastTimestamp = 0;
+
 const Wrap = () => {
   const theme = useContext(ThemeContext);
+  const language = useRecoilValue(languageAtom);
+
+  const showTabBar = useRecoilValue(showTabBarAtom);
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        tabBarIcon: ({color, size}) => {
+        tabBarLabel: ({focused, color, position}) => {
+          if (route.name === 'Home') {
+            return (
+              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+                {getLanguageString(language, 'HOME')}
+              </Text>
+            )
+          } else if (route.name === 'Transaction') {
+            return (
+              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+                {getLanguageString(language, 'TRANSACTIONS')}
+              </Text>
+            )
+          } else if (route.name === 'Staking') {
+            return (
+              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+                {getLanguageString(language, 'STAKING')}
+              </Text>
+            )
+          } else if (route.name === 'Address') {
+            return (
+              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+                {getLanguageString(language, 'ADDRESS_BOOK')}
+              </Text>
+            )
+          } else if (route.name === 'Setting') {
+            return (
+              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+                {getLanguageString(language, 'SETTING')}
+              </Text>
+            )
+          }
+        },
+        tabBarIcon: ({color, size, focused}) => {
           let iconName = '';
 
           if (route.name === 'Home') {
-            iconName = 'home';
+            return (
+              <Image
+                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
+                source={
+                  focused
+                    ? require('../../assets/icon/home_dark.png')
+                    : require('../../assets/icon/home_dark_inactive.png')
+                }
+              />
+            );
           } else if (route.name === 'News') {
             iconName = 'newspaper-o';
           } else if (route.name === 'Transaction') {
-            iconName = 'exchange';
+            return (
+              <Image
+                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
+                source={
+                  focused
+                    ? require('../../assets/icon/transaction_dark.png')
+                    : require('../../assets/icon/transaction_dark_inactive.png')
+                }
+              />
+            );
           } else if (route.name === 'DApp') {
             iconName = 'th-large';
           } else if (route.name === 'Setting') {
-            iconName = 'cog';
+            return (
+              <Image
+                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
+                source={
+                  focused
+                    ? require('../../assets/icon/setting_dark.png')
+                    : require('../../assets/icon/setting_dark_inactive.png')
+                }
+              />
+            );
           } else if (route.name === 'Staking') {
-            iconName = 'bank';
+            return (
+              <Image
+                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
+                source={
+                  focused
+                    ? require('../../assets/icon/staking_dark.png')
+                    : require('../../assets/icon/staking_dark_inactive.png')
+                }
+              />
+            );
+          } else if (route.name === 'Address') {
+            return (
+              <Image
+                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
+                source={
+                  focused
+                    ? require('../../assets/icon/address_book_dark.png')
+                    : require('../../assets/icon/address_book_dark_inactive.png')
+                }
+              />
+            );
           }
 
           // You can return any component that you like here!
           return <Icon name={iconName} size={size} color={color} />;
         },
+        tabBarVisible: showTabBar,
       })}
       tabBarOptions={{
-        activeTintColor: theme.primaryTextColor,
+        activeTintColor: theme.primaryColor,
         inactiveTintColor: '#7A859A',
         inactiveBackgroundColor: theme.backgroundColor,
         activeBackgroundColor: theme.backgroundColor,
@@ -72,21 +162,25 @@ const Wrap = () => {
         tabStyle: {
           backgroundColor: theme.backgroundFocusColor,
           borderTopColor: theme.backgroundFocusColor,
+          paddingBottom: 4,
         },
         labelStyle: {
           fontWeight: 'bold',
+          marginBottom: 4,
         },
         style: {
           backgroundColor: theme.backgroundFocusColor,
           borderTopColor: theme.backgroundFocusColor,
         },
-        showLabel: false,
+
+        // showLabel: false,
       }}>
       {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
       <Tab.Screen name="Home" component={HomeStackScreen} />
       <Tab.Screen name="Transaction" component={TransactionStackScreen} />
       {/* <Tab.Screen name="DApp" component={DAppScreen} /> */}
       <Tab.Screen name="Staking" component={StakingStackScreen} />
+      <Tab.Screen name="Address" component={AddressStackScreen} />
       {/* <Tab.Screen name="News" component={NewsScreen} /> */}
       <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>
@@ -121,11 +215,17 @@ const AppContainer = () => {
 
   const handleAppStateChange = useCallback(
     (state: string) => {
-      if (state === 'background' && localAuthEnabled) {
-        setIsLocalAuthed(false);
+      if (state === 'background') {
+        // Store current time
+        lastTimestamp = Date.now();
+      } else if (state === 'active' && localAuthEnabled) {
+        // Lock app if unfocused in 1 minute
+        if (Date.now() - lastTimestamp > 2 * 60 * 1000) {
+          setIsLocalAuthed(false);
+        }
       }
     },
-    [localAuthEnabled, setIsLocalAuthed],
+    [],
   );
 
   useEffect(() => {
@@ -244,6 +344,7 @@ const AppContainer = () => {
                   color: theme.textColor,
                 },
                 headerTintColor: theme.textColor,
+                headerBackTitleVisible: false,
                 headerTitle: getLanguageString(
                   language,
                   'NOTIFICATION_SCREEN_TITLE',

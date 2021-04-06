@@ -49,10 +49,10 @@ const Notification = () => {
       _date.getMinutes() < 10 ? `0${_date.getMinutes()}` : _date.getMinutes();
 
     if (format === 'h:m') {
-      return <Text style={styles.time}>{hours + ':' + minutes}</Text>;
+      return <Text allowFontScaling={false} style={styles.time}>{hours + ':' + minutes}</Text>;
     } else if (format === 'd/m h:m') {
       return (
-        <Text style={styles.time}>
+        <Text allowFontScaling={false} style={styles.time}>
           {day + '/' + month + ' ' + hours + ':' + month}
         </Text>
       );
@@ -74,7 +74,7 @@ const Notification = () => {
         flex: 1,
         justifyContent: 'flex-start',
       }}>
-      <Text style={styles.headline}>
+      <Text allowFontScaling={false} style={styles.headline}>
         {getLanguageString(language, 'TODAY')}
       </Text>
       {todayNotification.length > 0 && (
@@ -93,10 +93,11 @@ const Notification = () => {
                     />
                   </View>
                   <View style={styles.right}>
-                    <Text style={[styles.title, {color: theme.textColor}]}>
+                    <Text allowFontScaling={false} style={[styles.title, {color: theme.textColor}]}>
                       {item.title}
                     </Text>
                     <Text
+                      allowFontScaling={false}
                       style={[styles.description, {color: theme.textColor}]}>
                       {item.description}
                     </Text>
@@ -111,7 +112,7 @@ const Notification = () => {
         />
       )}
 
-      <Text style={styles.headline}>
+      <Text allowFontScaling={false} style={styles.headline}>
         {getLanguageString(language, 'EARLIER')}
       </Text>
       {earlierNotification.length > 0 && (
@@ -134,10 +135,11 @@ const Notification = () => {
                     />
                   </View>
                   <View style={styles.right}>
-                    <Text style={[styles.title, {color: theme.textColor}]}>
+                    <Text allowFontScaling={false} style={[styles.title, {color: theme.textColor}]}>
                       {item.title}
                     </Text>
                     <Text
+                      allowFontScaling={false}
                       style={[styles.description, {color: theme.textColor}]}>
                       {item.description}
                     </Text>

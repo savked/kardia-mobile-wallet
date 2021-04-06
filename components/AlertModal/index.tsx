@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {StyleProp, Text, TextStyle, View, ViewStyle} from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
@@ -5,7 +6,7 @@ import {styles} from './style';
 import Modal from '../Modal';
 import Button from '../Button';
 
-const getIcon = (type: string, iconSize = 140) => {
+const getIcon = (type: string, iconSize = 140, color?: string) => {
   switch (type) {
     case 'success':
       return (
@@ -13,7 +14,7 @@ const getIcon = (type: string, iconSize = 140) => {
           style={styles.iconContainer}
           name={'check-circle'}
           size={iconSize}
-          color="green"
+          color={color || 'green'}
         />
       );
     case 'warning':
@@ -22,7 +23,7 @@ const getIcon = (type: string, iconSize = 140) => {
           style={styles.iconContainer}
           name={'alert-triangle'}
           size={iconSize}
-          color="#F8BC87"
+          color={color || '#F8BC87'}
         />
       );
     case 'error':
@@ -31,7 +32,7 @@ const getIcon = (type: string, iconSize = 140) => {
           style={styles.iconContainer}
           name={'x-circle'}
           size={iconSize}
-          color="red"
+          color={color || 'red'}
         />
       );
     case 'confirm':
@@ -40,7 +41,7 @@ const getIcon = (type: string, iconSize = 140) => {
           style={styles.iconContainer}
           name={'help-circle'}
           size={iconSize}
-          color="#868a83"
+          color={color || '#868a83'}
         />
       );
     default:
@@ -58,6 +59,7 @@ const AlertModal = ({
   cancelText = 'Cancel',
   okText = 'OK',
   iconSize,
+  iconColor,
   messageStyle,
   modalStyle,
   okLoading,
@@ -73,22 +75,24 @@ const AlertModal = ({
       visible={visible}
       onClose={onClose}
       showCloseButton={type === 'confirm' ? false : true}
-      contentStyle={[styles.modalContent, modalStyle]}>
-      {getIcon(type, iconSize)}
+      contentStyle={{...styles.modalContent, ...(modalStyle as any)}}>
+      {getIcon(type, iconSize, iconColor)}
       {children}
       {!children && (
-        <Text style={[styles.messageContent, messageStyle]}>{message}</Text>
+        <Text allowFontScaling={false} style={[styles.messageContent, messageStyle]}>{message}</Text>
       )}
       {type === 'confirm' && (
         <View style={styles.buttonGroup}>
           <Button
             title={cancelText}
-            type="secondary"
+            type="outline"
             onPress={onClose}
             loading={cancelLoading}
             disabled={cancelDisabled}
+            style={{marginBottom: 8}}
           />
           <Button
+            type="primary"
             title={okText}
             onPress={onOK}
             loading={okLoading}

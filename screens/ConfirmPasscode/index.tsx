@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import OtpInputs from 'react-native-otp-inputs';
 import TouchID from 'react-native-touch-id';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -12,6 +12,7 @@ import {getLanguageString} from '../../utils/lang';
 import {getAppPasscode} from '../../utils/local';
 import {styles} from './style';
 import {localAuthAtom} from '../../atoms/localAuth';
+import Divider from '../../components/Divider';
 
 const optionalConfigObject = {
   unifiedErrors: false, // use unified error messages (default false)
@@ -25,6 +26,7 @@ const ConfirmPasscode = () => {
   const [passcode, setPasscode] = useState('');
   const [error, setError] = useState('');
   const [touchSupported, setTouchSupported] = useState(false);
+  const [touchType, setTouchType] = useState('');
   const setLocalAuth = useSetRecoilState(localAuthAtom);
 
   useEffect(() => {
@@ -32,8 +34,10 @@ const ConfirmPasscode = () => {
       .then((biometryType) => {
         // Success code
         if (biometryType === 'FaceID') {
+          setTouchType(biometryType);
           console.log('FaceID is supported.');
         } else {
+          setTouchType('TouchID');
           console.log('TouchID is supported.');
         }
         setTouchSupported(true);
@@ -47,16 +51,17 @@ const ConfirmPasscode = () => {
   const handleSubmit = async () => {
     const localPass = await getAppPasscode();
     if (localPass !== passcode) {
-      setError('Wrong passcode');
+      setError(getLanguageString(language, 'WRONG_PIN'));
       return;
     }
-    await setLocalAuth(true);
+    setLocalAuth(true);
   };
 
   const authByTouchID = async () => {
     TouchID.authenticate('Use touch ID to access wallet', optionalConfigObject)
       .then(async () => {
-        await setLocalAuth(true);
+        console.log('here')
+        setLocalAuth(true);
       })
       .catch((err: any) => {
         // Failure code
@@ -66,10 +71,10 @@ const ConfirmPasscode = () => {
 
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <Text style={[styles.title, {color: theme.textColor}]}>
-        {getLanguageString(language, 'ENTER_PASSCODE')}
+      <Text allowFontScaling={false} style={[styles.title, {color: theme.textColor}]}>
+        {getLanguageString(language, 'ENTER_PIN_CODE')}
       </Text>
-      <View style={{marginBottom: 40}}>
+      <View style={{marginVertical: 24, width: '100%'}}>
         <OtpInputs
           // TODO: remove ts-ignore after issue fixed
           // @ts-ignore
@@ -78,40 +83,48 @@ const ConfirmPasscode = () => {
           numberOfInputs={4}
           autofillFromClipboard={false}
           style={styles.otpContainer}
-          inputStyles={styles.otpInput}
+          inputStyles={{
+            ...styles.otpInput,
+            ...{backgroundColor: theme.backgroundFocusColor, color: theme.textColor},
+          }}
           secureTextEntry={true}
         />
         {error !== '' && (
           <Text
+            allowFontScaling={false}
             style={{color: 'red', paddingHorizontal: 20, fontStyle: 'italic'}}>
             {error}
           </Text>
         )}
       </View>
-      <View>
-        <Button
-          block
-          title={getLanguageString(language, 'CONFIRM')}
-          onPress={handleSubmit}
-        />
-      </View>
+      <Divider style={{width: 32, backgroundColor: '#F0F1F2'}} />
       {touchSupported && (
-        <View>
-          <TouchableOpacity
-            onPress={authByTouchID}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingVertical: 20,
-            }}>
+        <TouchableOpacity
+          onPress={authByTouchID}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingBottom: 20,
+          }}>
+          {touchType === 'FaceID' ? (
+            <Image
+              style={{width: 30, height: 30, marginRight: 8}}
+              source={require('../../assets/icon/face_id_dark.png')}
+            />
+          ) : (
             <Icon name="finger-print" color={theme.textColor} size={30} />
-            <Text style={{color: theme.textColor}}>
-              Authenticate by Touch ID
-            </Text>
-          </TouchableOpacity>
-        </View>
+          )}
+          <Text allowFontScaling={false} style={{color: theme.textColor}}>
+            Authenticate by {touchType}
+          </Text>
+        </TouchableOpacity>
       )}
+      <Button
+        block
+        title={getLanguageString(language, 'CONFIRM')}
+        onPress={handleSubmit}
+      />
     </View>
   );
 };

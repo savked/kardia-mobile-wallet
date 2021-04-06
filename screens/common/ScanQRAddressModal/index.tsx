@@ -1,13 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Dimensions, Image, Text, View} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
-import Button from '../../../components/Button';
 import {getLanguageString} from '../../../utils/lang';
 import {styles} from './style';
 import Portal from '@burstware/react-native-portal';
+import IconButton from '../../../components/IconButton';
+
+const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window');
 
 const ScanQRAddressModal = ({
   visible,
@@ -26,26 +28,63 @@ const ScanQRAddressModal = ({
     <Portal>
       <View
         style={{
-          position: 'absolute',
+          // position: 'absolute',
           top: 0,
           right: 0,
           left: 0,
           bottom: 0,
           zIndex: 1000,
         }}>
-        <View style={styles.qrScannerHeader}>
-          <Text style={styles.centerText}>
+        {/* <View style={styles.qrScannerHeader}>
+          <Text allowFontScaling={false} style={styles.centerText}>
             {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS')}
           </Text>
-        </View>
+        </View> */}
         <QRCodeScanner
           onRead={(e) => {
             onScanned(e.data);
           }}
-          showMarker={true}
+          // showMarker={true}
+          topViewStyle={{height: 0}}
+          bottomViewStyle={{height: 10}}
+          cameraStyle={{height: viewportHeight}}
         />
-        <View style={styles.qrScannerFooter}>
-          <Button size="large" title="Cancel" onPress={onClose} />
+        <Image
+          source={require('../../../assets/qr_background.png')}
+          style={{
+            resizeMode: 'cover',
+            width: viewportWidth,
+            height: viewportHeight,
+            position: 'absolute',
+          }}
+        />
+        <View
+          style={{padding: 20, alignItems: 'flex-end', width: viewportWidth}}>
+          <IconButton name="close" style={styles.closeIcon} onPress={onClose} />
+        </View>
+        <View
+          style={{
+            marginTop: (viewportHeight - 256) / 2 - 130,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <View style={{width: 250}}>
+            <Text
+              allowFontScaling={false}
+              style={{
+                textAlign: 'center',
+                color: '#FFFFFF',
+                fontWeight: 'bold',
+                fontSize: 24,
+                marginBottom: 4,
+              }}>
+              {getLanguageString(language, 'SCAN_QR_TITLE')}
+            </Text>
+            <Text allowFontScaling={false} style={{textAlign: 'center', color: '#FFFFFF', fontSize: 15}}>
+              {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS_DESCRIPTION')}
+              {/* Scan your seed phrase QR code, then we will do the rest */}
+            </Text>
+          </View>
         </View>
       </View>
     </Portal>

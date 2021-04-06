@@ -5,7 +5,7 @@ const ListItem = ({label, onSelect}: ListItemProps) => {
   return (
     <View style={styles.listItem}>
       <TouchableOpacity onPress={onSelect}>
-        <Text>{label}</Text>
+        <Text allowFontScaling={false}>{label}</Text>
       </TouchableOpacity>
     </View>
   );

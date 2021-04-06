@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 14,
+    // padding: 14,
   },
   formFieldContainer: {
     marginBottom: 14,
@@ -25,6 +25,18 @@ export const styles = StyleSheet.create({
   removeButtonText: {
     color: 'red',
     fontSize: 16,
+    fontWeight: 'bold',
+  },
+  noTXText: {
+    paddingVertical: 8,
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+  },
+  kaiLogo: {
+    width: 30,
+    height: 30,
+  },
+  kaiAmount: {
     fontWeight: 'bold',
   },
 });

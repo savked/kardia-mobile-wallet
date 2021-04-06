@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Text, View} from 'react-native';
+import {ActivityIndicator, Image, Text, View} from 'react-native';
+import Icon from 'react-native-vector-icons/Entypo';
 import {styles} from './style';
 import Button from '../../components/Button';
 import {generateMnemonic, getWalletFromMnemonic} from '../../utils/blockchain';
@@ -12,14 +13,16 @@ import {ThemeContext} from '../../ThemeContext';
 import List from '../../components/List';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
+import {useNavigation} from '@react-navigation/core';
 
 const CreateWithMnemonicPhrase = () => {
+  const navigation = useNavigation();
   const theme = useContext(ThemeContext);
   const [mnemonic, setMnemonic] = useState('');
   const [mnemonicError, setMnemonicError] = useState('');
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [loading, setLoading] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
+  // const [showConfirm, setShowConfirm] = useState(false);
 
   const language = useRecoilValue(languageAtom);
 
@@ -71,27 +74,29 @@ const CreateWithMnemonicPhrase = () => {
       case 'en_US':
         return (
           <Text
+            allowFontScaling={false}
             style={[
               styles.description,
               styles.paragraph,
               {color: theme.textColor},
             ]}>
             Please make sure you
-            <Text style={{fontWeight: 'bold'}}> WRITE DOWN</Text> and{' '}
-            <Text style={{fontWeight: 'bold'}}>SAVE</Text> your mnemonic phrase.
+            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}> WRITE DOWN</Text> and{' '}
+            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>SAVE</Text> your mnemonic phrase.
             You will need it to access or recover your wallet.
           </Text>
         );
       case 'vi_VI':
         return (
           <Text
+            allowFontScaling={false}
             style={[
               styles.description,
               styles.paragraph,
               {color: theme.textColor},
             ]}>
             Hãy đảm bảo bạn đã
-            <Text style={{fontWeight: 'bold'}}> GHI LẠI</Text> 24 từ này. 24 từ
+            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}> GHI LẠI</Text> 24 từ này. 24 từ
             này không thể thay đổi và sẽ được sử dụng để truy cập và khôi phục
             ví.
           </Text>
@@ -99,14 +104,15 @@ const CreateWithMnemonicPhrase = () => {
       default:
         return (
           <Text
+            allowFontScaling={false}
             style={[
               styles.description,
               styles.paragraph,
               {color: theme.textColor},
             ]}>
             Please make sure you
-            <Text style={{fontWeight: 'bold'}}> WRITE DOWN</Text> and{' '}
-            <Text style={{fontWeight: 'bold'}}>SAVE</Text> your mnemonic phrase.
+            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}> WRITE DOWN</Text> and{' '}
+            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>SAVE</Text> your mnemonic phrase.
             You will need it to access or recover your wallet.
           </Text>
         );
@@ -124,6 +130,23 @@ const CreateWithMnemonicPhrase = () => {
 
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+      <View
+        style={{
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'flex-start',
+        }}>
+        <Icon.Button
+          style={{paddingLeft: 20}}
+          name="chevron-left"
+          onPress={() => navigation.goBack()}
+          backgroundColor="transparent"
+        />
+      </View>
+      <Image
+        source={require('../../assets/create_mnemonic_background.png')}
+        style={{width: 170, height: 180, resizeMode: 'contain'}}
+      />
       <List
         items={mnemonicArr}
         numColumns={4}
@@ -142,7 +165,7 @@ const CreateWithMnemonicPhrase = () => {
                 styles.phraseItemContainer,
                 {backgroundColor: theme.backgroundFocusColor},
               ]}>
-              <Text style={[styles.phraseItemText, {color: theme.textColor}]}>
+              <Text allowFontScaling={false} style={[styles.phraseItemText, {color: theme.textColor}]}>
                 {item.label}
               </Text>
             </View>
@@ -150,6 +173,7 @@ const CreateWithMnemonicPhrase = () => {
         }}
       />
       <Text
+        allowFontScaling={false}
         style={[
           styles.description,
           styles.paragraph,
@@ -161,11 +185,14 @@ const CreateWithMnemonicPhrase = () => {
       <Button
         type="primary"
         disabled={loading}
+        loading={loading}
         title={getLanguageString(language, 'SUBMIT_CREATE')}
-        onPress={() => setShowConfirm(true)}
-        size="large"
+        // onPress={() => setShowConfirm(true)}
+        onPress={handleAccess}
         style={{
-          width: '100%',
+          // width: '100%',
+          marginHorizontal: 20,
+          marginBottom: 50,
         }}
       />
       <AlertModal
@@ -174,7 +201,7 @@ const CreateWithMnemonicPhrase = () => {
         onClose={() => setMnemonicError('')}
         message={mnemonicError}
       />
-      <AlertModal
+      {/* <AlertModal
         type="confirm"
         okText={getLanguageString(language, 'SURE')}
         cancelText={getLanguageString(language, 'NOT_SURE')}
@@ -186,7 +213,7 @@ const CreateWithMnemonicPhrase = () => {
         cancelDisabled={loading}
         messageStyle={{textAlign: 'center'}}
         message={getLanguageString(language, 'CONFIRM_ENTER_SEED_PHRASE')}
-      />
+      /> */}
     </View>
   );
 };

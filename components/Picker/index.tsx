@@ -16,7 +16,7 @@ const Picker = ({
   return (
     <>
       {headline && (
-        <Text style={[styles.headline, {color: theme.textColor}]}>
+        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
           {headline}
         </Text>
       )}

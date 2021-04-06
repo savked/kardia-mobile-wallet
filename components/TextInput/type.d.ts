@@ -16,4 +16,5 @@ interface CustomTextInputProps {
   keyboardType?: string;
   message?: string | (() => any);
   autoCapitalize?: 'characters' | 'words' | 'sentences' | 'none';
+  placeholderTextColor?: string;
 }

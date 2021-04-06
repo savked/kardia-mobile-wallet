@@ -1,17 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import numeral from 'numeral';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
 import {styles} from './style';
 import {weiToKAI} from '../../services/transaction/amount';
-import Icon from 'react-native-vector-icons/Feather';
 import Button from '../../components/Button';
-import {withdrawDelegatedAmount, withdrawReward} from '../../services/staking';
+import {
+  getValidatorCommissionRate,
+  withdrawDelegatedAmount,
+  withdrawReward,
+} from '../../services/staking';
 import {useRecoilValue} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
+import TextAvatar from '../../components/TextAvatar';
+import DelegateDetailModal from '../common/DelegateDetailModal';
 
 const StakingItem = ({
   item,
@@ -29,6 +34,7 @@ const StakingItem = ({
   const [showFull, setShowFull] = useState(false);
   const [claiming, setClaiming] = useState(false);
   const [withDrawing, setWithDrawing] = useState(false);
+  const [commissionRate, setCommissionRate] = useState(0);
   const theme = useContext(ThemeContext);
 
   const claimableInKAI = weiToKAI(item.claimableRewards);
@@ -39,6 +45,13 @@ const StakingItem = ({
   const language = useRecoilValue(languageAtom);
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
+
+  useEffect(() => {
+    (async () => {
+      const rate = await getValidatorCommissionRate(item.value);
+      setCommissionRate(Number(rate) * 100);
+    })();
+  }, [item.value]);
 
   const claimHandler = async () => {
     try {
@@ -135,15 +148,19 @@ const StakingItem = ({
   return (
     <View
       style={{
-        padding: 15,
-        // height: showFull ? (undelegateError === '' ? 240 : 270) : 120,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
         marginVertical: 2,
         backgroundColor: theme.backgroundFocusColor,
         borderRadius: 7,
-        // flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
+      <DelegateDetailModal
+        validatorItem={{...item, ...{commissionRate}}}
+        visible={showFull}
+        onClose={() => setShowFull(false)}
+      />
       <TouchableOpacity
         onPress={() => setShowFull(!showFull)}
         style={{
@@ -151,52 +168,93 @@ const StakingItem = ({
           justifyContent: 'space-between',
           width: '100%',
         }}>
-        <View style={{justifyContent: 'center'}}>
-          <Text style={[styles.validatorName, {color: theme.textColor}]}>
-            {item.name}
-          </Text>
-          {showFull && (
-            <Text style={{color: '#929394'}}>
+        <View
+          style={{
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <TextAvatar
+            text={item.name}
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 12,
+              marginRight: 12,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            textStyle={{fontSize: 16}}
+          />
+          <View>
+            <Text allowFontScaling={false} style={[styles.validatorName, {color: theme.textColor}]}>
+              {item.name}
+            </Text>
+            <Text
+              allowFontScaling={false}
+              style={{
+                fontSize: theme.defaultFontSize,
+                color: 'rgba(252, 252, 252, 0.54)',
+              }}>
+              Rate: {commissionRate} %
+            </Text>
+          </View>
+          {/* {showFull && (
+            <Text allowFontScaling={false} style={{color: '#929394'}}>
               {getLanguageString(language, 'STAKED')}:{' '}
-              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
+              <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(stakedAmountInKAI).format('0,0.00')}
               </Text>
             </Text>
           )}
           {showFull && (
-            <Text style={{color: '#929394'}}>
+            <Text allowFontScaling={false} style={{color: '#929394'}}>
               {getLanguageString(language, 'CLAIMABLE')}:{' '}
-              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
+              <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(claimableInKAI).format('0,0.00')}
               </Text>
             </Text>
           )}
           {showFull && (
-            <Text style={{color: '#929394'}}>
+            <Text allowFontScaling={false} style={{color: '#929394'}}>
               {getLanguageString(language, 'UNBONDED')}:{' '}
-              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
+              <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(unbondedInKAI).format('0,0.00')}
               </Text>
             </Text>
           )}
           {showFull && (
-            <Text style={{color: '#929394'}}>
+            <Text allowFontScaling={false} style={{color: '#929394'}}>
               {getLanguageString(language, 'WITHDRAWABLE')}:{' '}
-              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
+              <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(withDrawbleInKAI).format('0,0.00')}
               </Text>
             </Text>
-          )}
+          )} */}
         </View>
-        <View style={{flexDirection: 'row'}}>
-          {!showFull && (
-            <View style={{justifyContent: 'center'}}>
-              <Text style={{fontWeight: 'bold', color: theme.textColor}}>
-                {numeral(claimableInKAI).format('0,0.00')} KAI
-              </Text>
-            </View>
-          )}
-          <Icon
+        <View style={{alignItems: 'flex-end', justifyContent: 'space-between'}}>
+          <View style={{justifyContent: 'center'}}>
+            <Text
+              allowFontScaling={false}
+              style={{
+                fontWeight: 'bold',
+                color: theme.textColor,
+                fontSize: theme.defaultFontSize + 1,
+              }}>
+              {numeral(claimableInKAI).format('0,0.00')} KAI
+            </Text>
+          </View>
+          <View style={{justifyContent: 'center'}}>
+            <Text
+              allowFontScaling={false}
+              style={{
+                color: 'rgba(252, 252, 252, 0.54)',
+                fontSize: theme.defaultFontSize,
+              }}>
+              {numeral(stakedAmountInKAI).format('0,0.00')} KAI
+            </Text>
+          </View>
+          {/* <Icon
             name={showFull ? 'chevron-up' : 'chevron-down'}
             size={22}
             color="#929394"
@@ -206,10 +264,10 @@ const StakingItem = ({
               justifyContent: 'center',
             }}
             onPress={() => setShowFull(!showFull)}
-          />
+          /> */}
         </View>
       </TouchableOpacity>
-      {showFull && renderActionGroup()}
+      {/* {showFull && renderActionGroup()} */}
     </View>
   );
 };

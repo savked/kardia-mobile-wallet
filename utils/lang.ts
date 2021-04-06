@@ -23,6 +23,14 @@ export const getLanguageString = (langKey: string, key: string) => {
   return langObj.mapping[key];
 };
 
+export const getLanguageName = (langKey: string) => {
+  if (!(lang as Record<string, any>)[langKey]) {
+    return langKey;
+  }
+  const langObj = (lang as Record<string, any>)[langKey] as Language;
+  return langObj.name;
+};
+
 export const getDateFNSLocale = (langKey: string) => {
   switch (langKey) {
     case 'en_US':
@@ -52,4 +60,34 @@ export const parseError = (errorMessage: string, langKey: string) => {
     return key;
   }
   return langObj.mapping[key];
+};
+
+export const parseCardAvatar = (cardAvatarID: number) => {
+  const cardAvatar = require('../assets/card_background.png');
+  const cardAvatar1 = require('../assets/card_background_1.png');
+  const cardAvatar2 = require('../assets/card_background_2.png');
+  const cardAvatar3 = require('../assets/card_background_3.png');
+  switch (cardAvatarID) {
+    case 1:
+      return cardAvatar1;
+    case 2:
+      return cardAvatar2;
+    case 3:
+      return cardAvatar3;
+    default:
+      return cardAvatar;
+  }
+};
+
+export const parseCardAvatarColor = (cardAvatarID: number) => {
+  switch (cardAvatarID) {
+    case 1:
+      return 'Blue Ocean';
+    case 2:
+      return 'Purple Night';
+    case 3:
+      return 'Mystery';
+    default:
+      return 'Dark Galaxy';
+  }
 };

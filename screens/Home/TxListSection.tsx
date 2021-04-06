@@ -166,10 +166,10 @@ const TxListSection = () => {
                     flex: 2.5,
                     flexDirection: 'column',
                   }}>
-                  <Text style={{color: '#FFFFFF'}}>
+                  <Text allowFontScaling={false} style={{color: '#FFFFFF'}}>
                     {truncate(item.label, 6, 8)}
                   </Text>
-                  <Text style={{color: 'gray'}}>
+                  <Text allowFontScaling={false} style={{color: 'gray'}}>
                     {isSameDay(item.date, new Date())
                       ? `${formatDistanceToNowStrict(item.date, {
                           locale: getDateFNSLocale(language),
@@ -186,6 +186,7 @@ const TxListSection = () => {
                     justifyContent: 'flex-end',
                   }}>
                   <Text
+                    allowFontScaling={false}
                     style={[
                       styles.kaiAmount,
                       item.type === 'IN' ? {color: '#61b15a'} : {color: 'red'},
@@ -199,7 +200,7 @@ const TxListSection = () => {
           );
         }}
         ListEmptyComponent={
-          <Text style={[styles.noTXText, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
           </Text>
         }
@@ -211,7 +212,7 @@ const TxListSection = () => {
               justifyContent: 'space-between',
               paddingHorizontal: 15,
             }}>
-            <Text style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
+            <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
               {getLanguageString(language, 'RECENT_TRANSACTION')}
             </Text>
             <Button
@@ -221,7 +222,7 @@ const TxListSection = () => {
                   screen: 'TransactionList',
                 })
               }
-              title={`${getLanguageString(language, 'VIEW_ALL_TRANSACTION')} >`}
+              title={`${getLanguageString(language, 'VIEW_ALL')} >`}
             />
           </View>
         }

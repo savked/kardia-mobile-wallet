@@ -1,18 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {
-  Menu,
-  MenuOption,
-  MenuOptions,
-  MenuTrigger,
-} from 'react-native-popup-menu';
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {Image, Text, TouchableOpacity, View, Dimensions} from 'react-native';
+import ENIcon from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {krc20ListAtom} from '../../atoms/krc20';
 import {languageAtom} from '../../atoms/language';
-import Button from '../../components/Button';
 import {DEFAULT_KRC20_TOKENS} from '../../config';
 import {getBalance} from '../../services/krc20';
 import {ThemeContext} from '../../ThemeContext';
@@ -28,6 +26,11 @@ import AddressQRModal from '../common/AddressQRCode';
 import {styles} from './style';
 import TokenTxList from './TokenTxList';
 import numeral from 'numeral';
+import IconButton from '../../components/IconButton';
+import {showTabBarAtom} from '../../atoms/showTabBar';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+const {width: viewportWidth} = Dimensions.get('window');
 
 const TokenDetail = () => {
   const theme = useContext(ThemeContext);
@@ -46,6 +49,15 @@ const TokenDetail = () => {
   const [showAddressQR, setShowAddressQR] = useState(false);
   const [tokenBalance, setTokenBalance] = useState(0);
   const setTokenList = useSetRecoilState(krc20ListAtom);
+
+  const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+
+  useFocusEffect(
+    useCallback(() => {
+      setTabBarVisible(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   const fetchBalance = async () => {
     const _wallets = await getWallets();
@@ -68,44 +80,6 @@ const TokenDetail = () => {
     navigation.goBack();
   };
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Menu>
-          <MenuTrigger
-            customStyles={{
-              triggerOuterWrapper: {
-                width: 40,
-                height: 40,
-                alignItems: 'center',
-                justifyContent: 'center',
-              },
-              TriggerTouchableComponent: TouchableOpacity,
-              triggerWrapper: {
-                width: 27,
-                height: 27,
-                alignItems: 'center',
-                justifyContent: 'center',
-              },
-            }}>
-            <Icon name="cog" color="#FFFFFF" size={27} />
-          </MenuTrigger>
-          <MenuOptions
-            customStyles={{
-              optionWrapper: {
-                padding: 12,
-              },
-            }}>
-            <MenuOption onSelect={() => removeToken(tokenAddress)}>
-              <Text>{getLanguageString(language, 'REMOVE_TOKEN')}</Text>
-            </MenuOption>
-          </MenuOptions>
-        </Menu>
-      ),
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language, navigation, tokenAddress]);
-
   useEffect(() => {
     (async () => {
       await fetchBalance();
@@ -123,11 +97,11 @@ const TokenDetail = () => {
     return (
       <View
         style={{
-          width: 60,
-          height: 60,
+          width: 48,
+          height: 48,
 
-          borderRadius: 30,
-          backgroundColor: 'white',
+          borderRadius: 16,
+          backgroundColor: 'transparent',
 
           flexDirection: 'row',
           justifyContent: 'center',
@@ -148,63 +122,82 @@ const TokenDetail = () => {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <AddressQRModal
         visible={showAddressQR}
         onClose={() => setShowAddressQR(false)}
       />
-      <View
-        style={{
-          flex: 1,
-          width: '100%',
-          alignItems: 'center',
-          paddingVertical: 20,
-          borderBottomColor: '#C4C4C4',
-          borderBottomWidth: 0.3,
-        }}>
-        {renderIcon(tokenAvatar)}
-        <Text style={{fontSize: 20, color: theme.textColor}}>
-          {numeral(parseDecimals(tokenBalance, tokenDecimals)).format('0,0.00')}{' '}
-          {tokenSymbol}
-        </Text>
-        <View style={styles.buttonGroupContainer}>
-          <Button
-            title={getLanguageString(language, 'SEND_TOKEN').replace(
-              '{{TOKEN_SYMBOL}}',
-              tokenSymbol,
-            )}
-            type="outline"
-            onPress={() => {
-              navigation.navigate('Home', {
-                screen: 'NewKRC20Tx',
-                params: {
-                  tokenAddress,
-                  tokenSymbol,
-                  tokenDecimals,
-                },
-              });
-            }}
-            iconName="paper-plane"
-            // size="small"
-            textStyle={{color: '#FFFFFF'}}
-            style={{marginRight: 5}}
+      <ENIcon.Button
+        style={{paddingHorizontal: 20}}
+        name="chevron-left"
+        onPress={() => navigation.goBack()}
+        backgroundColor="transparent"
+      />
+      <View style={styles.kaiCardContainer}>
+        <View style={styles.kaiCard}>
+          <Image
+            style={[styles.cardBackground, {width: viewportWidth - 40}]}
+            source={require('../../assets/card_background.png')}
+            // source={require('../../assets/test.jpg')}
           />
-
-          <Button
-            onPress={() => setShowAddressQR(true)}
-            title={getLanguageString(language, 'RECEIVE_TOKEN').replace(
-              '{{TOKEN_SYMBOL}}',
-              tokenSymbol,
-            )}
-            // size="small"
-            type="outline"
-            iconName="download"
-            style={{marginLeft: 5, marginRight: 5}}
-            textStyle={{color: '#FFFFFF'}}
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+            }}>
+            <View>{renderIcon(tokenAvatar)}</View>
+            <IconButton
+              onPress={() => removeToken(tokenAddress)}
+              name="trash"
+              color={theme.textColor}
+              size={20}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+            }}>
+            <View>
+              <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+                {getLanguageString(language, 'BALANCE')}
+              </Text>
+              <Text allowFontScaling={false} style={{fontSize: 24, color: 'white', fontWeight: 'bold'}}>
+                {numeral(
+                  parseDecimals(Number(tokenBalance), tokenDecimals),
+                ).format('0,0.00')}{' '}
+                {tokenSymbol}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => setShowAddressQR(true)}
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 22,
+                backgroundColor: '#FFFFFF',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Icon size={20} name="qrcode" />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-      <View style={{flex: 3, width: '100%'}}>
+      <View style={{flex: 3, width: '100%', paddingVertical: 12}}>
+        <View
+          style={{
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            paddingHorizontal: 20,
+          }}>
+          <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
+            {getLanguageString(language, 'RECENT_TRANSACTION')}
+          </Text>
+        </View>
         <TokenTxList
           tokenAddress={tokenAddress}
           tokenAvatar={tokenAvatar}
@@ -212,7 +205,7 @@ const TokenDetail = () => {
           tokenDecimals={tokenDecimals}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

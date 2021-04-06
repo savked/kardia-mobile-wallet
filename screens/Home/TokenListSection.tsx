@@ -45,13 +45,13 @@ const TokenListSection = () => {
 
   const renderIcon = (avatar: string) => {
     return (
-      <View style={{flex: 0.5, marginRight: 18}}>
+      <View style={{flex: 0.3, marginRight: 12}}>
         <View
           style={{
-            width: 50,
-            height: 50,
+            width: 30,
+            height: 30,
 
-            borderRadius: 25,
+            borderRadius: 15,
             backgroundColor: 'white',
 
             flexDirection: 'row',
@@ -77,6 +77,40 @@ const TokenListSection = () => {
   return (
     <View style={styles.tokenListContainer}>
       <NewTokenModal visible={showModal} onClose={() => setShowModal(false)} />
+      <View
+        style={{
+          alignItems: 'center',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          padding: 20,
+        }}>
+        <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: 'bold', color: theme.textColor}}>
+          {getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}
+        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('KRC20Tokens')}>
+          <Text allowFontScaling={false} style={{fontSize: theme.defaultFontSize, color: theme.textColor}}>
+            {getLanguageString(language, 'VIEW_ALL')} ({tokenList.length})
+          </Text>
+        </TouchableOpacity>
+      </View>
+      {tokenList.length === 0 && !loading && (
+        <View style={{alignItems: 'center', marginTop: 45}}>
+          <Image
+            style={{width: 111, height: 52}}
+            source={require('../../assets/no_tokens_dark.png')}
+          />
+          <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
+            {getLanguageString(language, 'NO_TOKENS')}
+          </Text>
+          <Button
+            type="outline"
+            textStyle={{fontWeight: 'bold', fontSize: 12}}
+            style={{paddingVertical: 8, paddingHorizontal: 16}}
+            onPress={() => setShowModal(true)}
+            title={`+ ${getLanguageString(language, 'ADD_TOKEN')}`}
+          />
+        </View>
+      )}
       <List
         items={tokenList}
         loading={loading}
@@ -88,10 +122,10 @@ const TokenListSection = () => {
               key={item.name}
               style={{
                 padding: 15,
-                backgroundColor:
-                  index % 2 === 0
-                    ? theme.backgroundFocusColor
-                    : theme.backgroundColor,
+                marginHorizontal: 20,
+                borderRadius: 8,
+                marginVertical: 6,
+                backgroundColor: theme.backgroundFocusColor,
               }}>
               <TouchableOpacity
                 style={{
@@ -118,11 +152,12 @@ const TokenListSection = () => {
                   style={{
                     flex: 1,
                     flexDirection: 'column',
-                    justifyContent: 'space-between',
+                    justifyContent: 'center',
                     alignItems: 'flex-start',
                     height: '100%',
                   }}>
                   <Text
+                    allowFontScaling={false}
                     style={{
                       color: '#FFFFFF',
                       fontWeight: 'bold',
@@ -130,20 +165,20 @@ const TokenListSection = () => {
                     }}>
                     {item.name}
                   </Text>
-                  <Text style={{color: 'gray'}}>
-                    $ {numeral(item.price).format('0,0.00')}
-                  </Text>
                 </View>
                 <View
                   style={{
-                    flex: 1.5,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
+                    flex: 1,
+                    // flexDirection: 'row',
+                    alignItems: 'flex-end',
+                    justifyContent: 'center',
                   }}>
-                  <Text style={[styles.kaiAmount, {color: theme.textColor}]}>
+                  <Text allowFontScaling={false} style={[styles.kaiAmount, {color: theme.textColor}]}>
                     {numeral(
                       parseDecimals(balance[index], item.decimals),
-                    ).format('0,0.00')}{' '}
+                    ).format('0,0.00')}
+                  </Text>
+                  <Text allowFontScaling={false} style={{color: theme.ghostTextColor}}>
                     {item.symbol}
                   </Text>
                 </View>
@@ -151,29 +186,7 @@ const TokenListSection = () => {
             </View>
           );
         }}
-        ListEmptyComponent={
-          <Text style={[styles.noTXText, {color: theme.textColor}]}>
-            {getLanguageString(language, 'NO_TOKENS')}
-          </Text>
-        }
-        header={
-          <View
-            style={{
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingHorizontal: 15,
-            }}>
-            <Text style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
-              {getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}
-            </Text>
-            <Button
-              type="link"
-              onPress={() => setShowModal(true)}
-              title={`+ ${getLanguageString(language, 'ADD_TOKEN')}`}
-            />
-          </View>
-        }
+        ListEmptyComponent={null}
       />
     </View>
   );
