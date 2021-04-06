@@ -154,13 +154,15 @@ const AddressBookSetting = () => {
           );
         })}
       </ScrollView>
-      <Button
-        type="primary"
-        icon={<AntIcon name="plus" size={24} />}
-        size="small"
-        onPress={() => setShowNewAddressModal(true)}
-        style={styles.floatingButton}
-      />
+      {addressBook.length !== 0 && (
+        <Button
+          type="primary"
+          icon={<AntIcon name="plus" size={24} />}
+          size="small"
+          onPress={() => setShowNewAddressModal(true)}
+          style={styles.floatingButton}
+        />
+      )}
     </SafeAreaView>
   );
 };

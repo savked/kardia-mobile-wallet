@@ -221,5 +221,13 @@ export const lang: Language = {
     STAKING: 'Staking',
     ADDRESS_BOOK: 'Address',
     SETTING: 'Setting',
+    // Walk through screen:
+    START_NOW: 'Start now',
+    EASY: 'Easy',
+    INSTANT: 'Instant',
+    SECURE: 'Secure',
+    EASY_DESC: 'Easily create or import you wallet in just a few steps.',
+    INSTANT_DESC: 'Send and receive your crypto currencies within a blink of an eye.',
+    SECURE_DESC: 'Protect your digital assets with state-of-the-art blockchain technology.',
   },
 };

@@ -85,7 +85,6 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
   };
 
   const handleImport = () => {
-    console.log('here');
     const emptyExists = mnemonic.some((item) => item === '');
     if (emptyExists) {
       Alert.alert(getLanguageString(language, 'INVALID_PHRASE'));
@@ -96,7 +95,6 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
       Alert.alert(getLanguageString(language, 'INVALID_PHRASE'));
       return;
     }
-    console.log('fromNoWallet', fromNoWallet)
     navigation.navigate('SelectWallet', {
       mnemonic: mnemonic.join(' ').toLowerCase(),
       fromNoWallet

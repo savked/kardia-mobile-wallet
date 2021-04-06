@@ -275,7 +275,7 @@ export default ({
           />
           <Button
             type="primary"
-            title="Save Address"
+            title={getLanguageString(language, 'SAVE_TO_ADDRESS_BOOK')}
             onPress={handleSubmit}
             block={true}
           />
