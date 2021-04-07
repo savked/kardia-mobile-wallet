@@ -40,6 +40,7 @@ import TxDetailModal from '../common/TxDetailModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import NewAddressModal from '../common/NewAddressModal';
 import IconButton from '../../components/IconButton';
+import CustomImagePicker from '../../components/ImagePicker';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -283,7 +284,18 @@ const AddressDetail = () => {
           }}
           source={require('../../assets/address_detail_background.jpg')}>
           {addressData.avatar ? (
-            <Image source={{uri: addressData.avatar}} />
+            // <Image source={{uri: addressData.avatar}} />
+            <CustomImagePicker
+              image={{uri: addressData.avatar}}
+              editable={false}
+              imageStyle={{
+                width: 80,
+                height: 80,
+                borderRadius: 24,
+              }}
+              // style={styles.addressAvatarContainer}
+              // imageStyle={styles.addressAvatar}
+            />
           ) : (
             <View
               style={{

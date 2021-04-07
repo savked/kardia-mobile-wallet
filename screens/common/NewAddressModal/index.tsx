@@ -149,14 +149,14 @@ export default ({
   const getModalStyle = () => {
     if (Platform.OS === 'android') {
       return {
-        height: 440,
+        height: 460,
         backgroundColor: theme.backgroundFocusColor,
         // marginBottom: keyboardShown ? -70 : 0,
         // marginTop: keyboardShown ? 70 : 0,
       };
     } else {
       return {
-        height: 440,
+        height: 460,
         backgroundColor: theme.backgroundFocusColor,
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,
@@ -185,7 +185,11 @@ export default ({
       contentStyle={getModalStyle()}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
-          <CustomImagePicker image={abAvatar} onSelect={setABAvatar} />
+          <CustomImagePicker image={abAvatar} onSelect={setABAvatar} imageStyle={{
+                // width: 80,
+                // height: 80,
+                borderRadius: 24,
+              }} />
           <View
             style={{
               justifyContent: 'flex-start',
