@@ -80,8 +80,6 @@ export const parseCardAvatar = (cardAvatarID: number) => {
       return cardAvatar4;
     case 5:
       return cardAvatar5;
-    case 6:
-      return cardAvatar6;
     default:
       return cardAvatar;
   }
