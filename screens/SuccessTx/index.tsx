@@ -43,6 +43,7 @@ export default () => {
   const validatorItem: Validator = params ? (params as any).validatorItem : {};
   const claimAmount = params ? (params as any).claimAmount : '';
   const undelegateAmount = params ? (params as any).undelegateAmount : '';
+  const withdrawAmount = params ? (params as any).withdrawAmount : '';
 
   const theme = useContext(ThemeContext);
 
@@ -141,6 +142,24 @@ export default () => {
             </Text>
           </View>
         );
+      case 'withdraw':
+        return (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+            }}>
+            <Text
+              allowFontScaling={false}
+              style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
+              {numeral(withdrawAmount).format('0,0.00')}
+            </Text>
+            <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+              KAI
+            </Text>
+          </View>
+        );
       case 'undelegate':
         return (
           <View
@@ -232,6 +251,7 @@ export default () => {
       case 'delegate':
       case 'claim':
       case 'undelegate':
+      case 'withdraw':
         return (
           <View style={styles.addressContainer}>
             <TextAvatar
@@ -326,7 +346,9 @@ export default () => {
       case 'delegate':
         return getLanguageString(language, 'DELEGATE_SUCCESS');
       case 'undelegate':
-        return getLanguageString(language, 'UNDELEGATE_SUCCESS');
+        return getLanguageString(language, 'UNDELEGATE_SUCCESS').replace(/{{KAI_AMOUNT}}/g, numeral(undelegateAmount).format('0,0.00'));
+      case 'withdraw': 
+        return getLanguageString(language, 'WITHDRAW_SUCCESS').replace(/{{KAI_AMOUNT}}/g, numeral(withdrawAmount).format('0,0.00'))
       default:
         return getLanguageString(language, 'TX_SUCCESS');
     }
@@ -340,6 +362,7 @@ export default () => {
       case 'delegate':
       case 'claim':
       case 'undelegate':
+      case 'withdraw':
         navigation.reset({
           index: 0,
           routes: [{name: 'Staking'}],

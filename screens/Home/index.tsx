@@ -10,6 +10,7 @@ import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {
   getAppPasscodeSetting,
   getSelectedWallet,
+  getWalkThroughView,
   getWallets,
 } from '../../utils/local';
 import {ThemeContext} from '../../ThemeContext';
@@ -47,15 +48,15 @@ const HomeScreen = () => {
 
   useEffect(() => {
     (async () => {
+
       // Get local auth setting
       const enabled = await getAppPasscodeSetting();
       if (!enabled) {
-        setInited(true);
         setShowPasscodeRemindModal(true);
       } else {
-        setInited(true);
         setShowPasscodeRemindModal(false);
       }
+      setInited(true);
     })();
   }, []);
 
@@ -111,13 +112,14 @@ const HomeScreen = () => {
 
   if (showPasscodeRemindModal) {
     setShowPasscodeRemindModal(false);
+    // navigation.navigate('NewPasscode');
     navigation.reset({
       index: 0,
       routes: [
         {
           name: 'Setting',
           state: {
-            routes: [{name: 'Setting'}, {name: 'NewPasscode'}],
+            routes: [{name: 'NewPasscode', params: {fromHome: true}}],
           },
         },
       ],

@@ -9,7 +9,7 @@ import Modal from '../../../components/Modal';
 import TextAvatar from '../../../components/TextAvatar';
 import TextInput from '../../../components/TextInput';
 import {ThemeContext} from '../../../ThemeContext';
-import {getLanguageString} from '../../../utils/lang';
+import {getLanguageString, parseError} from '../../../utils/lang';
 import {getDigit, isNumber, format, parseKaiBalance, parseDecimals} from '../../../utils/number';
 import {styles} from './style';
 import {weiToKAI} from '../../../services/transaction/amount';
@@ -245,6 +245,11 @@ export default ({
     } catch (err) {
       console.error(err);
       setDelegating(false);
+      if (err.message) {
+        setAmountError(parseError(err.message, language));
+      } else {
+        setAmountError(getLanguageString(language, 'GENERAL_ERROR'));
+      }
     }
   };
 

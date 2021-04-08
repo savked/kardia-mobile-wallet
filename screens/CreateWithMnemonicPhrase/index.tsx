@@ -122,7 +122,7 @@ const CreateWithMnemonicPhrase = () => {
   if (!mnemonic) {
     return (
       <View
-        style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        style={[styles.container, {backgroundColor: theme.backgroundColor, alignItems: 'center', justifyContent: 'center'}]}>
         <ActivityIndicator color={theme.textColor} size={40} />
       </View>
     );
@@ -135,6 +135,7 @@ const CreateWithMnemonicPhrase = () => {
           flexDirection: 'row',
           width: '100%',
           justifyContent: 'flex-start',
+          paddingTop: 30,
         }}>
         <Icon.Button
           style={{paddingLeft: 20}}
@@ -192,7 +193,7 @@ const CreateWithMnemonicPhrase = () => {
         style={{
           // width: '100%',
           marginHorizontal: 20,
-          marginBottom: 50,
+          marginBottom: 82,
         }}
       />
       <AlertModal

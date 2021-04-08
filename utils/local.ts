@@ -242,3 +242,33 @@ export const saveTokenList = async (tokenList: KRC20[]) => {
     return false;
   }
 };
+
+export const getWalkThroughView = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@kardia_walk_through_view');
+    if (value !== null) {
+      if (value === 'disabled') {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  } catch (e) {
+    console.error(e);
+    return false;
+    // error reading value
+  }
+};
+
+export const saveWalkThroughView = async (on: boolean) => {
+  try {
+    await AsyncStorage.setItem(
+      '@kardia_walk_through_view',
+      on ? 'enabled' : 'disabled',
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};

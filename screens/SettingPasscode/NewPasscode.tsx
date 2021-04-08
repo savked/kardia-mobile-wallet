@@ -1,4 +1,4 @@
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native';
 import React, {useCallback, useContext, useState} from 'react';
 import {View} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,6 +12,7 @@ import Step2 from './Step2';
 import {styles} from './style';
 
 const NewPasscode = () => {
+  const {params} = useRoute();
   const theme = useContext(ThemeContext);
   const [passcode, setPasscode] = useState('');
   const [step, setStep] = useState(1);
@@ -36,7 +37,18 @@ const NewPasscode = () => {
     setLocalAuthEnabled(true);
     setStep(1);
     // navigation.navigate('Home');
-    navigation.goBack();
+    if (!params || !(params as any).fromHome) {
+      navigation.goBack();
+    } else {
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'Home',
+          },
+        ],
+      })
+    }
   };
 
   return (

@@ -2,7 +2,7 @@ export const lang: Language = {
   name: 'Tiếng Việt',
   flag: 'VN',
   key: 'vi_VI',
-  tag: ['vi_VI', 'VN', 'vi', 'VI', 'vn', 'Tiếng Việt'],
+  tag: ['vi_VI', 'VN', 'vi', 'VI', 'vn', 'Tiếng Việt', 'vi_US'],
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:
@@ -214,5 +214,13 @@ export const lang: Language = {
     STAKING: 'Đầu tư',
     ADDRESS_BOOK: 'Danh bạ ví',
     SETTING: 'Cài đặt',
+    // Walk through screen:
+    START_NOW: 'Bắt đầu',
+    EASY: 'Đơn giản',
+    INSTANT: 'Nhanh chóng',
+    SECURE: 'Bảo mật',
+    EASY_DESC: 'Tạo và quản lý ví một cách đơn giản và tiện lợi chỉ với vài thao tác.',
+    INSTANT_DESC: 'Gửi và nhận tiền điện tử tức thì với chi phí cực thấp.',
+    SECURE_DESC: 'Bảo vệ tài sản của bạn bằng những công nghệ tiên tiến nhất.',
   },
 };

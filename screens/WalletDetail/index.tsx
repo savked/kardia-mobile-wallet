@@ -164,7 +164,7 @@ export default () => {
                     }}>
                     <View>
                       <Text allowFontScaling={false} style={{ color: 'rgba(252, 252, 252, 0.54)', fontSize: 10 }}>
-                        {getLanguageString(language, 'BALANCE')}
+                        {getLanguageString(language, 'BALANCE').toUpperCase()}
                       </Text>
                       <Text allowFontScaling={false} style={{ fontSize: 30, color: 'white' }}>
                         $
@@ -204,7 +204,7 @@ export default () => {
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View>
                       <Text allowFontScaling={false} style={{ fontSize: 10, color: 'rgba(252, 252, 252, 0.54)' }}>
-                        {getLanguageString(language, 'WALLET_CARD_NAME')}
+                        {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
                       </Text>
                       <Text allowFontScaling={false} style={{ fontSize: 15, color: 'rgba(252, 252, 252, 0.87)' }}>
                         {wallet.name}

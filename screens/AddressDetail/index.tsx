@@ -10,6 +10,7 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
@@ -34,12 +35,12 @@ import {getTxByAddress} from '../../services/transaction';
 import {groupByDate} from '../../utils/date';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import {format} from 'date-fns';
-import List from '../../components/List';
 import {parseKaiBalance} from '../../utils/number';
 import TxDetailModal from '../common/TxDetailModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import NewAddressModal from '../common/NewAddressModal';
 import IconButton from '../../components/IconButton';
+import CustomImagePicker from '../../components/ImagePicker';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -283,7 +284,18 @@ const AddressDetail = () => {
           }}
           source={require('../../assets/address_detail_background.jpg')}>
           {addressData.avatar ? (
-            <Image source={{uri: addressData.avatar}} />
+            // <Image source={{uri: addressData.avatar}} />
+            <CustomImagePicker
+              image={{uri: addressData.avatar}}
+              editable={false}
+              imageStyle={{
+                width: 80,
+                height: 80,
+                borderRadius: 24,
+              }}
+              // style={styles.addressAvatarContainer}
+              // imageStyle={styles.addressAvatar}
+            />
           ) : (
             <View
               style={{
@@ -385,6 +397,9 @@ const AddressDetail = () => {
             {getLanguageString(language, 'NO_TRANSACTION')}
           </Text>
         )}
+        <ScrollView>
+
+       
         {groupByDate(filteredList, 'date').map((txsByDate) => {
           const dateLocale = getDateFNSLocale(language);
           return (
@@ -396,77 +411,72 @@ const AddressDetail = () => {
                 }}>
                 {format(txsByDate.date, 'E, dd/MM/yyyy', {locale: dateLocale})}
               </Text>
-              <List
-                // containerStyle={{flex: 1}}
-                items={txsByDate.items}
-                render={(item) => {
-                  return (
-                    <View
+              {txsByDate.items.map((item: any, index: number) => {
+                return (
+                  <View
+                    key={`group-${index}`}
+                    style={{
+                      paddingVertical: 12,
+                      paddingHorizontal: 16,
+                      // marginHorizontal: 20,
+                      marginVertical: 8,
+                      borderRadius: 8,
+                      backgroundColor: theme.backgroundFocusColor,
+                    }}>
+                    <TouchableOpacity
                       style={{
-                        paddingVertical: 12,
-                        paddingHorizontal: 16,
-                        // marginHorizontal: 20,
-                        marginVertical: 8,
-                        borderRadius: 8,
-                        backgroundColor: theme.backgroundFocusColor,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                      onPress={() => {
+                        setTxObjForDetail(item);
+                        setShowTxDetail(true);
                       }}>
-                      <TouchableOpacity
+                      {renderIcon(item.status, item.type)}
+                      <View
                         style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                        }}
-                        onPress={() => {
-                          setTxObjForDetail(item);
-                          setShowTxDetail(true);
+                          flexDirection: 'column',
+                          flex: 4,
+                          paddingHorizontal: 14,
                         }}>
-                        {renderIcon(item.status, item.type)}
-                        <View
-                          style={{
-                            flexDirection: 'column',
-                            flex: 4,
-                            paddingHorizontal: 14,
-                          }}>
-                          <Text allowFontScaling={false} style={{color: '#FFFFFF'}}>
-                            {item.type === 'IN'
-                              ? getLanguageString(language, 'TX_TYPE_RECEIVED')
-                              : getLanguageString(language, 'TX_TYPE_SEND')}
-                          </Text>
-                          <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
-                            {truncate(item.label, 8, 10)}
-                          </Text>
-                        </View>
-                        <View
-                          style={{
-                            flex: 3,
-                            alignItems: 'flex-end',
-                          }}>
-                          <Text
-                            allowFontScaling={false}
-                            style={[
-                              styles.kaiAmount,
-                              item.type === 'IN'
-                                ? {color: '#53B680'}
-                                : {color: 'red'},
-                            ]}>
-                            {item.type === 'IN' ? '+' : '-'}
-                            {parseKaiBalance(item.amount, true)} KAI
-                          </Text>
-                          <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
-                            {format(item.date, 'hh:mm aa')}
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                  );
-                }}
-                onSelect={(itemIndex) => {
-                  Alert.alert(`${itemIndex}`);
-                }}
-              />
+                        <Text allowFontScaling={false} style={{color: '#FFFFFF'}}>
+                          {item.type === 'IN'
+                            ? getLanguageString(language, 'TX_TYPE_RECEIVED')
+                            : getLanguageString(language, 'TX_TYPE_SEND')}
+                        </Text>
+                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
+                          {truncate(item.label, 8, 10)}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flex: 3,
+                          alignItems: 'flex-end',
+                        }}>
+                        <Text
+                          allowFontScaling={false}
+                          style={[
+                            styles.kaiAmount,
+                            item.type === 'IN'
+                              ? {color: '#53B680'}
+                              : {color: 'red'},
+                          ]}>
+                          {item.type === 'IN' ? '+' : '-'}
+                          {parseKaiBalance(item.amount, true)} KAI
+                        </Text>
+                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
+                          {format(item.date, 'hh:mm aa')}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                );
+              })}
             </React.Fragment>
           );
         })}
+         </ScrollView>
       </View>
     </SafeAreaView>
   );

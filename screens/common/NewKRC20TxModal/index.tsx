@@ -136,7 +136,7 @@ const NewKRC20TxModal = ({
         setError(parseError(err.message, language));
       } else {
         console.error(err);
-        setError('Error happen');
+        setError(getLanguageString(language, 'GENERAL_ERROR'));
       }
       setLoading(false);
     }

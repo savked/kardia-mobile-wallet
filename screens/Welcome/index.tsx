@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Image, Text, View} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
@@ -9,11 +9,35 @@ import Button from '../../components/Button';
 import {getLanguageString} from '../../utils/lang';
 import {styles} from './style';
 import {ThemeContext} from '../../ThemeContext';
+import WalkThrough from '../WalkThrough';
+import { getWalkThroughView, saveWalkThroughView } from '../../utils/local';
 
 const Welcome = () => {
   const navigation = useNavigation();
   const language = useRecoilValue(languageAtom);
   const theme = useContext(ThemeContext);
+
+  const [showWalkThrough, setShowWalkThrough] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      // Get local walkthrough view
+      const walkThroughViewed = await getWalkThroughView();
+      setShowWalkThrough(!walkThroughViewed)
+      // setShowWalkThrough(false);
+    })()
+  }, [])
+
+  const submitWalkThrough = async () => {
+    await saveWalkThroughView(true)
+    setShowWalkThrough(false);
+  }
+
+  if (showWalkThrough) {
+    return (
+      <WalkThrough onSubmit={submitWalkThrough} />
+    )
+  }
 
   return (
     <SafeAreaView

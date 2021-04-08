@@ -70,7 +70,6 @@ const StakingScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log('fired');
       getStakingData();
       setTabBarVisible(true);
       // TODO: Update after designer finish
