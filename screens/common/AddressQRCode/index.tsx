@@ -89,11 +89,13 @@ const QRModal = ({
           backgroundColor={theme.backgroundColor}
         />
       </View>
-      <Button
-        title={getLanguageString(language, 'CLOSE')}
-        onPress={onClose}
-        style={{marginTop: 32, marginHorizontal: 20}}
-      />
+      <View style={{width: '100%'}}>
+        <Button
+          title={getLanguageString(language, 'CLOSE')}
+          onPress={onClose}
+          style={{marginTop: 32, marginHorizontal: 20}}
+        />
+      </View>
     </Modal>
   );
 };

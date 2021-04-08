@@ -243,7 +243,7 @@ export default () => {
                     fontSize: theme.defaultFontSize,
                   },
                 ]}>
-                {truncate(address.address, 15, 15)}
+                {truncate(txObj.to, 15, 15)}
               </Text>
             </View>
           </View>
@@ -311,7 +311,7 @@ export default () => {
                 }
               />
             </View>
-            <View>
+            <View style={{justifyContent: 'space-between', height: 48, paddingVertical: 4}}>
               <Text
                 allowFontScaling={false}
                 style={[
@@ -331,7 +331,7 @@ export default () => {
                     fontSize: theme.defaultFontSize,
                   },
                 ]}>
-                {truncate(address.address, 15, 15)}
+                {truncate(txObj.to, 15, 15)}
               </Text>
             </View>
           </View>
@@ -451,6 +451,7 @@ export default () => {
       <Button
         title={getLanguageString(language, 'OK_TEXT')}
         onPress={handleBack}
+        block
         style={{marginTop: 95}}
         textStyle={{fontWeight: 'bold'}}
       />
