@@ -67,6 +67,8 @@ export const parseCardAvatar = (cardAvatarID: number) => {
   const cardAvatar1 = require('../assets/card_background_1.png');
   const cardAvatar2 = require('../assets/card_background_2.png');
   const cardAvatar3 = require('../assets/card_background_3.png');
+  const cardAvatar4 = require('../assets/card_background_4.png');
+  const cardAvatar5 = require('../assets/card_background_5.png');
   switch (cardAvatarID) {
     case 1:
       return cardAvatar1;
@@ -74,6 +76,12 @@ export const parseCardAvatar = (cardAvatarID: number) => {
       return cardAvatar2;
     case 3:
       return cardAvatar3;
+    case 4:
+      return cardAvatar4;
+    case 5:
+      return cardAvatar5;
+    case 6:
+      return cardAvatar6;
     default:
       return cardAvatar;
   }
@@ -87,6 +95,10 @@ export const parseCardAvatarColor = (cardAvatarID: number) => {
       return 'Purple Night';
     case 3:
       return 'Mystery';
+    case 4:
+      return 'Gold';
+    case 5:
+      return 'Violet';
     default:
       return 'Dark Galaxy';
   }

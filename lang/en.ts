@@ -94,7 +94,7 @@ export const lang: Language = {
     TRANSACTION_DATE: 'Transaction Date',
     CREATE_TX_ADDRESS: 'Send to Address',
     CREATE_KRC20_TX_ADDRESS: 'Send to Address',
-    CREATE_TX_KAI_AMOUNT: 'Amount (maximum: 5,000,000,000)',
+    CREATE_TX_KAI_AMOUNT: 'Amount',
     CREATE_TX_KRC20_AMOUNT: 'Amount',
     TRANSACTION_SPEED: 'Choose Transaction Speed',
     SLOW_SPEED: 'Slow',

@@ -56,7 +56,7 @@ export default () => {
             <TouchableOpacity onPress={() => navigation.navigate('WalletDetail', {address: item.address})} style={[styles.walletItemContainer, {backgroundColor: theme.backgroundFocusColor}]}>
               <Image style={styles.cardImage} source={parseCardAvatar(item.cardAvatarID || 0)} />
               <View style={{justifyContent: 'space-between'}}>
-                <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 13, fontWeight: 'bold'}}>{item.name}</Text>
+                <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 13, fontWeight: 'bold'}}>{item.name || getLanguageString(language, 'NEW_WALLET')}</Text>
                 <Text allowFontScaling={false} style={{fontSize: theme.defaultFontSize, color: 'rgba(252, 252, 252, 0.54)'}}>{truncate(item.address, 10, 10)}</Text>
               </View>
             </TouchableOpacity>

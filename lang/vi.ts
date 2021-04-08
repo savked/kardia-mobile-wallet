@@ -89,7 +89,7 @@ export const lang: Language = {
     TRANSACTION_DATE: 'Ngày giao dịch',
     CREATE_TX_ADDRESS: 'Địa chỉ ví nhận',
     CREATE_KRC20_TX_ADDRESS: 'Địa chỉ ví nhận',
-    CREATE_TX_KAI_AMOUNT: 'Số lượng (tối đa: 5,000,000,000)',
+    CREATE_TX_KAI_AMOUNT: 'Số lượng',
     CREATE_TX_KRC20_AMOUNT: 'Số lượng',
     TRANSACTION_SPEED: 'Chọn độ ưu tiên',
     SLOW_SPEED: 'Chậm',

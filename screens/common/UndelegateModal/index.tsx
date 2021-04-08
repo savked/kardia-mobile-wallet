@@ -173,10 +173,15 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
                   setUndelegateAmount('0');
                   return;
                 }
-                isNumber(digitOnly) && setUndelegateAmount(digitOnly);
+                if (isNumber(digitOnly)) {
+                  let formatedValue = format((Number(digitOnly)));
+                  if (newAmount[newAmount.length - 1] === '.') formatedValue += '.'
+                  setUndelegateAmount(formatedValue);
+                }
+                // isNumber(digitOnly) && setUndelegateAmount(digitOnly);
               }}
               onBlur={() => {
-                setUndelegateAmount(format(Number(undelegateAmount)));
+                setUndelegateAmount(format(Number(getDigit(undelegateAmount))));
               }}
               value={undelegateAmount}
               // headline={getLanguageString(

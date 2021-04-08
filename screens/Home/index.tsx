@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, Image, Linking, Text, View} from 'react-native';
+import {ActivityIndicator, Alert, Image, Linking, ScrollView, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
@@ -141,7 +141,7 @@ const HomeScreen = () => {
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
       <HomeHeader />
       <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
-      <View style={[styles.bodyContainer]}>
+      <ScrollView style={[styles.bodyContainer]}>
         <CardSliderSection showQRModal={() => setShowQRModal(true)} />
         <View
           style={{
@@ -193,25 +193,7 @@ const HomeScreen = () => {
           />
         </View>
         <TokenListSection />
-        {/* <RemindPasscodeModal
-          visible={showPasscodeRemindModal}
-          onClose={() => setShowPasscodeRemindModal(false)}
-          enablePasscode={() => {
-            setShowPasscodeRemindModal(false);
-            navigation.reset({
-              index: 0,
-              routes: [
-                {
-                  name: 'Setting',
-                  state: {
-                    routes: [{name: 'Setting'}, {name: 'SettingPasscode'}],
-                  },
-                },
-              ],
-            });
-          }}
-        /> */}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

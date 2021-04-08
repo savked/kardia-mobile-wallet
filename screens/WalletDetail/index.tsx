@@ -24,8 +24,9 @@ import CardTypeModal from '../common/CardTypeModal';
 import { ScrollView } from 'react-native-gesture-handler';
 import IconButton from '../../components/IconButton';
 import AuthModal from '../common/AuthModal';
+import { HEADER_HEIGHT } from '../../theme';
 
-const { width: viewportWidth } = Dimensions.get('window')
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
 export default () => {
   const navigation = useNavigation();
@@ -126,7 +127,6 @@ export default () => {
       <View
         style={{
           width: '100%',
-          marginBottom: 19,
           paddingHorizontal: 20,
         }}>
         <ENIcon.Button
@@ -137,7 +137,7 @@ export default () => {
         />
       </View>
       <View style={{ flex: 1, justifyContent: 'space-between', }}>
-        <ScrollView contentContainerStyle={{ justifyContent: 'space-between', height: '100%' }}>
+        <ScrollView contentContainerStyle={{ justifyContent: 'space-between', height: 550 }}>
           <View style={{ flex: 1 }}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
               <View style={{ paddingHorizontal: 20 }}>
@@ -241,7 +241,7 @@ export default () => {
             </TouchableWithoutFeedback>
             <View style={{ flex: 1 }}>
               <ScrollView horizontal ref={scrollRef}>
-                {[0, 1, 2, 3].map((item, index) => {
+                {[0, 1, 2, 3, 4, 5, 6].map((item, index) => {
                   return (
                     <TouchableOpacity key={`card-${index}`} onPress={() => setCardAvatarID(index)}>
                       <ImageBackground
@@ -258,7 +258,7 @@ export default () => {
                           borderRadius: 12,
                           justifyContent: 'flex-end',
                           padding: 12,
-                          borderColor: index === cardAvatarID ? theme.textColor : 'transparent',
+                          borderColor: item === cardAvatarID ? theme.textColor : 'transparent',
                           borderWidth: 3,
                         }} source={parseCardAvatar(item || 0)}>
                         <Text allowFontScaling={false} style={{ fontSize: 14, color: theme.textColor }}>{parseCardAvatarColor(item || 0)}</Text>
@@ -269,22 +269,22 @@ export default () => {
               </ScrollView>
             </View>
           </View>
-          <View style={{ marginVertical: 52, paddingHorizontal: 20 }}>
-            {/* <Button
-              title={getLanguageString(language, "REMOVE_WALLET")}
-              iconName="trash"
-              iconSize={18}
-              iconColor={theme.textColor}
-              type="outline"
-              onPress={() => setShowRemoveConfirm(true)}
-            /> */}
-            <Button
-              title={getLanguageString(language, 'SAVE')}
-              onPress={saveWallet}
-              style={{ marginTop: 12 }}
-            />
-          </View>
         </ScrollView>
+        <View style={{marginBottom: 42, paddingHorizontal: 20 }}>
+          {/* <Button
+            title={getLanguageString(language, "REMOVE_WALLET")}
+            iconName="trash"
+            iconSize={18}
+            iconColor={theme.textColor}
+            type="outline"
+            onPress={() => setShowRemoveConfirm(true)}
+          /> */}
+          <Button
+            title={getLanguageString(language, 'SAVE')}
+            onPress={saveWallet}
+            style={{ marginTop: 12 }}
+          />
+        </View>
       </View>
       <Modal
         visible={showRemoveConfirm}

@@ -294,11 +294,11 @@ export default ({
         <View style={{flex: 1, width: '100%'}}>
           <View style={{width: '100%'}}>
             <View style={{marginBottom: 4, flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={{color: theme.textColor}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor}}>
                 {getLanguageString(language, 'STAKING_AMOUNT')}
               </Text>
               <TouchableOpacity onPress={() => setAmount(parseDecimals(wallets[selectedWallet].balance, 18).toString())}>
-                <Text style={{color: theme.urlColor}}>
+                <Text allowFontScaling={false} style={{color: theme.urlColor}}>
                   {parseKaiBalance(wallets[selectedWallet].balance)} KAI
                 </Text>
               </TouchableOpacity>

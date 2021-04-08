@@ -39,15 +39,6 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
   const [removeIndex, setRemoveIndex] = useState(-1);
   const language = useRecoilValue(languageAtom);
 
-  // function showCredential() {
-  //   navigation.navigate('Setting', {
-  //     screen: 'MnemonicPhraseSetting',
-  //     initial: false,
-  //     params: {
-  //       from: 'Home',
-  //     },
-  //   });
-  // }
   const renderWalletItem = ({item: wallet}: any) => {
     return (
       <View style={styles.kaiCardContainer}>
@@ -67,12 +58,12 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
               <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
                 {getLanguageString(language, 'BALANCE').toUpperCase()}
               </Text>
-              <Text allowFontScaling={false} style={{fontSize: 30, color: 'white'}}>
-                $
+              <Text allowFontScaling={false} style={{fontSize: 24, color: 'white'}}>
+                ~${' '}
                 {numeral(
                   tokenInfo.price *
                     (Number(weiToKAI(wallet.balance)) + wallet.staked),
-                ).format('0,0.00a')}
+                ).format('0,0.00')}
               </Text>
             </View>
             <IconButton

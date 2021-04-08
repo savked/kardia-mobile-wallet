@@ -94,7 +94,7 @@ const TokenListSection = () => {
         </TouchableOpacity>
       </View>
       {tokenList.length === 0 && !loading && (
-        <View style={{alignItems: 'center', marginTop: 45}}>
+        <View style={{alignItems: 'center', marginTop: 45, marginBottom: 30}}>
           <Image
             style={{width: 111, height: 52}}
             source={require('../../assets/no_tokens_dark.png')}
@@ -163,7 +163,7 @@ const TokenListSection = () => {
                       fontWeight: 'bold',
                       fontSize: 16,
                     }}>
-                    {item.name}
+                    {item.symbol}
                   </Text>
                 </View>
                 <View

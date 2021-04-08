@@ -53,6 +53,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 83,
     alignItems: 'center',
     justifyContent: 'center',
+    marginVertical: 40,
   },
   noAvatarContainer: {
     width: 32,
