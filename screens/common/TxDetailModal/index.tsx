@@ -81,7 +81,7 @@ export default ({
         />
         <View>
           <Text allowFontScaling={false} style={{color: '#FFFFFF', fontWeight: 'bold'}}>
-            {wallets[selectedWallet].name}
+            {wallets[selectedWallet].name || getLanguageString(language, 'NEW_WALLET')}
           </Text>
           <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
             {truncate(address, 10, 10)}

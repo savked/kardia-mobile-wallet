@@ -99,7 +99,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
                 {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
               </Text>
               <Text allowFontScaling={false} style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.87)'}}>
-                {wallet.name || 'WALLET'}
+                {wallet.name || getLanguageString(language,'NEW_WALLET')}
               </Text>
             </View>
             <TouchableOpacity

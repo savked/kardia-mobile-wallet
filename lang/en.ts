@@ -114,6 +114,7 @@ export const lang: Language = {
     WALLET: 'Wallet',
     ADDRESS: 'Address',
     REMOVE_WALLET: 'Remove Wallet',
+    NEW_WALLET: 'New Wallet',
     // News key
     NEWS_SCREEN_TITLE: 'News',
     // Staking key

@@ -109,6 +109,7 @@ export const lang: Language = {
     WALLET: 'Ví',
     ADDRESS: 'Địa chỉ',
     REMOVE_WALLET: 'Xóa ví',
+    NEW_WALLET: 'Ví mới',
     // News key
     NEWS_SCREEN_TITLE: 'Tin tức',
     // Staking key
