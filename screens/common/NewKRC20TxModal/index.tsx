@@ -212,6 +212,11 @@ const NewKRC20TxModal = ({
     }
   };
 
+  const _getBalance = () => {
+    if (!wallets[selectedWallet]) return 0;
+    return wallets[selectedWallet].balance;
+  }
+
   if (showQRModal) {
     return (
       <ScanQRAddressModal
@@ -380,7 +385,7 @@ const NewKRC20TxModal = ({
           <View style={{marginBottom: 10}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text allowFontScaling={false} style={{color: theme.textColor, marginBottom: 5, fontWeight: 'bold'}}>{getLanguageString(language, 'CREATE_TX_KRC20_AMOUNT')}</Text>
-              <TouchableOpacity onPress={() => setAmount(format(parseDecimals(wallets[selectedWallet].balance, 18)))}>
+              <TouchableOpacity onPress={() => setAmount(format(parseDecimals(_getBalance(), 18)))}>
                 <Text allowFontScaling={false} style={{color: theme.urlColor}}>
                   {parseDecimals(balance, tokenDecimals)} {tokenSymbol}
                 </Text>

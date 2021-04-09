@@ -149,6 +149,11 @@ export default ({
     return null;
   }
 
+  const _getBalance = () => {
+    if (!wallets[selectedWallet]) return 0;
+    return wallets[selectedWallet].balance;
+  }
+
   const getSelectedCommission = () => {
     const formatted = numeral(validatorItem.commissionRate).format('0,0.00');
     return formatted === 'NaN' ? '0 %' : `${formatted} %`;
@@ -297,9 +302,9 @@ export default ({
               <Text allowFontScaling={false} style={{color: theme.textColor}}>
                 {getLanguageString(language, 'STAKING_AMOUNT')}
               </Text>
-              <TouchableOpacity onPress={() => setAmount(parseDecimals(wallets[selectedWallet].balance, 18).toString())}>
+              <TouchableOpacity onPress={() => setAmount(parseDecimals(_getBalance(), 18).toString())}>
                 <Text allowFontScaling={false} style={{color: theme.urlColor}}>
-                  {parseKaiBalance(wallets[selectedWallet].balance)} KAI
+                  {parseKaiBalance(_getBalance())} KAI
                 </Text>
               </TouchableOpacity>
             </View>
