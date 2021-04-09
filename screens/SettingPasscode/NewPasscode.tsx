@@ -61,7 +61,7 @@ const NewPasscode = () => {
           }}
         />
       ) : (
-        <Step2 step1Passcode={passcode} onConfirm={savePasscode} />
+        <Step2 step1Passcode={passcode} onConfirm={savePasscode} goBack={() => setStep(1)} />
       )}
     </SafeAreaView>
   );
