@@ -96,7 +96,7 @@ const CreateWithMnemonicPhrase = () => {
               {color: theme.textColor},
             ]}>
             Hãy đảm bảo bạn đã
-            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}> GHI LẠI</Text> 24 từ này. 24 từ
+            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}> GHI LẠI</Text> 12 từ này. 12 từ
             này không thể thay đổi và sẽ được sử dụng để truy cập và khôi phục
             ví.
           </Text>

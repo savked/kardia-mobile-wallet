@@ -15,7 +15,7 @@ import {showTabBarAtom} from '../../atoms/showTabBar';
 import {walletsAtom} from '../../atoms/wallets';
 
 const INFO_DATA = {
-  version: '2.0.6',
+  version: '2.0.7',
 };
 
 const SettingScreen = () => {

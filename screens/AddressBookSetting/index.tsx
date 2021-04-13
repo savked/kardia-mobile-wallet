@@ -56,7 +56,7 @@ const AddressBookSetting = () => {
       {groupByAlphabet(addressBook, 'name').length === 0 && (
         <View style={styles.noAddressContainer}>
           <Image
-            style={{width: 170, height: 156, marginBottom: 23}}
+            style={{width: 170, height: 156, marginBottom: 23, marginTop: 70}}
             source={require('../../assets/no_address_dark.png')}
           />
           <Text allowFontScaling={false} style={[styles.emptyAddressBook, {color: theme.textColor}]}>

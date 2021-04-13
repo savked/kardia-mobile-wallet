@@ -158,11 +158,13 @@ const TokenListSection = () => {
         <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: 'bold', color: theme.textColor}}>
           {getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('KRC20Tokens')}>
-          <Text allowFontScaling={false} style={{fontSize: theme.defaultFontSize, color: theme.textColor}}>
-            {getLanguageString(language, 'VIEW_ALL')} ({tokenList.length})
-          </Text>
-        </TouchableOpacity>
+        {tokenList.length > 0 && (
+          <TouchableOpacity onPress={() => navigation.navigate('KRC20Tokens')}>
+            <Text allowFontScaling={false} style={{fontSize: theme.defaultFontSize, color: theme.textColor}}>
+              {getLanguageString(language, 'VIEW_ALL')} ({tokenList.length})
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
       {tokenList.length === 0 && !loading && (
         <View style={{alignItems: 'center', marginTop: 45, marginBottom: 30}}>
@@ -185,83 +187,6 @@ const TokenListSection = () => {
       {loading ? <ActivityIndicator color={theme.textColor} size="large" /> : (
         renderTokenList()
       )}
-      {/* <List
-        items={tokenList}
-        loading={loading}
-        loadingColor={theme.textColor}
-        keyExtractor={(item) => item.id}
-        render={(item, index) => {
-          return (
-            <View
-              key={item.name}
-              style={{
-                padding: 15,
-                marginHorizontal: 20,
-                borderRadius: 8,
-                marginVertical: 6,
-                backgroundColor: theme.backgroundFocusColor,
-              }}>
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  flex: 1,
-                }}
-                onPress={() => {
-                  navigation.navigate('Home', {
-                    screen: 'TokenDetail',
-                    initial: false,
-                    params: {
-                      tokenAddress: item.address,
-                      name: item.name,
-                      symbol: item.symbol,
-                      avatar: item.avatar,
-                      decimals: item.decimals,
-                      // balance: balance[index],
-                    },
-                  });
-                }}>
-                {renderIcon(item.avatar)}
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
-                    height: '100%',
-                  }}>
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color: '#FFFFFF',
-                      fontWeight: 'bold',
-                      fontSize: 16,
-                    }}>
-                    {item.symbol}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    // flexDirection: 'row',
-                    alignItems: 'flex-end',
-                    justifyContent: 'center',
-                  }}>
-                  <Text allowFontScaling={false} style={[styles.kaiAmount, {color: theme.textColor}]}>
-                    {numeral(
-                      parseDecimals(balance[index], item.decimals),
-                    ).format('0,0.00')}
-                  </Text>
-                  <Text allowFontScaling={false} style={{color: theme.ghostTextColor}}>
-                    {item.symbol}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          );
-        }}
-        ListEmptyComponent={null}
-      /> */}
     </View>
   );
 };

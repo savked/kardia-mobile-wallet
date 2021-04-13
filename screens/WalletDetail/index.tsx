@@ -49,12 +49,8 @@ export default () => {
   const address = params ? (params as any).address : ''
   const wallet = wallets.find((w) => w.address === address);
 
-  if (!wallet) {
-    return null;
-  }
-
-  const [name, setName] = useState(wallet.name);
-  const [cardAvatarID, setCardAvatarID] = useState(wallet.cardAvatarID);
+  const [name, setName] = useState(wallet ? wallet.name : '');
+  const [cardAvatarID, setCardAvatarID] = useState(wallet ? wallet.cardAvatarID : 1);
 
   useFocusEffect(
     useCallback(() => {
@@ -72,6 +68,10 @@ export default () => {
       })
     }
   }, []);
+
+  if (!wallet) {
+    return null;
+  }
 
   const getAddressCardAvatar = () => {
     const walletItem = wallets.find((w) => w.address === address)
@@ -94,8 +94,8 @@ export default () => {
       await saveSelectedWallet(newWallets.length - 1);
       setSelectedWallet(newWallets.length - 1);
     }
-    // setWallets(newWallets);
     navigation.goBack();
+    setWallets(newWallets);
   };
 
   const saveWallet = async () => {
