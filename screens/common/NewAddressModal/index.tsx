@@ -186,10 +186,10 @@ export default ({
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
           <CustomImagePicker image={abAvatar} onSelect={setABAvatar} imageStyle={{
-                // width: 80,
-                // height: 80,
-                borderRadius: 24,
-              }} />
+            // width: 80,
+            // height: 80,
+            borderRadius: 24,
+          }} />
           <View
             style={{
               justifyContent: 'flex-start',

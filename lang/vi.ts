@@ -35,7 +35,7 @@ export const lang: Language = {
     CONFIRM_REMOVE_ADDRESS: 'Bạn chắc chắn muốn xóa địa chỉ này khỏi danh bạ?',
     SCAN_QR_FOR_ADDRESS: 'Địa chỉ ví của bạn',
     SCAN_QR_FOR_ADDRESS_DESCRIPTION: 'Quét mã QR code chứa địa chỉ',
-    ERC20_WARNING: 'Lưu ý: KHÔNG gửi KAI Token từ ví ERC20 wallet đến ví này.',
+    ERC20_WARNING: 'KHÔNG gửi KAI từ ví ERC20 đến ví này.',
     LATER: 'Để sau',
     SET_APP_PASSCODE: 'Cài đặt mật khẩu',
     NO_PASSCODE: 'Bạn chưa cài mật khẩu cho ví',
@@ -55,7 +55,7 @@ export const lang: Language = {
       '12 từ trên được dùng để  truy cập cũng như khôi phục lại ví của bạn.',
     WALLET_CARD_NAME: 'Tên',
     // Import wallet key:
-    ENTER_SEED_PHRASE: 'Nhập chuỗi 12 từ khóa bí mật',
+    ENTER_SEED_PHRASE: 'Nhập chuỗi khóa bí mật',
     ENTER_PRIVATE_KEY: 'Nhập private key',
     SCAN_SEED_PHRASE: 'Quét mã QR chứa chuỗi khóa bí mật',
     SCAN_PRIVATE_KEY: 'Quét mã QR chứa private key',

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, Image, Linking, ScrollView, Text, View} from 'react-native';
+import {ActivityIndicator, Alert, Image, Linking, RefreshControl, ScrollView, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
@@ -35,6 +35,7 @@ const HomeScreen = () => {
   const tokenInfo = useRecoilValue(tokenInfoAtom);
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
   const [inited, setInited] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(
@@ -137,11 +138,28 @@ const HomeScreen = () => {
     return wallets[selectedWallet].staked;
   }
 
+  const onRefresh = async () => {
+    setRefreshing(true)
+    await updateWalletBalance();
+    setRefreshing(false)
+  }
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
       <HomeHeader />
       <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
-      <ScrollView style={[styles.bodyContainer]}>
+      <ScrollView 
+        style={[styles.bodyContainer]} 
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[theme.textColor]}
+            tintColor={theme.textColor}
+            titleColor={theme.textColor}
+          />
+        }
+      >
         <CardSliderSection showQRModal={() => setShowQRModal(true)} />
         <View
           style={{
@@ -168,7 +186,7 @@ const HomeScreen = () => {
               <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
                 {getLanguageString(language, 'BALANCE')}
               </Text>
-              <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 18}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 18, marginVertical: 4}}>
                 {parseKaiBalance(_getBalance(), true)}{' '}
                 <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</Text>
               </Text>

@@ -273,13 +273,13 @@ export default ({
       return {
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
-        height: 530,
+        height: 570,
       };
     } else {
       return {
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
-        height: 530,
+        height: 570,
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,
       };
@@ -372,7 +372,7 @@ export default ({
           </View>
           <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
           <View style={{width: '100%'}}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
               <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'COMMISSION_RATE')}
               </Text>
@@ -380,7 +380,7 @@ export default ({
                 {getSelectedCommission()}
               </Text>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
               <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
               </Text>
@@ -388,7 +388,7 @@ export default ({
                 {getSelectedStakedAmount()}
               </Text>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
               <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'VOTING_POWER')}
               </Text>
@@ -396,7 +396,7 @@ export default ({
                 {getSelectedVotingPower()}
               </Text>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
               <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'ESTIMATED_EARNING')}
               </Text>
@@ -405,7 +405,7 @@ export default ({
                 {estimatedProfit ? 'KAI' : ''}
               </Text>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
               <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'ESTIMATED_APR')}
               </Text>
