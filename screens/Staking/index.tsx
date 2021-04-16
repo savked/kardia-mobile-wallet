@@ -186,14 +186,32 @@ const StakingScreen = () => {
               alignItems: 'center',
               justifyContent: 'center',
               marginTop: 70,
+              paddingHorizontal: 47,
             }}>
             <Image
               style={{width: 200, height: 172}}
               source={require('../../assets/icon/no_staking.png')}
             />
-            <Text allowFontScaling={false} style={[styles.noStakingText, {color: theme.textColor}]}>
+            <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 24, fontWeight: 'bold', marginBottom: 8, marginTop: 100}}>
+              {getLanguageString(language, 'NO_STAKING')}
+            </Text>
+            <Text allowFontScaling={false} style={[styles.noStakingText, {color: theme.mutedTextColor, textAlign: 'center', marginBottom: 32}]}>
               {getLanguageString(language, 'NO_STAKING_ITEM')}
             </Text>
+            <Button
+              type="primary"
+              onPress={() => navigation.navigate('ValidatorList')}
+              title={getLanguageString(language, 'STAKE_NOW')}
+              style={{width: 248}}
+              icon={
+                <AntIcon
+                  name="plus"
+                  size={20}
+                  color={'#000000'}
+                  style={{marginRight: 8}}
+                />
+              }
+            />
           </View>
         }
         render={(item, index) => {

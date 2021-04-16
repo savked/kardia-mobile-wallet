@@ -194,11 +194,14 @@ const TransactionScreen = () => {
           <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
           </Text>
+          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32}}>
+            {getLanguageString(language, 'NO_TRANSACTION_SUB_TEXT')}
+          </Text>
           <Button
             type="primary"
             onPress={() => setShowNewTxModal(true)}
             title={getLanguageString(language, 'SEND_NOW')}
-            block={true}
+            style={{width: 248}}
             icon={
               <AntIcon
                 name="plus"

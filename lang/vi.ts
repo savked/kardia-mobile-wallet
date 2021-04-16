@@ -6,6 +6,9 @@ export const lang: Language = {
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:
+    KEEP_IT: 'Giữ lại',
+    DELETE_NOW: 'Xoá ngay',
+    DONE: 'Hoàn tất',
     BUY_KAI: 'Mua KAI',
     OK_TEXT: 'OK',
     BALANCE: 'Số dư hiện tại',
@@ -29,6 +32,8 @@ export const lang: Language = {
     RESTART_APP_DESCRIPTION:
       'Kardia Wallet sẽ khởi động lại để đảm bảo các thay đổi được cập nhật.',
     ARE_YOU_SURE: 'Bạn chắc chắn muốn thực hiện thao tác này ?',
+    CONFIRM_REMOVE_TITLE: 'Xoá ví',
+    CONFIRM_REMOVE_WALLET: 'Bạn có chắc chắn muốn xoá ví khỏi thiết bị ?',
     SAVE: 'Lưu',
     CLOSE: 'Đóng',
     CONFIRM: 'Xác nhận',
@@ -44,7 +49,8 @@ export const lang: Language = {
     IMPORT_WITH_PRIVATE_KEY: 'Thêm bằng private key',
     IMPORT_WITH_SEED: 'Thêm bằng seed phrase',
     SELECT_ADDRESS: 'Chọn địa chỉ ví',
-    NO_SAVED_ADDRESS: 'Chưa có địa chỉ ví được lưu',
+    NO_SAVED_ADDRESS: '0 địa chỉ',
+    NO_SAVED_ADDRESS_SUB_TEXT: 'Hãy bắt đầu giao dịch và lưu địa chỉ giao dịch yêu thích tại đây.',
     ADD_NEW_ADDRESS: 'Thêm địa chỉ ví',
     SAVE_TO_ADDRESS_BOOK: 'Lưu ví',
     INVALID_ADDRESS: 'Địa chỉ không hợp lệ',
@@ -72,6 +78,7 @@ export const lang: Language = {
     // Transaction key
     RECENT_TRANSACTION: 'Giao dịch gần đây',
     NO_TRANSACTION: 'Không có giao dịch',
+    NO_TRANSACTION_SUB_TEXT: 'Có vẻ như chưa có bất kỳ giao dịch nào.',
     SEARCH_TRANSACTION_PLACEHOLDER: 'Tìm kiếm...',
     VIEW_ALL: 'Tất cả',
     SEND: 'Gửi KAI',
@@ -114,7 +121,9 @@ export const lang: Language = {
     NEWS_SCREEN_TITLE: 'Tin tức',
     // Staking key
     STAKING_TITLE: 'Đầu tư',
-    NO_STAKING_ITEM: 'Không có khoản đầu tư',
+    NO_STAKING: '0 Uỷ quyền',
+    NO_STAKING_ITEM: 'Bạn vẫn chưa uỷ quyền (stake) cho bất kỳ ai. Vậy thì còn chờ gì nữa?',
+    STAKE_NOW: 'Uỷ quyền (Stake) ngay',
     CLAIMABLE: 'KAI được thưởng',
     STAKED: 'KAI đã stake',
     WITHDRAWABLE: 'KAI có thể rút về ví',
@@ -135,7 +144,7 @@ export const lang: Language = {
     YOUR_INVESTMENTS: 'Các khoản đầu tư của bạn',
     TOTAL_EARNING: 'Tổng số lợi nhuận',
     INVEST: 'Đầu tư',
-    CHOOSE_VALIDATOR: 'Chọn validator',
+    CHOOSE_VALIDATOR: 'Chọn người được uỷ quyền (Validator)',
     STAKING_AMOUNT: 'Số KAI đầu tư',
     STAKING_AMOUNT_NOT_ENOUGHT: 'Ví hiện tại không đủ KAI',
     AT_LEAST_MIN_DELEGATE: 'Cần đầu tư ít nhất {{MIN_KAI}} KAI',
@@ -194,6 +203,7 @@ export const lang: Language = {
     RECEIVE_TOKEN: 'Nhận {{TOKEN_SYMBOL}}',
     REMOVE_TOKEN: 'Xóa token',
     NO_TOKENS: 'Chưa có tokens',
+    NO_TOKENS_SUB_TEXT: 'Thêm và quản lý token dễ dàng.',
     ERROR_FETCH_KRC20_DATA: 'Không lấy được dữ liệu tokens.',
     // Auth modal key
     ENTER_PIN_CODE: 'Nhập mã PIN để tiếp tục',

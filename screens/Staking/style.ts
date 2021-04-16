@@ -24,8 +24,8 @@ export const styles = StyleSheet.create({
   },
   noStakingText: {
     // padding: 15,
-    fontSize: 16,
-    fontStyle: 'italic',
+    fontSize: 15,
+    // fontStyle: 'italic',
   },
   validatorName: {
     fontSize: 18,

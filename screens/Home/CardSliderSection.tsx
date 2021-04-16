@@ -44,7 +44,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
       <View style={styles.kaiCardContainer}>
         <View style={styles.kaiCard}>
           <Image
-            style={[styles.cardBackground, {width: viewportWidth - 44}]}
+            style={[styles.cardBackground, {width: viewportWidth - 40}]}
             source={parseCardAvatar(wallet.cardAvatarID)}
             // source={require('../../assets/test.jpg')}
           />

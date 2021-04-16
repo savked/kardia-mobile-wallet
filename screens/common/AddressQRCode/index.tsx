@@ -39,7 +39,7 @@ const QRModal = ({
       contentStyle={{
         paddingHorizontal: 20,
         backgroundColor: theme.backgroundFocusColor,
-        height: 700,
+        height: 730,
       }}
       onClose={onClose}>
       {/* <Text allowFontScaling={false} style={{fontSize: 20, fontWeight: 'bold', color: theme.textColor}}>
@@ -99,9 +99,10 @@ const QRModal = ({
         source={require('../../../assets/address_qr_balance_background.png')}
         imageStyle={{
           resizeMode: 'cover',
-          width: '100%',
+          // width: '100%',
           height: 139,
           borderRadius: 12,
+          // marginHorizontal: 18,
         }}
         style={{
           width: '100%',
@@ -109,6 +110,7 @@ const QRModal = ({
           borderRadius: 12,
           alignItems: 'flex-start',
           justifyContent: 'center',
+          // paddingHorizontal: 18,
         }}
       >
         <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4, textAlign: 'left', paddingHorizontal: 20}}>
@@ -150,10 +152,10 @@ const QRModal = ({
         </View>
       </ImageBackground>
       <Button
-        title={getLanguageString(language, 'CLOSE')}
+        title={getLanguageString(language, 'DONE')}
         onPress={onClose}
         block
-        style={{marginTop: 32, marginHorizontal: 20}}
+        style={{marginTop: 32}}
       />
     </Modal>
   );

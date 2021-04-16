@@ -175,6 +175,9 @@ const TokenListSection = () => {
           <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TOKENS')}
           </Text>
+          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12, marginBottom: 16}}>
+            {getLanguageString(language, 'NO_TOKENS_SUB_TEXT')}
+          </Text>
           <Button
             type="outline"
             textStyle={{fontWeight: 'bold', fontSize: 12}}

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {Alert, Keyboard, Platform, View} from 'react-native';
+import {Alert, Keyboard, Platform, TouchableWithoutFeedback, View} from 'react-native';
 import TextInput from '../../components/TextInput';
 import {theme} from '../../theme/dark';
 import Button from '../../components/Button';

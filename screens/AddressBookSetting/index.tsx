@@ -62,12 +62,15 @@ const AddressBookSetting = () => {
           <Text allowFontScaling={false} style={[styles.emptyAddressBook, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS')}
           </Text>
+          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32, textAlign: 'center'}}>
+            {getLanguageString(language, 'NO_SAVED_ADDRESS_SUB_TEXT')}
+          </Text>
           <Button
             type="primary"
             // onPress={() => navigation.navigate('NewAddress')}
             onPress={() => setShowNewAddressModal(true)}
             title={getLanguageString(language, 'ADD_NEW_ADDRESS')}
-            block={true}
+            style={{width: 248}}
             icon={
               <AntIcon
                 name="plus"

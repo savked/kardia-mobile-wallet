@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, Image, Linking, RefreshControl, ScrollView, Text, View} from 'react-native';
+import {ActivityIndicator, Alert, Dimensions, Image, ImageBackground, Linking, RefreshControl, ScrollView, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
@@ -29,6 +29,8 @@ import {tokenInfoAtom} from '../../atoms/token';
 import {weiToKAI} from '../../services/transaction/amount';
 import Button from '../../components/Button';
 import { SIMPLEX_URL } from '../../config';
+
+const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
 const HomeScreen = () => {
   const [showQRModal, setShowQRModal] = useState(false);
@@ -148,70 +150,76 @@ const HomeScreen = () => {
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
       <HomeHeader />
       <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
-      <ScrollView 
-        style={[styles.bodyContainer]} 
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            colors={[theme.textColor]}
-            tintColor={theme.textColor}
-            titleColor={theme.textColor}
-          />
-        }
+      <ImageBackground
+        source={require('../../assets/home_background.jpg')}
+        imageStyle={{width: viewportWidth, height: viewportHeight, resizeMode: 'cover', marginLeft: 20}}
+        style={{width: viewportWidth, height: viewportHeight}}
       >
-        <CardSliderSection showQRModal={() => setShowQRModal(true)} />
-        <View
-          style={{
-            paddingVertical: 24,
-            paddingHorizontal: 16,
-            backgroundColor: 'rgba(58, 59, 60, 0.42)',
-            borderRadius: 12,
-            marginHorizontal: 20,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
+        <ScrollView 
+          style={[styles.bodyContainer]} 
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={[theme.textColor]}
+              tintColor={theme.textColor}
+              titleColor={theme.textColor}
+            />
+          }
+        >
+          <CardSliderSection showQRModal={() => setShowQRModal(true)} />
           <View
             style={{
+              paddingVertical: 24,
+              paddingHorizontal: 16,
+              backgroundColor: 'rgba(58, 59, 60, 0.42)',
+              borderRadius: 12,
+              marginHorizontal: 20,
               flexDirection: 'row',
-              justifyContent: 'flex-start',
               alignItems: 'center',
+              justifyContent: 'space-between',
             }}>
-            <Image
-              style={{width: 32, height: 32, marginRight: 12}}
-              source={require('../../assets/logo_dark.png')}
-            />
-            <View>
-              <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
-                {getLanguageString(language, 'BALANCE')}
-              </Text>
-              <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 18, marginVertical: 4}}>
-                {parseKaiBalance(_getBalance(), true)}{' '}
-                <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</Text>
-              </Text>
-              <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
-                ~${' '}
-                {numeral(
-                  tokenInfo.price *
-                    (Number(weiToKAI(_getBalance())) +
-                    _getStaked()),
-                ).format('0,0.00a')}
-              </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+              }}>
+              <Image
+                style={{width: 32, height: 32, marginRight: 12}}
+                source={require('../../assets/logo_dark.png')}
+              />
+              <View>
+                <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+                  {getLanguageString(language, 'BALANCE')}
+                </Text>
+                <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 18, marginVertical: 4}}>
+                  {parseKaiBalance(_getBalance(), true)}{' '}
+                  <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</Text>
+                </Text>
+                <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+                  ~${' '}
+                  {numeral(
+                    tokenInfo.price *
+                      (Number(weiToKAI(_getBalance())) +
+                      _getStaked()),
+                  ).format('0,0.00a')}
+                </Text>
+              </View>
             </View>
+            <Button
+              title={getLanguageString(language, 'BUY_KAI')}
+              // onPress={() => Alert.alert('Coming soon')}
+              onPress={() => Linking.openURL(SIMPLEX_URL)}
+              type="ghost"
+              size="small"
+              textStyle={{color: '#000000', fontWeight: 'bold'}}
+              style={{paddingHorizontal: 16, paddingVertical: 8}}
+            />
           </View>
-          <Button
-            title={getLanguageString(language, 'BUY_KAI')}
-            // onPress={() => Alert.alert('Coming soon')}
-            onPress={() => Linking.openURL(SIMPLEX_URL)}
-            type="ghost"
-            size="small"
-            textStyle={{color: '#000000', fontWeight: 'bold'}}
-            style={{paddingHorizontal: 16, paddingVertical: 8}}
-          />
-        </View>
-        <TokenListSection />
-      </ScrollView>
+          <TokenListSection />
+        </ScrollView>
+      </ImageBackground>
     </SafeAreaView>
   );
 };

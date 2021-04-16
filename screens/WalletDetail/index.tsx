@@ -78,7 +78,7 @@ export default () => {
     if (!walletItem) {
       return parseCardAvatar(0);
     }
-    return parseCardAvatar(walletItem.cardAvatarID || 0);
+    return parseCardAvatar(cardAvatarID || 0);
   }
 
   const removeWallet = async () => {
@@ -113,7 +113,6 @@ export default () => {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
       <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
-      <CardTypeModal cardAvatarID={cardAvatarID} visible={showCardTypeModal} onClose={() => setShowCardTypeModal(false)} />
       <AuthModal
         visible={requestAuth}
         onClose={() => {
@@ -241,7 +240,7 @@ export default () => {
             </TouchableWithoutFeedback>
             <View style={{ flex: 1 }}>
               <ScrollView horizontal ref={scrollRef}>
-                {[0, 1, 2, 3, 4, 5, 6].map((item, index) => {
+                {[0, 1, 2, 3, 4, 5].map((item, index) => {
                   return (
                     <TouchableOpacity key={`card-${index}`} onPress={() => setCardAvatarID(index)}>
                       <ImageBackground
@@ -305,14 +304,24 @@ export default () => {
             textAlign: 'center',
             fontSize: 22,
             fontWeight: 'bold',
-            marginVertical: 20,
+            marginTop: 20,
             color: theme.textColor,
           }}>
-          {getLanguageString(language, 'ARE_YOU_SURE')}
+          {getLanguageString(language, 'CONFIRM_REMOVE_TITLE')}
+        </Text>
+        <Text
+          allowFontScaling={false}
+          style={{
+            textAlign: 'center',
+            fontSize: 15,
+            marginBottom: 20,
+            color: theme.mutedTextColor,
+          }}>
+          {getLanguageString(language, 'CONFIRM_REMOVE_WALLET')}
         </Text>
         <Button
           block
-          title={getLanguageString(language, 'CANCEL')}
+          title={getLanguageString(language, 'KEEP_IT')}
           type="outline"
           textStyle={{
             fontWeight: 'bold',
@@ -321,7 +330,7 @@ export default () => {
         />
         <Button
           block
-          title={getLanguageString(language, 'CONFIRM')}
+          title={getLanguageString(language, 'DELETE_NOW')}
           type="ghost"
           style={{
             marginTop: 12,
