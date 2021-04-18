@@ -178,8 +178,8 @@ export default () => {
                         onPress={() => setRequestAuth(true)}
                         name="lock"
                         color={theme.textColor}
-                        size={20}
-                        style={{marginRight: 8}}
+                        size={22}
+                        style={{marginRight: 12}}
                       />
                       <IconButton
                         onPress={() => setShowRemoveConfirm(true)}

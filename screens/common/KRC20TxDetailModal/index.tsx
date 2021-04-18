@@ -1,7 +1,7 @@
 import {format} from 'date-fns';
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, Linking, TouchableOpacity} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {addressBookAtom} from '../../../atoms/addressBook';
 import {languageAtom} from '../../../atoms/language';
@@ -21,6 +21,7 @@ import {
   getFromAddressBook,
   getAddressAvatar,
   truncate,
+  getTxURL,
 } from '../../../utils/string';
 import NewAddressModal from '../NewAddressModal';
 import {styles} from './style';
@@ -61,6 +62,16 @@ export default ({
     return (
       getFromAddressBook(addressBook, getOtherAddress()) === getOtherAddress()
     );
+  };
+
+  const handleClickLink = (url: string) => {
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        console.error("Don't know how to open URI: " + url);
+      }
+    });
   };
 
   const getOtherAddress = () => {
@@ -231,7 +242,9 @@ export default ({
             {txObj.tokenSymbol}
           </Text>
         </View>
-        <Text allowFontScaling={false} style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</Text>
+        <TouchableOpacity onPress={() => handleClickLink(getTxURL(txObj.hash))}>
+          <Text allowFontScaling={false} style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</Text>
+        </TouchableOpacity>
         <View>
           <View
             style={{
