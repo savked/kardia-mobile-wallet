@@ -33,7 +33,7 @@ const CustomImagePicker = ({
         text: 'Take picture...',
         onPress: () =>
           launchCamera({mediaType: 'photo', durationLimit: 120, includeBase64: true}, (response) => {
-            const source = {uri: response.base64};
+            const source = {uri: `data:image/png;base64,${response.base64}`};
             onSelect && onSelect(source);
           }),
       },
@@ -43,9 +43,9 @@ const CustomImagePicker = ({
           launchImageLibrary(
             // TODO: Check for library error fixing
             // @ts-ignore
-            {mediaType: 'photo', durationLimit: 120},
+            {mediaType: 'photo', durationLimit: 120, includeBase64: true},
             (response) => {
-              const source = {uri: response.uri};
+              const source = {uri: `data:image/png;base64,${response.base64}`};
               onSelect && onSelect(source);
             },
           );
