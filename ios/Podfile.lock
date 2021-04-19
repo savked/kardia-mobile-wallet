@@ -260,8 +260,6 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
-  - react-native-webview (11.3.2):
-    - React-Core
   - React-RCTActionSheet (0.63.3):
     - React-Core/RCTActionSheetHeaders (= 0.63.3)
   - React-RCTAnimation (0.63.3):
@@ -394,7 +392,6 @@ DEPENDENCIES:
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
-  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `../node_modules/react-native/Libraries/Blob`)
@@ -482,8 +479,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
-  react-native-webview:
-    :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
     :path: "../node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
@@ -565,7 +560,6 @@ SPEC CHECKSUMS:
   react-native-randombytes: b6677f7d495c27e9ee0dbd77ebc97b3c59173729
   react-native-restart: a01029aadfe8e71f9e8205fdb17da2f0a4472d50
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
-  react-native-webview: 71567b6bf3d4e55914e580d720cc8f7df64af817
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
   React-RCTAnimation: 1befece0b5183c22ae01b966f5583f42e69a83c2
   React-RCTBlob: 0b284339cbe4b15705a05e2313a51c6d8b51fa40
