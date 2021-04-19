@@ -198,8 +198,8 @@ export default ({
             position: 'absolute',
             top: -67,
 
-            borderWidth: 1,
-            borderColor: 'gray',
+            // borderWidth: 1,
+            // borderColor: 'gray',
           }}>
           {txObj.type === 'IN' ? (
             <Image
@@ -248,7 +248,7 @@ export default ({
             </Text>
           </View>
         </View>
-        <Divider />
+        <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
         <View style={{justifyContent: 'flex-start', width: '100%'}}>
           <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'FROM')}
@@ -266,7 +266,7 @@ export default ({
             ? renderOwnAddress(txObj.to)
             : renderOtherAddress(txObj.to)}
         </View>
-        <Divider />
+        <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
         <View style={{justifyContent: 'flex-start', width: '100%'}}>
           <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'TRANSACTION_FEE')}
@@ -275,7 +275,7 @@ export default ({
             {parseKaiBalance(txObj.txFee, true)} KAI
           </Text>
         </View>
-        <Divider />
+        <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
         <Button
           title={getLanguageString(language, 'OK_TEXT')}
           type="primary"

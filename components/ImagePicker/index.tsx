@@ -11,6 +11,9 @@ import {
   ImageStyle,
 } from 'react-native';
 import styles from './style';
+import { getLanguageString } from '../../utils/lang';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../atoms/language';
 
 const CustomImagePicker = ({
   image,
@@ -27,31 +30,42 @@ const CustomImagePicker = ({
   style?: StyleProp<ViewStyle>;
   imageStyle?: StyleProp<ImageStyle>;
 }) => {
+  const language = useRecoilValue(languageAtom);
   const pickImage = () => {
     Alert.alert(pickerTitle, '', [
       {
-        text: 'Take picture...',
+        text: getLanguageString(language, 'TAKE_PICTURE'),
         onPress: () =>
           launchCamera({mediaType: 'photo', durationLimit: 120, includeBase64: true}, (response) => {
-            const source = {uri: `data:image/png;base64,${response.base64}`};
-            onSelect && onSelect(source);
+            if (onSelect && response.base64) {
+              const source = {uri: `data:image/png;base64,${response.base64}`};
+              onSelect(source);
+            }
           }),
       },
       {
-        text: 'Choose from library',
+        text: getLanguageString(language, 'CHOOSE_FROM_LIBRARY'),
         onPress: () => {
           launchImageLibrary(
             // TODO: Check for library error fixing
             // @ts-ignore
             {mediaType: 'photo', durationLimit: 120, includeBase64: true},
             (response) => {
-              const source = {uri: `data:image/png;base64,${response.base64}`};
-              onSelect && onSelect(source);
+              if (onSelect && response.base64) {
+                const source = {uri: `data:image/png;base64,${response.base64}`};
+                onSelect(source);
+              }
             },
           );
         },
       },
-    ]);
+      {
+        text: getLanguageString(language, 'CANCEL'),
+        style: "cancel",
+      },
+    ], {
+      cancelable: true,
+    });
   };
   if (image.uri) {
     return (
