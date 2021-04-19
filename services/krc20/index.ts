@@ -112,3 +112,27 @@ export const transferKRC20 = async (
 
   return krc20.transfer(privateKey, to, amount, transferPayload);
 };
+
+export const getVerifiedTokenList = async () => {
+  const requestOptions = {
+    method: 'GET',
+    redirect: 'follow',
+  };
+  const response = await requestWithTimeOut(
+    fetch(`${ENDPOINT}contracts?page=1&limit=25&type=KRC20&status=Verified`, requestOptions),
+    50 * 1000,
+  );
+  const responseJSON = await response.json();
+  const tokenList: KRC20[] = responseJSON.data.data.map((item: any) => {
+    return {
+      id: item.address,
+      name: item.name,
+      address: item.address,
+      symbol: item.tokenSymbol,
+      avatar: item.logo,
+      decimals: item.decimal,
+    }
+  });
+
+  return tokenList;
+}

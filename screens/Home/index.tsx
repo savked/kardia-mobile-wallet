@@ -29,6 +29,8 @@ import {tokenInfoAtom} from '../../atoms/token';
 import {weiToKAI} from '../../services/transaction/amount';
 import Button from '../../components/Button';
 import { SIMPLEX_URL } from '../../config';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { HEADER_HEIGHT } from '../../theme';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
@@ -45,6 +47,7 @@ const HomeScreen = () => {
   );
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+  const tabBarHeight = useBottomTabBarHeight();
 
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
@@ -153,7 +156,7 @@ const HomeScreen = () => {
       <ImageBackground
         source={require('../../assets/home_background.jpg')}
         imageStyle={{width: viewportWidth, height: viewportHeight, resizeMode: 'cover', marginLeft: 20}}
-        style={{width: viewportWidth, height: viewportHeight}}
+        style={{width: viewportWidth, height: viewportHeight - tabBarHeight - HEADER_HEIGHT - 48}}
       >
         <ScrollView 
           style={[styles.bodyContainer]} 

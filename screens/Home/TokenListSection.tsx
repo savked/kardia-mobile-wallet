@@ -75,7 +75,7 @@ const TokenListSection = () => {
   };
 
   const renderTokenList = () => {
-    return tokenList.map((item, index) => {
+    return tokenList.slice(0, 5).map((item, index) => {
       return <View
         key={item.name}
         style={{

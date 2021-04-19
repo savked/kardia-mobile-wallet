@@ -12,7 +12,7 @@ import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {krc20ListAtom} from '../../atoms/krc20';
 import {languageAtom} from '../../atoms/language';
 import {DEFAULT_KRC20_TOKENS} from '../../config';
-import {getBalance} from '../../services/krc20';
+import {getBalance, getVerifiedTokenList} from '../../services/krc20';
 import {ThemeContext} from '../../ThemeContext';
 import {getLanguageString} from '../../utils/lang';
 import {
@@ -76,6 +76,19 @@ const TokenDetail = () => {
       (i) => i.address !== _tokenAddress && !DEFAULT_ID.includes(i.address),
     );
     await saveTokenList(newLocalTokens);
+
+    const verifiedTokenList = await getVerifiedTokenList();
+    // Merge verified tokens with custom tokens
+    for (let tIndex = 0; tIndex < verifiedTokenList.length; tIndex++) {
+      const verifiedToken = verifiedTokenList[tIndex];
+      const index = newLocalTokens.findIndex((i) => i.address === verifiedToken.address)
+      if (index > 0) {
+        newLocalTokens[index] = verifiedToken
+      } else {
+        newLocalTokens.push(verifiedToken)
+      }
+    }
+
     setTokenList(newLocalTokens);
     navigation.goBack();
   };

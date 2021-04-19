@@ -156,7 +156,7 @@ export default () => {
                       fontWeight: 'bold',
                       fontSize: 16,
                     }}>
-                    {item.name}
+                    {item.symbol}
                   </Text>
                 </View>
                 <View

@@ -36,6 +36,7 @@ import {krc20ListAtom} from '../../atoms/krc20';
 import HomeStackScreen from '../../HomeStack';
 import AddressStackScreen from '../../AddressStack';
 import {showTabBarAtom} from '../../atoms/showTabBar';
+import { getVerifiedTokenList } from '../../services/krc20';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -284,6 +285,19 @@ const AppContainer = () => {
 
       // Get local KRC20 list
       const krc20List = await getTokenList();
+      const verifiedTokenList = await getVerifiedTokenList();
+
+      // Merge verified tokens with custom tokens
+      for (let tIndex = 0; tIndex < verifiedTokenList.length; tIndex++) {
+        const verifiedToken = verifiedTokenList[tIndex];
+        const index = krc20List.findIndex((i) => i.address === verifiedToken.address)
+        if (index > 0) {
+          krc20List[index] = verifiedToken
+        } else {
+          krc20List.push(verifiedToken)
+        }
+      }
+
       setKRC20TokenList(krc20List);
 
       setInited(1);
