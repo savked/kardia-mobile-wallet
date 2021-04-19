@@ -9,7 +9,7 @@ import Modal from '../../../components/Modal';
 import TextAvatar from '../../../components/TextAvatar';
 import TextInput from '../../../components/TextInput';
 import {ThemeContext} from '../../../ThemeContext';
-import {getLanguageString} from '../../../utils/lang';
+import {getLanguageString, parseError} from '../../../utils/lang';
 import {getDigit, isNumber, format, parseKaiBalance, parseDecimals} from '../../../utils/number';
 import {styles} from './style';
 import {weiToKAI} from '../../../services/transaction/amount';
@@ -149,6 +149,11 @@ export default ({
     return null;
   }
 
+  const _getBalance = () => {
+    if (!wallets[selectedWallet]) return 0;
+    return wallets[selectedWallet].balance;
+  }
+
   const getSelectedCommission = () => {
     const formatted = numeral(validatorItem.commissionRate).format('0,0.00');
     return formatted === 'NaN' ? '0 %' : `${formatted} %`;
@@ -245,6 +250,11 @@ export default ({
     } catch (err) {
       console.error(err);
       setDelegating(false);
+      if (err.message) {
+        setAmountError(parseError(err.message, language));
+      } else {
+        setAmountError(getLanguageString(language, 'GENERAL_ERROR'));
+      }
     }
   };
 
@@ -263,13 +273,13 @@ export default ({
       return {
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
-        height: 530,
+        height: 570,
       };
     } else {
       return {
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
-        height: 530,
+        height: 570,
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,
       };
@@ -289,12 +299,12 @@ export default ({
         <View style={{flex: 1, width: '100%'}}>
           <View style={{width: '100%'}}>
             <View style={{marginBottom: 4, flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={{color: theme.textColor}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor}}>
                 {getLanguageString(language, 'STAKING_AMOUNT')}
               </Text>
-              <TouchableOpacity onPress={() => setAmount(parseDecimals(wallets[selectedWallet].balance, 18).toString())}>
-                <Text style={{color: theme.urlColor}}>
-                  {parseKaiBalance(wallets[selectedWallet].balance)} KAI
+              <TouchableOpacity onPress={() => setAmount(parseDecimals(_getBalance(), 18).toString())}>
+                <Text allowFontScaling={false} style={{color: theme.urlColor}}>
+                  {parseKaiBalance(_getBalance())} KAI
                 </Text>
               </TouchableOpacity>
             </View>
@@ -362,7 +372,7 @@ export default ({
           </View>
           <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
           <View style={{width: '100%'}}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
               <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'COMMISSION_RATE')}
               </Text>
@@ -370,7 +380,7 @@ export default ({
                 {getSelectedCommission()}
               </Text>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
               <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
               </Text>
@@ -378,7 +388,7 @@ export default ({
                 {getSelectedStakedAmount()}
               </Text>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
               <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'VOTING_POWER')}
               </Text>
@@ -386,7 +396,7 @@ export default ({
                 {getSelectedVotingPower()}
               </Text>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
               <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'ESTIMATED_EARNING')}
               </Text>
@@ -395,7 +405,7 @@ export default ({
                 {estimatedProfit ? 'KAI' : ''}
               </Text>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
               <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'ESTIMATED_APR')}
               </Text>

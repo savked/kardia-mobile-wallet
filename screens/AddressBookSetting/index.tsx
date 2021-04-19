@@ -56,18 +56,21 @@ const AddressBookSetting = () => {
       {groupByAlphabet(addressBook, 'name').length === 0 && (
         <View style={styles.noAddressContainer}>
           <Image
-            style={{width: 170, height: 156, marginBottom: 23}}
+            style={{width: 170, height: 156, marginBottom: 23, marginTop: 70}}
             source={require('../../assets/no_address_dark.png')}
           />
           <Text allowFontScaling={false} style={[styles.emptyAddressBook, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS')}
+          </Text>
+          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32, textAlign: 'center'}}>
+            {getLanguageString(language, 'NO_SAVED_ADDRESS_SUB_TEXT')}
           </Text>
           <Button
             type="primary"
             // onPress={() => navigation.navigate('NewAddress')}
             onPress={() => setShowNewAddressModal(true)}
             title={getLanguageString(language, 'ADD_NEW_ADDRESS')}
-            block={true}
+            style={{width: 248}}
             icon={
               <AntIcon
                 name="plus"
@@ -154,13 +157,15 @@ const AddressBookSetting = () => {
           );
         })}
       </ScrollView>
-      <Button
-        type="primary"
-        icon={<AntIcon name="plus" size={24} />}
-        size="small"
-        onPress={() => setShowNewAddressModal(true)}
-        style={styles.floatingButton}
-      />
+      {addressBook.length !== 0 && (
+        <Button
+          type="primary"
+          icon={<AntIcon name="plus" size={24} />}
+          size="small"
+          onPress={() => setShowNewAddressModal(true)}
+          style={styles.floatingButton}
+        />
+      )}
     </SafeAreaView>
   );
 };

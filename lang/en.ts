@@ -6,6 +6,9 @@ export const lang: Language = {
   tag: ['en_US', 'US', 'en', 'US English'],
   mapping: {
     // Common key:
+    KEEP_IT: 'Keep it',
+    DELETE_NOW: 'Delete Now',
+    DONE: 'Done',
     BUY_KAI: 'Buy KAI',
     OK_TEXT: 'Ok! Got it',
     BALANCE: 'Balance',
@@ -29,6 +32,8 @@ export const lang: Language = {
     RESTART_APP_DESCRIPTION:
       'Kardia Wallet will now restart to ensure everything works properly.',
     ARE_YOU_SURE: 'Are you sure?',
+    CONFIRM_REMOVE_TITLE: 'Delete Wallet',
+    CONFIRM_REMOVE_WALLET: 'Remove this wallet from the device. Are you sure?',
     SAVE: 'Save',
     CLOSE: 'Close',
     CONFIRM: 'Confirm',
@@ -37,7 +42,7 @@ export const lang: Language = {
     SCAN_QR_FOR_ADDRESS_DESCRIPTION:
       'Scan QR code containing address to import',
     ERC20_WARNING:
-      'Please DO NOT send KAI Token from ERC20 wallet to this wallet.',
+      'Please DO NOT send ERC20 KAI to this wallet.',
     LATER: 'Later',
     SET_APP_PASSCODE: 'Set Passcode',
     NO_PASSCODE: "You haven't set your app passcode yet.",
@@ -46,7 +51,8 @@ export const lang: Language = {
     IMPORT_WITH_PRIVATE_KEY: 'Import with Private Key',
     IMPORT_WITH_SEED: 'Import with Seed Phrase',
     SELECT_ADDRESS: 'Select Address',
-    NO_SAVED_ADDRESS: 'No Contact',
+    NO_SAVED_ADDRESS: 'No Address',
+    NO_SAVED_ADDRESS_SUB_TEXT: 'Make transactions and save your favourite addresses here.',
     ADD_NEW_ADDRESS: 'Add new',
     SAVE_TO_ADDRESS_BOOK: 'Save address',
     INVALID_ADDRESS: 'Invalid address',
@@ -76,6 +82,7 @@ export const lang: Language = {
     // Transaction key
     RECENT_TRANSACTION: 'Recent Transactions',
     NO_TRANSACTION: 'No transaction',
+    NO_TRANSACTION_SUB_TEXT: 'Hello!? Anybody home ??',
     SEARCH_TRANSACTION_PLACEHOLDER:
       'Search with address / hash / block number...',
     VIEW_ALL: 'View All',
@@ -94,7 +101,7 @@ export const lang: Language = {
     TRANSACTION_DATE: 'Transaction Date',
     CREATE_TX_ADDRESS: 'Send to Address',
     CREATE_KRC20_TX_ADDRESS: 'Send to Address',
-    CREATE_TX_KAI_AMOUNT: 'Amount (maximum: 5,000,000,000)',
+    CREATE_TX_KAI_AMOUNT: 'Amount',
     CREATE_TX_KRC20_AMOUNT: 'Amount',
     TRANSACTION_SPEED: 'Choose Transaction Speed',
     SLOW_SPEED: 'Slow',
@@ -114,11 +121,14 @@ export const lang: Language = {
     WALLET: 'Wallet',
     ADDRESS: 'Address',
     REMOVE_WALLET: 'Remove Wallet',
+    NEW_WALLET: 'New Wallet',
     // News key
     NEWS_SCREEN_TITLE: 'News',
     // Staking key
     STAKING_TITLE: 'Staking',
-    NO_STAKING_ITEM: "You haven't staked for any validator yet.",
+    NO_STAKING: 'No Staking?',
+    NO_STAKING_ITEM: "You haven't staked for any validator yet? What are you waiting for?",
+    STAKE_NOW: 'Stake Now',
     CLAIMABLE: 'Claimable KAI',
     STAKED: 'Staked KAI',
     WITHDRAWABLE: 'Withdrawable KAI',
@@ -140,7 +150,7 @@ export const lang: Language = {
     YOUR_INVESTMENTS: 'Your Delegated Investments',
     TOTAL_EARNING: 'Your Total Earnings', // Your Total Return?
     INVEST: 'Stake Now',
-    CHOOSE_VALIDATOR: 'Choose Validator',
+    CHOOSE_VALIDATOR: 'Choose a Validator',
     STAKING_AMOUNT: 'Amount to Stake',
     STAKING_AMOUNT_NOT_ENOUGHT: 'Not enough KAI to stake.',
     AT_LEAST_MIN_DELEGATE: 'Must delegate at least {{MIN_KAI}} KAI',
@@ -158,12 +168,12 @@ export const lang: Language = {
     TODAY: 'Today',
     EARLIER: 'Earlier',
     // Setting key
-    SETTING_SCREEN_TITLE: 'Setting',
+    SETTING_SCREEN_TITLE: 'Settings',
     ADDRESS_BOOK_MENU: 'Address Book',
-    LANGUAGE_MENU: 'Language Setting',
+    LANGUAGE_MENU: 'Language Settings',
     LANGUAGE_SETTING_TITLE: 'Languages',
     SECRET_PHRASE_MENU: 'Export Secret Credential',
-    PASSCODE_MENU: 'App Passcode Setting',
+    PASSCODE_MENU: 'App Passcode Settings',
     INFO_MENU: 'About KardiaChain Wallet',
     MNEMONIC_SETTING_TITLE: 'Secret Credential',
     SHOW_SECRET_TEXT: 'Show my Credential',
@@ -200,6 +210,7 @@ export const lang: Language = {
     RECEIVE_TOKEN: 'Receive {{TOKEN_SYMBOL}}',
     REMOVE_TOKEN: 'Remove token',
     NO_TOKENS: 'No Tokens',
+    NO_TOKENS_SUB_TEXT: 'Add your tokens and manage them easily.',
     ERROR_FETCH_KRC20_DATA: "Couldn't get tokens data.",
     // Auth modal key
     ENTER_PIN_CODE: 'Enter your PIN to process',
@@ -220,6 +231,14 @@ export const lang: Language = {
     TRANSACTIONS: 'Transactions',
     STAKING: 'Staking',
     ADDRESS_BOOK: 'Address',
-    SETTING: 'Setting',
+    SETTING: 'Settings',
+    // Walk through screen:
+    START_NOW: 'Start now',
+    EASY: 'Easy',
+    INSTANT: 'Instant',
+    SECURE: 'Secure',
+    EASY_DESC: 'Easily create or import you wallet in just a few steps.',
+    INSTANT_DESC: 'Send and receive your crypto currencies within a blink of an eye.',
+    SECURE_DESC: 'Protect your digital assets with state-of-the-art blockchain technology.',
   },
 };

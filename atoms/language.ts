@@ -13,6 +13,7 @@ const _deviceLanguage =
 const supportedLanguage = getSupportedLanguage();
 supportedLanguage.forEach((item) => {
   if (item.tag?.includes(_deviceLanguage)) {
+    console.log('here')
     deviceLanguage = item.key!;
   }
 });

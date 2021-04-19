@@ -64,18 +64,23 @@ const NewAddress = () => {
     setShowModal(true);
   };
 
+  if (showModal) {
+    return (
+      <ScanQRAddressModal
+        visible={showModal}
+        onClose={() => setShowModal(false)}
+        onScanned={(_address) => {
+          setAddress(_address);
+          setShowModal(false);
+        }}
+      />
+    )
+  }
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View
         style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-        <ScanQRAddressModal
-          visible={showModal}
-          onClose={() => setShowModal(false)}
-          onScanned={(_address) => {
-            setAddress(_address);
-            setShowModal(false);
-          }}
-        />
         <View style={styles.avatarPickerContainer}>
           <CustomImagePicker image={avatar} onSelect={setAvatar} />
         </View>

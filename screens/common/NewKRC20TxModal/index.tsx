@@ -20,6 +20,7 @@ import {getLanguageString, parseError} from '../../../utils/lang';
 import {toChecksum, truncate} from '../../../utils/string';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import {
+  getBalance,
   getBalance as getKRC20Balance,
   transferKRC20,
 } from '../../../services/krc20';
@@ -55,6 +56,7 @@ const NewKRC20TxModal = ({
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const [address, setAddress] = useState('');
   const [amount, setAmount] = useState('0');
+  const [balance, setBalance] = useState(0);
   const [showQRModal, setShowQRModal] = useState(false);
   const [showAddressBookModal, setShowAddressBookModal] = useState(false);
   const [gasPrice, setGasPrice] = useState(1);
@@ -70,7 +72,14 @@ const NewKRC20TxModal = ({
 
   const language = useRecoilValue(languageAtom);
 
+  const _getKRC20Balance = async () => {
+    const balance = await getBalance(tokenAddress, wallets[selectedWallet].address);
+    setBalance(balance)
+  }
+
   useEffect(() => {
+    _getKRC20Balance();
+
     if (Platform.OS === 'ios') {
       Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
       Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
@@ -136,7 +145,7 @@ const NewKRC20TxModal = ({
         setError(parseError(err.message, language));
       } else {
         console.error(err);
-        setError('Error happen');
+        setError(getLanguageString(language, 'GENERAL_ERROR'));
       }
       setLoading(false);
     }
@@ -202,6 +211,11 @@ const NewKRC20TxModal = ({
       };
     }
   };
+
+  const _getBalance = () => {
+    if (!wallets[selectedWallet]) return 0;
+    return wallets[selectedWallet].balance;
+  }
 
   if (showQRModal) {
     return (
@@ -369,6 +383,14 @@ const NewKRC20TxModal = ({
           </View>
 
           <View style={{marginBottom: 10}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor, marginBottom: 5, fontWeight: 'bold'}}>{getLanguageString(language, 'CREATE_TX_KRC20_AMOUNT')}</Text>
+              <TouchableOpacity onPress={() => setAmount(format(parseDecimals(_getBalance(), 18)))}>
+                <Text allowFontScaling={false} style={{color: theme.urlColor}}>
+                  {parseDecimals(balance, tokenDecimals)} {tokenSymbol}
+                </Text>
+              </TouchableOpacity>
+            </View>
             <TextInput
               // headlineStyle={{color: 'black'}}
               keyboardType="numeric"
@@ -386,11 +408,16 @@ const NewKRC20TxModal = ({
                   setAmount('0');
                   return;
                 }
-                isNumber(digitOnly) && setAmount(digitOnly);
+                if (isNumber(digitOnly)) {
+                  let formatedValue = format((Number(digitOnly)));
+                  if (newAmount[newAmount.length - 1] === '.') formatedValue += '.'
+                  setAmount(formatedValue);
+                }
+                // isNumber(digitOnly) && setAmount(digitOnly);
               }}
-              onBlur={() => setAmount(format(Number(amount)))}
+              onBlur={() => setAmount(format(Number(getDigit(amount))))}
               value={amount}
-              headline={getLanguageString(language, 'CREATE_TX_KRC20_AMOUNT')}
+              // headline={getLanguageString(language, 'CREATE_TX_KRC20_AMOUNT')}
             />
           </View>
 

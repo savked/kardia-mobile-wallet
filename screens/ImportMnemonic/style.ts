@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
   },
   mnemonicInput: {
     minWidth: 60,
+    height: 36,
     borderColor: 'transparent',
     textAlign: 'center',
   },

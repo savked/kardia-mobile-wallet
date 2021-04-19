@@ -9,16 +9,16 @@ import Button from '../../components/Button';
 import {ThemeContext} from '../../ThemeContext';
 import {getLanguageString} from '../../utils/lang';
 import {styles} from './style';
-import {useNavigation} from '@react-navigation/core';
 
 const Step2 = ({
   step1Passcode,
   onConfirm,
+  goBack,
 }: {
   step1Passcode: string;
   onConfirm: () => void;
+  goBack: () => void;
 }) => {
-  const navigation = useNavigation();
   const language = useRecoilValue(languageAtom);
   const theme = useContext(ThemeContext);
   const [passcode, setPasscode] = useState('');
@@ -44,7 +44,7 @@ const Step2 = ({
         }}>
         <ENIcon.Button
           name="chevron-left"
-          onPress={() => navigation.goBack()}
+          onPress={goBack}
           backgroundColor="transparent"
           style={{padding: 0, marginBottom: 18}}
         />

@@ -48,6 +48,7 @@ const ScanQRAddressModal = ({
           topViewStyle={{height: 0}}
           bottomViewStyle={{height: 10}}
           cameraStyle={{height: viewportHeight}}
+          cameraProps={{useCamera2Api: true}}
         />
         <Image
           source={require('../../../assets/qr_background.png')}

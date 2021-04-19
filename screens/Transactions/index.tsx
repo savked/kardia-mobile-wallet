@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View, Image} from 'react-native';
+import {Text, TouchableOpacity, View, Image, ActivityIndicator} from 'react-native';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
@@ -27,6 +27,8 @@ import { HEADER_HEIGHT } from '../../theme';
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
+
+  const [loading, setLoading] = useState(false);
 
   const [wallets] = useRecoilState(walletsAtom);
   const [selectedWallet] = useRecoilState(selectedWalletAtom);
@@ -82,6 +84,7 @@ const TransactionScreen = () => {
         1000,
       );
       setTxList(newTxList.map(parseTXForList));
+      setLoading(false)
     } catch (error) {
       console.error(error);
     }
@@ -137,6 +140,7 @@ const TransactionScreen = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     getTX();
     const getTxInterval = setInterval(() => {
       getTX();
@@ -144,6 +148,15 @@ const TransactionScreen = () => {
     return () => clearInterval(getTxInterval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (loading) {
+    return (
+      <SafeAreaView
+        style={[styles.container, {backgroundColor: theme.backgroundColor, alignItems: 'center', justifyContent: 'center'}]}>
+          <ActivityIndicator color={theme.textColor} size="large" />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView
@@ -171,7 +184,7 @@ const TransactionScreen = () => {
       {groupByDate(txList, 'date').length === 0 && (
         <View style={styles.noTXContainer}>
           <Image
-            style={{width: 87, height: 66, marginBottom: 23}}
+            style={{width: 87, height: 66, marginBottom: 23, marginTop: 70}}
             source={require('../../assets/no_tx_butterfly.png')}
           />
           <Image
@@ -181,11 +194,14 @@ const TransactionScreen = () => {
           <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
           </Text>
+          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32}}>
+            {getLanguageString(language, 'NO_TRANSACTION_SUB_TEXT')}
+          </Text>
           <Button
             type="primary"
             onPress={() => setShowNewTxModal(true)}
             title={getLanguageString(language, 'SEND_NOW')}
-            block={true}
+            style={{width: 248}}
             icon={
               <AntIcon
                 name="plus"

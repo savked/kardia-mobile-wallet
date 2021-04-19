@@ -50,9 +50,10 @@ export const styles = StyleSheet.create({
   },
   noAddressContainer: {
     flex: 1,
-    paddingHorizontal: 83,
+    paddingHorizontal: 47,
     alignItems: 'center',
     justifyContent: 'center',
+    marginVertical: 138,
   },
   noAvatarContainer: {
     width: 32,

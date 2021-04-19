@@ -144,6 +144,11 @@ const NewStaking = () => {
     return formatted === 'NaN' ? '0 %' : `${formatted} %`;
   };
 
+  const _getBalance = () => {
+    if (!wallets[selectedWallet]) return 0;
+    return wallets[selectedWallet].balance;
+  }
+
   const delegateHandler = async () => {
     setAmountError('');
     try {
@@ -159,7 +164,7 @@ const NewStaking = () => {
 
       if (
         Number(getDigit(amount)) >
-        Number(weiToKAI(wallets[selectedWallet].balance))
+        Number(weiToKAI(_getBalance()))
       ) {
         setAmountError(
           getLanguageString(language, 'STAKING_AMOUNT_NOT_ENOUGHT'),

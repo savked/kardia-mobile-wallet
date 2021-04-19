@@ -1,11 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {Text, View} from 'react-native';
+import {ActivityIndicator, Alert, Text, TouchableOpacity, View} from 'react-native';
 import Divider from '../../../components/Divider';
 import Modal from '../../../components/Modal';
 import TextAvatar from '../../../components/TextAvatar';
 import {ThemeContext} from '../../../ThemeContext';
-import {getLanguageString} from '../../../utils/lang';
+import {getLanguageString, parseError} from '../../../utils/lang';
 import numeral from 'numeral';
 import {styles} from './style';
 import {useRecoilValue} from 'recoil';
@@ -13,9 +13,13 @@ import {languageAtom} from '../../../atoms/language';
 import {weiToKAI} from '../../../services/transaction/amount';
 import Button from '../../../components/Button';
 import {getSelectedWallet, getWallets} from '../../../utils/local';
-import {withdrawReward} from '../../../services/staking';
+import {withdrawDelegatedAmount, withdrawReward} from '../../../services/staking';
 import { useNavigation } from '@react-navigation/native';
 import UndelegateModal from '../UndelegateModal';
+
+const showWithdraw = (value: any) => {
+  return numeral(value).format('0,0.00') !== '0.00'
+}
 
 export default ({
   validatorItem,
@@ -72,8 +76,55 @@ export default ({
       onClose();
     } catch (err) {
       console.error(err);
+      setClaiming(false);
+      if (err.message) {
+        Alert.alert(parseError(err.message, language));
+      } else {
+        Alert.alert(getLanguageString(language, 'GENERAL_ERROR'));
+      }
       // showModal(getLanguageString(language, 'GENERAL_ERROR'), 'error', () => {
       //   setClaiming(false);
+      // });
+    }
+  };
+
+  const withdrawHandler = async () => {
+    try {
+      setWithdrawing(true);
+      const wallets = await getWallets();
+      const selectedWallet = await getSelectedWallet();
+      const rs = await withdrawDelegatedAmount(validatorItem.value, wallets[selectedWallet]);
+      setWithdrawing(false);
+      navigation.navigate('Transaction', {
+        screen: 'SuccessTx',
+        params: {
+          type: 'withdraw',
+          txHash: rs.transactionHash,
+          validatorItem: validatorItem,
+          withdrawAmount: weiToKAI(validatorItem.withdrawableAmount),
+        },
+      });
+      onClose();
+      // showModal(
+      //   getLanguageString(language, 'WITHDRAW_SUCCESS').replace(
+      //     '{{KAI_AMOUNT}}',
+      //     numeral(withDrawbleInKAI).format('0,0.00'),
+      //   ),
+      //   'success',
+      //   () => {
+      //     setWithDrawing(false);
+      //   },
+      // );
+    } catch (err) {
+      console.error(err);
+      setWithdrawing(false);
+      if (err.message) {
+        Alert.alert(parseError(err.message, language));
+      } else {
+        Alert.alert(getLanguageString(language, 'GENERAL_ERROR'));
+      }
+      // showModal(getLanguageString(language, 'GENERAL_ERROR'), 'error', () => {
+      //   setWithDrawing(false);
       // });
     }
   };
@@ -107,7 +158,7 @@ export default ({
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
         padding: 20,
-        height: 500,
+        height: showWithdraw(validatorItem.withdrawableAmount) ? 500 : 450,
       }}>
       <View style={{width: '100%', marginBottom: 4}}>
         <Text allowFontScaling={false} style={{color: theme.mutedTextColor}}>Validator</Text>
@@ -155,6 +206,13 @@ export default ({
             {getSelectedStakedAmount()}
           </Text>
         </View>
+        <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
+          <TouchableOpacity onPress={() => setShowUndelegateModal(true)}>
+            <Text allowFontScaling={false} style={[{color: theme.urlColor}]}>
+              {getLanguageString(language, 'UNDELEGATE')}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.dataContainer}>
           <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'CLAIMABLE')}
@@ -163,6 +221,17 @@ export default ({
             {numeral(weiToKAI(validatorItem.claimableRewards)).format('0,0.00')}{' '}
             KAI
           </Text>
+        </View>
+        <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
+          {claiming ? (
+            <ActivityIndicator color={theme.textColor} size="small" />
+          ) : (
+            <TouchableOpacity onPress={claimHandler}>
+              <Text allowFontScaling={false} style={[{color: theme.urlColor}]}>
+                {getLanguageString(language, 'CLAIM_REWARD')}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.dataContainer}>
           <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
@@ -186,19 +255,29 @@ export default ({
         </View>
       </View>
       <Divider style={{width: '100%'}} color="#60636C" />
+      {showWithdraw(validatorItem.withdrawableAmount) && (
+        <Button
+          loading={withdrawing}
+          disabled={withdrawing}
+          title={getLanguageString(language, 'WITHDRAW')}
+          onPress={withdrawHandler}
+          type="outline"
+          style={{width: '100%', marginBottom: 12}}
+        />
+      )}
       <Button
-        title={getLanguageString(language, 'CANCEL')}
+        title={getLanguageString(language, 'OK')}
         onPress={handleClose}
-        type="outline"
-        style={{width: '100%'}}
+        // type="outline"
+        style={{width: '100%', marginBottom: 12}}
       />
-      <Button
+      {/* <Button
         title={getLanguageString(language, 'UNDELEGATE')}
         onPress={() => setShowUndelegateModal(true)}
         type="secondary"
         style={{width: '100%', marginVertical: 12}}
-      />
-      <Button
+      /> */}
+      {/* <Button
         style={{width: '100%'}}
         loading={claiming}
         disabled={claiming || withdrawing}
@@ -206,7 +285,7 @@ export default ({
         type="primary"
         size="small"
         onPress={claimHandler}
-      />
+      /> */}
     </Modal>
   );
 };

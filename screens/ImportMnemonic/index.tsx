@@ -1,25 +1,29 @@
-import {useNavigation, useRoute} from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
-import {Dimensions, Image, Text, TouchableOpacity, View} from 'react-native';
-import {useRecoilValue} from 'recoil';
-import {languageAtom} from '../../atoms/language';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, Image, Keyboard, KeyboardAvoidingView, Platform, Text, TouchableOpacity, View } from 'react-native';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../atoms/language';
 import IconButton from '../../components/IconButton';
-import {theme} from '../../theme/dark';
-import {getLanguageString} from '../../utils/lang';
-import {styles} from './style';
+import { theme } from '../../theme/dark';
+import { getLanguageString } from '../../utils/lang';
+import { styles } from './style';
 import ScanMode from './ScanMode';
 import InputMode from './InputMode';
 import { saveAppPasscodeSetting } from '../../utils/local';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 // import {RNCamera} from 'react-native-camera';
 
-const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window');
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
 export default () => {
-  const {params} = useRoute();
+  const { params } = useRoute();
 
   const navigation = useNavigation();
   const language = useRecoilValue(languageAtom);
+  const [keyboardShown, setKeyboardShown] = useState(false);
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const [mode, setMode] = useState('scan');
 
@@ -30,7 +34,46 @@ export default () => {
         await saveAppPasscodeSetting(false);
       }
     })()
-  }, [])
+  }, []);
+
+  const _keyboardDidShow = (e: any) => {
+    setKeyboardOffset(e.endCoordinates.height);
+    setKeyboardShown(true)
+  };
+
+  const _keyboardDidHide = () => {
+    setKeyboardOffset(0);
+    setKeyboardShown(false)
+  };
+
+  useEffect(() => {
+    if (mode === 'enter') {
+      setStatusBarColor('rgba(28, 28, 40, 0.87)');
+    } else {
+      setStatusBarColor(theme.backgroundColor)
+    }
+  }, [mode])
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
+    } else {
+      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    }
+
+    // cleanup function
+    return () => {
+      if (Platform.OS === 'ios') {
+        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
+      } else {
+        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+      }
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -56,103 +99,104 @@ export default () => {
           />
         )}
         <View
-          style={{padding: 20, alignItems: 'flex-end', width: viewportWidth}}>
+          style={{ padding: 20, alignItems: 'flex-end', width: viewportWidth }}>
           <IconButton
             name="close"
             style={styles.closeIcon}
             onPress={() => navigation.goBack()}
           />
         </View>
-        {mode === 'scan' ? (
-          <View
-            style={{
-              marginBottom: (viewportHeight - 256) / 2 - 20,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <View style={{width: 250}}>
-              <Text
-                allowFontScaling={false}
-                style={{
-                  textAlign: 'center',
-                  color: '#FFFFFF',
-                  fontWeight: 'bold',
-                  fontSize: 24,
-                  marginBottom: 4,
-                }}>
-                {getLanguageString(language, 'SCAN_QR_TITLE')}
-              </Text>
-              <Text
-                allowFontScaling={false}
-                style={{textAlign: 'center', color: '#FFFFFF', fontSize: 15}}>
-                {getLanguageString(language, 'SCAN_QR_MNEMONIC')}
-              </Text>
+        <View style={{ flex: 1, justifyContent: keyboardShown ? 'flex-start' : 'space-between', marginVertical: 40 }}>
+          {mode === 'scan' ? (
+            <View
+              style={{
+                // marginBottom: (viewportHeight - 256) / 2 - 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <View style={{ width: 250 }}>
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    textAlign: 'center',
+                    color: '#FFFFFF',
+                    fontWeight: 'bold',
+                    fontSize: 24,
+                    marginBottom: 4,
+                  }}>
+                  {getLanguageString(language, 'SCAN_QR_TITLE')}
+                </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={{ textAlign: 'center', color: '#FFFFFF', fontSize: 15 }}>
+                  {getLanguageString(language, 'SCAN_QR_MNEMONIC')}
+                </Text>
+              </View>
             </View>
-          </View>
-        ) : (
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <View style={{width: 320, marginBottom: 24}}>
-              <Text
-                allowFontScaling={false}
-                style={{
-                  textAlign: 'center',
-                  color: '#FFFFFF',
-                  fontWeight: 'bold',
-                  fontSize: 24,
-                  marginBottom: 4,
-                }}>
-                {getLanguageString(language, 'ENTER_SEED_PHRASE')}
-              </Text>
-              <Text
-                allowFontScaling={false}
-                style={{textAlign: 'center', color: '#FFFFFF', fontSize: 15}}>
-                {getLanguageString(language, 'ENTER_QR_MNEMONIC')}
-              </Text>
+          ) : (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <View style={{ width: 320, marginBottom: 24 }}>
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    textAlign: 'center',
+                    color: '#FFFFFF',
+                    fontWeight: 'bold',
+                    fontSize: 24,
+                    marginBottom: 4,
+                  }}>
+                  {getLanguageString(language, 'ENTER_SEED_PHRASE')}
+                </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={{ textAlign: 'center', color: '#FFFFFF', fontSize: 15 }}>
+                  {getLanguageString(language, 'ENTER_QR_MNEMONIC')}
+                </Text>
+              </View>
+              <View style={{ width: 320 }}>
+                <InputMode fromNoWallet={params && (params as any).fromNoWallet === true ? true : false} />
+              </View>
             </View>
-            <View style={{width: 320}}>
-              <InputMode fromNoWallet={params && (params as any).fromNoWallet === true ? true : false} />
-            </View>
-          </View>
-        )}
+          )}
 
-        <View
-          style={{
-            backgroundColor: theme.backgroundColor,
-            marginHorizontal: 20,
-            marginVertical: 40,
-            borderRadius: 12,
-            paddingVertical: 8,
-            paddingHorizontal: 12,
-            flexDirection: 'row',
-          }}>
-          <TouchableOpacity
-            onPress={() => setMode('scan')}
+          <View
             style={{
-              flex: 1,
-              backgroundColor:
-                mode === 'scan' ? theme.backgroundFocusColor : 'transparent',
-              paddingVertical: 14,
+              backgroundColor: theme.backgroundColor,
+              marginHorizontal: 20,
               borderRadius: 12,
-              alignItems: 'center',
+              paddingVertical: 8,
+              paddingHorizontal: 12,
+              flexDirection: 'row',
             }}>
-            <Text allowFontScaling={false} style={{color: theme.textColor}}>{getLanguageString(language, 'SCAN_MODE')}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setMode('enter')}
-            style={{
-              flex: 1,
-              backgroundColor:
-                mode === 'enter' ? theme.backgroundFocusColor : 'transparent',
-              paddingVertical: 14,
-              borderRadius: 12,
-              alignItems: 'center',
-            }}>
-            <Text allowFontScaling={false} style={{color: theme.textColor}}>{getLanguageString(language, 'INPUT_MODE')}</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setMode('scan')}
+              style={{
+                flex: 1,
+                backgroundColor:
+                  mode === 'scan' ? theme.backgroundFocusColor : 'transparent',
+                paddingVertical: 14,
+                borderRadius: 12,
+                alignItems: 'center',
+              }}>
+              <Text allowFontScaling={false} style={{ color: mode === 'scan' ? theme.textColor : theme.mutedTextColor }}>{getLanguageString(language, 'SCAN_MODE')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setMode('enter')}
+              style={{
+                flex: 1,
+                backgroundColor:
+                  mode === 'enter' ? theme.backgroundFocusColor : 'transparent',
+                paddingVertical: 14,
+                borderRadius: 12,
+                alignItems: 'center',
+              }}>
+              <Text allowFontScaling={false} style={{ color: mode === 'enter' ? theme.textColor : theme.mutedTextColor }}>{getLanguageString(language, 'INPUT_MODE')}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>

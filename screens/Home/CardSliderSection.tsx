@@ -39,21 +39,12 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
   const [removeIndex, setRemoveIndex] = useState(-1);
   const language = useRecoilValue(languageAtom);
 
-  // function showCredential() {
-  //   navigation.navigate('Setting', {
-  //     screen: 'MnemonicPhraseSetting',
-  //     initial: false,
-  //     params: {
-  //       from: 'Home',
-  //     },
-  //   });
-  // }
   const renderWalletItem = ({item: wallet}: any) => {
     return (
       <View style={styles.kaiCardContainer}>
         <View style={styles.kaiCard}>
           <Image
-            style={[styles.cardBackground, {width: viewportWidth - 50}]}
+            style={[styles.cardBackground, {width: viewportWidth - 40}]}
             source={parseCardAvatar(wallet.cardAvatarID)}
             // source={require('../../assets/test.jpg')}
           />
@@ -64,23 +55,23 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
               alignItems: 'center',
             }}>
             <View>
-              <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+              <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4}}>
                 {getLanguageString(language, 'BALANCE').toUpperCase()}
               </Text>
-              <Text allowFontScaling={false} style={{fontSize: 30, color: 'white'}}>
-                $
+              <Text allowFontScaling={false} style={{fontSize: 24, color: 'white'}}>
+                ~${' '}
                 {numeral(
                   tokenInfo.price *
                     (Number(weiToKAI(wallet.balance)) + wallet.staked),
-                ).format('0,0.00a')}
+                ).format('0,0.00')}
               </Text>
             </View>
-            <IconButton
+            {/* <IconButton
               onPress={() => setRemoveIndex(selectedWallet)}
               name="trash"
               color={theme.textColor}
               size={20}
-            />
+            /> */}
           </View>
 
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -95,11 +86,11 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
 
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View>
-              <Text allowFontScaling={false} style={{fontSize: 10, color: 'rgba(252, 252, 252, 0.54)'}}>
+              <Text allowFontScaling={false} style={{fontSize: 10, color: 'rgba(252, 252, 252, 0.54)', marginBottom: 4}}>
                 {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
               </Text>
               <Text allowFontScaling={false} style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.87)'}}>
-                {wallet.name || 'WALLET'}
+                {wallet.name || getLanguageString(language,'NEW_WALLET')}
               </Text>
             </View>
             <TouchableOpacity

@@ -32,8 +32,8 @@ const CustomImagePicker = ({
       {
         text: 'Take picture...',
         onPress: () =>
-          launchCamera({mediaType: 'photo', durationLimit: 120}, (response) => {
-            const source = {uri: response.uri};
+          launchCamera({mediaType: 'photo', durationLimit: 120, includeBase64: true}, (response) => {
+            const source = {uri: response.base64};
             onSelect && onSelect(source);
           }),
       },

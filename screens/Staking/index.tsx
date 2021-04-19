@@ -70,7 +70,6 @@ const StakingScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log('fired');
       getStakingData();
       setTabBarVisible(true);
       // TODO: Update after designer finish
@@ -128,49 +127,41 @@ const StakingScreen = () => {
           onPress={() => navigation.navigate('Notification')}
         />
       </View>
-      <ImageBackground
-        source={require('../../assets/address_detail_background.jpg')}
-        imageStyle={{
-          resizeMode: 'cover',
-          width: viewportWidth - 40,
-          height: 210,
-          borderRadius: 12,
-        }}
-        style={{
-          width: viewportWidth - 40,
-          height: 210,
-          borderRadius: 12,
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          paddingVertical: 32,
-        }}>
-        <Text
-          allowFontScaling={false}
-          style={[
-            styles.sectionTitle,
-            {color: theme.textColor, textAlign: 'center'},
-          ]}>
-          {getLanguageString(language, 'TOTAL_EARNING')}
-        </Text>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text allowFontScaling={false} style={[styles.totalSaving, {color: theme.textColor}]}>
-            {numeral(getTotalSaving()).format('0,0.00')}
+      {currentStaking.length > 0 && (
+        <ImageBackground
+          source={require('../../assets/address_detail_background.jpg')}
+          imageStyle={{
+            resizeMode: 'cover',
+            width: viewportWidth - 40,
+            height: 210,
+            borderRadius: 12,
+          }}
+          style={{
+            width: viewportWidth - 40,
+            height: 210,
+            borderRadius: 12,
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            paddingVertical: 32,
+          }}>
+          <Text
+            allowFontScaling={false}
+            style={[
+              styles.sectionTitle,
+              {color: theme.textColor, textAlign: 'center'},
+            ]}>
+            {getLanguageString(language, 'TOTAL_EARNING')}
           </Text>
-          <Text allowFontScaling={false} style={{fontSize: 14, color: 'rgba(252, 252, 252, 0.54)'}}>
-            KAI
-          </Text>
-        </View>
-        {/* <View style={styles.headerButtonGroup}>
-          <Button
-            title={getLanguageString(language, 'INVEST')}
-            iconName="plus"
-            type="primary"
-            // textStyle={{color: '#FFFFFF'}}
-            onPress={() => navigation.navigate('ValidatorList')}
-            style={{width: '30%'}}
-          />
-        </View> */}
-      </ImageBackground>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text allowFontScaling={false} style={[styles.totalSaving, {color: theme.textColor}]}>
+              {numeral(getTotalSaving()).format('0,0.00')}
+            </Text>
+            <Text allowFontScaling={false} style={{fontSize: 14, color: 'rgba(252, 252, 252, 0.54)'}}>
+              KAI
+            </Text>
+          </View>
+        </ImageBackground>
+      )}
       {currentStaking.length > 0 && (
         <Text
           allowFontScaling={false}
@@ -194,15 +185,33 @@ const StakingScreen = () => {
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              marginTop: 40,
+              marginTop: 70,
+              paddingHorizontal: 47,
             }}>
             <Image
               style={{width: 200, height: 172}}
               source={require('../../assets/icon/no_staking.png')}
             />
-            <Text allowFontScaling={false} style={[styles.noStakingText, {color: theme.textColor}]}>
+            <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 24, fontWeight: 'bold', marginBottom: 8, marginTop: 100}}>
+              {getLanguageString(language, 'NO_STAKING')}
+            </Text>
+            <Text allowFontScaling={false} style={[styles.noStakingText, {color: theme.mutedTextColor, textAlign: 'center', marginBottom: 32}]}>
               {getLanguageString(language, 'NO_STAKING_ITEM')}
             </Text>
+            <Button
+              type="primary"
+              onPress={() => navigation.navigate('ValidatorList')}
+              title={getLanguageString(language, 'STAKE_NOW')}
+              style={{width: 248}}
+              icon={
+                <AntIcon
+                  name="plus"
+                  size={20}
+                  color={'#000000'}
+                  style={{marginRight: 8}}
+                />
+              }
+            />
           </View>
         }
         render={(item, index) => {

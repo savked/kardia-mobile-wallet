@@ -24,8 +24,9 @@ import CardTypeModal from '../common/CardTypeModal';
 import { ScrollView } from 'react-native-gesture-handler';
 import IconButton from '../../components/IconButton';
 import AuthModal from '../common/AuthModal';
+import { HEADER_HEIGHT } from '../../theme';
 
-const { width: viewportWidth } = Dimensions.get('window')
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
 export default () => {
   const navigation = useNavigation();
@@ -48,12 +49,8 @@ export default () => {
   const address = params ? (params as any).address : ''
   const wallet = wallets.find((w) => w.address === address);
 
-  if (!wallet) {
-    return null;
-  }
-
-  const [name, setName] = useState(wallet.name);
-  const [cardAvatarID, setCardAvatarID] = useState(wallet.cardAvatarID);
+  const [name, setName] = useState(wallet ? wallet.name : '');
+  const [cardAvatarID, setCardAvatarID] = useState(wallet ? wallet.cardAvatarID : 1);
 
   useFocusEffect(
     useCallback(() => {
@@ -72,12 +69,16 @@ export default () => {
     }
   }, []);
 
+  if (!wallet) {
+    return null;
+  }
+
   const getAddressCardAvatar = () => {
     const walletItem = wallets.find((w) => w.address === address)
     if (!walletItem) {
       return parseCardAvatar(0);
     }
-    return parseCardAvatar(walletItem.cardAvatarID || 0);
+    return parseCardAvatar(cardAvatarID || 0);
   }
 
   const removeWallet = async () => {
@@ -93,8 +94,8 @@ export default () => {
       await saveSelectedWallet(newWallets.length - 1);
       setSelectedWallet(newWallets.length - 1);
     }
-    // setWallets(newWallets);
     navigation.goBack();
+    setWallets(newWallets);
   };
 
   const saveWallet = async () => {
@@ -112,7 +113,6 @@ export default () => {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
       <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
-      <CardTypeModal cardAvatarID={cardAvatarID} visible={showCardTypeModal} onClose={() => setShowCardTypeModal(false)} />
       <AuthModal
         visible={requestAuth}
         onClose={() => {
@@ -126,7 +126,6 @@ export default () => {
       <View
         style={{
           width: '100%',
-          marginBottom: 19,
           paddingHorizontal: 20,
         }}>
         <ENIcon.Button
@@ -137,7 +136,7 @@ export default () => {
         />
       </View>
       <View style={{ flex: 1, justifyContent: 'space-between', }}>
-        <ScrollView contentContainerStyle={{ justifyContent: 'space-between', height: '100%' }}>
+        <ScrollView contentContainerStyle={{ justifyContent: 'space-between', height: 550 }}>
           <View style={{ flex: 1 }}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
               <View style={{ paddingHorizontal: 20 }}>
@@ -164,7 +163,7 @@ export default () => {
                     }}>
                     <View>
                       <Text allowFontScaling={false} style={{ color: 'rgba(252, 252, 252, 0.54)', fontSize: 10 }}>
-                        {getLanguageString(language, 'BALANCE')}
+                        {getLanguageString(language, 'BALANCE').toUpperCase()}
                       </Text>
                       <Text allowFontScaling={false} style={{ fontSize: 30, color: 'white' }}>
                         $
@@ -179,8 +178,8 @@ export default () => {
                         onPress={() => setRequestAuth(true)}
                         name="lock"
                         color={theme.textColor}
-                        size={20}
-                        style={{marginRight: 8}}
+                        size={22}
+                        style={{marginRight: 12}}
                       />
                       <IconButton
                         onPress={() => setShowRemoveConfirm(true)}
@@ -204,7 +203,7 @@ export default () => {
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View>
                       <Text allowFontScaling={false} style={{ fontSize: 10, color: 'rgba(252, 252, 252, 0.54)' }}>
-                        {getLanguageString(language, 'WALLET_CARD_NAME')}
+                        {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
                       </Text>
                       <Text allowFontScaling={false} style={{ fontSize: 15, color: 'rgba(252, 252, 252, 0.87)' }}>
                         {wallet.name}
@@ -241,7 +240,7 @@ export default () => {
             </TouchableWithoutFeedback>
             <View style={{ flex: 1 }}>
               <ScrollView horizontal ref={scrollRef}>
-                {[0, 1, 2, 3].map((item, index) => {
+                {[0, 1, 2, 3, 4, 5].map((item, index) => {
                   return (
                     <TouchableOpacity key={`card-${index}`} onPress={() => setCardAvatarID(index)}>
                       <ImageBackground
@@ -258,7 +257,7 @@ export default () => {
                           borderRadius: 12,
                           justifyContent: 'flex-end',
                           padding: 12,
-                          borderColor: index === cardAvatarID ? theme.textColor : 'transparent',
+                          borderColor: item === cardAvatarID ? theme.textColor : 'transparent',
                           borderWidth: 3,
                         }} source={parseCardAvatar(item || 0)}>
                         <Text allowFontScaling={false} style={{ fontSize: 14, color: theme.textColor }}>{parseCardAvatarColor(item || 0)}</Text>
@@ -269,22 +268,22 @@ export default () => {
               </ScrollView>
             </View>
           </View>
-          <View style={{ marginVertical: 52, paddingHorizontal: 20 }}>
-            {/* <Button
-              title={getLanguageString(language, "REMOVE_WALLET")}
-              iconName="trash"
-              iconSize={18}
-              iconColor={theme.textColor}
-              type="outline"
-              onPress={() => setShowRemoveConfirm(true)}
-            /> */}
-            <Button
-              title={getLanguageString(language, 'SAVE')}
-              onPress={saveWallet}
-              style={{ marginTop: 12 }}
-            />
-          </View>
         </ScrollView>
+        <View style={{marginBottom: 42, paddingHorizontal: 20 }}>
+          {/* <Button
+            title={getLanguageString(language, "REMOVE_WALLET")}
+            iconName="trash"
+            iconSize={18}
+            iconColor={theme.textColor}
+            type="outline"
+            onPress={() => setShowRemoveConfirm(true)}
+          /> */}
+          <Button
+            title={getLanguageString(language, 'SAVE')}
+            onPress={saveWallet}
+            style={{ marginTop: 12 }}
+          />
+        </View>
       </View>
       <Modal
         visible={showRemoveConfirm}
@@ -305,14 +304,24 @@ export default () => {
             textAlign: 'center',
             fontSize: 22,
             fontWeight: 'bold',
-            marginVertical: 20,
+            marginTop: 20,
             color: theme.textColor,
           }}>
-          {getLanguageString(language, 'ARE_YOU_SURE')}
+          {getLanguageString(language, 'CONFIRM_REMOVE_TITLE')}
+        </Text>
+        <Text
+          allowFontScaling={false}
+          style={{
+            textAlign: 'center',
+            fontSize: 15,
+            marginBottom: 20,
+            color: theme.mutedTextColor,
+          }}>
+          {getLanguageString(language, 'CONFIRM_REMOVE_WALLET')}
         </Text>
         <Button
           block
-          title={getLanguageString(language, 'CANCEL')}
+          title={getLanguageString(language, 'KEEP_IT')}
           type="outline"
           textStyle={{
             fontWeight: 'bold',
@@ -321,7 +330,7 @@ export default () => {
         />
         <Button
           block
-          title={getLanguageString(language, 'CONFIRM')}
+          title={getLanguageString(language, 'DELETE_NOW')}
           type="ghost"
           style={{
             marginTop: 12,

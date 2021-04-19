@@ -13,10 +13,11 @@ export const theme = {
   backgroundColor: '#181818',
   backgroundFocusColor: 'rgba(58, 59, 60, 1)',
   textColor: '#F7F7F7',
-  urlColor: '#82d5ff',
-  mutedTextColor: '#DBDBDB',
+  urlColor: 'rgba(128, 156, 255, 1)',
+  mutedTextColor: 'rgba(252, 252, 252, 0.54)',
   successColor: '#52c93a',
   failColor: '#db4537',
   defaultFontSize: 12,
   inputBackgroundColor: 'rgba(96, 99, 108, 1)',
+  warningTextColor: 'rgba(255, 209, 153, 1)',
 };

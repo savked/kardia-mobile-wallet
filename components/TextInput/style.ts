@@ -25,6 +25,7 @@ export const styles = StyleSheet.create({
   },
   errorMessage: {
     fontStyle: 'italic',
-    color: 'rgba(208, 37, 38, 1)',
+    marginTop: 2,
+    color: 'red',
   },
 });

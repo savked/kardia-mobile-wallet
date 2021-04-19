@@ -25,7 +25,7 @@ import {saveWallets} from '../../../utils/local';
 import {weiToKAI} from '../../../services/transaction/amount';
 import ListCard from './ListCard';
 // import Icon from 'react-native-vector-icons/FontAwesome';
-import {getDigit, isNumber, format} from '../../../utils/number';
+import {getDigit, isNumber, format, parseKaiBalance, parseDecimals} from '../../../utils/number';
 import AddressBookModal from '../AddressBookModal';
 import ScanQRAddressModal from '../ScanQRAddressModal';
 import {theme} from '../../../theme/dark';
@@ -122,7 +122,7 @@ const NewTxModal = ({
         setError(parseError(err.message, language));
       } else {
         console.error(err);
-        setError('Error happen');
+        setError(getLanguageString(language, 'GENERAL_ERROR'));
       }
       setLoading(false);
     }
@@ -167,6 +167,11 @@ const NewTxModal = ({
     setErrorAddress('');
     setErrorAmount('');
   };
+
+  const _getBalance = () => {
+    if (!wallets[selectedWallet]) return 0;
+    return wallets[selectedWallet].balance;
+  }
 
   const getModalStyle = () => {
     if (Platform.OS === 'android') {
@@ -354,6 +359,14 @@ const NewTxModal = ({
           </View>
 
           <View style={{marginBottom: 10}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text allowFontScaling={false} style={{color: theme.textColor, marginBottom: 5, fontWeight: 'bold'}}>{getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}</Text>
+              <TouchableOpacity onPress={() => setAmount(format(parseDecimals(_getBalance(), 18)))}>
+                <Text allowFontScaling={false} style={{color: theme.urlColor}}>
+                  {parseKaiBalance(_getBalance())} KAI
+                </Text>
+              </TouchableOpacity>
+            </View>
             <TextInput
               // headlineStyle={{color: 'black'}}
               keyboardType="numeric"
@@ -371,11 +384,14 @@ const NewTxModal = ({
                   setAmount('0');
                   return;
                 }
-                isNumber(digitOnly) && setAmount(digitOnly);
+                if (isNumber(digitOnly)) {
+                  let formatedValue = format((Number(digitOnly)));
+                  if (newAmount[newAmount.length - 1] === '.') formatedValue += '.'
+                  setAmount(formatedValue);
+                }
               }}
-              onBlur={() => setAmount(format(Number(amount)))}
+              onBlur={() => setAmount(format(Number(getDigit(amount))))}
               value={amount}
-              headline={getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}
             />
           </View>
 

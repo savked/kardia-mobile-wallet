@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
   },
   noTXContainer: {
     marginTop: 50,
-    paddingHorizontal: 83,
+    paddingHorizontal: 47,
     alignItems: 'center',
     justifyContent: 'center',
   },

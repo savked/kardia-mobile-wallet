@@ -20,7 +20,6 @@ import {useNavigation} from '@react-navigation/native';
 export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
 
   const [mnemonic, setMnemonic] = useState<string[]>(Array(12).fill(''));
-  const [keyboardShown, setKeyboardShown] = useState(false);
   // const [keyboardOffset, setKeyboardOffset] = useState(0);
   const [elRefs, setElRefs] = useState<React.RefObject<RNTextInput>[]>([]);
 
@@ -35,37 +34,6 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
         .map((_, i) => _elRefs[i] || createRef()),
     );
   }, []);
-
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
-    } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    }
-
-    // cleanup function
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
-    };
-  }, []);
-
-  const _keyboardDidShow = () => {
-    // setKeyboardOffset(e.endCoordinates.height);
-    setKeyboardShown(true);
-  };
-
-  const _keyboardDidHide = () => {
-    // setKeyboardOffset(0);
-    setKeyboardShown(false);
-  };
 
   const updateMnemonic = (newText: string, index: number) => {
     if (newText.includes(' ')) {
@@ -85,7 +53,6 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
   };
 
   const handleImport = () => {
-    console.log('here');
     const emptyExists = mnemonic.some((item) => item === '');
     if (emptyExists) {
       Alert.alert(getLanguageString(language, 'INVALID_PHRASE'));
@@ -96,7 +63,6 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
       Alert.alert(getLanguageString(language, 'INVALID_PHRASE'));
       return;
     }
-    console.log('fromNoWallet', fromNoWallet)
     navigation.navigate('SelectWallet', {
       mnemonic: mnemonic.join(' ').toLowerCase(),
       fromNoWallet
@@ -105,7 +71,7 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
   };
 
   return (
-    <View style={{width: '100%', marginBottom: keyboardShown ? 130 : 0}}>
+    <View style={{width: '100%'}}>
       <View
         style={{
           flexDirection: 'row',
@@ -203,7 +169,7 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
         })}
       </View>
       <Button
-        style={{marginTop: 12}}
+        style={{marginTop: 42, marginBottom: 12}}
         title={getLanguageString(language, 'IMPORT')}
         onPress={handleImport}
       />

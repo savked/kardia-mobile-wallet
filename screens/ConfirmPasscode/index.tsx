@@ -60,7 +60,6 @@ const ConfirmPasscode = () => {
   const authByTouchID = async () => {
     TouchID.authenticate('Use touch ID to access wallet', optionalConfigObject)
       .then(async () => {
-        console.log('here')
         setLocalAuth(true);
       })
       .catch((err: any) => {

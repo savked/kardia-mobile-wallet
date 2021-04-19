@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'rgba(252, 252, 252, 0.54)',
     fontSize: 15,
+    textDecorationLine: 'underline'
   },
   newContactAvatarContainer: {
     backgroundColor: '#F7F7F8',

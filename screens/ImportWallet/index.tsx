@@ -10,16 +10,19 @@ import {styles} from './style';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 
 export default () => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
   const theme = useContext(ThemeContext);
   const navigation = useNavigation();
   const language = useRecoilValue(languageAtom);
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(false);
+      setStatusBarColor(theme.backgroundColor)
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );

@@ -1,7 +1,7 @@
 import {format} from 'date-fns';
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, Linking, TouchableOpacity} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {addressBookAtom} from '../../../atoms/addressBook';
 import {languageAtom} from '../../../atoms/language';
@@ -20,6 +20,7 @@ import {
   getFromAddressBook,
   getAddressAvatar,
   truncate,
+  getTxURL,
 } from '../../../utils/string';
 import NewAddressModal from '../NewAddressModal';
 import {styles} from './style';
@@ -47,6 +48,16 @@ export default ({
     return (
       getFromAddressBook(addressBook, getOtherAddress()) === getOtherAddress()
     );
+  };
+
+  const handleClickLink = (url: string) => {
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        console.error("Don't know how to open URI: " + url);
+      }
+    });
   };
 
   const getOtherAddress = () => {
@@ -81,7 +92,7 @@ export default ({
         />
         <View>
           <Text allowFontScaling={false} style={{color: '#FFFFFF', fontWeight: 'bold'}}>
-            {wallets[selectedWallet].name}
+            {wallets[selectedWallet].name || getLanguageString(language, 'NEW_WALLET')}
           </Text>
           <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
             {truncate(address, 10, 10)}
@@ -213,7 +224,9 @@ export default ({
           </Text>
           <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 18}}>KAI</Text>
         </View>
-        <Text allowFontScaling={false} style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</Text>
+        <TouchableOpacity onPress={() => handleClickLink(getTxURL(txObj.hash))}>
+          <Text allowFontScaling={false} style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</Text>
+        </TouchableOpacity>
         <View>
           <View
             style={{

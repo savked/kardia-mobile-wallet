@@ -215,11 +215,11 @@ const AppContainer = () => {
 
   const handleAppStateChange = useCallback(
     (state: string) => {
-      if (state === 'background') {
+      if (state === 'background' || state === 'inactive') {
         // Store current time
         lastTimestamp = Date.now();
-      } else if (state === 'active' && localAuthEnabled) {
-        // Lock app if unfocused in 1 minute
+      } else if (state === 'active') {
+        // Lock app if unfocused in 2 minute
         if (Date.now() - lastTimestamp > 2 * 60 * 1000) {
           setIsLocalAuthed(false);
         }
@@ -300,7 +300,7 @@ const AppContainer = () => {
 
   if (!inited) {
     return (
-      <View style={styles.splashContainer}>
+      <View style={[styles.splashContainer, {backgroundColor: theme.backgroundColor}]}>
         <Image
           style={styles.splashLogo}
           source={require('../../assets/kardia-logo-full-white.png')}
