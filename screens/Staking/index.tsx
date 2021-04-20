@@ -124,22 +124,22 @@ const StakingScreen = () => {
         <IconButton
           name="bell-o"
           color={theme.textColor}
-          size={18}
+          size={20}
           onPress={() => navigation.navigate('Notification')}
         />
       </View>
       {currentStaking.length > 0 && (
         <ImageBackground
-          source={require('../../assets/address_detail_background.jpg')}
+          source={require('../../assets/staking_background.png')}
           imageStyle={{
             resizeMode: 'cover',
             width: viewportWidth - 40,
-            height: 210,
+            height: 172,
             borderRadius: 12,
           }}
           style={{
             width: viewportWidth - 40,
-            height: 210,
+            height: 172,
             borderRadius: 12,
             alignItems: 'center',
             justifyContent: 'flex-end',

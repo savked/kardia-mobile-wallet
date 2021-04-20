@@ -46,7 +46,7 @@ const SettingScreen = () => {
         <IconButton
           name="bell-o"
           color={theme.textColor}
-          size={18}
+          size={20}
           onPress={() => navigation.navigate('Notification')}
         />
       </View>

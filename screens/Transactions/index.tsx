@@ -121,20 +121,9 @@ const TransactionScreen = () => {
             />
           )}
         </View>
-        {status ? (
-          <AntIcon
-            name="checkcircle"
-            size={14}
-            color={'green'}
-            style={{position: 'absolute', right: 0, bottom: 0}}
-          />
-        ) : (
-          <AntIcon
-            name="closecircle"
-            size={14}
-            color={'red'}
-            style={{position: 'absolute', right: 0, bottom: 0}}
-          />
+        {status === 0 && (
+          // <Image source={require('../../assets/icon/warning.png')} style={{width: 14, height: 14, position: 'absolute', right: 3, top: -2}} />
+          <CustomText style={{position: 'absolute', right: 0, top: -4, fontSize: theme.defaultFontSize}}>⚠️</CustomText>
         )}
       </View>
     );
@@ -178,7 +167,7 @@ const TransactionScreen = () => {
         <IconButton
           name="bell-o"
           color={theme.textColor}
-          size={18}
+          size={20}
           onPress={() => navigation.navigate('Notification')}
         />
       </View>

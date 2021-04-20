@@ -10,13 +10,13 @@ export const styles = StyleSheet.create({
   addressContainer: {
     marginTop: 24,
     flexDirection: 'row',
-    shadowColor: '#000',
+    shadowColor: 'rgba(0, 0, 0, 0.3)',
     shadowOffset: {
       width: 0,
       height: 4,
     },
-    shadowOpacity: 8,
-    shadowRadius: 0,
+    shadowOpacity: 2,
+    shadowRadius: 4,
     elevation: 9,
     backgroundColor: 'rgba(33, 33, 33, 1)',
     width: '100%',

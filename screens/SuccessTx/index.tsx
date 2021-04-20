@@ -12,6 +12,8 @@ import {
   Image,
   ImageBackground,
   ActivityIndicator,
+  TouchableOpacity,
+  Linking,
 } from 'react-native';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {addressBookAtom} from '../../atoms/addressBook';
@@ -23,12 +25,13 @@ import {getTxDetail} from '../../services/transaction';
 import {getTxDetail as getKRC20TxDetail} from '../../services/krc20';
 import {ThemeContext} from '../../ThemeContext';
 import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
-import {truncate} from '../../utils/string';
+import {copyToClipboard, getTxURL, truncate} from '../../utils/string';
 import {styles} from './style';
 import {parseDecimals} from '../../utils/number';
 import numeral from 'numeral';
 import TextAvatar from '../../components/TextAvatar';
 import CustomText from '../../components/Text';
+import Toast from 'react-native-toast-message';
 
 export default () => {
   const {params} = useRoute();
@@ -39,7 +42,7 @@ export default () => {
   const userAddress = params ? (params as any).userAddress : '';
   const tokenAddress = params ? (params as any).tokenAddress : '';
   const tokenSymbol = params ? (params as any).tokenSymbol : '';
-  const tokenAvatar = params ? (params as any).tokenAvatarß : '';
+  const tokenAvatar = params ? (params as any).tokenAvatar : '';
   const tokenDecimals = params ? (params as any).tokenDecimals : -1;
   const validatorItem: Validator = params ? (params as any).validatorItem : {};
   const claimAmount = params ? (params as any).claimAmount : '';
@@ -58,6 +61,16 @@ export default () => {
   const [loading, setLoading] = useState(true);
 
   const addressBook = useRecoilValue(addressBookAtom);
+
+  const handleClickLink = (url: string) => {
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        console.error("Don't know how to open URI: " + url);
+      }
+    });
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -216,7 +229,7 @@ export default () => {
                 backgroundColor: theme.backgroundColor,
               }}>
               <Image
-                style={{width: 20, height: 20}}
+                style={{width: 48, height: 48}}
                 source={
                   address.avatar
                     ? {uri: address.avatar}
@@ -300,7 +313,7 @@ export default () => {
                 backgroundColor: theme.backgroundColor,
               }}>
               <Image
-                style={{width: 20, height: 20}}
+                style={{width: 48, height: 48, borderRadius: 12}}
                 source={
                   address.avatar
                     ? {uri: address.avatar}
@@ -370,11 +383,11 @@ export default () => {
             {
               name: 'Home',
               state: {
-                routes: [{name: 'TokenDetail', params: {
-                  tokenSymbol,
+                routes: [{name: 'HomeScreen'}, {name: 'TokenDetail', params: {
+                  symbol: tokenSymbol,
                   tokenAddress,
-                  tokenDecimals,
-                  tokenAvatar,
+                  decimals: tokenDecimals,
+                  avatar: tokenAvatar,
                 }}],
               }
             }
@@ -405,50 +418,71 @@ export default () => {
 
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <View
-        style={{
-          // marginTop: 95,
-          width: '100%',
-          height: 272,
-        }}>
-        <ImageBackground
-          imageStyle={{resizeMode: 'contain'}}
-          style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end'}}
-          source={require('../../assets/success_tx.png')}>
-          <Image
-            style={{width: 86, height: 86}}
-            source={require('../../assets/icon/success_tx_icon.png')}
-          />
-          <CustomText
-            allowFontScaling={false}
-            style={{color: theme.textColor, fontSize: 32, fontWeight: 'bold'}}>
-            {getLanguageString(language, 'SUCCESS')}
+      <View style={{flex: 1, width: '100%', alignItems: 'center'}}>
+        <View
+          style={{
+            // marginTop: 95,
+            width: '100%',
+            height: 272,
+          }}>
+          <ImageBackground
+            imageStyle={{resizeMode: 'contain'}}
+            style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end'}}
+            source={require('../../assets/success_tx.png')}>
+            <Image
+              style={{width: 86, height: 86}}
+              source={require('../../assets/icon/success_tx_icon.png')}
+            />
+            <CustomText
+              allowFontScaling={false}
+              style={{color: theme.textColor, fontSize: 32, fontWeight: 'bold'}}>
+              {getLanguageString(language, 'SUCCESS')}
+            </CustomText>
+            <CustomText style={{color: theme.textColor, fontSize: 15, marginTop: 8, textAlign: 'center', paddingHorizontal: 18}}>
+              {renderSuccessDesc()}
+            </CustomText>
+          </ImageBackground>
+        </View>
+        {renderReceiver()}
+        <Divider
+          style={{width: 280, backgroundColor: '#60636C', marginVertical: 32}}
+        />
+        <CustomText style={{textAlign: 'center', color: theme.textColor, fontSize: 15}}>
+          {getLanguageString(language, 'TRANSACTION_AMOUNT')}
+        </CustomText>
+        {renderAmount()}
+        <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+          {txObj.date &&
+            format(txObj.date, 'MMM dd, yyyy - hh:mm aa', {
+              locale: dateLocale,
+            })}
+        </CustomText>
+        <View style={{backgroundColor: '#212121', paddingHorizontal: 16, paddingVertical: 12, borderRadius: 8, marginTop: 20, width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+          <CustomText style={{color: theme.textColor}}>
+            {truncate(txObj.hash, 16, 16)}
           </CustomText>
-          <CustomText style={{color: theme.textColor, fontSize: 15, marginTop: 8, textAlign: 'center', paddingHorizontal: 18}}>
-            {renderSuccessDesc()}
-          </CustomText>
-        </ImageBackground>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity onPress={() => {
+              copyToClipboard(txObj.hash)
+              Toast.show({
+                type: 'success',
+                topOffset: 70,
+                text1: getLanguageString(language, 'COPIED'),
+              });
+            }}>
+              <Image source={require('../../assets/icon/copy.png')} style={{width: 16, height: 16, marginRight: 12}} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleClickLink(getTxURL(txObj.hash))}>
+              <Image source={require('../../assets/icon/external_url_dark.png')} style={{width: 16, height: 16}} />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-      {renderReceiver()}
-      <Divider
-        style={{width: 280, backgroundColor: '#60636C', marginVertical: 32}}
-      />
-      <CustomText style={{textAlign: 'center', color: theme.textColor, fontSize: 15}}>
-        {getLanguageString(language, 'TRANSACTION_AMOUNT')}
-      </CustomText>
-      {renderAmount()}
-      <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
-        {txObj.date &&
-          format(txObj.date, 'MMM dd, yyyy - hh:mm aa', {
-            locale: dateLocale,
-          })}
-      </CustomText>
       <Button
         title={getLanguageString(language, 'OK_TEXT')}
         onPress={handleBack}
         block
-        style={{marginTop: 95}}
-        textStyle={{fontWeight: 'bold'}}
+        style={{marginBottom: 82}}
       />
     </View>
   );

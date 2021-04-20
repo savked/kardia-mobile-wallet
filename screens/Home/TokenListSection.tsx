@@ -76,7 +76,7 @@ const TokenListSection = () => {
   };
 
   const renderTokenList = () => {
-    return tokenList.slice(0, 5).map((item, index) => {
+    return tokenList.slice(0, 7).map((item, index) => {
       return <View
         key={item.name}
         style={{
@@ -154,7 +154,9 @@ const TokenListSection = () => {
           alignItems: 'center',
           flexDirection: 'row',
           justifyContent: 'space-between',
-          padding: 20,
+          paddingHorizontal: 20,
+          paddingTop: 16,
+          paddingBottom: 12,
         }}>
         <CustomText style={{fontSize: 18, fontWeight: 'bold', color: theme.textColor}}>
           {getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}

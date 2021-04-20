@@ -13,10 +13,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     // marginBottom: 20,
     justifyContent: 'space-between',
+    marginBottom: 18
   },
   headline: {
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 36,
+    // fontWeight: 'bold',
   },
   sectionTitle: {
     fontSize: 20,

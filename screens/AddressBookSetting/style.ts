@@ -21,8 +21,8 @@ export const styles = StyleSheet.create({
     marginRight: 12,
   },
   headline: {
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 36,
+    // fontWeight: 'bold',
   },
   header: {
     paddingHorizontal: 20,
@@ -30,6 +30,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginBottom: 18,
   },
   addressAvatar: {
     width: 32,

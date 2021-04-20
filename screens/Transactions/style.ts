@@ -17,11 +17,12 @@ export const styles = StyleSheet.create({
     height: SEARCH_INPUT_HEIGHT,
   },
   headline: {
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 36,
+    // fontWeight: 'bold',
   },
   header: {
-    paddingHorizontal: 12,
+    marginBottom: 16,
+    paddingHorizontal: 20,
     height: HEADER_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',

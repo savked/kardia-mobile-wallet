@@ -156,7 +156,7 @@ const HomeScreen = () => {
       <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
       <ImageBackground
         source={require('../../assets/home_background.jpg')}
-        imageStyle={{width: viewportWidth, height: viewportHeight, resizeMode: 'cover', marginLeft: 20}}
+        imageStyle={{width: viewportWidth, height: viewportHeight, resizeMode: 'cover'}}
         style={{width: viewportWidth, height: viewportHeight - tabBarHeight - HEADER_HEIGHT - 48}}
       >
         <ScrollView 
@@ -194,14 +194,14 @@ const HomeScreen = () => {
                 source={require('../../assets/logo_dark.png')}
               />
               <View>
-                <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
-                  {getLanguageString(language, 'BALANCE')}
+                <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 14}}>
+                  {getLanguageString(language, 'BALANCE').toUpperCase()}
                 </CustomText>
-                <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4}}>
+                <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold'}}>
                   {parseKaiBalance(_getBalance(), true)}{' '}
                   <CustomText style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</CustomText>
                 </CustomText>
-                <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+                <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 14}}>
                   ~${' '}
                   {numeral(
                     tokenInfo.price *

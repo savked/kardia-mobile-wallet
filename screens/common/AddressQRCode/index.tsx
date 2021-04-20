@@ -44,9 +44,6 @@ const QRModal = ({
         height: 730,
       }}
       onClose={onClose}>
-      {/* <CustomText style={{fontSize: 20, fontWeight: 'bold', color: theme.textColor}}>
-        {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS')}
-      </CustomText> */}
       <View
         style={{
           padding: 32,
@@ -56,45 +53,23 @@ const QRModal = ({
         <QRCode
           size={viewportWidth - 104}
           value={wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
-          // logo={require('../../../assets/logo.png')}
-          // logoBackgroundColor="#FFFFFF"
-          // logoSize={}
-          // logoMargin={8}
-          // logoBorderRadius={20}
           color={theme.textColor}
           backgroundColor={theme.backgroundColor}
         />
       </View>
-      {/* <TouchableOpacity
-        onPress={() =>
-          copyToClipboard(
-            wallets[selectedWallet] ? wallets[selectedWallet].address : '',
-          )
-        }>
+      <View style={{flexDirection: 'row', paddingVertical: 0, paddingHorizontal: 20, alignItems: 'center'}}>
+        <Image source={require('../../../assets/icon/warning.png')} style={{width: 20, height: 20, marginRight: 8}} />
         <CustomText
           style={{
-            fontSize: 14,
-            fontStyle: 'italic',
-            paddingHorizontal: 18,
-            textAlign: 'center',
-            textDecorationLine: 'underline',
-            color: theme.textColor,
+            fontWeight: '500',
+            fontSize: 13,            
+            color: theme.warningTextColor,
+            textAlign: 'left',
+            width: '100%',
           }}>
-          {wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
+          {getLanguageString(language, 'ERC20_WARNING')}
         </CustomText>
-      </TouchableOpacity> */}
-      <CustomText
-        style={{
-          fontWeight: 'bold',
-          fontSize: 13,
-          // paddingHorizontal: 12,
-          paddingVertical: 16,
-          color: theme.warningTextColor,
-          textAlign: 'left',
-          width: '100%',
-        }}>
-        {getLanguageString(language, 'ERC20_WARNING')}
-      </CustomText>
+      </View>
       <ImageBackground
         source={require('../../../assets/address_qr_balance_background.png')}
         imageStyle={{

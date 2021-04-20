@@ -53,8 +53,8 @@ const NewTxModal = ({
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [errorAddress, setErrorAddress] = useState(' ');
-  const [errorAmount, setErrorAmount] = useState(' ');
+  const [errorAddress, setErrorAddress] = useState('');
+  const [errorAmount, setErrorAmount] = useState('');
   const [keyboardShown, setKeyboardShown] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
 
@@ -432,7 +432,6 @@ const NewTxModal = ({
               // size="large"
               loading={loading}
               disabled={loading}
-              textStyle={{fontWeight: 'bold'}}
             />
           </View>
           <AlertModal

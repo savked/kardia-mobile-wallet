@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   headerContainer: {
     height: HEADER_HEIGHT,
     flexDirection: 'row',
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
