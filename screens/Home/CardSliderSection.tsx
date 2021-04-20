@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Dimensions, Image, Text, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, TouchableOpacity, View} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -21,8 +21,8 @@ import NewTxModal from '../common/NewTxModal';
 import numeral from 'numeral';
 import {weiToKAI} from '../../services/transaction/amount';
 import {ThemeContext} from '../../ThemeContext';
-import IconButton from '../../components/IconButton';
 import Button from '../../components/Button';
+import CustomText from '../../components/Text';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -55,16 +55,16 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
               alignItems: 'center',
             }}>
             <View>
-              <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4}}>
+              <CustomText allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4}}>
                 {getLanguageString(language, 'BALANCE').toUpperCase()}
-              </Text>
-              <Text allowFontScaling={false} style={{fontSize: 24, color: 'white'}}>
+              </CustomText>
+              <CustomText allowFontScaling={false} style={{fontSize: 24, color: 'white'}}>
                 ~${' '}
                 {numeral(
                   tokenInfo.price *
                     (Number(weiToKAI(wallet.balance)) + wallet.staked),
                 ).format('0,0.00')}
-              </Text>
+              </CustomText>
             </View>
             {/* <IconButton
               onPress={() => setRemoveIndex(selectedWallet)}
@@ -75,23 +75,23 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
           </View>
 
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text allowFontScaling={false} style={styles.kaiCardText}>
+            <CustomText allowFontScaling={false} style={styles.kaiCardText}>
               {truncate(
                 wallet.address,
                 viewportWidth >= 432 ? 14 : 10,
                 viewportWidth >= 432 ? 14 : 12,
               )}
-            </Text>
+            </CustomText>
           </View>
 
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View>
-              <Text allowFontScaling={false} style={{fontSize: 10, color: 'rgba(252, 252, 252, 0.54)', marginBottom: 4}}>
+              <CustomText style={{fontSize: 10, color: 'rgba(252, 252, 252, 0.54)', marginBottom: 4}}>
                 {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
-              </Text>
-              <Text allowFontScaling={false} style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.87)'}}>
+              </CustomText>
+              <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.87)'}}>
                 {wallet.name || getLanguageString(language,'NEW_WALLET')}
-              </Text>
+              </CustomText>
             </View>
             <TouchableOpacity
               onPress={() => showQRModal()}
@@ -196,8 +196,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
           style={{width: 101, height: 152}}
           source={require('../../assets/trash_dark.png')}
         />
-        <Text
-          allowFontScaling={false}
+        <CustomText
           style={{
             textAlign: 'center',
             fontSize: 22,
@@ -206,7 +205,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
             color: theme.textColor,
           }}>
           {getLanguageString(language, 'ARE_YOU_SURE')}
-        </Text>
+        </CustomText>
         <Button
           block
           title={getLanguageString(language, 'CANCEL')}

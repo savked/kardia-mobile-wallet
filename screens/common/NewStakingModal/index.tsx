@@ -22,6 +22,7 @@ import AuthModal from '../AuthModal';
 import {useNavigation} from '@react-navigation/native';
 import { getBalance } from '../../../services/account';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
+import CustomText from '../../../components/Text';
 
 export default ({
   validatorItem,
@@ -299,13 +300,13 @@ export default ({
         <View style={{flex: 1, width: '100%'}}>
           <View style={{width: '100%'}}>
             <View style={{marginBottom: 4, flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor}}>
+              <CustomText  style={{color: theme.textColor}}>
                 {getLanguageString(language, 'STAKING_AMOUNT')}
-              </Text>
+              </CustomText>
               <TouchableOpacity onPress={() => setAmount(parseDecimals(_getBalance(), 18).toString())}>
-                <Text allowFontScaling={false} style={{color: theme.urlColor}}>
+                <CustomText  style={{color: theme.urlColor}}>
                   {parseKaiBalance(_getBalance())} KAI
-                </Text>
+                </CustomText>
               </TouchableOpacity>
             </View>
             <TextInput
@@ -329,7 +330,7 @@ export default ({
             />
           </View>
           <View style={{width: '100%', marginTop: 12}}>
-            <Text allowFontScaling={false} style={{color: theme.textColor}}>Validator</Text>
+            <CustomText  style={{color: theme.textColor}}>Validator</CustomText>
             <View
               style={[
                 styles.validatorItemContainer,
@@ -350,69 +351,67 @@ export default ({
                 textStyle={{fontSize: 16}}
               />
               <View style={{justifyContent: 'space-between'}}>
-                <Text
-                  allowFontScaling={false}
+                <CustomText
                   style={{
                     color: theme.textColor,
                     fontSize: 13,
                     fontWeight: 'bold',
                   }}>
                   {validatorItem.name}
-                </Text>
-                <Text
-                  allowFontScaling={false}
+                </CustomText>
+                <CustomText
                   style={{
                     color: 'rgba(252, 252, 252, 0.54)',
                     fontSize: theme.defaultFontSize,
                   }}>
                   {validatorItem.commissionRate} %
-                </Text>
+                </CustomText>
               </View>
             </View>
           </View>
           <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
           <View style={{width: '100%'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'COMMISSION_RATE')}
-              </Text>
-              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+              </CustomText>
+              <CustomText  style={[{color: theme.textColor}]}>
                 {getSelectedCommission()}
-              </Text>
+              </CustomText>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
-              </Text>
-              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+              </CustomText>
+              <CustomText  style={[{color: theme.textColor}]}>
                 {getSelectedStakedAmount()}
-              </Text>
+              </CustomText>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'VOTING_POWER')}
-              </Text>
-              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+              </CustomText>
+              <CustomText  style={[{color: theme.textColor}]}>
                 {getSelectedVotingPower()}
-              </Text>
+              </CustomText>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'ESTIMATED_EARNING')}
-              </Text>
-              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+              </CustomText>
+              <CustomText  style={[{color: theme.textColor}]}>
                 {numeral(estimatedProfit).format('0,0.00')}{' '}
                 {estimatedProfit ? 'KAI' : ''}
-              </Text>
+              </CustomText>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'ESTIMATED_APR')}
-              </Text>
-              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+              </CustomText>
+              <CustomText  style={[{color: theme.textColor}]}>
                 {numeral(estimatedAPR).format('0,0.00')}{' '}
                 {estimatedProfit ? '%' : ''}
-              </Text>
+              </CustomText>
             </View>
           </View>
           <Divider style={{width: '100%', backgroundColor: '#60636C'}} />

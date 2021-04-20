@@ -15,6 +15,7 @@ import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import { useNavigation } from '@react-navigation/core';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AuthModal from '../common/AuthModal';
+import CustomText from '../../components/Text';
 
 const MnemonicPhraseSetting = () => {
   const navigation = useNavigation();
@@ -70,8 +71,8 @@ const MnemonicPhraseSetting = () => {
       </View>
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
         <View style={{ flex: 1, justifyContent: 'center' }}>
-          <Text style={{ fontSize: 24, textAlign: 'center', fontWeight: 'bold', color: theme.textColor }} allowFontScaling={false}>Wallet credentials</Text>
-          <Text style={{ color: theme.mutedTextColor, marginTop: 4, textAlign: 'center' }} allowFontScaling={false}>Keep it safe & sound</Text>
+          <CustomText style={{ fontSize: 24, textAlign: 'center', fontWeight: 'bold', color: theme.textColor }} allowFontScaling={false}>Wallet credentials</CustomText>
+          <CustomText style={{ color: theme.mutedTextColor, marginTop: 4, textAlign: 'center' }} allowFontScaling={false}>Keep it safe & sound</CustomText>
           <List
             items={mnemonicArr}
             numColumns={4}
@@ -91,11 +92,10 @@ const MnemonicPhraseSetting = () => {
                     styles.phraseItemContainer,
                     { backgroundColor: theme.backgroundFocusColor },
                   ]}>
-                  <Text
-                    allowFontScaling={false}
+                  <CustomText
                     style={[styles.phraseItemText, { color: theme.textColor }]}>
                     {item.label}
-                  </Text>
+                  </CustomText>
                 </View>
               );
             }}

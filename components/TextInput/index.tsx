@@ -3,6 +3,7 @@ import React, {useContext} from 'react';
 import {TextInput, View, Text, StyleProp, TextStyle, ViewStyle} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ThemeContext} from '../../ThemeContext';
+import CustomText from '../Text';
 import {styles} from './style';
 
 const CustomTextInput = ({
@@ -40,7 +41,7 @@ const CustomTextInput = ({
       return;
     }
     if (typeof message === 'string') {
-      return <Text allowFontScaling={false} style={styles.errorMessage}>{message}</Text>;
+      return <CustomText style={styles.errorMessage}>{message}</CustomText>;
     }
     return message();
   };
@@ -48,11 +49,10 @@ const CustomTextInput = ({
   return (
     <>
       {headline && (
-        <Text
-          allowFontScaling={false}
+        <CustomText
           style={[styles.headline, {color: theme.textColor}, headlineStyle]}>
           {headline}
-        </Text>
+        </CustomText>
       )}
       <View
         style={[

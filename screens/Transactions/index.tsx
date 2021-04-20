@@ -23,6 +23,7 @@ import TxDetailModal from '../common/TxDetailModal';
 import {ScrollView} from 'react-native-gesture-handler';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import { HEADER_HEIGHT } from '../../theme';
+import CustomText from '../../components/Text';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
@@ -171,9 +172,9 @@ const TransactionScreen = () => {
         txObj={txObjForDetail}
       />
       <View style={styles.header}>
-        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
+        <CustomText  style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'RECENT_TRANSACTION')}
-        </Text>
+        </CustomText>
         <IconButton
           name="bell-o"
           color={theme.textColor}
@@ -191,12 +192,12 @@ const TransactionScreen = () => {
             style={{width: 170, height: 140}}
             source={require('../../assets/no_tx_box.png')}
           />
-          <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
+          <CustomText  style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
-          </Text>
-          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32}}>
+          </CustomText>
+          <CustomText  style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32}}>
             {getLanguageString(language, 'NO_TRANSACTION_SUB_TEXT')}
-          </Text>
+          </CustomText>
           <Button
             type="primary"
             onPress={() => setShowNewTxModal(true)}
@@ -218,14 +219,13 @@ const TransactionScreen = () => {
           const dateLocale = getDateFNSLocale(language);
           return (
             <React.Fragment key={`transaction-by-${txsByDate.date.getTime()}`}>
-              <Text
-                allowFontScaling={false}
+              <CustomText
                 style={{
                   marginHorizontal: 20,
                   color: theme.textColor,
                 }}>
                 {format(txsByDate.date, 'E, dd/MM/yyyy', {locale: dateLocale})}
-              </Text>
+              </CustomText>
               {txsByDate.items.map((item: any, index: number) => {
                 return (
                   <View
@@ -255,22 +255,21 @@ const TransactionScreen = () => {
                           flex: 4,
                           paddingHorizontal: 14,
                         }}>
-                        <Text allowFontScaling={false} style={{color: '#FFFFFF'}}>
+                        <CustomText  style={{color: '#FFFFFF'}}>
                           {item.type === 'IN'
                             ? getLanguageString(language, 'TX_TYPE_RECEIVED')
                             : getLanguageString(language, 'TX_TYPE_SEND')}
-                        </Text>
-                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
+                        </CustomText>
+                        <CustomText  style={{color: '#DBDBDB', fontSize: 12}}>
                           {truncate(item.label, 8, 10)}
-                        </Text>
+                        </CustomText>
                       </View>
                       <View
                         style={{
                           flex: 3,
                           alignItems: 'flex-end',
                         }}>
-                        <Text
-                          allowFontScaling={false}
+                        <CustomText
                           style={[
                             styles.kaiAmount,
                             item.type === 'IN'
@@ -279,10 +278,10 @@ const TransactionScreen = () => {
                           ]}>
                           {item.type === 'IN' ? '+' : '-'}
                           {parseKaiBalance(item.amount, true)} KAI
-                        </Text>
-                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
+                        </CustomText>
+                        <CustomText  style={{color: '#DBDBDB', fontSize: 12}}>
                           {format(item.date, 'hh:mm aa')}
-                        </Text>
+                        </CustomText>
                       </View>
                     </TouchableOpacity>
                   </View>

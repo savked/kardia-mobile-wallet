@@ -33,6 +33,7 @@ import ScanQRAddressModal from '../ScanQRAddressModal';
 import {theme} from '../../../theme/dark';
 import AuthModal from '../AuthModal';
 import {useNavigation} from '@react-navigation/native';
+import CustomText from '../../../components/Text';
 
 const MAX_AMOUNT = 5000000000;
 
@@ -263,25 +264,25 @@ const NewKRC20TxModal = ({
           backgroundColor: theme.backgroundFocusColor,
         }}
         onClose={() => setShowConfirmModal(false)}>
-        <Text allowFontScaling={false} style={[styles.confirmTitle, {color: theme.textColor}]}>
+        <CustomText  style={[styles.confirmTitle, {color: theme.textColor}]}>
           {getLanguageString(language, 'CONFIRM_TRANSACTION')}
-        </Text>
+        </CustomText>
         <View style={{width: '100%'}}>
           <View style={styles.confirmGroup}>
-            <Text allowFontScaling={false} style={[styles.confirmText, {color: theme.textColor}]}>
+            <CustomText  style={[styles.confirmText, {color: theme.textColor}]}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}:{' '}
-            </Text>
-            <Text allowFontScaling={false} style={[styles.confirmContent, {color: theme.textColor}]}>
+            </CustomText>
+            <CustomText  style={[styles.confirmContent, {color: theme.textColor}]}>
               {truncate(address, 10, 10)}
-            </Text>
+            </CustomText>
           </View>
           <View style={styles.confirmGroup}>
-            <Text allowFontScaling={false} style={[styles.confirmText, {color: theme.textColor}]}>
+            <CustomText  style={[styles.confirmText, {color: theme.textColor}]}>
               {getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:{' '}
-            </Text>
-            <Text allowFontScaling={false} style={[styles.confirmContent, {color: theme.textColor}]}>
+            </CustomText>
+            <CustomText  style={[styles.confirmContent, {color: theme.textColor}]}>
               {amount} {tokenSymbol}
-            </Text>
+            </CustomText>
           </View>
         </View>
         <View
@@ -320,9 +321,9 @@ const NewKRC20TxModal = ({
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
           <View>
-            <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
+            <CustomText  style={[styles.headline, {color: theme.textColor}]}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}
-            </Text>
+            </CustomText>
           </View>
           <View
             style={{
@@ -384,11 +385,11 @@ const NewKRC20TxModal = ({
 
           <View style={{marginBottom: 10}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor, marginBottom: 5, fontWeight: 'bold'}}>{getLanguageString(language, 'CREATE_TX_KRC20_AMOUNT')}</Text>
+              <CustomText  style={{color: theme.textColor, marginBottom: 5, fontWeight: 'bold'}}>{getLanguageString(language, 'CREATE_TX_KRC20_AMOUNT')}</CustomText>
               <TouchableOpacity onPress={() => setAmount(format(parseDecimals(_getBalance(), 18)))}>
-                <Text allowFontScaling={false} style={{color: theme.urlColor}}>
+                <CustomText  style={{color: theme.urlColor}}>
                   {parseDecimals(balance, tokenDecimals)} {tokenSymbol}
-                </Text>
+                </CustomText>
               </TouchableOpacity>
             </View>
             <TextInput
@@ -421,11 +422,11 @@ const NewKRC20TxModal = ({
             />
           </View>
 
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={[styles.title, {marginBottom: 12, color: theme.textColor}]}>
             {getLanguageString(language, 'TRANSACTION_SPEED')}
-          </Text>
+          </CustomText>
           <View style={{marginBottom: 20}}>
             <ListCard gasPrice={gasPrice} selectGasPrice={setGasPrice} />
           </View>

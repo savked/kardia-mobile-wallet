@@ -8,6 +8,7 @@ import {getLanguageString} from '../../../utils/lang';
 import {styles} from './style';
 import Portal from '@burstware/react-native-portal';
 import IconButton from '../../../components/IconButton';
+import CustomText from '../../../components/Text';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window');
 
@@ -36,9 +37,9 @@ const ScanQRAddressModal = ({
           zIndex: 1000,
         }}>
         {/* <View style={styles.qrScannerHeader}>
-          <Text allowFontScaling={false} style={styles.centerText}>
+          <CustomText  style={styles.centerText}>
             {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS')}
-          </Text>
+          </CustomText>
         </View> */}
         <QRCodeScanner
           onRead={(e) => {
@@ -70,7 +71,7 @@ const ScanQRAddressModal = ({
             justifyContent: 'center',
           }}>
           <View style={{width: 250}}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{
                 textAlign: 'center',
@@ -80,11 +81,11 @@ const ScanQRAddressModal = ({
                 marginBottom: 4,
               }}>
               {getLanguageString(language, 'SCAN_QR_TITLE')}
-            </Text>
-            <Text allowFontScaling={false} style={{textAlign: 'center', color: '#FFFFFF', fontSize: 15}}>
+            </CustomText>
+            <CustomText  style={{textAlign: 'center', color: '#FFFFFF', fontSize: 15}}>
               {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS_DESCRIPTION')}
               {/* Scan your seed phrase QR code, then we will do the rest */}
-            </Text>
+            </CustomText>
           </View>
         </View>
       </View>

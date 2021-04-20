@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useContext, useState} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, TouchableOpacity, Image} from 'react-native';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {ThemeContext} from '../../ThemeContext';
 import {addressBookAtom} from '../../atoms/addressBook';
@@ -17,6 +17,7 @@ import NewAddressModal from '../common/NewAddressModal';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import {ScrollView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import CustomText from '../../components/Text';
 
 const AddressBookSetting = () => {
   const theme = useContext(ThemeContext);
@@ -43,9 +44,9 @@ const AddressBookSetting = () => {
         onClose={() => setShowNewAddressModal(false)}
       />
       <View style={styles.header}>
-        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
+        <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'ADDRESS_BOOK_MENU')}
-        </Text>
+        </CustomText>
         <IconButton
           name="bell-o"
           color={theme.textColor}
@@ -59,12 +60,12 @@ const AddressBookSetting = () => {
             style={{width: 170, height: 156, marginBottom: 23, marginTop: 70}}
             source={require('../../assets/no_address_dark.png')}
           />
-          <Text allowFontScaling={false} style={[styles.emptyAddressBook, {color: theme.textColor}]}>
+          <CustomText  style={[styles.emptyAddressBook, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS')}
-          </Text>
-          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32, textAlign: 'center'}}>
+          </CustomText>
+          <CustomText  style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32, textAlign: 'center'}}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS_SUB_TEXT')}
-          </Text>
+          </CustomText>
           <Button
             type="primary"
             // onPress={() => navigation.navigate('NewAddress')}
@@ -86,15 +87,14 @@ const AddressBookSetting = () => {
         {groupByAlphabet(addressBook, 'name').map((group) => {
           return (
             <React.Fragment key={`address-group-${group.char}`}>
-              <Text
-                allowFontScaling={false}
+              <CustomText
                 style={{
                   marginHorizontal: 20,
                   marginBottom: 8,
                   color: theme.textColor,
                 }}>
                 {group.char}
-              </Text>
+              </CustomText>
               {group.items.map((address: Address) => {
                 return (
                   <TouchableOpacity
@@ -130,15 +130,15 @@ const AddressBookSetting = () => {
                       </View>
                     )}
                     <View>
-                      <Text
+                      <CustomText
                         allowFontScaling={false}
                         style={[
                           styles.addressName,
                           {color: theme.textColor, fontSize: 13},
                         ]}>
                         {address.name}
-                      </Text>
-                      <Text
+                      </CustomText>
+                      <CustomText
                         allowFontScaling={false}
                         style={[
                           styles.addressHash,
@@ -148,7 +148,7 @@ const AddressBookSetting = () => {
                           },
                         ]}>
                         {truncate(address.address, 15, 15)}
-                      </Text>
+                      </CustomText>
                     </View>
                   </TouchableOpacity>
                 );

@@ -16,6 +16,7 @@ import {getSelectedWallet, getWallets} from '../../../utils/local';
 import {withdrawDelegatedAmount, withdrawReward} from '../../../services/staking';
 import { useNavigation } from '@react-navigation/native';
 import UndelegateModal from '../UndelegateModal';
+import CustomText from '../../../components/Text';
 
 const showWithdraw = (value: any) => {
   return numeral(value).format('0,0.00') !== '0.00'
@@ -161,7 +162,7 @@ export default ({
         height: showWithdraw(validatorItem.withdrawableAmount) ? 500 : 450,
       }}>
       <View style={{width: '100%', marginBottom: 4}}>
-        <Text allowFontScaling={false} style={{color: theme.mutedTextColor}}>Validator</Text>
+        <CustomText  style={{color: theme.mutedTextColor}}>Validator</CustomText>
       </View>
       <View
         style={[
@@ -183,75 +184,75 @@ export default ({
           textStyle={{fontSize: 16}}
         />
         <View>
-          <Text allowFontScaling={false} style={[styles.validatorName, {color: theme.textColor}]}>
+          <CustomText  style={[styles.validatorName, {color: theme.textColor}]}>
             {validatorItem.name}
-          </Text>
+          </CustomText>
         </View>
       </View>
       <Divider style={{width: '100%'}} color="#60636C" />
       <View style={{width: '100%'}}>
         <View style={styles.dataContainer}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'COMMISSION_RATE')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+          </CustomText>
+          <CustomText  style={[{color: theme.textColor}]}>
             {getSelectedCommission()}
-          </Text>
+          </CustomText>
         </View>
         <View style={styles.dataContainer}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+          </CustomText>
+          <CustomText  style={[{color: theme.textColor}]}>
             {getSelectedStakedAmount()}
-          </Text>
+          </CustomText>
         </View>
         <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
           <TouchableOpacity onPress={() => setShowUndelegateModal(true)}>
-            <Text allowFontScaling={false} style={[{color: theme.urlColor}]}>
+            <CustomText  style={[{color: theme.urlColor}]}>
               {getLanguageString(language, 'UNDELEGATE')}
-            </Text>
+            </CustomText>
           </TouchableOpacity>
         </View>
         <View style={styles.dataContainer}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'CLAIMABLE')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+          </CustomText>
+          <CustomText  style={[{color: theme.textColor}]}>
             {numeral(weiToKAI(validatorItem.claimableRewards)).format('0,0.00')}{' '}
             KAI
-          </Text>
+          </CustomText>
         </View>
         <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
           {claiming ? (
             <ActivityIndicator color={theme.textColor} size="small" />
           ) : (
             <TouchableOpacity onPress={claimHandler}>
-              <Text allowFontScaling={false} style={[{color: theme.urlColor}]}>
+              <CustomText  style={[{color: theme.urlColor}]}>
                 {getLanguageString(language, 'CLAIM_REWARD')}
-              </Text>
+              </CustomText>
             </TouchableOpacity>
           )}
         </View>
         <View style={styles.dataContainer}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'UNBONDED')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+          </CustomText>
+          <CustomText  style={[{color: theme.textColor}]}>
             {numeral(weiToKAI(validatorItem.unbondedAmount)).format('0,0.00')}{' '}
             KAI
-          </Text>
+          </CustomText>
         </View>
         <View style={styles.dataContainer}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'WITHDRAWABLE')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+          </CustomText>
+          <CustomText  style={[{color: theme.textColor}]}>
             {numeral(weiToKAI(validatorItem.withdrawableAmount)).format(
               '0,0.00',
             )}{' '}
             KAI
-          </Text>
+          </CustomText>
         </View>
       </View>
       <Divider style={{width: '100%'}} color="#60636C" />

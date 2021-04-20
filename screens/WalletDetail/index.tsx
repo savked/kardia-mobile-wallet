@@ -25,6 +25,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import IconButton from '../../components/IconButton';
 import AuthModal from '../common/AuthModal';
 import { HEADER_HEIGHT } from '../../theme';
+import CustomText from '../../components/Text';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
@@ -162,16 +163,16 @@ export default () => {
                       alignItems: 'center',
                     }}>
                     <View>
-                      <Text allowFontScaling={false} style={{ color: 'rgba(252, 252, 252, 0.54)', fontSize: 10 }}>
+                      <CustomText  style={{ color: 'rgba(252, 252, 252, 0.54)', fontSize: 10 }}>
                         {getLanguageString(language, 'BALANCE').toUpperCase()}
-                      </Text>
-                      <Text allowFontScaling={false} style={{ fontSize: 30, color: 'white' }}>
+                      </CustomText>
+                      <CustomText  style={{ fontSize: 30, color: 'white' }}>
                         $
                         {numeral(
                         tokenInfo.price *
                         (Number(weiToKAI(wallet.balance)) + wallet.staked),
                       ).format('0,0.00a')}
-                      </Text>
+                      </CustomText>
                     </View>
                     <View style={{flexDirection: 'row'}}>
                       <IconButton
@@ -191,23 +192,23 @@ export default () => {
                   </View>
 
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text allowFontScaling={false} style={styles.kaiCardText}>
+                    <CustomText  style={styles.kaiCardText}>
                       {truncate(
                         wallet.address,
                         viewportWidth >= 432 ? 14 : 10,
                         viewportWidth >= 432 ? 14 : 12,
                       )}
-                    </Text>
+                    </CustomText>
                   </View>
 
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View>
-                      <Text allowFontScaling={false} style={{ fontSize: 10, color: 'rgba(252, 252, 252, 0.54)' }}>
+                      <CustomText  style={{ fontSize: 10, color: 'rgba(252, 252, 252, 0.54)' }}>
                         {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
-                      </Text>
-                      <Text allowFontScaling={false} style={{ fontSize: 15, color: 'rgba(252, 252, 252, 0.87)' }}>
+                      </CustomText>
+                      <CustomText  style={{ fontSize: 15, color: 'rgba(252, 252, 252, 0.87)' }}>
                         {wallet.name}
-                      </Text>
+                      </CustomText>
                     </View>
                     <TouchableOpacity
                       onPress={() => setShowQRModal(true)}
@@ -223,9 +224,9 @@ export default () => {
                     </TouchableOpacity>
                   </View>
                 </ImageBackground>
-                <Text allowFontScaling={false} style={{ color: theme.textColor, fontSize: 20, fontWeight: 'bold', marginTop: 20 }}>
+                <CustomText  style={{ color: theme.textColor, fontSize: 20, fontWeight: 'bold', marginTop: 20 }}>
                   {getLanguageString(language, 'WALLET_DETAILS')}
-                </Text>
+                </CustomText>
                 <CustomTextInput
                   headline={getLanguageString(language, 'WALLET_CARD_NAME')}
                   value={name}
@@ -236,7 +237,7 @@ export default () => {
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-              <Text allowFontScaling={false} style={{ marginTop: 16, marginBottom: 8, fontWeight: 'normal', color: theme.textColor, paddingHorizontal: 20 }}>{getLanguageString(language, 'WALLET_CARD_TYPE')}</Text>
+              <CustomText  style={{ marginTop: 16, marginBottom: 8, fontWeight: 'normal', color: theme.textColor, paddingHorizontal: 20 }}>{getLanguageString(language, 'WALLET_CARD_TYPE')}</CustomText>
             </TouchableWithoutFeedback>
             <View style={{ flex: 1 }}>
               <ScrollView horizontal ref={scrollRef}>
@@ -260,7 +261,7 @@ export default () => {
                           borderColor: item === cardAvatarID ? theme.textColor : 'transparent',
                           borderWidth: 3,
                         }} source={parseCardAvatar(item || 0)}>
-                        <Text allowFontScaling={false} style={{ fontSize: 14, color: theme.textColor }}>{parseCardAvatarColor(item || 0)}</Text>
+                        <CustomText  style={{ fontSize: 14, color: theme.textColor }}>{parseCardAvatarColor(item || 0)}</CustomText>
                       </ImageBackground>
                     </TouchableOpacity>
                   );
@@ -298,8 +299,7 @@ export default () => {
           style={{ width: 101, height: 152 }}
           source={require('../../assets/trash_dark.png')}
         />
-        <Text
-          allowFontScaling={false}
+        <CustomText
           style={{
             textAlign: 'center',
             fontSize: 22,
@@ -308,9 +308,8 @@ export default () => {
             color: theme.textColor,
           }}>
           {getLanguageString(language, 'CONFIRM_REMOVE_TITLE')}
-        </Text>
-        <Text
-          allowFontScaling={false}
+        </CustomText>
+        <CustomText
           style={{
             textAlign: 'center',
             fontSize: 15,
@@ -318,7 +317,7 @@ export default () => {
             color: theme.mutedTextColor,
           }}>
           {getLanguageString(language, 'CONFIRM_REMOVE_WALLET')}
-        </Text>
+        </CustomText>
         <Button
           block
           title={getLanguageString(language, 'KEEP_IT')}

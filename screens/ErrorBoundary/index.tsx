@@ -11,6 +11,7 @@ import {ThemeContext} from '../../ThemeContext';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString} from '../../utils/lang';
+import CustomText from '../../components/Text';
 
 class ErrorBoundary extends React.Component<any, any> {
   static contextType = ThemeContext;
@@ -38,17 +39,17 @@ class ErrorBoundary extends React.Component<any, any> {
         <SafeAreaView
           style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
           <View style={styles.container}>
-            <Text allowFontScaling={false} style={{width: '100%'}}>
+            <CustomText  style={{width: '100%'}}>
               <FontAwesome
                 name="ios-information-circle-outline"
                 size={60}
                 color={theme.textColor}
               />
-            </Text>
-            <Text allowFontScaling={false} style={{fontSize: 32, color: theme.textColor}}>
+            </CustomText>
+            <CustomText  style={{fontSize: 32, color: theme.textColor}}>
               {getLanguageString(language, 'ERROR_BOUNDARY_TITLE')}
-            </Text>
-            <Text
+            </CustomText>
+            <CustomText
               allowFontScaling={false}
               style={{
                 marginVertical: 10,
@@ -57,7 +58,7 @@ class ErrorBoundary extends React.Component<any, any> {
                 color: theme.textColor,
               }}>
               {getLanguageString(language, 'ERROR_BOUNDARY_DESCRIPTION')}
-            </Text>
+            </CustomText>
             <Button
               title={'Go back'}
               onPress={() => this.clearData()}

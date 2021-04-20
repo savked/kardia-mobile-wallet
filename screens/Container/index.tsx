@@ -37,6 +37,7 @@ import HomeStackScreen from '../../HomeStack';
 import AddressStackScreen from '../../AddressStack';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import { getVerifiedTokenList } from '../../services/krc20';
+import CustomText from '../../components/Text';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -55,33 +56,33 @@ const Wrap = () => {
         tabBarLabel: ({focused, color, position}) => {
           if (route.name === 'Home') {
             return (
-              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+              <CustomText  style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
                 {getLanguageString(language, 'HOME')}
-              </Text>
+              </CustomText>
             )
           } else if (route.name === 'Transaction') {
             return (
-              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+              <CustomText  style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
                 {getLanguageString(language, 'TRANSACTIONS')}
-              </Text>
+              </CustomText>
             )
           } else if (route.name === 'Staking') {
             return (
-              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+              <CustomText  style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
                 {getLanguageString(language, 'STAKING')}
-              </Text>
+              </CustomText>
             )
           } else if (route.name === 'Address') {
             return (
-              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+              <CustomText  style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
                 {getLanguageString(language, 'ADDRESS_BOOK')}
-              </Text>
+              </CustomText>
             )
           } else if (route.name === 'Setting') {
             return (
-              <Text allowFontScaling={false} style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+              <CustomText  style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
                 {getLanguageString(language, 'SETTING')}
-              </Text>
+              </CustomText>
             )
           }
         },

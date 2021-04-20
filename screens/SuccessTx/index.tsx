@@ -28,6 +28,7 @@ import {styles} from './style';
 import {parseDecimals} from '../../utils/number';
 import numeral from 'numeral';
 import TextAvatar from '../../components/TextAvatar';
+import CustomText from '../../components/Text';
 
 export default () => {
   const {params} = useRoute();
@@ -96,14 +97,14 @@ export default () => {
               alignItems: 'center',
               marginVertical: 10,
             }}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(txObj.amount).format('0,0.00')}
-            </Text>
-            <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            </CustomText>
+            <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
-            </Text>
+            </CustomText>
           </View>
         );
       case 'krc20':
@@ -114,14 +115,14 @@ export default () => {
               alignItems: 'center',
               marginVertical: 10,
             }}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {parseDecimals(txObj.value, tokenDecimals)}
-            </Text>
-            <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            </CustomText>
+            <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               {tokenSymbol}
-            </Text>
+            </CustomText>
           </View>
         );
       case 'claim':
@@ -132,14 +133,14 @@ export default () => {
               alignItems: 'center',
               marginVertical: 10,
             }}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(claimAmount).format('0,0.00')}
-            </Text>
-            <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            </CustomText>
+            <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
-            </Text>
+            </CustomText>
           </View>
         );
       case 'withdraw':
@@ -150,14 +151,14 @@ export default () => {
               alignItems: 'center',
               marginVertical: 10,
             }}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(withdrawAmount).format('0,0.00')}
-            </Text>
-            <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            </CustomText>
+            <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
-            </Text>
+            </CustomText>
           </View>
         );
       case 'undelegate':
@@ -168,14 +169,14 @@ export default () => {
               alignItems: 'center',
               marginVertical: 10,
             }}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(undelegateAmount).format('0,0.00')}
-            </Text>
-            <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            </CustomText>
+            <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
-            </Text>
+            </CustomText>
           </View>
         );
       default:
@@ -186,14 +187,14 @@ export default () => {
               alignItems: 'center',
               marginVertical: 10,
             }}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(txObj.amount).format('0,0.00')}
-            </Text>
-            <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            </CustomText>
+            <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
-            </Text>
+            </CustomText>
           </View>
         );
     }
@@ -224,8 +225,7 @@ export default () => {
               />
             </View>
             <View>
-              <Text
-                allowFontScaling={false}
+              <CustomText
                 style={[
                   styles.addressName,
                   {color: theme.textColor, fontSize: 13},
@@ -233,9 +233,8 @@ export default () => {
                 {address.name
                   ? address.name
                   : getLanguageString(language, 'NEW_CONTACT')}
-              </Text>
-              <Text
-                allowFontScaling={false}
+              </CustomText>
+              <CustomText
                 style={[
                   styles.addressHash,
                   {
@@ -244,7 +243,7 @@ export default () => {
                   },
                 ]}>
                 {truncate(txObj.to, 15, 15)}
-              </Text>
+              </CustomText>
             </View>
           </View>
         );
@@ -267,16 +266,14 @@ export default () => {
               textStyle={{fontSize: 16}}
             />
             <View style={{justifyContent: 'space-between'}}>
-              <Text
-                allowFontScaling={false}
+              <CustomText
                 style={[
                   styles.addressName,
                   {color: theme.textColor, fontSize: 13},
                 ]}>
                 {validatorItem.name}
-              </Text>
-              <Text
-                allowFontScaling={false}
+              </CustomText>
+              <CustomText
                 style={[
                   styles.commissionRateText,
                   {
@@ -285,7 +282,7 @@ export default () => {
                   },
                 ]}>
                 Rate: {validatorItem.commissionRate} %
-              </Text>
+              </CustomText>
             </View>
           </View>
         );
@@ -312,8 +309,7 @@ export default () => {
               />
             </View>
             <View style={{justifyContent: 'space-between', height: 48, paddingVertical: 4}}>
-              <Text
-                allowFontScaling={false}
+              <CustomText
                 style={[
                   styles.addressName,
                   {color: theme.textColor, fontSize: 13},
@@ -321,9 +317,8 @@ export default () => {
                 {address.name
                   ? address.name
                   : getLanguageString(language, 'NEW_CONTACT')}
-              </Text>
-              <Text
-                allowFontScaling={false}
+              </CustomText>
+              <CustomText
                 style={[
                   styles.addressHash,
                   {
@@ -332,7 +327,7 @@ export default () => {
                   },
                 ]}>
                 {truncate(txObj.to, 15, 15)}
-              </Text>
+              </CustomText>
             </View>
           </View>
         );
@@ -424,30 +419,30 @@ export default () => {
             style={{width: 86, height: 86}}
             source={require('../../assets/icon/success_tx_icon.png')}
           />
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={{color: theme.textColor, fontSize: 32, fontWeight: 'bold'}}>
             {getLanguageString(language, 'SUCCESS')}
-          </Text>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 15, marginTop: 8, textAlign: 'center', paddingHorizontal: 18}}>
+          </CustomText>
+          <CustomText  style={{color: theme.textColor, fontSize: 15, marginTop: 8, textAlign: 'center', paddingHorizontal: 18}}>
             {renderSuccessDesc()}
-          </Text>
+          </CustomText>
         </ImageBackground>
       </View>
       {renderReceiver()}
       <Divider
         style={{width: 280, backgroundColor: '#60636C', marginVertical: 32}}
       />
-      <Text allowFontScaling={false} style={{textAlign: 'center', color: theme.textColor, fontSize: 15}}>
+      <CustomText  style={{textAlign: 'center', color: theme.textColor, fontSize: 15}}>
         {getLanguageString(language, 'TRANSACTION_AMOUNT')}
-      </Text>
+      </CustomText>
       {renderAmount()}
-      <Text allowFontScaling={false} style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+      <CustomText  style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
         {txObj.date &&
           format(txObj.date, 'MMM dd, yyyy - hh:mm aa', {
             locale: dateLocale,
           })}
-      </Text>
+      </CustomText>
       <Button
         title={getLanguageString(language, 'OK_TEXT')}
         onPress={handleBack}

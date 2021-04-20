@@ -10,6 +10,7 @@ import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
 import Modal from '../../components/Modal';
 import CustomTextInput from '../../components/TextInput';
+import CustomText from '../../components/Text';
 
 const ImportModal = ({
   onClose,
@@ -100,9 +101,9 @@ const ImportModal = ({
           onClose={onClose}
           showCloseButton={true}
           contentStyle={getMnemonicModalContentStyle() as any}>
-          <Text allowFontScaling={false} style={{fontSize: 22}}>
+          <CustomText  style={{fontSize: 22}}>
             {getLanguageString(language, 'ENTER_SEED_PHRASE')}
-          </Text>
+          </CustomText>
           <CustomTextInput
             style={styles.input}
             value={mnemonic}
@@ -153,9 +154,9 @@ const ImportModal = ({
           onClose={onClose}
           showCloseButton={true}
           contentStyle={getPrivateKeyModalContentStyle() as any}>
-          <Text allowFontScaling={false} style={{fontSize: 22}}>
+          <CustomText  style={{fontSize: 22}}>
             {getLanguageString(language, 'ENTER_PRIVATE_KEY')}
-          </Text>
+          </CustomText>
           <CustomTextInput
             style={styles.input}
             value={privateKey}
@@ -207,12 +208,12 @@ const ImportModal = ({
   return (
     <View style={styles.scanContainer}>
       <View style={styles.qrScannerHeader}>
-        <Text allowFontScaling={false} style={styles.centerText}>
+        <CustomText  style={styles.centerText}>
           {getLanguageString(
             language,
             scanType === 'mnemonic' ? 'SCAN_SEED_PHRASE' : 'SCAN_PRIVATE_KEY',
           )}
-        </Text>
+        </CustomText>
       </View>
       <QRCodeScanner
         onRead={(e) => onSuccessScan(e, scanType)}

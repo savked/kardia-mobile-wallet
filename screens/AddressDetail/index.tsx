@@ -41,6 +41,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import NewAddressModal from '../common/NewAddressModal';
 import IconButton from '../../components/IconButton';
 import CustomImagePicker from '../../components/ImagePicker';
+import CustomText from '../../components/Text';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -222,7 +223,7 @@ const AddressDetail = () => {
   if (!addressData) {
     return (
       <View>
-        <Text allowFontScaling={false}>Invalid address</Text>
+        <CustomText>Invalid address</CustomText>
       </View>
     );
   }
@@ -312,8 +313,7 @@ const AddressDetail = () => {
               />
             </View>
           )}
-          <Text
-            allowFontScaling={false}
+          <CustomText
             style={{
               color: theme.textColor,
               textAlign: 'center',
@@ -322,10 +322,9 @@ const AddressDetail = () => {
               marginVertical: 16,
             }}>
             {addressData.name}
-          </Text>
+          </CustomText>
           <View style={{flexDirection: 'row'}}>
-            <Text
-              allowFontScaling={false}
+            <CustomText
               style={{
                 color: 'rgba(252, 252, 252, 0.54)',
                 textAlign: 'center',
@@ -333,7 +332,7 @@ const AddressDetail = () => {
                 marginRight: 8,
               }}>
               {truncate(addressData.address, 10, 10)}
-            </Text>
+            </CustomText>
             <TouchableOpacity
               style={{
                 width: 24,
@@ -377,8 +376,7 @@ const AddressDetail = () => {
         </ImageBackground>
       </View>
       <View style={{padding: 20}}>
-        <Text
-          allowFontScaling={false}
+        <CustomText
           style={{
             color: theme.textColor,
             fontSize: 20,
@@ -386,16 +384,16 @@ const AddressDetail = () => {
             marginBottom: 12,
           }}>
           {getLanguageString(language, 'RECENT_TRANSACTION')}
-        </Text>
+        </CustomText>
         {groupByDate(filteredList, 'date').length === 0 && (
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={[
               styles.noTXText,
               {color: theme.textColor, fontSize: theme.defaultFontSize},
             ]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
-          </Text>
+          </CustomText>
         )}
         <ScrollView>
 
@@ -404,13 +402,12 @@ const AddressDetail = () => {
           const dateLocale = getDateFNSLocale(language);
           return (
             <React.Fragment key={`transaction-by-${txsByDate.date.getTime()}`}>
-              <Text
-                allowFontScaling={false}
+              <CustomText
                 style={{
                   color: theme.textColor,
                 }}>
                 {format(txsByDate.date, 'E, dd/MM/yyyy', {locale: dateLocale})}
-              </Text>
+              </CustomText>
               {txsByDate.items.map((item: any, index: number) => {
                 return (
                   <View
@@ -440,22 +437,21 @@ const AddressDetail = () => {
                           flex: 4,
                           paddingHorizontal: 14,
                         }}>
-                        <Text allowFontScaling={false} style={{color: '#FFFFFF'}}>
+                        <CustomText  style={{color: '#FFFFFF'}}>
                           {item.type === 'IN'
                             ? getLanguageString(language, 'TX_TYPE_RECEIVED')
                             : getLanguageString(language, 'TX_TYPE_SEND')}
-                        </Text>
-                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
+                        </CustomText>
+                        <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
                           {truncate(item.label, 8, 10)}
-                        </Text>
+                        </CustomText>
                       </View>
                       <View
                         style={{
                           flex: 3,
                           alignItems: 'flex-end',
                         }}>
-                        <Text
-                          allowFontScaling={false}
+                        <CustomText
                           style={[
                             styles.kaiAmount,
                             item.type === 'IN'
@@ -464,10 +460,10 @@ const AddressDetail = () => {
                           ]}>
                           {item.type === 'IN' ? '+' : '-'}
                           {parseKaiBalance(item.amount, true)} KAI
-                        </Text>
-                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
+                        </CustomText>
+                        <CustomText  style={{color: '#DBDBDB', fontSize: 12}}>
                           {format(item.date, 'hh:mm aa')}
-                        </Text>
+                        </CustomText>
                       </View>
                     </TouchableOpacity>
                   </View>

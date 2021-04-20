@@ -25,6 +25,7 @@ import {groupByDate} from '../../utils/date';
 import Button from '../../components/Button';
 import NewKRC20TxModal from '../common/NewKRC20TxModal';
 import KRC20TxDetailModal from '../common/KRC20TxDetailModal';
+import CustomText from '../../components/Text';
 
 const TokenTxList = ({
   tokenAddress,
@@ -151,9 +152,9 @@ const TokenTxList = ({
             style={{width: 128, height: 105}}
             source={require('../../assets/no_tx_box.png')}
           />
-          <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
+          <CustomText  style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
-          </Text>
+          </CustomText>
           <Button
             type="primary"
             onPress={() => setShowNewTxModal(true)}
@@ -175,14 +176,13 @@ const TokenTxList = ({
           const dateLocale = getDateFNSLocale(language);
           return (
             <React.Fragment key={`transaction-by-${txsByDate.date.getTime()}`}>
-              <Text
-                allowFontScaling={false}
+              <CustomText
                 style={{
                   marginHorizontal: 20,
                   color: theme.textColor,
                 }}>
                 {format(txsByDate.date, 'E, dd/MM/yyyy', {locale: dateLocale})}
-              </Text>
+              </CustomText>
               {txsByDate.items.map((item: any, index: number) => {
                 return (
                   <View
@@ -212,22 +212,21 @@ const TokenTxList = ({
                           flex: 4,
                           paddingHorizontal: 14,
                         }}>
-                        <Text allowFontScaling={false} style={{color: '#FFFFFF'}}>
+                        <CustomText  style={{color: '#FFFFFF'}}>
                           {item.type === 'IN'
                             ? getLanguageString(language, 'TX_TYPE_RECEIVED')
                             : getLanguageString(language, 'TX_TYPE_SEND')}
-                        </Text>
-                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
+                        </CustomText>
+                        <CustomText  style={{color: '#DBDBDB', fontSize: 12}}>
                           {truncate(item.transactionHash, 8, 10)}
-                        </Text>
+                        </CustomText>
                       </View>
                       <View
                         style={{
                           flex: 3,
                           alignItems: 'flex-end',
                         }}>
-                        <Text
-                          allowFontScaling={false}
+                        <CustomText
                           style={[
                             styles.kaiAmount,
                             item.type === 'IN'
@@ -239,10 +238,10 @@ const TokenTxList = ({
                             parseDecimals(Number(item.value), tokenDecimals),
                           ).format('0,0.00')}{' '}
                           {tokenSymbol}
-                        </Text>
-                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
+                        </CustomText>
+                        <CustomText  style={{color: '#DBDBDB', fontSize: 12}}>
                           {format(item.date, 'hh:mm aa')}
-                        </Text>
+                        </CustomText>
                       </View>
                     </TouchableOpacity>
                   </View>

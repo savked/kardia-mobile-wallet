@@ -24,6 +24,7 @@ import AlertModal from '../../components/AlertModal';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
+import CustomText from '../../components/Text';
 
 const parseValidatorItemForList = (item: Validator) => {
   return {
@@ -270,50 +271,50 @@ const NewStaking = () => {
           <View style={{marginBottom: 20}}>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'COMMISSION_RATE')}
-              </Text>
-              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+              </CustomText>
+              <CustomText  style={[{color: theme.textColor}]}>
                 {getSelectedCommission()}
-              </Text>
+              </CustomText>
             </View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
-              </Text>
-              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+              </CustomText>
+              <CustomText  style={[{color: theme.textColor}]}>
                 {getSelectedStakedAmount()}
-              </Text>
+              </CustomText>
             </View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'VOTING_POWER')}
-              </Text>
-              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+              </CustomText>
+              <CustomText  style={[{color: theme.textColor}]}>
                 {getSelectedVotingPower()}
-              </Text>
+              </CustomText>
             </View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'ESTIMATED_EARNING')}
-              </Text>
-              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+              </CustomText>
+              <CustomText  style={[{color: theme.textColor}]}>
                 {numeral(estimatedProfit).format('0,0.00')}{' '}
                 {estimatedProfit ? 'KAI' : ''}
-              </Text>
+              </CustomText>
             </View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'ESTIMATED_APR')}
-              </Text>
-              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+              </CustomText>
+              <CustomText  style={[{color: theme.textColor}]}>
                 {numeral(estimatedAPR).format('0,0.00')}{' '}
                 {estimatedProfit ? '%' : ''}
-              </Text>
+              </CustomText>
             </View>
           </View>
         )}

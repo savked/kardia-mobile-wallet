@@ -11,6 +11,7 @@ import {styles} from './style';
 import {ThemeContext} from '../../ThemeContext';
 import WalkThrough from '../WalkThrough';
 import { getWalkThroughView, saveWalkThroughView } from '../../utils/local';
+import CustomText from '../../components/Text';
 
 const Welcome = () => {
   const navigation = useNavigation();
@@ -53,8 +54,7 @@ const Welcome = () => {
           />
         </View>
         <View>
-          <Text
-            allowFontScaling={false}
+          <CustomText
             style={{
               fontSize: 24,
               textAlign: 'center',
@@ -63,10 +63,10 @@ const Welcome = () => {
               color: '#B4BDC9',
             }}>
             {getLanguageString(language, 'WELCOME')}
-          </Text>
-          <Text allowFontScaling={false} style={{fontSize: 14, color: '#B4BDC9', textAlign: 'center'}}>
+          </CustomText>
+          <CustomText style={{fontSize: 14, color: '#B4BDC9', textAlign: 'center'}}>
             {getLanguageString(language, 'GETTING_STARTED_DESCRIPTION')}
-          </Text>
+          </CustomText>
         </View>
       </View>
       <View style={{flex: 1, justifyContent: 'space-evenly'}}>

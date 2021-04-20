@@ -20,6 +20,7 @@ import {
 } from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import {getSelectedWallet, getWallets} from '../../utils/local';
+import CustomText from '../../components/Text';
 
 const TxListSection = () => {
   const navigation = useNavigation();
@@ -166,10 +167,10 @@ const TxListSection = () => {
                     flex: 2.5,
                     flexDirection: 'column',
                   }}>
-                  <Text allowFontScaling={false} style={{color: '#FFFFFF'}}>
+                  <CustomText  style={{color: '#FFFFFF'}}>
                     {truncate(item.label, 6, 8)}
-                  </Text>
-                  <Text allowFontScaling={false} style={{color: 'gray'}}>
+                  </CustomText>
+                  <CustomText  style={{color: 'gray'}}>
                     {isSameDay(item.date, new Date())
                       ? `${formatDistanceToNowStrict(item.date, {
                           locale: getDateFNSLocale(language),
@@ -177,7 +178,7 @@ const TxListSection = () => {
                       : format(item.date, getDateTimeFormat(language), {
                           locale: getDateFNSLocale(language),
                         })}
-                  </Text>
+                  </CustomText>
                 </View>
                 <View
                   style={{
@@ -185,24 +186,23 @@ const TxListSection = () => {
                     flexDirection: 'row',
                     justifyContent: 'flex-end',
                   }}>
-                  <Text
-                    allowFontScaling={false}
+                  <CustomText
                     style={[
                       styles.kaiAmount,
                       item.type === 'IN' ? {color: '#61b15a'} : {color: 'red'},
                     ]}>
                     {item.type === 'IN' ? '+' : '-'}
                     {parseKaiBalance(item.amount)} KAI
-                  </Text>
+                  </CustomText>
                 </View>
               </TouchableOpacity>
             </View>
           );
         }}
         ListEmptyComponent={
-          <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
+          <CustomText  style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
-          </Text>
+          </CustomText>
         }
         header={
           <View
@@ -212,9 +212,9 @@ const TxListSection = () => {
               justifyContent: 'space-between',
               paddingHorizontal: 15,
             }}>
-            <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
+            <CustomText  style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
               {getLanguageString(language, 'RECENT_TRANSACTION')}
-            </Text>
+            </CustomText>
             <Button
               type="link"
               onPress={() =>

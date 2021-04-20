@@ -10,6 +10,7 @@ import {truncate} from '../../../utils/string';
 import TextAvatar from '../../../components/TextAvatar';
 import {languageAtom} from '../../../atoms/language';
 import {getLanguageString} from '../../../utils/lang';
+import CustomText from '../../../components/Text';
 
 const AddressBookModal = ({
   visible,
@@ -31,7 +32,7 @@ const AddressBookModal = ({
         flex: 0.65,
       }}
     >
-      <Text>{getLanguageString(language, 'SELECT_ADDRESS')}</Text>
+      <CustomText>{getLanguageString(language, 'SELECT_ADDRESS')}</CustomText>
       <List
         items={addressBook}
         keyExtractor={(item) => item.address}
@@ -50,20 +51,20 @@ const AddressBookModal = ({
                 )}
               </View>
               <View>
-                <Text allowFontScaling={false} style={[styles.addressName, {color: '#000000'}]}>
+                <CustomText  style={[styles.addressName, {color: '#000000'}]}>
                   {_address.name}
-                </Text>
-                <Text allowFontScaling={false} style={[styles.addressHash, {color: '#000000'}]}>
+                </CustomText>
+                <CustomText  style={[styles.addressHash, {color: '#000000'}]}>
                   {truncate(_address.address, 20, 20)}
-                </Text>
+                </CustomText>
               </View>
             </TouchableOpacity>
           );
         }}
         ListEmptyComponent={
-          <Text allowFontScaling={false} style={[styles.emptyAddressBook]}>
+          <CustomText  style={[styles.emptyAddressBook]}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS')}
-          </Text>
+          </CustomText>
         }
       />
     </Modal>

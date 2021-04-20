@@ -23,6 +23,7 @@ import {styles} from './styles';
 import numeral from 'numeral';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import Button from '../../components/Button';
+import CustomText from '../../components/Text';
 
 const TokenTxDetail = () => {
   const navigation = useNavigation();
@@ -92,20 +93,20 @@ const TokenTxDetail = () => {
             />
           )}
         </View>
-        <Text allowFontScaling={false} style={[styles.tokenBalance, {color: theme.textColor}]}>
+        <CustomText  style={[styles.tokenBalance, {color: theme.textColor}]}>
           {numeral(
             parseDecimals(Number(txData.value), tokenInfo.decimals || 18),
           ).format('0,0.00')}{' '}
           {tokenInfo.symbol}
-        </Text>
+        </CustomText>
         {/* <Divider /> */}
       </View>
       <View style={styles.infoContainer}>
-        <Text allowFontScaling={false} style={[styles.infoTitle, {color: theme.textColor}]}>
+        <CustomText  style={[styles.infoTitle, {color: theme.textColor}]}>
           {getLanguageString(language, 'FROM')}
-        </Text>
+        </CustomText>
         <View style={{flexDirection: 'row'}}>
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={[
               styles.infoValue,
@@ -116,7 +117,7 @@ const TokenTxDetail = () => {
               10,
               10,
             )}
-          </Text>
+          </CustomText>
           <IconButton
             color={theme.textColor}
             name="copy"
@@ -126,18 +127,18 @@ const TokenTxDetail = () => {
         </View>
       </View>
       <View style={styles.infoContainer}>
-        <Text allowFontScaling={false} style={[styles.infoTitle, {color: theme.textColor}]}>
+        <CustomText  style={[styles.infoTitle, {color: theme.textColor}]}>
           {getLanguageString(language, 'TO')}
-        </Text>
+        </CustomText>
         <View style={{flexDirection: 'row'}}>
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={[
               styles.infoValue,
               {color: theme.textColor, marginRight: 6},
             ]}>
             {truncate(getFromAddressBook(addressBook, txData.to || ''), 10, 10)}
-          </Text>
+          </CustomText>
           <IconButton
             color={theme.textColor}
             name="copy"
@@ -147,10 +148,10 @@ const TokenTxDetail = () => {
         </View>
       </View>
       <View style={styles.infoContainer}>
-        <Text allowFontScaling={false} style={[styles.infoTitle, {color: theme.textColor}]}>
+        <CustomText  style={[styles.infoTitle, {color: theme.textColor}]}>
           {getLanguageString(language, 'TRANSACTION_DATE')}
-        </Text>
-        <Text allowFontScaling={false} style={[styles.infoValue, {color: theme.textColor}]}>
+        </CustomText>
+        <CustomText  style={[styles.infoValue, {color: theme.textColor}]}>
           {isSameDay(new Date(txData.time), new Date())
             ? `${formatDistanceToNowStrict(new Date(txData.time), {
                 locale: getDateFNSLocale(language),
@@ -158,7 +159,7 @@ const TokenTxDetail = () => {
             : format(new Date(txData.time), getDateTimeFormat(language), {
                 locale: getDateFNSLocale(language),
               })}
-        </Text>
+        </CustomText>
       </View>
       <View style={{marginTop: 15, paddingHorizontal: 22, paddingVertical: 8}}>
         {getFromAddressBook(addressBook, getOtherAddress()) ===

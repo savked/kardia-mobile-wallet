@@ -13,9 +13,10 @@ import {getLanguageName, getLanguageString} from '../../utils/lang';
 import {styles} from './style';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import {walletsAtom} from '../../atoms/wallets';
+import CustomText from '../../components/Text';
 
 const INFO_DATA = {
-  version: '2.0.9',
+  version: '2.0.10',
 };
 
 const SettingScreen = () => {
@@ -39,9 +40,9 @@ const SettingScreen = () => {
     <SafeAreaView
       style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
-        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
+        <CustomText  style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'SETTING_SCREEN_TITLE')}
-        </Text>
+        </CustomText>
         <IconButton
           name="bell-o"
           color={theme.textColor}
@@ -51,7 +52,7 @@ const SettingScreen = () => {
       </View>
       <ScrollView>
         <View style={{flex: 1}}>
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={{
               color: theme.textColor,
@@ -59,7 +60,7 @@ const SettingScreen = () => {
               fontSize: 12,
             }}>
             {getLanguageString(language, 'GENERAL_GROUP')}
-          </Text>
+          </CustomText>
           <View
             style={{
               backgroundColor: theme.backgroundFocusColor,
@@ -86,17 +87,17 @@ const SettingScreen = () => {
                 />
               </View>
               <View style={{alignItems: 'flex-start', flex: 1}}>
-                <Text allowFontScaling={false} style={[styles.settingTitle, {color: theme.textColor}]}>
+                <CustomText  style={[styles.settingTitle, {color: theme.textColor}]}>
                   {getLanguageString(language, 'LANGUAGE_MENU')}
-                </Text>
+                </CustomText>
               </View>
-              <Text allowFontScaling={false} style={{color: theme.mutedTextColor}}>
+              <CustomText  style={{color: theme.mutedTextColor}}>
                 {getLanguageName(language)}
-              </Text>
+              </CustomText>
               <ENIcon name="chevron-right" color={theme.textColor} size={20} />
             </TouchableOpacity>
           </View>
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={{
               color: theme.textColor,
@@ -104,7 +105,7 @@ const SettingScreen = () => {
               fontSize: 12,
             }}>
             {getLanguageString(language, 'SECURITY_GROUP')}
-          </Text>
+          </CustomText>
           <View
             style={{
               backgroundColor: theme.backgroundFocusColor,
@@ -131,9 +132,9 @@ const SettingScreen = () => {
                 />
               </View>
               <View style={{alignItems: 'flex-start', flex: 1}}>
-                <Text allowFontScaling={false} style={[styles.settingTitle, {color: theme.textColor}]}>
+                <CustomText  style={[styles.settingTitle, {color: theme.textColor}]}>
                   {getLanguageString(language, 'PASSCODE_MENU')}
-                </Text>
+                </CustomText>
               </View>
               <ENIcon name="chevron-right" color={theme.textColor} size={20} />
             </TouchableOpacity>
@@ -155,20 +156,19 @@ const SettingScreen = () => {
                 />
               </View>
               <View style={{alignItems: 'flex-start', flex: 1}}>
-                <Text allowFontScaling={false} style={[styles.settingTitle, {color: theme.textColor}]}>
+                <CustomText  style={[styles.settingTitle, {color: theme.textColor}]}>
                   {getLanguageString(language, 'WALLET_MANAGEMENT')}
-                </Text>
+                </CustomText>
               </View>
-              <Text allowFontScaling={false} style={{color: theme.mutedTextColor}}>
+              <CustomText  style={{color: theme.mutedTextColor}}>
                 ({wallets.length})
-              </Text>
+              </CustomText>
               <ENIcon name="chevron-right" color={theme.textColor} size={20} />
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
-      <Text
-        allowFontScaling={false}
+      <CustomText
         style={{
           textAlign: 'center',
           color: 'rgba(252, 252, 252, 0.26)',
@@ -176,7 +176,7 @@ const SettingScreen = () => {
           marginBottom: 24,
         }}>
         Kardiachain©2020 - Version {INFO_DATA.version}
-      </Text>
+      </CustomText>
     </SafeAreaView>
   );
 };

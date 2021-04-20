@@ -5,6 +5,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import {styles} from './style';
 import Modal from '../Modal';
 import Button from '../Button';
+import CustomText from '../Text';
 
 const getIcon = (type: string, iconSize = 140, color?: string) => {
   switch (type) {
@@ -79,7 +80,7 @@ const AlertModal = ({
       {getIcon(type, iconSize, iconColor)}
       {children}
       {!children && (
-        <Text allowFontScaling={false} style={[styles.messageContent, messageStyle]}>{message}</Text>
+        <CustomText  style={[styles.messageContent, messageStyle]}>{message}</CustomText>
       )}
       {type === 'confirm' && (
         <View style={styles.buttonGroup}>

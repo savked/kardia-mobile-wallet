@@ -31,6 +31,7 @@ import Button from '../../components/Button';
 import { SIMPLEX_URL } from '../../config';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { HEADER_HEIGHT } from '../../theme';
+import CustomText from '../../components/Text';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
@@ -193,21 +194,21 @@ const HomeScreen = () => {
                 source={require('../../assets/logo_dark.png')}
               />
               <View>
-                <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+                <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
                   {getLanguageString(language, 'BALANCE')}
-                </Text>
-                <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 18, marginVertical: 4}}>
+                </CustomText>
+                <CustomText  style={{color: theme.textColor, fontSize: 18, marginVertical: 4}}>
                   {parseKaiBalance(_getBalance(), true)}{' '}
-                  <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</Text>
-                </Text>
-                <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+                  <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</CustomText>
+                </CustomText>
+                <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
                   ~${' '}
                   {numeral(
                     tokenInfo.price *
                       (Number(weiToKAI(_getBalance())) +
                       _getStaked()),
                   ).format('0,0.00a')}
-                </Text>
+                </CustomText>
               </View>
             </View>
             <Button

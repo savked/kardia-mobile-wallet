@@ -13,6 +13,7 @@ import {getAppPasscode} from '../../utils/local';
 import {styles} from './style';
 import {localAuthAtom} from '../../atoms/localAuth';
 import Divider from '../../components/Divider';
+import CustomText from '../../components/Text';
 
 const optionalConfigObject = {
   unifiedErrors: false, // use unified error messages (default false)
@@ -70,9 +71,9 @@ const ConfirmPasscode = () => {
 
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <Text allowFontScaling={false} style={[styles.title, {color: theme.textColor}]}>
+      <CustomText  style={[styles.title, {color: theme.textColor}]}>
         {getLanguageString(language, 'ENTER_PIN_CODE')}
-      </Text>
+      </CustomText>
       <View style={{marginVertical: 24, width: '100%'}}>
         <OtpInputs
           // TODO: remove ts-ignore after issue fixed
@@ -89,11 +90,11 @@ const ConfirmPasscode = () => {
           secureTextEntry={true}
         />
         {error !== '' && (
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={{color: 'red', paddingHorizontal: 20, fontStyle: 'italic'}}>
             {error}
-          </Text>
+          </CustomText>
         )}
       </View>
       <Divider style={{width: 32, backgroundColor: '#F0F1F2'}} />
@@ -114,9 +115,9 @@ const ConfirmPasscode = () => {
           ) : (
             <Icon name="finger-print" color={theme.textColor} size={30} />
           )}
-          <Text allowFontScaling={false} style={{color: theme.textColor}}>
+          <CustomText  style={{color: theme.textColor}}>
             Authenticate by {touchType}
-          </Text>
+          </CustomText>
         </TouchableOpacity>
       )}
       <Button

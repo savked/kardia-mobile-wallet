@@ -17,6 +17,7 @@ import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import TextAvatar from '../../components/TextAvatar';
 import DelegateDetailModal from '../common/DelegateDetailModal';
+import CustomText from '../../components/Text';
 
 const StakingItem = ({
   item,
@@ -187,54 +188,54 @@ const StakingItem = ({
             textStyle={{fontSize: 16}}
           />
           <View>
-            <Text allowFontScaling={false} style={[styles.validatorName, {color: theme.textColor}]}>
+            <CustomText  style={[styles.validatorName, {color: theme.textColor}]}>
               {item.name}
-            </Text>
-            <Text
+            </CustomText>
+            <CustomText
               allowFontScaling={false}
               style={{
                 fontSize: theme.defaultFontSize,
                 color: 'rgba(252, 252, 252, 0.54)',
               }}>
               Rate: {commissionRate} %
-            </Text>
+            </CustomText>
           </View>
           {/* {showFull && (
-            <Text allowFontScaling={false} style={{color: '#929394'}}>
+            <CustomText  style={{color: '#929394'}}>
               {getLanguageString(language, 'STAKED')}:{' '}
-              <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
+              <CustomText  style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(stakedAmountInKAI).format('0,0.00')}
-              </Text>
-            </Text>
+              </CustomText>
+            </CustomText>
           )}
           {showFull && (
-            <Text allowFontScaling={false} style={{color: '#929394'}}>
+            <CustomText  style={{color: '#929394'}}>
               {getLanguageString(language, 'CLAIMABLE')}:{' '}
-              <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
+              <CustomText  style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(claimableInKAI).format('0,0.00')}
-              </Text>
-            </Text>
+              </CustomText>
+            </CustomText>
           )}
           {showFull && (
-            <Text allowFontScaling={false} style={{color: '#929394'}}>
+            <CustomText  style={{color: '#929394'}}>
               {getLanguageString(language, 'UNBONDED')}:{' '}
-              <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
+              <CustomText  style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(unbondedInKAI).format('0,0.00')}
-              </Text>
-            </Text>
+              </CustomText>
+            </CustomText>
           )}
           {showFull && (
-            <Text allowFontScaling={false} style={{color: '#929394'}}>
+            <CustomText  style={{color: '#929394'}}>
               {getLanguageString(language, 'WITHDRAWABLE')}:{' '}
-              <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
+              <CustomText  style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(withDrawbleInKAI).format('0,0.00')}
-              </Text>
-            </Text>
+              </CustomText>
+            </CustomText>
           )} */}
         </View>
         <View style={{alignItems: 'flex-end', justifyContent: 'space-between'}}>
           <View style={{justifyContent: 'center'}}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{
                 fontWeight: 'bold',
@@ -242,17 +243,17 @@ const StakingItem = ({
                 fontSize: theme.defaultFontSize + 1,
               }}>
               {numeral(claimableInKAI).format('0,0.00')} KAI
-            </Text>
+            </CustomText>
           </View>
           <View style={{justifyContent: 'center'}}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{
                 color: 'rgba(252, 252, 252, 0.54)',
                 fontSize: theme.defaultFontSize,
               }}>
               {numeral(stakedAmountInKAI).format('0,0.00')} KAI
-            </Text>
+            </CustomText>
           </View>
           {/* <Icon
             name={showFull ? 'chevron-up' : 'chevron-down'}

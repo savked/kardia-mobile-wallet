@@ -8,6 +8,7 @@ import {useRecoilValue} from 'recoil';
 import {notificationAtom} from '../../atoms/notification';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
+import CustomText from '../../components/Text';
 
 const Notification = () => {
   const theme = useContext(ThemeContext);
@@ -49,12 +50,12 @@ const Notification = () => {
       _date.getMinutes() < 10 ? `0${_date.getMinutes()}` : _date.getMinutes();
 
     if (format === 'h:m') {
-      return <Text allowFontScaling={false} style={styles.time}>{hours + ':' + minutes}</Text>;
+      return <CustomText  style={styles.time}>{hours + ':' + minutes}</CustomText>;
     } else if (format === 'd/m h:m') {
       return (
-        <Text allowFontScaling={false} style={styles.time}>
+        <CustomText  style={styles.time}>
           {day + '/' + month + ' ' + hours + ':' + month}
-        </Text>
+        </CustomText>
       );
     }
   }
@@ -74,9 +75,9 @@ const Notification = () => {
         flex: 1,
         justifyContent: 'flex-start',
       }}>
-      <Text allowFontScaling={false} style={styles.headline}>
+      <CustomText  style={styles.headline}>
         {getLanguageString(language, 'TODAY')}
-      </Text>
+      </CustomText>
       {todayNotification.length > 0 && (
         <FlatList
           data={todayNotification}
@@ -93,14 +94,13 @@ const Notification = () => {
                     />
                   </View>
                   <View style={styles.right}>
-                    <Text allowFontScaling={false} style={[styles.title, {color: theme.textColor}]}>
+                    <CustomText  style={[styles.title, {color: theme.textColor}]}>
                       {item.title}
-                    </Text>
-                    <Text
-                      allowFontScaling={false}
+                    </CustomText>
+                    <CustomText
                       style={[styles.description, {color: theme.textColor}]}>
                       {item.description}
-                    </Text>
+                    </CustomText>
                     {convertSecondsToDate(item.date.getTime())}
                   </View>
                 </View>
@@ -112,9 +112,9 @@ const Notification = () => {
         />
       )}
 
-      <Text allowFontScaling={false} style={styles.headline}>
+      <CustomText  style={styles.headline}>
         {getLanguageString(language, 'EARLIER')}
-      </Text>
+      </CustomText>
       {earlierNotification.length > 0 && (
         <FlatList
           data={earlierNotification}
@@ -135,14 +135,13 @@ const Notification = () => {
                     />
                   </View>
                   <View style={styles.right}>
-                    <Text allowFontScaling={false} style={[styles.title, {color: theme.textColor}]}>
+                    <CustomText  style={[styles.title, {color: theme.textColor}]}>
                       {item.title}
-                    </Text>
-                    <Text
-                      allowFontScaling={false}
+                    </CustomText>
+                    <CustomText
                       style={[styles.description, {color: theme.textColor}]}>
                       {item.description}
-                    </Text>
+                    </CustomText>
                     {convertSecondsToDate(item.date.getTime(), 'd/m h:m')}
                   </View>
                 </View>

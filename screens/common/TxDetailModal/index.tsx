@@ -9,6 +9,7 @@ import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
 import Modal from '../../../components/Modal';
+import CustomText from '../../../components/Text';
 import {ThemeContext} from '../../../ThemeContext';
 import {
   getDateFNSLocale,
@@ -91,12 +92,12 @@ export default ({
           source={parseCardAvatar(wallets[selectedWallet].cardAvatarID || 0)}
         />
         <View>
-          <Text allowFontScaling={false} style={{color: '#FFFFFF', fontWeight: 'bold'}}>
+          <CustomText  style={{color: '#FFFFFF', fontWeight: 'bold'}}>
             {wallets[selectedWallet].name || getLanguageString(language, 'NEW_WALLET')}
-          </Text>
-          <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+          </CustomText>
+          <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
             {truncate(address, 10, 10)}
-          </Text>
+          </CustomText>
         </View>
       </View>
     );
@@ -137,14 +138,14 @@ export default ({
           />
         )}
         <View>
-          <Text allowFontScaling={false} style={{color: '#FFFFFF', fontWeight: 'bold'}}>
+          <CustomText  style={{color: '#FFFFFF', fontWeight: 'bold'}}>
             {isNewContact()
               ? getLanguageString(language, 'NEW_CONTACT')
               : getFromAddressBook(addressBook, address)}
-          </Text>
-          <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+          </CustomText>
+          <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
             {truncate(address, 10, 10)}
-          </Text>
+          </CustomText>
         </View>
         {isNewContact() && (
           <View style={{alignItems: 'flex-end', flex: 1}}>
@@ -214,18 +215,18 @@ export default ({
           )}
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={[
               styles.amountText,
               {color: theme.textColor, marginRight: 12},
             ]}>
             {parseKaiBalance(txObj.amount, true)}
-          </Text>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 18}}>KAI</Text>
+          </CustomText>
+          <CustomText  style={{color: theme.textColor, fontSize: 18}}>KAI</CustomText>
         </View>
         <TouchableOpacity onPress={() => handleClickLink(getTxURL(txObj.hash))}>
-          <Text allowFontScaling={false} style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</Text>
+          <CustomText  style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</CustomText>
         </TouchableOpacity>
         <View>
           <View
@@ -241,39 +242,39 @@ export default ({
               style={{width: 16, height: 16, marginRight: 8}}
               source={require('../../../assets/icon/calendar.png')}
             />
-            <Text allowFontScaling={false} style={{fontSize: 12, color: theme.textColor}}>
+            <CustomText  style={{fontSize: 12, color: theme.textColor}}>
               {format(txObj.date, 'hh:mm aa, E dd/MM/yyyy', {
                 locale: dateLocale,
               })}
-            </Text>
+            </CustomText>
           </View>
         </View>
         <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
         <View style={{justifyContent: 'flex-start', width: '100%'}}>
-          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12}}>
+          <CustomText  style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'FROM')}
-          </Text>
+          </CustomText>
           {txObj.from !== getOtherAddress()
             ? renderOwnAddress(txObj.from)
             : renderOtherAddress(txObj.from)}
         </View>
         <View
           style={{justifyContent: 'flex-start', width: '100%', marginTop: 12}}>
-          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12}}>
+          <CustomText  style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'TO')}
-          </Text>
+          </CustomText>
           {txObj.to !== getOtherAddress()
             ? renderOwnAddress(txObj.to)
             : renderOtherAddress(txObj.to)}
         </View>
         <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
         <View style={{justifyContent: 'flex-start', width: '100%'}}>
-          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12}}>
+          <CustomText  style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'TRANSACTION_FEE')}
-          </Text>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 15}}>
+          </CustomText>
+          <CustomText  style={{color: theme.textColor, fontSize: 15}}>
             {parseKaiBalance(txObj.txFee, true)} KAI
-          </Text>
+          </CustomText>
         </View>
         <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
         <Button

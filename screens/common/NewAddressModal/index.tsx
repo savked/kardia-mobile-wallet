@@ -24,6 +24,7 @@ import {styles} from './style';
 import {addressBookAtom} from '../../../atoms/addressBook';
 import {saveAddressBook} from '../../../utils/local';
 import {toChecksum} from '../../../utils/string';
+import CustomText from '../../../components/Text';
 
 export default ({
   name = '',
@@ -41,10 +42,10 @@ export default ({
   onClose: () => void;
 }) => {
   const [abName, setABName] = useState(name);
-  const [errName, setErrName] = useState(' ');
+  const [errName, setErrName] = useState('');
   const [abAvatar, setABAvatar] = useState<ImageURISource>({uri: avatar});
   const [abAddress, setABAddress] = useState(address);
-  const [errAddress, setErrAddress] = useState(' ');
+  const [errAddress, setErrAddress] = useState('');
   const [showQRModal, setShowQRModal] = useState(false);
   const [keyboardShown, setKeyboardShown] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
@@ -201,7 +202,7 @@ export default ({
               width: '100%',
               marginBottom: 12,
             }}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{
                 color: theme.mutedTextColor,
@@ -209,9 +210,8 @@ export default ({
                 marginBottom: 6,
               }}>
               {getLanguageString(language, 'ADDRESS_NAME')}
-            </Text>
+            </CustomText>
             <TextInput
-              // headlineStyle={{color: 'black'}}
               onChangeText={setABName}
               value={abName}
               inputStyle={{
@@ -227,7 +227,7 @@ export default ({
               width: '100%',
               marginBottom: 12,
             }}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{
                 color: theme.mutedTextColor,
@@ -235,7 +235,7 @@ export default ({
                 marginBottom: 6,
               }}>
               {getLanguageString(language, 'ADDRESS_ADDRESS')}
-            </Text>
+            </CustomText>
             <View
               style={{
                 marginBottom: 10,

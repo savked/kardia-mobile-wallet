@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import {Text, View} from 'react-native';
 import List from '../../components/List';
+import CustomText from '../../components/Text';
 import {ThemeContext} from '../../ThemeContext';
 import {styles} from './style';
 
@@ -20,12 +21,12 @@ const Info = () => {
         render={(item) => {
           return (
             <View style={styles.settingItem}>
-              <Text allowFontScaling={false} style={[styles.settingItemTitle, {color: theme.textColor}]}>
+              <CustomText  style={[styles.settingItemTitle, {color: theme.textColor}]}>
                 {item.label}
-              </Text>
-              <Text allowFontScaling={false} style={[styles.settingItemTitle, {color: theme.textColor}]}>
+              </CustomText>
+              <CustomText  style={[styles.settingItemTitle, {color: theme.textColor}]}>
                 {item.value}
-              </Text>
+              </CustomText>
             </View>
           );
         }}

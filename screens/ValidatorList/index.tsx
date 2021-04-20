@@ -15,6 +15,7 @@ import {styles} from './style';
 import TextAvatar from '../../components/TextAvatar';
 import NewStakingModal from '../common/NewStakingModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import CustomText from '../../components/Text';
 
 const ValidatorList = () => {
   const theme = useContext(ThemeContext);
@@ -80,11 +81,10 @@ const ValidatorList = () => {
           onChangeText={setFilterValidator}
         />
       </View> */}
-      <Text
-        allowFontScaling={false}
+      <CustomText
         style={{color: theme.textColor, paddingHorizontal: 20, fontSize: 36}}>
         {getLanguageString(language, 'CHOOSE_VALIDATOR')}
-      </Text>
+      </CustomText>
       <View style={{flex: 1}}>
         <List
           keyExtractor={(item) => item.smcAddress}
@@ -121,23 +121,21 @@ const ValidatorList = () => {
                   textStyle={{fontSize: 16}}
                 />
                 <View style={{justifyContent: 'space-between'}}>
-                  <Text
-                    allowFontScaling={false}
+                  <CustomText
                     style={{
                       color: theme.textColor,
                       fontSize: 13,
                       fontWeight: 'bold',
                     }}>
                     {item.name}
-                  </Text>
-                  <Text
-                    allowFontScaling={false}
+                  </CustomText>
+                  <CustomText
                     style={{
                       color: 'rgba(252, 252, 252, 0.54)',
                       fontSize: theme.defaultFontSize,
                     }}>
                     {item.commissionRate} %
-                  </Text>
+                  </CustomText>
                 </View>
               </TouchableOpacity>
             );

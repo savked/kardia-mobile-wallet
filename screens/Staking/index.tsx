@@ -23,6 +23,7 @@ import UndelegateModal from './UndelegateModal';
 import IconButton from '../../components/IconButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { showTabBarAtom } from '../../atoms/showTabBar';
+import CustomText from '../../components/Text';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -117,9 +118,9 @@ const StakingScreen = () => {
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
-        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
+        <CustomText  style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'STAKING_TITLE')}
-        </Text>
+        </CustomText>
         <IconButton
           name="bell-o"
           color={theme.textColor}
@@ -144,27 +145,26 @@ const StakingScreen = () => {
             justifyContent: 'flex-end',
             paddingVertical: 32,
           }}>
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={[
               styles.sectionTitle,
               {color: theme.textColor, textAlign: 'center'},
             ]}>
             {getLanguageString(language, 'TOTAL_EARNING')}
-          </Text>
+          </CustomText>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text allowFontScaling={false} style={[styles.totalSaving, {color: theme.textColor}]}>
+            <CustomText  style={[styles.totalSaving, {color: theme.textColor}]}>
               {numeral(getTotalSaving()).format('0,0.00')}
-            </Text>
-            <Text allowFontScaling={false} style={{fontSize: 14, color: 'rgba(252, 252, 252, 0.54)'}}>
+            </CustomText>
+            <CustomText  style={{fontSize: 14, color: 'rgba(252, 252, 252, 0.54)'}}>
               KAI
-            </Text>
+            </CustomText>
           </View>
         </ImageBackground>
       )}
       {currentStaking.length > 0 && (
-        <Text
-          allowFontScaling={false}
+        <CustomText
           style={[
             styles.sectionTitle,
             {
@@ -174,7 +174,7 @@ const StakingScreen = () => {
             },
           ]}>
           {getLanguageString(language, 'YOUR_INVESTMENTS')}
-        </Text>
+        </CustomText>
       )}
       <List
         loading={loading}
@@ -192,12 +192,12 @@ const StakingScreen = () => {
               style={{width: 200, height: 172}}
               source={require('../../assets/icon/no_staking.png')}
             />
-            <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 24, fontWeight: 'bold', marginBottom: 8, marginTop: 100}}>
+            <CustomText  style={{color: theme.textColor, fontSize: 24, fontWeight: 'bold', marginBottom: 8, marginTop: 100}}>
               {getLanguageString(language, 'NO_STAKING')}
-            </Text>
-            <Text allowFontScaling={false} style={[styles.noStakingText, {color: theme.mutedTextColor, textAlign: 'center', marginBottom: 32}]}>
+            </CustomText>
+            <CustomText  style={[styles.noStakingText, {color: theme.mutedTextColor, textAlign: 'center', marginBottom: 32}]}>
               {getLanguageString(language, 'NO_STAKING_ITEM')}
-            </Text>
+            </CustomText>
             <Button
               type="primary"
               onPress={() => navigation.navigate('ValidatorList')}

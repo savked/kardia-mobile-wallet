@@ -24,6 +24,7 @@ import {DEFAULT_KRC20_TOKENS} from '../../../config';
 import {parseDecimals} from '../../../utils/number';
 import numeral from 'numeral';
 import {ThemeContext} from '../../../ThemeContext';
+import CustomText from '../../../components/Text';
 
 const NewTokenModal = ({
   visible,
@@ -194,9 +195,9 @@ const NewTokenModal = ({
         <View style={[styles.container]}>
           <View style={{marginBottom: 0}}>
             <View>
-              <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
+              <CustomText  style={[styles.headline, {color: theme.textColor}]}>
                 {getLanguageString(language, 'TOKEN_ADDRESS')}
-              </Text>
+              </CustomText>
             </View>
             <View
               style={{
@@ -239,36 +240,36 @@ const NewTokenModal = ({
           </View>
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor}}>
-                Token name: <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>{name}</Text>
-              </Text>
+              <CustomText  style={{color: theme.textColor}}>
+                Token name: <CustomText  style={{fontWeight: 'bold'}}>{name}</CustomText>
+              </CustomText>
             </View>
           )}
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor}}>
-                Token symbol: <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>{symbol}</Text>
-              </Text>
+              <CustomText  style={{color: theme.textColor}}>
+                Token symbol: <CustomText  style={{fontWeight: 'bold'}}>{symbol}</CustomText>
+              </CustomText>
             </View>
           )}
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor}}>
+              <CustomText  style={{color: theme.textColor}}>
                 Token decimals:{' '}
-                <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>{decimals}</Text>
-              </Text>
+                <CustomText  style={{fontWeight: 'bold'}}>{decimals}</CustomText>
+              </CustomText>
             </View>
           )}
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor}}>
+              <CustomText  style={{color: theme.textColor}}>
                 Token supply:{' '}
-                <Text allowFontScaling={false} style={{fontWeight: 'bold', color: theme.textColor}}>
+                <CustomText  style={{fontWeight: 'bold', color: theme.textColor}}>
                   {numeral(parseDecimals(Number(totalSupply), decimals)).format(
                     '0,0.00',
                   )}
-                </Text>
-              </Text>
+                </CustomText>
+              </CustomText>
             </View>
           )}
           <View>

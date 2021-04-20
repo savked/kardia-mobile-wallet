@@ -10,6 +10,7 @@ import {ThemeContext} from '../../ThemeContext';
 import {getLanguageString} from '../../utils/lang';
 import {styles} from './style';
 import {useNavigation} from '@react-navigation/core';
+import CustomText from '../../components/Text';
 
 const Step1 = ({onSubmit}: {onSubmit: (passcode: string) => void}) => {
   const navigation = useNavigation();
@@ -31,14 +32,14 @@ const Step1 = ({onSubmit}: {onSubmit: (passcode: string) => void}) => {
           backgroundColor="transparent"
           style={{padding: 0, marginBottom: 18}}
         />
-        <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 36}}>
+        <CustomText  style={{color: theme.textColor, fontSize: 36}}>
           {getLanguageString(language, 'SET_NEW_PIN')}
-        </Text>
+        </CustomText>
       </View>
       <View style={{flex: 1, width: '100%'}}>
-        <Text allowFontScaling={false} style={[styles.title, {color: 'rgba(252, 252, 252, 0.54)'}]}>
+        <CustomText  style={[styles.title, {color: 'rgba(252, 252, 252, 0.54)'}]}>
           {getLanguageString(language, 'NEW_PASSCODE')}
-        </Text>
+        </CustomText>
         <View style={{marginBottom: 40, width: '100%'}}>
           <OtpInputs
             // TODO: remove ts-ignore after issue fixed

@@ -17,6 +17,7 @@ import {krc20ListAtom} from '../../atoms/krc20';
 import {getBalance} from '../../services/krc20';
 import {getSelectedWallet, getWallets} from '../../utils/local';
 import {selectedWalletAtom} from '../../atoms/wallets';
+import CustomText from '../../components/Text';
 
 const TokenListSection = () => {
   const navigation = useNavigation();
@@ -114,7 +115,7 @@ const TokenListSection = () => {
               alignItems: 'flex-start',
               height: '100%',
             }}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{
                 color: '#FFFFFF',
@@ -122,7 +123,7 @@ const TokenListSection = () => {
                 fontSize: 16,
               }}>
               {item.symbol}
-            </Text>
+            </CustomText>
           </View>
           <View
             style={{
@@ -131,14 +132,14 @@ const TokenListSection = () => {
               alignItems: 'flex-end',
               justifyContent: 'center',
             }}>
-            <Text allowFontScaling={false} style={[styles.kaiAmount, {color: theme.textColor}]}>
+            <CustomText  style={[styles.kaiAmount, {color: theme.textColor}]}>
               {numeral(
                 parseDecimals(balance[index], item.decimals),
               ).format('0,0.00')}
-            </Text>
-            <Text allowFontScaling={false} style={{color: theme.ghostTextColor}}>
+            </CustomText>
+            <CustomText  style={{color: theme.ghostTextColor}}>
               {item.symbol}
-            </Text>
+            </CustomText>
           </View>
         </TouchableOpacity>
       </View>
@@ -155,14 +156,14 @@ const TokenListSection = () => {
           justifyContent: 'space-between',
           padding: 20,
         }}>
-        <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: 'bold', color: theme.textColor}}>
+        <CustomText  style={{fontSize: 18, fontWeight: 'bold', color: theme.textColor}}>
           {getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}
-        </Text>
+        </CustomText>
         {tokenList.length > 0 && (
           <TouchableOpacity onPress={() => navigation.navigate('KRC20Tokens')}>
-            <Text allowFontScaling={false} style={{fontSize: theme.defaultFontSize, color: theme.textColor}}>
+            <CustomText  style={{fontSize: theme.defaultFontSize, color: theme.textColor}}>
               {getLanguageString(language, 'VIEW_ALL')} ({tokenList.length})
-            </Text>
+            </CustomText>
           </TouchableOpacity>
         )}
       </View>
@@ -172,12 +173,12 @@ const TokenListSection = () => {
             style={{width: 111, height: 52}}
             source={require('../../assets/no_tokens_dark.png')}
           />
-          <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
+          <CustomText  style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TOKENS')}
-          </Text>
-          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12, marginBottom: 16}}>
+          </CustomText>
+          <CustomText  style={{color: theme.mutedTextColor, fontSize: 12, marginBottom: 16}}>
             {getLanguageString(language, 'NO_TOKENS_SUB_TEXT')}
-          </Text>
+          </CustomText>
           <Button
             type="outline"
             textStyle={{fontWeight: 'bold', fontSize: 12}}

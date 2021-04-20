@@ -13,6 +13,7 @@ import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../atoms/language';
 import {getNews} from '../../services/news';
 import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
+import CustomText from '../../components/Text';
 
 const NewsScreen = () => {
   const theme = useContext(ThemeContext);
@@ -52,9 +53,9 @@ const NewsScreen = () => {
     <SafeAreaView
       style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
-        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
+        <CustomText  style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'NEWS_SCREEN_TITLE')}
-        </Text>
+        </CustomText>
       </View>
       <TouchableOpacity
         style={styles.highlight}
@@ -65,10 +66,10 @@ const NewsScreen = () => {
             uri: news[0].thumbnail,
           }}
         />
-        <Text allowFontScaling={false} style={[styles.title, {color: theme.textColor}]}>
+        <CustomText  style={[styles.title, {color: theme.textColor}]}>
           {news[0].title}
-        </Text>
-        <Text allowFontScaling={false} style={[styles.time, {color: theme.textColor}]}>
+        </CustomText>
+        <CustomText  style={[styles.time, {color: theme.textColor}]}>
           {isSameDay(news[0].createdAt, new Date())
             ? `${formatDistanceToNowStrict(news[0].createdAt, {
                 locale: getDateFNSLocale(language),
@@ -76,7 +77,7 @@ const NewsScreen = () => {
             : format(news[0].createdAt, getDateTimeFormat(language), {
                 locale: getDateFNSLocale(language),
               })}
-        </Text>
+        </CustomText>
       </TouchableOpacity>
       <FlatList
         data={news.slice(1)}
@@ -93,19 +94,17 @@ const NewsScreen = () => {
                   />
                 </View>
                 <View style={styles.right}>
-                  <Text
-                    allowFontScaling={false}
+                  <CustomText
                     style={[styles.title, {color: theme.textColor}]}
                     numberOfLines={2}>
                     {item.title}
-                  </Text>
-                  <Text
-                    allowFontScaling={false}
+                  </CustomText>
+                  <CustomText
                     style={[styles.description, {color: theme.textColor}]}
                     numberOfLines={2}>
                     {item.description}
-                  </Text>
-                  <Text allowFontScaling={false} style={[styles.time, {color: theme.textColor}]}>
+                  </CustomText>
+                  <CustomText  style={[styles.time, {color: theme.textColor}]}>
                     {isSameDay(item.createdAt, new Date())
                       ? `${formatDistanceToNowStrict(item.createdAt, {
                           locale: getDateFNSLocale(language),
@@ -113,7 +112,7 @@ const NewsScreen = () => {
                       : format(item.createdAt, getDateTimeFormat(language), {
                           locale: getDateFNSLocale(language),
                         })}
-                  </Text>
+                  </CustomText>
                 </View>
               </View>
             </TouchableOpacity>
@@ -121,9 +120,9 @@ const NewsScreen = () => {
         }}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={
-          <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
+          <CustomText  style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
-          </Text>
+          </CustomText>
         }
       />
     </SafeAreaView>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-const CustomText = (props: any) => {
+const CustomText = ({children, ...rest}: any) => {
   return (
-    <Text {...props} style={[props.style, {fontFamily: 'Cochin'}]}></Text>
+    <Text {...rest} style={[rest.style, {fontFamily: 'Work Sans'}]}>{children}</Text>
   );
 };
 
