@@ -82,8 +82,8 @@ const CreateWithMnemonicPhrase = () => {
               {color: theme.textColor},
             ]}>
             Please make sure you
-            <CustomText  style={{fontWeight: 'bold'}}> WRITE DOWN</CustomText> and{' '}
-            <CustomText  style={{fontWeight: 'bold'}}>SAVE</CustomText> your mnemonic phrase.
+            <CustomText style={{fontWeight: 'bold'}}> WRITE DOWN</CustomText> and{' '}
+            <CustomText style={{fontWeight: 'bold'}}>SAVE</CustomText> your mnemonic phrase.
             You will need it to access or recover your wallet.
           </CustomText>
         );
@@ -97,7 +97,7 @@ const CreateWithMnemonicPhrase = () => {
               {color: theme.textColor},
             ]}>
             Hãy đảm bảo bạn đã
-            <CustomText  style={{fontWeight: 'bold'}}> GHI LẠI</CustomText> 12 từ này. 12 từ
+            <CustomText style={{fontWeight: 'bold'}}> GHI LẠI</CustomText> 12 từ này. 12 từ
             này không thể thay đổi và sẽ được sử dụng để truy cập và khôi phục
             ví.
           </CustomText>
@@ -112,8 +112,8 @@ const CreateWithMnemonicPhrase = () => {
               {color: theme.textColor},
             ]}>
             Please make sure you
-            <CustomText  style={{fontWeight: 'bold'}}> WRITE DOWN</CustomText> and{' '}
-            <CustomText  style={{fontWeight: 'bold'}}>SAVE</CustomText> your mnemonic phrase.
+            <CustomText style={{fontWeight: 'bold'}}> WRITE DOWN</CustomText> and{' '}
+            <CustomText style={{fontWeight: 'bold'}}>SAVE</CustomText> your mnemonic phrase.
             You will need it to access or recover your wallet.
           </CustomText>
         );
@@ -167,7 +167,7 @@ const CreateWithMnemonicPhrase = () => {
                 styles.phraseItemContainer,
                 {backgroundColor: theme.backgroundFocusColor},
               ]}>
-              <CustomText  style={[styles.phraseItemText, {color: theme.textColor}]}>
+              <CustomText style={[styles.phraseItemText, {color: theme.textColor}]}>
                 {item.label}
               </CustomText>
             </View>

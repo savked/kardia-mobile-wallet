@@ -104,7 +104,7 @@ export default () => {
           style={{ padding: 0 }}
         />
       </View>
-      <CustomText  style={{fontSize: 36, paddingHorizontal: 20, color: theme.textColor}}>{getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}</CustomText>
+      <CustomText style={{fontSize: 36, paddingHorizontal: 20, color: theme.textColor}}>{getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}</CustomText>
       <List
         items={tokenList}
         loading={loading}
@@ -166,12 +166,12 @@ export default () => {
                     alignItems: 'flex-end',
                     justifyContent: 'center',
                   }}>
-                  <CustomText  style={[styles.kaiAmount, {color: theme.textColor}]}>
+                  <CustomText style={[styles.kaiAmount, {color: theme.textColor}]}>
                     {numeral(
                       parseDecimals(balance[index], item.decimals),
                     ).format('0,0.00')}
                   </CustomText>
-                  <CustomText  style={{color: theme.ghostTextColor}}>
+                  <CustomText style={{color: theme.ghostTextColor}}>
                     {item.symbol}
                   </CustomText>
                 </View>

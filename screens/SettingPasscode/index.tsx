@@ -201,7 +201,7 @@ const SettingPasscode = () => {
             ) : (
               <Icon name="finger-print" color={theme.textColor} size={30} />
             )}
-            <CustomText  style={{color: theme.textColor}}>
+            <CustomText style={{color: theme.textColor}}>
               Authenticate by {touchType}
             </CustomText>
           </TouchableOpacity>

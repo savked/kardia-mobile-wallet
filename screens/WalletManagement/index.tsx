@@ -45,7 +45,7 @@ export default () => {
           backgroundColor="transparent"
           style={{padding: 0, marginBottom: 18}}
         />
-        <CustomText  style={{color: theme.textColor, fontSize: 36}}>
+        <CustomText style={{color: theme.textColor, fontSize: 36}}>
           {getLanguageString(language, 'WALLET_MANAGEMENT')}
         </CustomText>
       </View>
@@ -57,8 +57,8 @@ export default () => {
             <TouchableOpacity onPress={() => navigation.navigate('WalletDetail', {address: item.address})} style={[styles.walletItemContainer, {backgroundColor: theme.backgroundFocusColor}]}>
               <Image style={styles.cardImage} source={parseCardAvatar(item.cardAvatarID || 0)} />
               <View style={{justifyContent: 'space-between'}}>
-                <CustomText  style={{color: theme.textColor, fontSize: 13, fontWeight: 'bold'}}>{item.name || getLanguageString(language, 'NEW_WALLET')}</CustomText>
-                <CustomText  style={{fontSize: theme.defaultFontSize, color: 'rgba(252, 252, 252, 0.54)'}}>{truncate(item.address, 10, 10)}</CustomText>
+                <CustomText style={{color: theme.textColor, fontSize: 13, fontWeight: 'bold'}}>{item.name || getLanguageString(language, 'NEW_WALLET')}</CustomText>
+                <CustomText style={{fontSize: theme.defaultFontSize, color: 'rgba(252, 252, 252, 0.54)'}}>{truncate(item.address, 10, 10)}</CustomText>
               </View>
             </TouchableOpacity>
           )

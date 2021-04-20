@@ -50,7 +50,7 @@ export default ({ visible, onClose, cardAvatarID }: {
                   justifyContent: 'flex-end',
                   padding: 12,
                 }} source={parseCardAvatar(item || 0)}>
-                  <CustomText  style={{fontSize: 14, color: theme.textColor}}>{parseCardAvatarColor(item || 0)}</CustomText>
+                  <CustomText style={{fontSize: 14, color: theme.textColor}}>{parseCardAvatarColor(item || 0)}</CustomText>
               </ImageBackground>
             );
           })}

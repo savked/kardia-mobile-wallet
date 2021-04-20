@@ -43,7 +43,7 @@ const App = () => {
             {
               success: ({ text1 = '', ...rest }) => (
                 <View style={{ height: 32, minWidth: 77, paddingHorizontal: 16, paddingVertical: 8, backgroundColor: '#DDFFDB', borderRadius: 8, alignItems: 'center', justifyContent: 'center' }}>
-                  <CustomText  style={{color: 'rgba(69, 188, 67, 1)', fontWeight: 'bold'}}>{text1}</CustomText>
+                  <CustomText style={{color: 'rgba(69, 188, 67, 1)', fontWeight: 'bold'}}>{text1}</CustomText>
                 </View>
               )
             }

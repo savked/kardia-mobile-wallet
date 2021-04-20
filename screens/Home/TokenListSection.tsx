@@ -132,12 +132,12 @@ const TokenListSection = () => {
               alignItems: 'flex-end',
               justifyContent: 'center',
             }}>
-            <CustomText  style={[styles.kaiAmount, {color: theme.textColor}]}>
+            <CustomText style={[styles.kaiAmount, {color: theme.textColor}]}>
               {numeral(
                 parseDecimals(balance[index], item.decimals),
               ).format('0,0.00')}
             </CustomText>
-            <CustomText  style={{color: theme.ghostTextColor}}>
+            <CustomText style={{color: theme.ghostTextColor}}>
               {item.symbol}
             </CustomText>
           </View>
@@ -156,12 +156,12 @@ const TokenListSection = () => {
           justifyContent: 'space-between',
           padding: 20,
         }}>
-        <CustomText  style={{fontSize: 18, fontWeight: 'bold', color: theme.textColor}}>
+        <CustomText style={{fontSize: 18, fontWeight: 'bold', color: theme.textColor}}>
           {getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}
         </CustomText>
         {tokenList.length > 0 && (
           <TouchableOpacity onPress={() => navigation.navigate('KRC20Tokens')}>
-            <CustomText  style={{fontSize: theme.defaultFontSize, color: theme.textColor}}>
+            <CustomText style={{fontSize: theme.defaultFontSize, color: theme.textColor}}>
               {getLanguageString(language, 'VIEW_ALL')} ({tokenList.length})
             </CustomText>
           </TouchableOpacity>
@@ -173,10 +173,10 @@ const TokenListSection = () => {
             style={{width: 111, height: 52}}
             source={require('../../assets/no_tokens_dark.png')}
           />
-          <CustomText  style={[styles.noTXText, {color: theme.textColor}]}>
+          <CustomText style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TOKENS')}
           </CustomText>
-          <CustomText  style={{color: theme.mutedTextColor, fontSize: 12, marginBottom: 16}}>
+          <CustomText style={{color: theme.mutedTextColor, fontSize: 12, marginBottom: 16}}>
             {getLanguageString(language, 'NO_TOKENS_SUB_TEXT')}
           </CustomText>
           <Button

@@ -50,10 +50,10 @@ const Notification = () => {
       _date.getMinutes() < 10 ? `0${_date.getMinutes()}` : _date.getMinutes();
 
     if (format === 'h:m') {
-      return <CustomText  style={styles.time}>{hours + ':' + minutes}</CustomText>;
+      return <CustomText style={styles.time}>{hours + ':' + minutes}</CustomText>;
     } else if (format === 'd/m h:m') {
       return (
-        <CustomText  style={styles.time}>
+        <CustomText style={styles.time}>
           {day + '/' + month + ' ' + hours + ':' + month}
         </CustomText>
       );
@@ -75,7 +75,7 @@ const Notification = () => {
         flex: 1,
         justifyContent: 'flex-start',
       }}>
-      <CustomText  style={styles.headline}>
+      <CustomText style={styles.headline}>
         {getLanguageString(language, 'TODAY')}
       </CustomText>
       {todayNotification.length > 0 && (
@@ -94,7 +94,7 @@ const Notification = () => {
                     />
                   </View>
                   <View style={styles.right}>
-                    <CustomText  style={[styles.title, {color: theme.textColor}]}>
+                    <CustomText style={[styles.title, {color: theme.textColor}]}>
                       {item.title}
                     </CustomText>
                     <CustomText
@@ -112,7 +112,7 @@ const Notification = () => {
         />
       )}
 
-      <CustomText  style={styles.headline}>
+      <CustomText style={styles.headline}>
         {getLanguageString(language, 'EARLIER')}
       </CustomText>
       {earlierNotification.length > 0 && (
@@ -135,7 +135,7 @@ const Notification = () => {
                     />
                   </View>
                   <View style={styles.right}>
-                    <CustomText  style={[styles.title, {color: theme.textColor}]}>
+                    <CustomText style={[styles.title, {color: theme.textColor}]}>
                       {item.title}
                     </CustomText>
                     <CustomText

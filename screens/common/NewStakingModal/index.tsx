@@ -300,11 +300,11 @@ export default ({
         <View style={{flex: 1, width: '100%'}}>
           <View style={{width: '100%'}}>
             <View style={{marginBottom: 4, flexDirection: 'row', justifyContent: 'space-between'}}>
-              <CustomText  style={{color: theme.textColor}}>
+              <CustomText style={{color: theme.textColor}}>
                 {getLanguageString(language, 'STAKING_AMOUNT')}
               </CustomText>
               <TouchableOpacity onPress={() => setAmount(parseDecimals(_getBalance(), 18).toString())}>
-                <CustomText  style={{color: theme.urlColor}}>
+                <CustomText style={{color: theme.urlColor}}>
                   {parseKaiBalance(_getBalance())} KAI
                 </CustomText>
               </TouchableOpacity>
@@ -330,7 +330,7 @@ export default ({
             />
           </View>
           <View style={{width: '100%', marginTop: 12}}>
-            <CustomText  style={{color: theme.textColor}}>Validator</CustomText>
+            <CustomText style={{color: theme.textColor}}>Validator</CustomText>
             <View
               style={[
                 styles.validatorItemContainer,
@@ -372,43 +372,43 @@ export default ({
           <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
           <View style={{width: '100%'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
-              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'COMMISSION_RATE')}
               </CustomText>
-              <CustomText  style={[{color: theme.textColor}]}>
+              <CustomText style={[{color: theme.textColor}]}>
                 {getSelectedCommission()}
               </CustomText>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
-              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
               </CustomText>
-              <CustomText  style={[{color: theme.textColor}]}>
+              <CustomText style={[{color: theme.textColor}]}>
                 {getSelectedStakedAmount()}
               </CustomText>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
-              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'VOTING_POWER')}
               </CustomText>
-              <CustomText  style={[{color: theme.textColor}]}>
+              <CustomText style={[{color: theme.textColor}]}>
                 {getSelectedVotingPower()}
               </CustomText>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
-              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'ESTIMATED_EARNING')}
               </CustomText>
-              <CustomText  style={[{color: theme.textColor}]}>
+              <CustomText style={[{color: theme.textColor}]}>
                 {numeral(estimatedProfit).format('0,0.00')}{' '}
                 {estimatedProfit ? 'KAI' : ''}
               </CustomText>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
-              <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
+              <CustomText style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'ESTIMATED_APR')}
               </CustomText>
-              <CustomText  style={[{color: theme.textColor}]}>
+              <CustomText style={[{color: theme.textColor}]}>
                 {numeral(estimatedAPR).format('0,0.00')}{' '}
                 {estimatedProfit ? '%' : ''}
               </CustomText>

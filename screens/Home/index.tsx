@@ -194,14 +194,14 @@ const HomeScreen = () => {
                 source={require('../../assets/logo_dark.png')}
               />
               <View>
-                <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+                <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
                   {getLanguageString(language, 'BALANCE')}
                 </CustomText>
-                <CustomText  style={{color: theme.textColor, fontSize: 18, marginVertical: 4}}>
+                <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4}}>
                   {parseKaiBalance(_getBalance(), true)}{' '}
-                  <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</CustomText>
+                  <CustomText style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</CustomText>
                 </CustomText>
-                <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+                <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
                   ~${' '}
                   {numeral(
                     tokenInfo.price *

@@ -35,7 +35,7 @@ export default () => {
         onPress={() => navigation.goBack()}
         backgroundColor="transparent"
       />
-      <CustomText  style={[styles.title, {color: theme.textColor}]}>
+      <CustomText style={[styles.title, {color: theme.textColor}]}>
         {getLanguageString(language, 'IMPORT_WALLET')}
       </CustomText>
       <CustomText
@@ -62,7 +62,7 @@ export default () => {
             style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
             Import
           </CustomText>
-          <CustomText  style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+          <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
             {getLanguageString(language, 'BY_PRIVATE_KEY')}
           </CustomText>
         </View>
@@ -83,7 +83,7 @@ export default () => {
             style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
             Import
           </CustomText>
-          <CustomText  style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+          <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
             {getLanguageString(language, 'BY_SEED_PHRASE')}
           </CustomText>
         </View>

@@ -102,7 +102,7 @@ export default () => {
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(txObj.amount).format('0,0.00')}
             </CustomText>
-            <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
             </CustomText>
           </View>
@@ -120,7 +120,7 @@ export default () => {
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {parseDecimals(txObj.value, tokenDecimals)}
             </CustomText>
-            <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               {tokenSymbol}
             </CustomText>
           </View>
@@ -138,7 +138,7 @@ export default () => {
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(claimAmount).format('0,0.00')}
             </CustomText>
-            <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
             </CustomText>
           </View>
@@ -156,7 +156,7 @@ export default () => {
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(withdrawAmount).format('0,0.00')}
             </CustomText>
-            <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
             </CustomText>
           </View>
@@ -174,7 +174,7 @@ export default () => {
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(undelegateAmount).format('0,0.00')}
             </CustomText>
-            <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
             </CustomText>
           </View>
@@ -192,7 +192,7 @@ export default () => {
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
               {numeral(txObj.amount).format('0,0.00')}
             </CustomText>
-            <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+            <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
             </CustomText>
           </View>
@@ -424,7 +424,7 @@ export default () => {
             style={{color: theme.textColor, fontSize: 32, fontWeight: 'bold'}}>
             {getLanguageString(language, 'SUCCESS')}
           </CustomText>
-          <CustomText  style={{color: theme.textColor, fontSize: 15, marginTop: 8, textAlign: 'center', paddingHorizontal: 18}}>
+          <CustomText style={{color: theme.textColor, fontSize: 15, marginTop: 8, textAlign: 'center', paddingHorizontal: 18}}>
             {renderSuccessDesc()}
           </CustomText>
         </ImageBackground>
@@ -433,11 +433,11 @@ export default () => {
       <Divider
         style={{width: 280, backgroundColor: '#60636C', marginVertical: 32}}
       />
-      <CustomText  style={{textAlign: 'center', color: theme.textColor, fontSize: 15}}>
+      <CustomText style={{textAlign: 'center', color: theme.textColor, fontSize: 15}}>
         {getLanguageString(language, 'TRANSACTION_AMOUNT')}
       </CustomText>
       {renderAmount()}
-      <CustomText  style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+      <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
         {txObj.date &&
           format(txObj.date, 'MMM dd, yyyy - hh:mm aa', {
             locale: dateLocale,

@@ -37,7 +37,7 @@ const ScanQRAddressModal = ({
           zIndex: 1000,
         }}>
         {/* <View style={styles.qrScannerHeader}>
-          <CustomText  style={styles.centerText}>
+          <CustomText style={styles.centerText}>
             {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS')}
           </CustomText>
         </View> */}
@@ -82,7 +82,7 @@ const ScanQRAddressModal = ({
               }}>
               {getLanguageString(language, 'SCAN_QR_TITLE')}
             </CustomText>
-            <CustomText  style={{textAlign: 'center', color: '#FFFFFF', fontSize: 15}}>
+            <CustomText style={{textAlign: 'center', color: '#FFFFFF', fontSize: 15}}>
               {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS_DESCRIPTION')}
               {/* Scan your seed phrase QR code, then we will do the rest */}
             </CustomText>

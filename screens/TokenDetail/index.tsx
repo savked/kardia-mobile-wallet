@@ -175,10 +175,10 @@ const TokenDetail = () => {
               alignItems: 'flex-end',
             }}>
             <View>
-              <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+              <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
                 {getLanguageString(language, 'BALANCE')}
               </CustomText>
-              <CustomText  style={{fontSize: 24, color: 'white', fontWeight: 'bold'}}>
+              <CustomText style={{fontSize: 24, color: 'white', fontWeight: 'bold'}}>
                 {numeral(
                   parseDecimals(Number(tokenBalance), tokenDecimals),
                 ).format('0,0.00')}{' '}
@@ -208,7 +208,7 @@ const TokenDetail = () => {
             justifyContent: 'flex-start',
             paddingHorizontal: 20,
           }}>
-          <CustomText  style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
+          <CustomText style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
             {getLanguageString(language, 'RECENT_TRANSACTION')}
           </CustomText>
         </View>

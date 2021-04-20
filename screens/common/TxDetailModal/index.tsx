@@ -92,10 +92,10 @@ export default ({
           source={parseCardAvatar(wallets[selectedWallet].cardAvatarID || 0)}
         />
         <View>
-          <CustomText  style={{color: '#FFFFFF', fontWeight: 'bold'}}>
+          <CustomText style={{color: '#FFFFFF', fontWeight: 'bold'}}>
             {wallets[selectedWallet].name || getLanguageString(language, 'NEW_WALLET')}
           </CustomText>
-          <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+          <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
             {truncate(address, 10, 10)}
           </CustomText>
         </View>
@@ -138,12 +138,12 @@ export default ({
           />
         )}
         <View>
-          <CustomText  style={{color: '#FFFFFF', fontWeight: 'bold'}}>
+          <CustomText style={{color: '#FFFFFF', fontWeight: 'bold'}}>
             {isNewContact()
               ? getLanguageString(language, 'NEW_CONTACT')
               : getFromAddressBook(addressBook, address)}
           </CustomText>
-          <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+          <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
             {truncate(address, 10, 10)}
           </CustomText>
         </View>
@@ -223,10 +223,10 @@ export default ({
             ]}>
             {parseKaiBalance(txObj.amount, true)}
           </CustomText>
-          <CustomText  style={{color: theme.textColor, fontSize: 18}}>KAI</CustomText>
+          <CustomText style={{color: theme.textColor, fontSize: 18}}>KAI</CustomText>
         </View>
         <TouchableOpacity onPress={() => handleClickLink(getTxURL(txObj.hash))}>
-          <CustomText  style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</CustomText>
+          <CustomText style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</CustomText>
         </TouchableOpacity>
         <View>
           <View
@@ -242,7 +242,7 @@ export default ({
               style={{width: 16, height: 16, marginRight: 8}}
               source={require('../../../assets/icon/calendar.png')}
             />
-            <CustomText  style={{fontSize: 12, color: theme.textColor}}>
+            <CustomText style={{fontSize: 12, color: theme.textColor}}>
               {format(txObj.date, 'hh:mm aa, E dd/MM/yyyy', {
                 locale: dateLocale,
               })}
@@ -251,7 +251,7 @@ export default ({
         </View>
         <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
         <View style={{justifyContent: 'flex-start', width: '100%'}}>
-          <CustomText  style={{color: theme.mutedTextColor, fontSize: 12}}>
+          <CustomText style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'FROM')}
           </CustomText>
           {txObj.from !== getOtherAddress()
@@ -260,7 +260,7 @@ export default ({
         </View>
         <View
           style={{justifyContent: 'flex-start', width: '100%', marginTop: 12}}>
-          <CustomText  style={{color: theme.mutedTextColor, fontSize: 12}}>
+          <CustomText style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'TO')}
           </CustomText>
           {txObj.to !== getOtherAddress()
@@ -269,10 +269,10 @@ export default ({
         </View>
         <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
         <View style={{justifyContent: 'flex-start', width: '100%'}}>
-          <CustomText  style={{color: theme.mutedTextColor, fontSize: 12}}>
+          <CustomText style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'TRANSACTION_FEE')}
           </CustomText>
-          <CustomText  style={{color: theme.textColor, fontSize: 15}}>
+          <CustomText style={{color: theme.textColor, fontSize: 15}}>
             {parseKaiBalance(txObj.txFee, true)} KAI
           </CustomText>
         </View>

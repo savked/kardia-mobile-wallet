@@ -188,7 +188,7 @@ const StakingItem = ({
             textStyle={{fontSize: 16}}
           />
           <View>
-            <CustomText  style={[styles.validatorName, {color: theme.textColor}]}>
+            <CustomText style={[styles.validatorName, {color: theme.textColor}]}>
               {item.name}
             </CustomText>
             <CustomText
@@ -201,33 +201,33 @@ const StakingItem = ({
             </CustomText>
           </View>
           {/* {showFull && (
-            <CustomText  style={{color: '#929394'}}>
+            <CustomText style={{color: '#929394'}}>
               {getLanguageString(language, 'STAKED')}:{' '}
-              <CustomText  style={{fontWeight: 'bold', color: theme.textColor}}>
+              <CustomText style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(stakedAmountInKAI).format('0,0.00')}
               </CustomText>
             </CustomText>
           )}
           {showFull && (
-            <CustomText  style={{color: '#929394'}}>
+            <CustomText style={{color: '#929394'}}>
               {getLanguageString(language, 'CLAIMABLE')}:{' '}
-              <CustomText  style={{fontWeight: 'bold', color: theme.textColor}}>
+              <CustomText style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(claimableInKAI).format('0,0.00')}
               </CustomText>
             </CustomText>
           )}
           {showFull && (
-            <CustomText  style={{color: '#929394'}}>
+            <CustomText style={{color: '#929394'}}>
               {getLanguageString(language, 'UNBONDED')}:{' '}
-              <CustomText  style={{fontWeight: 'bold', color: theme.textColor}}>
+              <CustomText style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(unbondedInKAI).format('0,0.00')}
               </CustomText>
             </CustomText>
           )}
           {showFull && (
-            <CustomText  style={{color: '#929394'}}>
+            <CustomText style={{color: '#929394'}}>
               {getLanguageString(language, 'WITHDRAWABLE')}:{' '}
-              <CustomText  style={{fontWeight: 'bold', color: theme.textColor}}>
+              <CustomText style={{fontWeight: 'bold', color: theme.textColor}}>
                 {numeral(withDrawbleInKAI).format('0,0.00')}
               </CustomText>
             </CustomText>

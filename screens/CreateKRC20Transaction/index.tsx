@@ -144,7 +144,7 @@ const CreateKRC20TxScreen = () => {
     return (
       <>
         <View style={styles.qrScannerHeader}>
-          <CustomText  style={styles.centerText}>Scan address QR code</CustomText>
+          <CustomText style={styles.centerText}>Scan address QR code</CustomText>
         </View>
         <QRCodeScanner
           onRead={(e) => {
@@ -187,10 +187,10 @@ const CreateKRC20TxScreen = () => {
                   )}
                 </View>
                 <View>
-                  <CustomText  style={[styles.addressName, {color: '#000000'}]}>
+                  <CustomText style={[styles.addressName, {color: '#000000'}]}>
                     {_address.name}
                   </CustomText>
-                  <CustomText  style={[styles.addressHash, {color: '#000000'}]}>
+                  <CustomText style={[styles.addressHash, {color: '#000000'}]}>
                     {truncate(_address.address, 20, 20)}
                   </CustomText>
                 </View>
@@ -198,7 +198,7 @@ const CreateKRC20TxScreen = () => {
             );
           }}
           ListEmptyComponent={
-            <CustomText  style={[styles.emptyAddressBook, {color: theme.textColor}]}>
+            <CustomText style={[styles.emptyAddressBook, {color: theme.textColor}]}>
               No saved address
             </CustomText>
           }
@@ -214,23 +214,23 @@ const CreateKRC20TxScreen = () => {
         visible={true}
         contentStyle={{flex: 0.3, marginTop: viewportHeight / 3}}
         onClose={() => setShowConfirmModal(false)}>
-        <CustomText  style={styles.confirmTitle}>
+        <CustomText style={styles.confirmTitle}>
           {getLanguageString(language, 'CONFIRM_TRANSACTION')}
         </CustomText>
         <View>
           <View style={styles.confirmGroup}>
-            <CustomText  style={styles.confirmText}>
+            <CustomText style={styles.confirmText}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}:{' '}
             </CustomText>
-            <CustomText  style={styles.confirmContent}>
+            <CustomText style={styles.confirmContent}>
               {truncate(address, 10, 10)}
             </CustomText>
           </View>
           <View style={styles.confirmGroup}>
-            <CustomText  style={styles.confirmText}>
+            <CustomText style={styles.confirmText}>
               {getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:{' '}
             </CustomText>
-            <CustomText  style={styles.confirmContent}>
+            <CustomText style={styles.confirmContent}>
               {amount} {tokenSymbol}
             </CustomText>
           </View>
@@ -321,16 +321,16 @@ const CreateKRC20TxScreen = () => {
         <View>
           <View style={styles.wrap}>
             <View>
-              <CustomText  style={[{color: theme.textColor}]}>
+              <CustomText style={[{color: theme.textColor}]}>
                 {getLanguageString(language, 'GAS_PRICE')}
               </CustomText>
-              <CustomText  style={[{color: theme.textColor}]}>{gasPrice} Oxy</CustomText>
+              <CustomText style={[{color: theme.textColor}]}>{gasPrice} Oxy</CustomText>
             </View>
             <View>
-              <CustomText  style={[{color: theme.textColor}]}>
+              <CustomText style={[{color: theme.textColor}]}>
                 {getLanguageString(language, 'GAS_LIMIT')}
               </CustomText>
-              <CustomText  style={[{color: theme.textColor, textAlign: 'right'}]}>
+              <CustomText style={[{color: theme.textColor, textAlign: 'right'}]}>
                 {gasLimit > 0 && numeral(gasLimit).format('0,0')}
               </CustomText>
             </View>

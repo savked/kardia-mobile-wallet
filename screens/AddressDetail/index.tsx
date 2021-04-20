@@ -437,7 +437,7 @@ const AddressDetail = () => {
                           flex: 4,
                           paddingHorizontal: 14,
                         }}>
-                        <CustomText  style={{color: '#FFFFFF'}}>
+                        <CustomText style={{color: '#FFFFFF'}}>
                           {item.type === 'IN'
                             ? getLanguageString(language, 'TX_TYPE_RECEIVED')
                             : getLanguageString(language, 'TX_TYPE_SEND')}
@@ -461,7 +461,7 @@ const AddressDetail = () => {
                           {item.type === 'IN' ? '+' : '-'}
                           {parseKaiBalance(item.amount, true)} KAI
                         </CustomText>
-                        <CustomText  style={{color: '#DBDBDB', fontSize: 12}}>
+                        <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
                           {format(item.date, 'hh:mm aa')}
                         </CustomText>
                       </View>

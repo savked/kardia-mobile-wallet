@@ -162,7 +162,7 @@ const Button = ({
           {loading && <ActivityIndicator color={textTypeStyle.color} />}
           {!loading && renderIcon()}
           {!loading && title && (
-            <CustomText  style={[styles.title, textTypeStyle, textStyle]}>
+            <CustomText style={[styles.title, textTypeStyle, textStyle]}>
               {title}
             </CustomText>
           )}
@@ -189,7 +189,7 @@ const Button = ({
       {!loading && renderIcon()}
       {/* <Icon name={iconName} size={size} color={color} style={{marginRight:8}}/> */}
       {!loading && title && (
-        <CustomText  style={[styles.title, textTypeStyle, textStyle]}>{title}</CustomText>
+        <CustomText style={[styles.title, textTypeStyle, textStyle]}>{title}</CustomText>
       )}
     </TouchableOpacity>
   );

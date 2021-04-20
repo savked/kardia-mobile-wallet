@@ -159,7 +159,7 @@ const SelectWallet = () => {
         }}>
         {getLanguageString(language, 'SELECT_YOUR_WALLET')}
       </CustomText>
-      {/* <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 16}}>
+      {/* <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 16}}>
         {getLanguageString(language, 'SELECT_YOUR_WALLET_DESCRIPTION')}
       </CustomText> */}
       <View style={{flex: 0.8, justifyContent: 'center', marginTop: 36}}>
@@ -203,7 +203,7 @@ const SelectWallet = () => {
                     />
                   </View>
                   <View>
-                    <CustomText  style={{color: theme.textColor, fontSize: 13}}>
+                    <CustomText style={{color: theme.textColor, fontSize: 13}}>
                       {truncate(item.address, 10, 10)}
                     </CustomText>
                     <CustomText
@@ -211,7 +211,7 @@ const SelectWallet = () => {
                         color: theme.textColor,
                         fontSize: theme.defaultFontSize,
                       }}>
-                      <CustomText  style={{color: theme.mutedTextColor}}>
+                      <CustomText style={{color: theme.mutedTextColor}}>
                         Balance:
                       </CustomText>{' '}
                       {parseKaiBalance(item.balance)} KAI

@@ -107,7 +107,7 @@ const TransactionDetail = () => {
         {renderStatusIcon(txData?.status)}
         <View style={{justifyContent: 'space-between', paddingTop: 10}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <CustomText  style={[{fontSize: 18}, {color: theme.textColor}]}>
+            <CustomText style={[{fontSize: 18}, {color: theme.textColor}]}>
               {getLanguageString(language, 'TRANSACTION_HASH')}:{' '}
             </CustomText>
             <Button
@@ -141,23 +141,23 @@ const TransactionDetail = () => {
           <Divider />
         </View>
         <View style={styles.infoContainer}>
-          <CustomText  style={[styles.infoTitle, {color: theme.textColor}]}>
+          <CustomText style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'TRANSACTION_AMOUNT')}
           </CustomText>
-          <CustomText  style={[styles.infoValue, {color: theme.textColor}]}>
+          <CustomText style={[styles.infoValue, {color: theme.textColor}]}>
             {numeral(txData?.amount).format('0,0.00')} KAI
           </CustomText>
         </View>
         <View style={styles.infoContainer}>
-          <CustomText  style={[styles.infoTitle, {color: theme.textColor}]}>
+          <CustomText style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'TRANSACTION_FEE')}
           </CustomText>
-          <CustomText  style={[styles.infoValue, {color: theme.textColor}]}>
+          <CustomText style={[styles.infoValue, {color: theme.textColor}]}>
             {txData.fee} KAI
           </CustomText>
         </View>
         <View style={styles.infoContainer}>
-          <CustomText  style={[styles.infoTitle, {color: theme.textColor}]}>
+          <CustomText style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'FROM')}
           </CustomText>
           <View style={{flexDirection: 'row'}}>
@@ -182,7 +182,7 @@ const TransactionDetail = () => {
           </View>
         </View>
         <View style={styles.infoContainer}>
-          <CustomText  style={[styles.infoTitle, {color: theme.textColor}]}>
+          <CustomText style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'TO')}
           </CustomText>
           <View style={{flexDirection: 'row'}}>
@@ -207,10 +207,10 @@ const TransactionDetail = () => {
           </View>
         </View>
         <View style={styles.infoContainer}>
-          <CustomText  style={[styles.infoTitle, {color: theme.textColor}]}>
+          <CustomText style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'TRANSACTION_DATE')}
           </CustomText>
-          <CustomText  style={[styles.infoValue, {color: theme.textColor}]}>
+          <CustomText style={[styles.infoValue, {color: theme.textColor}]}>
             {isSameDay(txData.date, new Date())
               ? `${formatDistanceToNowStrict(txData.date, {
                   locale: getDateFNSLocale(language),

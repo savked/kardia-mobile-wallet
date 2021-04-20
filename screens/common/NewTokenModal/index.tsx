@@ -195,7 +195,7 @@ const NewTokenModal = ({
         <View style={[styles.container]}>
           <View style={{marginBottom: 0}}>
             <View>
-              <CustomText  style={[styles.headline, {color: theme.textColor}]}>
+              <CustomText style={[styles.headline, {color: theme.textColor}]}>
                 {getLanguageString(language, 'TOKEN_ADDRESS')}
               </CustomText>
             </View>
@@ -240,31 +240,31 @@ const NewTokenModal = ({
           </View>
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <CustomText  style={{color: theme.textColor}}>
-                Token name: <CustomText  style={{fontWeight: 'bold'}}>{name}</CustomText>
+              <CustomText style={{color: theme.textColor}}>
+                Token name: <CustomText style={{fontWeight: 'bold'}}>{name}</CustomText>
               </CustomText>
             </View>
           )}
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <CustomText  style={{color: theme.textColor}}>
-                Token symbol: <CustomText  style={{fontWeight: 'bold'}}>{symbol}</CustomText>
+              <CustomText style={{color: theme.textColor}}>
+                Token symbol: <CustomText style={{fontWeight: 'bold'}}>{symbol}</CustomText>
               </CustomText>
             </View>
           )}
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <CustomText  style={{color: theme.textColor}}>
+              <CustomText style={{color: theme.textColor}}>
                 Token decimals:{' '}
-                <CustomText  style={{fontWeight: 'bold'}}>{decimals}</CustomText>
+                <CustomText style={{fontWeight: 'bold'}}>{decimals}</CustomText>
               </CustomText>
             </View>
           )}
           {showTokenData() && (
             <View style={{marginBottom: 10}}>
-              <CustomText  style={{color: theme.textColor}}>
+              <CustomText style={{color: theme.textColor}}>
                 Token supply:{' '}
-                <CustomText  style={{fontWeight: 'bold', color: theme.textColor}}>
+                <CustomText style={{fontWeight: 'bold', color: theme.textColor}}>
                   {numeral(parseDecimals(Number(totalSupply), decimals)).format(
                     '0,0.00',
                   )}

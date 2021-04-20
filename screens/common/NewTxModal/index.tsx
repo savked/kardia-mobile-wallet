@@ -240,23 +240,23 @@ const NewTxModal = ({
           backgroundColor: theme.backgroundFocusColor,
         }}
         onClose={() => setShowConfirmModal(false)}>
-        <CustomText  style={[styles.confirmTitle, {color: theme.textColor}]}>
+        <CustomText style={[styles.confirmTitle, {color: theme.textColor}]}>
           {getLanguageString(language, 'CONFIRM_TRANSACTION')}
         </CustomText>
         <View style={{width: '100%'}}>
           <View style={styles.confirmGroup}>
-            <CustomText  style={[styles.confirmText, {color: theme.textColor}]}>
+            <CustomText style={[styles.confirmText, {color: theme.textColor}]}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}:{' '}
             </CustomText>
-            <CustomText  style={[styles.confirmContent, {color: theme.textColor}]}>
+            <CustomText style={[styles.confirmContent, {color: theme.textColor}]}>
               {truncate(address, 10, 10)}
             </CustomText>
           </View>
           <View style={styles.confirmGroup}>
-            <CustomText  style={[styles.confirmText, {color: theme.textColor}]}>
+            <CustomText style={[styles.confirmText, {color: theme.textColor}]}>
               {getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:{' '}
             </CustomText>
-            <CustomText  style={[styles.confirmContent, {color: theme.textColor}]}>
+            <CustomText style={[styles.confirmContent, {color: theme.textColor}]}>
               {amount} KAI
             </CustomText>
           </View>
@@ -297,7 +297,7 @@ const NewTxModal = ({
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
           <View>
-            <CustomText  style={[styles.headline, {color: theme.textColor}]}>
+            <CustomText style={[styles.headline, {color: theme.textColor}]}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}
             </CustomText>
           </View>
@@ -361,9 +361,9 @@ const NewTxModal = ({
 
           <View style={{marginBottom: 10}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <CustomText  style={{color: theme.textColor, marginBottom: 5, fontWeight: 'bold'}}>{getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}</CustomText>
+              <CustomText style={{color: theme.textColor, marginBottom: 5, fontWeight: 'bold'}}>{getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}</CustomText>
               <TouchableOpacity onPress={() => setAmount(format(parseDecimals(_getBalance(), 18)))}>
-                <CustomText  style={{color: theme.urlColor}}>
+                <CustomText style={{color: theme.urlColor}}>
                   {parseKaiBalance(_getBalance())} KAI
                 </CustomText>
               </TouchableOpacity>

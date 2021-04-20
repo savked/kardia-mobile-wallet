@@ -56,31 +56,31 @@ const Wrap = () => {
         tabBarLabel: ({focused, color, position}) => {
           if (route.name === 'Home') {
             return (
-              <CustomText  style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
                 {getLanguageString(language, 'HOME')}
               </CustomText>
             )
           } else if (route.name === 'Transaction') {
             return (
-              <CustomText  style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
                 {getLanguageString(language, 'TRANSACTIONS')}
               </CustomText>
             )
           } else if (route.name === 'Staking') {
             return (
-              <CustomText  style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
                 {getLanguageString(language, 'STAKING')}
               </CustomText>
             )
           } else if (route.name === 'Address') {
             return (
-              <CustomText  style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
                 {getLanguageString(language, 'ADDRESS_BOOK')}
               </CustomText>
             )
           } else if (route.name === 'Setting') {
             return (
-              <CustomText  style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
                 {getLanguageString(language, 'SETTING')}
               </CustomText>
             )

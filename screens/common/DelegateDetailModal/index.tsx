@@ -162,7 +162,7 @@ export default ({
         height: showWithdraw(validatorItem.withdrawableAmount) ? 500 : 450,
       }}>
       <View style={{width: '100%', marginBottom: 4}}>
-        <CustomText  style={{color: theme.mutedTextColor}}>Validator</CustomText>
+        <CustomText style={{color: theme.mutedTextColor}}>Validator</CustomText>
       </View>
       <View
         style={[
@@ -184,7 +184,7 @@ export default ({
           textStyle={{fontSize: 16}}
         />
         <View>
-          <CustomText  style={[styles.validatorName, {color: theme.textColor}]}>
+          <CustomText style={[styles.validatorName, {color: theme.textColor}]}>
             {validatorItem.name}
           </CustomText>
         </View>
@@ -192,33 +192,33 @@ export default ({
       <Divider style={{width: '100%'}} color="#60636C" />
       <View style={{width: '100%'}}>
         <View style={styles.dataContainer}>
-          <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'COMMISSION_RATE')}
           </CustomText>
-          <CustomText  style={[{color: theme.textColor}]}>
+          <CustomText style={[{color: theme.textColor}]}>
             {getSelectedCommission()}
           </CustomText>
         </View>
         <View style={styles.dataContainer}>
-          <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
           </CustomText>
-          <CustomText  style={[{color: theme.textColor}]}>
+          <CustomText style={[{color: theme.textColor}]}>
             {getSelectedStakedAmount()}
           </CustomText>
         </View>
         <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
           <TouchableOpacity onPress={() => setShowUndelegateModal(true)}>
-            <CustomText  style={[{color: theme.urlColor}]}>
+            <CustomText style={[{color: theme.urlColor}]}>
               {getLanguageString(language, 'UNDELEGATE')}
             </CustomText>
           </TouchableOpacity>
         </View>
         <View style={styles.dataContainer}>
-          <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'CLAIMABLE')}
           </CustomText>
-          <CustomText  style={[{color: theme.textColor}]}>
+          <CustomText style={[{color: theme.textColor}]}>
             {numeral(weiToKAI(validatorItem.claimableRewards)).format('0,0.00')}{' '}
             KAI
           </CustomText>
@@ -228,26 +228,26 @@ export default ({
             <ActivityIndicator color={theme.textColor} size="small" />
           ) : (
             <TouchableOpacity onPress={claimHandler}>
-              <CustomText  style={[{color: theme.urlColor}]}>
+              <CustomText style={[{color: theme.urlColor}]}>
                 {getLanguageString(language, 'CLAIM_REWARD')}
               </CustomText>
             </TouchableOpacity>
           )}
         </View>
         <View style={styles.dataContainer}>
-          <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'UNBONDED')}
           </CustomText>
-          <CustomText  style={[{color: theme.textColor}]}>
+          <CustomText style={[{color: theme.textColor}]}>
             {numeral(weiToKAI(validatorItem.unbondedAmount)).format('0,0.00')}{' '}
             KAI
           </CustomText>
         </View>
         <View style={styles.dataContainer}>
-          <CustomText  style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText style={{color: theme.textColor, fontStyle: 'italic'}}>
             {getLanguageString(language, 'WITHDRAWABLE')}
           </CustomText>
-          <CustomText  style={[{color: theme.textColor}]}>
+          <CustomText style={[{color: theme.textColor}]}>
             {numeral(weiToKAI(validatorItem.withdrawableAmount)).format(
               '0,0.00',
             )}{' '}

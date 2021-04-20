@@ -40,7 +40,7 @@ const SettingScreen = () => {
     <SafeAreaView
       style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
-        <CustomText  style={[styles.headline, {color: theme.textColor}]}>
+        <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'SETTING_SCREEN_TITLE')}
         </CustomText>
         <IconButton
@@ -87,11 +87,11 @@ const SettingScreen = () => {
                 />
               </View>
               <View style={{alignItems: 'flex-start', flex: 1}}>
-                <CustomText  style={[styles.settingTitle, {color: theme.textColor}]}>
+                <CustomText style={[styles.settingTitle, {color: theme.textColor}]}>
                   {getLanguageString(language, 'LANGUAGE_MENU')}
                 </CustomText>
               </View>
-              <CustomText  style={{color: theme.mutedTextColor}}>
+              <CustomText style={{color: theme.mutedTextColor}}>
                 {getLanguageName(language)}
               </CustomText>
               <ENIcon name="chevron-right" color={theme.textColor} size={20} />
@@ -132,7 +132,7 @@ const SettingScreen = () => {
                 />
               </View>
               <View style={{alignItems: 'flex-start', flex: 1}}>
-                <CustomText  style={[styles.settingTitle, {color: theme.textColor}]}>
+                <CustomText style={[styles.settingTitle, {color: theme.textColor}]}>
                   {getLanguageString(language, 'PASSCODE_MENU')}
                 </CustomText>
               </View>
@@ -156,11 +156,11 @@ const SettingScreen = () => {
                 />
               </View>
               <View style={{alignItems: 'flex-start', flex: 1}}>
-                <CustomText  style={[styles.settingTitle, {color: theme.textColor}]}>
+                <CustomText style={[styles.settingTitle, {color: theme.textColor}]}>
                   {getLanguageString(language, 'WALLET_MANAGEMENT')}
                 </CustomText>
               </View>
-              <CustomText  style={{color: theme.mutedTextColor}}>
+              <CustomText style={{color: theme.mutedTextColor}}>
                 ({wallets.length})
               </CustomText>
               <ENIcon name="chevron-right" color={theme.textColor} size={20} />

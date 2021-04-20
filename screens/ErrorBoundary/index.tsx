@@ -39,14 +39,14 @@ class ErrorBoundary extends React.Component<any, any> {
         <SafeAreaView
           style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
           <View style={styles.container}>
-            <CustomText  style={{width: '100%'}}>
+            <CustomText style={{width: '100%'}}>
               <FontAwesome
                 name="ios-information-circle-outline"
                 size={60}
                 color={theme.textColor}
               />
             </CustomText>
-            <CustomText  style={{fontSize: 32, color: theme.textColor}}>
+            <CustomText style={{fontSize: 32, color: theme.textColor}}>
               {getLanguageString(language, 'ERROR_BOUNDARY_TITLE')}
             </CustomText>
             <CustomText

@@ -21,10 +21,10 @@ const Info = () => {
         render={(item) => {
           return (
             <View style={styles.settingItem}>
-              <CustomText  style={[styles.settingItemTitle, {color: theme.textColor}]}>
+              <CustomText style={[styles.settingItemTitle, {color: theme.textColor}]}>
                 {item.label}
               </CustomText>
-              <CustomText  style={[styles.settingItemTitle, {color: theme.textColor}]}>
+              <CustomText style={[styles.settingItemTitle, {color: theme.textColor}]}>
                 {item.value}
               </CustomText>
             </View>

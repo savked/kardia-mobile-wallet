@@ -205,7 +205,7 @@ export default ({
               size={24}
             />
           )}
-          <CustomText  style={{color: theme.textColor, fontSize: 15}}>
+          <CustomText style={{color: theme.textColor, fontSize: 15}}>
             Authenticate by {touchType}
           </CustomText>
         </TouchableOpacity>

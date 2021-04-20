@@ -53,7 +53,7 @@ const NewsScreen = () => {
     <SafeAreaView
       style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
-        <CustomText  style={[styles.headline, {color: theme.textColor}]}>
+        <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'NEWS_SCREEN_TITLE')}
         </CustomText>
       </View>
@@ -66,10 +66,10 @@ const NewsScreen = () => {
             uri: news[0].thumbnail,
           }}
         />
-        <CustomText  style={[styles.title, {color: theme.textColor}]}>
+        <CustomText style={[styles.title, {color: theme.textColor}]}>
           {news[0].title}
         </CustomText>
-        <CustomText  style={[styles.time, {color: theme.textColor}]}>
+        <CustomText style={[styles.time, {color: theme.textColor}]}>
           {isSameDay(news[0].createdAt, new Date())
             ? `${formatDistanceToNowStrict(news[0].createdAt, {
                 locale: getDateFNSLocale(language),
@@ -104,7 +104,7 @@ const NewsScreen = () => {
                     numberOfLines={2}>
                     {item.description}
                   </CustomText>
-                  <CustomText  style={[styles.time, {color: theme.textColor}]}>
+                  <CustomText style={[styles.time, {color: theme.textColor}]}>
                     {isSameDay(item.createdAt, new Date())
                       ? `${formatDistanceToNowStrict(item.createdAt, {
                           locale: getDateFNSLocale(language),
@@ -120,7 +120,7 @@ const NewsScreen = () => {
         }}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={
-          <CustomText  style={[styles.noTXText, {color: theme.textColor}]}>
+          <CustomText style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
           </CustomText>
         }

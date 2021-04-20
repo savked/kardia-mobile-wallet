@@ -6,7 +6,7 @@ import {styles} from './style';
 const DAppScreen = () => {
   return (
     <View style={styles.container}>
-      <CustomText  style={styles.title}>Explorer Kardia's ecosystem</CustomText>
+      <CustomText style={styles.title}>Explorer Kardia's ecosystem</CustomText>
       <FlatList
         numColumns={2}
         data={data}

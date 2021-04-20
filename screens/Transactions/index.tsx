@@ -172,7 +172,7 @@ const TransactionScreen = () => {
         txObj={txObjForDetail}
       />
       <View style={styles.header}>
-        <CustomText  style={[styles.headline, {color: theme.textColor}]}>
+        <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'RECENT_TRANSACTION')}
         </CustomText>
         <IconButton
@@ -192,10 +192,10 @@ const TransactionScreen = () => {
             style={{width: 170, height: 140}}
             source={require('../../assets/no_tx_box.png')}
           />
-          <CustomText  style={[styles.noTXText, {color: theme.textColor}]}>
+          <CustomText style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
           </CustomText>
-          <CustomText  style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32}}>
+          <CustomText style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32}}>
             {getLanguageString(language, 'NO_TRANSACTION_SUB_TEXT')}
           </CustomText>
           <Button
@@ -255,12 +255,12 @@ const TransactionScreen = () => {
                           flex: 4,
                           paddingHorizontal: 14,
                         }}>
-                        <CustomText  style={{color: '#FFFFFF'}}>
+                        <CustomText style={{color: '#FFFFFF'}}>
                           {item.type === 'IN'
                             ? getLanguageString(language, 'TX_TYPE_RECEIVED')
                             : getLanguageString(language, 'TX_TYPE_SEND')}
                         </CustomText>
-                        <CustomText  style={{color: '#DBDBDB', fontSize: 12}}>
+                        <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
                           {truncate(item.label, 8, 10)}
                         </CustomText>
                       </View>
@@ -279,7 +279,7 @@ const TransactionScreen = () => {
                           {item.type === 'IN' ? '+' : '-'}
                           {parseKaiBalance(item.amount, true)} KAI
                         </CustomText>
-                        <CustomText  style={{color: '#DBDBDB', fontSize: 12}}>
+                        <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
                           {format(item.date, 'hh:mm aa')}
                         </CustomText>
                       </View>

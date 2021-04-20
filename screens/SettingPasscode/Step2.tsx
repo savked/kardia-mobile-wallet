@@ -49,11 +49,11 @@ const Step2 = ({
           backgroundColor="transparent"
           style={{padding: 0, marginBottom: 18}}
         />
-        <CustomText  style={{color: theme.textColor, fontSize: 36}}>
+        <CustomText style={{color: theme.textColor, fontSize: 36}}>
           {getLanguageString(language, 'CONFIRM_PIN')}
         </CustomText>
       </View>
-      <CustomText  style={[styles.title, {color: theme.textColor}]}>
+      <CustomText style={[styles.title, {color: theme.textColor}]}>
         {getLanguageString(language, 'CONFIRM_PASSCODE')}
       </CustomText>
       <View style={{flex: 1, width: '100%'}}>

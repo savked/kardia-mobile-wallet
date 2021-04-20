@@ -27,7 +27,7 @@ const IconButton = ({
       {!loading && <Icon name={name} size={size} color={color} />}
       {!loading && badge !== 0 && badge !== '0' && (
         <View style={styles.badgeContainer}>
-          <CustomText  style={styles.badgeText}>{badge}</CustomText>
+          <CustomText style={styles.badgeText}>{badge}</CustomText>
         </View>
       )}
     </TouchableOpacity>

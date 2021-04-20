@@ -71,7 +71,7 @@ const ConfirmPasscode = () => {
 
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <CustomText  style={[styles.title, {color: theme.textColor}]}>
+      <CustomText style={[styles.title, {color: theme.textColor}]}>
         {getLanguageString(language, 'ENTER_PIN_CODE')}
       </CustomText>
       <View style={{marginVertical: 24, width: '100%'}}>
@@ -115,7 +115,7 @@ const ConfirmPasscode = () => {
           ) : (
             <Icon name="finger-print" color={theme.textColor} size={30} />
           )}
-          <CustomText  style={{color: theme.textColor}}>
+          <CustomText style={{color: theme.textColor}}>
             Authenticate by {touchType}
           </CustomText>
         </TouchableOpacity>

@@ -60,10 +60,10 @@ const AddressBookSetting = () => {
             style={{width: 170, height: 156, marginBottom: 23, marginTop: 70}}
             source={require('../../assets/no_address_dark.png')}
           />
-          <CustomText  style={[styles.emptyAddressBook, {color: theme.textColor}]}>
+          <CustomText style={[styles.emptyAddressBook, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS')}
           </CustomText>
-          <CustomText  style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32, textAlign: 'center'}}>
+          <CustomText style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32, textAlign: 'center'}}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS_SUB_TEXT')}
           </CustomText>
           <Button

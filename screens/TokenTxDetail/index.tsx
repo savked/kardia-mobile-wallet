@@ -93,7 +93,7 @@ const TokenTxDetail = () => {
             />
           )}
         </View>
-        <CustomText  style={[styles.tokenBalance, {color: theme.textColor}]}>
+        <CustomText style={[styles.tokenBalance, {color: theme.textColor}]}>
           {numeral(
             parseDecimals(Number(txData.value), tokenInfo.decimals || 18),
           ).format('0,0.00')}{' '}
@@ -102,7 +102,7 @@ const TokenTxDetail = () => {
         {/* <Divider /> */}
       </View>
       <View style={styles.infoContainer}>
-        <CustomText  style={[styles.infoTitle, {color: theme.textColor}]}>
+        <CustomText style={[styles.infoTitle, {color: theme.textColor}]}>
           {getLanguageString(language, 'FROM')}
         </CustomText>
         <View style={{flexDirection: 'row'}}>
@@ -127,7 +127,7 @@ const TokenTxDetail = () => {
         </View>
       </View>
       <View style={styles.infoContainer}>
-        <CustomText  style={[styles.infoTitle, {color: theme.textColor}]}>
+        <CustomText style={[styles.infoTitle, {color: theme.textColor}]}>
           {getLanguageString(language, 'TO')}
         </CustomText>
         <View style={{flexDirection: 'row'}}>
@@ -148,10 +148,10 @@ const TokenTxDetail = () => {
         </View>
       </View>
       <View style={styles.infoContainer}>
-        <CustomText  style={[styles.infoTitle, {color: theme.textColor}]}>
+        <CustomText style={[styles.infoTitle, {color: theme.textColor}]}>
           {getLanguageString(language, 'TRANSACTION_DATE')}
         </CustomText>
-        <CustomText  style={[styles.infoValue, {color: theme.textColor}]}>
+        <CustomText style={[styles.infoValue, {color: theme.textColor}]}>
           {isSameDay(new Date(txData.time), new Date())
             ? `${formatDistanceToNowStrict(new Date(txData.time), {
                 locale: getDateFNSLocale(language),

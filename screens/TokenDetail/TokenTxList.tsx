@@ -152,7 +152,7 @@ const TokenTxList = ({
             style={{width: 128, height: 105}}
             source={require('../../assets/no_tx_box.png')}
           />
-          <CustomText  style={[styles.noTXText, {color: theme.textColor}]}>
+          <CustomText style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
           </CustomText>
           <Button
@@ -212,12 +212,12 @@ const TokenTxList = ({
                           flex: 4,
                           paddingHorizontal: 14,
                         }}>
-                        <CustomText  style={{color: '#FFFFFF'}}>
+                        <CustomText style={{color: '#FFFFFF'}}>
                           {item.type === 'IN'
                             ? getLanguageString(language, 'TX_TYPE_RECEIVED')
                             : getLanguageString(language, 'TX_TYPE_SEND')}
                         </CustomText>
-                        <CustomText  style={{color: '#DBDBDB', fontSize: 12}}>
+                        <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
                           {truncate(item.transactionHash, 8, 10)}
                         </CustomText>
                       </View>
@@ -239,7 +239,7 @@ const TokenTxList = ({
                           ).format('0,0.00')}{' '}
                           {tokenSymbol}
                         </CustomText>
-                        <CustomText  style={{color: '#DBDBDB', fontSize: 12}}>
+                        <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
                           {format(item.date, 'hh:mm aa')}
                         </CustomText>
                       </View>

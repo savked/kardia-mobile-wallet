@@ -51,10 +51,10 @@ const AddressBookModal = ({
                 )}
               </View>
               <View>
-                <CustomText  style={[styles.addressName, {color: '#000000'}]}>
+                <CustomText style={[styles.addressName, {color: '#000000'}]}>
                   {_address.name}
                 </CustomText>
-                <CustomText  style={[styles.addressHash, {color: '#000000'}]}>
+                <CustomText style={[styles.addressHash, {color: '#000000'}]}>
                   {truncate(_address.address, 20, 20)}
                 </CustomText>
               </View>
@@ -62,7 +62,7 @@ const AddressBookModal = ({
           );
         }}
         ListEmptyComponent={
-          <CustomText  style={[styles.emptyAddressBook]}>
+          <CustomText style={[styles.emptyAddressBook]}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS')}
           </CustomText>
         }

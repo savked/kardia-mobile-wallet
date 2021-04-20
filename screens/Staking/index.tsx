@@ -118,7 +118,7 @@ const StakingScreen = () => {
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
-        <CustomText  style={[styles.headline, {color: theme.textColor}]}>
+        <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'STAKING_TITLE')}
         </CustomText>
         <IconButton
@@ -154,10 +154,10 @@ const StakingScreen = () => {
             {getLanguageString(language, 'TOTAL_EARNING')}
           </CustomText>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <CustomText  style={[styles.totalSaving, {color: theme.textColor}]}>
+            <CustomText style={[styles.totalSaving, {color: theme.textColor}]}>
               {numeral(getTotalSaving()).format('0,0.00')}
             </CustomText>
-            <CustomText  style={{fontSize: 14, color: 'rgba(252, 252, 252, 0.54)'}}>
+            <CustomText style={{fontSize: 14, color: 'rgba(252, 252, 252, 0.54)'}}>
               KAI
             </CustomText>
           </View>
@@ -192,10 +192,10 @@ const StakingScreen = () => {
               style={{width: 200, height: 172}}
               source={require('../../assets/icon/no_staking.png')}
             />
-            <CustomText  style={{color: theme.textColor, fontSize: 24, fontWeight: 'bold', marginBottom: 8, marginTop: 100}}>
+            <CustomText style={{color: theme.textColor, fontSize: 24, fontWeight: 'bold', marginBottom: 8, marginTop: 100}}>
               {getLanguageString(language, 'NO_STAKING')}
             </CustomText>
-            <CustomText  style={[styles.noStakingText, {color: theme.mutedTextColor, textAlign: 'center', marginBottom: 32}]}>
+            <CustomText style={[styles.noStakingText, {color: theme.mutedTextColor, textAlign: 'center', marginBottom: 32}]}>
               {getLanguageString(language, 'NO_STAKING_ITEM')}
             </CustomText>
             <Button

@@ -44,7 +44,7 @@ const QRModal = ({
         height: 730,
       }}
       onClose={onClose}>
-      {/* <CustomText  style={{fontSize: 20, fontWeight: 'bold', color: theme.textColor}}>
+      {/* <CustomText style={{fontSize: 20, fontWeight: 'bold', color: theme.textColor}}>
         {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS')}
       </CustomText> */}
       <View
@@ -113,10 +113,10 @@ const QRModal = ({
           // paddingHorizontal: 18,
         }}
       >
-        <CustomText  style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4, textAlign: 'left', paddingHorizontal: 20}}>
+        <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4, textAlign: 'left', paddingHorizontal: 20}}>
           {getLanguageString(language, 'BALANCE').toUpperCase()}
         </CustomText>
-        <CustomText  style={{fontSize: 24, color: 'white', paddingHorizontal: 20}}>
+        <CustomText style={{fontSize: 24, color: 'white', paddingHorizontal: 20}}>
           ~${' '}
           {numeral(
             tokenInfo.price *
@@ -124,7 +124,7 @@ const QRModal = ({
           ).format('0,0.00')}
         </CustomText>
         <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', width: '100%', paddingHorizontal: 20}}>
-          <CustomText  style={{
+          <CustomText style={{
               color: '#FFFFFF',
               fontSize: 16,
               marginRight: 8,

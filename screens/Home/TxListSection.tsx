@@ -167,10 +167,10 @@ const TxListSection = () => {
                     flex: 2.5,
                     flexDirection: 'column',
                   }}>
-                  <CustomText  style={{color: '#FFFFFF'}}>
+                  <CustomText style={{color: '#FFFFFF'}}>
                     {truncate(item.label, 6, 8)}
                   </CustomText>
-                  <CustomText  style={{color: 'gray'}}>
+                  <CustomText style={{color: 'gray'}}>
                     {isSameDay(item.date, new Date())
                       ? `${formatDistanceToNowStrict(item.date, {
                           locale: getDateFNSLocale(language),
@@ -200,7 +200,7 @@ const TxListSection = () => {
           );
         }}
         ListEmptyComponent={
-          <CustomText  style={[styles.noTXText, {color: theme.textColor}]}>
+          <CustomText style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
           </CustomText>
         }
@@ -212,7 +212,7 @@ const TxListSection = () => {
               justifyContent: 'space-between',
               paddingHorizontal: 15,
             }}>
-            <CustomText  style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
+            <CustomText style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
               {getLanguageString(language, 'RECENT_TRANSACTION')}
             </CustomText>
             <Button

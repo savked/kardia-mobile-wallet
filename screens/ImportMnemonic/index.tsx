@@ -179,7 +179,7 @@ export default () => {
                 borderRadius: 12,
                 alignItems: 'center',
               }}>
-              <CustomText  style={{ color: mode === 'scan' ? theme.textColor : theme.mutedTextColor }}>{getLanguageString(language, 'SCAN_MODE')}</CustomText>
+              <CustomText style={{ color: mode === 'scan' ? theme.textColor : theme.mutedTextColor }}>{getLanguageString(language, 'SCAN_MODE')}</CustomText>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setMode('enter')}
@@ -191,7 +191,7 @@ export default () => {
                 borderRadius: 12,
                 alignItems: 'center',
               }}>
-              <CustomText  style={{ color: mode === 'enter' ? theme.textColor : theme.mutedTextColor }}>{getLanguageString(language, 'INPUT_MODE')}</CustomText>
+              <CustomText style={{ color: mode === 'enter' ? theme.textColor : theme.mutedTextColor }}>{getLanguageString(language, 'INPUT_MODE')}</CustomText>
             </TouchableOpacity>
           </View>
         </View>
