@@ -6,6 +6,7 @@ export const lang: Language = {
   tag: ['en_US', 'US', 'en', 'US English'],
   mapping: {
     // Common key:
+    COPIED: 'Copied',
     PICKER_TITLE: 'Choose image',
     TAKE_PICTURE: 'Take picture',
     CHOOSE_FROM_LIBRARY: 'Choose from library',
@@ -150,8 +151,8 @@ export const lang: Language = {
     UNDELEGATE_AMOUNT_REMAIN_1000:
       'You must keep at least 1.000 KAI in staking, or undelegate all KAI.',
     UNDELEGATE_AMOUNT_PLACEHOLDER: 'Amount to Undelegate:',
-    YOUR_INVESTMENTS: 'Your Delegated Investments',
-    TOTAL_EARNING: 'Your Total Earnings', // Your Total Return?
+    YOUR_INVESTMENTS: 'My Investments',
+    TOTAL_EARNING: 'Total Earnings', // Your Total Return?
     INVEST: 'Stake Now',
     CHOOSE_VALIDATOR: 'Choose a Validator',
     STAKING_AMOUNT: 'Amount to Stake',

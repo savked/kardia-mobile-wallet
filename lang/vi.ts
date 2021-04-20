@@ -6,6 +6,7 @@ export const lang: Language = {
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:
+    COPIED: 'Sao chép thành công',
     PICKER_TITLE: 'Chọn hình',
     TAKE_PICTURE: 'Chụp hình mới',
     CHOOSE_FROM_LIBRARY: 'Chọn từ thư viện',
@@ -29,7 +30,7 @@ export const lang: Language = {
     REQUIRED_FIELD: 'Vui lòng nhập thông tin',
     ADDRESS_NOT_FOUND: 'Không tìm thấy địa chỉ trong danh bạ',
     ADDRESS_EXISTS: 'Địa chỉ đã tồn tại trong danh bạ.',
-    COPY_TO_CLIPBOARD: 'Copy vào bộ nhớ tạm',
+    COPY_TO_CLIPBOARD: 'Sao chép vào bộ nhớ tạm',
     SECOND: 'giây',
     CONFIRM_IMPORT: 'Bạn chắc chắn muốn thêm ví mới ?',
     RESTART_APP_DESCRIPTION:
@@ -144,8 +145,8 @@ export const lang: Language = {
     UNDELEGATE_AMOUNT_REMAIN_1000:
       'Cần giữ lại ít nhất 1.000 KAI hoặc rút hết KAI.',
     UNDELEGATE_AMOUNT_PLACEHOLDER: 'Số KAI muốn rút từ stake...',
-    YOUR_INVESTMENTS: 'Các khoản đầu tư của bạn',
-    TOTAL_EARNING: 'Tổng số lợi nhuận',
+    YOUR_INVESTMENTS: 'Đầu tư của tôi',
+    TOTAL_EARNING: 'Lợi nhuận',
     INVEST: 'Đầu tư',
     CHOOSE_VALIDATOR: 'Chọn người được uỷ quyền (Validator)',
     STAKING_AMOUNT: 'Số KAI đầu tư',
