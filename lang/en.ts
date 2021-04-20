@@ -107,7 +107,7 @@ export const lang: Language = {
     CREATE_KRC20_TX_ADDRESS: 'Send to Address',
     CREATE_TX_KAI_AMOUNT: 'Amount',
     CREATE_TX_KRC20_AMOUNT: 'Amount',
-    TRANSACTION_SPEED: 'Choose Transaction Speed',
+    TRANSACTION_SPEED: 'Transaction Speed',
     SLOW_SPEED: 'Slow',
     AVERAGE_SPEED: 'Average',
     FAST_SPEED: 'Fast',
@@ -207,7 +207,7 @@ export const lang: Language = {
       'The amount requested exceeds your current wallet balance.',
     GENERAL_ERROR: 'An error occured. Please try again later.',
     // KRC20 key
-    KRC20_TOKENS_SECTION_TITLE: 'My assets',
+    KRC20_TOKENS_SECTION_TITLE: 'Tokens',
     ADD_TOKEN: 'Add token',
     TOKEN_ADDRESS: 'Token address',
     SEND_TOKEN: 'Send {{TOKEN_SYMBOL}}',
