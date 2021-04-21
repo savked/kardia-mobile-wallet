@@ -283,7 +283,7 @@ const NewTokenModal = ({
             />
             <Button
               title={getLanguageString(language, 'ADD_TOKEN')}
-              textStyle={{fontWeight: 'bold'}}
+              // textStyle={{fontWeight: 'bold'}}
               onPress={handleImport}
               loading={loading}
               disabled={loading}

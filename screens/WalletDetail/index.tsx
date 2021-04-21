@@ -182,12 +182,12 @@ export default () => {
                         size={22}
                         style={{marginRight: 12}}
                       />
-                      <IconButton
+                      {/* <IconButton
                         onPress={() => setShowRemoveConfirm(true)}
                         name="trash"
                         color={theme.textColor}
                         size={20}
-                      />
+                      /> */}
                     </View>
                   </View>
 
@@ -271,14 +271,14 @@ export default () => {
           </View>
         </ScrollView>
         <View style={{marginBottom: 42, paddingHorizontal: 20 }}>
-          {/* <Button
+          <Button
             title={getLanguageString(language, "REMOVE_WALLET")}
             iconName="trash"
             iconSize={18}
             iconColor={theme.textColor}
             type="outline"
             onPress={() => setShowRemoveConfirm(true)}
-          /> */}
+          />
           <Button
             title={getLanguageString(language, 'SAVE')}
             onPress={saveWallet}

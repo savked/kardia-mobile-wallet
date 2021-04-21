@@ -1,9 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Image, Text, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, Image, TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
-import List from '../../components/List';
+// import List from '../../components/List';
 import {styles} from './style';
 import {parseDecimals} from '../../utils/number';
 import Button from '../../components/Button';
@@ -12,7 +12,7 @@ import numeral from 'numeral';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 // import {getTokenList} from '../../utils/local';
-import NewTokenModal from '../common/NewTokenModal';
+// import NewTokenModal from '../common/NewTokenModal';
 import {krc20ListAtom} from '../../atoms/krc20';
 import {getBalance} from '../../services/krc20';
 import {getSelectedWallet, getWallets} from '../../utils/local';
@@ -26,7 +26,6 @@ const TokenListSection = () => {
 
   const language = useRecoilValue(languageAtom);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
   const [balance, setBalance] = useState<number[]>([]);
   const tokenList = useRecoilValue(krc20ListAtom);
 
@@ -148,7 +147,7 @@ const TokenListSection = () => {
 
   return (
     <View style={styles.tokenListContainer}>
-      <NewTokenModal visible={showModal} onClose={() => setShowModal(false)} />
+      {/* <NewTokenModal visible={showModal} onClose={() => setShowModal(false)} /> */}
       <View
         style={{
           alignItems: 'center',
@@ -185,7 +184,7 @@ const TokenListSection = () => {
             type="outline"
             textStyle={{fontWeight: 'bold', fontSize: 12}}
             style={{paddingVertical: 8, paddingHorizontal: 16}}
-            onPress={() => setShowModal(true)}
+            onPress={() => navigation.navigate('NewKRC20Tokens')}
             title={`+ ${getLanguageString(language, 'ADD_TOKEN')}`}
           />
         </View>

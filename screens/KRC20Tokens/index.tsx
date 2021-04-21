@@ -18,7 +18,6 @@ import { getLanguageString } from '../../utils/lang';
 import { getSelectedWallet, getWallets } from '../../utils/local';
 import { parseDecimals } from '../../utils/number';
 import {styles} from './style';
-import NewTokenModal from '../common/NewTokenModal';
 import Button from '../../components/Button';
 import CustomText from '../../components/Text';
 
@@ -34,7 +33,6 @@ export default () => {
 
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState<number[]>([]);
-  const [showModal, setShowModal] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -90,7 +88,6 @@ export default () => {
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <NewTokenModal visible={showModal} onClose={() => setShowModal(false)} />
       <View
         style={{
           width: '100%',
@@ -186,7 +183,7 @@ export default () => {
           type="primary"
           icon={<AntIcon name="plus" size={24} />}
           size="small"
-          onPress={() => setShowModal(true)}
+          onPress={() => navigation.navigate('NewKRC20Tokens')}
           style={styles.floatingButton}
         />
       )}

@@ -115,7 +115,6 @@ export default ({
           alignItems: 'center',
           justifyContent: 'flex-start',
         }}>
-        {isNewContact() || getAddressAvatar(addressBook, address) === '' ? (
           <View
             style={{
               width: 52,
@@ -124,19 +123,20 @@ export default ({
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <View style={styles.newContactAvatarContainer}>
+            {isNewContact() || getAddressAvatar(addressBook, address) === '' ? (
+              <View style={styles.newContactAvatarContainer}>
+                <Image
+                  style={{width: 20, height: 20}}
+                  source={require('../../../assets/icon/user.png')}
+                />
+              </View>
+            ) : (
               <Image
-                style={{width: 20, height: 20}}
-                source={require('../../../assets/icon/user.png')}
+                style={{width: 32, height: 32, borderRadius: 8}}
+                source={{uri: getAddressAvatar(addressBook, address)}}
               />
-            </View>
+            )}
           </View>
-        ) : (
-          <Image
-            style={{width: 20, height: 20}}
-            source={{uri: getAddressAvatar(addressBook, address)}}
-          />
-        )}
         <View>
           <CustomText style={{color: '#FFFFFF', fontWeight: 'bold'}}>
             {isNewContact()
@@ -282,7 +282,7 @@ export default ({
           type="primary"
           block={true}
           onPress={onClose}
-          textStyle={{fontWeight: 'bold'}}
+          // textStyle={{fontWeight: 'bold'}}
         />
       </View>
     </Modal>

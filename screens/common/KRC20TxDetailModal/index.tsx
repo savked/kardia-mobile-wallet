@@ -107,7 +107,7 @@ export default ({
         />
         <View>
           <CustomText style={{color: '#FFFFFF', fontWeight: 'bold'}}>
-            {wallets[selectedWallet].name}
+            {wallets[selectedWallet].name || getLanguageString(language, 'NEW_WALLET')}
           </CustomText>
           <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
             {truncate(address, 10, 10)}
@@ -129,28 +129,28 @@ export default ({
           alignItems: 'center',
           justifyContent: 'flex-start',
         }}>
+        <View
+          style={{
+            width: 52,
+            height: 32,
+            marginRight: 12,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
         {isNewContact() || getAddressAvatar(addressBook, address) === '' ? (
-          <View
-            style={{
-              width: 52,
-              height: 32,
-              marginRight: 12,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <View style={styles.newContactAvatarContainer}>
-              <Image
-                style={{width: 20, height: 20}}
-                source={require('../../../assets/icon/user.png')}
-              />
-            </View>
+          <View style={styles.newContactAvatarContainer}>
+            <Image
+              style={{width: 32, height: 32}}
+              source={require('../../../assets/icon/user.png')}
+            />
           </View>
         ) : (
           <Image
-            style={{width: 20, height: 20}}
+            style={{width: 32, height: 32, borderRadius: 8}}
             source={{uri: getAddressAvatar(addressBook, address)}}
           />
         )}
+        </View>
         <View>
           <CustomText style={{color: '#FFFFFF', fontWeight: 'bold'}}>
             {isNewContact()
@@ -213,8 +213,8 @@ export default ({
             position: 'absolute',
             top: -67,
 
-            borderWidth: 1,
-            borderColor: 'gray',
+            // borderWidth: 1,
+            // borderColor: 'gray',
           }}>
           {txObj.type === 'IN' ? (
             <Image
@@ -300,7 +300,7 @@ export default ({
           type="primary"
           block={true}
           onPress={onClose}
-          textStyle={{fontWeight: 'bold'}}
+          // textStyle={{fontWeight: 'bold'}}
         />
       </View>
     </Modal>
