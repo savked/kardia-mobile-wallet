@@ -202,6 +202,7 @@ export const lang: Language = {
     // KRC20 key
     KRC20_TOKENS_SECTION_TITLE: 'Tokens',
     ADD_TOKEN: 'Thêm token',
+    ADD_CUSTOM_TOKEN: 'Thêm token mới',
     TOKEN_ADDRESS: 'Địa chỉ token',
     SEND_TOKEN: 'Gửi {{TOKEN_SYMBOL}}',
     RECEIVE_TOKEN: 'Nhận {{TOKEN_SYMBOL}}',
@@ -209,6 +210,7 @@ export const lang: Language = {
     NO_TOKENS: 'Chưa có tokens',
     NO_TOKENS_SUB_TEXT: 'Thêm và quản lý token dễ dàng.',
     ERROR_FETCH_KRC20_DATA: 'Không lấy được dữ liệu tokens.',
+    CHOOSE_VERIFIED_TOKENS: 'Chọn token',
     // Auth modal key
     ENTER_PIN_CODE: 'Nhập mã PIN để tiếp tục',
     WRONG_PIN: 'Mã PIN không đúng',

@@ -209,6 +209,7 @@ export const lang: Language = {
     // KRC20 key
     KRC20_TOKENS_SECTION_TITLE: 'Tokens',
     ADD_TOKEN: 'Add token',
+    ADD_CUSTOM_TOKEN: 'Add custom token',
     TOKEN_ADDRESS: 'Token address',
     SEND_TOKEN: 'Send {{TOKEN_SYMBOL}}',
     RECEIVE_TOKEN: 'Receive {{TOKEN_SYMBOL}}',
@@ -216,6 +217,7 @@ export const lang: Language = {
     NO_TOKENS: 'No Tokens',
     NO_TOKENS_SUB_TEXT: 'Add your tokens and manage them easily.',
     ERROR_FETCH_KRC20_DATA: "Couldn't get tokens data.",
+    CHOOSE_VERIFIED_TOKENS: 'Choose token',
     // Auth modal key
     ENTER_PIN_CODE: 'Enter your PIN to process',
     WRONG_PIN: 'Incorrect PIN',
