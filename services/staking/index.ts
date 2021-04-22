@@ -29,6 +29,7 @@ export const getAllValidator = async () => {
     10 * 1000,
   );
   const responseJSON = await response.json();
+  console.log('aaaa', responseJSON.data)
   return {
     totalStaked: responseJSON.data.totalStakedAmount,
     validators: Array.isArray(responseJSON.data.validators)

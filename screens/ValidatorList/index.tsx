@@ -1,8 +1,8 @@
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, Text, TouchableOpacity, View} from 'react-native';
-import {useRecoilValue} from 'recoil';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {languageAtom} from '../../atoms/language';
 import ENIcon from 'react-native-vector-icons/Entypo';
 import List from '../../components/List';
@@ -16,6 +16,8 @@ import TextAvatar from '../../components/TextAvatar';
 import NewStakingModal from '../common/NewStakingModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomText from '../../components/Text';
+import { showTabBarAtom } from '../../atoms/showTabBar';
+import ValidatorItem from './ValidatorItem';
 
 const ValidatorList = () => {
   const theme = useContext(ThemeContext);
@@ -23,10 +25,18 @@ const ValidatorList = () => {
   // const [filterValidator, setFilterValidator] = useState('');
   const [validatorList, setValidatorList] = useState<Validator[]>([]);
   const [loading, setLoading] = useState(true);
-
   const [validatorItem, setValidatorItem] = useState<Validator>();
 
   const navigation = useNavigation();
+
+  const setTabBarVisible = useSetRecoilState(showTabBarAtom)
+
+  useFocusEffect(
+    useCallback(() => {
+      setTabBarVisible(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   useEffect(() => {
     (async () => {
@@ -40,20 +50,6 @@ const ValidatorList = () => {
       }
     })();
   }, []);
-
-  // const filter = (validator: Validator) => {
-  //   if (filterValidator.length < 1) {
-  //     return true;
-  //   }
-  //   if (validator.name.toLowerCase().includes(filterValidator.toLowerCase())) {
-  //     return true;
-  //   }
-  //   if (isNumber(filterValidator)) {
-  //     const _minCom = Number(getDigit(filterValidator));
-  //     return Number(validator.commissionRate) >= _minCom;
-  //   }
-  //   return false;
-  // };
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
@@ -70,17 +66,6 @@ const ValidatorList = () => {
         onPress={() => navigation.goBack()}
         backgroundColor="transparent"
       />
-      {/* <View style={styles.controlContainer}>
-        <TextInput
-          block={true}
-          placeholder={getLanguageString(
-            language,
-            'SEARCH_VALIDATOR_PLACEHOLDER',
-          )}
-          value={filterValidator}
-          onChangeText={setFilterValidator}
-        />
-      </View> */}
       <CustomText
         style={{color: theme.textColor, paddingHorizontal: 20, fontSize: 36}}>
         {getLanguageString(language, 'CHOOSE_VALIDATOR')}
@@ -95,49 +80,7 @@ const ValidatorList = () => {
           loadingColor={theme.textColor}
           render={(item: Validator) => {
             return (
-              <TouchableOpacity
-                onPress={() =>
-                  // navigation.navigate('NewStaking', {
-                  //   smcAddress: item.smcAddress,
-                  // })
-                  setValidatorItem(item)
-                }
-                style={[
-                  styles.validatorItemContainer,
-                  {
-                    backgroundColor: theme.backgroundFocusColor,
-                  },
-                ]}>
-                <TextAvatar
-                  text={item.name}
-                  style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 12,
-                    marginRight: 12,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                  textStyle={{fontSize: 16}}
-                />
-                <View style={{justifyContent: 'space-between'}}>
-                  <CustomText
-                    style={{
-                      color: theme.textColor,
-                      fontSize: 13,
-                      fontWeight: 'bold',
-                    }}>
-                    {item.name}
-                  </CustomText>
-                  <CustomText
-                    style={{
-                      color: 'rgba(252, 252, 252, 0.54)',
-                      fontSize: theme.defaultFontSize,
-                    }}>
-                    {item.commissionRate} %
-                  </CustomText>
-                </View>
-              </TouchableOpacity>
+              <ValidatorItem item={item} onSelect={() => setValidatorItem(item)} />
             );
           }}
         />

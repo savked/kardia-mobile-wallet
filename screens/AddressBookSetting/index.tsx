@@ -63,7 +63,7 @@ const AddressBookSetting = () => {
           <CustomText style={[styles.emptyAddressBook, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS')}
           </CustomText>
-          <CustomText style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32, textAlign: 'center'}}>
+          <CustomText style={{color: theme.mutedTextColor, fontWeight: '500', fontSize: 15, marginBottom: 32, textAlign: 'center'}}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS_SUB_TEXT')}
           </CustomText>
           <Button
@@ -72,6 +72,7 @@ const AddressBookSetting = () => {
             onPress={() => setShowNewAddressModal(true)}
             title={getLanguageString(language, 'ADD_NEW_ADDRESS')}
             style={{width: 248}}
+            textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
             icon={
               <AntIcon
                 name="plus"

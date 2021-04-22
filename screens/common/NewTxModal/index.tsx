@@ -297,7 +297,7 @@ const NewTxModal = ({
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
           <View>
-            <CustomText style={[styles.headline, {color: theme.textColor}]}>
+            <CustomText style={[styles.headline, {color: theme.textColor, fontSize: theme.defaultFontSize + 1}]}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}
             </CustomText>
           </View>
@@ -317,6 +317,8 @@ const NewTxModal = ({
                   backgroundColor: 'rgba(96, 99, 108, 1)',
                   color: theme.textColor,
                 }}
+                placeholder={getLanguageString(language, 'CREATE_TX_ADDRESS_PLACEHOLDER')}
+                placeholderTextColor={theme.mutedTextColor}
                 // headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
               />
             </View>
@@ -361,7 +363,7 @@ const NewTxModal = ({
 
           <View style={{marginBottom: 10}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <CustomText style={{color: theme.textColor, marginBottom: 5, fontWeight: 'bold'}}>{getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}</CustomText>
+              <CustomText style={{color: theme.textColor, marginBottom: 5, fontWeight: '500', fontSize: theme.defaultFontSize + 1}}>{getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}</CustomText>
               <TouchableOpacity onPress={() => setAmount(format(parseDecimals(_getBalance(), 18)))}>
                 <CustomText style={{color: theme.urlColor}}>
                   {parseKaiBalance(_getBalance())} KAI
@@ -398,7 +400,7 @@ const NewTxModal = ({
 
           <CustomText
             allowFontScaling={false}
-            style={[styles.title, {marginBottom: 12, color: theme.textColor}]}>
+            style={[styles.title, {marginBottom: 12, color: theme.textColor, fontSize: theme.defaultFontSize + 1}]}>
             {getLanguageString(language, 'TRANSACTION_SPEED')}
           </CustomText>
           <View style={{marginBottom: 20}}>
@@ -420,6 +422,7 @@ const NewTxModal = ({
               block
               type="outline"
               style={{marginBottom: 12}}
+              textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
               // size="large"
               disabled={loading}
             />
@@ -430,6 +433,7 @@ const NewTxModal = ({
               block
               type="primary"
               // size="large"
+              textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
               loading={loading}
               disabled={loading}
             />

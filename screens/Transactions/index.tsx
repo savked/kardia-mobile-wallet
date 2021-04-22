@@ -24,6 +24,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import { HEADER_HEIGHT } from '../../theme';
 import CustomText from '../../components/Text';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
@@ -41,10 +42,12 @@ const TransactionScreen = () => {
   const [txObjForDetail, setTxObjForDetail] = useState();
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(true);
+      setStatusBarColor(theme.backgroundColor);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
@@ -191,6 +194,7 @@ const TransactionScreen = () => {
             type="primary"
             onPress={() => setShowNewTxModal(true)}
             title={getLanguageString(language, 'SEND_NOW')}
+            textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
             style={{width: 248}}
             icon={
               <AntIcon
@@ -203,7 +207,7 @@ const TransactionScreen = () => {
           />
         </View>
       )}
-      <ScrollView>
+      <ScrollView style={{flex: 1}}>
         {groupByDate(txList, 'date').map((txsByDate) => {
           const dateLocale = getDateFNSLocale(language);
           return (
@@ -244,12 +248,12 @@ const TransactionScreen = () => {
                           flex: 4,
                           paddingHorizontal: 14,
                         }}>
-                        <CustomText style={{color: '#FFFFFF'}}>
+                        <CustomText style={{color: '#FFFFFF', fontSize: theme.defaultFontSize + 4, fontWeight: '500', marginBottom: 4}}>
                           {item.type === 'IN'
                             ? getLanguageString(language, 'TX_TYPE_RECEIVED')
                             : getLanguageString(language, 'TX_TYPE_SEND')}
                         </CustomText>
-                        <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
+                        <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize + 1}}>
                           {truncate(item.label, 8, 10)}
                         </CustomText>
                       </View>
@@ -261,14 +265,15 @@ const TransactionScreen = () => {
                         <CustomText
                           style={[
                             styles.kaiAmount,
-                            item.type === 'IN'
-                              ? {color: '#53B680'}
-                              : {color: 'red'},
+                            {color: theme.textColor, fontSize: theme.defaultFontSize + 4, marginBottom: 4}
                           ]}>
-                          {item.type === 'IN' ? '+' : '-'}
-                          {parseKaiBalance(item.amount, true)} KAI
+                          {/* {item.type === 'IN' ? '+' : '-'} */}
+                          {parseKaiBalance(item.amount, true)}{' '}
+                          <CustomText style={{color: theme.mutedTextColor}}>
+                            KAI
+                          </CustomText>
                         </CustomText>
-                        <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
+                        <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
                           {format(item.date, 'hh:mm aa')}
                         </CustomText>
                       </View>

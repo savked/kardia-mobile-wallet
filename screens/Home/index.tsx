@@ -199,7 +199,7 @@ const HomeScreen = () => {
                 </CustomText>
                 <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold'}}>
                   {parseKaiBalance(_getBalance(), true)}{' '}
-                  <CustomText style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</CustomText>
+                  <CustomText style={{color: theme.mutedTextColor, fontWeight: '500'}}>KAI</CustomText>
                 </CustomText>
                 <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 14}}>
                   ~${' '}
@@ -207,7 +207,7 @@ const HomeScreen = () => {
                     tokenInfo.price *
                       (Number(weiToKAI(_getBalance())) +
                       _getStaked()),
-                  ).format('0,0.00a')}
+                  ).format('0,0.00')}
                 </CustomText>
               </View>
             </View>

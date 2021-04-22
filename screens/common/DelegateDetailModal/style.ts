@@ -2,8 +2,7 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   validatorName: {
-    fontSize: 18,
-    fontStyle: 'italic',
+    fontSize: 15,
     fontWeight: 'bold',
     // marginBottom: 18,
   },

@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   kaiAmount: {
-    fontWeight: 'bold',
+    // fontWeight: '400',
   },
   controlContainer: {
     flexDirection: 'row',

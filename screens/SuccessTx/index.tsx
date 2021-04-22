@@ -483,6 +483,7 @@ export default () => {
         onPress={handleBack}
         block
         style={{marginBottom: 82}}
+        textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
       />
     </View>
   );

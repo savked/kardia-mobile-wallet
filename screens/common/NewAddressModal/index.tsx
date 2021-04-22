@@ -205,8 +205,8 @@ export default ({
             <CustomText
               allowFontScaling={false}
               style={{
-                color: theme.mutedTextColor,
-                fontSize: 12,
+                color: theme.textColor,
+                fontSize: 13,
                 marginBottom: 6,
               }}>
               {getLanguageString(language, 'ADDRESS_NAME')}
@@ -219,6 +219,8 @@ export default ({
                 color: theme.textColor,
               }}
               message={errName}
+              placeholder={getLanguageString(language, 'ADDRESS_NAME_PLACEHOLDER')}
+              placeholderTextColor={theme.mutedTextColor}
             />
           </View>
           <View
@@ -230,8 +232,8 @@ export default ({
             <CustomText
               allowFontScaling={false}
               style={{
-                color: theme.mutedTextColor,
-                fontSize: 12,
+                color: theme.textColor,
+                fontSize: 13,
                 marginBottom: 6,
               }}>
               {getLanguageString(language, 'ADDRESS_ADDRESS')}
@@ -252,6 +254,8 @@ export default ({
                     color: theme.textColor,
                   }}
                   message={errAddress}
+                  placeholder={getLanguageString(language, 'ADDRESS_ADDRESS_PLACEHOLDER')}
+                  placeholderTextColor={theme.mutedTextColor}
                 />
               </View>
               <TouchableOpacity
@@ -281,12 +285,14 @@ export default ({
             onPress={closeModal}
             block={true}
             style={{marginBottom: 12}}
+            textStyle={{color: theme.textColor, fontSize: 17, fontWeight: '500'}}
           />
           <Button
             type="primary"
             title={getLanguageString(language, 'SAVE_TO_ADDRESS_BOOK')}
             onPress={handleSubmit}
             block={true}
+            textStyle={{fontSize: 17, fontWeight: '500'}}
           />
         </View>
       </TouchableWithoutFeedback>

@@ -186,7 +186,7 @@ const StakingScreen = () => {
               alignItems: 'center',
               justifyContent: 'center',
               marginTop: 70,
-              paddingHorizontal: 47,
+              paddingHorizontal: 27,
             }}>
             <Image
               style={{width: 200, height: 172}}
@@ -195,13 +195,14 @@ const StakingScreen = () => {
             <CustomText style={{color: theme.textColor, fontSize: 24, fontWeight: 'bold', marginBottom: 8, marginTop: 100}}>
               {getLanguageString(language, 'NO_STAKING')}
             </CustomText>
-            <CustomText style={[styles.noStakingText, {color: theme.mutedTextColor, textAlign: 'center', marginBottom: 32}]}>
+            <CustomText style={[styles.noStakingText, {color: theme.mutedTextColor, textAlign: 'center', marginBottom: 32, lineHeight: 26}]}>
               {getLanguageString(language, 'NO_STAKING_ITEM')}
             </CustomText>
             <Button
               type="primary"
               onPress={() => navigation.navigate('ValidatorList')}
               title={getLanguageString(language, 'STAKE_NOW')}
+              textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
               style={{width: 248}}
               icon={
                 <AntIcon
@@ -235,13 +236,15 @@ const StakingScreen = () => {
         }}
         ItemSeprator={() => <View style={{height: 6}} />}
       />
-      <Button
-        type="primary"
-        icon={<AntIcon name="plus" size={24} />}
-        size="small"
-        onPress={() => navigation.navigate('ValidatorList')}
-        style={styles.floatingButton}
-      />
+      {currentStaking.length > 0 && (
+        <Button
+          type="primary"
+          icon={<AntIcon name="plus" size={24} />}
+          size="small"
+          onPress={() => navigation.navigate('ValidatorList')}
+          style={styles.floatingButton}
+        />
+      )}
       {message !== '' && (
         <AlertModal
           type={messageType as any}

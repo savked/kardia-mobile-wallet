@@ -418,7 +418,7 @@ export default ({
           <View style={{width: '100%'}}>
             <Button
               type="outline"
-              title={getLanguageString(language, 'GO_BACK')}
+              title={getLanguageString(language, 'CANCEL')}
               onPress={() => {
                 resetState();
                 onClose();
@@ -436,7 +436,7 @@ export default ({
                   setShowAuthModal(true);
                 }
               }}
-              textStyle={{fontWeight: 'bold'}}
+              textStyle={{fontWeight: '500'}}
             />
           </View>
         </View>
