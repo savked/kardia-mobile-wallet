@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Dimensions, Image, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, Platform, TouchableOpacity, View} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -55,14 +55,14 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
               alignItems: 'center',
             }}>
             <View>
-              <CustomText allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4}}>
+              <CustomText allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: theme.defaultFontSize}}>
                 {getLanguageString(language, 'BALANCE').toUpperCase()}
               </CustomText>
-              <CustomText allowFontScaling={false} style={{fontSize: 24, color: 'white'}}>
-                ~${' '}
+              <CustomText allowFontScaling={false} style={Platform.OS === 'android' ? {fontSize: 24, color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {fontSize: 24, color: theme.textColor, fontWeight: '500'}}>
+                $
                 {numeral(
                   tokenInfo.price *
-                    (Number(weiToKAI(wallet.balance)) + wallet.staked),
+                    (Number(weiToKAI(wallet.balance)) + wallet.staked + wallet.undelegating),
                 ).format('0,0.00')}
               </CustomText>
             </View>
@@ -74,7 +74,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
             /> */}
           </View>
 
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{flexDirection: 'row', alignItems: 'flex-end', flex: 1}}>
             <CustomText allowFontScaling={false} style={styles.kaiCardText}>
               {truncate(
                 wallet.address,
@@ -84,26 +84,38 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
             </CustomText>
           </View>
 
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end'}}>
             <View>
-              <CustomText style={{fontSize: 10, color: 'rgba(252, 252, 252, 0.54)', marginBottom: 4}}>
+              <CustomText style={{fontSize: theme.defaultFontSize, color: 'rgba(252, 252, 252, 0.54)'}}>
                 {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
               </CustomText>
-              <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.87)'}}>
+              <CustomText style={Platform.OS === 'android' ? {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontFamily: 'WorkSans-SemiBold'} : {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontWeight: '500'}}>
                 {wallet.name || getLanguageString(language,'NEW_WALLET')}
               </CustomText>
             </View>
             <TouchableOpacity
               onPress={() => showQRModal()}
               style={{
-                width: 44,
-                height: 44,
-                borderRadius: 22,
+                width: 52,
+                height: 52,
+                borderRadius: 26,
                 backgroundColor: '#FFFFFF',
                 alignItems: 'center',
                 justifyContent: 'center',
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                shadowOffset: {
+                  width: 0,
+                  height: 4,
+                },
+                shadowOpacity: 2,
+                shadowRadius: 4,
+                elevation: 9,
               }}>
-              <Icon size={20} name="qrcode" />
+              <Image
+                source={require('../../assets/icon/qr_dark.png')}
+                style={{width: 30, height: 30, marginRight: 2, marginTop: 2}}
+              />
+              {/* <Icon size={30} name="qrcode" /> */}
             </TouchableOpacity>
           </View>
         </View>

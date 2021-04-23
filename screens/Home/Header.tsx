@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {View} from 'react-native';
+import {Image, TouchableOpacity, View} from 'react-native';
 import IconButton from '../../components/IconButton';
 import {styles} from './style';
 import {useNavigation} from '@react-navigation/native';
@@ -39,20 +39,26 @@ const HomeHeader = () => {
         </CustomText>
       </View>
       <View style={{flexDirection: 'row'}}>
-        <IconButton
+        {/* <IconButton
           style={{marginRight: 20}}
           name="bell-o"
           size={18}
           color={theme.textColor}
           badge={newNotiCount}
           onPress={navigateNotiScreen}
-        />
-        <IconButton
+        /> */}
+        <TouchableOpacity onPress={() => navigation.navigate('ImportWallet')}>
+          <Image 
+            source={require('../../assets/icon/plus_dark.png')}
+            style={{width: 24, height: 24}}
+          />
+        </TouchableOpacity>
+        {/* <IconButton
           name="plus"
           size={18}
           color={theme.textColor}
           onPress={() => navigation.navigate('ImportWallet')}
-        />
+        /> */}
       </View>
     </View>
   );

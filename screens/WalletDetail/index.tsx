@@ -213,6 +213,30 @@ export default () => {
                     <TouchableOpacity
                       onPress={() => setShowQRModal(true)}
                       style={{
+                        width: 52,
+                        height: 52,
+                        borderRadius: 26,
+                        backgroundColor: '#FFFFFF',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        shadowColor: 'rgba(0, 0, 0, 0.3)',
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
+                        shadowOpacity: 2,
+                        shadowRadius: 4,
+                        elevation: 9,
+                      }}>
+                      <Image
+                        source={require('../../assets/icon/qr_dark.png')}
+                        style={{width: 30, height: 30, marginRight: 2, marginTop: 2}}
+                      />
+                      {/* <Icon size={30} name="qrcode" /> */}
+                    </TouchableOpacity>
+                    {/* <TouchableOpacity
+                      onPress={() => setShowQRModal(true)}
+                      style={{
                         width: 44,
                         height: 44,
                         borderRadius: 22,
@@ -221,7 +245,7 @@ export default () => {
                         justifyContent: 'center',
                       }}>
                       <Icon size={20} name="qrcode" />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                   </View>
                 </ImageBackground>
                 <CustomText style={{ color: theme.textColor, fontSize: 20, fontWeight: 'bold', marginTop: 20 }}>
