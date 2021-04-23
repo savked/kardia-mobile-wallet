@@ -1,51 +1,58 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
 import numeral from 'numeral';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
 import {styles} from './style';
 import {weiToKAI} from '../../services/transaction/amount';
-import Button from '../../components/Button';
 import {
+  getAllValidator,
   getValidatorCommissionRate,
-  withdrawDelegatedAmount,
-  withdrawReward,
 } from '../../services/staking';
 import {useRecoilValue} from 'recoil';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import TextAvatar from '../../components/TextAvatar';
 import DelegateDetailModal from '../common/DelegateDetailModal';
 import CustomText from '../../components/Text';
+import { getLatestBlock } from '../../services/blockchain';
+import { getDigit } from '../../utils/number';
+import { BLOCK_TIME } from '../../config';
 
 const StakingItem = ({
-  item,
-  showModal,
-  triggerUndelegate,
+  item
 }: {
   item: any;
-  showModal: (
-    message: string,
-    messageType: string,
-    callback: () => void,
-  ) => void;
-  triggerUndelegate: (contractAddress: string) => void;
 }) => {
   const [showFull, setShowFull] = useState(false);
-  const [claiming, setClaiming] = useState(false);
-  const [withDrawing, setWithDrawing] = useState(false);
   const [commissionRate, setCommissionRate] = useState(0);
   const theme = useContext(ThemeContext);
 
   const claimableInKAI = weiToKAI(item.claimableRewards);
-  const withDrawbleInKAI = weiToKAI(item.withdrawableAmount);
-  const unbondedInKAI = weiToKAI(item.unbondedAmount);
   const stakedAmountInKAI = weiToKAI(item.stakedAmount);
 
+  const [totalStakedAmount, setTotalStakedAmount] = useState('');
+  const [estimatedAPR, setEstimatedAPR] = useState('');
+
   const language = useRecoilValue(languageAtom);
-  const wallets = useRecoilValue(walletsAtom);
-  const selectedWallet = useRecoilValue(selectedWalletAtom);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const {totalStaked} = await getAllValidator();
+        setTotalStakedAmount(totalStaked);
+        // setValidatorList(validators);
+        // setLoading(false);
+      } catch (error) {
+        console.error(error);
+        // setLoading(false);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    calculateStakingAPR();
+  }, [totalStakedAmount]);
 
   useEffect(() => {
     (async () => {
@@ -54,96 +61,40 @@ const StakingItem = ({
     })();
   }, [item.value]);
 
-  const claimHandler = async () => {
-    try {
-      setClaiming(true);
-      await withdrawReward(item.value, wallets[selectedWallet]);
-      showModal(
-        getLanguageString(language, 'CLAIM_SUCCESS').replace(
-          '{{KAI_AMOUNT}}',
-          numeral(claimableInKAI).format('0,0.00'),
-        ),
-        'success',
-        () => {
-          setClaiming(false);
-        },
-      );
-    } catch (err) {
-      console.error(err);
-      showModal(getLanguageString(language, 'GENERAL_ERROR'), 'error', () => {
-        setClaiming(false);
-      });
-    }
-  };
-
-  const undelegateHandler = () => {
-    try {
-      triggerUndelegate(item.value);
-    } catch (error) {}
-  };
-
-  const withdrawHandler = async () => {
-    try {
-      setWithDrawing(true);
-      await withdrawDelegatedAmount(item.value, wallets[selectedWallet]);
-      showModal(
-        getLanguageString(language, 'WITHDRAW_SUCCESS').replace(
-          '{{KAI_AMOUNT}}',
-          numeral(withDrawbleInKAI).format('0,0.00'),
-        ),
-        'success',
-        () => {
-          setWithDrawing(false);
-        },
-      );
-    } catch (err) {
-      console.error(err);
-      showModal(getLanguageString(language, 'GENERAL_ERROR'), 'error', () => {
-        setWithDrawing(false);
-      });
-    }
-  };
-
-  const renderActionGroup = () => {
-    return (
-      <View style={styles.actionContainer}>
-        {numeral(claimableInKAI).format('0,0.00') !== '0.00' && (
-          <Button
-            style={{marginRight: 12, paddingVertical: 8}}
-            loading={claiming}
-            disabled={claiming || withDrawing}
-            title={getLanguageString(language, 'CLAIM_REWARD')}
-            type="primary"
-            size="small"
-            onPress={claimHandler}
-          />
-        )}
-        {numeral(stakedAmountInKAI).format('0,0.00') !== '0.00' && (
-          <Button
-            style={{
-              paddingVertical: 8,
-              marginRight:
-                numeral(withDrawbleInKAI).format('0,0.00') !== '0.00' ? 12 : 0,
-            }}
-            title={getLanguageString(language, 'UNDELEGATE')}
-            type="ghost"
-            size="small"
-            onPress={undelegateHandler}
-          />
-        )}
-        {numeral(withDrawbleInKAI).format('0,0.00') !== '0.00' && (
-          <Button
-            style={{paddingVertical: 8}}
-            title={getLanguageString(language, 'WITHDRAW')}
-            loading={withDrawing}
-            disabled={claiming || withDrawing}
-            type="ghost"
-            size="small"
-            onPress={withdrawHandler}
-          />
-        )}
-      </View>
+  const getSelectedStakedAmount = () => {
+    const formatted = numeral(weiToKAI(item.stakedAmount)).format(
+      '0,0.00',
     );
+    return formatted === 'NaN' ? '0 KAI' : `${formatted} KAI`;
+  };
+
+  const calculateStakingAPR = async () => {
+    if (!item || !totalStakedAmount) {
+      return;
+    }
+    try {
+      const commission = Number(commissionRate) / 100;
+      const votingPower = Number(weiToKAI(item.stakedAmount)) / Number(weiToKAI(totalStakedAmount));
+
+      const block = await getLatestBlock();
+      const blockReward = Number(weiToKAI(block.rewards));
+      const delegatorsReward = blockReward * (1 - commission) * votingPower;
+
+      const yourReward =
+        (Number(getDigit(getSelectedStakedAmount())) / Number(weiToKAI(item.stakedAmount))) * delegatorsReward;
+      
+      // setEstimatedProfit(`${(yourReward * (30 * 24 * 3600)) / BLOCK_TIME}`);
+      setEstimatedAPR(
+        `${
+          ((yourReward * (365 * 24 * 3600)) /
+            BLOCK_TIME /
+            Number(getDigit(getSelectedStakedAmount()))) *
+          100
+        }`,
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -197,41 +148,9 @@ const StakingItem = ({
                 fontSize: theme.defaultFontSize,
                 color: 'rgba(252, 252, 252, 0.54)',
               }}>
-              Rate: {commissionRate} %
+              {getLanguageString(language, 'ESTIMATED_APR')}: {numeral(estimatedAPR).format('0,0.00')}{' '}%
             </CustomText>
           </View>
-          {/* {showFull && (
-            <CustomText style={{color: '#929394'}}>
-              {getLanguageString(language, 'STAKED')}:{' '}
-              <CustomText style={{fontWeight: 'bold', color: theme.textColor}}>
-                {numeral(stakedAmountInKAI).format('0,0.00')}
-              </CustomText>
-            </CustomText>
-          )}
-          {showFull && (
-            <CustomText style={{color: '#929394'}}>
-              {getLanguageString(language, 'CLAIMABLE')}:{' '}
-              <CustomText style={{fontWeight: 'bold', color: theme.textColor}}>
-                {numeral(claimableInKAI).format('0,0.00')}
-              </CustomText>
-            </CustomText>
-          )}
-          {showFull && (
-            <CustomText style={{color: '#929394'}}>
-              {getLanguageString(language, 'UNBONDED')}:{' '}
-              <CustomText style={{fontWeight: 'bold', color: theme.textColor}}>
-                {numeral(unbondedInKAI).format('0,0.00')}
-              </CustomText>
-            </CustomText>
-          )}
-          {showFull && (
-            <CustomText style={{color: '#929394'}}>
-              {getLanguageString(language, 'WITHDRAWABLE')}:{' '}
-              <CustomText style={{fontWeight: 'bold', color: theme.textColor}}>
-                {numeral(withDrawbleInKAI).format('0,0.00')}
-              </CustomText>
-            </CustomText>
-          )} */}
         </View>
         <View style={{alignItems: 'flex-end', justifyContent: 'space-between'}}>
           <View style={{justifyContent: 'center'}}>
@@ -255,20 +174,8 @@ const StakingItem = ({
               {numeral(stakedAmountInKAI).format('0,0.00')} KAI
             </CustomText>
           </View>
-          {/* <Icon
-            name={showFull ? 'chevron-up' : 'chevron-down'}
-            size={22}
-            color="#929394"
-            style={{
-              marginLeft: 12,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            onPress={() => setShowFull(!showFull)}
-          /> */}
         </View>
       </TouchableOpacity>
-      {/* {showFull && renderActionGroup()} */}
     </View>
   );
 };

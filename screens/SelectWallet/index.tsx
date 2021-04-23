@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -21,7 +21,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import {getLanguageString} from '../../utils/lang';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {languageAtom} from '../../atoms/language';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native';
 import {
   getWallets,
   saveMnemonic,
@@ -31,6 +31,7 @@ import {
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomText from '../../components/Text';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 
 const SelectWallet = () => {
   const [startIndex, setStartIndex] = useState(0);
@@ -45,6 +46,14 @@ const SelectWallet = () => {
 
   const setWallets = useSetRecoilState(walletsAtom);
   const setSelectedWallet = useSetRecoilState(selectedWalletAtom);
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
+
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarColor(theme.backgroundColor);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   const onSelect = async (_wallet: Wallet) => {
     const localWallets = await getWallets();
@@ -58,6 +67,7 @@ const SelectWallet = () => {
       address: walletAddress,
       balance,
       staked,
+      undelegating: 0
     };
 
     const walletExisted = localWallets
@@ -109,6 +119,7 @@ const SelectWallet = () => {
               address: walletAddress,
               balance,
               staked,
+              undelegating: 0
             };
             resolve(wallet);
           } catch (error) {

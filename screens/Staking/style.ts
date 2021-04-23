@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
   noStakingText: {
     // padding: 15,
@@ -43,7 +43,6 @@ export const styles = StyleSheet.create({
   },
   totalSaving: {
     textAlign: 'center',
-    fontWeight: 'bold',
     fontSize: 32,
     paddingVertical: 14,
     marginRight: 12,

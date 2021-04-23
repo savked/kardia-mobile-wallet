@@ -1,9 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View, Image, ActivityIndicator} from 'react-native';
+import {TouchableOpacity, View, Image, ActivityIndicator} from 'react-native';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {truncate} from '../../utils/string';
 import {styles} from './style';
@@ -22,7 +22,6 @@ import {groupByDate} from '../../utils/date';
 import TxDetailModal from '../common/TxDetailModal';
 import {ScrollView} from 'react-native-gesture-handler';
 import {showTabBarAtom} from '../../atoms/showTabBar';
-import { HEADER_HEIGHT } from '../../theme';
 import CustomText from '../../components/Text';
 import { statusBarColorAtom } from '../../atoms/statusBar';
 
@@ -44,12 +43,15 @@ const TransactionScreen = () => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
+  const insets = useSafeAreaInsets();
+
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(true);
       setStatusBarColor(theme.backgroundColor);
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []),
+    }, [showNewTxModal]),
   );
 
   const parseTXForList = (tx: Transaction) => {
@@ -152,8 +154,8 @@ const TransactionScreen = () => {
   }
 
   return (
-    <SafeAreaView
-      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <View
+      style={[styles.container, {backgroundColor: theme.backgroundColor, paddingTop: insets.top}]}>
       <NewTxModal
         visible={showNewTxModal}
         onClose={() => setShowNewTxModal(false)}
@@ -167,12 +169,12 @@ const TransactionScreen = () => {
         <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'RECENT_TRANSACTION')}
         </CustomText>
-        <IconButton
+        {/* <IconButton
           name="bell-o"
           color={theme.textColor}
           size={20}
           onPress={() => navigation.navigate('Notification')}
-        />
+        /> */}
       </View>
       {groupByDate(txList, 'date').length === 0 && (
         <View style={styles.noTXContainer}>
@@ -246,14 +248,14 @@ const TransactionScreen = () => {
                         style={{
                           flexDirection: 'column',
                           flex: 4,
-                          paddingHorizontal: 14,
+                          paddingHorizontal: 4,
                         }}>
-                        <CustomText style={{color: '#FFFFFF', fontSize: theme.defaultFontSize + 4, fontWeight: '500', marginBottom: 4}}>
+                        <CustomText style={{color: '#FFFFFF', fontSize: theme.defaultFontSize + 1, fontWeight: '500'}}>
                           {item.type === 'IN'
                             ? getLanguageString(language, 'TX_TYPE_RECEIVED')
                             : getLanguageString(language, 'TX_TYPE_SEND')}
                         </CustomText>
-                        <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize + 1}}>
+                        <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
                           {truncate(item.label, 8, 10)}
                         </CustomText>
                       </View>
@@ -265,7 +267,7 @@ const TransactionScreen = () => {
                         <CustomText
                           style={[
                             styles.kaiAmount,
-                            {color: theme.textColor, fontSize: theme.defaultFontSize + 4, marginBottom: 4}
+                            {color: theme.textColor, fontSize: theme.defaultFontSize + 1}
                           ]}>
                           {/* {item.type === 'IN' ? '+' : '-'} */}
                           {parseKaiBalance(item.amount, true)}{' '}
@@ -294,7 +296,7 @@ const TransactionScreen = () => {
           style={styles.floatingButton}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 

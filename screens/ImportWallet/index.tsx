@@ -43,6 +43,7 @@ export default () => {
           fontSize: 15,
           color: 'rgba(252, 252, 252, 0.54)',
           marginTop: 6,
+          lineHeight: 22,
         }}>
         {getLanguageString(language, 'IMPORT_WALLET_DESCRIPTION')}
       </CustomText>

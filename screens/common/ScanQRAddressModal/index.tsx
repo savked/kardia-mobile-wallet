@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Dimensions, Image, Text, View} from 'react-native';
+import {Dimensions, Image, View} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
@@ -49,7 +49,7 @@ const ScanQRAddressModal = ({
           topViewStyle={{height: 0}}
           bottomViewStyle={{height: 10}}
           cameraStyle={{height: viewportHeight}}
-          cameraProps={{useCamera2Api: true}}
+          // cameraProps={{useCamera2Api: true}}
         />
         <Image
           source={require('../../../assets/qr_background.png')}

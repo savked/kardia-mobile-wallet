@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Dimensions, ImageBackground, Text, View, Image} from 'react-native';
+import {Dimensions, ImageBackground, View, Image, Platform} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import {useFocusEffect} from '@react-navigation/native';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
@@ -149,15 +149,16 @@ const StakingScreen = () => {
             allowFontScaling={false}
             style={[
               styles.sectionTitle,
-              {color: theme.textColor, textAlign: 'center'},
+              {color: theme.textColor, textAlign: 'center', fontWeight: '500'},
+              {fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}
             ]}>
             {getLanguageString(language, 'TOTAL_EARNING')}
           </CustomText>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <CustomText style={[styles.totalSaving, {color: theme.textColor}]}>
+            <CustomText style={[styles.totalSaving, Platform.OS === 'android' ? {color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {color: theme.textColor, fontWeight: '500'}]}>
               {numeral(getTotalSaving()).format('0,0.00')}
             </CustomText>
-            <CustomText style={{fontSize: 14, color: 'rgba(252, 252, 252, 0.54)'}}>
+            <CustomText style={{fontSize: theme.defaultFontSize + 6, color: 'rgba(252, 252, 252, 0.54)', fontWeight: '500', fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
               KAI
             </CustomText>
           </View>
@@ -219,18 +220,6 @@ const StakingScreen = () => {
           return (
             <StakingItem
               item={item}
-              // onFocus={() => setFocusingItem(index)}
-              // onUnfocus={() => setFocusingItem(-1)}
-              showModal={(
-                _message: string,
-                _messageType: string,
-                cb: () => void,
-              ) => {
-                setMessage(_message);
-                setMessageType(_messageType);
-                cb();
-              }}
-              triggerUndelegate={() => setUndelegatingIndex(index)}
             />
           );
         }}

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, Dimensions, Image, ImageBackground, Linking, RefreshControl, ScrollView, Text, View} from 'react-native';
+import {ActivityIndicator, Alert, Dimensions, Image, ImageBackground, Linking, Platform, RefreshControl, ScrollView, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
@@ -21,10 +21,9 @@ import numeral from 'numeral';
 import {getLanguageString} from '../../utils/lang';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 // import RemindPasscodeModal from '../common/RemindPasscodeModal';
-import {getStakingAmount} from '../../services/staking';
+import {getStakingAmount, getUndelegatingAmount} from '../../services/staking';
 import TokenListSection from './TokenListSection';
 import {showTabBarAtom} from '../../atoms/showTabBar';
-import {parseKaiBalance} from '../../utils/number';
 import {tokenInfoAtom} from '../../atoms/token';
 import {weiToKAI} from '../../services/transaction/amount';
 import Button from '../../components/Button';
@@ -80,11 +79,14 @@ const HomeScreen = () => {
     try {
       const balance = await getBalance(_wallets[_selectedWallet].address);
       const staked = await getStakingAmount(_wallets[_selectedWallet].address);
+      const undelegating = await getUndelegatingAmount(_wallets[_selectedWallet].address);
+
       const newWallets: Wallet[] = JSON.parse(JSON.stringify(_wallets));
       newWallets.forEach((walletItem, index) => {
         if (walletItem.address === _wallets[_selectedWallet].address) {
           newWallets[index].balance = balance;
           newWallets[index].staked = staked;
+          newWallets[index].undelegating = undelegating;
         }
       });
       setWallets(newWallets);
@@ -144,6 +146,11 @@ const HomeScreen = () => {
     return wallets[selectedWallet].staked;
   }
 
+  const _getUndelegating = () => {
+    if (!wallets[selectedWallet]) return 0;
+    return wallets[selectedWallet].undelegating;
+  }
+
   const onRefresh = async () => {
     setRefreshing(true)
     await updateWalletBalance();
@@ -198,7 +205,10 @@ const HomeScreen = () => {
                   {getLanguageString(language, 'BALANCE').toUpperCase()}
                 </CustomText>
                 <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold'}}>
-                  {parseKaiBalance(_getBalance(), true)}{' '}
+                  {
+                    numeral((Number(weiToKAI(_getBalance())) +
+                      _getStaked() + _getUndelegating()
+                    )).format('0,0.00')}{' '}
                   <CustomText style={{color: theme.mutedTextColor, fontWeight: '500'}}>KAI</CustomText>
                 </CustomText>
                 <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 14}}>
@@ -206,7 +216,7 @@ const HomeScreen = () => {
                   {numeral(
                     tokenInfo.price *
                       (Number(weiToKAI(_getBalance())) +
-                      _getStaked()),
+                      _getStaked() + _getUndelegating()),
                   ).format('0,0.00')}
                 </CustomText>
               </View>
@@ -217,7 +227,7 @@ const HomeScreen = () => {
               onPress={() => Linking.openURL(SIMPLEX_URL)}
               type="ghost"
               size="small"
-              textStyle={{color: '#000000', fontWeight: 'bold'}}
+              textStyle={Platform.OS === 'android' ? {color: '#000000', fontFamily: 'WorkSans-SemiBold'} : {color: '#000000', fontWeight: '500'}}
               style={{paddingHorizontal: 16, paddingVertical: 8}}
             />
           </View>

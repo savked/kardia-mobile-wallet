@@ -274,13 +274,13 @@ export default ({
       return {
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
-        height: 570,
+        height: 620,
       };
     } else {
       return {
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
-        height: 570,
+        height: 540,
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,
       };
@@ -373,6 +373,15 @@ export default ({
           <View style={{width: '100%'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
               <CustomText style={{color: theme.textColor, fontStyle: 'italic'}}>
+                {getLanguageString(language, 'ESTIMATED_APR')}
+              </CustomText>
+              <CustomText style={[{color: theme.textColor}]}>
+                {numeral(estimatedAPR).format('0,0.00')}{' '}
+                {estimatedAPR ? '%' : ''}
+              </CustomText>
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
+              <CustomText style={{color: theme.textColor, fontStyle: 'italic'}}>
                 {getLanguageString(language, 'COMMISSION_RATE')}
               </CustomText>
               <CustomText style={[{color: theme.textColor}]}>
@@ -404,15 +413,6 @@ export default ({
                 {estimatedProfit ? 'KAI' : ''}
               </CustomText>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 6}}>
-              <CustomText style={{color: theme.textColor, fontStyle: 'italic'}}>
-                {getLanguageString(language, 'ESTIMATED_APR')}
-              </CustomText>
-              <CustomText style={[{color: theme.textColor}]}>
-                {numeral(estimatedAPR).format('0,0.00')}{' '}
-                {estimatedProfit ? '%' : ''}
-              </CustomText>
-            </View>
           </View>
           <Divider style={{width: '100%', backgroundColor: '#60636C'}} />
           <View style={{width: '100%'}}>
@@ -424,7 +424,7 @@ export default ({
                 onClose();
               }}
               disabled={delegating}
-              style={{marginBottom: 12, marginTop: 36}}
+              style={{marginBottom: 12, marginTop: 12}}
             />
             <Button
               loading={delegating}
@@ -436,7 +436,7 @@ export default ({
                   setShowAuthModal(true);
                 }
               }}
-              textStyle={{fontWeight: '500'}}
+              textStyle={Platform.OS === 'android' ? {fontFamily: 'WorkSans-SemiBold'} : {fontWeight: '500'}}
             />
           </View>
         </View>

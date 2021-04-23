@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useContext, useState} from 'react';
-import {View, TouchableOpacity, Image} from 'react-native';
+import {View, TouchableOpacity, Image, Platform} from 'react-native';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {ThemeContext} from '../../ThemeContext';
 import {addressBookAtom} from '../../atoms/addressBook';
@@ -18,6 +18,7 @@ import {showTabBarAtom} from '../../atoms/showTabBar';
 import {ScrollView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomText from '../../components/Text';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 
 const AddressBookSetting = () => {
   const theme = useContext(ThemeContext);
@@ -26,12 +27,14 @@ const AddressBookSetting = () => {
   const language = useRecoilValue(languageAtom);
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   const [showNewAddressModal, setShowNewAddressModal] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(true);
+      setStatusBarColor(theme.backgroundColor);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
@@ -72,7 +75,7 @@ const AddressBookSetting = () => {
             onPress={() => setShowNewAddressModal(true)}
             title={getLanguageString(language, 'ADD_NEW_ADDRESS')}
             style={{width: 248}}
-            textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
+            textStyle={Platform.OS === 'android' ? {fontFamily: 'WorkSans-SemiBold', fontSize: theme.defaultFontSize + 4}  : {fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
             icon={
               <AntIcon
                 name="plus"
@@ -132,7 +135,6 @@ const AddressBookSetting = () => {
                     )}
                     <View>
                       <CustomText
-                        allowFontScaling={false}
                         style={[
                           styles.addressName,
                           {color: theme.textColor, fontSize: 13},
