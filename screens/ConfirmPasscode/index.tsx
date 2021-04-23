@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
-import OtpInputs from 'react-native-otp-inputs';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import {Image, TouchableOpacity, View} from 'react-native';
+import OtpInputs, { OtpInputsRef } from 'react-native-otp-inputs';
 import TouchID from 'react-native-touch-id';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
@@ -30,7 +30,16 @@ const ConfirmPasscode = () => {
   const [touchType, setTouchType] = useState('');
   const setLocalAuth = useSetRecoilState(localAuthAtom);
 
+  const otpRef = useRef<OtpInputsRef>(null)
+
+  const focusOTP = useCallback(() => {
+    if (otpRef && otpRef.current) {
+      otpRef.current.focus();
+    }
+  }, [])
+
   useEffect(() => {
+    focusOTP()
     TouchID.isSupported(optionalConfigObject)
       .then((biometryType) => {
         // Success code
@@ -88,6 +97,7 @@ const ConfirmPasscode = () => {
             ...{backgroundColor: theme.backgroundFocusColor, color: theme.textColor},
           }}
           secureTextEntry={true}
+          ref={otpRef}
         />
         {error !== '' && (
           <CustomText
@@ -124,6 +134,7 @@ const ConfirmPasscode = () => {
         block
         title={getLanguageString(language, 'CONFIRM')}
         onPress={handleSubmit}
+        textStyle={{fontSize: theme.defaultFontSize + 4}}
       />
     </View>
   );
