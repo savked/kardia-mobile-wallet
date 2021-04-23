@@ -8,7 +8,7 @@ import {
   ViewStyle,
   Dimensions,
   View,
-  Text,
+  BackHandler,
 } from 'react-native';
 import {BlurView} from '@react-native-community/blur';
 import Portal from '@burstware/react-native-portal';
@@ -29,29 +29,26 @@ const CustomModal = ({
   full = false,
   showCloseButton = true,
   contentStyle = {
-    flex: DEFAULT_HEIGHT_MODAL,
+    height: DEFAULT_HEIGHT_MODAL_IN_PIXEL,
   } as StyleProp<ViewStyle>,
 }: CustomModalProps & {
   contentStyle?: any;
 }) => {
   const theme = useContext(ThemeContext);
-  let endFlex = DEFAULT_HEIGHT_MODAL;
+  // let endFlex = DEFAULT_HEIGHT_MODAL;
   let endHeight = DEFAULT_HEIGHT_MODAL_IN_PIXEL;
   if (full) {
-    endFlex = 0.9;
+    // endFlex = 0.9;
     endHeight = (11 * viewportHeight) / 12;
   } else if (contentStyle && contentStyle.flex) {
-    endFlex = contentStyle.flex;
+    // endFlex = contentStyle.flex;
   } else if (contentStyle && contentStyle.height) {
     endHeight = contentStyle.height;
   }
 
   const slideAnim = useRef(new Animated.Value(0)).current;
   useEffect(() => {
-    let endValue = endFlex;
-    if (contentStyle && contentStyle.height) {
-      endValue = endHeight;
-    }
+    let endValue = endHeight;
     if (visible) {
       Animated.timing(slideAnim, {
         toValue: endValue,
@@ -59,14 +56,27 @@ const CustomModal = ({
         useNativeDriver: false,
       }).start();
     }
-  }, [contentStyle, endFlex, endHeight, slideAnim, visible]);
+  }, [contentStyle, endHeight, slideAnim, visible]);
 
   const getAnimationStyle = () => {
-    if (contentStyle && contentStyle.height) {
-      return {height: slideAnim};
-    }
-    return {flex: slideAnim};
+    return {height: slideAnim};
   };
+
+  useEffect(() => {
+    const onBackPress = () => {
+      if (visible) {
+        onClose();
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  }, [visible])
 
   if (!visible) {
     return null;
