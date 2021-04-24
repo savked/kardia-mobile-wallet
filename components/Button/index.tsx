@@ -136,7 +136,7 @@ const Button = ({
         // style={{flex: 1}}
         style={[
           styles.button,
-          parseSize(),
+          
           typeStyle,
           block ? {width: '100%'} : null,
           style,
@@ -153,12 +153,12 @@ const Button = ({
             !loading && onPress();
           }}
           disabled={disabled}
-          style={{
+          style={[parseSize(),{
             alignItems: 'center',
             justifyContent: 'center',
             flex: 1,
             flexDirection: 'row',
-          }}>
+          }]}>
           {loading && <ActivityIndicator color={textTypeStyle.color} />}
           {!loading && renderIcon()}
           {!loading && title && (

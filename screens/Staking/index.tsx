@@ -203,7 +203,11 @@ const StakingScreen = () => {
               type="primary"
               onPress={() => navigation.navigate('ValidatorList')}
               title={getLanguageString(language, 'STAKE_NOW')}
-              textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
+              textStyle={{
+                fontWeight: '500', 
+                fontSize: theme.defaultFontSize + 3,
+                fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+              }}
               style={{width: 248}}
               icon={
                 <AntIcon

@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Linking,
+  Platform,
 } from 'react-native';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {addressBookAtom} from '../../atoms/addressBook';
@@ -483,7 +484,11 @@ export default () => {
         onPress={handleBack}
         block
         style={{marginBottom: 82}}
-        textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
+        textStyle={{
+          fontWeight: '500', 
+          fontSize: theme.defaultFontSize + 4,
+          fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+        }}
       />
     </View>
   );

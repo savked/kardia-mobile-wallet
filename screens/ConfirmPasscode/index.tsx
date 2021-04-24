@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Image, Platform, TouchableOpacity, View} from 'react-native';
 import OtpInputs, { OtpInputsRef } from 'react-native-otp-inputs';
 import TouchID from 'react-native-touch-id';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -78,6 +78,12 @@ const ConfirmPasscode = () => {
       });
   };
 
+  useEffect(() => {
+    if (touchSupported) {
+      authByTouchID()
+    }
+  }, [touchSupported])
+
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <CustomText style={[styles.title, {color: theme.textColor}]}>
@@ -134,7 +140,11 @@ const ConfirmPasscode = () => {
         block
         title={getLanguageString(language, 'CONFIRM')}
         onPress={handleSubmit}
-        textStyle={{fontSize: theme.defaultFontSize + 4}}
+        textStyle={{
+          fontSize: theme.defaultFontSize + 4,
+          fontWeight: '500',
+          fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+        }}
       />
     </View>
   );

@@ -28,11 +28,13 @@ const CustomTextInput = ({
   placeholderTextColor,
   inputRef,
   containerStyle,
+  autoFocus,
 }: CustomTextInputProps & {
   headlineStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<TextStyle>;
   inputRef?: React.RefObject<TextInput>;
+  autoFocus?: boolean;
 }) => {
   const theme = useContext(ThemeContext);
 
@@ -80,6 +82,7 @@ const CustomTextInput = ({
           autoCapitalize={autoCapitalize}
           onFocus={onFocus}
           placeholderTextColor={placeholderTextColor}
+          autoFocus={autoFocus}
         />
         {iconName && (
           <Icon

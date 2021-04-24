@@ -285,14 +285,17 @@ export default ({
             onPress={closeModal}
             block={true}
             style={{marginBottom: 12}}
-            textStyle={{color: theme.textColor, fontSize: 17, fontWeight: '500'}}
+            textStyle={{color: theme.textColor, fontSize: theme.defaultFontSize + 1}}
           />
           <Button
             type="primary"
             title={getLanguageString(language, 'SAVE_TO_ADDRESS_BOOK')}
             onPress={handleSubmit}
             block={true}
-            textStyle={{fontSize: 17, fontWeight: '500'}}
+            textStyle={{
+              fontSize: theme.defaultFontSize + 3, fontWeight: '500',
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+            }}
           />
         </View>
       </TouchableWithoutFeedback>

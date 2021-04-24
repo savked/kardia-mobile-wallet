@@ -67,7 +67,7 @@ const AddressBookModal = ({
           );
         }}
         ListEmptyComponent={
-          <CustomText style={[styles.emptyAddressBook]}>
+          <CustomText style={[styles.emptyAddressBook, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS')}
           </CustomText>
         }

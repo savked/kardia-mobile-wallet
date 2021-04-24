@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {TouchableOpacity, View, Image, ActivityIndicator} from 'react-native';
+import {TouchableOpacity, View, Image, ActivityIndicator, Platform} from 'react-native';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
@@ -196,7 +196,11 @@ const TransactionScreen = () => {
             type="primary"
             onPress={() => setShowNewTxModal(true)}
             title={getLanguageString(language, 'SEND_NOW')}
-            textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
+            textStyle={{
+              fontWeight: '500',
+              fontSize: theme.defaultFontSize + 4,
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+            }}
             style={{width: 248}}
             icon={
               <AntIcon

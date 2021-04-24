@@ -75,7 +75,7 @@ const AddressBookSetting = () => {
             onPress={() => setShowNewAddressModal(true)}
             title={getLanguageString(language, 'ADD_NEW_ADDRESS')}
             style={{width: 248}}
-            textStyle={Platform.OS === 'android' ? {fontFamily: 'WorkSans-SemiBold', fontSize: theme.defaultFontSize + 4}  : {fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
+            textStyle={Platform.OS === 'android' ? {fontFamily: 'WorkSans-SemiBold', fontSize: theme.defaultFontSize + 3}  : {fontWeight: '500', fontSize: theme.defaultFontSize + 3}}
             icon={
               <AntIcon
                 name="plus"

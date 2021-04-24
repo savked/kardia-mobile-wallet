@@ -179,7 +179,7 @@ const NewTxModal = ({
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: 480,
+        height: keyboardShown ? 470 : 500,
         backgroundColor: 'rgba(58, 59, 60, 1)',
       };
     } else {
@@ -433,7 +433,10 @@ const NewTxModal = ({
               block
               type="primary"
               // size="large"
-              textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
+              textStyle={{
+                fontWeight: '500', fontSize: theme.defaultFontSize + 3,
+                fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+              }}
               loading={loading}
               disabled={loading}
             />

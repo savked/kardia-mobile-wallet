@@ -436,7 +436,7 @@ export default ({
                   setShowAuthModal(true);
                 }
               }}
-              textStyle={Platform.OS === 'android' ? {fontFamily: 'WorkSans-SemiBold'} : {fontWeight: '500'}}
+              textStyle={Platform.OS === 'android' ? {fontFamily: 'WorkSans-SemiBold', fontSize: theme.defaultFontSize + 3} : {fontWeight: '500', fontSize: theme.defaultFontSize + 3}}
             />
           </View>
         </View>

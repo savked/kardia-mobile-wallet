@@ -13,6 +13,7 @@ import {getLanguageString} from '../../utils/lang';
 import {getSelectedWallet, getWallets} from '../../utils/local';
 import {format, getDigit, isNumber} from '../../utils/number';
 import Button from '../../components/Button';
+import { theme } from '../../theme/dark';
 
 const UndelegateModal = ({
   item,
@@ -166,7 +167,10 @@ const UndelegateModal = ({
             language,
             'UNDELEGATE_AMOUNT_PLACEHOLDER',
           )}
-          headlineStyle={{color: '#000000'}}
+          headlineStyle={{
+            color: theme.textColor,
+            fontSize: theme.defaultFontSize + 1
+          }}
         />
       </View>
       <View

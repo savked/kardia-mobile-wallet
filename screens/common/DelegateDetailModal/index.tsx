@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, Text, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, Alert, Platform, Text, TouchableOpacity, View} from 'react-native';
 import Divider from '../../../components/Divider';
 import Modal from '../../../components/Modal';
 import TextAvatar from '../../../components/TextAvatar';
@@ -21,7 +21,7 @@ import { getLatestBlock } from '../../../services/blockchain';
 import { getDigit } from '../../../utils/number';
 import { BLOCK_TIME } from '../../../config';
 
-const showWithdraw = (value: any) => {
+const showButton = (value: any) => {
   return numeral(value).format('0,0.00') !== '0.00'
 }
 
@@ -185,6 +185,20 @@ export default ({
     );
   }
 
+  const getModalHeight = () => {
+    let height = Platform.OS === 'android' ? 530 : 500;
+    if (showButton(validatorItem.withdrawableAmount)) {
+      height += 12
+    }
+    if (showButton(validatorItem.claimableRewards)) {
+      height += 12
+    }
+    if (showButton(validatorItem.stakedAmount)) {
+      height += 12
+    }
+    return height
+  }
+
   return (
     <Modal
       visible={visible}
@@ -194,7 +208,7 @@ export default ({
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
         padding: 20,
-        height: showWithdraw(validatorItem.withdrawableAmount) ? 500 : 490,
+        height: getModalHeight(),
       }}>
       <View style={{width: '100%', marginBottom: 4}}>
         <CustomText style={{color: theme.mutedTextColor}}>Validator</CustomText>
@@ -250,13 +264,16 @@ export default ({
             {getSelectedStakedAmount()}
           </CustomText>
         </View>
-        <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
-          <TouchableOpacity onPress={() => setShowUndelegateModal(true)}>
-            <CustomText style={[{color: theme.urlColor}]}>
-              {getLanguageString(language, 'UNDELEGATE')}
-            </CustomText>
-          </TouchableOpacity>
-        </View>
+        {showButton(validatorItem.stakedAmount) && (
+          <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
+            <TouchableOpacity onPress={() => setShowUndelegateModal(true)}>
+              <CustomText style={[{color: theme.urlColor}]}>
+                {getLanguageString(language, 'UNDELEGATE')}
+              </CustomText>
+            </TouchableOpacity>
+          </View>
+        )}
+        
         <View style={styles.dataContainer}>
           <CustomText style={{color: theme.mutedTextColor}}>
             {getLanguageString(language, 'CLAIMABLE')}
@@ -267,14 +284,16 @@ export default ({
           </CustomText>
         </View>
         <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
-          {claiming ? (
-            <ActivityIndicator color={theme.textColor} size="small" />
-          ) : (
-            <TouchableOpacity onPress={claimHandler}>
-              <CustomText style={[{color: theme.urlColor}]}>
-                {getLanguageString(language, 'CLAIM_REWARD')}
-              </CustomText>
-            </TouchableOpacity>
+          {showButton(weiToKAI(validatorItem.claimableRewards)) && (
+            claiming ? (
+              <ActivityIndicator color={theme.textColor} size="small" />
+            ) : (
+              <TouchableOpacity onPress={claimHandler}>
+                <CustomText style={[{color: theme.urlColor}]}>
+                  {getLanguageString(language, 'CLAIM_REWARD')}
+                </CustomText>
+              </TouchableOpacity>
+            )
           )}
         </View>
         <View style={styles.dataContainer}>
@@ -297,7 +316,7 @@ export default ({
             KAI
           </CustomText>
         </View>
-        {showWithdraw(validatorItem.withdrawableAmount) && (
+        {showButton(validatorItem.withdrawableAmount) && (
           <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
             {withdrawing ? (
               <ActivityIndicator color={theme.textColor} size="small" />
@@ -336,7 +355,11 @@ export default ({
         onPress={handleClose}
         // type="outline"
         style={{width: '100%', marginBottom: 12}}
-        textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
+        textStyle={{
+          fontWeight: '500',
+          fontSize: theme.defaultFontSize + 4,
+          fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+        }}
       />
       {/* <Button
         title={getLanguageString(language, 'UNDELEGATE')}

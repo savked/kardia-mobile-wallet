@@ -16,7 +16,7 @@ import {walletsAtom} from '../../atoms/wallets';
 import CustomText from '../../components/Text';
 
 const INFO_DATA = {
-  version: '2.0.12',
+  version: '2.0.13',
 };
 
 const SettingScreen = () => {

@@ -131,7 +131,7 @@ export default ({
   const getModalStyle = () => {
     if (Platform.OS === 'android') {
       return {
-        height: 350,
+        height: 370,
         backgroundColor: theme.backgroundFocusColor,
         alignItems: 'center',
       };
@@ -221,6 +221,10 @@ export default ({
         <Button
           title={getLanguageString(language, 'CONFIRM')}
           onPress={verify}
+          textStyle={{
+            fontWeight: '500', fontSize: theme.defaultFontSize + 3,
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+          }}
           type="primary"
           block
         />
