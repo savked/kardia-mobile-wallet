@@ -206,17 +206,14 @@ const HomeScreen = () => {
                 </CustomText>
                 <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold'}}>
                   {
-                    numeral((Number(weiToKAI(_getBalance())) +
-                      _getStaked() + _getUndelegating()
-                    )).format('0,0.00')}{' '}
+                    numeral(Number(weiToKAI(_getBalance()))).format('0,0.00')}{' '}
                   <CustomText style={{color: theme.mutedTextColor, fontWeight: '500'}}>KAI</CustomText>
                 </CustomText>
                 <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 14}}>
-                  ~${' '}
+                  $
                   {numeral(
                     tokenInfo.price *
-                      (Number(weiToKAI(_getBalance())) +
-                      _getStaked() + _getUndelegating()),
+                      Number(weiToKAI(_getBalance())),
                   ).format('0,0.00')}
                 </CustomText>
               </View>

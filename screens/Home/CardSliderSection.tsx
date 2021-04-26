@@ -56,7 +56,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
             }}>
             <View>
               <CustomText allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: theme.defaultFontSize}}>
-                {getLanguageString(language, 'BALANCE').toUpperCase()}
+                {getLanguageString(language, 'TOTAL_BALANCE').toUpperCase()}
               </CustomText>
               <CustomText allowFontScaling={false} style={Platform.OS === 'android' ? {fontSize: 24, color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {fontSize: 24, color: theme.textColor, fontWeight: '500'}}>
                 $
@@ -90,7 +90,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
                 {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
               </CustomText>
               <CustomText style={Platform.OS === 'android' ? {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontFamily: 'WorkSans-SemiBold'} : {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontWeight: '500'}}>
-                {wallet.name || getLanguageString(language,'NEW_WALLET')}
+                {wallet.name ? wallet.name.toUpperCase() : getLanguageString(language,'NEW_WALLET').toUpperCase()}
               </CustomText>
             </View>
             <TouchableOpacity
