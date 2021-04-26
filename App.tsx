@@ -41,9 +41,9 @@ const App = () => {
         <Toast ref={(ref) => Toast.setRef(ref)}
           config={
             {
-              success: ({ text1 = '', ...rest }) => (
-                <View style={{ height: 32, minWidth: 77, paddingHorizontal: 16, paddingVertical: 8, backgroundColor: '#DDFFDB', borderRadius: 8, alignItems: 'center', justifyContent: 'center' }}>
-                  <CustomText style={{color: 'rgba(69, 188, 67, 1)', fontWeight: 'bold'}}>{text1}</CustomText>
+              success: ({ text1 = '', props = {}, ...rest }) => (
+                <View style={{ height: 32, minWidth: 77, paddingHorizontal: 16, paddingVertical: 8, backgroundColor: (props as any).backgroundColor || '#DDFFDB', borderRadius: 8, alignItems: 'center', justifyContent: 'center' }}>
+                  <CustomText style={{color: (props as any).textColor || 'rgba(69, 188, 67, 1)', fontWeight: 'bold'}}>{text1}</CustomText>
                 </View>
               )
             }

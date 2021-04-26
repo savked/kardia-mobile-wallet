@@ -2,7 +2,7 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
+import {View, TouchableOpacity, Image, ScrollView, Platform} from 'react-native';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import ENIcon from 'react-native-vector-icons/Entypo';
 import IconButton from '../../components/IconButton';
@@ -16,7 +16,7 @@ import {walletsAtom} from '../../atoms/wallets';
 import CustomText from '../../components/Text';
 
 const INFO_DATA = {
-  version: '2.0.13',
+  version: '2.0.14',
 };
 
 const SettingScreen = () => {
@@ -53,11 +53,12 @@ const SettingScreen = () => {
       <ScrollView>
         <View style={{flex: 1}}>
           <CustomText
-            allowFontScaling={false}
             style={{
               color: theme.textColor,
               marginHorizontal: 20,
-              fontSize: 12,
+              fontSize: theme.defaultFontSize,
+              fontWeight: '500',
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
             }}>
             {getLanguageString(language, 'GENERAL_GROUP')}
           </CustomText>
@@ -87,7 +88,7 @@ const SettingScreen = () => {
                 />
               </View>
               <View style={{alignItems: 'flex-start', flex: 1}}>
-                <CustomText style={[styles.settingTitle, {color: theme.textColor}]}>
+                <CustomText style={[styles.settingTitle, {color: theme.textColor, fontWeight: '500', fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}]}>
                   {getLanguageString(language, 'LANGUAGE_MENU')}
                 </CustomText>
               </View>
@@ -103,6 +104,8 @@ const SettingScreen = () => {
               color: theme.textColor,
               marginHorizontal: 20,
               fontSize: 12,
+              fontWeight: '500',
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
             }}>
             {getLanguageString(language, 'SECURITY_GROUP')}
           </CustomText>
@@ -132,7 +135,7 @@ const SettingScreen = () => {
                 />
               </View>
               <View style={{alignItems: 'flex-start', flex: 1}}>
-                <CustomText style={[styles.settingTitle, {color: theme.textColor}]}>
+                <CustomText style={[styles.settingTitle, {color: theme.textColor, fontWeight: '500', fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}]}>
                   {getLanguageString(language, 'PASSCODE_MENU')}
                 </CustomText>
               </View>
@@ -156,7 +159,7 @@ const SettingScreen = () => {
                 />
               </View>
               <View style={{alignItems: 'flex-start', flex: 1}}>
-                <CustomText style={[styles.settingTitle, {color: theme.textColor}]}>
+                <CustomText style={[styles.settingTitle, {color: theme.textColor, fontWeight: '500', fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}]}>
                   {getLanguageString(language, 'WALLET_MANAGEMENT')}
                 </CustomText>
               </View>

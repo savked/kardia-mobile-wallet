@@ -119,7 +119,8 @@ const SelectWallet = () => {
               address: walletAddress,
               balance,
               staked,
-              undelegating: 0
+              undelegating: 0,
+              name: 'New Wallet'
             };
             resolve(wallet);
           } catch (error) {

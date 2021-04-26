@@ -54,7 +54,7 @@ const ListCard = ({
               paddingVertical: 8,
               paddingHorizontal: 12,
               borderRadius: 8,
-              width: '32%',
+              width: 114,
               alignItems: 'center',
               justifyContent: 'space-between',
               flexDirection: 'row',

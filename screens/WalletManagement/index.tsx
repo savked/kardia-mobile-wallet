@@ -16,6 +16,7 @@ import List from '../../components/List';
 import { truncate } from '../../utils/string';
 import Button from '../../components/Button';
 import CustomText from '../../components/Text';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 
 export default () => {
   const navigation = useNavigation();
@@ -24,10 +25,12 @@ export default () => {
   const theme = useContext(ThemeContext);
 
   const wallets = useRecoilValue(walletsAtom);
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom)
 
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(false);
+      setStatusBarColor(theme.backgroundColor)
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
@@ -55,7 +58,10 @@ export default () => {
         render={(item: Wallet) => {
           return (
             <TouchableOpacity onPress={() => navigation.navigate('WalletDetail', {address: item.address})} style={[styles.walletItemContainer, {backgroundColor: theme.backgroundFocusColor}]}>
-              <Image style={styles.cardImage} source={parseCardAvatar(item.cardAvatarID || 0)} />
+              <View style={styles.cardImageContainer}>
+                <Image style={styles.cardImage} source={parseCardAvatar(item.cardAvatarID || 0)} />
+                <View style={styles.pinButton}></View>
+              </View>
               <View style={{justifyContent: 'space-between'}}>
                 <CustomText style={{color: theme.textColor, fontSize: 13, fontWeight: 'bold'}}>{item.name || getLanguageString(language, 'NEW_WALLET')}</CustomText>
                 <CustomText style={{fontSize: theme.defaultFontSize, color: 'rgba(252, 252, 252, 0.54)'}}>{truncate(item.address, 10, 10)}</CustomText>

@@ -237,13 +237,14 @@ const NewTxModal = ({
         visible={showConfirmModal}
         contentStyle={{
           height: 300,
+          justifyContent: 'flex-start',
           backgroundColor: theme.backgroundFocusColor,
         }}
         onClose={() => setShowConfirmModal(false)}>
         <CustomText style={[styles.confirmTitle, {color: theme.textColor}]}>
           {getLanguageString(language, 'CONFIRM_TRANSACTION')}
         </CustomText>
-        <View style={{width: '100%'}}>
+        <View style={{width: '100%', marginBottom: 24}}>
           <View style={styles.confirmGroup}>
             <CustomText style={[styles.confirmText, {color: theme.textColor}]}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}:{' '}
@@ -272,11 +273,13 @@ const NewTxModal = ({
             onPress={() => setShowConfirmModal(false)}
             type="outline"
             style={{marginBottom: 12}}
+            textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 3, fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}
           />
           <Button
             title={getLanguageString(language, 'CONFIRM')}
             onPress={() => setShowAuthModal(true)}
             type="primary"
+            textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 3, fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}
           />
         </View>
       </Modal>
@@ -422,7 +425,7 @@ const NewTxModal = ({
               block
               type="outline"
               style={{marginBottom: 12}}
-              textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4}}
+              textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4, fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}
               // size="large"
               disabled={loading}
             />

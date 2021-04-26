@@ -85,6 +85,7 @@ export const styles = StyleSheet.create({
   confirmTitle: {
     fontSize: 22,
     fontWeight: 'bold',
+    marginBottom: 24
   },
   headline: {
     fontWeight: '500',

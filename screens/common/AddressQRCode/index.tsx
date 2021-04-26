@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {Dimensions, Image, ImageBackground, Text, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, ImageBackground, Platform, TouchableOpacity, View} from 'react-native';
 import Toast from 'react-native-toast-message';
 import QRCode from 'react-native-qrcode-svg';
 import {useRecoilValue} from 'recoil';
@@ -92,7 +92,7 @@ const QRModal = ({
           {getLanguageString(language, 'BALANCE').toUpperCase()}
         </CustomText>
         <CustomText style={{fontSize: 24, color: 'white', paddingHorizontal: 20}}>
-          ~${' '}
+          $
           {numeral(
             tokenInfo.price *
               (Number(weiToKAI(wallet.balance)) + wallet.staked),
@@ -119,6 +119,10 @@ const QRModal = ({
                 type: 'success',
                 topOffset: 70,
                 text1: getLanguageString(language, 'COPIED'),
+                props: {
+                  backgroundColor: theme.backgroundFocusColor,
+                  textColor: theme.textColor
+                }
               });
             }}
             style={{
@@ -138,6 +142,11 @@ const QRModal = ({
         onPress={onClose}
         block
         style={{marginTop: 32}}
+        textStyle={{
+          fontWeight: '500',
+          fontSize: theme.defaultFontSize + 3,
+          fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+        }}
       />
     </Modal>
   );

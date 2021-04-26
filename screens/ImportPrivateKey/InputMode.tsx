@@ -80,6 +80,8 @@ export default () => {
         address: walletAddress,
         balance,
         staked,
+        undelegating: 0,
+        name: 'New Wallet'
       };
 
       const walletExisted = wallets

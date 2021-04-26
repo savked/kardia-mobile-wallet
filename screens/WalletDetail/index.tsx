@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { ImageBackground, Text, View, Dimensions, TouchableOpacity, Image, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { ImageBackground, View, Dimensions, TouchableOpacity, Image, TouchableWithoutFeedback, Keyboard, Platform, BackHandler } from 'react-native';
 import ENIcon from 'react-native-vector-icons/Entypo';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
@@ -68,6 +68,17 @@ export default () => {
         animated: false,
       })
     }
+
+    const onBackPress = () => {
+      saveWallet()
+      return true;
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+
   }, []);
 
   if (!wallet) {
@@ -121,7 +132,9 @@ export default () => {
         }}
         onSuccess={() => {
           setRequestAuth(false);
-          navigation.navigate('MnemonicPhraseSetting')
+          navigation.navigate('MnemonicPhraseSetting', {
+            wallet
+          })
         }}
       />
       <View
@@ -131,7 +144,7 @@ export default () => {
         }}>
         <ENIcon.Button
           name="chevron-left"
-          onPress={() => navigation.goBack()}
+          onPress={saveWallet}
           backgroundColor="transparent"
           style={{ padding: 0, marginBottom: 18 }}
         />
@@ -171,27 +184,20 @@ export default () => {
                         {numeral(
                         tokenInfo.price *
                         (Number(weiToKAI(wallet.balance)) + wallet.staked),
-                      ).format('0,0.00a')}
+                      ).format('0,0.00')}
                       </CustomText>
                     </View>
                     <View style={{flexDirection: 'row'}}>
-                      <IconButton
-                        onPress={() => setRequestAuth(true)}
-                        name="lock"
-                        color={theme.textColor}
-                        size={22}
-                        style={{marginRight: 12}}
-                      />
-                      {/* <IconButton
-                        onPress={() => setShowRemoveConfirm(true)}
-                        name="trash"
-                        color={theme.textColor}
-                        size={20}
-                      /> */}
+                      <TouchableOpacity onPress={() => setRequestAuth(true)}>
+                        <Image
+                          source={require('../../assets/icon/lock_dark.png')}
+                          style={{width: 24, height: 24}}
+                        />
+                      </TouchableOpacity>
                     </View>
                   </View>
 
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'flex-end', flex: 1 }}>
                     <CustomText style={styles.kaiCardText}>
                       {truncate(
                         wallet.address,
@@ -201,13 +207,13 @@ export default () => {
                     </CustomText>
                   </View>
 
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                     <View>
                       <CustomText style={{ fontSize: 10, color: 'rgba(252, 252, 252, 0.54)' }}>
                         {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
                       </CustomText>
                       <CustomText style={{ fontSize: 15, color: 'rgba(252, 252, 252, 0.87)' }}>
-                        {wallet.name}
+                        {name?.toUpperCase()}
                       </CustomText>
                     </View>
                     <TouchableOpacity
@@ -270,20 +276,29 @@ export default () => {
                     <TouchableOpacity key={`card-${index}`} onPress={() => setCardAvatarID(index)}>
                       <ImageBackground
                         imageStyle={{
-                          resizeMode: 'contain',
-                          width: 187,
-                          height: 115,
+                          resizeMode: 'cover',
+                          width: 189,
+                          height: 117,
                           borderRadius: 12,
                         }}
                         style={{
-                          marginHorizontal: 12,
+                          marginLeft: index === 0 ? 20 : 16,
+                          marginRight: index === 5 ? 20 : 0,
                           width: 193,
                           height: 121,
-                          borderRadius: 12,
+                          borderRadius: 14,
                           justifyContent: 'flex-end',
                           padding: 12,
                           borderColor: item === cardAvatarID ? theme.textColor : 'transparent',
-                          borderWidth: 3,
+                          borderWidth: 2,
+                          shadowColor: 'rgba(0, 0, 0, 0.3)',
+                          shadowOffset: {
+                            width: 0,
+                            height: -4,
+                          },
+                          shadowOpacity: 2,
+                          shadowRadius: 4,
+                          elevation: 9,
                         }} source={parseCardAvatar(item || 0)}>
                         <CustomText style={{ fontSize: 14, color: theme.textColor }}>{parseCardAvatarColor(item || 0)}</CustomText>
                       </ImageBackground>
@@ -297,17 +312,27 @@ export default () => {
         <View style={{marginBottom: 42, paddingHorizontal: 20 }}>
           <Button
             title={getLanguageString(language, "REMOVE_WALLET")}
-            iconName="trash"
-            iconSize={18}
-            iconColor={theme.textColor}
+            // iconName="trash"
+            // iconSize={18}
+            // iconColor={theme.textColor}
             type="outline"
             onPress={() => setShowRemoveConfirm(true)}
+            textStyle={{
+              fontWeight: '500',
+              fontSize: theme.defaultFontSize + 3,
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+            }}
           />
-          <Button
+          {/* <Button
             title={getLanguageString(language, 'SAVE')}
             onPress={saveWallet}
             style={{ marginTop: 12 }}
-          />
+            textStyle={{
+              fontWeight: '500',
+              fontSize: theme.defaultFontSize + 3,
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+            }}
+          /> */}
         </View>
       </View>
       <Modal
@@ -316,7 +341,7 @@ export default () => {
         onClose={() => setShowRemoveConfirm(false)}
         contentStyle={{
           backgroundColor: theme.backgroundFocusColor,
-          height: 450,
+          height: 540,
           justifyContent: 'center',
         }}>
         <Image
@@ -329,6 +354,7 @@ export default () => {
             fontSize: 22,
             fontWeight: 'bold',
             marginTop: 20,
+            marginBottom: 12,
             color: theme.textColor,
           }}>
           {getLanguageString(language, 'CONFIRM_REMOVE_TITLE')}
@@ -337,8 +363,9 @@ export default () => {
           style={{
             textAlign: 'center',
             fontSize: 15,
-            marginBottom: 20,
+            marginBottom: 36,
             color: theme.mutedTextColor,
+            lineHeight: 26
           }}>
           {getLanguageString(language, 'CONFIRM_REMOVE_WALLET')}
         </CustomText>
@@ -347,7 +374,9 @@ export default () => {
           title={getLanguageString(language, 'KEEP_IT')}
           type="outline"
           textStyle={{
-            fontWeight: 'bold',
+            fontWeight: '500',
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+            fontSize: theme.defaultFontSize + 3
           }}
           onPress={() => setShowRemoveConfirm(false)}
         />
@@ -361,7 +390,9 @@ export default () => {
           }}
           textStyle={{
             color: '#FFFFFF',
-            fontWeight: 'bold',
+            fontWeight: '500',
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+            fontSize: theme.defaultFontSize + 3
           }}
           onPress={removeWallet}
         />
