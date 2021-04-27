@@ -5,7 +5,6 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, TouchableOpacity, Image, ScrollView, Platform} from 'react-native';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import ENIcon from 'react-native-vector-icons/Entypo';
-import IconButton from '../../components/IconButton';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {ThemeContext} from '../../ThemeContext';
 import {languageAtom} from '../../atoms/language';
@@ -16,7 +15,7 @@ import {walletsAtom} from '../../atoms/wallets';
 import CustomText from '../../components/Text';
 
 const INFO_DATA = {
-  version: '2.0.14',
+  version: '2.0.15',
 };
 
 const SettingScreen = () => {
@@ -43,12 +42,12 @@ const SettingScreen = () => {
         <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'SETTING_SCREEN_TITLE')}
         </CustomText>
-        <IconButton
+        {/* <IconButton
           name="bell-o"
           color={theme.textColor}
           size={20}
           onPress={() => navigation.navigate('Notification')}
-        />
+        /> */}
       </View>
       <ScrollView>
         <View style={{flex: 1}}>

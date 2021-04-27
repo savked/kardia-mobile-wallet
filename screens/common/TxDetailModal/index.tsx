@@ -1,7 +1,7 @@
 import {format} from 'date-fns';
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {View, Text, Image, Linking, TouchableOpacity} from 'react-native';
+import {View, Text, Image, Linking, TouchableOpacity, Platform} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {addressBookAtom} from '../../../atoms/addressBook';
 import {languageAtom} from '../../../atoms/language';
@@ -192,15 +192,20 @@ export default ({
             borderRadius: 16,
             backgroundColor: theme.backgroundColor,
 
-            // flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
 
             position: 'absolute',
             top: -67,
 
-            // borderWidth: 1,
-            // borderColor: 'gray',
+            shadowColor: 'rgba(0, 0, 0, 0.3)',
+            shadowOffset: {
+              width: 0,
+              height: 4,
+            },
+            shadowOpacity: 2,
+            shadowRadius: 4,
+            elevation: 9,
           }}>
           {txObj.type === 'IN' ? (
             <Image
@@ -283,6 +288,11 @@ export default ({
           block={true}
           onPress={onClose}
           // textStyle={{fontWeight: 'bold'}}
+          textStyle={{
+            fontWeight: '500',
+            fontSize: theme.defaultFontSize + 3,
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+          }}
         />
       </View>
     </Modal>

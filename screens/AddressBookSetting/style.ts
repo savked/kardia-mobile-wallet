@@ -74,5 +74,13 @@ export const styles = StyleSheet.create({
     height: 52,
     borderRadius: 26,
     paddingVertical: 0,
+    shadowColor: 'rgba(0, 0, 0, 0.3)',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 12,
+    shadowRadius: 8,
+    elevation: 9,
   },
 });

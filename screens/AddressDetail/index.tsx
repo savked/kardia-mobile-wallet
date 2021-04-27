@@ -357,21 +357,18 @@ const AddressDetail = () => {
               top: 24,
               right: 20,
             }}>
-            <Icon.Button
-              name="edit"
-              size={18}
-              onPress={() => setShowUpdateAddressModal(true)}
-              backgroundColor="transparent"
-              color="rgba(128, 128, 128, 1)"
-              style={{justifyContent: 'center'}}
-            />
-            <IconButton
-              name="trash"
-              size={18}
-              onPress={removeAddress}
-              color="rgba(128, 128, 128, 1)"
-              style={{justifyContent: 'center'}}
-            />
+            <TouchableOpacity onPress={() => setShowUpdateAddressModal(true)}>
+              <Image
+                source={require('../../assets/icon/edit_dark.png')}
+                style={{width: 24, height: 24, marginRight: 8}}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={removeAddress}>
+              <Image
+                source={require('../../assets/icon/trash_dark.png')}
+                style={{width: 24, height: 24}}
+              />
+            </TouchableOpacity>
           </View>
         </ImageBackground>
       </View>

@@ -8,7 +8,6 @@ import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import CustomImagePicker from '../../components/ImagePicker';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import IconButton from '../../components/IconButton';
 import {getLanguageString} from '../../utils/lang';
 import {groupByAlphabet, truncate} from '../../utils/string';
 import {styles} from './style';
@@ -16,7 +15,7 @@ import Button from '../../components/Button';
 import NewAddressModal from '../common/NewAddressModal';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import {ScrollView} from 'react-native-gesture-handler';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import CustomText from '../../components/Text';
 import { statusBarColorAtom } from '../../atoms/statusBar';
 
@@ -31,6 +30,8 @@ const AddressBookSetting = () => {
 
   const [showNewAddressModal, setShowNewAddressModal] = useState(false);
 
+  const insets = useSafeAreaInsets();
+
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(true);
@@ -40,8 +41,8 @@ const AddressBookSetting = () => {
   );
 
   return (
-    <SafeAreaView
-      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <View
+      style={[styles.container, {backgroundColor: theme.backgroundColor, paddingTop: insets.top}]}>
       <NewAddressModal
         visible={showNewAddressModal}
         onClose={() => setShowNewAddressModal(false)}
@@ -50,12 +51,12 @@ const AddressBookSetting = () => {
         <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'ADDRESS_BOOK_MENU')}
         </CustomText>
-        <IconButton
+        {/* <IconButton
           name="bell-o"
           color={theme.textColor}
           size={20}
           onPress={() => navigation.navigate('Notification')}
-        />
+        /> */}
       </View>
       {groupByAlphabet(addressBook, 'name').length === 0 && (
         <View style={styles.noAddressContainer}>
@@ -169,7 +170,7 @@ const AddressBookSetting = () => {
           style={styles.floatingButton}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 

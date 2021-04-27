@@ -169,7 +169,7 @@ export const lang: Language = {
     EARLIER: 'Lịch sử',
     // Setting key
     SETTING_SCREEN_TITLE: 'Cài đặt',
-    ADDRESS_BOOK_MENU: 'Danh bạ ví',
+    ADDRESS_BOOK_MENU: 'Danh bạ',
     LANGUAGE_MENU: 'Ngôn ngữ',
     LANGUAGE_SETTING_TITLE: 'Chọn ngôn ngữ',
     SECRET_PHRASE_MENU: 'Chuỗi khóa bí mật / private key',
@@ -235,7 +235,7 @@ export const lang: Language = {
     HOME: 'Trang chủ',
     TRANSACTIONS: 'Giao dịch',
     STAKING: 'Đầu tư',
-    ADDRESS_BOOK: 'Danh bạ ví',
+    ADDRESS_BOOK: 'Danh bạ',
     SETTING: 'Cài đặt',
     // Walk through screen:
     START_NOW: 'Bắt đầu',

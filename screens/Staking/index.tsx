@@ -121,12 +121,12 @@ const StakingScreen = () => {
         <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'STAKING_TITLE')}
         </CustomText>
-        <IconButton
+        {/* <IconButton
           name="bell-o"
           color={theme.textColor}
           size={20}
           onPress={() => navigation.navigate('Notification')}
-        />
+        /> */}
       </View>
       {currentStaking.length > 0 && (
         <ImageBackground
