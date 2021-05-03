@@ -1,32 +1,56 @@
 import React from 'react';
 import { Text } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { fontSizeAtom } from '../../atoms/fontSize';
 
-const CustomText = ({children, ...rest}: any) => {
-  // console.log(rest.style)
+const CustomText = ({children, style, ...rest}: any) => {
+
+  const fontSizeSetting = useRecoilValue(fontSizeAtom)
+
   let finalStyle: any = {
     fontFamily: 'WorkSans-Regular'
   }
 
-  if (rest.style) {
-    if (Array.isArray(rest.style)) {
+  let finalFontSize = undefined
+
+  if (style) {
+    if (Array.isArray(style)) {
       finalStyle = [
         {
           fontFamily: 'WorkSans-Regular'
         },
-        ...rest.style,
+        ...style,
       ]
+      style.forEach((i: any) => {
+        if (i.fontSize) {
+          finalFontSize = i.fontSize
+        }
+      })
     } else {
       finalStyle = [
         {
           fontFamily: 'WorkSans-Regular'
         },
-        rest.style
+        style
       ]
+      if (style.fontSize) {
+        finalFontSize = style.fontSize
+      }
     }
   }
 
+  if (finalFontSize) {
+    if (Array.isArray(finalStyle)) {
+      finalStyle.push({fontSize: fontSizeSetting === 'small' ? finalFontSize : finalFontSize * 1.2})
+    } else {
+      finalStyle.fontSize = fontSizeSetting === 'small' ? finalFontSize : finalFontSize * 1.2
+    }
+  }
+
+
+
   return (
-    <Text {...rest} style={finalStyle}>{children}</Text>
+    <Text allowFontScaling={false} {...rest} style={finalStyle}>{children}</Text>
   );
 };
 

@@ -1,11 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useContext} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, TouchableOpacity, Image, ScrollView, Platform} from 'react-native';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import ENIcon from 'react-native-vector-icons/Entypo';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {ThemeContext} from '../../ThemeContext';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageName, getLanguageString} from '../../utils/lang';
@@ -13,6 +13,8 @@ import {styles} from './style';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import {walletsAtom} from '../../atoms/wallets';
 import CustomText from '../../components/Text';
+import { fontSizeAtom } from '../../atoms/fontSize';
+import { saveFontSize } from '../../utils/local';
 
 const INFO_DATA = {
   version: '2.0.15',
@@ -28,12 +30,24 @@ const SettingScreen = () => {
 
   const wallets = useRecoilValue(walletsAtom);
 
+  const [fontSize, setFontSize] = useRecoilState(fontSizeAtom)
+
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(true);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
+
+  const toggleFontSize = async () => {
+    if (fontSize === 'small') {
+      setFontSize('large');
+      await saveFontSize('large')
+    } else {
+      setFontSize('small');
+      await saveFontSize('small')
+    }
+  }
 
   return (
     <SafeAreaView
@@ -95,6 +109,42 @@ const SettingScreen = () => {
                 {getLanguageName(language)}
               </CustomText>
               <ENIcon name="chevron-right" color={theme.textColor} size={20} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.settingItemContainer, {marginTop: 28}]}
+              onPress={toggleFontSize}>
+              <View
+                style={{
+                  width: 32,
+                  height: 32,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'rgba(234, 178, 112, 1)',
+                  borderRadius: 12,
+                }}>
+                <Image
+                  source={require('../../assets/icon/font_size.png')}
+                  style={{width: 24, height: 24, resizeMode: 'contain'}}
+                />
+              </View>
+              <View style={{alignItems: 'flex-start', flex: 1}}>
+                <CustomText style={[styles.settingTitle, {color: theme.textColor, fontWeight: '500', fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}]}>
+                  {getLanguageString(language, 'FONT_SIZE')}
+                </CustomText>
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{width: 32, height: 32, alignItems: 'center', justifyContent: 'center'}}>
+                  <CustomText style={{color: fontSize === 'small' ? theme.textColor : theme.mutedTextColor, fontSize: theme.defaultFontSize + 2}}>
+                    aA
+                  </CustomText>
+                </View>
+                <View style={{width: 32, height: 32, alignItems: 'center', justifyContent: 'center'}}>
+                  <CustomText style={{color: fontSize === 'large' ? theme.textColor : theme.mutedTextColor, fontSize: (theme.defaultFontSize + 2) * 1.2}}>
+                    aA
+                  </CustomText>
+                </View>
+              </View>
+              {/* <ENIcon name="chevron-right" color={theme.textColor} size={20} /> */}
             </TouchableOpacity>
           </View>
           <CustomText

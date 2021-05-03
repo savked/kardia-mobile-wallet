@@ -272,3 +272,28 @@ export const saveWalkThroughView = async (on: boolean) => {
     return false;
   }
 };
+
+export const getFontSize = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@kardia_font_size');
+    if (!value) return 'small'
+    return value
+  } catch (e) {
+    console.error(e);
+    return 'small';
+    // error reading value
+  }
+}
+
+export const saveFontSize = async (fontSize: 'small' | 'large') => {
+  try {
+    await AsyncStorage.setItem(
+      '@kardia_font_size',
+      fontSize,
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
