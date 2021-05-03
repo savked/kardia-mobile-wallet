@@ -205,6 +205,7 @@ export const lang: Language = {
     WALLET_CARD_TYPE: 'Card Type',
     SEED_PHRASE_TITLE: 'My credentials',
     SEED_PHRASE_DESC: 'Keep it safe & sound.',
+    FONT_SIZE: 'Font Size',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, Something Went Wrong',
     ERROR_BOUNDARY_DESCRIPTION:
@@ -215,7 +216,7 @@ export const lang: Language = {
     // KRC20 key
     KRC20_TOKENS_SECTION_TITLE: 'Tokens',
     ADD_TOKEN: 'Add token',
-    ADD_CUSTOM_TOKEN: 'Add custom token',
+    ADD_CUSTOM_TOKEN: 'Custom token',
     TOKEN_ADDRESS: 'Token address',
     SEND_TOKEN: 'Send {{TOKEN_SYMBOL}}',
     RECEIVE_TOKEN: 'Receive {{TOKEN_SYMBOL}}',
@@ -224,6 +225,10 @@ export const lang: Language = {
     NO_TOKENS_SUB_TEXT: 'Add your tokens and manage them easily.',
     ERROR_FETCH_KRC20_DATA: "Couldn't get tokens data.",
     CHOOSE_VERIFIED_TOKENS: 'Choose token',
+    CUSTOM_TOKENS_DESC: 'created by developer',
+    VERIFIED_TOKENS: 'Verified Token',
+    VERIFIED_TOKENS_DESC: 'listed by KardiaChain',
+    ADD_TOKEN_DESCRIPTION: 'All tokens in 1 wallet for easier management',
     // Auth modal key
     ENTER_PIN_CODE: 'Enter your PIN to process',
     WRONG_PIN: 'Incorrect PIN',
@@ -239,7 +244,7 @@ export const lang: Language = {
     SCAN_MODE: 'Scan QR code',
     INPUT_MODE: 'Enter manually',
     // Tab nav:
-    HOME: 'Home',
+    HOME: 'My Wallet',
     TRANSACTIONS: 'Transactions',
     STAKING: 'Staking',
     ADDRESS_BOOK: 'Address',

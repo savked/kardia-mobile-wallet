@@ -199,6 +199,7 @@ export const lang: Language = {
     WALLET_CARD_TYPE: 'Thẻ',
     SEED_PHRASE_TITLE: 'My credentials',
     SEED_PHRASE_DESC: 'Hãy giữ nó cẩn thận và an toàn.',
+    FONT_SIZE: 'Cỡ chữ',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, có lỗi xảy ra.',
     ERROR_BOUNDARY_DESCRIPTION:
@@ -208,7 +209,7 @@ export const lang: Language = {
     // KRC20 key
     KRC20_TOKENS_SECTION_TITLE: 'Tokens',
     ADD_TOKEN: 'Thêm token',
-    ADD_CUSTOM_TOKEN: 'Thêm token mới',
+    ADD_CUSTOM_TOKEN: 'Custom Token',
     TOKEN_ADDRESS: 'Địa chỉ token',
     SEND_TOKEN: 'Gửi {{TOKEN_SYMBOL}}',
     RECEIVE_TOKEN: 'Nhận {{TOKEN_SYMBOL}}',
@@ -217,6 +218,10 @@ export const lang: Language = {
     NO_TOKENS_SUB_TEXT: 'Thêm và quản lý token dễ dàng.',
     ERROR_FETCH_KRC20_DATA: 'Không lấy được dữ liệu tokens.',
     CHOOSE_VERIFIED_TOKENS: 'Chọn token',
+    CUSTOM_TOKENS_DESC: 'created by developer',
+    VERIFIED_TOKENS: 'Verified Token',
+    VERIFIED_TOKENS_DESC: 'xác thực bởi KardiaChain',
+    ADD_TOKEN_DESCRIPTION: 'Quản lý token KRC20 tiện lợi.',
     // Auth modal key
     ENTER_PIN_CODE: 'Nhập mã PIN để tiếp tục',
     WRONG_PIN: 'Mã PIN không đúng',
@@ -232,9 +237,9 @@ export const lang: Language = {
     SCAN_MODE: 'Quét QR code',
     INPUT_MODE: 'Nhập thủ công',
     // Tab nav:
-    HOME: 'Trang chủ',
+    HOME: 'Ví',
     TRANSACTIONS: 'Giao dịch',
-    STAKING: 'Đầu tư',
+    STAKING: 'Staking',
     ADDRESS_BOOK: 'Danh bạ',
     SETTING: 'Cài đặt',
     // Walk through screen:
