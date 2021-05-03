@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-// import ToggleSwitch from 'toggle-switch-react-native';
 import OtpInputs from 'react-native-otp-inputs';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {languageAtom} from '../../atoms/language';

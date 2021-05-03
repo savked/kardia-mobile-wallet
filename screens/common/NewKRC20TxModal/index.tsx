@@ -213,11 +213,6 @@ const NewKRC20TxModal = ({
     }
   };
 
-  const _getBalance = () => {
-    if (!wallets[selectedWallet]) return 0;
-    return wallets[selectedWallet].balance;
-  }
-
   if (showQRModal) {
     return (
       <ScanQRAddressModal
@@ -386,9 +381,9 @@ const NewKRC20TxModal = ({
           <View style={{marginBottom: 10}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <CustomText style={{color: theme.textColor, marginBottom: 5, fontWeight: 'bold'}}>{getLanguageString(language, 'CREATE_TX_KRC20_AMOUNT')}</CustomText>
-              <TouchableOpacity onPress={() => setAmount(format(parseDecimals(_getBalance(), 18)))}>
+              <TouchableOpacity onPress={() => setAmount(format(parseDecimals(balance, tokenDecimals)))}>
                 <CustomText style={{color: theme.urlColor}}>
-                  {parseDecimals(balance, tokenDecimals)} {tokenSymbol}
+                  {format(parseDecimals(balance, tokenDecimals))} {tokenSymbol}
                 </CustomText>
               </TouchableOpacity>
             </View>
@@ -446,6 +441,7 @@ const NewKRC20TxModal = ({
               block
               type="outline"
               style={{marginBottom: 12}}
+              textStyle={{fontSize: theme.defaultFontSize + 3}}
               // size="large"
               disabled={loading}
             />
@@ -458,6 +454,11 @@ const NewKRC20TxModal = ({
               // size="large"
               loading={loading}
               disabled={loading}
+              textStyle={{
+                fontWeight: '500',
+                fontSize: theme.defaultFontSize + 3,
+                fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+              }}
             />
           </View>
           <AlertModal

@@ -133,6 +133,5 @@ export const getVerifiedTokenList = async () => {
       decimals: item.decimal,
     }
   });
-
   return tokenList;
 }

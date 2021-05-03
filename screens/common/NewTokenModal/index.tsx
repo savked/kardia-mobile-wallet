@@ -5,7 +5,6 @@ import {
   Image,
   Keyboard,
   Platform,
-  Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -29,9 +28,11 @@ import CustomText from '../../../components/Text';
 const NewTokenModal = ({
   visible,
   onClose,
+  onSuccess,
 }: {
   visible: boolean;
   onClose: () => void;
+  onSuccess: () => void;
 }) => {
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
@@ -140,7 +141,7 @@ const NewTokenModal = ({
     await saveTokenList(newTokenList.filter((i) => !DEFAULT_ID.includes(i.id)));
     setKRC20List(newTokenList);
     clearState();
-    onClose();
+    onSuccess();
   };
 
   if (showQRModal) {

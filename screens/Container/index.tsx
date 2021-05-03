@@ -10,6 +10,7 @@ import TransactionStackScreen from '../../TransactionStack';
 import {
   getAddressBook,
   getAppPasscodeSetting,
+  getFontSize,
   getLanguageSetting,
   getSelectedWallet,
   getTokenList,
@@ -38,6 +39,7 @@ import AddressStackScreen from '../../AddressStack';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import { getVerifiedTokenList } from '../../services/krc20';
 import CustomText from '../../components/Text';
+import { fontSizeAtom } from '../../atoms/fontSize';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -202,6 +204,7 @@ const AppContainer = () => {
   const setTokenInfo = useSetRecoilState(tokenInfoAtom);
   const setAddressBook = useSetRecoilState(addressBookAtom);
   const setKRC20TokenList = useSetRecoilState(krc20ListAtom);
+  const setFontSize = useSetRecoilState(fontSizeAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(
     selectedWalletAtom,
   );
@@ -294,8 +297,11 @@ const AppContainer = () => {
 
       // Get local KRC20 list
       const krc20List = await getTokenList();
-
       setKRC20TokenList(krc20List);
+
+      // Get font size setting
+      const fontSizeSetting = await getFontSize();
+      setFontSize(fontSizeSetting)
 
       setInited(1);
     })();

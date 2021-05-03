@@ -13,6 +13,7 @@ import ImportMnemonic from './screens/ImportMnemonic';
 import SelectWallet from './screens/SelectWallet';
 import ImportPrivateKey from './screens/ImportPrivateKey';
 import KRC20Tokens from './screens/KRC20Tokens';
+import AddVerifiedKRC20Tokens from './screens/AddVerifiedKRC20Tokens';
 import AddKRC20Tokens from './screens/AddKRC20Tokens';
 
 const HomeStack = createStackNavigator();
@@ -57,6 +58,11 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name="NewKRC20Tokens"
         component={AddKRC20Tokens}
+        options={{headerShown: false}}
+      />
+      <HomeStack.Screen
+        name="AddVerifiedKRC20Tokens"
+        component={AddVerifiedKRC20Tokens}
         options={{headerShown: false}}
       />
       <HomeStack.Screen

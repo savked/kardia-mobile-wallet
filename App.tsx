@@ -18,7 +18,7 @@ import themes from './theme/index';
 import ErrorBoundary from './screens/ErrorBoundary';
 import { ThemeContext } from './ThemeContext';
 import GlobalStatusBar from './GlobalStatusBar';
-import { Text, View } from 'react-native';
+import { Platform, View } from 'react-native';
 import CustomText from './components/Text';
 
 declare const global: { HermesInternal: null | {} };
@@ -43,7 +43,15 @@ const App = () => {
             {
               success: ({ text1 = '', props = {}, ...rest }) => (
                 <View style={{ height: 32, minWidth: 77, paddingHorizontal: 16, paddingVertical: 8, backgroundColor: (props as any).backgroundColor || '#DDFFDB', borderRadius: 8, alignItems: 'center', justifyContent: 'center' }}>
-                  <CustomText style={{color: (props as any).textColor || 'rgba(69, 188, 67, 1)', fontWeight: 'bold'}}>{text1}</CustomText>
+                  <CustomText 
+                    style={{
+                      color: (props as any).textColor || 'rgba(69, 188, 67, 1)',
+                      fontWeight: '500',
+                      fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                    }}
+                  >
+                    {text1}
+                  </CustomText>
                 </View>
               )
             }
