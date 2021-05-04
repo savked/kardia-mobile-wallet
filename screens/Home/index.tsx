@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, Dimensions, Image, ImageBackground, Linking, RefreshControl, ScrollView, Text, View} from 'react-native';
+import {ActivityIndicator, Alert, Dimensions, Image, ImageBackground, Linking, Platform, RefreshControl, ScrollView, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
@@ -21,14 +21,16 @@ import numeral from 'numeral';
 import {getLanguageString} from '../../utils/lang';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 // import RemindPasscodeModal from '../common/RemindPasscodeModal';
-import {getStakingAmount} from '../../services/staking';
+import {getStakingAmount, getUndelegatingAmount} from '../../services/staking';
 import TokenListSection from './TokenListSection';
 import {showTabBarAtom} from '../../atoms/showTabBar';
-import {parseKaiBalance} from '../../utils/number';
 import {tokenInfoAtom} from '../../atoms/token';
 import {weiToKAI} from '../../services/transaction/amount';
 import Button from '../../components/Button';
 import { SIMPLEX_URL } from '../../config';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { HEADER_HEIGHT } from '../../theme';
+import CustomText from '../../components/Text';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
@@ -45,6 +47,7 @@ const HomeScreen = () => {
   );
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+  const tabBarHeight = useBottomTabBarHeight();
 
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
@@ -76,11 +79,14 @@ const HomeScreen = () => {
     try {
       const balance = await getBalance(_wallets[_selectedWallet].address);
       const staked = await getStakingAmount(_wallets[_selectedWallet].address);
+      const undelegating = await getUndelegatingAmount(_wallets[_selectedWallet].address);
+
       const newWallets: Wallet[] = JSON.parse(JSON.stringify(_wallets));
       newWallets.forEach((walletItem, index) => {
         if (walletItem.address === _wallets[_selectedWallet].address) {
           newWallets[index].balance = balance;
           newWallets[index].staked = staked;
+          newWallets[index].undelegating = undelegating;
         }
       });
       setWallets(newWallets);
@@ -140,6 +146,11 @@ const HomeScreen = () => {
     return wallets[selectedWallet].staked;
   }
 
+  const _getUndelegating = () => {
+    if (!wallets[selectedWallet]) return 0;
+    return wallets[selectedWallet].undelegating;
+  }
+
   const onRefresh = async () => {
     setRefreshing(true)
     await updateWalletBalance();
@@ -152,8 +163,8 @@ const HomeScreen = () => {
       <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
       <ImageBackground
         source={require('../../assets/home_background.jpg')}
-        imageStyle={{width: viewportWidth, height: viewportHeight, resizeMode: 'cover', marginLeft: 20}}
-        style={{width: viewportWidth, height: viewportHeight}}
+        imageStyle={{width: viewportWidth, height: viewportHeight, resizeMode: 'cover'}}
+        style={{width: viewportWidth, height: viewportHeight - tabBarHeight - HEADER_HEIGHT - 48}}
       >
         <ScrollView 
           style={[styles.bodyContainer]} 
@@ -190,21 +201,21 @@ const HomeScreen = () => {
                 source={require('../../assets/logo_dark.png')}
               />
               <View>
-                <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
-                  {getLanguageString(language, 'BALANCE')}
-                </Text>
-                <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 18, marginVertical: 4}}>
-                  {parseKaiBalance(_getBalance(), true)}{' '}
-                  <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)'}}>KAI</Text>
-                </Text>
-                <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
-                  ~${' '}
+                <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 14}}>
+                  {getLanguageString(language, 'BALANCE').toUpperCase()}
+                </CustomText>
+                <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold'}}>
+                  {
+                    numeral(Number(weiToKAI(_getBalance()))).format('0,0.00')}{' '}
+                  <CustomText style={{color: theme.mutedTextColor, fontWeight: '500'}}>KAI</CustomText>
+                </CustomText>
+                <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 14}}>
+                  $
                   {numeral(
                     tokenInfo.price *
-                      (Number(weiToKAI(_getBalance())) +
-                      _getStaked()),
-                  ).format('0,0.00a')}
-                </Text>
+                      Number(weiToKAI(_getBalance())),
+                  ).format('0,0.00')}
+                </CustomText>
               </View>
             </View>
             <Button
@@ -213,7 +224,7 @@ const HomeScreen = () => {
               onPress={() => Linking.openURL(SIMPLEX_URL)}
               type="ghost"
               size="small"
-              textStyle={{color: '#000000', fontWeight: 'bold'}}
+              textStyle={Platform.OS === 'android' ? {color: '#000000', fontFamily: 'WorkSans-SemiBold'} : {color: '#000000', fontWeight: '500'}}
               style={{paddingHorizontal: 16, paddingVertical: 8}}
             />
           </View>

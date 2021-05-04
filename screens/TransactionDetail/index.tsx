@@ -27,6 +27,7 @@ import {
 } from '../../utils/lang';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import IconButton from '../../components/IconButton';
+import CustomText from '../../components/Text';
 
 const TransactionDetail = () => {
   const theme = useContext(ThemeContext);
@@ -106,9 +107,9 @@ const TransactionDetail = () => {
         {renderStatusIcon(txData?.status)}
         <View style={{justifyContent: 'space-between', paddingTop: 10}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text allowFontScaling={false} style={[{fontSize: 18}, {color: theme.textColor}]}>
+            <CustomText style={[{fontSize: 18}, {color: theme.textColor}]}>
               {getLanguageString(language, 'TRANSACTION_HASH')}:{' '}
-            </Text>
+            </CustomText>
             <Button
               type="link"
               onPress={() => handleClickLink(getTxURL(txHash))}
@@ -119,48 +120,48 @@ const TransactionDetail = () => {
                 color: theme.textColor,
               }}
             />
-            {/* <Text
+            {/* <CustomText
               allowFontScaling={false}
               style={[
                 {fontSize: 18, fontWeight: 'bold'},
                 {color: theme.textColor},
               ]}>
               {truncate(txHash, 7, 7)}
-            </Text> */}
+            </CustomText> */}
           </View>
         </View>
       </View>
       <View style={{width: '100%'}}>
         <View style={{width: '100%', paddingHorizontal: 22}}>
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={{color: theme.textColor, fontSize: 18, fontStyle: 'italic'}}>
             {getLanguageString(language, 'TRANSACTION_DETAIL')}
-          </Text>
+          </CustomText>
           <Divider />
         </View>
         <View style={styles.infoContainer}>
-          <Text allowFontScaling={false} style={[styles.infoTitle, {color: theme.textColor}]}>
+          <CustomText style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'TRANSACTION_AMOUNT')}
-          </Text>
-          <Text allowFontScaling={false} style={[styles.infoValue, {color: theme.textColor}]}>
+          </CustomText>
+          <CustomText style={[styles.infoValue, {color: theme.textColor}]}>
             {numeral(txData?.amount).format('0,0.00')} KAI
-          </Text>
+          </CustomText>
         </View>
         <View style={styles.infoContainer}>
-          <Text allowFontScaling={false} style={[styles.infoTitle, {color: theme.textColor}]}>
+          <CustomText style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'TRANSACTION_FEE')}
-          </Text>
-          <Text allowFontScaling={false} style={[styles.infoValue, {color: theme.textColor}]}>
+          </CustomText>
+          <CustomText style={[styles.infoValue, {color: theme.textColor}]}>
             {txData.fee} KAI
-          </Text>
+          </CustomText>
         </View>
         <View style={styles.infoContainer}>
-          <Text allowFontScaling={false} style={[styles.infoTitle, {color: theme.textColor}]}>
+          <CustomText style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'FROM')}
-          </Text>
+          </CustomText>
           <View style={{flexDirection: 'row'}}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={[
                 styles.infoValue,
@@ -171,7 +172,7 @@ const TransactionDetail = () => {
                 10,
                 10,
               )}
-            </Text>
+            </CustomText>
             <IconButton
               color={theme.textColor}
               name="copy"
@@ -181,11 +182,11 @@ const TransactionDetail = () => {
           </View>
         </View>
         <View style={styles.infoContainer}>
-          <Text allowFontScaling={false} style={[styles.infoTitle, {color: theme.textColor}]}>
+          <CustomText style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'TO')}
-          </Text>
+          </CustomText>
           <View style={{flexDirection: 'row'}}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={[
                 styles.infoValue,
@@ -196,7 +197,7 @@ const TransactionDetail = () => {
                 10,
                 10,
               )}
-            </Text>
+            </CustomText>
             <IconButton
               color={theme.textColor}
               name="copy"
@@ -206,10 +207,10 @@ const TransactionDetail = () => {
           </View>
         </View>
         <View style={styles.infoContainer}>
-          <Text allowFontScaling={false} style={[styles.infoTitle, {color: theme.textColor}]}>
+          <CustomText style={[styles.infoTitle, {color: theme.textColor}]}>
             {getLanguageString(language, 'TRANSACTION_DATE')}
-          </Text>
-          <Text allowFontScaling={false} style={[styles.infoValue, {color: theme.textColor}]}>
+          </CustomText>
+          <CustomText style={[styles.infoValue, {color: theme.textColor}]}>
             {isSameDay(txData.date, new Date())
               ? `${formatDistanceToNowStrict(txData.date, {
                   locale: getDateFNSLocale(language),
@@ -217,7 +218,7 @@ const TransactionDetail = () => {
               : format(txData.date, getDateTimeFormat(language), {
                   locale: getDateFNSLocale(language),
                 })}
-          </Text>
+          </CustomText>
         </View>
         <View
           style={{marginTop: 15, paddingHorizontal: 22, paddingVertical: 8}}>

@@ -18,8 +18,8 @@ import { getLanguageString } from '../../utils/lang';
 import { getSelectedWallet, getWallets } from '../../utils/local';
 import { parseDecimals } from '../../utils/number';
 import {styles} from './style';
-import NewTokenModal from '../common/NewTokenModal';
 import Button from '../../components/Button';
+import CustomText from '../../components/Text';
 
 export default () => {
   const theme = useContext(ThemeContext);
@@ -33,7 +33,6 @@ export default () => {
 
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState<number[]>([]);
-  const [showModal, setShowModal] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -89,7 +88,6 @@ export default () => {
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <NewTokenModal visible={showModal} onClose={() => setShowModal(false)} />
       <View
         style={{
           width: '100%',
@@ -103,7 +101,7 @@ export default () => {
           style={{ padding: 0 }}
         />
       </View>
-      <Text allowFontScaling={false} style={{fontSize: 36, paddingHorizontal: 20, color: theme.textColor}}>{getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}</Text>
+      <CustomText style={{fontSize: 36, paddingHorizontal: 20, color: theme.textColor}}>{getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}</CustomText>
       <List
         items={tokenList}
         loading={loading}
@@ -149,15 +147,14 @@ export default () => {
                     alignItems: 'flex-start',
                     height: '100%',
                   }}>
-                  <Text
-                    allowFontScaling={false}
+                  <CustomText
                     style={{
                       color: '#FFFFFF',
                       fontWeight: 'bold',
                       fontSize: 16,
                     }}>
-                    {item.name}
-                  </Text>
+                    {item.symbol}
+                  </CustomText>
                 </View>
                 <View
                   style={{
@@ -166,14 +163,14 @@ export default () => {
                     alignItems: 'flex-end',
                     justifyContent: 'center',
                   }}>
-                  <Text allowFontScaling={false} style={[styles.kaiAmount, {color: theme.textColor}]}>
+                  <CustomText style={[styles.kaiAmount, {color: theme.textColor}]}>
                     {numeral(
                       parseDecimals(balance[index], item.decimals),
                     ).format('0,0.00')}
-                  </Text>
-                  <Text allowFontScaling={false} style={{color: theme.ghostTextColor}}>
+                  </CustomText>
+                  <CustomText style={{color: theme.ghostTextColor}}>
                     {item.symbol}
-                  </Text>
+                  </CustomText>
                 </View>
               </TouchableOpacity>
             </View>
@@ -186,7 +183,7 @@ export default () => {
           type="primary"
           icon={<AntIcon name="plus" size={24} />}
           size="small"
-          onPress={() => setShowModal(true)}
+          onPress={() => navigation.navigate('NewKRC20Tokens')}
           style={styles.floatingButton}
         />
       )}

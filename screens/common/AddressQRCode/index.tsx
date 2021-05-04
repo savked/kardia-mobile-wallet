@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {Dimensions, Image, ImageBackground, Text, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, ImageBackground, Platform, TouchableOpacity, View} from 'react-native';
+import Toast from 'react-native-toast-message';
 import QRCode from 'react-native-qrcode-svg';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
@@ -13,6 +14,7 @@ import {ThemeContext} from '../../../ThemeContext';
 import {getLanguageString} from '../../../utils/lang';
 import {copyToClipboard, truncate} from '../../../utils/string';
 import numeral from 'numeral'
+import CustomText from '../../../components/Text';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -42,9 +44,6 @@ const QRModal = ({
         height: 730,
       }}
       onClose={onClose}>
-      {/* <Text allowFontScaling={false} style={{fontSize: 20, fontWeight: 'bold', color: theme.textColor}}>
-        {getLanguageString(language, 'SCAN_QR_FOR_ADDRESS')}
-      </Text> */}
       <View
         style={{
           padding: 32,
@@ -54,47 +53,23 @@ const QRModal = ({
         <QRCode
           size={viewportWidth - 104}
           value={wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
-          // logo={require('../../../assets/logo.png')}
-          // logoBackgroundColor="#FFFFFF"
-          // logoSize={}
-          // logoMargin={8}
-          // logoBorderRadius={20}
           color={theme.textColor}
           backgroundColor={theme.backgroundColor}
         />
       </View>
-      {/* <TouchableOpacity
-        onPress={() =>
-          copyToClipboard(
-            wallets[selectedWallet] ? wallets[selectedWallet].address : '',
-          )
-        }>
-        <Text
-          allowFontScaling={false}
+      <View style={{flexDirection: 'row', paddingVertical: 0, paddingHorizontal: 20, alignItems: 'center'}}>
+        <Image source={require('../../../assets/icon/warning.png')} style={{width: 20, height: 20, marginRight: 8}} />
+        <CustomText
           style={{
-            fontSize: 14,
-            fontStyle: 'italic',
-            paddingHorizontal: 18,
-            textAlign: 'center',
-            textDecorationLine: 'underline',
-            color: theme.textColor,
+            fontWeight: '500',
+            fontSize: 13,            
+            color: theme.warningTextColor,
+            textAlign: 'left',
+            width: '100%',
           }}>
-          {wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
-        </Text>
-      </TouchableOpacity> */}
-      <Text
-        allowFontScaling={false}
-        style={{
-          fontWeight: 'bold',
-          fontSize: 13,
-          // paddingHorizontal: 12,
-          paddingVertical: 16,
-          color: theme.warningTextColor,
-          textAlign: 'left',
-          width: '100%',
-        }}>
-        {getLanguageString(language, 'ERC20_WARNING')}
-      </Text>
+          {getLanguageString(language, 'ERC20_WARNING')}
+        </CustomText>
+      </View>
       <ImageBackground
         source={require('../../../assets/address_qr_balance_background.png')}
         imageStyle={{
@@ -113,18 +88,18 @@ const QRModal = ({
           // paddingHorizontal: 18,
         }}
       >
-        <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4, textAlign: 'left', paddingHorizontal: 20}}>
+        <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4, textAlign: 'left', paddingHorizontal: 20}}>
           {getLanguageString(language, 'BALANCE').toUpperCase()}
-        </Text>
-        <Text allowFontScaling={false} style={{fontSize: 24, color: 'white', paddingHorizontal: 20}}>
-          ~${' '}
+        </CustomText>
+        <CustomText style={{fontSize: 24, color: 'white', paddingHorizontal: 20}}>
+          $
           {numeral(
             tokenInfo.price *
               (Number(weiToKAI(wallet.balance)) + wallet.staked),
           ).format('0,0.00')}
-        </Text>
+        </CustomText>
         <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', width: '100%', paddingHorizontal: 20}}>
-          <Text allowFontScaling={false} style={{
+          <CustomText style={{
               color: '#FFFFFF',
               fontSize: 16,
               marginRight: 8,
@@ -134,11 +109,22 @@ const QRModal = ({
               viewportWidth >= 432 ? 14 : 10,
               viewportWidth >= 432 ? 14 : 12,
             )}
-          </Text>
+          </CustomText>
           <TouchableOpacity
-            onPress={() => copyToClipboard(
-              wallets[selectedWallet] ? wallets[selectedWallet].address : '',
-            )}
+            onPress={() => {
+              copyToClipboard(
+                wallets[selectedWallet] ? wallets[selectedWallet].address : '',
+              )
+              Toast.show({
+                type: 'success',
+                topOffset: 70,
+                text1: getLanguageString(language, 'COPIED'),
+                props: {
+                  backgroundColor: theme.backgroundFocusColor,
+                  textColor: theme.textColor
+                }
+              });
+            }}
             style={{
               width: 44,
               height: 44,
@@ -156,6 +142,11 @@ const QRModal = ({
         onPress={onClose}
         block
         style={{marginTop: 32}}
+        textStyle={{
+          fontWeight: '500',
+          fontSize: theme.defaultFontSize + 3,
+          fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+        }}
       />
     </Modal>
   );

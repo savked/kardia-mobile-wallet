@@ -106,6 +106,20 @@ export const getStakingAmount = async (address: string) => {
   }
 };
 
+export const getUndelegatingAmount = async (address: string) => {
+  try {
+    const _staking: Staking[] = await getCurrentStaking(address);
+    let total = 0;
+    _staking.forEach((item) => {
+      total += Number(weiToKAI(item.unbondedAmount)) + Number(weiToKAI(item.withdrawableAmount));
+    });
+    return total;
+  } catch (error) {
+    console.error('Get staking amount error for address ', address);
+    throw error;
+  }
+};
+
 export const withdrawReward = async (valSmcAddr: string, wallet: Wallet) => {
   try {
     kardiaContract.updateAbi(VALIDATOR_ABI);

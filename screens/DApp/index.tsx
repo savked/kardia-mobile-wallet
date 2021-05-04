@@ -1,11 +1,12 @@
 import React from 'react';
-import {Text, View, FlatList, Image} from 'react-native';
+import {View, FlatList, Image} from 'react-native';
+import CustomText from '../../components/Text';
 import {styles} from './style';
 
 const DAppScreen = () => {
   return (
     <View style={styles.container}>
-      <Text allowFontScaling={false} style={styles.title}>Explorer Kardia's ecosystem</Text>
+      <CustomText style={styles.title}>Explorer Kardia's ecosystem</CustomText>
       <FlatList
         numColumns={2}
         data={data}
@@ -19,14 +20,14 @@ const DAppScreen = () => {
                 }}
               />
               <View>
-                <Text>{item.title}</Text>
-                {/* <Text>{item.description}</Text> */}
+                <CustomText>{item.title}</CustomText>
+                {/* <CustomText>{item.description}</CustomText> */}
               </View>
             </View>
           );
         }}
         keyExtractor={(item) => item.title}
-        ListEmptyComponent={<Text>No data</Text>}
+        ListEmptyComponent={<CustomText>No data</CustomText>}
       />
     </View>
   );

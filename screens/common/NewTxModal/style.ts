@@ -14,8 +14,8 @@ export const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    // fontSize: 16,
+    fontWeight: '500',
     marginBottom: 5,
   },
 
@@ -85,9 +85,10 @@ export const styles = StyleSheet.create({
   confirmTitle: {
     fontSize: 22,
     fontWeight: 'bold',
+    marginBottom: 24
   },
   headline: {
-    fontWeight: 'bold',
+    fontWeight: '500',
     marginBottom: 5,
   },
 });

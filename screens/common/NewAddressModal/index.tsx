@@ -24,6 +24,7 @@ import {styles} from './style';
 import {addressBookAtom} from '../../../atoms/addressBook';
 import {saveAddressBook} from '../../../utils/local';
 import {toChecksum} from '../../../utils/string';
+import CustomText from '../../../components/Text';
 
 export default ({
   name = '',
@@ -41,10 +42,10 @@ export default ({
   onClose: () => void;
 }) => {
   const [abName, setABName] = useState(name);
-  const [errName, setErrName] = useState(' ');
+  const [errName, setErrName] = useState('');
   const [abAvatar, setABAvatar] = useState<ImageURISource>({uri: avatar});
   const [abAddress, setABAddress] = useState(address);
-  const [errAddress, setErrAddress] = useState(' ');
+  const [errAddress, setErrAddress] = useState('');
   const [showQRModal, setShowQRModal] = useState(false);
   const [keyboardShown, setKeyboardShown] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
@@ -185,28 +186,32 @@ export default ({
       contentStyle={getModalStyle()}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
-          <CustomImagePicker image={abAvatar} onSelect={setABAvatar} imageStyle={{
-            // width: 80,
-            // height: 80,
-            borderRadius: 24,
-          }} />
+          <CustomImagePicker 
+            image={abAvatar} 
+            onSelect={setABAvatar} 
+            imageStyle={{
+              // width: 80,
+              // height: 80,
+              borderRadius: 24,
+            }}
+            pickerTitle={getLanguageString(language, 'PICKER_TITLE')}
+          />
           <View
             style={{
               justifyContent: 'flex-start',
               width: '100%',
               marginBottom: 12,
             }}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{
-                color: theme.mutedTextColor,
-                fontSize: 12,
+                color: theme.textColor,
+                fontSize: 13,
                 marginBottom: 6,
               }}>
               {getLanguageString(language, 'ADDRESS_NAME')}
-            </Text>
+            </CustomText>
             <TextInput
-              // headlineStyle={{color: 'black'}}
               onChangeText={setABName}
               value={abName}
               inputStyle={{
@@ -214,6 +219,8 @@ export default ({
                 color: theme.textColor,
               }}
               message={errName}
+              placeholder={getLanguageString(language, 'ADDRESS_NAME_PLACEHOLDER')}
+              placeholderTextColor={theme.mutedTextColor}
             />
           </View>
           <View
@@ -222,15 +229,15 @@ export default ({
               width: '100%',
               marginBottom: 12,
             }}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{
-                color: theme.mutedTextColor,
-                fontSize: 12,
+                color: theme.textColor,
+                fontSize: 13,
                 marginBottom: 6,
               }}>
               {getLanguageString(language, 'ADDRESS_ADDRESS')}
-            </Text>
+            </CustomText>
             <View
               style={{
                 marginBottom: 10,
@@ -247,6 +254,8 @@ export default ({
                     color: theme.textColor,
                   }}
                   message={errAddress}
+                  placeholder={getLanguageString(language, 'ADDRESS_ADDRESS_PLACEHOLDER')}
+                  placeholderTextColor={theme.mutedTextColor}
                 />
               </View>
               <TouchableOpacity
@@ -276,12 +285,17 @@ export default ({
             onPress={closeModal}
             block={true}
             style={{marginBottom: 12}}
+            textStyle={{color: theme.textColor, fontSize: theme.defaultFontSize + 1}}
           />
           <Button
             type="primary"
             title={getLanguageString(language, 'SAVE_TO_ADDRESS_BOOK')}
             onPress={handleSubmit}
             block={true}
+            textStyle={{
+              fontSize: theme.defaultFontSize + 3, fontWeight: '500',
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+            }}
           />
         </View>
       </TouchableWithoutFeedback>

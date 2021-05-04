@@ -1,3 +1,5 @@
+import { ENDPOINT } from "./config";
+
 const DEFAULT_TIMEOUT = 15 * 1000;
 
 /**
@@ -13,3 +15,18 @@ export const requestWithTimeOut = (promise: Promise<any>, timeout?: number) => {
 
   return Promise.race([timeoutPromise, promise]);
 };
+
+export const getAppStatus = async () => {
+  const requestOptions = {
+    method: 'GET',
+    redirect: 'follow',
+  };
+
+  const response = await requestWithTimeOut(
+    fetch(`${ENDPOINT}status`, requestOptions),
+    50 * 1000,
+  )
+
+  const responseJSON = await response.json();
+  return responseJSON.data;
+}

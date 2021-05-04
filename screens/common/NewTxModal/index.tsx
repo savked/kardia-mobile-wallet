@@ -31,6 +31,7 @@ import ScanQRAddressModal from '../ScanQRAddressModal';
 import {theme} from '../../../theme/dark';
 import AuthModal from '../AuthModal';
 import {useNavigation} from '@react-navigation/native';
+import CustomText from '../../../components/Text';
 
 const MAX_AMOUNT = 5000000000;
 
@@ -52,8 +53,8 @@ const NewTxModal = ({
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [errorAddress, setErrorAddress] = useState(' ');
-  const [errorAmount, setErrorAmount] = useState(' ');
+  const [errorAddress, setErrorAddress] = useState('');
+  const [errorAmount, setErrorAmount] = useState('');
   const [keyboardShown, setKeyboardShown] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
 
@@ -178,7 +179,7 @@ const NewTxModal = ({
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: 480,
+        height: keyboardShown ? 470 : 500,
         backgroundColor: 'rgba(58, 59, 60, 1)',
       };
     } else {
@@ -236,28 +237,29 @@ const NewTxModal = ({
         visible={showConfirmModal}
         contentStyle={{
           height: 300,
+          justifyContent: 'flex-start',
           backgroundColor: theme.backgroundFocusColor,
         }}
         onClose={() => setShowConfirmModal(false)}>
-        <Text allowFontScaling={false} style={[styles.confirmTitle, {color: theme.textColor}]}>
+        <CustomText style={[styles.confirmTitle, {color: theme.textColor}]}>
           {getLanguageString(language, 'CONFIRM_TRANSACTION')}
-        </Text>
-        <View style={{width: '100%'}}>
+        </CustomText>
+        <View style={{width: '100%', marginBottom: 24}}>
           <View style={styles.confirmGroup}>
-            <Text allowFontScaling={false} style={[styles.confirmText, {color: theme.textColor}]}>
+            <CustomText style={[styles.confirmText, {color: theme.textColor}]}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}:{' '}
-            </Text>
-            <Text allowFontScaling={false} style={[styles.confirmContent, {color: theme.textColor}]}>
+            </CustomText>
+            <CustomText style={[styles.confirmContent, {color: theme.textColor}]}>
               {truncate(address, 10, 10)}
-            </Text>
+            </CustomText>
           </View>
           <View style={styles.confirmGroup}>
-            <Text allowFontScaling={false} style={[styles.confirmText, {color: theme.textColor}]}>
+            <CustomText style={[styles.confirmText, {color: theme.textColor}]}>
               {getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:{' '}
-            </Text>
-            <Text allowFontScaling={false} style={[styles.confirmContent, {color: theme.textColor}]}>
+            </CustomText>
+            <CustomText style={[styles.confirmContent, {color: theme.textColor}]}>
               {amount} KAI
-            </Text>
+            </CustomText>
           </View>
         </View>
         <View
@@ -271,11 +273,13 @@ const NewTxModal = ({
             onPress={() => setShowConfirmModal(false)}
             type="outline"
             style={{marginBottom: 12}}
+            textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 3, fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}
           />
           <Button
             title={getLanguageString(language, 'CONFIRM')}
             onPress={() => setShowAuthModal(true)}
             type="primary"
+            textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 3, fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}
           />
         </View>
       </Modal>
@@ -296,9 +300,9 @@ const NewTxModal = ({
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
           <View>
-            <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
+            <CustomText style={[styles.headline, {color: theme.textColor, fontSize: theme.defaultFontSize + 1}]}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}
-            </Text>
+            </CustomText>
           </View>
           <View
             style={{
@@ -316,6 +320,8 @@ const NewTxModal = ({
                   backgroundColor: 'rgba(96, 99, 108, 1)',
                   color: theme.textColor,
                 }}
+                placeholder={getLanguageString(language, 'CREATE_TX_ADDRESS_PLACEHOLDER')}
+                placeholderTextColor={theme.mutedTextColor}
                 // headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
               />
             </View>
@@ -360,11 +366,11 @@ const NewTxModal = ({
 
           <View style={{marginBottom: 10}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text allowFontScaling={false} style={{color: theme.textColor, marginBottom: 5, fontWeight: 'bold'}}>{getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}</Text>
+              <CustomText style={{color: theme.textColor, marginBottom: 5, fontWeight: '500', fontSize: theme.defaultFontSize + 1}}>{getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}</CustomText>
               <TouchableOpacity onPress={() => setAmount(format(parseDecimals(_getBalance(), 18)))}>
-                <Text allowFontScaling={false} style={{color: theme.urlColor}}>
+                <CustomText style={{color: theme.urlColor}}>
                   {parseKaiBalance(_getBalance())} KAI
-                </Text>
+                </CustomText>
               </TouchableOpacity>
             </View>
             <TextInput
@@ -395,11 +401,11 @@ const NewTxModal = ({
             />
           </View>
 
-          <Text
+          <CustomText
             allowFontScaling={false}
-            style={[styles.title, {marginBottom: 12, color: theme.textColor}]}>
+            style={[styles.title, {marginBottom: 12, color: theme.textColor, fontSize: theme.defaultFontSize + 1}]}>
             {getLanguageString(language, 'TRANSACTION_SPEED')}
-          </Text>
+          </CustomText>
           <View style={{marginBottom: 20}}>
             <ListCard gasPrice={gasPrice} selectGasPrice={setGasPrice} />
           </View>
@@ -419,6 +425,7 @@ const NewTxModal = ({
               block
               type="outline"
               style={{marginBottom: 12}}
+              textStyle={{fontWeight: '500', fontSize: theme.defaultFontSize + 4, fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}
               // size="large"
               disabled={loading}
             />
@@ -429,9 +436,12 @@ const NewTxModal = ({
               block
               type="primary"
               // size="large"
+              textStyle={{
+                fontWeight: '500', fontSize: theme.defaultFontSize + 3,
+                fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+              }}
               loading={loading}
               disabled={loading}
-              textStyle={{fontWeight: 'bold'}}
             />
           </View>
           <AlertModal

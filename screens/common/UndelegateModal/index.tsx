@@ -15,6 +15,7 @@ import { ThemeContext } from '../../../ThemeContext';
 import { getLanguageString } from '../../../utils/lang';
 import { getSelectedWallet, getWallets } from '../../../utils/local';
 import { format, getDigit, isNumber } from '../../../utils/number';
+import CustomText from '../../../components/Text';
 
 export default ({visible, onClose, validatorItem, onSuccess}: {
   visible: boolean;
@@ -126,7 +127,7 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
   const getModalStyle = () => {
     if (Platform.OS === 'android') {
       return {
-        height: 280,
+        height: 300,
         backgroundColor: theme.backgroundFocusColor,
         alignItems: 'center',
         justifyContent: 'flex-start',
@@ -151,14 +152,14 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
         <View style={{flex: 1, width: '100%', padding: 35}}>
           <View style={{width: '100%'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8}}>
-              <Text style={{fontSize: theme.defaultFontSize, color: theme.textColor}} allowFontScaling={false}>
+              <CustomText style={{fontSize: theme.defaultFontSize + 1, color: theme.textColor}} allowFontScaling={false}>
                 {getLanguageString(
                   language,
                   'UNDELEGATE_AMOUNT_PLACEHOLDER',
                 )}
-              </Text>
+              </CustomText>
               <TouchableOpacity onPress={() => setUndelegateAmount(format(Number(stakedAmountInKAI)))}>
-                <Text style={{fontSize: theme.defaultFontSize, color: theme.urlColor}} allowFontScaling={false}>{numeral(stakedAmountInKAI).format('0,0.00')} KAI</Text>
+                <CustomText style={{fontSize: theme.defaultFontSize + 1, color: theme.urlColor}} allowFontScaling={false}>{numeral(stakedAmountInKAI).format('0,0.00')} KAI</CustomText>
               </TouchableOpacity>
             </View>
             <CustomTextInput
@@ -184,6 +185,7 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
                 setUndelegateAmount(format(Number(getDigit(undelegateAmount))));
               }}
               value={undelegateAmount}
+              autoFocus={true}
               // headline={getLanguageString(
               //   language,
               //   'UNDELEGATE_AMOUNT_PLACEHOLDER',
@@ -204,6 +206,11 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
             title={getLanguageString(language, 'UNDELEGATE')}
             onPress={handleUndelegate}
             style={{marginTop: 8}}
+            textStyle={{
+              fontWeight: '500',
+              fontSize: theme.defaultFontSize + 3,
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+            }}
           />
         </View>
       </TouchableWithoutFeedback>

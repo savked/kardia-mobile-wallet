@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   headerContainer: {
     height: HEADER_HEIGHT,
     flexDirection: 'row',
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
     // paddingHorizontal: 20,
     paddingVertical: 10,
     height: 240,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   kaiCard: {
     borderRadius: 8,

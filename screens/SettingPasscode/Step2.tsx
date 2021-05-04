@@ -9,6 +9,7 @@ import Button from '../../components/Button';
 import {ThemeContext} from '../../ThemeContext';
 import {getLanguageString} from '../../utils/lang';
 import {styles} from './style';
+import CustomText from '../../components/Text';
 
 const Step2 = ({
   step1Passcode,
@@ -48,13 +49,13 @@ const Step2 = ({
           backgroundColor="transparent"
           style={{padding: 0, marginBottom: 18}}
         />
-        <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 36}}>
+        <CustomText style={{color: theme.textColor, fontSize: 36}}>
           {getLanguageString(language, 'CONFIRM_PIN')}
-        </Text>
+        </CustomText>
       </View>
-      <Text allowFontScaling={false} style={[styles.title, {color: theme.textColor}]}>
+      <CustomText style={[styles.title, {color: theme.textColor}]}>
         {getLanguageString(language, 'CONFIRM_PASSCODE')}
-      </Text>
+      </CustomText>
       <View style={{flex: 1, width: '100%'}}>
         <OtpInputs
           // TODO: remove ts-ignore after issue fixed
@@ -74,11 +75,11 @@ const Step2 = ({
           secureTextEntry={true}
         />
         {error !== '' && (
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={{color: 'red', paddingHorizontal: 20, fontStyle: 'italic'}}>
             {error}
-          </Text>
+          </CustomText>
         )}
       </View>
       <Button

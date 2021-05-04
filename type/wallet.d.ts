@@ -5,6 +5,7 @@ interface Wallet {
   privateKey?: string;
   balance: number;
   staked: number;
+  undelegating: number;
   cardAvatarID?: number;
 }
 

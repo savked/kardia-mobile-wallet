@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { ImageBackground, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Modal from '../../../components/Modal';
+import CustomText from '../../../components/Text';
 import { ThemeContext } from '../../../ThemeContext';
 import { parseCardAvatar, parseCardAvatarColor } from '../../../utils/lang';
 
@@ -28,7 +29,7 @@ export default ({ visible, onClose, cardAvatarID }: {
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start'
       }}>
-      <Text allowFontScaling={false} style={{ fontSize: 15, color: 'rgba(252, 252, 252, 0.54)', marginBottom: 16 }}>Select card</Text>
+      <CustomText style={{ fontSize: 15, color: 'rgba(252, 252, 252, 0.54)', marginBottom: 16 }}>Select card</CustomText>
       <View style={{ flex: 1 }}>
         <ScrollView horizontal>
           {[0, 1, 2, 3].map((item, index) => {
@@ -49,7 +50,7 @@ export default ({ visible, onClose, cardAvatarID }: {
                   justifyContent: 'flex-end',
                   padding: 12,
                 }} source={parseCardAvatar(item || 0)}>
-                  <Text allowFontScaling={false} style={{fontSize: 14, color: theme.textColor}}>{parseCardAvatarColor(item || 0)}</Text>
+                  <CustomText style={{fontSize: 14, color: theme.textColor}}>{parseCardAvatarColor(item || 0)}</CustomText>
               </ImageBackground>
             );
           })}

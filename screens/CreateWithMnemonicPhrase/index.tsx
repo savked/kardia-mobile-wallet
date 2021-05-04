@@ -14,6 +14,7 @@ import List from '../../components/List';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import {useNavigation} from '@react-navigation/core';
+import CustomText from '../../components/Text';
 
 const CreateWithMnemonicPhrase = () => {
   const navigation = useNavigation();
@@ -73,7 +74,7 @@ const CreateWithMnemonicPhrase = () => {
     switch (language) {
       case 'en_US':
         return (
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={[
               styles.description,
@@ -81,14 +82,14 @@ const CreateWithMnemonicPhrase = () => {
               {color: theme.textColor},
             ]}>
             Please make sure you
-            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}> WRITE DOWN</Text> and{' '}
-            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>SAVE</Text> your mnemonic phrase.
+            <CustomText style={{fontWeight: 'bold'}}> WRITE DOWN</CustomText> and{' '}
+            <CustomText style={{fontWeight: 'bold'}}>SAVE</CustomText> your mnemonic phrase.
             You will need it to access or recover your wallet.
-          </Text>
+          </CustomText>
         );
       case 'vi_VI':
         return (
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={[
               styles.description,
@@ -96,14 +97,14 @@ const CreateWithMnemonicPhrase = () => {
               {color: theme.textColor},
             ]}>
             Hãy đảm bảo bạn đã
-            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}> GHI LẠI</Text> 12 từ này. 12 từ
+            <CustomText style={{fontWeight: 'bold'}}> GHI LẠI</CustomText> 12 từ này. 12 từ
             này không thể thay đổi và sẽ được sử dụng để truy cập và khôi phục
             ví.
-          </Text>
+          </CustomText>
         );
       default:
         return (
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={[
               styles.description,
@@ -111,10 +112,10 @@ const CreateWithMnemonicPhrase = () => {
               {color: theme.textColor},
             ]}>
             Please make sure you
-            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}> WRITE DOWN</Text> and{' '}
-            <Text allowFontScaling={false} style={{fontWeight: 'bold'}}>SAVE</Text> your mnemonic phrase.
+            <CustomText style={{fontWeight: 'bold'}}> WRITE DOWN</CustomText> and{' '}
+            <CustomText style={{fontWeight: 'bold'}}>SAVE</CustomText> your mnemonic phrase.
             You will need it to access or recover your wallet.
-          </Text>
+          </CustomText>
         );
     }
   };
@@ -166,22 +167,21 @@ const CreateWithMnemonicPhrase = () => {
                 styles.phraseItemContainer,
                 {backgroundColor: theme.backgroundFocusColor},
               ]}>
-              <Text allowFontScaling={false} style={[styles.phraseItemText, {color: theme.textColor}]}>
+              <CustomText style={[styles.phraseItemText, {color: theme.textColor}]}>
                 {item.label}
-              </Text>
+              </CustomText>
             </View>
           );
         }}
       />
-      <Text
-        allowFontScaling={false}
+      <CustomText
         style={[
           styles.description,
           styles.paragraph,
           {color: theme.textColor},
         ]}>
         {getLanguageString(language, 'MNEMONIC_DESCRIPTION')}
-      </Text>
+      </CustomText>
       {renderWarning()}
       <Button
         type="primary"

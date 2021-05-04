@@ -11,6 +11,7 @@ import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { statusBarColorAtom } from '../../atoms/statusBar';
+import CustomText from '../../components/Text';
 
 export default () => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
@@ -34,18 +35,18 @@ export default () => {
         onPress={() => navigation.goBack()}
         backgroundColor="transparent"
       />
-      <Text allowFontScaling={false} style={[styles.title, {color: theme.textColor}]}>
+      <CustomText style={[styles.title, {color: theme.textColor}]}>
         {getLanguageString(language, 'IMPORT_WALLET')}
-      </Text>
-      <Text
-        allowFontScaling={false}
+      </CustomText>
+      <CustomText
         style={{
           fontSize: 15,
           color: 'rgba(252, 252, 252, 0.54)',
           marginTop: 6,
+          lineHeight: 22,
         }}>
         {getLanguageString(language, 'IMPORT_WALLET_DESCRIPTION')}
-      </Text>
+      </CustomText>
       <TouchableOpacity
         onPress={() => navigation.navigate('ImportPrivateKey')}
         style={[
@@ -57,14 +58,14 @@ export default () => {
           source={require('../../assets/import_private_key.png')}
         />
         <View style={{marginBottom: 24, marginLeft: 18}}>
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
             Import
-          </Text>
-          <Text allowFontScaling={false} style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+          </CustomText>
+          <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
             {getLanguageString(language, 'BY_PRIVATE_KEY')}
-          </Text>
+          </CustomText>
         </View>
       </TouchableOpacity>
       <TouchableOpacity
@@ -78,14 +79,14 @@ export default () => {
           source={require('../../assets/import_seed_phrase.png')}
         />
         <View style={{marginBottom: 24, marginLeft: 18}}>
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
             Import
-          </Text>
-          <Text allowFontScaling={false} style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+          </CustomText>
+          <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
             {getLanguageString(language, 'BY_SEED_PHRASE')}
-          </Text>
+          </CustomText>
         </View>
       </TouchableOpacity>
     </SafeAreaView>

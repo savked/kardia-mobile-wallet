@@ -1,9 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Dimensions, Image, Text, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, Platform, TouchableOpacity, View} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {useRecoilState, useRecoilValue} from 'recoil';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {truncate} from '../../utils/string';
 import {styles} from './style';
@@ -21,8 +20,8 @@ import NewTxModal from '../common/NewTxModal';
 import numeral from 'numeral';
 import {weiToKAI} from '../../services/transaction/amount';
 import {ThemeContext} from '../../ThemeContext';
-import IconButton from '../../components/IconButton';
 import Button from '../../components/Button';
+import CustomText from '../../components/Text';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -55,16 +54,16 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
               alignItems: 'center',
             }}>
             <View>
-              <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4}}>
-                {getLanguageString(language, 'BALANCE').toUpperCase()}
-              </Text>
-              <Text allowFontScaling={false} style={{fontSize: 24, color: 'white'}}>
-                ~${' '}
+              <CustomText allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: theme.defaultFontSize}}>
+                {getLanguageString(language, 'TOTAL_BALANCE').toUpperCase()}
+              </CustomText>
+              <CustomText allowFontScaling={false} style={Platform.OS === 'android' ? {fontSize: 24, color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {fontSize: 24, color: theme.textColor, fontWeight: '500'}}>
+                $
                 {numeral(
                   tokenInfo.price *
-                    (Number(weiToKAI(wallet.balance)) + wallet.staked),
+                    (Number(weiToKAI(wallet.balance)) + wallet.staked + wallet.undelegating),
                 ).format('0,0.00')}
-              </Text>
+              </CustomText>
             </View>
             {/* <IconButton
               onPress={() => setRemoveIndex(selectedWallet)}
@@ -74,36 +73,48 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
             /> */}
           </View>
 
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text allowFontScaling={false} style={styles.kaiCardText}>
+          <View style={{flexDirection: 'row', alignItems: 'flex-end', flex: 1}}>
+            <CustomText allowFontScaling={false} style={styles.kaiCardText}>
               {truncate(
                 wallet.address,
                 viewportWidth >= 432 ? 14 : 10,
                 viewportWidth >= 432 ? 14 : 12,
               )}
-            </Text>
+            </CustomText>
           </View>
 
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end'}}>
             <View>
-              <Text allowFontScaling={false} style={{fontSize: 10, color: 'rgba(252, 252, 252, 0.54)', marginBottom: 4}}>
+              <CustomText style={{fontSize: theme.defaultFontSize, color: 'rgba(252, 252, 252, 0.54)'}}>
                 {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
-              </Text>
-              <Text allowFontScaling={false} style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.87)'}}>
-                {wallet.name || getLanguageString(language,'NEW_WALLET')}
-              </Text>
+              </CustomText>
+              <CustomText style={Platform.OS === 'android' ? {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontFamily: 'WorkSans-SemiBold'} : {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontWeight: '500'}}>
+                {wallet.name ? wallet.name.toUpperCase() : getLanguageString(language,'NEW_WALLET').toUpperCase()}
+              </CustomText>
             </View>
             <TouchableOpacity
               onPress={() => showQRModal()}
               style={{
-                width: 44,
-                height: 44,
-                borderRadius: 22,
+                width: 52,
+                height: 52,
+                borderRadius: 26,
                 backgroundColor: '#FFFFFF',
                 alignItems: 'center',
                 justifyContent: 'center',
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                shadowOffset: {
+                  width: 0,
+                  height: 4,
+                },
+                shadowOpacity: 2,
+                shadowRadius: 4,
+                elevation: 9,
               }}>
-              <Icon size={20} name="qrcode" />
+              <Image
+                source={require('../../assets/icon/qr_dark.png')}
+                style={{width: 30, height: 30, marginRight: 2, marginTop: 2}}
+              />
+              {/* <Icon size={30} name="qrcode" /> */}
             </TouchableOpacity>
           </View>
         </View>
@@ -161,8 +172,9 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
         enableSnap={true}
         renderItem={renderWalletItem}
         sliderWidth={viewportWidth}
-        itemWidth={viewportWidth - 50}
+        itemWidth={viewportWidth - 40}
         onSnapToItem={setSelectedWallet}
+        inactiveSlideScale={0.95}
       />
       <Pagination
         dotsLength={wallets.length}
@@ -172,12 +184,13 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
           height: 6,
           alignItems: 'center',
           justifyContent: 'center',
+          marginBottom: 12,
         }}
         dotStyle={{
           width: 6,
           height: 6,
           borderRadius: 3,
-          marginHorizontal: 2,
+          marginHorizontal: -8,
           backgroundColor: 'rgba(255, 255, 255, 0.92)',
         }}
         inactiveDotOpacity={0.4}
@@ -196,8 +209,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
           style={{width: 101, height: 152}}
           source={require('../../assets/trash_dark.png')}
         />
-        <Text
-          allowFontScaling={false}
+        <CustomText
           style={{
             textAlign: 'center',
             fontSize: 22,
@@ -206,7 +218,7 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
             color: theme.textColor,
           }}>
           {getLanguageString(language, 'ARE_YOU_SURE')}
-        </Text>
+        </CustomText>
         <Button
           block
           title={getLanguageString(language, 'CANCEL')}

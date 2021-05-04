@@ -8,18 +8,35 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* KardiaChainWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* KardiaChainWalletTests.m */; };
+		012E8186C0E4402FB51BF58D /* WorkSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58C3C99A7B9946E4B68C5108 /* WorkSans-SemiBoldItalic.ttf */; };
+		02CF7E99E797446995EA4E07 /* WorkSans-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8E18617FA42740088C9FBD2E /* WorkSans-ExtraLightItalic.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		14467EAE23BA4DD1B424F83F /* WorkSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 77048D9D2F074B109A17B547 /* WorkSans-LightItalic.ttf */; };
+		1BD8506BBFF34DE08305004F /* WorkSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F049C7FA389747BD82987B4F /* WorkSans-Italic.ttf */; };
+		1F7060F16A534EE6B6DD7E12 /* WorkSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26C3966C3D4F4A2CB5C305E7 /* WorkSans-ExtraLight.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* KardiaChainWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* KardiaChainWalletTests.m */; };
+		4174F492CC3D4176807AB008 /* WorkSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F790BD3C06034F6E926F7B07 /* WorkSans-BoldItalic.ttf */; };
+		4603E3047EF143E797964BC0 /* WorkSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 60C1AD319C3C46DC9C41C934 /* WorkSans-ExtraBold.ttf */; };
 		641C5654DD9BD58346C7EFAE /* libPods-KardiaChainWallet-KardiaChainWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFD89B467400CABBBD42E63A /* libPods-KardiaChainWallet-KardiaChainWalletTests.a */; };
+		687ED2DD77B64BD1B223A4DA /* WorkSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E65E2C61E2524BAE98440D37 /* WorkSans-ExtraBoldItalic.ttf */; };
 		6D08BE128E30D1053D9F1ACE /* libPods-KardiaChainWallet-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AABE70309BD1456DFA6CDA1D /* libPods-KardiaChainWallet-tvOS.a */; };
+		6F1E5AA1418647C698A62DD7 /* WorkSans-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38169D63EF2445B1B1738E3B /* WorkSans-BlackItalic.ttf */; };
+		7217CF89082F48DD8C959F3F /* WorkSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CEC923CE1ADF473AAF5F1BE6 /* WorkSans-MediumItalic.ttf */; };
 		7EF264FD972C8ECB0CBF3C03 /* libPods-KardiaChainWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFA8A037F92759AF43117805 /* libPods-KardiaChainWallet.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		81F6234B5D22489B851B53F0 /* WorkSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 19C486A58CD046928F300CAC /* WorkSans-Light.ttf */; };
 		8B541B39C312F67F072BBB64 /* libPods-KardiaChainWallet-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCAC4B8772DD357F18CCA1B5 /* libPods-KardiaChainWallet-tvOSTests.a */; };
+		8B7F83A6B29F4884BB1E8FA7 /* WorkSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC73DE383E9B494A83FF356A /* WorkSans-Regular.ttf */; };
+		8CA01BC3FD1A4CCA8167CD1A /* WorkSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21E060E558A94452B33E69DE /* WorkSans-Medium.ttf */; };
+		8DC7789602A44CAFBBEECD46 /* WorkSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CEF677D1B1B34C84A6907C95 /* WorkSans-Bold.ttf */; };
+		9A90CF4E21F0464DA516B11F /* WorkSans-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D2C6D990C56B4FEEB8F75F4D /* WorkSans-Thin.ttf */; };
+		A7E1719493BB4FEF92DCD2B2 /* WorkSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA5C521982F544A994F98E7D /* WorkSans-Black.ttf */; };
+		BBF31D91CD3444E3959B2D2A /* WorkSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 924165BF1C394B04A58C4B89 /* WorkSans-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,35 +69,52 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = KardiaChainWallet/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = KardiaChainWallet/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = KardiaChainWallet/main.m; sourceTree = "<group>"; };
+		19C486A58CD046928F300CAC /* WorkSans-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-Light.ttf"; path = "../assets/fonts/WorkSans-Light.ttf"; sourceTree = "<group>"; };
+		21E060E558A94452B33E69DE /* WorkSans-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-Medium.ttf"; path = "../assets/fonts/WorkSans-Medium.ttf"; sourceTree = "<group>"; };
 		257A960B7C9D4F5FBCE86A61 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		25B66AA3587047BBAD0B333C /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		26C3966C3D4F4A2CB5C305E7 /* WorkSans-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-ExtraLight.ttf"; path = "../assets/fonts/WorkSans-ExtraLight.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* KardiaChainWallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KardiaChainWallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* KardiaChainWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KardiaChainWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		38169D63EF2445B1B1738E3B /* WorkSans-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-BlackItalic.ttf"; path = "../assets/fonts/WorkSans-BlackItalic.ttf"; sourceTree = "<group>"; };
 		4C2657719F0041D6A5DAB534 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		53BE24379F13141892B3F960 /* Pods-KardiaChainWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet.debug.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet/Pods-KardiaChainWallet.debug.xcconfig"; sourceTree = "<group>"; };
+		58C3C99A7B9946E4B68C5108 /* WorkSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-SemiBoldItalic.ttf"; path = "../assets/fonts/WorkSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		5FDEBD9A4A1D423C9F2836AE /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		60C1AD319C3C46DC9C41C934 /* WorkSans-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-ExtraBold.ttf"; path = "../assets/fonts/WorkSans-ExtraBold.ttf"; sourceTree = "<group>"; };
 		6ADF746942654BC5AB728F24 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		77048D9D2F074B109A17B547 /* WorkSans-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-LightItalic.ttf"; path = "../assets/fonts/WorkSans-LightItalic.ttf"; sourceTree = "<group>"; };
 		793C01B173354903B1F3AF47 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = KardiaChainWallet/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8D470CB135034D73BE75C1E6 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		8E18617FA42740088C9FBD2E /* WorkSans-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-ExtraLightItalic.ttf"; path = "../assets/fonts/WorkSans-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		8F1E501164430AED8C75CB21 /* Pods-KardiaChainWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet.release.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet/Pods-KardiaChainWallet.release.xcconfig"; sourceTree = "<group>"; };
+		924165BF1C394B04A58C4B89 /* WorkSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-SemiBold.ttf"; path = "../assets/fonts/WorkSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		9C10FA5356E14EC8958126C4 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		A94612FE1748227D40AA22C5 /* Pods-KardiaChainWallet-KardiaChainWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet-KardiaChainWalletTests.debug.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet-KardiaChainWalletTests/Pods-KardiaChainWallet-KardiaChainWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AABE70309BD1456DFA6CDA1D /* libPods-KardiaChainWallet-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KardiaChainWallet-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACC7245D18258B873ED0C5EF /* Pods-KardiaChainWallet-KardiaChainWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet-KardiaChainWalletTests.release.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet-KardiaChainWalletTests/Pods-KardiaChainWallet-KardiaChainWalletTests.release.xcconfig"; sourceTree = "<group>"; };
+		BA5C521982F544A994F98E7D /* WorkSans-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-Black.ttf"; path = "../assets/fonts/WorkSans-Black.ttf"; sourceTree = "<group>"; };
 		BFD89B467400CABBBD42E63A /* libPods-KardiaChainWallet-KardiaChainWalletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KardiaChainWallet-KardiaChainWalletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C2BF4AA1BE40768755F75E /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		C39C80D834D242559F9F3044 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		C50731AC32DC4EE1B3D7E4AB /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		C7F84764C03DC0E0E7B725EC /* Pods-KardiaChainWallet-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet-tvOS/Pods-KardiaChainWallet-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		CCAC4B8772DD357F18CCA1B5 /* libPods-KardiaChainWallet-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KardiaChainWallet-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEC923CE1ADF473AAF5F1BE6 /* WorkSans-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-MediumItalic.ttf"; path = "../assets/fonts/WorkSans-MediumItalic.ttf"; sourceTree = "<group>"; };
+		CEF677D1B1B34C84A6907C95 /* WorkSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-Bold.ttf"; path = "../assets/fonts/WorkSans-Bold.ttf"; sourceTree = "<group>"; };
 		CF53DD1F9E429800851C8870 /* Pods-KardiaChainWallet-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet-tvOSTests/Pods-KardiaChainWallet-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D1CF2F89CB1C4321B13F063F /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		D2C6D990C56B4FEEB8F75F4D /* WorkSans-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-Thin.ttf"; path = "../assets/fonts/WorkSans-Thin.ttf"; sourceTree = "<group>"; };
 		DBDB0D66810F43F0BB24AF51 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		DFA8A037F92759AF43117805 /* libPods-KardiaChainWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KardiaChainWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E65E2C61E2524BAE98440D37 /* WorkSans-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-ExtraBoldItalic.ttf"; path = "../assets/fonts/WorkSans-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		F049C7FA389747BD82987B4F /* WorkSans-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-Italic.ttf"; path = "../assets/fonts/WorkSans-Italic.ttf"; sourceTree = "<group>"; };
+		F790BD3C06034F6E926F7B07 /* WorkSans-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-BoldItalic.ttf"; path = "../assets/fonts/WorkSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		F7C909A7469D4E1782727EAC /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		FC73DE383E9B494A83FF356A /* WorkSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-Regular.ttf"; path = "../assets/fonts/WorkSans-Regular.ttf"; sourceTree = "<group>"; };
 		FFAEF617DFE34B148A443741 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		FFED244E7A414D9BBC7D39B4 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -184,6 +218,23 @@
 				DBDB0D66810F43F0BB24AF51 /* Octicons.ttf */,
 				FFAEF617DFE34B148A443741 /* SimpleLineIcons.ttf */,
 				C39C80D834D242559F9F3044 /* Zocial.ttf */,
+				BA5C521982F544A994F98E7D /* WorkSans-Black.ttf */,
+				38169D63EF2445B1B1738E3B /* WorkSans-BlackItalic.ttf */,
+				CEF677D1B1B34C84A6907C95 /* WorkSans-Bold.ttf */,
+				F790BD3C06034F6E926F7B07 /* WorkSans-BoldItalic.ttf */,
+				60C1AD319C3C46DC9C41C934 /* WorkSans-ExtraBold.ttf */,
+				E65E2C61E2524BAE98440D37 /* WorkSans-ExtraBoldItalic.ttf */,
+				26C3966C3D4F4A2CB5C305E7 /* WorkSans-ExtraLight.ttf */,
+				8E18617FA42740088C9FBD2E /* WorkSans-ExtraLightItalic.ttf */,
+				F049C7FA389747BD82987B4F /* WorkSans-Italic.ttf */,
+				19C486A58CD046928F300CAC /* WorkSans-Light.ttf */,
+				77048D9D2F074B109A17B547 /* WorkSans-LightItalic.ttf */,
+				21E060E558A94452B33E69DE /* WorkSans-Medium.ttf */,
+				CEC923CE1ADF473AAF5F1BE6 /* WorkSans-MediumItalic.ttf */,
+				FC73DE383E9B494A83FF356A /* WorkSans-Regular.ttf */,
+				924165BF1C394B04A58C4B89 /* WorkSans-SemiBold.ttf */,
+				58C3C99A7B9946E4B68C5108 /* WorkSans-SemiBoldItalic.ttf */,
+				D2C6D990C56B4FEEB8F75F4D /* WorkSans-Thin.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -386,6 +437,23 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				A7E1719493BB4FEF92DCD2B2 /* WorkSans-Black.ttf in Resources */,
+				6F1E5AA1418647C698A62DD7 /* WorkSans-BlackItalic.ttf in Resources */,
+				8DC7789602A44CAFBBEECD46 /* WorkSans-Bold.ttf in Resources */,
+				4174F492CC3D4176807AB008 /* WorkSans-BoldItalic.ttf in Resources */,
+				4603E3047EF143E797964BC0 /* WorkSans-ExtraBold.ttf in Resources */,
+				687ED2DD77B64BD1B223A4DA /* WorkSans-ExtraBoldItalic.ttf in Resources */,
+				1F7060F16A534EE6B6DD7E12 /* WorkSans-ExtraLight.ttf in Resources */,
+				02CF7E99E797446995EA4E07 /* WorkSans-ExtraLightItalic.ttf in Resources */,
+				1BD8506BBFF34DE08305004F /* WorkSans-Italic.ttf in Resources */,
+				81F6234B5D22489B851B53F0 /* WorkSans-Light.ttf in Resources */,
+				14467EAE23BA4DD1B424F83F /* WorkSans-LightItalic.ttf in Resources */,
+				8CA01BC3FD1A4CCA8167CD1A /* WorkSans-Medium.ttf in Resources */,
+				7217CF89082F48DD8C959F3F /* WorkSans-MediumItalic.ttf in Resources */,
+				8B7F83A6B29F4884BB1E8FA7 /* WorkSans-Regular.ttf in Resources */,
+				BBF31D91CD3444E3959B2D2A /* WorkSans-SemiBold.ttf in Resources */,
+				012E8186C0E4402FB51BF58D /* WorkSans-SemiBoldItalic.ttf in Resources */,
+				9A90CF4E21F0464DA516B11F /* WorkSans-Thin.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -771,7 +839,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 69;
+				CURRENT_PROJECT_VERSION = 81;
 				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = KardiaChainWallet/Info.plist;
@@ -799,7 +867,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 69;
+				CURRENT_PROJECT_VERSION = 81;
 				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				INFOPLIST_FILE = KardiaChainWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

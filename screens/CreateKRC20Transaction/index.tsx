@@ -36,6 +36,7 @@ import {
   getBalance,
   transferKRC20,
 } from '../../services/krc20';
+import CustomText from '../../components/Text';
 
 // const MAX_AMOUNT = 5000000000;
 
@@ -143,7 +144,7 @@ const CreateKRC20TxScreen = () => {
     return (
       <>
         <View style={styles.qrScannerHeader}>
-          <Text allowFontScaling={false} style={styles.centerText}>Scan address QR code</Text>
+          <CustomText style={styles.centerText}>Scan address QR code</CustomText>
         </View>
         <QRCodeScanner
           onRead={(e) => {
@@ -166,7 +167,7 @@ const CreateKRC20TxScreen = () => {
   if (showAddressBookModal) {
     return (
       <Modal full visible={true} onClose={() => setShowAddressBookModal(false)}>
-        <Text>Select Address</Text>
+        <CustomText>Select Address</CustomText>
         <List
           items={addressBook}
           keyExtractor={(item) => item.address}
@@ -186,20 +187,20 @@ const CreateKRC20TxScreen = () => {
                   )}
                 </View>
                 <View>
-                  <Text allowFontScaling={false} style={[styles.addressName, {color: '#000000'}]}>
+                  <CustomText style={[styles.addressName, {color: '#000000'}]}>
                     {_address.name}
-                  </Text>
-                  <Text allowFontScaling={false} style={[styles.addressHash, {color: '#000000'}]}>
+                  </CustomText>
+                  <CustomText style={[styles.addressHash, {color: '#000000'}]}>
                     {truncate(_address.address, 20, 20)}
-                  </Text>
+                  </CustomText>
                 </View>
               </TouchableOpacity>
             );
           }}
           ListEmptyComponent={
-            <Text allowFontScaling={false} style={[styles.emptyAddressBook, {color: theme.textColor}]}>
+            <CustomText style={[styles.emptyAddressBook, {color: theme.textColor}]}>
               No saved address
-            </Text>
+            </CustomText>
           }
         />
       </Modal>
@@ -213,25 +214,25 @@ const CreateKRC20TxScreen = () => {
         visible={true}
         contentStyle={{flex: 0.3, marginTop: viewportHeight / 3}}
         onClose={() => setShowConfirmModal(false)}>
-        <Text allowFontScaling={false} style={styles.confirmTitle}>
+        <CustomText style={styles.confirmTitle}>
           {getLanguageString(language, 'CONFIRM_TRANSACTION')}
-        </Text>
+        </CustomText>
         <View>
           <View style={styles.confirmGroup}>
-            <Text allowFontScaling={false} style={styles.confirmText}>
+            <CustomText style={styles.confirmText}>
               {getLanguageString(language, 'CREATE_TX_ADDRESS')}:{' '}
-            </Text>
-            <Text allowFontScaling={false} style={styles.confirmContent}>
+            </CustomText>
+            <CustomText style={styles.confirmContent}>
               {truncate(address, 10, 10)}
-            </Text>
+            </CustomText>
           </View>
           <View style={styles.confirmGroup}>
-            <Text allowFontScaling={false} style={styles.confirmText}>
+            <CustomText style={styles.confirmText}>
               {getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:{' '}
-            </Text>
-            <Text allowFontScaling={false} style={styles.confirmContent}>
+            </CustomText>
+            <CustomText style={styles.confirmContent}>
               {amount} {tokenSymbol}
-            </Text>
+            </CustomText>
           </View>
         </View>
         <View
@@ -309,11 +310,10 @@ const CreateKRC20TxScreen = () => {
           />
         </View>
 
-        <Text
-          allowFontScaling={false}
+        <CustomText
           style={[styles.title, {color: theme.textColor, marginBottom: 12}]}>
           {getLanguageString(language, 'TRANSACTION_SPEED')}
-        </Text>
+        </CustomText>
         <View style={{marginBottom: 20}}>
           <ListCard gasPrice={gasPrice} selectGasPrice={setGasPrice} />
         </View>
@@ -321,30 +321,29 @@ const CreateKRC20TxScreen = () => {
         <View>
           <View style={styles.wrap}>
             <View>
-              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+              <CustomText style={[{color: theme.textColor}]}>
                 {getLanguageString(language, 'GAS_PRICE')}
-              </Text>
-              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>{gasPrice} Oxy</Text>
+              </CustomText>
+              <CustomText style={[{color: theme.textColor}]}>{gasPrice} Oxy</CustomText>
             </View>
             <View>
-              <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+              <CustomText style={[{color: theme.textColor}]}>
                 {getLanguageString(language, 'GAS_LIMIT')}
-              </Text>
-              <Text allowFontScaling={false} style={[{color: theme.textColor, textAlign: 'right'}]}>
+              </CustomText>
+              <CustomText style={[{color: theme.textColor, textAlign: 'right'}]}>
                 {gasLimit > 0 && numeral(gasLimit).format('0,0')}
-              </Text>
+              </CustomText>
             </View>
           </View>
         </View>
 
-        <Text
-          allowFontScaling={false}
+        <CustomText
           style={[
             {marginTop: 20, fontStyle: 'italic'},
             {color: theme.textColor},
           ]}>
           {getLanguageString(language, 'SPEED_DESCRIPTION')}
-        </Text>
+        </CustomText>
         <View
           style={{
             flexDirection: 'row',
@@ -384,8 +383,8 @@ const CreateKRC20TxScreen = () => {
               navigation.goBack();
             }}
             visible={true}>
-            <Text>Transaction completed</Text>
-            <Text>Tx Hash: {truncate(successTxHash, 10, 20)}</Text>
+            <CustomText>Transaction completed</CustomText>
+            <CustomText>Tx Hash: {truncate(successTxHash, 10, 20)}</CustomText>
           </AlertModal>
         )}
         {}
@@ -436,22 +435,22 @@ const ListCard = ({
               borderRadius: 8,
               width: '30%',
             }}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{
                 textAlign: 'center',
                 color: active ? theme.primaryTextColor : theme.ghostTextColor,
               }}>
               {item.title}
-            </Text>
-            <Text
+            </CustomText>
+            <CustomText
               allowFontScaling={false}
               style={{
                 textAlign: 'center',
                 color: active ? theme.primaryTextColor : theme.ghostTextColor,
               }}>
               {item.time}
-            </Text>
+            </CustomText>
           </TouchableOpacity>
         );
       })}

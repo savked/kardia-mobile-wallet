@@ -26,6 +26,7 @@ import {
 import NewAddressModal from '../NewAddressModal';
 import {styles} from './style';
 import {getTxDetail} from '../../../services/transaction';
+import CustomText from '../../../components/Text';
 
 export default ({
   txObj,
@@ -105,12 +106,12 @@ export default ({
           source={parseCardAvatar(wallets[selectedWallet].cardAvatarID || 0)}
         />
         <View>
-          <Text allowFontScaling={false} style={{color: '#FFFFFF', fontWeight: 'bold'}}>
-            {wallets[selectedWallet].name}
-          </Text>
-          <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+          <CustomText style={{color: '#FFFFFF', fontWeight: 'bold'}}>
+            {wallets[selectedWallet].name || getLanguageString(language, 'NEW_WALLET')}
+          </CustomText>
+          <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
             {truncate(address, 10, 10)}
-          </Text>
+          </CustomText>
         </View>
       </View>
     );
@@ -128,37 +129,37 @@ export default ({
           alignItems: 'center',
           justifyContent: 'flex-start',
         }}>
+        <View
+          style={{
+            width: 52,
+            height: 32,
+            marginRight: 12,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
         {isNewContact() || getAddressAvatar(addressBook, address) === '' ? (
-          <View
-            style={{
-              width: 52,
-              height: 32,
-              marginRight: 12,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <View style={styles.newContactAvatarContainer}>
-              <Image
-                style={{width: 20, height: 20}}
-                source={require('../../../assets/icon/user.png')}
-              />
-            </View>
+          <View style={styles.newContactAvatarContainer}>
+            <Image
+              style={{width: 32, height: 32}}
+              source={require('../../../assets/icon/user.png')}
+            />
           </View>
         ) : (
           <Image
-            style={{width: 20, height: 20}}
+            style={{width: 32, height: 32, borderRadius: 8}}
             source={{uri: getAddressAvatar(addressBook, address)}}
           />
         )}
+        </View>
         <View>
-          <Text allowFontScaling={false} style={{color: '#FFFFFF', fontWeight: 'bold'}}>
+          <CustomText style={{color: '#FFFFFF', fontWeight: 'bold'}}>
             {isNewContact()
               ? getLanguageString(language, 'NEW_CONTACT')
               : getFromAddressBook(addressBook, address)}
-          </Text>
-          <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+          </CustomText>
+          <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
             {truncate(address, 10, 10)}
-          </Text>
+          </CustomText>
         </View>
         {isNewContact() && (
           <View style={{alignItems: 'flex-end', flex: 1}}>
@@ -212,8 +213,8 @@ export default ({
             position: 'absolute',
             top: -67,
 
-            borderWidth: 1,
-            borderColor: 'gray',
+            // borderWidth: 1,
+            // borderColor: 'gray',
           }}>
           {txObj.type === 'IN' ? (
             <Image
@@ -228,7 +229,7 @@ export default ({
           )}
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={[
               styles.amountText,
@@ -237,13 +238,13 @@ export default ({
             {numeral(parseDecimals(txObj.value, txObj.decimals)).format(
               '0,0.00',
             )}
-          </Text>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 18}}>
+          </CustomText>
+          <CustomText style={{color: theme.textColor, fontSize: 18}}>
             {txObj.tokenSymbol}
-          </Text>
+          </CustomText>
         </View>
         <TouchableOpacity onPress={() => handleClickLink(getTxURL(txObj.hash))}>
-          <Text allowFontScaling={false} style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</Text>
+          <CustomText style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</CustomText>
         </TouchableOpacity>
         <View>
           <View
@@ -259,39 +260,39 @@ export default ({
               style={{width: 16, height: 16, marginRight: 8}}
               source={require('../../../assets/icon/calendar.png')}
             />
-            <Text allowFontScaling={false} style={{fontSize: 12, color: theme.textColor}}>
+            <CustomText style={{fontSize: 12, color: theme.textColor}}>
               {format(txObj.date, 'hh:mm aa, E dd/MM/yyyy', {
                 locale: dateLocale,
               })}
-            </Text>
+            </CustomText>
           </View>
         </View>
         <Divider />
         <View style={{justifyContent: 'flex-start', width: '100%'}}>
-          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12}}>
+          <CustomText style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'FROM')}
-          </Text>
+          </CustomText>
           {txObj.from !== getOtherAddress()
             ? renderOwnAddress(txObj.from)
             : renderOtherAddress(txObj.from)}
         </View>
         <View
           style={{justifyContent: 'flex-start', width: '100%', marginTop: 12}}>
-          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12}}>
+          <CustomText style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'TO')}
-          </Text>
+          </CustomText>
           {txObj.to !== getOtherAddress()
             ? renderOwnAddress(txObj.to)
             : renderOtherAddress(txObj.to)}
         </View>
         <Divider />
         <View style={{justifyContent: 'flex-start', width: '100%'}}>
-          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12}}>
+          <CustomText style={{color: theme.mutedTextColor, fontSize: 12}}>
             {getLanguageString(language, 'TRANSACTION_FEE')}
-          </Text>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 15}}>
+          </CustomText>
+          <CustomText style={{color: theme.textColor, fontSize: 15}}>
             {txFee} KAI
-          </Text>
+          </CustomText>
         </View>
         <Divider />
         <Button
@@ -299,7 +300,7 @@ export default ({
           type="primary"
           block={true}
           onPress={onClose}
-          textStyle={{fontWeight: 'bold'}}
+          // textStyle={{fontWeight: 'bold'}}
         />
       </View>
     </Modal>

@@ -5,6 +5,7 @@ import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
 import Button from '../../../components/Button';
 import CustomModal from '../../../components/Modal';
+import CustomText from '../../../components/Text';
 import {getLanguageString} from '../../../utils/lang';
 
 const {height: viewportHeight} = Dimensions.get('window');
@@ -31,8 +32,8 @@ const RemindPasscodeModal = ({
       }}
       visible={visible}
       onClose={onClose}>
-      <Text>{getLanguageString(language, 'NO_PASSCODE')}</Text>
-      <Text>{getLanguageString(language, 'PASSCODE_DESCRIPTION')}</Text>
+      <CustomText>{getLanguageString(language, 'NO_PASSCODE')}</CustomText>
+      <CustomText>{getLanguageString(language, 'PASSCODE_DESCRIPTION')}</CustomText>
       <View
         style={{
           flexDirection: 'row',

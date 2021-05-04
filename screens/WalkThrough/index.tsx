@@ -5,6 +5,7 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../atoms/language';
 import Button from '../../components/Button';
+import CustomText from '../../components/Text';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
 import {styles} from './style';
@@ -27,8 +28,8 @@ export default ({onSubmit}: {onSubmit: () => void}) => {
         <View style={{flex: 1, alignItems: 'center'}}>
           <Image source={require('../../assets/walkthrough_1.png')} style={{width: 209, height: 216, flex: 1, resizeMode: 'contain', marginVertical: 100}} />
           <View style={{alignItems: 'flex-start', width: '100%', paddingHorizontal: 20}}>
-            <Text style={{color: theme.textColor, fontSize: 40}}>{getLanguageString(language, 'EASY')}</Text>
-            <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18, marginTop: 12}}>{getLanguageString(language, 'EASY_DESC')}</Text>
+            <CustomText style={{color: theme.textColor, fontSize: 40}}>{getLanguageString(language, 'EASY')}</CustomText>
+            <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18, marginTop: 12}}>{getLanguageString(language, 'EASY_DESC')}</CustomText>
           </View>
         </View>
       );
@@ -38,8 +39,8 @@ export default ({onSubmit}: {onSubmit: () => void}) => {
         <View style={{flex: 1, alignItems: 'center'}}>
           <Image source={require('../../assets/walkthrough_2.png')} style={{width: 209, height: 216, flex: 1, resizeMode: 'contain', marginVertical: 100}} />
           <View style={{alignItems: 'flex-start', width: '100%', paddingHorizontal: 20}}>
-            <Text style={{color: theme.textColor, fontSize: 40}}>{getLanguageString(language, 'INSTANT')}</Text>
-            <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18, marginTop: 12}}>{getLanguageString(language, 'INSTANT_DESC')}</Text>
+            <CustomText style={{color: theme.textColor, fontSize: 40}}>{getLanguageString(language, 'INSTANT')}</CustomText>
+            <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18, marginTop: 12}}>{getLanguageString(language, 'INSTANT_DESC')}</CustomText>
           </View>
         </View>
       );
@@ -48,8 +49,8 @@ export default ({onSubmit}: {onSubmit: () => void}) => {
       <View style={{flex: 1, alignItems: 'center'}}>
         <Image source={require('../../assets/walkthrough_3.png')} style={{width: 209, height: 216, flex: 1, resizeMode: 'contain', marginVertical: 100}} />
         <View style={{alignItems: 'flex-start', width: '100%', paddingHorizontal: 20}}>
-          <Text style={{color: theme.textColor, fontSize: 40}}>{getLanguageString(language, 'SECURE')}</Text>
-          <Text style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18, marginTop: 12}}>{getLanguageString(language, 'SECURE_DESC')}</Text>
+          <CustomText style={{color: theme.textColor, fontSize: 40}}>{getLanguageString(language, 'SECURE')}</CustomText>
+          <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18, marginTop: 12}}>{getLanguageString(language, 'SECURE_DESC')}</CustomText>
         </View>
       </View>
     );

@@ -5,7 +5,7 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Image, Text, TouchableOpacity, View, Dimensions} from 'react-native';
+import {Image, TouchableOpacity, View, Dimensions} from 'react-native';
 import ENIcon from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
@@ -29,6 +29,7 @@ import numeral from 'numeral';
 import IconButton from '../../components/IconButton';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import CustomText from '../../components/Text';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -76,6 +77,7 @@ const TokenDetail = () => {
       (i) => i.address !== _tokenAddress && !DEFAULT_ID.includes(i.address),
     );
     await saveTokenList(newLocalTokens);
+
     setTokenList(newLocalTokens);
     navigation.goBack();
   };
@@ -161,15 +163,15 @@ const TokenDetail = () => {
               alignItems: 'flex-end',
             }}>
             <View>
-              <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
+              <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
                 {getLanguageString(language, 'BALANCE')}
-              </Text>
-              <Text allowFontScaling={false} style={{fontSize: 24, color: 'white', fontWeight: 'bold'}}>
+              </CustomText>
+              <CustomText style={{fontSize: 24, color: 'white', fontWeight: 'bold'}}>
                 {numeral(
                   parseDecimals(Number(tokenBalance), tokenDecimals),
                 ).format('0,0.00')}{' '}
                 {tokenSymbol}
-              </Text>
+              </CustomText>
             </View>
             <TouchableOpacity
               onPress={() => setShowAddressQR(true)}
@@ -194,9 +196,9 @@ const TokenDetail = () => {
             justifyContent: 'flex-start',
             paddingHorizontal: 20,
           }}>
-          <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
+          <CustomText style={{fontSize: 18, fontWeight: 'bold', color: '#FFFFFF'}}>
             {getLanguageString(language, 'RECENT_TRANSACTION')}
-          </Text>
+          </CustomText>
         </View>
         <TokenTxList
           tokenAddress={tokenAddress}

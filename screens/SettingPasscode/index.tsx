@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-// import ToggleSwitch from 'toggle-switch-react-native';
 import OtpInputs from 'react-native-otp-inputs';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {languageAtom} from '../../atoms/language';
@@ -30,6 +29,7 @@ import TouchID from 'react-native-touch-id';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ENIcon from 'react-native-vector-icons/Entypo';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import CustomText from '../../components/Text';
 
 const optionalConfigObject = {
   unifiedErrors: false, // use unified error messages (default false)
@@ -137,14 +137,13 @@ const SettingPasscode = () => {
         />
       </View>
       <View style={{flex: 1, width: '100%', alignItems: 'center'}}>
-        <Text
-          allowFontScaling={false}
+        <CustomText
           style={[
             styles.title,
             {color: 'rgba(252, 252, 252, 0.54)', fontSize: 15},
           ]}>
           {getLanguageString(language, 'ENTER_PASSCODE')}
-        </Text>
+        </CustomText>
         <View style={{marginBottom: 32, width: '100%'}}>
           <OtpInputs
             // TODO: remove ts-ignore after issue fixed
@@ -172,7 +171,7 @@ const SettingPasscode = () => {
             }}
           />
           {error !== '' && (
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{
                 color: 'red',
@@ -180,7 +179,7 @@ const SettingPasscode = () => {
                 fontStyle: 'italic',
               }}>
               {error}
-            </Text>
+            </CustomText>
           )}
         </View>
         <Divider style={{width: 32, backgroundColor: '#F0F1F2'}} />
@@ -201,9 +200,9 @@ const SettingPasscode = () => {
             ) : (
               <Icon name="finger-print" color={theme.textColor} size={30} />
             )}
-            <Text allowFontScaling={false} style={{color: theme.textColor}}>
+            <CustomText style={{color: theme.textColor}}>
               Authenticate by {touchType}
-            </Text>
+            </CustomText>
           </TouchableOpacity>
         )}
       </View>

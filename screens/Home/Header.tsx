@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {Text, View} from 'react-native';
+import {Image, TouchableOpacity, View} from 'react-native';
 import IconButton from '../../components/IconButton';
 import {styles} from './style';
 import {useNavigation} from '@react-navigation/native';
@@ -10,6 +10,7 @@ import {notificationAtom} from '../../atoms/notification';
 import {getLanguageString} from '../../utils/lang';
 import NewTxModal from '../common/NewTxModal';
 import {languageAtom} from '../../atoms/language';
+import CustomText from '../../components/Text';
 
 const HomeHeader = () => {
   const navigation = useNavigation();
@@ -32,27 +33,32 @@ const HomeHeader = () => {
         onClose={() => setShowNewTxModal(false)}
       />
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text
-          allowFontScaling={false}
-          style={{fontSize: 25, fontWeight: 'bold', color: theme.textColor}}>
+        <CustomText
+          style={{fontSize: 36, color: theme.textColor, fontFamily: 'Work Sans'}}>
           {getLanguageString(language, 'WALLET')}
-        </Text>
+        </CustomText>
       </View>
       <View style={{flexDirection: 'row'}}>
-        <IconButton
+        {/* <IconButton
           style={{marginRight: 20}}
           name="bell-o"
           size={18}
           color={theme.textColor}
           badge={newNotiCount}
           onPress={navigateNotiScreen}
-        />
-        <IconButton
+        /> */}
+        <TouchableOpacity onPress={() => navigation.navigate('ImportWallet')}>
+          <Image 
+            source={require('../../assets/icon/plus_dark.png')}
+            style={{width: 24, height: 24}}
+          />
+        </TouchableOpacity>
+        {/* <IconButton
           name="plus"
           size={18}
           color={theme.textColor}
           onPress={() => navigation.navigate('ImportWallet')}
-        />
+        /> */}
       </View>
     </View>
   );

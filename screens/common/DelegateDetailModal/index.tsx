@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
-import {ActivityIndicator, Alert, Text, TouchableOpacity, View} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {ActivityIndicator, Alert, Platform, Text, TouchableOpacity, View} from 'react-native';
 import Divider from '../../../components/Divider';
 import Modal from '../../../components/Modal';
 import TextAvatar from '../../../components/TextAvatar';
@@ -13,11 +13,15 @@ import {languageAtom} from '../../../atoms/language';
 import {weiToKAI} from '../../../services/transaction/amount';
 import Button from '../../../components/Button';
 import {getSelectedWallet, getWallets} from '../../../utils/local';
-import {withdrawDelegatedAmount, withdrawReward} from '../../../services/staking';
+import {getAllValidator, withdrawDelegatedAmount, withdrawReward} from '../../../services/staking';
 import { useNavigation } from '@react-navigation/native';
 import UndelegateModal from '../UndelegateModal';
+import CustomText from '../../../components/Text';
+import { getLatestBlock } from '../../../services/blockchain';
+import { getDigit } from '../../../utils/number';
+import { BLOCK_TIME } from '../../../config';
 
-const showWithdraw = (value: any) => {
+const showButton = (value: any) => {
   return numeral(value).format('0,0.00') !== '0.00'
 }
 
@@ -37,6 +41,26 @@ export default ({
   const [claiming, setClaiming] = useState(false);
   const [showUndelegateModal, setShowUndelegateModal] = useState(false);
   const [withdrawing, setWithdrawing] = useState(false);
+  const [totalStakedAmount, setTotalStakedAmount] = useState('');
+  const [estimatedAPR, setEstimatedAPR] = useState('');
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const {totalStaked} = await getAllValidator();
+        setTotalStakedAmount(totalStaked);
+        // setValidatorList(validators);
+        // setLoading(false);
+      } catch (error) {
+        console.error(error);
+        // setLoading(false);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    calculateStakingAPR();
+  }, [totalStakedAmount]);
 
   const getSelectedCommission = () => {
     const formatted = numeral(validatorItem.commissionRate).format('0,0.00');
@@ -56,6 +80,34 @@ export default ({
     }
     onClose();
   }
+
+  const calculateStakingAPR = async () => {
+    if (!validatorItem || !totalStakedAmount) {
+      return;
+    }
+    try {
+      const commission = Number(validatorItem.commissionRate) / 100;
+      const votingPower = Number(weiToKAI(validatorItem.stakedAmount)) / Number(weiToKAI(totalStakedAmount));
+
+      const block = await getLatestBlock();
+      const blockReward = Number(weiToKAI(block.rewards));
+      const delegatorsReward = blockReward * (1 - commission) * votingPower;
+
+      const yourReward =
+        (Number(getDigit(getSelectedStakedAmount())) / Number(weiToKAI(validatorItem.stakedAmount))) * delegatorsReward;
+      // setEstimatedProfit(`${(yourReward * (30 * 24 * 3600)) / BLOCK_TIME}`);
+      setEstimatedAPR(
+        `${
+          ((yourReward * (365 * 24 * 3600)) /
+            BLOCK_TIME /
+            Number(getDigit(getSelectedStakedAmount()))) *
+          100
+        }`,
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const claimHandler = async () => {
     try {
@@ -82,9 +134,6 @@ export default ({
       } else {
         Alert.alert(getLanguageString(language, 'GENERAL_ERROR'));
       }
-      // showModal(getLanguageString(language, 'GENERAL_ERROR'), 'error', () => {
-      //   setClaiming(false);
-      // });
     }
   };
 
@@ -105,16 +154,6 @@ export default ({
         },
       });
       onClose();
-      // showModal(
-      //   getLanguageString(language, 'WITHDRAW_SUCCESS').replace(
-      //     '{{KAI_AMOUNT}}',
-      //     numeral(withDrawbleInKAI).format('0,0.00'),
-      //   ),
-      //   'success',
-      //   () => {
-      //     setWithDrawing(false);
-      //   },
-      // );
     } catch (err) {
       console.error(err);
       setWithdrawing(false);
@@ -123,9 +162,6 @@ export default ({
       } else {
         Alert.alert(getLanguageString(language, 'GENERAL_ERROR'));
       }
-      // showModal(getLanguageString(language, 'GENERAL_ERROR'), 'error', () => {
-      //   setWithDrawing(false);
-      // });
     }
   };
 
@@ -149,6 +185,20 @@ export default ({
     );
   }
 
+  const getModalHeight = () => {
+    let height = Platform.OS === 'android' ? 530 : 500;
+    if (showButton(validatorItem.withdrawableAmount)) {
+      height += 12
+    }
+    if (showButton(validatorItem.claimableRewards)) {
+      height += 12
+    }
+    if (showButton(validatorItem.stakedAmount)) {
+      height += 12
+    }
+    return height
+  }
+
   return (
     <Modal
       visible={visible}
@@ -158,10 +208,10 @@ export default ({
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
         padding: 20,
-        height: showWithdraw(validatorItem.withdrawableAmount) ? 500 : 450,
+        height: getModalHeight(),
       }}>
       <View style={{width: '100%', marginBottom: 4}}>
-        <Text allowFontScaling={false} style={{color: theme.mutedTextColor}}>Validator</Text>
+        <CustomText style={{color: theme.mutedTextColor}}>Validator</CustomText>
       </View>
       <View
         style={[
@@ -183,79 +233,105 @@ export default ({
           textStyle={{fontSize: 16}}
         />
         <View>
-          <Text allowFontScaling={false} style={[styles.validatorName, {color: theme.textColor}]}>
+          <CustomText style={[styles.validatorName, {color: theme.textColor}]}>
             {validatorItem.name}
-          </Text>
+          </CustomText>
         </View>
       </View>
       <Divider style={{width: '100%'}} color="#60636C" />
       <View style={{width: '100%'}}>
         <View style={styles.dataContainer}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText style={{color: theme.mutedTextColor}}>
+            {getLanguageString(language, 'ESTIMATED_APR')}
+          </CustomText>
+          <CustomText style={[{color: theme.textColor, fontWeight: '500'}]}>
+            {numeral(estimatedAPR).format('0,0.00')}{' '}%
+          </CustomText>
+        </View>
+        <View style={styles.dataContainer}>
+          <CustomText style={{color: theme.mutedTextColor}}>
             {getLanguageString(language, 'COMMISSION_RATE')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+          </CustomText>
+          <CustomText style={[{color: theme.textColor, fontWeight: '500'}]}>
             {getSelectedCommission()}
-          </Text>
+          </CustomText>
         </View>
         <View style={styles.dataContainer}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText style={{color: theme.mutedTextColor}}>
             {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+          </CustomText>
+          <CustomText style={[{color: theme.textColor, fontWeight: '500'}]}>
             {getSelectedStakedAmount()}
-          </Text>
+          </CustomText>
         </View>
-        <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
-          <TouchableOpacity onPress={() => setShowUndelegateModal(true)}>
-            <Text allowFontScaling={false} style={[{color: theme.urlColor}]}>
-              {getLanguageString(language, 'UNDELEGATE')}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        {showButton(validatorItem.stakedAmount) && (
+          <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
+            <TouchableOpacity onPress={() => setShowUndelegateModal(true)}>
+              <CustomText style={[{color: theme.urlColor}]}>
+                {getLanguageString(language, 'UNDELEGATE')}
+              </CustomText>
+            </TouchableOpacity>
+          </View>
+        )}
+        
         <View style={styles.dataContainer}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText style={{color: theme.mutedTextColor}}>
             {getLanguageString(language, 'CLAIMABLE')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+          </CustomText>
+          <CustomText style={[{color: theme.textColor, fontWeight: '500'}]}>
             {numeral(weiToKAI(validatorItem.claimableRewards)).format('0,0.00')}{' '}
             KAI
-          </Text>
+          </CustomText>
         </View>
         <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
-          {claiming ? (
-            <ActivityIndicator color={theme.textColor} size="small" />
-          ) : (
-            <TouchableOpacity onPress={claimHandler}>
-              <Text allowFontScaling={false} style={[{color: theme.urlColor}]}>
-                {getLanguageString(language, 'CLAIM_REWARD')}
-              </Text>
-            </TouchableOpacity>
+          {showButton(weiToKAI(validatorItem.claimableRewards)) && (
+            claiming ? (
+              <ActivityIndicator color={theme.textColor} size="small" />
+            ) : (
+              <TouchableOpacity onPress={claimHandler}>
+                <CustomText style={[{color: theme.urlColor}]}>
+                  {getLanguageString(language, 'CLAIM_REWARD')}
+                </CustomText>
+              </TouchableOpacity>
+            )
           )}
         </View>
         <View style={styles.dataContainer}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText style={{color: theme.mutedTextColor}}>
             {getLanguageString(language, 'UNBONDED')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+          </CustomText>
+          <CustomText style={[{color: theme.textColor, fontWeight: '500'}]}>
             {numeral(weiToKAI(validatorItem.unbondedAmount)).format('0,0.00')}{' '}
             KAI
-          </Text>
+          </CustomText>
         </View>
         <View style={styles.dataContainer}>
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontStyle: 'italic'}}>
+          <CustomText style={{color: theme.mutedTextColor}}>
             {getLanguageString(language, 'WITHDRAWABLE')}
-          </Text>
-          <Text allowFontScaling={false} style={[{color: theme.textColor}]}>
+          </CustomText>
+          <CustomText style={[{color: theme.textColor, fontWeight: '500'}]}>
             {numeral(weiToKAI(validatorItem.withdrawableAmount)).format(
               '0,0.00',
             )}{' '}
             KAI
-          </Text>
+          </CustomText>
         </View>
+        {showButton(validatorItem.withdrawableAmount) && (
+          <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
+            {withdrawing ? (
+              <ActivityIndicator color={theme.textColor} size="small" />
+            ) : (
+              <TouchableOpacity onPress={withdrawHandler}>
+                <CustomText style={[{color: theme.urlColor}]}>
+                  {getLanguageString(language, 'WITHDRAW')}
+                </CustomText>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
       </View>
       <Divider style={{width: '100%'}} color="#60636C" />
-      {showWithdraw(validatorItem.withdrawableAmount) && (
+      {/* {showWithdraw(validatorItem.withdrawableAmount) && (
         <Button
           loading={withdrawing}
           disabled={withdrawing}
@@ -264,27 +340,32 @@ export default ({
           type="outline"
           style={{width: '100%', marginBottom: 12}}
         />
-      )}
+      )} */}
+      {/* <Button
+        style={{width: '100%', marginBottom: 12}}
+        loading={claiming}
+        disabled={claiming || withdrawing}
+        title={getLanguageString(language, 'CLAIM_REWARD')}
+        type="outline"
+        size="small"
+        onPress={claimHandler}
+      /> */}
       <Button
-        title={getLanguageString(language, 'OK')}
+        title={getLanguageString(language, 'OK_TEXT')}
         onPress={handleClose}
         // type="outline"
         style={{width: '100%', marginBottom: 12}}
+        textStyle={{
+          fontWeight: '500',
+          fontSize: theme.defaultFontSize + 4,
+          fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+        }}
       />
       {/* <Button
         title={getLanguageString(language, 'UNDELEGATE')}
         onPress={() => setShowUndelegateModal(true)}
         type="secondary"
         style={{width: '100%', marginVertical: 12}}
-      /> */}
-      {/* <Button
-        style={{width: '100%'}}
-        loading={claiming}
-        disabled={claiming || withdrawing}
-        title={getLanguageString(language, 'CLAIM_REWARD')}
-        type="primary"
-        size="small"
-        onPress={claimHandler}
       /> */}
     </Modal>
   );

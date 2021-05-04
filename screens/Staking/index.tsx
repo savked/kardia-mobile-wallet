@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Dimensions, ImageBackground, Text, View, Image} from 'react-native';
+import {Dimensions, ImageBackground, View, Image, Platform} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import {useFocusEffect} from '@react-navigation/native';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
@@ -23,6 +23,7 @@ import UndelegateModal from './UndelegateModal';
 import IconButton from '../../components/IconButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { showTabBarAtom } from '../../atoms/showTabBar';
+import CustomText from '../../components/Text';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -117,54 +118,54 @@ const StakingScreen = () => {
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <View style={styles.header}>
-        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
+        <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'STAKING_TITLE')}
-        </Text>
-        <IconButton
+        </CustomText>
+        {/* <IconButton
           name="bell-o"
           color={theme.textColor}
-          size={18}
+          size={20}
           onPress={() => navigation.navigate('Notification')}
-        />
+        /> */}
       </View>
       {currentStaking.length > 0 && (
         <ImageBackground
-          source={require('../../assets/address_detail_background.jpg')}
+          source={require('../../assets/staking_background.png')}
           imageStyle={{
             resizeMode: 'cover',
             width: viewportWidth - 40,
-            height: 210,
+            height: 172,
             borderRadius: 12,
           }}
           style={{
             width: viewportWidth - 40,
-            height: 210,
+            height: 172,
             borderRadius: 12,
             alignItems: 'center',
             justifyContent: 'flex-end',
             paddingVertical: 32,
           }}>
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={[
               styles.sectionTitle,
-              {color: theme.textColor, textAlign: 'center'},
+              {color: theme.textColor, textAlign: 'center', fontWeight: '500'},
+              {fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}
             ]}>
             {getLanguageString(language, 'TOTAL_EARNING')}
-          </Text>
+          </CustomText>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text allowFontScaling={false} style={[styles.totalSaving, {color: theme.textColor}]}>
+            <CustomText style={[styles.totalSaving, Platform.OS === 'android' ? {color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {color: theme.textColor, fontWeight: '500'}]}>
               {numeral(getTotalSaving()).format('0,0.00')}
-            </Text>
-            <Text allowFontScaling={false} style={{fontSize: 14, color: 'rgba(252, 252, 252, 0.54)'}}>
+            </CustomText>
+            <CustomText style={{fontSize: theme.defaultFontSize + 6, color: 'rgba(252, 252, 252, 0.54)', fontWeight: '500', fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
               KAI
-            </Text>
+            </CustomText>
           </View>
         </ImageBackground>
       )}
       {currentStaking.length > 0 && (
-        <Text
-          allowFontScaling={false}
+        <CustomText
           style={[
             styles.sectionTitle,
             {
@@ -174,7 +175,7 @@ const StakingScreen = () => {
             },
           ]}>
           {getLanguageString(language, 'YOUR_INVESTMENTS')}
-        </Text>
+        </CustomText>
       )}
       <List
         loading={loading}
@@ -186,22 +187,27 @@ const StakingScreen = () => {
               alignItems: 'center',
               justifyContent: 'center',
               marginTop: 70,
-              paddingHorizontal: 47,
+              paddingHorizontal: 27,
             }}>
             <Image
               style={{width: 200, height: 172}}
               source={require('../../assets/icon/no_staking.png')}
             />
-            <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 24, fontWeight: 'bold', marginBottom: 8, marginTop: 100}}>
+            <CustomText style={{color: theme.textColor, fontSize: 24, fontWeight: 'bold', marginBottom: 8, marginTop: 100}}>
               {getLanguageString(language, 'NO_STAKING')}
-            </Text>
-            <Text allowFontScaling={false} style={[styles.noStakingText, {color: theme.mutedTextColor, textAlign: 'center', marginBottom: 32}]}>
+            </CustomText>
+            <CustomText style={[styles.noStakingText, {color: theme.mutedTextColor, textAlign: 'center', marginBottom: 32, lineHeight: 26}]}>
               {getLanguageString(language, 'NO_STAKING_ITEM')}
-            </Text>
+            </CustomText>
             <Button
               type="primary"
               onPress={() => navigation.navigate('ValidatorList')}
               title={getLanguageString(language, 'STAKE_NOW')}
+              textStyle={{
+                fontWeight: '500', 
+                fontSize: theme.defaultFontSize + 3,
+                fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+              }}
               style={{width: 248}}
               icon={
                 <AntIcon
@@ -218,30 +224,20 @@ const StakingScreen = () => {
           return (
             <StakingItem
               item={item}
-              // onFocus={() => setFocusingItem(index)}
-              // onUnfocus={() => setFocusingItem(-1)}
-              showModal={(
-                _message: string,
-                _messageType: string,
-                cb: () => void,
-              ) => {
-                setMessage(_message);
-                setMessageType(_messageType);
-                cb();
-              }}
-              triggerUndelegate={() => setUndelegatingIndex(index)}
             />
           );
         }}
         ItemSeprator={() => <View style={{height: 6}} />}
       />
-      <Button
-        type="primary"
-        icon={<AntIcon name="plus" size={24} />}
-        size="small"
-        onPress={() => navigation.navigate('ValidatorList')}
-        style={styles.floatingButton}
-      />
+      {currentStaking.length > 0 && (
+        <Button
+          type="primary"
+          icon={<AntIcon name="plus" size={24} />}
+          size="small"
+          onPress={() => navigation.navigate('ValidatorList')}
+          style={styles.floatingButton}
+        />
+      )}
       {message !== '' && (
         <AlertModal
           type={messageType as any}

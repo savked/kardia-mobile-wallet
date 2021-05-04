@@ -1,9 +1,9 @@
 import React from 'react';
-import {Text} from 'react-native';
+import CustomText from '../Text';
 import {styles} from './style';
 const ErrMessage = (props: any) => {
   return props.message ? (
-    <Text allowFontScaling={false} style={styles.text}>{props.message}</Text>
+    <CustomText style={styles.text}>{props.message}</CustomText>
   ) : (
     <></>
   );

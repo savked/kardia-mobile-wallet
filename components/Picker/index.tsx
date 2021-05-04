@@ -1,8 +1,8 @@
 import React, {useContext} from 'react';
-import {Text} from 'react-native';
 import RNPickerSelect, {Item} from 'react-native-picker-select';
 import Icon from 'react-native-vector-icons/Feather';
 import {ThemeContext} from '../../ThemeContext';
+import CustomText from '../Text';
 import {pickerSelectStyles, styles} from './style';
 
 const Picker = ({
@@ -16,9 +16,9 @@ const Picker = ({
   return (
     <>
       {headline && (
-        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
+        <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {headline}
-        </Text>
+        </CustomText>
       )}
       <RNPickerSelect
         style={pickerSelectStyles}

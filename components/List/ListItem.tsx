@@ -1,11 +1,12 @@
 import React from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
+import CustomText from '../Text';
 import {styles} from './style';
 const ListItem = ({label, onSelect}: ListItemProps) => {
   return (
     <View style={styles.listItem}>
       <TouchableOpacity onPress={onSelect}>
-        <Text allowFontScaling={false}>{label}</Text>
+        <CustomText>{label}</CustomText>
       </TouchableOpacity>
     </View>
   );

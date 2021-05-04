@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -21,7 +21,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import {getLanguageString} from '../../utils/lang';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {languageAtom} from '../../atoms/language';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native';
 import {
   getWallets,
   saveMnemonic,
@@ -30,6 +30,8 @@ import {
 } from '../../utils/local';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import CustomText from '../../components/Text';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 
 const SelectWallet = () => {
   const [startIndex, setStartIndex] = useState(0);
@@ -44,6 +46,14 @@ const SelectWallet = () => {
 
   const setWallets = useSetRecoilState(walletsAtom);
   const setSelectedWallet = useSetRecoilState(selectedWalletAtom);
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
+
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarColor(theme.backgroundColor);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   const onSelect = async (_wallet: Wallet) => {
     const localWallets = await getWallets();
@@ -57,6 +67,7 @@ const SelectWallet = () => {
       address: walletAddress,
       balance,
       staked,
+      undelegating: 0
     };
 
     const walletExisted = localWallets
@@ -108,6 +119,8 @@ const SelectWallet = () => {
               address: walletAddress,
               balance,
               staked,
+              undelegating: 0,
+              name: 'New Wallet'
             };
             resolve(wallet);
           } catch (error) {
@@ -149,8 +162,7 @@ const SelectWallet = () => {
         onPress={() => navigation.goBack()}
         backgroundColor="transparent"
       />
-      <Text
-        allowFontScaling={false}
+      <CustomText
         style={{
           color: theme.textColor,
           // textAlign: 'center',
@@ -158,10 +170,10 @@ const SelectWallet = () => {
           marginBottom: 20,
         }}>
         {getLanguageString(language, 'SELECT_YOUR_WALLET')}
-      </Text>
-      {/* <Text allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 16}}>
+      </CustomText>
+      {/* <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 16}}>
         {getLanguageString(language, 'SELECT_YOUR_WALLET_DESCRIPTION')}
-      </Text> */}
+      </CustomText> */}
       <View style={{flex: 0.8, justifyContent: 'center', marginTop: 36}}>
         {walletList.length > 0 && (
           <List
@@ -203,20 +215,19 @@ const SelectWallet = () => {
                     />
                   </View>
                   <View>
-                    <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 13}}>
+                    <CustomText style={{color: theme.textColor, fontSize: 13}}>
                       {truncate(item.address, 10, 10)}
-                    </Text>
-                    <Text
-                      allowFontScaling={false}
+                    </CustomText>
+                    <CustomText
                       style={{
                         color: theme.textColor,
                         fontSize: theme.defaultFontSize,
                       }}>
-                      <Text allowFontScaling={false} style={{color: theme.mutedTextColor}}>
+                      <CustomText style={{color: theme.mutedTextColor}}>
                         Balance:
-                      </Text>{' '}
+                      </CustomText>{' '}
                       {parseKaiBalance(item.balance)} KAI
-                    </Text>
+                    </CustomText>
                   </View>
                 </TouchableOpacity>
               );

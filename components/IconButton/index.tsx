@@ -8,6 +8,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import CustomText from '../Text';
 import {styles} from './style';
 
 const IconButton = ({
@@ -26,7 +27,7 @@ const IconButton = ({
       {!loading && <Icon name={name} size={size} color={color} />}
       {!loading && badge !== 0 && badge !== '0' && (
         <View style={styles.badgeContainer}>
-          <Text allowFontScaling={false} style={styles.badgeText}>{badge}</Text>
+          <CustomText style={styles.badgeText}>{badge}</CustomText>
         </View>
       )}
     </TouchableOpacity>

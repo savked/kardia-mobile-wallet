@@ -13,14 +13,15 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     // marginBottom: 20,
     justifyContent: 'space-between',
+    marginBottom: 18
   },
   headline: {
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 36,
+    // fontWeight: 'bold',
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
   noStakingText: {
     // padding: 15,
@@ -42,7 +43,6 @@ export const styles = StyleSheet.create({
   },
   totalSaving: {
     textAlign: 'center',
-    fontWeight: 'bold',
     fontSize: 32,
     paddingVertical: 14,
     marginRight: 12,

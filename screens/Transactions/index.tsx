@@ -1,9 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View, Image, ActivityIndicator} from 'react-native';
+import {TouchableOpacity, View, Image, ActivityIndicator, Platform} from 'react-native';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {truncate} from '../../utils/string';
 import {styles} from './style';
@@ -22,7 +22,8 @@ import {groupByDate} from '../../utils/date';
 import TxDetailModal from '../common/TxDetailModal';
 import {ScrollView} from 'react-native-gesture-handler';
 import {showTabBarAtom} from '../../atoms/showTabBar';
-import { HEADER_HEIGHT } from '../../theme';
+import CustomText from '../../components/Text';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
@@ -40,12 +41,17 @@ const TransactionScreen = () => {
   const [txObjForDetail, setTxObjForDetail] = useState();
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
+
+  const insets = useSafeAreaInsets();
 
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(true);
+      setStatusBarColor(theme.backgroundColor);
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []),
+    }, [showNewTxModal]),
   );
 
   const parseTXForList = (tx: Transaction) => {
@@ -120,20 +126,9 @@ const TransactionScreen = () => {
             />
           )}
         </View>
-        {status ? (
-          <AntIcon
-            name="checkcircle"
-            size={14}
-            color={'green'}
-            style={{position: 'absolute', right: 0, bottom: 0}}
-          />
-        ) : (
-          <AntIcon
-            name="closecircle"
-            size={14}
-            color={'red'}
-            style={{position: 'absolute', right: 0, bottom: 0}}
-          />
+        {status === 0 && (
+          // <Image source={require('../../assets/icon/warning.png')} style={{width: 14, height: 14, position: 'absolute', right: 3, top: -2}} />
+          <CustomText style={{position: 'absolute', right: 0, top: -4, fontSize: theme.defaultFontSize}}>⚠️</CustomText>
         )}
       </View>
     );
@@ -159,8 +154,8 @@ const TransactionScreen = () => {
   }
 
   return (
-    <SafeAreaView
-      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <View
+      style={[styles.container, {backgroundColor: theme.backgroundColor, paddingTop: insets.top}]}>
       <NewTxModal
         visible={showNewTxModal}
         onClose={() => setShowNewTxModal(false)}
@@ -171,15 +166,15 @@ const TransactionScreen = () => {
         txObj={txObjForDetail}
       />
       <View style={styles.header}>
-        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
+        <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'RECENT_TRANSACTION')}
-        </Text>
-        <IconButton
+        </CustomText>
+        {/* <IconButton
           name="bell-o"
           color={theme.textColor}
-          size={18}
+          size={20}
           onPress={() => navigation.navigate('Notification')}
-        />
+        /> */}
       </View>
       {groupByDate(txList, 'date').length === 0 && (
         <View style={styles.noTXContainer}>
@@ -191,16 +186,21 @@ const TransactionScreen = () => {
             style={{width: 170, height: 140}}
             source={require('../../assets/no_tx_box.png')}
           />
-          <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
+          <CustomText style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
-          </Text>
-          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32}}>
+          </CustomText>
+          <CustomText style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32}}>
             {getLanguageString(language, 'NO_TRANSACTION_SUB_TEXT')}
-          </Text>
+          </CustomText>
           <Button
             type="primary"
             onPress={() => setShowNewTxModal(true)}
             title={getLanguageString(language, 'SEND_NOW')}
+            textStyle={{
+              fontWeight: '500',
+              fontSize: theme.defaultFontSize + 4,
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+            }}
             style={{width: 248}}
             icon={
               <AntIcon
@@ -213,19 +213,18 @@ const TransactionScreen = () => {
           />
         </View>
       )}
-      <ScrollView>
+      <ScrollView style={{flex: 1}}>
         {groupByDate(txList, 'date').map((txsByDate) => {
           const dateLocale = getDateFNSLocale(language);
           return (
             <React.Fragment key={`transaction-by-${txsByDate.date.getTime()}`}>
-              <Text
-                allowFontScaling={false}
+              <CustomText
                 style={{
                   marginHorizontal: 20,
                   color: theme.textColor,
                 }}>
                 {format(txsByDate.date, 'E, dd/MM/yyyy', {locale: dateLocale})}
-              </Text>
+              </CustomText>
               {txsByDate.items.map((item: any, index: number) => {
                 return (
                   <View
@@ -253,36 +252,36 @@ const TransactionScreen = () => {
                         style={{
                           flexDirection: 'column',
                           flex: 4,
-                          paddingHorizontal: 14,
+                          paddingHorizontal: 4,
                         }}>
-                        <Text allowFontScaling={false} style={{color: '#FFFFFF'}}>
+                        <CustomText style={{color: '#FFFFFF', fontSize: theme.defaultFontSize + 1, fontWeight: '500'}}>
                           {item.type === 'IN'
                             ? getLanguageString(language, 'TX_TYPE_RECEIVED')
                             : getLanguageString(language, 'TX_TYPE_SEND')}
-                        </Text>
-                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
+                        </CustomText>
+                        <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
                           {truncate(item.label, 8, 10)}
-                        </Text>
+                        </CustomText>
                       </View>
                       <View
                         style={{
                           flex: 3,
                           alignItems: 'flex-end',
                         }}>
-                        <Text
-                          allowFontScaling={false}
+                        <CustomText
                           style={[
                             styles.kaiAmount,
-                            item.type === 'IN'
-                              ? {color: '#53B680'}
-                              : {color: 'red'},
+                            {color: theme.textColor, fontSize: theme.defaultFontSize + 1}
                           ]}>
-                          {item.type === 'IN' ? '+' : '-'}
-                          {parseKaiBalance(item.amount, true)} KAI
-                        </Text>
-                        <Text allowFontScaling={false} style={{color: '#DBDBDB', fontSize: 12}}>
+                          {/* {item.type === 'IN' ? '+' : '-'} */}
+                          {parseKaiBalance(item.amount, true)}{' '}
+                          <CustomText style={{color: theme.mutedTextColor}}>
+                            KAI
+                          </CustomText>
+                        </CustomText>
+                        <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
                           {format(item.date, 'hh:mm aa')}
-                        </Text>
+                        </CustomText>
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -301,7 +300,7 @@ const TransactionScreen = () => {
           style={styles.floatingButton}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 

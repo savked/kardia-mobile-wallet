@@ -1,14 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useContext, useState} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, TouchableOpacity, Image, Platform} from 'react-native';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {ThemeContext} from '../../ThemeContext';
 import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import CustomImagePicker from '../../components/ImagePicker';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import IconButton from '../../components/IconButton';
 import {getLanguageString} from '../../utils/lang';
 import {groupByAlphabet, truncate} from '../../utils/string';
 import {styles} from './style';
@@ -16,7 +15,9 @@ import Button from '../../components/Button';
 import NewAddressModal from '../common/NewAddressModal';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import {ScrollView} from 'react-native-gesture-handler';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import CustomText from '../../components/Text';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 
 const AddressBookSetting = () => {
   const theme = useContext(ThemeContext);
@@ -25,33 +26,37 @@ const AddressBookSetting = () => {
   const language = useRecoilValue(languageAtom);
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   const [showNewAddressModal, setShowNewAddressModal] = useState(false);
+
+  const insets = useSafeAreaInsets();
 
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(true);
+      setStatusBarColor(theme.backgroundColor);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
 
   return (
-    <SafeAreaView
-      style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+    <View
+      style={[styles.container, {backgroundColor: theme.backgroundColor, paddingTop: insets.top}]}>
       <NewAddressModal
         visible={showNewAddressModal}
         onClose={() => setShowNewAddressModal(false)}
       />
       <View style={styles.header}>
-        <Text allowFontScaling={false} style={[styles.headline, {color: theme.textColor}]}>
+        <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'ADDRESS_BOOK_MENU')}
-        </Text>
-        <IconButton
+        </CustomText>
+        {/* <IconButton
           name="bell-o"
           color={theme.textColor}
-          size={18}
+          size={20}
           onPress={() => navigation.navigate('Notification')}
-        />
+        /> */}
       </View>
       {groupByAlphabet(addressBook, 'name').length === 0 && (
         <View style={styles.noAddressContainer}>
@@ -59,18 +64,19 @@ const AddressBookSetting = () => {
             style={{width: 170, height: 156, marginBottom: 23, marginTop: 70}}
             source={require('../../assets/no_address_dark.png')}
           />
-          <Text allowFontScaling={false} style={[styles.emptyAddressBook, {color: theme.textColor}]}>
+          <CustomText style={[styles.emptyAddressBook, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS')}
-          </Text>
-          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32, textAlign: 'center'}}>
+          </CustomText>
+          <CustomText style={{color: theme.mutedTextColor, fontWeight: '500', fontSize: 15, marginBottom: 32, textAlign: 'center'}}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS_SUB_TEXT')}
-          </Text>
+          </CustomText>
           <Button
             type="primary"
             // onPress={() => navigation.navigate('NewAddress')}
             onPress={() => setShowNewAddressModal(true)}
             title={getLanguageString(language, 'ADD_NEW_ADDRESS')}
             style={{width: 248}}
+            textStyle={Platform.OS === 'android' ? {fontFamily: 'WorkSans-SemiBold', fontSize: theme.defaultFontSize + 3}  : {fontWeight: '500', fontSize: theme.defaultFontSize + 3}}
             icon={
               <AntIcon
                 name="plus"
@@ -86,15 +92,14 @@ const AddressBookSetting = () => {
         {groupByAlphabet(addressBook, 'name').map((group) => {
           return (
             <React.Fragment key={`address-group-${group.char}`}>
-              <Text
-                allowFontScaling={false}
+              <CustomText
                 style={{
                   marginHorizontal: 20,
                   marginBottom: 8,
                   color: theme.textColor,
                 }}>
                 {group.char}
-              </Text>
+              </CustomText>
               {group.items.map((address: Address) => {
                 return (
                   <TouchableOpacity
@@ -130,15 +135,14 @@ const AddressBookSetting = () => {
                       </View>
                     )}
                     <View>
-                      <Text
-                        allowFontScaling={false}
+                      <CustomText
                         style={[
                           styles.addressName,
                           {color: theme.textColor, fontSize: 13},
                         ]}>
                         {address.name}
-                      </Text>
-                      <Text
+                      </CustomText>
+                      <CustomText
                         allowFontScaling={false}
                         style={[
                           styles.addressHash,
@@ -148,7 +152,7 @@ const AddressBookSetting = () => {
                           },
                         ]}>
                         {truncate(address.address, 15, 15)}
-                      </Text>
+                      </CustomText>
                     </View>
                   </TouchableOpacity>
                 );
@@ -166,7 +170,7 @@ const AddressBookSetting = () => {
           style={styles.floatingButton}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 

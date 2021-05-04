@@ -20,6 +20,7 @@ import {getLanguageString} from '../../../utils/lang';
 import {getAppPasscode} from '../../../utils/local';
 import {styles} from './style';
 import Divider from '../../../components/Divider';
+import CustomText from '../../../components/Text';
 
 const optionalConfigObject = {
   unifiedErrors: false, // use unified error messages (default false)
@@ -130,7 +131,7 @@ export default ({
   const getModalStyle = () => {
     if (Platform.OS === 'android') {
       return {
-        height: 350,
+        height: 370,
         backgroundColor: theme.backgroundFocusColor,
         alignItems: 'center',
       };
@@ -151,15 +152,14 @@ export default ({
       showCloseButton={false}
       onClose={closeAuthModal}
       contentStyle={getModalStyle()}>
-      <Text
-        allowFontScaling={false}
+      <CustomText
         style={{
           textAlign: 'center',
           color: theme.mutedTextColor,
           fontSize: 15,
         }}>
         {getLanguageString(language, 'ENTER_PIN_CODE')}
-      </Text>
+      </CustomText>
       <OtpInputs
         // TODO: remove ts-ignore after issue fixed
         // @ts-ignore
@@ -177,11 +177,10 @@ export default ({
         ref={otpRef}
       />
       {error !== '' && (
-        <Text
-          allowFontScaling={false}
+        <CustomText
           style={{color: 'red', paddingHorizontal: 20, fontStyle: 'italic'}}>
           {error}
-        </Text>
+        </CustomText>
       )}
       <Divider style={{width: 32, backgroundColor: '#F0F1F2'}} />
       {touchSupported && (
@@ -206,9 +205,9 @@ export default ({
               size={24}
             />
           )}
-          <Text allowFontScaling={false} style={{color: theme.textColor, fontSize: 15}}>
+          <CustomText style={{color: theme.textColor, fontSize: 15}}>
             Authenticate by {touchType}
-          </Text>
+          </CustomText>
         </TouchableOpacity>
       )}
       <View style={{width: '100%'}}>
@@ -222,6 +221,10 @@ export default ({
         <Button
           title={getLanguageString(language, 'CONFIRM')}
           onPress={verify}
+          textStyle={{
+            fontWeight: '500', fontSize: theme.defaultFontSize + 3,
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+          }}
           type="primary"
           block
         />

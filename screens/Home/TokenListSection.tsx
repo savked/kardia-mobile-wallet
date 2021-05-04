@@ -1,9 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Image, Text, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, Image, TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
-import List from '../../components/List';
+// import List from '../../components/List';
 import {styles} from './style';
 import {parseDecimals} from '../../utils/number';
 import Button from '../../components/Button';
@@ -12,11 +12,12 @@ import numeral from 'numeral';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 // import {getTokenList} from '../../utils/local';
-import NewTokenModal from '../common/NewTokenModal';
+// import NewTokenModal from '../common/NewTokenModal';
 import {krc20ListAtom} from '../../atoms/krc20';
 import {getBalance} from '../../services/krc20';
 import {getSelectedWallet, getWallets} from '../../utils/local';
 import {selectedWalletAtom} from '../../atoms/wallets';
+import CustomText from '../../components/Text';
 
 const TokenListSection = () => {
   const navigation = useNavigation();
@@ -25,7 +26,6 @@ const TokenListSection = () => {
 
   const language = useRecoilValue(languageAtom);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
   const [balance, setBalance] = useState<number[]>([]);
   const tokenList = useRecoilValue(krc20ListAtom);
 
@@ -75,7 +75,7 @@ const TokenListSection = () => {
   };
 
   const renderTokenList = () => {
-    return tokenList.map((item, index) => {
+    return tokenList.slice(0, 7).map((item, index) => {
       return <View
         key={item.name}
         style={{
@@ -114,7 +114,7 @@ const TokenListSection = () => {
               alignItems: 'flex-start',
               height: '100%',
             }}>
-            <Text
+            <CustomText
               allowFontScaling={false}
               style={{
                 color: '#FFFFFF',
@@ -122,7 +122,7 @@ const TokenListSection = () => {
                 fontSize: 16,
               }}>
               {item.symbol}
-            </Text>
+            </CustomText>
           </View>
           <View
             style={{
@@ -131,14 +131,14 @@ const TokenListSection = () => {
               alignItems: 'flex-end',
               justifyContent: 'center',
             }}>
-            <Text allowFontScaling={false} style={[styles.kaiAmount, {color: theme.textColor}]}>
+            <CustomText style={[styles.kaiAmount, {color: theme.textColor}]}>
               {numeral(
                 parseDecimals(balance[index], item.decimals),
               ).format('0,0.00')}
-            </Text>
-            <Text allowFontScaling={false} style={{color: theme.ghostTextColor}}>
+            </CustomText>
+            <CustomText style={{color: theme.ghostTextColor}}>
               {item.symbol}
-            </Text>
+            </CustomText>
           </View>
         </TouchableOpacity>
       </View>
@@ -147,22 +147,24 @@ const TokenListSection = () => {
 
   return (
     <View style={styles.tokenListContainer}>
-      <NewTokenModal visible={showModal} onClose={() => setShowModal(false)} />
+      {/* <NewTokenModal visible={showModal} onClose={() => setShowModal(false)} /> */}
       <View
         style={{
           alignItems: 'center',
           flexDirection: 'row',
           justifyContent: 'space-between',
-          padding: 20,
+          paddingHorizontal: 20,
+          paddingTop: 16,
+          paddingBottom: 12,
         }}>
-        <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: 'bold', color: theme.textColor}}>
+        <CustomText style={{fontSize: 18, fontWeight: 'bold', color: theme.textColor}}>
           {getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}
-        </Text>
+        </CustomText>
         {tokenList.length > 0 && (
           <TouchableOpacity onPress={() => navigation.navigate('KRC20Tokens')}>
-            <Text allowFontScaling={false} style={{fontSize: theme.defaultFontSize, color: theme.textColor}}>
+            <CustomText style={{fontSize: theme.defaultFontSize, color: theme.textColor}}>
               {getLanguageString(language, 'VIEW_ALL')} ({tokenList.length})
-            </Text>
+            </CustomText>
           </TouchableOpacity>
         )}
       </View>
@@ -172,17 +174,17 @@ const TokenListSection = () => {
             style={{width: 111, height: 52}}
             source={require('../../assets/no_tokens_dark.png')}
           />
-          <Text allowFontScaling={false} style={[styles.noTXText, {color: theme.textColor}]}>
+          <CustomText style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TOKENS')}
-          </Text>
-          <Text allowFontScaling={false} style={{color: theme.mutedTextColor, fontSize: 12, marginBottom: 16}}>
+          </CustomText>
+          <CustomText style={{color: theme.mutedTextColor, fontSize: 12, marginBottom: 16}}>
             {getLanguageString(language, 'NO_TOKENS_SUB_TEXT')}
-          </Text>
+          </CustomText>
           <Button
             type="outline"
             textStyle={{fontWeight: 'bold', fontSize: 12}}
             style={{paddingVertical: 8, paddingHorizontal: 16}}
-            onPress={() => setShowModal(true)}
+            onPress={() => navigation.navigate('NewKRC20Tokens')}
             title={`+ ${getLanguageString(language, 'ADD_TOKEN')}`}
           />
         </View>

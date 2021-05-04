@@ -15,6 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
 import { useFocusEffect } from '@react-navigation/native';
 import { showTabBarAtom } from '../../atoms/showTabBar';
+import CustomText from '../../components/Text';
 
 const languageList = getSupportedLanguage();
 
@@ -53,7 +54,7 @@ const LanguageSetting = () => {
           backgroundColor="transparent"
         />
       </View>
-      <Text allowFontScaling={false} style={{color: theme.textColor, marginHorizontal: 20, marginVertical: 18, fontSize: 36}}>{getLanguageString(language, 'LANGUAGE_SETTING_TITLE')}</Text>
+      <CustomText style={{color: theme.textColor, marginHorizontal: 20, marginVertical: 18, fontSize: 36}}>{getLanguageString(language, 'LANGUAGE_SETTING_TITLE')}</CustomText>
       <List
         items={languageList}
         keyExtractor={(item) => item.flag}
@@ -65,7 +66,7 @@ const LanguageSetting = () => {
               onPress={() => selectLanguage(item.key || '')}>
               <View style={styles.itemContainer}>
                 <Flag code={item.flag} size={48} style={{marginRight: 14}} />
-                <Text allowFontScaling={false} style={{color: theme.textColor}}>{item.name}</Text>
+                <CustomText style={{color: theme.textColor}}>{item.name}</CustomText>
               </View>
               <View>
                 {active && (

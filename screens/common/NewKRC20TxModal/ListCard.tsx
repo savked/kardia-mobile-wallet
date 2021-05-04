@@ -6,6 +6,7 @@ import {ThemeContext} from '../../../ThemeContext';
 import {languageAtom} from '../../../atoms/language';
 import {getLanguageString} from '../../../utils/lang';
 import {styles} from './style';
+import CustomText from '../../../components/Text';
 
 const ListCard = ({
   gasPrice,
@@ -78,22 +79,20 @@ const ListCard = ({
               <Image source={item.image} style={{width: 20, height: 20}} />
             </View>
             <View style={{alignItems: 'flex-start'}}>
-              <Text
-                allowFontScaling={false}
+              <CustomText
                 style={{
                   textAlign: 'center',
                   color: active ? theme.textColor : theme.ghostTextColor,
                 }}>
                 {item.title}
-              </Text>
-              <Text
-                allowFontScaling={false}
+              </CustomText>
+              <CustomText
                 style={{
                   textAlign: 'center',
                   color: active ? theme.textColor : theme.ghostTextColor,
                 }}>
                 {item.time}
-              </Text>
+              </CustomText>
             </View>
           </TouchableOpacity>
         );

@@ -11,6 +11,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ThemeContext} from '../../ThemeContext';
+import CustomText from '../Text';
 import {styles} from './style';
 
 const Button = ({
@@ -135,7 +136,7 @@ const Button = ({
         // style={{flex: 1}}
         style={[
           styles.button,
-          parseSize(),
+          
           typeStyle,
           block ? {width: '100%'} : null,
           style,
@@ -152,18 +153,18 @@ const Button = ({
             !loading && onPress();
           }}
           disabled={disabled}
-          style={{
+          style={[parseSize(),{
             alignItems: 'center',
             justifyContent: 'center',
             flex: 1,
             flexDirection: 'row',
-          }}>
+          }]}>
           {loading && <ActivityIndicator color={textTypeStyle.color} />}
           {!loading && renderIcon()}
           {!loading && title && (
-            <Text allowFontScaling={false} style={[styles.title, textTypeStyle, textStyle]}>
+            <CustomText style={[styles.title, textTypeStyle, textStyle]}>
               {title}
-            </Text>
+            </CustomText>
           )}
         </TouchableOpacity>
       </LinearGradient>
@@ -188,7 +189,7 @@ const Button = ({
       {!loading && renderIcon()}
       {/* <Icon name={iconName} size={size} color={color} style={{marginRight:8}}/> */}
       {!loading && title && (
-        <Text allowFontScaling={false} style={[styles.title, textTypeStyle, textStyle]}>{title}</Text>
+        <CustomText style={[styles.title, textTypeStyle, textStyle]}>{title}</CustomText>
       )}
     </TouchableOpacity>
   );

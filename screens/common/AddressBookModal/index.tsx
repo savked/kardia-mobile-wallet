@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useContext } from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {addressBookAtom} from '../../../atoms/addressBook';
@@ -10,6 +10,9 @@ import {truncate} from '../../../utils/string';
 import TextAvatar from '../../../components/TextAvatar';
 import {languageAtom} from '../../../atoms/language';
 import {getLanguageString} from '../../../utils/lang';
+import CustomText from '../../../components/Text';
+import { ThemeContext } from '../../../ThemeContext';
+import CustomImagePicker from '../../../components/ImagePicker';
 
 const AddressBookModal = ({
   visible,
@@ -22,16 +25,19 @@ const AddressBookModal = ({
 }) => {
   const addressBook = useRecoilValue(addressBookAtom);
   const language = useRecoilValue(languageAtom);
+  const theme = useContext(ThemeContext)
   return (
     <Modal 
       visible={visible} 
+      showCloseButton={false}
       onClose={onClose} 
       contentStyle={{
         paddingHorizontal: 0,
-        flex: 0.65,
+        height: 500,
+        backgroundColor: theme.backgroundColor
       }}
     >
-      <Text>{getLanguageString(language, 'SELECT_ADDRESS')}</Text>
+      <CustomText style={{color: theme.textColor, fontSize: 15}}>{getLanguageString(language, 'SELECT_ADDRESS')}</CustomText>
       <List
         items={addressBook}
         keyExtractor={(item) => item.address}
@@ -44,26 +50,26 @@ const AddressBookModal = ({
               }}>
               <View style={styles.addressAvatarContainer}>
                 {_address.avatar ? (
-                  <Image source={{uri: _address.avatar}} />
+                  <CustomImagePicker image={{uri: _address.avatar}} editable={false} imageStyle={{width: 50, height: 50, borderRadius: 8}} />
                 ) : (
                   <TextAvatar text={_address.name} />
                 )}
               </View>
               <View>
-                <Text allowFontScaling={false} style={[styles.addressName, {color: '#000000'}]}>
+                <CustomText style={[styles.addressName, {color: theme.textColor}]}>
                   {_address.name}
-                </Text>
-                <Text allowFontScaling={false} style={[styles.addressHash, {color: '#000000'}]}>
+                </CustomText>
+                <CustomText style={[styles.addressHash, {color: theme.textColor}]}>
                   {truncate(_address.address, 20, 20)}
-                </Text>
+                </CustomText>
               </View>
             </TouchableOpacity>
           );
         }}
         ListEmptyComponent={
-          <Text allowFontScaling={false} style={[styles.emptyAddressBook]}>
+          <CustomText style={[styles.emptyAddressBook, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_SAVED_ADDRESS')}
-          </Text>
+          </CustomText>
         }
       />
     </Modal>

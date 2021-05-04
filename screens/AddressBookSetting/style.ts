@@ -21,8 +21,8 @@ export const styles = StyleSheet.create({
     marginRight: 12,
   },
   headline: {
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 36,
+    // fontWeight: 'bold',
   },
   header: {
     paddingHorizontal: 20,
@@ -30,6 +30,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginBottom: 18,
   },
   addressAvatar: {
     width: 32,
@@ -73,5 +74,13 @@ export const styles = StyleSheet.create({
     height: 52,
     borderRadius: 26,
     paddingVertical: 0,
+    shadowColor: 'rgba(0, 0, 0, 0.3)',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 12,
+    shadowRadius: 8,
+    elevation: 9,
   },
 });

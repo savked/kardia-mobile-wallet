@@ -11,6 +11,7 @@ import ScanMode from './ScanMode';
 import InputMode from './InputMode';
 import { statusBarColorAtom } from '../../atoms/statusBar';
 import { ThemeContext } from '../../ThemeContext';
+import CustomText from '../../components/Text';
 // import {RNCamera} from 'react-native-camera';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window');
@@ -68,8 +69,7 @@ export default () => {
                 justifyContent: 'center',
               }}>
               <View style={{width: 250}}>
-                <Text
-                  allowFontScaling={false}
+                <CustomText
                   style={{
                     textAlign: 'center',
                     color: '#FFFFFF',
@@ -78,12 +78,11 @@ export default () => {
                     marginBottom: 4,
                   }}>
                   {getLanguageString(language, 'SCAN_QR_TITLE')}
-                </Text>
-                <Text
-                  allowFontScaling={false}
+                </CustomText>
+                <CustomText
                   style={{textAlign: 'center', color: '#FFFFFF', fontSize: 15}}>
                   {getLanguageString(language, 'SCAN_QR_PRIVATE_KEY')}
-                </Text>
+                </CustomText>
               </View>
             </View>
           ) : (
@@ -93,8 +92,7 @@ export default () => {
                 justifyContent: 'center',
               }}>
               <View style={{width: 320, marginBottom: 24}}>
-                <Text
-                  allowFontScaling={false}
+                <CustomText
                   style={{
                     textAlign: 'center',
                     color: '#FFFFFF',
@@ -103,12 +101,11 @@ export default () => {
                     marginBottom: 4,
                   }}>
                   {getLanguageString(language, 'ENTER_PRIVATE_KEY')}
-                </Text>
-                <Text
-                  allowFontScaling={false}
+                </CustomText>
+                <CustomText
                   style={{textAlign: 'center', color: '#FFFFFF', fontSize: 15}}>
                   {getLanguageString(language, 'ENTER_QR_PRIVATE_KEY')}
-                </Text>
+                </CustomText>
               </View>
               <View style={{width: 320}}>
                 <InputMode />
@@ -136,7 +133,7 @@ export default () => {
                 borderRadius: 12,
                 alignItems: 'center',
               }}>
-              <Text allowFontScaling={false} style={{color: theme.textColor}}>{getLanguageString(language, 'SCAN_MODE')}</Text>
+              <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'SCAN_MODE')}</CustomText>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setMode('enter')}
@@ -148,7 +145,7 @@ export default () => {
                 borderRadius: 12,
                 alignItems: 'center',
               }}>
-              <Text allowFontScaling={false} style={{color: theme.textColor}}>{getLanguageString(language, 'INPUT_MODE')}</Text>
+              <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'INPUT_MODE')}</CustomText>
             </TouchableOpacity>
           </View>
         </View>

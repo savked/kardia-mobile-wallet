@@ -12,6 +12,7 @@ import ScanMode from './ScanMode';
 import InputMode from './InputMode';
 import { saveAppPasscodeSetting } from '../../utils/local';
 import { statusBarColorAtom } from '../../atoms/statusBar';
+import CustomText from '../../components/Text';
 // import {RNCamera} from 'react-native-camera';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -115,8 +116,7 @@ export default () => {
                 justifyContent: 'center',
               }}>
               <View style={{ width: 250 }}>
-                <Text
-                  allowFontScaling={false}
+                <CustomText
                   style={{
                     textAlign: 'center',
                     color: '#FFFFFF',
@@ -125,12 +125,11 @@ export default () => {
                     marginBottom: 4,
                   }}>
                   {getLanguageString(language, 'SCAN_QR_TITLE')}
-                </Text>
-                <Text
-                  allowFontScaling={false}
+                </CustomText>
+                <CustomText
                   style={{ textAlign: 'center', color: '#FFFFFF', fontSize: 15 }}>
                   {getLanguageString(language, 'SCAN_QR_MNEMONIC')}
-                </Text>
+                </CustomText>
               </View>
             </View>
           ) : (
@@ -140,8 +139,7 @@ export default () => {
                 justifyContent: 'center',
               }}>
               <View style={{ width: 320, marginBottom: 24 }}>
-                <Text
-                  allowFontScaling={false}
+                <CustomText
                   style={{
                     textAlign: 'center',
                     color: '#FFFFFF',
@@ -150,12 +148,11 @@ export default () => {
                     marginBottom: 4,
                   }}>
                   {getLanguageString(language, 'ENTER_SEED_PHRASE')}
-                </Text>
-                <Text
-                  allowFontScaling={false}
+                </CustomText>
+                <CustomText
                   style={{ textAlign: 'center', color: '#FFFFFF', fontSize: 15 }}>
                   {getLanguageString(language, 'ENTER_QR_MNEMONIC')}
-                </Text>
+                </CustomText>
               </View>
               <View style={{ width: 320 }}>
                 <InputMode fromNoWallet={params && (params as any).fromNoWallet === true ? true : false} />
@@ -182,7 +179,7 @@ export default () => {
                 borderRadius: 12,
                 alignItems: 'center',
               }}>
-              <Text allowFontScaling={false} style={{ color: mode === 'scan' ? theme.textColor : theme.mutedTextColor }}>{getLanguageString(language, 'SCAN_MODE')}</Text>
+              <CustomText style={{ color: mode === 'scan' ? theme.textColor : theme.mutedTextColor }}>{getLanguageString(language, 'SCAN_MODE')}</CustomText>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setMode('enter')}
@@ -194,7 +191,7 @@ export default () => {
                 borderRadius: 12,
                 alignItems: 'center',
               }}>
-              <Text allowFontScaling={false} style={{ color: mode === 'enter' ? theme.textColor : theme.mutedTextColor }}>{getLanguageString(language, 'INPUT_MODE')}</Text>
+              <CustomText style={{ color: mode === 'enter' ? theme.textColor : theme.mutedTextColor }}>{getLanguageString(language, 'INPUT_MODE')}</CustomText>
             </TouchableOpacity>
           </View>
         </View>

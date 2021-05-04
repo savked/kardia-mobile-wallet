@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
-import OtpInputs from 'react-native-otp-inputs';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import {Image, Platform, TouchableOpacity, View} from 'react-native';
+import OtpInputs, { OtpInputsRef } from 'react-native-otp-inputs';
 import TouchID from 'react-native-touch-id';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
@@ -13,6 +13,7 @@ import {getAppPasscode} from '../../utils/local';
 import {styles} from './style';
 import {localAuthAtom} from '../../atoms/localAuth';
 import Divider from '../../components/Divider';
+import CustomText from '../../components/Text';
 
 const optionalConfigObject = {
   unifiedErrors: false, // use unified error messages (default false)
@@ -29,7 +30,16 @@ const ConfirmPasscode = () => {
   const [touchType, setTouchType] = useState('');
   const setLocalAuth = useSetRecoilState(localAuthAtom);
 
+  const otpRef = useRef<OtpInputsRef>(null)
+
+  const focusOTP = useCallback(() => {
+    if (otpRef && otpRef.current) {
+      otpRef.current.focus();
+    }
+  }, [])
+
   useEffect(() => {
+    focusOTP()
     TouchID.isSupported(optionalConfigObject)
       .then((biometryType) => {
         // Success code
@@ -68,11 +78,17 @@ const ConfirmPasscode = () => {
       });
   };
 
+  useEffect(() => {
+    if (touchSupported) {
+      authByTouchID()
+    }
+  }, [touchSupported])
+
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <Text allowFontScaling={false} style={[styles.title, {color: theme.textColor}]}>
+      <CustomText style={[styles.title, {color: theme.textColor}]}>
         {getLanguageString(language, 'ENTER_PIN_CODE')}
-      </Text>
+      </CustomText>
       <View style={{marginVertical: 24, width: '100%'}}>
         <OtpInputs
           // TODO: remove ts-ignore after issue fixed
@@ -87,13 +103,14 @@ const ConfirmPasscode = () => {
             ...{backgroundColor: theme.backgroundFocusColor, color: theme.textColor},
           }}
           secureTextEntry={true}
+          ref={otpRef}
         />
         {error !== '' && (
-          <Text
+          <CustomText
             allowFontScaling={false}
             style={{color: 'red', paddingHorizontal: 20, fontStyle: 'italic'}}>
             {error}
-          </Text>
+          </CustomText>
         )}
       </View>
       <Divider style={{width: 32, backgroundColor: '#F0F1F2'}} />
@@ -114,15 +131,20 @@ const ConfirmPasscode = () => {
           ) : (
             <Icon name="finger-print" color={theme.textColor} size={30} />
           )}
-          <Text allowFontScaling={false} style={{color: theme.textColor}}>
+          <CustomText style={{color: theme.textColor}}>
             Authenticate by {touchType}
-          </Text>
+          </CustomText>
         </TouchableOpacity>
       )}
       <Button
         block
         title={getLanguageString(language, 'CONFIRM')}
         onPress={handleSubmit}
+        textStyle={{
+          fontSize: theme.defaultFontSize + 4,
+          fontWeight: '500',
+          fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+        }}
       />
     </View>
   );
