@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {View, Image, AppState, Text} from 'react-native';
+import {View, Image, AppState, Dimensions, Linking, Platform} from 'react-native';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -37,12 +37,17 @@ import {krc20ListAtom} from '../../atoms/krc20';
 import HomeStackScreen from '../../HomeStack';
 import AddressStackScreen from '../../AddressStack';
 import {showTabBarAtom} from '../../atoms/showTabBar';
-import { getVerifiedTokenList } from '../../services/krc20';
 import CustomText from '../../components/Text';
 import { fontSizeAtom } from '../../atoms/fontSize';
+import { getAppStatus } from '../../services/util';
+import { INFO_DATA } from '../Setting';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Button from '../../components/Button';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+const {width: viewportWidth} = Dimensions.get('window')
 
 let lastTimestamp = 0;
 
@@ -214,6 +219,7 @@ const AppContainer = () => {
     localAuthEnabledAtom,
   );
   const [inited, setInited] = useState(0);
+  const [appStatus, setAppStatus] = useState('OK')
 
   const theme = useContext(ThemeContext);
 
@@ -241,6 +247,30 @@ const AppContainer = () => {
     [],
   );
 
+  const compareVersion = (localVersion: string, serverVersion: string) => {
+    const localArr = localVersion.split('.').map((i) => Number(i));
+    const serverArr = serverVersion.split('.').map((i) => Number(i));
+    if (serverArr[0] < localArr[0]) {
+      return 'OK'
+    }
+    if (serverArr[0] > localArr[0]) {
+      return 'NEED_UPDATE'
+    }
+
+    if (serverArr[1] < localArr[1]) {
+      return 'OK'
+    }
+    if (serverArr[1] > localArr[1]) {
+      return 'NEED_UPDATE'
+    }
+
+    if (serverArr[2] <= localArr[2]) {
+      return 'OK'
+    }
+    return 'NEED_UPDATE'
+
+  }
+
   useEffect(() => {
     AppState.addEventListener('change', handleAppStateChange);
 
@@ -252,6 +282,24 @@ const AppContainer = () => {
 
   useEffect(() => {
     (async () => {
+      // Get app status
+      const serverStatus = await getAppStatus();
+
+      if (serverStatus.status === 'UNDER_MAINTAINANCE') {
+        setAppStatus('UNDER_MAINTAINANCE');
+        return;
+      }
+
+      const compareResult = compareVersion(serverStatus.appVersion, serverStatus.appVersion)
+      // const compareResult = compareVersion(INFO_DATA.version, '2.0.16')
+
+      setAppStatus(compareResult)
+
+      if (compareResult !== 'OK') {
+        setInited(1);
+        return;
+      }
+
       // Get local auth setting
       const enabled = await getAppPasscodeSetting();
       setLocalAuthEnabled(enabled);
@@ -324,6 +372,46 @@ const AppContainer = () => {
         />
       </View>
     );
+  }
+
+  if (appStatus === 'UNDER_MAINTAINANCE') {
+    return (
+      <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor, alignItems: 'center', justifyContent: 'center'}}>
+        <Image
+          source={require('../../assets/under_maintenance.png')}
+          style={{
+            width: viewportWidth,
+            height: 400,
+          }}
+        />
+        <CustomText style={{color: theme.textColor, fontSize: 32, textAlign: 'center', marginBottom: 12, fontWeight: 'bold'}}>Under maintenance</CustomText>
+        <CustomText style={{color: theme.textColor, fontSize: 13, textAlign: 'center', marginHorizontal: 20}}>Sorry for the inconvenience .We will come back soon</CustomText>
+      </SafeAreaView>
+    )
+  }
+
+  if (appStatus === 'NEED_UPDATE') {
+    return (
+      <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor, alignItems: 'center', justifyContent: 'center'}}>
+        <CustomText style={{color: theme.textColor, fontSize: 28, fontWeight: 'bold', marginBottom: 12, marginHorizontal: 20}}>
+          New version is available.
+        </CustomText>
+        <CustomText style={{color: theme.textColor, marginHorizontal: 20}}>
+          A new version is available, please update your app to use latest features
+        </CustomText>
+        <Button
+          title={'Update'}
+          style={{marginHorizontal: 20, marginTop: 24}}
+          onPress={() => {
+            if (Platform.OS === 'android') {
+              Linking.openURL("market://details?id=com.kardiawallet")
+            } else {
+              Linking.openURL("itms-apps://itunes.apple.com/us/app/apple-store/id1551620695")
+            }
+          }}
+        />
+      </SafeAreaView>
+    )
   }
 
   if (wallets.length === 0) {

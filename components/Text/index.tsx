@@ -22,7 +22,7 @@ const CustomText = ({children, style, ...rest}: any) => {
         ...style,
       ]
       style.forEach((i: any) => {
-        if (i.fontSize) {
+        if (i && i.fontSize) {
           finalFontSize = i.fontSize
         }
       })

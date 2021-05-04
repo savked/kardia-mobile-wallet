@@ -16,7 +16,7 @@ import CustomText from '../../components/Text';
 import { fontSizeAtom } from '../../atoms/fontSize';
 import { saveFontSize } from '../../utils/local';
 
-const INFO_DATA = {
+export const INFO_DATA = {
   version: '2.0.15',
 };
 
