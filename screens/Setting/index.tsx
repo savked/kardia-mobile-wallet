@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useContext, useState} from 'react';
+import React, {useCallback, useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, TouchableOpacity, Image, ScrollView, Platform} from 'react-native';
 // import Icon from 'react-native-vector-icons/FontAwesome';
