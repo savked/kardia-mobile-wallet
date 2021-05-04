@@ -17,7 +17,7 @@ import { fontSizeAtom } from '../../atoms/fontSize';
 import { saveFontSize } from '../../utils/local';
 
 export const INFO_DATA = {
-  version: '2.0.15',
+  version: '2.1.0',
 };
 
 const SettingScreen = () => {
