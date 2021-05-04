@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import {DEFAULT_KRC20_TOKENS} from '../config';
 
-export const getWallets = async () => {
+const _getWallets = async () => {
   try {
     const value = await AsyncStorage.getItem('@kardia_wallets');
     if (value !== null) {
@@ -21,15 +22,56 @@ export const getWallets = async () => {
   }
 };
 
+export const getWallets = async () => {
+  try {
+    const value = await EncryptedStorage.getItem('@kardia_wallets');
+
+    if (value !== null && value !== undefined) {
+      // value previously stored
+      const wallets = JSON.parse(value);
+      if (!Array.isArray(wallets)) {
+        console.log('Invalid local data');
+        return [];
+      }
+      return wallets;
+    } else {
+      // Migrate old value
+      const oldValue = await _getWallets();
+      if (oldValue !== null) {
+        await saveWallets(oldValue)
+        // Remove old value
+        await AsyncStorage.removeItem('@kardia_wallets')
+        console.log('old value cleared')
+        return oldValue
+      }
+    }
+    return [];
+  } catch (e) {
+    console.error(e);
+    return [];
+    // error reading value
+  }
+};
+
+// const _saveWallets = async (wallets: Wallet[]) => {
+//   try {
+//     await AsyncStorage.setItem('@kardia_wallets', JSON.stringify(wallets));
+//     return true;
+//   } catch (e) {
+//     console.error(e);
+//     return false;
+//   }
+// };
+
 export const saveWallets = async (wallets: Wallet[]) => {
   try {
-    await AsyncStorage.setItem('@kardia_wallets', JSON.stringify(wallets));
+    await EncryptedStorage.setItem('@kardia_wallets', JSON.stringify(wallets));
     return true;
   } catch (e) {
     console.error(e);
     return false;
   }
-};
+}; 
 
 export const saveSelectedWallet = async (selectedWallet: number) => {
   try {
