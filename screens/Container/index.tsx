@@ -291,7 +291,6 @@ const AppContainer = () => {
       }
 
       const compareResult = compareVersion(INFO_DATA.version, serverStatus.appVersion)
-      // const compareResult = compareVersion(INFO_DATA.version, '2.0.16')
       setAppStatus(compareResult)
 
       if (compareResult !== 'OK') {

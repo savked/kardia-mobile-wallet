@@ -88,6 +88,7 @@ export const lang: Language = {
     RECENT_TRANSACTION: 'Transactions',
     NO_TRANSACTION: 'No transaction',
     NO_TRANSACTION_SUB_TEXT: 'Hello!? Anybody home ??',
+    NO_KRC20_TRANSACTION_SUB_TEXT: 'Looks like we don’t have any transaction for this token...yet',
     SEARCH_TRANSACTION_PLACEHOLDER:
       'Search with address / hash / block number...',
     VIEW_ALL: 'View All',

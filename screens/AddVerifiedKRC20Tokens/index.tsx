@@ -31,9 +31,13 @@ export default () => {
   const setKRC20List = useSetRecoilState(krc20ListAtom)
   const [localKRC20List, setLocalKRC20List] = useState<KRC20[]>([]);
 
+  const [touched, setTouched] = useState(false);
+  const [adding, setAdding] = useState(false);
+
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(false);
+      setTouched(false);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
@@ -83,6 +87,7 @@ export default () => {
   };
 
   const handleAddToken = async () => {
+    setAdding(true);
     const localTokens = await getTokenList();
     const listAddress = (await getVerifiedTokenList()).map((i) => i.address);
     const customTokens = localTokens.filter((i) => {
@@ -93,10 +98,15 @@ export default () => {
 
     await saveTokenList(newTokenList);
     setKRC20List(newTokenList);
-    navigation.goBack();
+    // setAdding(false);
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Home'}],
+    });
   }
 
   const toggleToken = (item: KRC20) => {
+    setTouched(true)
     const _localList: KRC20[] = JSON.parse(JSON.stringify(localKRC20List))
     const index = _localList.findIndex((i) => i.address === item.address)
     if (index > -1) {
@@ -193,29 +203,33 @@ export default () => {
           }}
         />
       </View>
-      <View
-        style={{
-          shadowColor: 'rgba(0, 0, 0, 0.3)',
-          shadowOffset: {
-            width: 0,
-            height: -16,
-          },
-          shadowOpacity: 2,
-          shadowRadius: 4,
-          elevation: 9,
-        }}
-      >
-        <Button
-          title={getLanguageString(language, 'DONE')}
-          onPress={handleAddToken}
-          style={{marginHorizontal: 20, marginBottom: 52}}
-          textStyle={{
-            fontWeight: '500',
-            fontSize: theme.defaultFontSize + 3,
-            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+      {touched && (
+        <View
+          style={{
+            shadowColor: 'rgba(0, 0, 0, 0.3)',
+            shadowOffset: {
+              width: 0,
+              height: -16,
+            },
+            shadowOpacity: 2,
+            shadowRadius: 4,
+            elevation: 9,
           }}
-        />
-      </View>
+        >
+          <Button
+            title={getLanguageString(language, 'DONE')}
+            onPress={handleAddToken}
+            loading={adding}
+            disabled={adding}
+            style={{marginHorizontal: 20, marginBottom: 52}}
+            textStyle={{
+              fontWeight: '500',
+              fontSize: theme.defaultFontSize + 3,
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+            }}
+          />
+        </View>
+      )}
     </SafeAreaView>
   )
 };

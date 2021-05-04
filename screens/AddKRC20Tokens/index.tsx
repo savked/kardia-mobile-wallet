@@ -56,11 +56,7 @@ export default () => {
           styles.cardWrapper,
           {backgroundColor: theme.backgroundFocusColor},
         ]}>
-        {/* <Image
-          style={{width: 185, height: 162}}
-          source={require('../../assets/import_private_key.png')}
-        /> */}
-        <View style={{marginBottom: 24, marginLeft: 18}}>
+        <View style={{marginBottom: 24, paddingLeft: 18}}>
           <CustomText
             allowFontScaling={false}
             style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
@@ -70,6 +66,10 @@ export default () => {
             {getLanguageString(language, 'VERIFIED_TOKENS_DESC')}
           </CustomText>
         </View>
+        <Image
+          style={{width: 186, height: 160}}
+          source={require('../../assets/add_verified_token.png')}
+        />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => setShowModal(true)}

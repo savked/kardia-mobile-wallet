@@ -24,8 +24,6 @@ export const styles = StyleSheet.create({
   },
   noTXText: {
     padding: 15,
-    fontSize: 16,
-    fontStyle: 'italic',
   },
   kaiAmount: {
     fontWeight: 'bold',
@@ -71,7 +69,7 @@ export const styles = StyleSheet.create({
   },
   noTXContainer: {
     // flex: 1,
-    paddingHorizontal: 83,
+    // paddingHorizontal: 83,
     alignItems: 'center',
     justifyContent: 'center',
   },

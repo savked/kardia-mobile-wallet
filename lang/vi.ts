@@ -84,6 +84,7 @@ export const lang: Language = {
     RECENT_TRANSACTION: 'Giao dịch',
     NO_TRANSACTION: '0 giao dịch',
     NO_TRANSACTION_SUB_TEXT: 'Có vẻ như chưa có bất kỳ giao dịch nào.',
+    NO_KRC20_TRANSACTION_SUB_TEXT: 'Có vẻ như chưa có bất kỳ giao dịch nào.',
     SEARCH_TRANSACTION_PLACEHOLDER: 'Tìm kiếm...',
     VIEW_ALL: 'Tất cả',
     SEND: 'Gửi KAI',
@@ -220,7 +221,7 @@ export const lang: Language = {
     CHOOSE_VERIFIED_TOKENS: 'Chọn token',
     CUSTOM_TOKENS_DESC: 'created by developer',
     VERIFIED_TOKENS: 'Verified Token',
-    VERIFIED_TOKENS_DESC: 'xác thực bởi KardiaChain',
+    VERIFIED_TOKENS_DESC: 'bởi KardiaChain',
     ADD_TOKEN_DESCRIPTION: 'Quản lý token KRC20 tiện lợi.',
     // Auth modal key
     ENTER_PIN_CODE: 'Nhập mã PIN để tiếp tục',

@@ -5,6 +5,7 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import {
   ActivityIndicator,
   Image,
+  Platform,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -152,23 +153,33 @@ const TokenTxList = ({
             style={{width: 128, height: 105}}
             source={require('../../assets/no_tx_box.png')}
           />
-          <CustomText style={[styles.noTXText, {color: theme.textColor}]}>
+          <CustomText style={[styles.noTXText, {color: theme.textColor, fontSize: 24, fontWeight: 'bold'}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
           </CustomText>
-          <Button
-            type="primary"
-            onPress={() => setShowNewTxModal(true)}
-            title={getLanguageString(language, 'SEND_NOW')}
-            block={true}
-            icon={
-              <AntIcon
-                name="plus"
-                size={20}
-                color={'#000000'}
-                style={{marginRight: 8}}
-              />
-            }
-          />
+          <CustomText style={{color: theme.textColor}}>
+            {getLanguageString(language, 'NO_KRC20_TRANSACTION_SUB_TEXT')}
+          </CustomText>
+          <View style={{marginHorizontal: 83, marginTop: 32}}>
+            <Button
+              type="primary"
+              onPress={() => setShowNewTxModal(true)}
+              title={getLanguageString(language, 'SEND_NOW')}
+              block={true}
+              icon={
+                <AntIcon
+                  name="plus"
+                  size={20}
+                  color={'#000000'}
+                  style={{marginRight: 8}}
+                />
+              }
+              textStyle={{
+                fontSize: theme.defaultFontSize + 2,
+                fontWeight: '500',
+                fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+              }}
+            />
+          </View>
         </View>
       )}
       <ScrollView>

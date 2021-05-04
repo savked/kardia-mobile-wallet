@@ -163,8 +163,8 @@ const TokenDetail = () => {
               alignItems: 'flex-end',
             }}>
             <View>
-              <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10}}>
-                {getLanguageString(language, 'BALANCE')}
+              <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, lineHeight: 16}}>
+                {getLanguageString(language, 'BALANCE').toUpperCase()}
               </CustomText>
               <CustomText style={{fontSize: 24, color: 'white', fontWeight: 'bold'}}>
                 {numeral(
