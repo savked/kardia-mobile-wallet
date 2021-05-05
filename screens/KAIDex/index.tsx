@@ -74,25 +74,26 @@ export default () => {
         </View>
         <View style={{width: '100%', justifyContent: 'center'}}>
           <Divider style={{width: '100%', backgroundColor: '#F0F1F2'}} />
-          <TouchableOpacity 
-            style={{
-              width: 24,
-              height: 24,
-              borderRadius: 12,
-              backgroundColor: 'rgba(51, 96, 255, 1)',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'absolute',
-              right: 20 + 29.5 + 8,
-            }}
-          >
-            <Image
-              source={require('../../assets/icon/swap_dark.png')}
+          <View style={{width: 32, height: 32, position: 'absolute',
+                right: 20 + 29.5 + 8, justifyContent: 'center'}}>
+            <TouchableOpacity 
               style={{
-                width: 15, height: 15
+                width: 24,
+                height: 24,
+                borderRadius: 12,
+                backgroundColor: 'rgba(51, 96, 255, 1)',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
-            />
-          </TouchableOpacity>
+            >
+              <Image
+                source={require('../../assets/icon/swap_dark.png')}
+                style={{
+                  width: 15, height: 15
+                }}
+              />
+            </TouchableOpacity>
+            </View>
         </View>
         <View style={{width: '100%'}}>
           <CustomText 
