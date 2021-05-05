@@ -210,7 +210,7 @@ export const lang: Language = {
     // KRC20 key
     KRC20_TOKENS_SECTION_TITLE: 'Tokens',
     ADD_TOKEN: 'Thêm token',
-    ADD_CUSTOM_TOKEN: 'Custom Token',
+    ADD_CUSTOM_TOKEN: 'Token mới',
     TOKEN_ADDRESS: 'Địa chỉ token',
     SEND_TOKEN: 'Gửi {{TOKEN_SYMBOL}}',
     RECEIVE_TOKEN: 'Nhận {{TOKEN_SYMBOL}}',
@@ -219,8 +219,8 @@ export const lang: Language = {
     NO_TOKENS_SUB_TEXT: 'Thêm và quản lý token dễ dàng.',
     ERROR_FETCH_KRC20_DATA: 'Không lấy được dữ liệu tokens.',
     CHOOSE_VERIFIED_TOKENS: 'Chọn token',
-    CUSTOM_TOKENS_DESC: 'created by developer',
-    VERIFIED_TOKENS: 'Verified Token',
+    CUSTOM_TOKENS_DESC: 'tạo bởi developer',
+    VERIFIED_TOKENS: 'Mặc định',
     VERIFIED_TOKENS_DESC: 'bởi KardiaChain',
     ADD_TOKEN_DESCRIPTION: 'Quản lý token KRC20 tiện lợi.',
     // Auth modal key

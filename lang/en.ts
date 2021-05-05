@@ -227,7 +227,7 @@ export const lang: Language = {
     ERROR_FETCH_KRC20_DATA: "Couldn't get tokens data.",
     CHOOSE_VERIFIED_TOKENS: 'Choose token',
     CUSTOM_TOKENS_DESC: 'created by developer',
-    VERIFIED_TOKENS: 'Verified Token',
+    VERIFIED_TOKENS: 'Listed Token',
     VERIFIED_TOKENS_DESC: 'listed by KardiaChain',
     ADD_TOKEN_DESCRIPTION: 'All tokens in 1 wallet for easier management',
     // Auth modal key

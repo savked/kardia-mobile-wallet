@@ -7,7 +7,6 @@ import {
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {Image, TouchableOpacity, View, Dimensions} from 'react-native';
 import ENIcon from 'react-native-vector-icons/Entypo';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {krc20ListAtom} from '../../atoms/krc20';
 import {languageAtom} from '../../atoms/language';
@@ -26,7 +25,6 @@ import AddressQRModal from '../common/AddressQRCode';
 import {styles} from './style';
 import TokenTxList from './TokenTxList';
 import numeral from 'numeral';
-import IconButton from '../../components/IconButton';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomText from '../../components/Text';
@@ -149,12 +147,12 @@ const TokenDetail = () => {
               alignItems: 'flex-start',
             }}>
             <View>{renderIcon(tokenAvatar)}</View>
-            <IconButton
-              onPress={() => removeToken(tokenAddress)}
-              name="trash"
-              color={theme.textColor}
-              size={20}
-            />
+            <TouchableOpacity onPress={() => removeToken(tokenAddress)}>
+              <Image
+                source={require('../../assets/icon/lock_dark.png')}
+                style={{width: 24, height: 24}}
+              />
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -176,14 +174,25 @@ const TokenDetail = () => {
             <TouchableOpacity
               onPress={() => setShowAddressQR(true)}
               style={{
-                width: 44,
-                height: 44,
-                borderRadius: 22,
+                width: 52,
+                height: 52,
+                borderRadius: 26,
                 backgroundColor: '#FFFFFF',
                 alignItems: 'center',
                 justifyContent: 'center',
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                shadowOffset: {
+                  width: 0,
+                  height: 4,
+                },
+                shadowOpacity: 2,
+                shadowRadius: 4,
+                elevation: 9,
               }}>
-              <Icon size={20} name="qrcode" />
+              <Image
+                source={require('../../assets/icon/qr_dark.png')}
+                style={{width: 30, height: 30, marginRight: 2, marginTop: 2}}
+              />
             </TouchableOpacity>
           </View>
         </View>
