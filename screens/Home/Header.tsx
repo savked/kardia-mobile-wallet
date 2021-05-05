@@ -39,26 +39,18 @@ const HomeHeader = () => {
         </CustomText>
       </View>
       <View style={{flexDirection: 'row'}}>
-        {/* <IconButton
-          style={{marginRight: 20}}
-          name="bell-o"
-          size={18}
-          color={theme.textColor}
-          badge={newNotiCount}
-          onPress={navigateNotiScreen}
-        /> */}
         <TouchableOpacity onPress={() => navigation.navigate('ImportWallet')}>
           <Image 
             source={require('../../assets/icon/plus_dark.png')}
+            style={{width: 24, height: 24, marginRight: 8}}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ImportWallet')}>
+          <Image 
+            source={require('../../assets/icon/menu.png')}
             style={{width: 24, height: 24}}
           />
         </TouchableOpacity>
-        {/* <IconButton
-          name="plus"
-          size={18}
-          color={theme.textColor}
-          onPress={() => navigation.navigate('ImportWallet')}
-        /> */}
       </View>
     </View>
   );

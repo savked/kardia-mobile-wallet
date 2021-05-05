@@ -250,6 +250,7 @@ export const lang: Language = {
     STAKING: 'Staking',
     ADDRESS_BOOK: 'Address',
     SETTING: 'Settings',
+    KAI_DEX: 'KAI Dex',
     // Walk through screen:
     START_NOW: 'Start now',
     EASY: 'Easy',

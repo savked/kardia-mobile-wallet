@@ -43,6 +43,7 @@ import { getAppStatus } from '../../services/util';
 import { INFO_DATA } from '../Setting';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '../../components/Button';
+import KAIDex from '../KAIDex';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -89,6 +90,12 @@ const Wrap = () => {
             return (
               <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
                 {getLanguageString(language, 'SETTING')}
+              </CustomText>
+            )
+          } else if (route.name === 'DEX') {
+            return (
+              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+                {getLanguageString(language, 'KAI_DEX')}
               </CustomText>
             )
           }
@@ -155,6 +162,17 @@ const Wrap = () => {
                 }
               />
             );
+          } else if (route.name === 'DEX') {
+            return (
+              <Image
+                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
+                source={
+                  focused
+                    ? require('../../assets/icon/kai_dex_dark.png')
+                    : require('../../assets/icon/kai_dex_dark_inactive.png')
+                }
+              />
+            )
           }
 
           // You can return any component that you like here!
@@ -195,11 +213,11 @@ const Wrap = () => {
       {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
       <Tab.Screen name="Home" component={HomeStackScreen} />
       <Tab.Screen name="Transaction" component={TransactionStackScreen} />
-      {/* <Tab.Screen name="DApp" component={DAppScreen} /> */}
+      <Tab.Screen name="DEX" component={KAIDex} />
       <Tab.Screen name="Staking" component={StakingStackScreen} />
       <Tab.Screen name="Address" component={AddressStackScreen} />
       {/* <Tab.Screen name="News" component={NewsScreen} /> */}
-      <Tab.Screen name="Setting" component={SettingStackScreen} />
+      {/* <Tab.Screen name="Setting" component={SettingStackScreen} /> */}
     </Tab.Navigator>
   );
 };

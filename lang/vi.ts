@@ -243,6 +243,7 @@ export const lang: Language = {
     STAKING: 'Staking',
     ADDRESS_BOOK: 'Danh bạ',
     SETTING: 'Cài đặt',
+    KAI_DEX: 'KAI Dex',
     // Walk through screen:
     START_NOW: 'Bắt đầu',
     EASY: 'Đơn giản',
