@@ -77,10 +77,6 @@ export default () => {
           styles.cardWrapper,
           {backgroundColor: theme.backgroundFocusColor},
         ]}>
-        {/* <Image
-          style={{width: 185, height: 162}}
-          source={require('../../assets/import_seed_phrase.png')}
-        /> */}
         <View style={{marginBottom: 24, marginLeft: 18}}>
           <CustomText
             allowFontScaling={false}
@@ -91,6 +87,10 @@ export default () => {
             {getLanguageString(language, 'CUSTOM_TOKENS_DESC')}
           </CustomText>
         </View>
+        <Image
+          style={{width: 186, height: 160}}
+          source={require('../../assets/add_custom_token.png')}
+        />
       </TouchableOpacity>
     </SafeAreaView>
   );
