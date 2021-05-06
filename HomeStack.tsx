@@ -15,6 +15,7 @@ import ImportPrivateKey from './screens/ImportPrivateKey';
 import KRC20Tokens from './screens/KRC20Tokens';
 import AddVerifiedKRC20Tokens from './screens/AddVerifiedKRC20Tokens';
 import AddKRC20Tokens from './screens/AddKRC20Tokens';
+import SettingStackScreen from './SettingStack';
 
 const HomeStack = createStackNavigator();
 
@@ -83,6 +84,11 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name="ImportPrivateKey"
         component={ImportPrivateKey}
+        options={{headerShown: false}}
+      />
+      <HomeStack.Screen
+        name="Setting"
+        component={SettingStackScreen}
         options={{headerShown: false}}
       />
     </HomeStack.Navigator>

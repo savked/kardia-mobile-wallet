@@ -6,6 +6,7 @@ export const lang: Language = {
   tag: ['en_US', 'US', 'en', 'US English'],
   mapping: {
     // Common key:
+    COMING_SOON_DESC: 'On the way already!! Be patient',
     COPIED: 'Copied',
     PICKER_TITLE: 'Choose image',
     TAKE_PICTURE: 'Take picture',

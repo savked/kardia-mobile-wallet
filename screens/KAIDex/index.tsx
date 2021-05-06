@@ -7,6 +7,7 @@ import Divider from '../../components/Divider';
 import CustomText from '../../components/Text';
 import CustomTextInput from '../../components/TextInput';
 import { ThemeContext } from '../../ThemeContext';
+import ComingSoon from '../common/ComingSoon';
 
 export default () => {
   const theme = useContext(ThemeContext);
@@ -18,7 +19,7 @@ export default () => {
 
   return (
     <SafeAreaView style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20}}>
-      <View style={{width: '100%', alignItems: 'center'}}>
+      {/* <View style={{width: '100%', alignItems: 'center'}}>
         <View style={{borderRadius: 12, borderColor: 'rgba(96, 99, 108, 1)', borderWidth: 1.5, padding: 4, flexDirection: 'row', marginBottom: 32}}>
           <TouchableOpacity 
             style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'SWAP' ? theme.backgroundFocusColor : 'transparent'}}
@@ -134,7 +135,8 @@ export default () => {
             <CustomText style={{color: theme.textColor}}>100</CustomText>
           </CustomText>
         </View>
-      </View>
+      </View> */}
+      <ComingSoon />
     </SafeAreaView>
   )
 };

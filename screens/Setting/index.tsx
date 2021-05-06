@@ -34,7 +34,7 @@ const SettingScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      setTabBarVisible(true);
+      setTabBarVisible(false);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
@@ -52,6 +52,19 @@ const SettingScreen = () => {
   return (
     <SafeAreaView
       style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+      <View
+        style={{
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'flex-start',
+        }}>
+        <ENIcon.Button
+          style={{paddingLeft: 20}}
+          name="chevron-left"
+          onPress={() => navigation.goBack()}
+          backgroundColor="transparent"
+        />
+      </View>
       <View style={styles.header}>
         <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'SETTING_SCREEN_TITLE')}

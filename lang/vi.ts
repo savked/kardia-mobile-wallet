@@ -6,6 +6,7 @@ export const lang: Language = {
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:
+    COMING_SOON_DESC: 'Chỉ vài ngày nữa thôi!! Kiên nhẫn nào',
     COPIED: 'Sao chép thành công',
     PICKER_TITLE: 'Chọn hình',
     TAKE_PICTURE: 'Chụp hình mới',
