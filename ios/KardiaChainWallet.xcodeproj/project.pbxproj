@@ -300,6 +300,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				F24EA30B48F3851BFF6FD588 /* [CP] Copy Pods Resources */,
+				EE25CA6673D21AD33F8BB51D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -322,6 +323,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				658DF3D70F16BE6FADCE6CBB /* [CP] Copy Pods Resources */,
+				D7E9859CB4DEAA6BC8210E0C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -597,6 +599,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D7E9859CB4DEAA6BC8210E0C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-KardiaChainWallet/Pods-KardiaChainWallet-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KardiaChainWallet/Pods-KardiaChainWallet-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		DA203D4CD63DE92F7001CFCE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -639,6 +659,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EE25CA6673D21AD33F8BB51D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-KardiaChainWallet-KardiaChainWalletTests/Pods-KardiaChainWallet-KardiaChainWalletTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KardiaChainWallet-KardiaChainWalletTests/Pods-KardiaChainWallet-KardiaChainWalletTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F24EA30B48F3851BFF6FD588 /* [CP] Copy Pods Resources */ = {
@@ -825,8 +863,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "71b84581-fe50-4392-9caa-76fb206b7d2d";
-				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore 1618303766";
+				PROVISIONING_PROFILE = "1ef2492e-20fe-422d-92e7-a3303ebdd4e1";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore 1620192583";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaChainWallet.app/KardiaChainWallet";
 			};
 			name = Release;
@@ -839,7 +877,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 89;
 				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = KardiaChainWallet/Info.plist;
@@ -867,7 +905,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 89;
 				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				INFOPLIST_FILE = KardiaChainWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -878,8 +916,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kardiachain.wallet;
 				PRODUCT_NAME = "KardiaChain Wallet";
-				PROVISIONING_PROFILE = "71b84581-fe50-4392-9caa-76fb206b7d2d";
-				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore 1618303766";
+				PROVISIONING_PROFILE = "1ef2492e-20fe-422d-92e7-a3303ebdd4e1";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore 1620192583";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -937,8 +975,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaChainWallet-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "71b84581-fe50-4392-9caa-76fb206b7d2d";
-				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore 1618303766";
+				PROVISIONING_PROFILE = "1ef2492e-20fe-422d-92e7-a3303ebdd4e1";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore 1620192583";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
@@ -995,8 +1033,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaChainWallet-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "71b84581-fe50-4392-9caa-76fb206b7d2d";
-				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore 1618303766";
+				PROVISIONING_PROFILE = "1ef2492e-20fe-422d-92e7-a3303ebdd4e1";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore 1620192583";
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaChainWallet-tvOS.app/KardiaChainWallet-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
