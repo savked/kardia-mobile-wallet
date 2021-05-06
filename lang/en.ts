@@ -6,6 +6,7 @@ export const lang: Language = {
   tag: ['en_US', 'US', 'en', 'US English'],
   mapping: {
     // Common key:
+    COMING_SOON_DESC: 'On the way already!! Be patient',
     COPIED: 'Copied',
     PICKER_TITLE: 'Choose image',
     TAKE_PICTURE: 'Take picture',
@@ -88,6 +89,7 @@ export const lang: Language = {
     RECENT_TRANSACTION: 'Transactions',
     NO_TRANSACTION: 'No transaction',
     NO_TRANSACTION_SUB_TEXT: 'Hello!? Anybody home ??',
+    NO_KRC20_TRANSACTION_SUB_TEXT: 'Looks like we don’t have any transaction for this token...yet',
     SEARCH_TRANSACTION_PLACEHOLDER:
       'Search with address / hash / block number...',
     VIEW_ALL: 'View All',
@@ -226,7 +228,7 @@ export const lang: Language = {
     ERROR_FETCH_KRC20_DATA: "Couldn't get tokens data.",
     CHOOSE_VERIFIED_TOKENS: 'Choose token',
     CUSTOM_TOKENS_DESC: 'created by developer',
-    VERIFIED_TOKENS: 'Verified Token',
+    VERIFIED_TOKENS: 'Listed Token',
     VERIFIED_TOKENS_DESC: 'listed by KardiaChain',
     ADD_TOKEN_DESCRIPTION: 'All tokens in 1 wallet for easier management',
     // Auth modal key
@@ -249,6 +251,7 @@ export const lang: Language = {
     STAKING: 'Staking',
     ADDRESS_BOOK: 'Address',
     SETTING: 'Settings',
+    KAI_DEX: 'KAI Dex',
     // Walk through screen:
     START_NOW: 'Start now',
     EASY: 'Easy',
