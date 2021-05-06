@@ -32,6 +32,7 @@ import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomText from '../../components/Text';
 import { statusBarColorAtom } from '../../atoms/statusBar';
+import { sleep } from '../../utils/promiseHelper';
 
 const SelectWallet = () => {
   const [startIndex, setStartIndex] = useState(0);
@@ -102,8 +103,9 @@ const SelectWallet = () => {
 
   const handler = async () => {
     try {
-      let newWalletList = [];
-      for (let index = startIndex; index < startIndex + 5; index++) {
+      let newWalletList: Promise<Wallet>[] = [];
+      const indexArr = [startIndex, startIndex + 1, startIndex + 2, startIndex + 3, startIndex + 4]
+      indexArr.forEach((index) => {
         const promise = new Promise<Wallet>(async (resolve, reject) => {
           const ethWallet = ethers.Wallet.fromMnemonic(
             mnemonic.trim(),
@@ -129,12 +131,12 @@ const SelectWallet = () => {
         });
 
         newWalletList.push(promise);
-      }
-      newWalletList = await Promise.all(newWalletList);
+      })
+      const newWalletListRs = await Promise.all(newWalletList);
       const currentWalletList: Wallet[] = JSON.parse(
         JSON.stringify(walletList),
       );
-      setWalletList(currentWalletList.concat(newWalletList));
+      setWalletList(currentWalletList.concat(newWalletListRs));
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -143,10 +145,15 @@ const SelectWallet = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      handler();
-    }, 0.1);
+    (async () => {
+      setLoading(true);
+      await sleep(1)
+      handler()
+    })()
+    // setLoading(true);
+    // setTimeout(() => {
+    //   handler();
+    // }, 0.1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startIndex]);
 

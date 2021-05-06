@@ -28,7 +28,7 @@ export const getAllValidator = async () => {
     fetch(`${ENDPOINT}validators`, options),
     10 * 1000,
   );
-  const responseJSON = await response.json();
+  const responseJSON = await (response as any).json();
   return {
     totalStaked: responseJSON.data.totalStakedAmount,
     validators: Array.isArray(responseJSON.data.validators)
@@ -94,11 +94,14 @@ export const getCurrentStaking = async (address: string) => {
 
 export const getStakingAmount = async (address: string) => {
   try {
+    console.log('start get staking')
     const _staking: Staking[] = await getCurrentStaking(address);
+    console.log('end get staking')
     let total = 0;
     _staking.forEach((item) => {
       total += Number(weiToKAI(item.stakedAmount));
     });
+    console.log('end parse get staking')
     return total;
   } catch (error) {
     console.error('Get staking amount error for address ', address);

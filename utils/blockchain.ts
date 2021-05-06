@@ -21,6 +21,7 @@ export const getWalletFromMnemonic = async (
       privateKey,
       balance: 0,
       staked: 0,
+      undelegating: 0,
     };
   } catch (error) {
     console.error(error);
