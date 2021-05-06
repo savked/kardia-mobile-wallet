@@ -253,5 +253,7 @@ export const lang: Language = {
     EASY_DESC: 'Tạo và quản lý ví một cách đơn giản và tiện lợi chỉ với vài thao tác.',
     INSTANT_DESC: 'Gửi và nhận tiền điện tử tức thì với chi phí cực thấp.',
     SECURE_DESC: 'Bảo vệ tài sản của bạn bằng những công nghệ tiên tiến nhất.',
+    // Dex key
+    PAIRS: 'Pairs',
   },
 };

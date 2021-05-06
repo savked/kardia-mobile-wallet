@@ -260,5 +260,7 @@ export const lang: Language = {
     EASY_DESC: 'Easily create or import you wallet in just a few steps.',
     INSTANT_DESC: 'Send and receive your crypto currencies within a blink of an eye.',
     SECURE_DESC: 'Protect your digital assets with state-of-the-art blockchain technology.',
+    // Dex key
+    PAIRS: 'Pairs',
   },
 };

@@ -21,6 +21,18 @@ import GlobalStatusBar from './GlobalStatusBar';
 import { Platform, View } from 'react-native';
 import CustomText from './components/Text';
 
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+
+// Initialize Apollo Client
+const client = new ApolloClient({
+  uri: 'https://hasura-dex.kardiachain.io/v1/graphql',
+  cache: new InMemoryCache(),
+  headers: {
+    'x-hasura-admin-secret': 'fengari@kaitothemoon123'
+  }
+});
+
+
 declare const global: { HermesInternal: null | {} };
 
 const DEFAULT_THEME = themes.dark;
@@ -29,34 +41,36 @@ export { ThemeContext };
 const App = () => {
   return (
     <RecoilRoot>
-      <ThemeContext.Provider value={DEFAULT_THEME}>
-        <GlobalStatusBar />
-        <SafeAreaProvider>
-          <ErrorBoundary>
-            <MenuProvider>
-              <AppContainer />
-            </MenuProvider>
-          </ErrorBoundary>
-        </SafeAreaProvider>
-        <Toast ref={(ref) => Toast.setRef(ref)}
-          config={
-            {
-              success: ({ text1 = '', props = {}, ...rest }) => (
-                <View style={{ height: 32, minWidth: 77, paddingHorizontal: 16, paddingVertical: 8, backgroundColor: (props as any).backgroundColor || '#DDFFDB', borderRadius: 8, alignItems: 'center', justifyContent: 'center' }}>
-                  <CustomText 
-                    style={{
-                      color: (props as any).textColor || 'rgba(69, 188, 67, 1)',
-                      fontWeight: '500',
-                      fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-                    }}
-                  >
-                    {text1}
-                  </CustomText>
-                </View>
-              )
-            }
-          } />
-      </ThemeContext.Provider>
+      <ApolloProvider client={client}>
+        <ThemeContext.Provider value={DEFAULT_THEME}>
+          <GlobalStatusBar />
+          <SafeAreaProvider>
+            <ErrorBoundary>
+              <MenuProvider>
+                <AppContainer />
+              </MenuProvider>
+            </ErrorBoundary>
+          </SafeAreaProvider>
+          <Toast ref={(ref) => Toast.setRef(ref)}
+            config={
+              {
+                success: ({ text1 = '', props = {}, ...rest }) => (
+                  <View style={{ height: 32, minWidth: 77, paddingHorizontal: 16, paddingVertical: 8, backgroundColor: (props as any).backgroundColor || '#DDFFDB', borderRadius: 8, alignItems: 'center', justifyContent: 'center' }}>
+                    <CustomText 
+                      style={{
+                        color: (props as any).textColor || 'rgba(69, 188, 67, 1)',
+                        fontWeight: '500',
+                        fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                      }}
+                    >
+                      {text1}
+                    </CustomText>
+                  </View>
+                )
+              }
+            } />
+        </ThemeContext.Provider>
+      </ApolloProvider>
     </RecoilRoot>
   );
 };
