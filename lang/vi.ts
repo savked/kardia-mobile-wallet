@@ -6,6 +6,7 @@ export const lang: Language = {
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:
+    COMING_SOON_DESC: 'Chỉ vài ngày nữa thôi!! Kiên nhẫn nào',
     COPIED: 'Sao chép thành công',
     PICKER_TITLE: 'Chọn hình',
     TAKE_PICTURE: 'Chụp hình mới',
@@ -84,6 +85,7 @@ export const lang: Language = {
     RECENT_TRANSACTION: 'Giao dịch',
     NO_TRANSACTION: '0 giao dịch',
     NO_TRANSACTION_SUB_TEXT: 'Có vẻ như chưa có bất kỳ giao dịch nào.',
+    NO_KRC20_TRANSACTION_SUB_TEXT: 'Có vẻ như chưa có bất kỳ giao dịch nào.',
     SEARCH_TRANSACTION_PLACEHOLDER: 'Tìm kiếm...',
     VIEW_ALL: 'Tất cả',
     SEND: 'Gửi KAI',
@@ -209,7 +211,7 @@ export const lang: Language = {
     // KRC20 key
     KRC20_TOKENS_SECTION_TITLE: 'Tokens',
     ADD_TOKEN: 'Thêm token',
-    ADD_CUSTOM_TOKEN: 'Custom Token',
+    ADD_CUSTOM_TOKEN: 'Token mới',
     TOKEN_ADDRESS: 'Địa chỉ token',
     SEND_TOKEN: 'Gửi {{TOKEN_SYMBOL}}',
     RECEIVE_TOKEN: 'Nhận {{TOKEN_SYMBOL}}',
@@ -218,9 +220,9 @@ export const lang: Language = {
     NO_TOKENS_SUB_TEXT: 'Thêm và quản lý token dễ dàng.',
     ERROR_FETCH_KRC20_DATA: 'Không lấy được dữ liệu tokens.',
     CHOOSE_VERIFIED_TOKENS: 'Chọn token',
-    CUSTOM_TOKENS_DESC: 'created by developer',
-    VERIFIED_TOKENS: 'Verified Token',
-    VERIFIED_TOKENS_DESC: 'xác thực bởi KardiaChain',
+    CUSTOM_TOKENS_DESC: 'tạo bởi developer',
+    VERIFIED_TOKENS: 'Mặc định',
+    VERIFIED_TOKENS_DESC: 'bởi KardiaChain',
     ADD_TOKEN_DESCRIPTION: 'Quản lý token KRC20 tiện lợi.',
     // Auth modal key
     ENTER_PIN_CODE: 'Nhập mã PIN để tiếp tục',
@@ -242,6 +244,7 @@ export const lang: Language = {
     STAKING: 'Staking',
     ADDRESS_BOOK: 'Danh bạ',
     SETTING: 'Cài đặt',
+    KAI_DEX: 'KAI Dex',
     // Walk through screen:
     START_NOW: 'Bắt đầu',
     EASY: 'Đơn giản',

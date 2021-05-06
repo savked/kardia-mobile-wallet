@@ -53,10 +53,6 @@ export default () => {
           styles.cardWrapper,
           {backgroundColor: theme.backgroundFocusColor},
         ]}>
-        <Image
-          style={{width: 185, height: 162}}
-          source={require('../../assets/import_private_key.png')}
-        />
         <View style={{marginBottom: 24, marginLeft: 18}}>
           <CustomText
             allowFontScaling={false}
@@ -67,6 +63,10 @@ export default () => {
             {getLanguageString(language, 'BY_PRIVATE_KEY')}
           </CustomText>
         </View>
+        <Image
+          style={{width: 185, height: 162}}
+          source={require('../../assets/import_private_key.png')}
+        />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate('ImportMnemonic')}
@@ -74,10 +74,6 @@ export default () => {
           styles.cardWrapper,
           {backgroundColor: theme.backgroundFocusColor},
         ]}>
-        <Image
-          style={{width: 185, height: 162}}
-          source={require('../../assets/import_seed_phrase.png')}
-        />
         <View style={{marginBottom: 24, marginLeft: 18}}>
           <CustomText
             allowFontScaling={false}
@@ -88,6 +84,10 @@ export default () => {
             {getLanguageString(language, 'BY_SEED_PHRASE')}
           </CustomText>
         </View>
+        <Image
+          style={{width: 185, height: 162}}
+          source={require('../../assets/import_seed_phrase.png')}
+        />
       </TouchableOpacity>
     </SafeAreaView>
   );

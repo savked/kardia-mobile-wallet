@@ -9,10 +9,11 @@ export const styles = StyleSheet.create({
     fontSize: 36,
   },
   cardWrapper: {
-    padding: 10,
+    paddingLeft: 10,
     borderRadius: 12,
-    marginTop: 48,
+    marginTop: 32,
     flexDirection: 'row',
     alignItems: 'flex-end',
+    justifyContent: 'space-between',
   },
 });
