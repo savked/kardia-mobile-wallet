@@ -37,7 +37,7 @@ import { sleep } from '../../utils/promiseHelper';
 const SelectWallet = () => {
   const [startIndex, setStartIndex] = useState(0);
   const [walletList, setWalletList] = useState<Wallet[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const language = useRecoilValue(languageAtom);
   const theme = useContext(ThemeContext);
 
@@ -145,15 +145,10 @@ const SelectWallet = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      await sleep(1)
-      handler()
-    })()
-    // setLoading(true);
-    // setTimeout(() => {
-    //   handler();
-    // }, 0.1);
+    setLoading(true);
+    setTimeout(() => {
+      handler();
+    }, 0.1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startIndex]);
 
