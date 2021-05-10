@@ -11,3 +11,5 @@ export const EXPLORER_URL = 'https://explorer.kardiachain.io';
 export const DEFAULT_KRC20_TOKENS: KRC20[] = [];
 
 export const SIMPLEX_URL = 'https://buy.chainbits.com/?crypto=KAI';
+
+export const SWAP_ROUTER_SMC = '0xd258f28642e8AEa592A2D914c1975bcA495FD931';
