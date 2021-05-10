@@ -8,7 +8,7 @@ import CustomText from '../../components/Text';
 import { ThemeContext } from '../../ThemeContext';
 import ExchangeScreen from './LimitScreen';
 import SelectingPair from './SelectingPair';
-import SwapScreen from './MarketScreen';
+import MarketScreen from './MarketScreen';
 
 export default () => {
   const theme = useContext(ThemeContext);
@@ -69,7 +69,7 @@ export default () => {
         </View>
       </View>
       {type === 'MARKET' ? 
-        <SwapScreen 
+        <MarketScreen 
           triggerSelectPair={() => setSelectingPair(true)} 
           tokenFrom={tokenFrom}
           tokenTo={tokenTo}
