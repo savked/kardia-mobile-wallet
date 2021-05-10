@@ -176,8 +176,6 @@ export default () => {
           </View>
         );
       case 'undelegate':
-        console.log('undelegateAmount', undelegateAmount)
-        console.log('undelegateAmount', typeof undelegateAmount)
         return (
           <View
             style={{
