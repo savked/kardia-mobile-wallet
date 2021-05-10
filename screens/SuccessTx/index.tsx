@@ -28,7 +28,7 @@ import {ThemeContext} from '../../ThemeContext';
 import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
 import {copyToClipboard, getTxURL, truncate} from '../../utils/string';
 import {styles} from './style';
-import {parseDecimals} from '../../utils/number';
+import {formatNumberString, parseDecimals} from '../../utils/number';
 import numeral from 'numeral';
 import TextAvatar from '../../components/TextAvatar';
 import CustomText from '../../components/Text';
@@ -114,7 +114,7 @@ export default () => {
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {numeral(txObj.amount).format('0,0.00')}
+              {formatNumberString(txObj.amount)}
             </CustomText>
             <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
@@ -150,7 +150,7 @@ export default () => {
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {numeral(claimAmount).format('0,0.00')}
+              {formatNumberString(claimAmount)}
             </CustomText>
             <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
@@ -168,7 +168,7 @@ export default () => {
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {numeral(withdrawAmount).format('0,0.00')}
+              {formatNumberString(withdrawAmount)}
             </CustomText>
             <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
@@ -176,6 +176,8 @@ export default () => {
           </View>
         );
       case 'undelegate':
+        console.log('undelegateAmount', undelegateAmount)
+        console.log('undelegateAmount', typeof undelegateAmount)
         return (
           <View
             style={{
@@ -186,7 +188,7 @@ export default () => {
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {numeral(undelegateAmount).format('0,0.00')}
+              {formatNumberString(undelegateAmount)}
             </CustomText>
             <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
@@ -204,7 +206,7 @@ export default () => {
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {numeral(txObj.amount).format('0,0.00')}
+              {formatNumberString(txObj.amount)}
             </CustomText>
             <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
@@ -355,9 +357,9 @@ export default () => {
       case 'delegate':
         return getLanguageString(language, 'DELEGATE_SUCCESS');
       case 'undelegate':
-        return getLanguageString(language, 'UNDELEGATE_SUCCESS').replace(/{{KAI_AMOUNT}}/g, numeral(undelegateAmount).format('0,0.00'));
+        return getLanguageString(language, 'UNDELEGATE_SUCCESS').replace(/{{KAI_AMOUNT}}/g, formatNumberString(undelegateAmount));
       case 'withdraw': 
-        return getLanguageString(language, 'WITHDRAW_SUCCESS').replace(/{{KAI_AMOUNT}}/g, numeral(withdrawAmount).format('0,0.00'))
+        return getLanguageString(language, 'WITHDRAW_SUCCESS').replace(/{{KAI_AMOUNT}}/g, formatNumberString(withdrawAmount))
       default:
         return getLanguageString(language, 'TX_SUCCESS');
     }

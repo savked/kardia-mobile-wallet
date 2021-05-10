@@ -13,6 +13,7 @@ interface PairToken {
   name: string;
   symbol: string;
   logo: string;
+  decimals: number;
 }
 
 interface Pair {

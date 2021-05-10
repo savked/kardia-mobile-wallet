@@ -121,10 +121,10 @@ const UndelegateModal = ({
 
   const getContentStyle = () => {
     if (Platform.OS === 'android') {
-      return {flex: keyboardShown ? 0.3 : 0.2};
+      return {height: keyboardShown ? 400 : 300};
     } else {
       return {
-        flex: 0.2,
+        height: 500,
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,
       };

@@ -6,7 +6,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {languageAtom} from '../../atoms/language';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import numeral from 'numeral';
+import { BigNumber } from "bignumber.js";
 import List from '../../components/List';
 import {getCurrentStaking, mapValidatorRole} from '../../services/staking';
 import {ThemeContext} from '../../ThemeContext';
@@ -24,6 +24,7 @@ import IconButton from '../../components/IconButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import CustomText from '../../components/Text';
+import { formatNumberString } from '../../utils/number';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -110,9 +111,10 @@ const StakingScreen = () => {
   };
 
   const getTotalSaving = () => {
-    return currentStaking.reduce((total, item) => {
-      return total + Number(weiToKAI(item.claimableRewards));
-    }, 0);
+    const rs = currentStaking.reduce((total, item) => {
+      return total.plus(new BigNumber(item.claimableRewards));
+    }, new BigNumber(0));
+    return weiToKAI(rs)
   };
 
   return (
@@ -156,7 +158,7 @@ const StakingScreen = () => {
           </CustomText>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <CustomText style={[styles.totalSaving, Platform.OS === 'android' ? {color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {color: theme.textColor, fontWeight: '500'}]}>
-              {numeral(getTotalSaving()).format('0,0.00')}
+              {formatNumberString(getTotalSaving().toString(), 2)} KAI
             </CustomText>
             <CustomText style={{fontSize: theme.defaultFontSize + 6, color: 'rgba(252, 252, 252, 0.54)', fontWeight: '500', fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
               KAI

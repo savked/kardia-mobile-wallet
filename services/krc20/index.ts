@@ -28,12 +28,16 @@ export const getKRC20TokenInfo = async (address: string) => {
 };
 
 export const getBalance = async (tokenAddress: string, userAddress: string) => {
-  const client = new KardiaClient({endpoint: RPC_ENDPOINT});
-  const krc20 = client.krc20;
-  krc20.address = tokenAddress;
-
-  const balance = await krc20.balanceOf(userAddress);
-  return balance;
+  try {
+    const client = new KardiaClient({endpoint: RPC_ENDPOINT});
+    const krc20 = client.krc20;
+    krc20.address = tokenAddress;
+    const balance = await krc20.balanceOf(userAddress);
+    return balance;
+  } catch (error) {
+    console.log('error', userAddress)
+    return 0
+  }
 };
 
 export const getTxDetail = async (
@@ -65,14 +69,14 @@ export const getTxDetail = async (
     : {};
 };
 
-export const getTx = async (tokenAddress: string, userAddress: string) => {
+export const getTx = async (tokenAddress: string, userAddress: string, page: number) => {
   const requestOptions = {
     method: 'GET',
     redirect: 'follow',
   };
   const response = await requestWithTimeOut(
     fetch(
-      `${ENDPOINT}token/txs?page=1&limit=100&address=${userAddress}&contractAddress=${tokenAddress}`,
+      `${ENDPOINT}token/txs?page=${page}&limit=10&address=${userAddress}&contractAddress=${tokenAddress}`,
       requestOptions,
     ),
     50 * 1000,

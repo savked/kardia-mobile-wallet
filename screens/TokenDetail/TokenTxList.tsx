@@ -44,34 +44,43 @@ const TokenTxList = ({
   const [loading, setLoading] = useState(false);
   const [showTxDetail, setShowTxDetail] = useState(false);
   const [txObjForDetail, setTxObjForDetail] = useState();
+  const [page, setPage] = useState(1);
 
   const [showNewTxModal, setShowNewTxModal] = useState(false);
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
 
-  const fetchTxList = async () => {
+  const fetchTxList = async (page: number) => {
     const _wallets = await getWallets();
     const _selectedWallet = await getSelectedWallet();
-    const _txList = await getTx(
+    return await getTx(
       tokenAddress,
       _wallets[_selectedWallet].address,
+      page
     );
-    setTxList(_txList);
   };
 
   useEffect(() => {
     (async () => {
       setLoading(true);
-      await fetchTxList();
+      const _txList = await fetchTxList(1);
+      setTxList(_txList);
       setLoading(false);
 
-      const intervalId = setInterval(() => {
-        fetchTxList();
-      }, 2000);
-      return () => clearInterval(intervalId);
+      // const intervalId = setInterval(() => {
+      //   fetchTxList();
+      // }, 2000);
+      // return () => clearInterval(intervalId);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet, tokenAddress]);
+
+  useEffect(() => {
+    (async () => {
+      const _txList =  await fetchTxList(2)
+      // console.log(_txList)
+    })()
+  }, [page])
 
   const renderIcon = (status: number, type: 'IN' | 'OUT') => {
     return (
@@ -120,6 +129,14 @@ const TokenTxList = ({
         )}
       </View>
     );
+  };
+
+  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: any) => {
+    const paddingToBottom = 20;
+    console.log('layoutMeasurement.height + contentOffset.y', layoutMeasurement.height + contentOffset.y)
+    console.log('contentSize.height - paddingToBottom', contentSize.height - paddingToBottom)
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
   };
 
   if (loading) {
@@ -182,7 +199,14 @@ const TokenTxList = ({
           </View>
         </View>
       )}
-      <ScrollView>
+      <ScrollView
+        onScroll={({nativeEvent}) => {
+          if (isCloseToBottom(nativeEvent)) {
+            setPage(page + 1)
+          }
+        }}
+        scrollEventThrottle={400}
+      >
         {groupByDate(txList, 'date').map((txsByDate) => {
           const dateLocale = getDateFNSLocale(language);
           return (

@@ -16,12 +16,14 @@ export const GET_PAIRS = gql`
         name
         logo
         symbol
+        decimals
       }
       t2 {
         hash
         name
         logo
         symbol
+        decimals
       }
     }
   }

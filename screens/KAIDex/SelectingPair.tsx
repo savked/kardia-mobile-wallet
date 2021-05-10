@@ -15,7 +15,7 @@ import List from '../../components/List';
 
 export default ({goBack, onSelect}: {
   goBack: () => void;
-  onSelect: (from: PairToken, to: PairToken) => void;
+  onSelect: (from: PairToken, to: PairToken, liquidityFrom: string, liquidityTo: string) => void;
 }) => {
   const theme = useContext(ThemeContext);
 
@@ -54,7 +54,7 @@ export default ({goBack, onSelect}: {
                     marginBottom: 12,
                   }}
                   onPress={() => {
-                    onSelect(item.t1, item.t2)
+                    onSelect(item.t1, item.t2, item.token1_liquidity, item.token2_liquidity)
                   }}
                 >
                   <View style={{flexDirection: 'row', marginRight: 12}}>

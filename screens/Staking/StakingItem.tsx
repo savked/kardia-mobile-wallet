@@ -16,7 +16,7 @@ import TextAvatar from '../../components/TextAvatar';
 import DelegateDetailModal from '../common/DelegateDetailModal';
 import CustomText from '../../components/Text';
 import { getLatestBlock } from '../../services/blockchain';
-import { getDigit } from '../../utils/number';
+import { formatNumberString, getDigit } from '../../utils/number';
 import { BLOCK_TIME } from '../../config';
 
 const StakingItem = ({
@@ -161,7 +161,8 @@ const StakingItem = ({
                 color: theme.textColor,
                 fontSize: theme.defaultFontSize + 1,
               }}>
-              {numeral(claimableInKAI).format('0,0.00')} KAI
+              {/* {numeral(claimableInKAI).format('0,0.00')} KAI */}
+              {formatNumberString(claimableInKAI, 3)} KAI
             </CustomText>
           </View>
           <View style={{justifyContent: 'center'}}>
@@ -171,7 +172,7 @@ const StakingItem = ({
                 color: 'rgba(252, 252, 252, 0.54)',
                 fontSize: theme.defaultFontSize,
               }}>
-              {numeral(stakedAmountInKAI).format('0,0.00')} KAI
+              {formatNumberString(stakedAmountInKAI)} KAI
             </CustomText>
           </View>
         </View>
