@@ -121,7 +121,15 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   return (
     <View style={{width: '100%', alignItems: 'center', backgroundColor: theme.backgroundFocusColor, paddingHorizontal: 16, paddingVertical: 24, borderRadius: 12}}>
       <TouchableOpacity 
-        style={{backgroundColor: theme.backgroundColor, padding: 16, width: '100%', borderRadius: 12, marginBottom: 12, flexDirection: 'row', alignItems: 'center'}}
+        style={{
+          backgroundColor: theme.backgroundColor,
+          padding: 16, 
+          width: '100%',
+          borderRadius: 12,
+          marginBottom: tokenFrom && tokenTo ? 12 : 0,
+          flexDirection: 'row',
+          alignItems: 'center'
+        }}
         onPress={triggerSelectPair}
       >
         <View style={{flexDirection: 'row', marginRight: 12}}>
@@ -204,26 +212,38 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           </CustomText>
         </View>
       )}
-      <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 16}}>
-        <Divider style={{width: '100%', backgroundColor: '#F0F1F2'}} />
-        <TouchableOpacity 
-          style={{
-            backgroundColor: 'rgba(96, 99, 108, 1)',
-            width: 24,
-            height: 24,
-            borderRadius: 12,
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute'
-          }}
-          onPress={handleSwitchToken}
-        >
-          <Image 
-            source={require('../../assets/icon/swap_dark.png')}
-            style={{width: 16, height: 16}}
-          />
-        </TouchableOpacity>
-      </View>
+      {
+        tokenFrom && tokenTo && (
+          <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 16}}>
+            <Divider height={0.5} style={{width: '100%', backgroundColor: '#F0F1F2'}} />
+            <TouchableOpacity 
+              style={{
+                backgroundColor: 'rgba(96, 99, 108, 1)',
+                width: 24,
+                height: 24,
+                borderRadius: 12,
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'absolute',
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 2,
+                shadowRadius: 4,
+                elevation: 9,
+              }}
+              onPress={handleSwitchToken}
+            >
+              <Image 
+                source={require('../../assets/icon/swap_dark.png')}
+                style={{width: 16, height: 16}}
+              />
+            </TouchableOpacity>
+          </View>
+        )
+      }
       {tokenTo && (
         <View style={{width: '100%', marginTop: 12}}>
           <CustomText 
@@ -240,11 +260,14 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
             <CustomTextInput
               value={amountTo}
+              // editable={false}
               onChangeText={(newValue) => {
                 setAmountTo(formatNumberString(getDigit(newValue)))
               }}
               containerStyle={{width: '100%'}}
               inputStyle={{
+                // backgroundColor: 'rgba(184, 184, 184, 1)',
+                // color: 'rgba(28, 28, 40, 0.36)',
                 backgroundColor: 'rgba(96, 99, 108, 1)',
                 color: theme.textColor,
                 paddingRight: 90
