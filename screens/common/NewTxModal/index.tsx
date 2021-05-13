@@ -25,7 +25,7 @@ import {saveWallets} from '../../../utils/local';
 import {weiToKAI} from '../../../services/transaction/amount';
 import ListCard from './ListCard';
 // import Icon from 'react-native-vector-icons/FontAwesome';
-import {getDigit, isNumber, format, parseKaiBalance, parseDecimals} from '../../../utils/number';
+import {getDigit, isNumber, format, parseKaiBalance, parseDecimals, formatNumberString} from '../../../utils/number';
 import AddressBookModal from '../AddressBookModal';
 import ScanQRAddressModal from '../ScanQRAddressModal';
 import {theme} from '../../../theme/dark';
@@ -367,7 +367,7 @@ const NewTxModal = ({
           <View style={{marginBottom: 10}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <CustomText style={{color: theme.textColor, marginBottom: 5, fontWeight: '500', fontSize: theme.defaultFontSize + 1}}>{getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}</CustomText>
-              <TouchableOpacity onPress={() => setAmount(format(parseDecimals(_getBalance(), 18)))}>
+              <TouchableOpacity onPress={() => setAmount(formatNumberString(parseDecimals(_getBalance(), 18)))}>
                 <CustomText style={{color: theme.urlColor}}>
                   {parseKaiBalance(_getBalance())} KAI
                 </CustomText>
