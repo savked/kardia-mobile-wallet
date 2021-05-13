@@ -12,6 +12,8 @@ import { useQuery } from '@apollo/client';
 import { GET_PAIRS } from '../../services/dex/queries';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import List from '../../components/List';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import { formatDexToken } from '../../services/dex';
 
 export default ({goBack, onSelect}: {
   goBack: () => void;
@@ -21,6 +23,9 @@ export default ({goBack, onSelect}: {
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom)
   const language = useRecoilValue(languageAtom)
+
+  const wallets = useRecoilValue(walletsAtom);
+  const selectedWallet = useRecoilValue(selectedWalletAtom);
 
   const { loading, error, data: pairData } = useQuery(GET_PAIRS);
 
@@ -68,7 +73,9 @@ export default ({goBack, onSelect}: {
                     />
                   </View>
                   <View style={{flex: 1, justifyContent: 'center'}}>
-                    <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 4}}>{item.t1.symbol} / {item.t2.symbol}</CustomText>
+                    <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 4}}>
+                      {formatDexToken(item.t1, wallets[selectedWallet]).symbol} / {formatDexToken(item.t2, wallets[selectedWallet]).symbol}
+                    </CustomText>
                   </View>
                 </TouchableOpacity>
               )

@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Keyboard, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSetRecoilState } from 'recoil';
 import { showTabBarAtom } from '../../atoms/showTabBar';
@@ -52,32 +52,36 @@ export default () => {
 
   return (
     <SafeAreaView style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20}}>
-      <View style={{width: '100%', alignItems: 'center'}}>
-        <View style={{borderRadius: 12, borderColor: 'rgba(96, 99, 108, 1)', borderWidth: 1.5, padding: 4, flexDirection: 'row', marginBottom: 32}}>
-          <TouchableOpacity 
-            style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'MARKET' ? theme.backgroundFocusColor : 'transparent'}}
-            onPress={() => setType('MARKET')}
-          >
-            <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'MARKET' ? 'bold' : undefined}}>Market</CustomText>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'LIMIT' ? theme.backgroundFocusColor : 'transparent'}}
-            onPress={() => setType('LIMIT')}
-          >
-            <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'LIMIT' ? 'bold' : undefined}}>Limit</CustomText>
-          </TouchableOpacity>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={{flex: 1}}>
+          <View style={{width: '100%', alignItems: 'center'}}>
+            <View style={{borderRadius: 12, borderColor: 'rgba(96, 99, 108, 1)', borderWidth: 1.5, padding: 4, flexDirection: 'row', marginBottom: 32}}>
+              <TouchableOpacity 
+                style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'MARKET' ? theme.backgroundFocusColor : 'transparent'}}
+                onPress={() => setType('MARKET')}
+              >
+                <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'MARKET' ? 'bold' : undefined}}>Market</CustomText>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'LIMIT' ? theme.backgroundFocusColor : 'transparent'}}
+                onPress={() => setType('LIMIT')}
+              >
+                <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'LIMIT' ? 'bold' : undefined}}>Limit</CustomText>
+              </TouchableOpacity>
+            </View>
+          </View>
+          {type === 'MARKET' ? 
+            <MarketScreen 
+              triggerSelectPair={() => setSelectingPair(true)} 
+              tokenFrom={tokenFrom}
+              tokenTo={tokenTo}
+              tokenFromLiquidity={tokenFromLiquidity}
+              tokenToLiquidity={tokenToLiquidity}
+            /> 
+            : 
+            <ExchangeScreen />}
         </View>
-      </View>
-      {type === 'MARKET' ? 
-        <MarketScreen 
-          triggerSelectPair={() => setSelectingPair(true)} 
-          tokenFrom={tokenFrom}
-          tokenTo={tokenTo}
-          tokenFromLiquidity={tokenFromLiquidity}
-          tokenToLiquidity={tokenToLiquidity}
-        /> 
-        : 
-        <ExchangeScreen />}
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   )
 };
