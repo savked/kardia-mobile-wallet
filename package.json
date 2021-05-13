@@ -8,7 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "postinstall": "rn-nodeify --install assert,crypto,buffer,stream,events,process --hack",
+    "postinstall": "rn-nodeify --install assert,crypto,buffer,stream,events,process,http,https,url,os --hack",
     "bundle-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
     "build-apk": "cd android && ./gradlew assembleDebug",
     "link": "react-native link"
@@ -25,6 +25,7 @@
     "@react-navigation/bottom-tabs": "^5.11.2",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
+    "@tradle/react-native-http": "^2.0.1",
     "@types/numeral": "0.0.28",
     "@types/react-native-snap-carousel": "^3.8.2",
     "@types/react-native-vector-icons": "^6.4.6",
@@ -38,7 +39,9 @@
     "ethers": "^5.0.24",
     "events": "^1.1.1",
     "graphql": "^15.5.0",
+    "https-browserify": "^0.0.1",
     "js-sha3": "^0.8.0",
+    "kaidex-sdk": "git+https://github.com/kardiachain/kaidex-sdk.git#dev",
     "kardia-js-sdk": "^0.2.9",
     "numeral": "^2.0.6",
     "process": "^0.11.10",
@@ -52,6 +55,7 @@
     "react-native-get-random-values": "^1.5.0",
     "react-native-image-picker": "^3.1.1",
     "react-native-linear-gradient": "^2.5.6",
+    "react-native-os": "^1.2.6",
     "react-native-otp-inputs": "^6.0.0",
     "react-native-permissions": "^3.0.0",
     "react-native-picker-select": "^8.0.4",
@@ -71,7 +75,8 @@
     "readable-stream": "^1.0.33",
     "recoil": "^0.1.2",
     "stream-browserify": "^1.0.0",
-    "toggle-switch-react-native": "^2.3.0"
+    "toggle-switch-react-native": "^2.3.0",
+    "url": "^0.10.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
@@ -108,7 +113,10 @@
     "_stream_writable": "readable-stream/writable",
     "_stream_duplex": "readable-stream/duplex",
     "_stream_passthrough": "readable-stream/passthrough",
-    "stream": "stream-browserify"
+    "stream": "stream-browserify",
+    "http": "@tradle/react-native-http",
+    "https": "https-browserify",
+    "os": "react-native-os"
   },
   "browser": {
     "crypto": "react-native-crypto",
@@ -117,6 +125,9 @@
     "_stream_writable": "readable-stream/writable",
     "_stream_duplex": "readable-stream/duplex",
     "_stream_passthrough": "readable-stream/passthrough",
-    "stream": "stream-browserify"
+    "stream": "stream-browserify",
+    "http": "@tradle/react-native-http",
+    "https": "https-browserify",
+    "os": "react-native-os"
   }
 }
