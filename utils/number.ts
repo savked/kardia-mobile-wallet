@@ -51,6 +51,12 @@ export const parseDecimals = (kaiAmount: number | string, decimals: number) => {
   // return kaiAmount / 10 ** decimals;
 };
 
+export const cellValueWithDecimals = (amount: number | string, decimals: number) => {
+  const rawValue = new BigNumber(amount);
+  return rawValue.multipliedBy(new BigNumber(10 ** decimals)).toFixed()
+  // return kaiAmount / 10 ** decimals;
+}
+
 export const formatNumberString = (numberString: string, fragtionsCount?: number) => {
   if (!numberString) return '0'
   if (typeof numberString !== 'string') {
