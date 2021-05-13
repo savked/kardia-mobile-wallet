@@ -262,5 +262,13 @@ export const lang: Language = {
     SECURE_DESC: 'Protect your digital assets with state-of-the-art blockchain technology.',
     // Dex key
     PAIRS: 'Pairs',
+    BUY: 'Buy',
+    SELL: 'Sell',
+    CLICK_TO_SELECT_PAIR: 'Click to select pair',
+    TX_DEALDINE: 'Transaction deadline',
+    SLIPPAGE_TOLERANCE: 'Slippage tolerance',
+    DEX_MODE_BUY: 'Buy',
+    DEX_MODE_SELL: 'Sell',
+    DEX_TX_SUCCESS: '{{DEX_MODE}} {{TOKEN_AMOUNT}} {{TOKEN_SYMBOL}} successfully',
   },
 };

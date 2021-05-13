@@ -255,5 +255,13 @@ export const lang: Language = {
     SECURE_DESC: 'Bảo vệ tài sản của bạn bằng những công nghệ tiên tiến nhất.',
     // Dex key
     PAIRS: 'Pairs',
+    BUY: 'Mua',
+    SELL: 'Bán',
+    CLICK_TO_SELECT_PAIR: 'Chọn cặp giao dịch',
+    TX_DEALDINE: 'Transaction deadline',
+    SLIPPAGE_TOLERANCE: 'Slippage tolerance',
+    DEX_MODE_BUY: 'Mua',
+    DEX_MODE_SELL: 'Bán',
+    DEX_TX_SUCCESS: '{{DEX_MODE}} {{TOKEN_AMOUNT}} {{TOKEN_SYMBOL}} thành công',
   },
 };
