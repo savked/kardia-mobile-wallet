@@ -83,6 +83,7 @@ const CustomTextInput = ({
           onFocus={onFocus}
           placeholderTextColor={placeholderTextColor}
           autoFocus={autoFocus}
+          keyboardAppearance="dark"
         />
         {iconName && (
           <Icon
