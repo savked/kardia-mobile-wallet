@@ -27,7 +27,7 @@ import {
 import {getSelectedWallet, getWallets} from '../../../utils/local';
 import ListCard from './ListCard';
 // import Icon from 'react-native-vector-icons/FontAwesome';
-import {getDigit, isNumber, format, parseDecimals} from '../../../utils/number';
+import {getDigit, isNumber, format, parseDecimals, formatNumberString} from '../../../utils/number';
 import AddressBookModal from '../AddressBookModal';
 import ScanQRAddressModal from '../ScanQRAddressModal';
 import {theme} from '../../../theme/dark';
@@ -176,7 +176,7 @@ const NewKRC20TxModal = ({
     const _txAmount = Number(amount.replace(/,/g, ''));
     // const currentBalance = Number(weiToKAI(wallet.balance));
     const currentBalance = await getKRC20Balance(tokenAddress, wallet.address);
-    if (_txAmount > parseDecimals(Number(currentBalance), tokenDecimals)) {
+    if (_txAmount > Number(parseDecimals(Number(currentBalance), tokenDecimals))) {
       setErrorAmount(getLanguageString(language, 'NOT_ENOUGH_KAI_FOR_TX'));
       isValid = false;
     }
@@ -381,9 +381,9 @@ const NewKRC20TxModal = ({
           <View style={{marginBottom: 10}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <CustomText style={{color: theme.textColor, marginBottom: 5, fontWeight: 'bold'}}>{getLanguageString(language, 'CREATE_TX_KRC20_AMOUNT')}</CustomText>
-              <TouchableOpacity onPress={() => setAmount(format(parseDecimals(balance, tokenDecimals)))}>
+              <TouchableOpacity onPress={() => setAmount(formatNumberString(parseDecimals(balance, tokenDecimals)))}>
                 <CustomText style={{color: theme.urlColor}}>
-                  {format(parseDecimals(balance, tokenDecimals))} {tokenSymbol}
+                  {formatNumberString(parseDecimals(balance, tokenDecimals))} {tokenSymbol}
                 </CustomText>
               </TouchableOpacity>
             </View>
