@@ -6,6 +6,7 @@ interface KRC20 {
   avatar?: string;
   decimals: number;
   price?: number;
+  walletOwnerAddress?: string;
 }
 
 interface PairToken {

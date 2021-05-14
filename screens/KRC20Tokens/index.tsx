@@ -103,7 +103,11 @@ export default () => {
       </View>
       <CustomText style={{fontSize: 36, paddingHorizontal: 20, color: theme.textColor}}>{getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}</CustomText>
       <List
-        items={tokenList}
+        items={tokenList.filter((item) => {
+          if (!item.walletOwnerAddress) return true
+          if (item.walletOwnerAddress === wallets[selectedWallet].address) return true
+          return false
+        })}
         loading={loading}
         loadingColor={theme.textColor}
         keyExtractor={(item) => item.id}
