@@ -17,10 +17,10 @@ export const getKRC20TokenInfo = async (address: string) => {
   );
   const responseJSON = await response.json();
   const info = {
-    name: await krc20.getName(true),
-    symbol: await krc20.getSymbol(true),
-    decimals: await krc20.getDecimals(true),
-    totalSupply: await krc20.getTotalSupply(),
+    name: responseJSON.data.name,
+    symbol: responseJSON.data.tokenSymbol,
+    decimals: responseJSON.data.decimals,
+    totalSupply: responseJSON.data.totalSupply,
     avatar: responseJSON.data.logo || '',
     // avatar: '',
   };
@@ -35,7 +35,7 @@ export const getBalance = async (tokenAddress: string, userAddress: string) => {
     const balance = await krc20.balanceOf(userAddress);
     return balance;
   } catch (error) {
-    console.log('error', userAddress)
+    console.log('error', userAddress, tokenAddress)
     return 0
   }
 };
@@ -111,8 +111,9 @@ export const transferKRC20 = async (
   const client = new KardiaClient({endpoint: RPC_ENDPOINT});
   const krc20 = client.krc20;
   krc20.address = tokenAddress;
-
+  console.log('start get decimals', Date.now())
   await krc20.getDecimals(true);
+  console.log('end get decimals', Date.now())
 
   return krc20.transfer(privateKey, to, amount, transferPayload);
 };
