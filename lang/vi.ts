@@ -254,14 +254,18 @@ export const lang: Language = {
     INSTANT_DESC: 'Gửi và nhận tiền điện tử tức thì với chi phí cực thấp.',
     SECURE_DESC: 'Bảo vệ tài sản của bạn bằng những công nghệ tiên tiến nhất.',
     // Dex key
+    MARKET_TITLE: 'Thị trường',
+    LIMIT_TITLE: 'Giới hạn',
     PAIRS: 'Pairs',
     BUY: 'Mua',
     SELL: 'Bán',
     CLICK_TO_SELECT_PAIR: 'Chọn cặp giao dịch',
-    TX_DEALDINE: 'Transaction deadline',
-    SLIPPAGE_TOLERANCE: 'Slippage tolerance',
+    TX_DEADLINE: 'Thời gian tối đa',
+    SLIPPAGE_TOLERANCE: 'Giới hạn trượt giá',
     DEX_MODE_BUY: 'Mua',
     DEX_MODE_SELL: 'Bán',
     DEX_TX_SUCCESS: '{{DEX_MODE}} {{TOKEN_AMOUNT}} {{TOKEN_SYMBOL}} thành công',
+    MINS: 'phút',
+    TX_SETTING: 'Cài đặt lệnh giao dịch'
   },
 };

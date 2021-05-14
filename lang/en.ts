@@ -261,14 +261,18 @@ export const lang: Language = {
     INSTANT_DESC: 'Send and receive your crypto currencies within a blink of an eye.',
     SECURE_DESC: 'Protect your digital assets with state-of-the-art blockchain technology.',
     // Dex key
+    MARKET_TITLE: 'Market',
+    LIMIT_TITLE: 'Limit',
     PAIRS: 'Pairs',
     BUY: 'Buy',
     SELL: 'Sell',
     CLICK_TO_SELECT_PAIR: 'Click to select pair',
-    TX_DEALDINE: 'Transaction deadline',
+    TX_DEADLINE: 'Transaction deadline',
     SLIPPAGE_TOLERANCE: 'Slippage tolerance',
     DEX_MODE_BUY: 'Buy',
     DEX_MODE_SELL: 'Sell',
     DEX_TX_SUCCESS: '{{DEX_MODE}} {{TOKEN_AMOUNT}} {{TOKEN_SYMBOL}} successfully',
+    MINS: 'mins',
+    TX_SETTING: 'Transaction settings'
   },
 };
