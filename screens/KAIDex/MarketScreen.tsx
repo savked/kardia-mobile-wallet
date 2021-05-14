@@ -64,11 +64,14 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   useEffect(() => {
     (async () => {
       if (!tokenFrom) return;
-
       const wallets = await getWallets();
       const selectedWallet = await getSelectedWallet();
-      const balance = await getBalance(tokenFrom.hash, wallets[selectedWallet].address)
-      setBalanceFrom(balance)
+      if (tokenFrom.symbol === 'KAI') {
+        setBalanceFrom(wallets[selectedWallet].balance)
+      } else if (tokenFrom.symbol !== 'WKAI') {
+        const balance = await getBalance(tokenFrom.hash, wallets[selectedWallet].address)
+        setBalanceFrom(balance)
+      }
     })()
   }, [tokenFrom])
 
@@ -78,8 +81,13 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
 
       const wallets = await getWallets();
       const selectedWallet = await getSelectedWallet();
-      const balance = await getBalance(tokenTo.hash, wallets[selectedWallet].address)
-      setBalanceTo(balance)
+
+      if (tokenTo.symbol === 'KAI') {
+        setBalanceTo(wallets[selectedWallet].balance)
+      } else if (tokenTo.symbol !== 'WKAI') {
+        const balance = await getBalance(tokenTo.hash, wallets[selectedWallet].address)
+        setBalanceTo(balance)
+      }
     })()
   }, [tokenTo])
 
@@ -220,7 +228,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   const renderSetting = () => {
     if (tokenFrom && tokenTo && tokenFromLiquidity && tokenToLiquidity && rate) {
       return (
-        <View style={{width: '100%', marginTop: 24}}>
+        <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 16}}>
           <TxSettingModal
             visible={showTxSettingModal}
             slippageTolerance={slippageTolerance}
@@ -234,26 +242,34 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               setShowTxSettingModal(false);
             }}
           />
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize + 2}}>Transaction deadline:</CustomText>
-            <CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize + 2}}>{txDeadline} mins</CustomText>
-          </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 4}}>
-            <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize + 2}}>Slippage tolerance:</CustomText>
-            <CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize + 2}}>{slippageTolerance} %</CustomText>
-          </View>
-          <View style={{alignItems: 'flex-end'}}>
-            <TouchableOpacity onPress={() => setShowTxSettingModal(true)}>
-              <CustomText style={{color: theme.urlColor, fontSize: theme.defaultFontSize + 2}}>Edit</CustomText>
-            </TouchableOpacity>
-          </View>
+          <Divider height={0.5} style={{width: '100%', backgroundColor: 'rgba(96, 99, 108, 1)', height: 2}} />
+          <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', width: '100%'}} onPress={() => setShowTxSettingModal(true)}>
+            <Image style={{width: 16, height: 16, marginRight: 4}} source={require('../../assets/icon/setting_dark.png')} />
+            <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'TX_SETTING')}</CustomText>
+          </TouchableOpacity>
         </View>
       )
     }
   }
 
   return (
-    <View style={{width: '100%', alignItems: 'center', backgroundColor: theme.backgroundFocusColor, paddingHorizontal: 16, paddingVertical: 24, borderRadius: 12}}>
+    <View 
+      style={{
+        width: '100%',
+        alignItems: 'center',
+        backgroundColor: theme.backgroundFocusColor,
+        paddingHorizontal: 16,
+        paddingVertical: 24,
+        borderRadius: 12,
+        shadowColor: 'rgba(0, 0, 0, 0.4)',
+        shadowOffset: {
+          width: 0,
+          height: 6,
+        },
+        shadowOpacity: 12,
+        shadowRadius: 8,
+        elevation: 11,
+      }}>
       <TouchableOpacity 
         style={{
           backgroundColor: theme.backgroundColor,
@@ -269,18 +285,38 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
         <View style={{flexDirection: 'row', marginRight: 12}}>
           {
             tokenFrom && (
-              <Image
-                source={{uri: tokenFrom.logo}}
-                style={{width: 32, height: 32}}
-              />
+              <View style={{width: 32, height: 32, backgroundColor: '#FFFFFF', borderRadius: 16}}>
+                <Image
+                  source={{uri: tokenFrom.logo}}
+                  style={{width: 32, height: 32}}
+                />
+              </View>
             )
           }
           {
             tokenTo && (
-              <Image
-                source={{uri: tokenTo.logo}}
-                style={{width: 32, height: 32, marginLeft: -8}}
-              />
+              <View 
+                style={{
+                  width: 32,
+                  height: 32,
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: 16,
+                  marginLeft: -8,
+                  shadowColor: 'rgba(0, 0, 0, 0.3)',
+                  shadowOffset: {
+                    width: -6,
+                    height: 0,
+                  },
+                  shadowOpacity: 12,
+                  shadowRadius: 8,
+                  elevation: 11,
+                }}
+              >
+                <Image
+                  source={{uri: tokenTo.logo}}
+                  style={{width: 32, height: 32}}
+                />
+              </View>
             )
           }
         </View>
@@ -345,10 +381,12 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               {
                 tokenFrom && (
                   <>
-                    <Image
-                      source={{uri: tokenFrom.logo}}
-                      style={{width: 20, height: 20, marginRight: 8}}
-                    />
+                    <View style={{width: 20, height: 20, backgroundColor: '#FFFFFF', borderRadius: 10, marginRight: 8}}>
+                      <Image
+                        source={{uri: tokenFrom.logo}}
+                        style={{width: 20, height: 20}}
+                      />
+                    </View>
                     <CustomText style={{color: theme.textColor}}>{tokenFrom.symbol}</CustomText>
                   </>
                 )
@@ -357,7 +395,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           </View>
           <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
             {getLanguageString(language, 'BALANCE')}:{' '}
-            <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceFrom, tokenFrom.decimals))}</CustomText>
+            <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceFrom, tokenFrom.decimals), 6)}</CustomText>
           </CustomText>
         </View>
       )}
@@ -445,10 +483,12 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               {
                 tokenTo && (
                   <>
-                    <Image
-                      source={{uri: tokenTo.logo}}
-                      style={{width: 20, height: 20, marginRight: 8}}
-                    />
+                    <View style={{width: 20, height: 20, backgroundColor: '#FFFFFF', borderRadius: 10, marginRight: 8}}>
+                      <Image
+                        source={{uri: tokenTo.logo}}
+                        style={{width: 20, height: 20}}
+                      />
+                    </View>
                     <CustomText style={{color: theme.textColor}}>{tokenTo.symbol}</CustomText>
                   </>
                 )
@@ -458,7 +498,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           {tokenTo && (
             <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
               {getLanguageString(language, 'BALANCE')}:{' '}
-              <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceTo, tokenTo.decimals))}</CustomText>
+              <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceTo, tokenTo.decimals), 6)}</CustomText>
             </CustomText>
           )}
         </View>
@@ -468,6 +508,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
       {
         tokenFrom && tokenTo && (
           <Button
+            loadingColor={mode === 'BUY' ? '#000000' : '#FFFFFF'}
             loading={processing}
             disabled={processing}
             title={

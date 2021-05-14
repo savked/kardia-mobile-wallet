@@ -4,6 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../atoms/language';
 import Button from '../../components/Button';
 import CustomModal from '../../components/Modal';
+import Tags from '../../components/Tags';
 import CustomText from '../../components/Text';
 import CustomTextInput from '../../components/TextInput';
 import { ThemeContext } from '../../ThemeContext';
@@ -59,7 +60,7 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
   const getContentStyle = () => {
     return {
       backgroundColor: theme.backgroundFocusColor,
-      height: 350,
+      height: 420,
       marginBottom: keyboardOffset
     }
   }
@@ -82,23 +83,33 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
           <CustomTextInput
             value={deadline}
             onChangeText={setDeadline}
-            headline={'Transaction deadline (mins)'}
+            headline={`${getLanguageString(language, 'TX_DEADLINE')} (${getLanguageString(language, 'MINS')})`}
             headlineStyle={{
-              fontWeight: '500',
-              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+              fontWeight: 'normal',
             }}
           />
+          <View style={{flexDirection: 'row', marginTop: 12}}>
+            <Tags content={`2 ${getLanguageString(language, 'MINS')}`} active={deadline === '2'} containerStyle={{marginRight: 12}} onPress={() => setDeadline('2')} />
+            <Tags content={`5 ${getLanguageString(language, 'MINS')}`} active={deadline === '5'} containerStyle={{marginRight: 12}} onPress={() => setDeadline('5')} />
+            <Tags content={`10 ${getLanguageString(language, 'MINS')}`} active={deadline === '10'} containerStyle={{marginRight: 12}} onPress={() => setDeadline('10')} />
+            <Tags content={`15 ${getLanguageString(language, 'MINS')}`} active={deadline === '15'} onPress={() => setDeadline('15')} />
+          </View>
         </View>
         <View style={{width: '100%', marginTop: 18}}>
           <CustomTextInput
             value={slippageTolerance}
             onChangeText={setSlippageTolerance}
-            headline={'Slippage tolerance (%)'}
+            headline={`${getLanguageString(language, 'SLIPPAGE_TOLERANCE')} (%)`}
             headlineStyle={{
-              fontWeight: '500',
-              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+              fontWeight: 'normal',
             }}
           />
+          <View style={{flexDirection: 'row', marginTop: 12}}>
+            <Tags content={`1 %`} active={slippageTolerance === '1'} containerStyle={{marginRight: 12}} onPress={() => setSlippageTolerance('1')} />
+            <Tags content={`2 %`} active={slippageTolerance === '2'} containerStyle={{marginRight: 12}} onPress={() => setSlippageTolerance('2')} />
+            <Tags content={`5 %`} active={slippageTolerance === '5'} containerStyle={{marginRight: 12}} onPress={() => setSlippageTolerance('5')} />
+            <Tags content={`10 %`} active={slippageTolerance === '10'} onPress={() => setSlippageTolerance('10')} />
+          </View>
         </View>
       </View>
       <Button
@@ -107,6 +118,10 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
           onSubmit(deadline, slippageTolerance)
         }}
         style={{marginBottom: 40}}
+        textStyle={{
+          fontWeight: '500',
+          fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+        }}
       />
     </CustomModal>
   );

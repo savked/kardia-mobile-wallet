@@ -2,16 +2,19 @@ import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Keyboard, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import CustomText from '../../components/Text';
 import { ThemeContext } from '../../ThemeContext';
 import ExchangeScreen from './LimitScreen';
 import SelectingPair from './SelectingPair';
 import MarketScreen from './MarketScreen';
+import { getLanguageString } from '../../utils/lang';
+import { languageAtom } from '../../atoms/language';
 
 export default () => {
   const theme = useContext(ThemeContext);
+  const language = useRecoilValue(languageAtom);
 
   const [type, setType] = useState('MARKET');
   const [selectingPair, setSelectingPair] = useState(false)
@@ -60,13 +63,17 @@ export default () => {
                 style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'MARKET' ? theme.backgroundFocusColor : 'transparent'}}
                 onPress={() => setType('MARKET')}
               >
-                <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'MARKET' ? 'bold' : undefined}}>Market</CustomText>
+                <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'MARKET' ? 'bold' : undefined}}>
+                  {getLanguageString(language, 'MARKET_TITLE')}
+                </CustomText>
               </TouchableOpacity>
               <TouchableOpacity 
                 style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'LIMIT' ? theme.backgroundFocusColor : 'transparent'}}
                 onPress={() => setType('LIMIT')}
               >
-                <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'LIMIT' ? 'bold' : undefined}}>Limit</CustomText>
+                <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'LIMIT' ? 'bold' : undefined}}>
+                  {getLanguageString(language, 'LIMIT_TITLE')}
+                </CustomText>
               </TouchableOpacity>
             </View>
           </View>

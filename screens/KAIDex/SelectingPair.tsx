@@ -63,14 +63,34 @@ export default ({goBack, onSelect}: {
                   }}
                 >
                   <View style={{flexDirection: 'row', marginRight: 12}}>
-                    <Image
-                      source={{uri: item.t1.logo}}
-                      style={{width: 32, height: 32}}
-                    />
-                    <Image
-                      source={{uri: item.t2.logo}}
-                      style={{width: 32, height: 32, marginLeft: -8}}
-                    />
+                    <View style={{width: 32, height: 32, backgroundColor: '#FFFFFF', borderRadius: 16}}>
+                      <Image
+                        source={{uri: item.t1.logo}}
+                        style={{width: 32, height: 32}}
+                      />
+                    </View>
+                    <View 
+                      style={{
+                        width: 32,
+                        height: 32,
+                        backgroundColor: '#FFFFFF',
+                        borderRadius: 16,
+                        marginLeft: -8,
+                        shadowColor: 'rgba(0, 0, 0, 0.3)',
+                        shadowOffset: {
+                          width: -6,
+                          height: 0,
+                        },
+                        shadowOpacity: 12,
+                        shadowRadius: 8,
+                        elevation: 11,
+                      }}
+                    >
+                      <Image
+                        source={{uri: item.t2.logo}}
+                        style={{width: 32, height: 32}}
+                      />
+                    </View>
                   </View>
                   <View style={{flex: 1, justifyContent: 'center'}}>
                     <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 4}}>
