@@ -1,6 +1,6 @@
 import Clipboard from '@react-native-community/clipboard';
 import {keccak256} from 'js-sha3';
-import {EXPLORER_URL} from '../config';
+import { EXPLORER_URL } from '../services/config';
 
 export const truncate = (str: string, n: number, e: number) => {
   if (!str) {

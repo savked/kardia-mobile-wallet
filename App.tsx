@@ -22,10 +22,11 @@ import { Platform, View } from 'react-native';
 import CustomText from './components/Text';
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { HASURA_ENDPOINT } from './services/config';
 
 // Initialize Apollo Client
 const client = new ApolloClient({
-  uri: 'https://hasura-dex.kardiachain.io/v1/graphql',
+  uri: HASURA_ENDPOINT,
   cache: new InMemoryCache(),
   headers: {
     'x-hasura-admin-secret': 'fengari@kaitothemoon123'

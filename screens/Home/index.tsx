@@ -28,10 +28,10 @@ import {showTabBarAtom} from '../../atoms/showTabBar';
 import {tokenInfoAtom} from '../../atoms/token';
 import {weiToKAI} from '../../services/transaction/amount';
 import Button from '../../components/Button';
-import { SIMPLEX_URL } from '../../config';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { HEADER_HEIGHT } from '../../theme';
 import CustomText from '../../components/Text';
+import { SIMPLEX_URL } from '../../services/config';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
