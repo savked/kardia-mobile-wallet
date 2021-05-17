@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, Dimensions, Image, ImageBackground, Linking, Platform, RefreshControl, ScrollView, Text, View} from 'react-native';
+import {ActivityIndicator, Alert, Dimensions, Image, ImageBackground, Linking, Platform, RefreshControl, ScrollView, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
@@ -169,6 +169,7 @@ const HomeScreen = () => {
         style={{width: viewportWidth, height: viewportHeight - tabBarHeight - HEADER_HEIGHT - 48}}
       >
         <ScrollView 
+          showsVerticalScrollIndicator={false}
           style={[styles.bodyContainer]} 
           refreshControl={
             <RefreshControl

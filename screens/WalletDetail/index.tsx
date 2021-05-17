@@ -150,7 +150,7 @@ export default () => {
         />
       </View>
       <View style={{ flex: 1, justifyContent: 'space-between', }}>
-        <ScrollView contentContainerStyle={{ justifyContent: 'space-between', height: 550 }}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ justifyContent: 'space-between', height: 550 }}>
           <View style={{ flex: 1 }}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
               <View style={{ paddingHorizontal: 20 }}>
@@ -270,7 +270,7 @@ export default () => {
               <CustomText style={{ marginTop: 16, marginBottom: 8, fontWeight: 'normal', color: theme.textColor, paddingHorizontal: 20 }}>{getLanguageString(language, 'WALLET_CARD_TYPE')}</CustomText>
             </TouchableWithoutFeedback>
             <View style={{ flex: 1 }}>
-              <ScrollView horizontal ref={scrollRef}>
+              <ScrollView showsHorizontalScrollIndicator={false} horizontal ref={scrollRef}>
                 {[0, 1, 2, 3, 4, 5].map((item, index) => {
                   return (
                     <TouchableOpacity key={`card-${index}`} onPress={() => setCardAvatarID(index)}>

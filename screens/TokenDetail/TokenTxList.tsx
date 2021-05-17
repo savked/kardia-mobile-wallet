@@ -200,12 +200,13 @@ const TokenTxList = ({
         </View>
       )}
       <ScrollView
+        showsVerticalScrollIndicator={false}
         onScroll={({nativeEvent}) => {
           if (isCloseToBottom(nativeEvent)) {
             setPage(page + 1)
           }
         }}
-        scrollEventThrottle={400}
+        scrollEventThrottle={8}
       >
         {groupByDate(txList, 'date').map((txsByDate) => {
           const dateLocale = getDateFNSLocale(language);

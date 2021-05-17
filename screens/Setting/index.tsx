@@ -76,7 +76,9 @@ const SettingScreen = () => {
           onPress={() => navigation.navigate('Notification')}
         /> */}
       </View>
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+      >
         <View style={{flex: 1}}>
           <CustomText
             style={{
