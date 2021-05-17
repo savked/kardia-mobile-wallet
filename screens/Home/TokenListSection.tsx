@@ -11,7 +11,7 @@ import {useRecoilValue} from 'recoil';
 import numeral from 'numeral';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
-import {krc20ListAtom} from '../../atoms/krc20';
+import {filterByOwnerSelector, krc20ListAtom} from '../../atoms/krc20';
 import {getBalance} from '../../services/krc20';
 import {getSelectedWallet, getWallets} from '../../utils/local';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
@@ -26,7 +26,8 @@ const TokenListSection = () => {
   const language = useRecoilValue(languageAtom);
   const [loading, setLoading] = useState(true);
   const [balance, setBalance] = useState<number[]>([]);
-  const tokenList = useRecoilValue(krc20ListAtom);
+  // const tokenList = useRecoilValue(krc20ListAtom);
+  const tokenList = useRecoilValue(filterByOwnerSelector(wallets[selectedWallet].address))
 
   useEffect(() => {
     (async () => {
@@ -74,7 +75,7 @@ const TokenListSection = () => {
   };
 
   const renderTokenList = () => {
-    return tokenList.filter((item) => item.walletOwnerAddress === wallets[selectedWallet].address).slice(0, 7).map((item, index) => {
+    return tokenList.slice(0, 7).map((item, index) => {
       return <View
         key={item.name}
         style={{
@@ -167,7 +168,7 @@ const TokenListSection = () => {
           </TouchableOpacity>
         )}
       </View>
-      {tokenList.filter((item) => item.walletOwnerAddress === wallets[selectedWallet].address).length === 0 && !loading && (
+      {tokenList.length === 0 && !loading && (
         <View style={{alignItems: 'center', marginTop: 45, marginBottom: 30}}>
           <Image
             style={{width: 111, height: 52}}
