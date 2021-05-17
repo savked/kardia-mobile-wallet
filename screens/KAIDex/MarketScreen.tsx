@@ -354,6 +354,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                   setAmountFrom('0')
                 }
                 if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)))) {
+                  setAmountFrom(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)).toFixed())
                   return;
                 }
               
@@ -396,6 +397,12 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
             {getLanguageString(language, 'BALANCE')}:{' '}
             <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceFrom, tokenFrom.decimals), 6)}</CustomText>
+          </CustomText>
+          <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
+            Liquidity:{' '}
+            <CustomText style={{color: theme.textColor}}>
+              {formatNumberString(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)).toFixed(), 6)}
+            </CustomText>
           </CustomText>
         </View>
       )}
@@ -454,6 +461,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                   setAmountTo('0')
                 }
                 if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)))) {
+                  setAmountFrom(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)).toFixed())
                   return;
                 }
               
@@ -495,12 +503,16 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               }
             </View>
           </View>
-          {tokenTo && (
-            <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
-              {getLanguageString(language, 'BALANCE')}:{' '}
-              <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceTo, tokenTo.decimals), 6)}</CustomText>
+          <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
+            {getLanguageString(language, 'BALANCE')}:{' '}
+            <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceTo, tokenTo.decimals), 6)}</CustomText>
+          </CustomText>
+          <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
+            Liquidity:{' '}
+            <CustomText style={{color: theme.textColor}}>
+              {formatNumberString(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)).toFixed(), 6)}
             </CustomText>
-          )}
+          </CustomText>
         </View>
       )}
       {renderRate()}
