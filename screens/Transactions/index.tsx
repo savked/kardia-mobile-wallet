@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {TouchableOpacity, View, Image, ActivityIndicator, Platform} from 'react-native';
+import {TouchableOpacity, View, Image, ActivityIndicator, Platform, RefreshControl} from 'react-native';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
@@ -11,7 +11,6 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import {getTxByAddress} from '../../services/transaction';
 import {parseKaiBalance} from '../../utils/number';
 import {format} from 'date-fns';
-import IconButton from '../../components/IconButton';
 import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import NewTxModal from '../common/NewTxModal';
@@ -27,9 +26,11 @@ import { statusBarColorAtom } from '../../atoms/statusBar';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [gettingMore, setGettingMore] = useState(false);
 
   const [wallets] = useRecoilState(walletsAtom);
   const [selectedWallet] = useRecoilState(selectedWalletAtom);
@@ -39,11 +40,46 @@ const TransactionScreen = () => {
 
   const [showTxDetail, setShowTxDetail] = useState(false);
   const [txObjForDetail, setTxObjForDetail] = useState();
+  const [page, setPage] = useState(1)
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   const insets = useSafeAreaInsets();
+
+  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: any) => {
+    const paddingToBottom = 90;
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
+  };
+
+  const getTX = async (page = 1) => {
+    const SIZE = 15;
+    if (page * SIZE <= txList.length) return;
+    console.log('triggered with page ', page)
+    const localWallets = await getWallets();
+    const localSelectedWallet = await getSelectedWallet();
+    if (
+      !localWallets[localSelectedWallet] ||
+      !localWallets[localSelectedWallet].address
+    ) {
+      return;
+    }
+    try {
+      const newTxList = await getTxByAddress(
+        localWallets[localSelectedWallet].address,
+        page,
+        SIZE,
+      );
+      // setTxList([...oldTxList, ...newTxList].map(parseTXForList));
+      setTxList([...txList, ...newTxList.map(parseTXForList)]);
+      // setTxList(newTxList.map(parseTXForList))
+      setLoading(false)
+      setGettingMore(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -53,6 +89,13 @@ const TransactionScreen = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showNewTxModal]),
   );
+
+  useEffect(() => {
+    (async () => {
+      setGettingMore(true)
+      await getTX(page);
+    })()
+  }, [page])
 
   const parseTXForList = (tx: Transaction) => {
     return {
@@ -72,28 +115,6 @@ const TransactionScreen = () => {
           ? 'OUT'
           : 'IN',
     };
-  };
-
-  const getTX = async () => {
-    const localWallets = await getWallets();
-    const localSelectedWallet = await getSelectedWallet();
-    if (
-      !localWallets[localSelectedWallet] ||
-      !localWallets[localSelectedWallet].address
-    ) {
-      return;
-    }
-    try {
-      const newTxList = await getTxByAddress(
-        localWallets[localSelectedWallet].address,
-        1,
-        1000,
-      );
-      setTxList(newTxList.map(parseTXForList));
-      setLoading(false)
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   const renderIcon = (status: number, type: 'IN' | 'OUT') => {
@@ -134,15 +155,21 @@ const TransactionScreen = () => {
     );
   };
 
-  useEffect(() => {
-    setLoading(true);
-    getTX();
-    const getTxInterval = setInterval(() => {
-      getTX();
-    }, 3000);
-    return () => clearInterval(getTxInterval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   getTX();
+  //   // const getTxInterval = setInterval(() => {
+  //   //   getTX();
+  //   // }, 3000);
+  //   // return () => clearInterval(getTxInterval);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  const onRefresh = async () => {
+    setRefreshing(true)
+    await getTX();
+    setRefreshing(false)
+  }
 
   if (loading) {
     return (
@@ -213,7 +240,25 @@ const TransactionScreen = () => {
           />
         </View>
       )}
-      <ScrollView style={{flex: 1}}>
+      <ScrollView 
+        showsVerticalScrollIndicator={false}
+        scrollEventThrottle={8}
+        onScroll={({nativeEvent}) => {
+          if (isCloseToBottom(nativeEvent) && !gettingMore) {
+            setPage(page + 1)
+          }
+        }}
+        style={{flex: 1}}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[theme.textColor]}
+            tintColor={theme.textColor}
+            titleColor={theme.textColor}
+          />
+        }
+      >
         {groupByDate(txList, 'date').map((txsByDate) => {
           const dateLocale = getDateFNSLocale(language);
           return (
@@ -223,7 +268,7 @@ const TransactionScreen = () => {
                   marginHorizontal: 20,
                   color: theme.textColor,
                 }}>
-                {format(txsByDate.date, 'E, dd/MM/yyyy', {locale: dateLocale})}
+                {format(new Date(txsByDate.date), 'E, dd/MM/yyyy', {locale: dateLocale})}
               </CustomText>
               {txsByDate.items.map((item: any, index: number) => {
                 return (
@@ -280,7 +325,7 @@ const TransactionScreen = () => {
                           </CustomText>
                         </CustomText>
                         <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
-                          {format(item.date, 'hh:mm aa')}
+                          {format(new Date(item.date), 'hh:mm aa')}
                         </CustomText>
                       </View>
                     </TouchableOpacity>
@@ -291,6 +336,11 @@ const TransactionScreen = () => {
           );
         })}
       </ScrollView>
+      {gettingMore && (
+        <View style={{paddingVertical: 12}}>
+          <ActivityIndicator color={theme.textColor} size="small" />
+        </View>
+      )}
       {txList.length > 0 && (
         <Button
           type="primary"
