@@ -48,15 +48,18 @@ const TransactionScreen = () => {
   const insets = useSafeAreaInsets();
 
   const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: any) => {
-    const paddingToBottom = 90;
+    const paddingToBottom = 550;
     return layoutMeasurement.height + contentOffset.y >=
       contentSize.height - paddingToBottom;
   };
 
-  const getTX = async (page = 1) => {
-    const SIZE = 15;
-    if (page * SIZE <= txList.length) return;
-    console.log('triggered with page ', page)
+  const getTX = async () => {
+    const SIZE = 30;
+    if (page * SIZE <= txList.length || gettingMore) {
+      setLoading(false);
+      setGettingMore(false);
+      return;
+    }
     const localWallets = await getWallets();
     const localSelectedWallet = await getSelectedWallet();
     if (
@@ -71,9 +74,7 @@ const TransactionScreen = () => {
         page,
         SIZE,
       );
-      // setTxList([...oldTxList, ...newTxList].map(parseTXForList));
       setTxList([...txList, ...newTxList.map(parseTXForList)]);
-      // setTxList(newTxList.map(parseTXForList))
       setLoading(false)
       setGettingMore(false);
     } catch (error) {
@@ -92,10 +93,13 @@ const TransactionScreen = () => {
 
   useEffect(() => {
     (async () => {
+      if (gettingMore) {
+        return;
+      }
       setGettingMore(true)
-      await getTX(page);
+      await getTX();
     })()
-  }, [page])
+  }, [page, gettingMore])
 
   const parseTXForList = (tx: Transaction) => {
     return {
@@ -154,16 +158,6 @@ const TransactionScreen = () => {
       </View>
     );
   };
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   getTX();
-  //   // const getTxInterval = setInterval(() => {
-  //   //   getTX();
-  //   // }, 3000);
-  //   // return () => clearInterval(getTxInterval);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   const onRefresh = async () => {
     setRefreshing(true)
@@ -335,12 +329,12 @@ const TransactionScreen = () => {
             </React.Fragment>
           );
         })}
+        {gettingMore && (
+          <View style={{paddingVertical: 12}}>
+            <ActivityIndicator color={theme.textColor} size="small" />
+          </View>
+        )}
       </ScrollView>
-      {gettingMore && (
-        <View style={{paddingVertical: 12}}>
-          <ActivityIndicator color={theme.textColor} size="small" />
-        </View>
-      )}
       {txList.length > 0 && (
         <Button
           type="primary"
