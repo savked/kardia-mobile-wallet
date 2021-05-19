@@ -233,7 +233,6 @@ export default ({
         Number(getDigit(amount)),
       );
       if (rs.status === 0) {
-        console.log('Delegate Tx Fail ', rs.transactionHash);
         setDelegating(false);
       } else {
         setDelegating(false);

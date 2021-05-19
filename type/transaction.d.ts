@@ -12,6 +12,13 @@ interface Transaction {
   gas?: number;
   gasUsed?: number;
   gasLimit?: number;
+  toName?: string;
+  decodedInputData?: {
+    function: string;
+    methodID: string;
+    methodName: string;
+    arguments: Record<string, any>
+  }
 }
 
 interface KRC20Transaction {

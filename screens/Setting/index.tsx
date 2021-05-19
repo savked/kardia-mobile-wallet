@@ -154,7 +154,7 @@ const SettingScreen = () => {
                   </CustomText>
                 </View>
                 <View style={{width: 32, height: 32, alignItems: 'center', justifyContent: 'center'}}>
-                  <CustomText style={{color: fontSize === 'large' ? theme.textColor : theme.mutedTextColor, fontSize: (theme.defaultFontSize + 2) * 1.2}}>
+                  <CustomText style={{color: fontSize === 'large' ? theme.textColor : theme.mutedTextColor, fontSize: (theme.defaultFontSize + 2) * 1.4}}>
                     aA
                   </CustomText>
                 </View>

@@ -76,21 +76,33 @@ export const getTx = async (tokenAddress: string, userAddress: string, page: num
   };
   const response = await requestWithTimeOut(
     fetch(
-      `${ENDPOINT}token/txs?page=${page}&limit=10&address=${userAddress}&contractAddress=${tokenAddress}`,
+      `${ENDPOINT}token/txs?page=${page}&limit=5&address=${userAddress}&contractAddress=${tokenAddress}`,
       requestOptions,
     ),
     50 * 1000,
   );
   const responseJSON = await response.json();
+  let haveMore = true
+  if (responseJSON?.data?.total >= 0 && responseJSON.data.data.length === 0) {
+    haveMore = false
+  } else if (responseJSON?.data?.total > responseJSON.data.data.length * (responseJSON?.data?.page)) {
+    haveMore = true
+  }
   return responseJSON.data
-    ? responseJSON.data.data.map((i: any) => {
-        i.date = new Date(i.time);
-        i.time = new Date(i.time);
-        i.status = 1;
-        i.type = i.from === userAddress ? 'OUT' : 'IN';
-        return i;
-      })
-    : [];
+    ? {
+        data: responseJSON.data.data.map((i: any) => {
+          i.date = new Date(i.time);
+          i.time = new Date(i.time);
+          i.status = 1;
+          i.type = i.from === userAddress ? 'OUT' : 'IN';
+          return i;
+        }),
+        haveMore: haveMore
+      }
+    : {
+      data: [],
+      haveMore: false
+    };
 };
 
 export const estimateKRC20Gas = async (to: string, amount: number) => {
@@ -111,9 +123,7 @@ export const transferKRC20 = async (
   const client = new KardiaClient({endpoint: RPC_ENDPOINT});
   const krc20 = client.krc20;
   krc20.address = tokenAddress;
-  console.log('start get decimals', Date.now())
   await krc20.getDecimals(true);
-  console.log('end get decimals', Date.now())
 
   return krc20.transfer(privateKey, to, amount, transferPayload);
 };

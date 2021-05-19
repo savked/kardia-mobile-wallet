@@ -20,7 +20,6 @@ import Button from '../../components/Button';
 import {statusBarColorAtom} from '../../atoms/statusBar';
 import {getSelectedWallet, getWallets} from '../../utils/local';
 import UndelegateModal from './UndelegateModal';
-import IconButton from '../../components/IconButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import CustomText from '../../components/Text';

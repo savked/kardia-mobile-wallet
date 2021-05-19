@@ -16,6 +16,7 @@ import {
   getTokenList,
   getWallets,
   saveSelectedWallet,
+  saveTokenList,
 } from '../../utils/local';
 import {styles} from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
@@ -361,7 +362,14 @@ const AppContainer = () => {
 
       // Get local KRC20 list
       const krc20List = await getTokenList();
-      setKRC20TokenList(krc20List);
+      const filteredList = krc20List.filter((item) => !!item.walletOwnerAddress)
+      if (filteredList.length === krc20List.length) {
+        console.log('No old token found')
+      } else {
+        console.log('Clear old token')
+        await saveTokenList(filteredList);
+      }
+      setKRC20TokenList(filteredList);
 
       // Get font size setting
       const fontSizeSetting = await getFontSize();

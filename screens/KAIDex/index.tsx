@@ -55,7 +55,8 @@ export default () => {
 
   return (
     <SafeAreaView style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20}}>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <ExchangeScreen />
+      {/* <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{flex: 1}}>
           <View style={{width: '100%', alignItems: 'center'}}>
             <View style={{borderRadius: 12, borderColor: 'rgba(96, 99, 108, 1)', borderWidth: 1.5, padding: 4, flexDirection: 'row', marginBottom: 32}}>
@@ -88,7 +89,7 @@ export default () => {
             : 
             <ExchangeScreen />}
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback> */}
     </SafeAreaView>
   )
 };

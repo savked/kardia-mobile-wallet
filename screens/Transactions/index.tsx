@@ -2,7 +2,7 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {TouchableOpacity, View, Image, ActivityIndicator, Platform, RefreshControl} from 'react-native';
-import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {truncate} from '../../utils/string';
@@ -23,6 +23,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import CustomText from '../../components/Text';
 import { statusBarColorAtom } from '../../atoms/statusBar';
+import CustomTextInput from '../../components/TextInput';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
@@ -31,9 +32,9 @@ const TransactionScreen = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [gettingMore, setGettingMore] = useState(false);
+  const [haveMore, setHaveMore] = useState(false);
 
-  const [wallets] = useRecoilState(walletsAtom);
-  const [selectedWallet] = useRecoilState(selectedWalletAtom);
+  const [searchString, setSearchString] = useState('');
   const [txList, setTxList] = useState([] as any[]);
   const [showNewTxModal, setShowNewTxModal] = useState(false);
   const language = useRecoilValue(languageAtom);
@@ -53,13 +54,15 @@ const TransactionScreen = () => {
       contentSize.height - paddingToBottom;
   };
 
-  const getTX = async () => {
-    const SIZE = 30;
-    if (page * SIZE <= txList.length || gettingMore) {
-      setLoading(false);
-      setGettingMore(false);
+  const getTX = async (page: number) => {
+    let shouldFetch = false
+    if (page === 1 || !gettingMore) {
+      shouldFetch = true
+    }
+    if (!shouldFetch) {
       return;
     }
+    const SIZE = 30;
     const localWallets = await getWallets();
     const localSelectedWallet = await getSelectedWallet();
     if (
@@ -69,14 +72,18 @@ const TransactionScreen = () => {
       return;
     }
     try {
-      const newTxList = await getTxByAddress(
+      const {haveMore: _haveMore, data: newTxList} = await getTxByAddress(
         localWallets[localSelectedWallet].address,
         page,
         SIZE,
       );
-      setTxList([...txList, ...newTxList.map(parseTXForList)]);
-      setLoading(false)
-      setGettingMore(false);
+      if (page === 1) {
+        setTxList(newTxList.map((i: any) => parseTXForList(i, localWallets[localSelectedWallet].address)));
+      } else {
+        setTxList([...txList, ...newTxList.map((i: any) => parseTXForList(i, localWallets[localSelectedWallet].address))]);
+      }
+      setHaveMore(_haveMore);
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -86,22 +93,22 @@ const TransactionScreen = () => {
     useCallback(() => {
       setTabBarVisible(true);
       setStatusBarColor(theme.backgroundColor);
-
+      setLoading(true);
+      setPage(1)
+      getTX(1);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [showNewTxModal]),
+    }, []),
   );
 
   useEffect(() => {
     (async () => {
-      if (gettingMore) {
-        return;
-      }
-      setGettingMore(true)
-      await getTX();
+      setGettingMore(true);
+      await getTX(page);
+      setGettingMore(false)
     })()
-  }, [page, gettingMore])
+  }, [page])
 
-  const parseTXForList = (tx: Transaction) => {
+  const parseTXForList = (tx: Transaction, address: string) => {
     return {
       label: tx.hash,
       value: tx.hash,
@@ -115,7 +122,7 @@ const TransactionScreen = () => {
       blockNumber: tx.blockNumber || '',
       status: tx.status,
       type:
-        wallets[selectedWallet] && tx.from === wallets[selectedWallet].address
+        tx.from === address
           ? 'OUT'
           : 'IN',
     };
@@ -161,7 +168,7 @@ const TransactionScreen = () => {
 
   const onRefresh = async () => {
     setRefreshing(true)
-    await getTX();
+    await getTX(1);
     setRefreshing(false)
   }
 
@@ -177,10 +184,14 @@ const TransactionScreen = () => {
   return (
     <View
       style={[styles.container, {backgroundColor: theme.backgroundColor, paddingTop: insets.top}]}>
-      <NewTxModal
-        visible={showNewTxModal}
-        onClose={() => setShowNewTxModal(false)}
-      />
+      {
+        showNewTxModal && (
+          <NewTxModal
+            visible={showNewTxModal}
+            onClose={() => setShowNewTxModal(false)}
+          />
+        )
+      }
       <TxDetailModal
         visible={showTxDetail}
         onClose={() => setShowTxDetail(false)}
@@ -197,6 +208,12 @@ const TransactionScreen = () => {
           onPress={() => navigation.navigate('Notification')}
         /> */}
       </View>
+      {/* <View style={{marginHorizontal: 20, marginBottom: 22}}>
+        <CustomTextInput
+          value={searchString}
+          onChangeText={setSearchString}
+        />
+      </View> */}
       {groupByDate(txList, 'date').length === 0 && (
         <View style={styles.noTXContainer}>
           <Image
@@ -238,7 +255,8 @@ const TransactionScreen = () => {
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={8}
         onScroll={({nativeEvent}) => {
-          if (isCloseToBottom(nativeEvent) && !gettingMore) {
+          if (!haveMore || gettingMore) return;
+          if (isCloseToBottom(nativeEvent)) {
             setPage(page + 1)
           }
         }}

@@ -27,6 +27,10 @@ export const getAppStatus = async () => {
     50 * 1000,
   )
 
+  if (!response) {
+    return {};
+  }
+
   const responseJSON = await response.json();
   return responseJSON.data;
 }

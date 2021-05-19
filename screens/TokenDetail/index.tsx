@@ -89,12 +89,12 @@ const TokenDetail = () => {
   useEffect(() => {
     (async () => {
       await fetchBalance();
-      const intervalId = setInterval(async () => {
-        await fetchBalance();
-      }, 2000);
-      return () => {
-        clearInterval(intervalId);
-      };
+      // const intervalId = setInterval(async () => {
+      //   await fetchBalance();
+      // }, 2000);
+      // return () => {
+      //   clearInterval(intervalId);
+      // };
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tokenAddress]);

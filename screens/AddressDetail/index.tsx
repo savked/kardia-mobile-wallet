@@ -100,6 +100,8 @@ const AddressDetail = () => {
       blockHash: tx.blockHash || '',
       blockNumber: tx.blockNumber || '',
       status: tx.status,
+      toName: tx.toName,
+      decodedInputData: tx.decodedInputData,
       type:
         wallets[selectedWallet] && tx.from === wallets[selectedWallet].address
           ? 'OUT'
@@ -126,7 +128,7 @@ const AddressDetail = () => {
         1000,
       );
       setTxList(
-        newTxList
+        newTxList.data
           // .filter((txItem: Transaction) => {
           //   return (
           //     txItem.from === addressData?.address ||
@@ -191,10 +193,10 @@ const AddressDetail = () => {
 
   useEffect(() => {
     getTX();
-    const getTxInterval = setInterval(() => {
-      getTX();
-    }, 3000);
-    return () => clearInterval(getTxInterval);
+    // const getTxInterval = setInterval(() => {
+    //   getTX();
+    // }, 3000);
+    // return () => clearInterval(getTxInterval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -229,9 +231,11 @@ const AddressDetail = () => {
   }
 
   const filteredList = txList.filter((txItem: Transaction) => {
-    return (
-      txItem.from === addressData?.address || txItem.to === addressData?.address
-    );
+    if (txItem.from === addressData?.address || txItem.to === addressData?.address) return true;
+    if (txItem.decodedInputData && txItem.toName) {
+      return txItem.decodedInputData.arguments._receiver === addressData?.address
+    } 
+    return false;
   });
 
   return (

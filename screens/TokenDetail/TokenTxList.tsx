@@ -18,9 +18,8 @@ import {getTx} from '../../services/krc20';
 import {ThemeContext} from '../../ThemeContext';
 import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
 import {getSelectedWallet, getWallets} from '../../utils/local';
-import {parseDecimals} from '../../utils/number';
+import {formatNumberString, parseDecimals} from '../../utils/number';
 import {truncate} from '../../utils/string';
-import numeral from 'numeral';
 import {styles} from './style';
 import {groupByDate} from '../../utils/date';
 import Button from '../../components/Button';
@@ -49,6 +48,8 @@ const TokenTxList = ({
   const [showNewTxModal, setShowNewTxModal] = useState(false);
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
+  const [haveMore, setHaveMore] = useState(false);
+  const [gettingMore, setGettingMore] = useState(false);
 
   const fetchTxList = async (page: number) => {
     const _wallets = await getWallets();
@@ -62,22 +63,39 @@ const TokenTxList = ({
 
   useEffect(() => {
     (async () => {
-      setLoading(true);
-      const _txList = await fetchTxList(1);
-      setTxList(_txList);
-      setLoading(false);
-
-      // const intervalId = setInterval(() => {
-      //   fetchTxList();
-      // }, 2000);
-      // return () => clearInterval(intervalId);
+      try {
+        setLoading(true);
+        const txRs = await fetchTxList(1);
+        setTxList(txRs.data);
+        setHaveMore(txRs.haveMore);
+        setLoading(false); 
+      } catch (error) {
+        console.log(error)
+        setTxList([]);
+        setLoading(false); 
+      }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet, tokenAddress]);
 
   useEffect(() => {
     (async () => {
-      const _txList =  await fetchTxList(2)
+      let shouldFetch = false
+      if (page === 1 || !gettingMore) {
+        shouldFetch = true
+      }
+      if (!shouldFetch) {
+        return;
+      }
+      setGettingMore(true)
+      const txRs =  await fetchTxList(page)
+      if (page === 1) {
+        setTxList(txRs.data);
+      } else {
+        setTxList([...txList, ...txRs.data]);
+      }
+      setHaveMore(txRs.haveMore)
+      setGettingMore(false)
       // console.log(_txList)
     })()
   }, [page])
@@ -132,9 +150,7 @@ const TokenTxList = ({
   };
 
   const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: any) => {
-    const paddingToBottom = 20;
-    console.log('layoutMeasurement.height + contentOffset.y', layoutMeasurement.height + contentOffset.y)
-    console.log('contentSize.height - paddingToBottom', contentSize.height - paddingToBottom)
+    const paddingToBottom = 80;
     return layoutMeasurement.height + contentOffset.y >=
       contentSize.height - paddingToBottom;
   };
@@ -202,6 +218,9 @@ const TokenTxList = ({
       <ScrollView
         showsVerticalScrollIndicator={false}
         onScroll={({nativeEvent}) => {
+          if (!haveMore || gettingMore) {
+            return;
+          }
           if (isCloseToBottom(nativeEvent)) {
             setPage(page + 1)
           }
@@ -265,15 +284,20 @@ const TokenTxList = ({
                         <CustomText
                           style={[
                             styles.kaiAmount,
-                            item.type === 'IN'
-                              ? {color: '#53B680'}
-                              : {color: 'red'},
+                            {
+                              fontWeight: '500',
+                              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+                              color: theme.textColor,
+                              fontSize: theme.defaultFontSize + 1
+                            }
+                            // item.type === 'IN'
+                            //   ? {color: '#53B680'}
+                            //   : {color: 'red'},
                           ]}>
-                          {item.type === 'IN' ? '+' : '-'}
-                          {numeral(
-                            parseDecimals(Number(item.value), tokenDecimals),
-                          ).format('0,0.00')}{' '}
-                          {tokenSymbol}
+                          {/* {item.type === 'IN' ? '+' : '-'} */}
+                          {formatNumberString(parseDecimals(Number(item.value), tokenDecimals), 8)}
+                          {' '}
+                          <CustomText style={{fontWeight: 'normal', color: theme.mutedTextColor}}>{tokenSymbol}</CustomText>
                         </CustomText>
                         <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
                           {format(item.date, 'hh:mm aa')}
@@ -286,6 +310,11 @@ const TokenTxList = ({
             </React.Fragment>
           );
         })}
+        {gettingMore && (
+          <View style={{paddingVertical: 12}}>
+            <ActivityIndicator color={theme.textColor} size="small" />
+          </View>
+        )}
       </ScrollView>
       {txList.length > 0 && (
         <Button
