@@ -266,6 +266,7 @@ export const lang: Language = {
     DEX_MODE_SELL: 'Bán',
     DEX_TX_SUCCESS: '{{DEX_MODE}} {{TOKEN_AMOUNT}} {{TOKEN_SYMBOL}} thành công',
     MINS: 'phút',
-    TX_SETTING: 'Cài đặt lệnh giao dịch'
+    TX_SETTING: 'Cài đặt lệnh giao dịch',
+    VOLUME_24H: 'Giao dịch (24h):'
   },
 };

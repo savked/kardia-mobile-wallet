@@ -273,6 +273,7 @@ export const lang: Language = {
     DEX_MODE_SELL: 'Sell',
     DEX_TX_SUCCESS: '{{DEX_MODE}} {{TOKEN_AMOUNT}} {{TOKEN_SYMBOL}} successfully',
     MINS: 'mins',
-    TX_SETTING: 'Transaction settings'
+    TX_SETTING: 'Transaction settings',
+    VOLUME_24H: 'Volume (24h):'
   },
 };
