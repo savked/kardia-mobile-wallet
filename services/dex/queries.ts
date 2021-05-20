@@ -4,6 +4,7 @@ export const GET_PAIRS = gql`
   query GetPairs {
     pairs {
       decimals
+      contract_address
       last_updated
       pair_name
       token1

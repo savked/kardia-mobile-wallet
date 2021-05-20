@@ -2,9 +2,10 @@ import KaidexClient from 'kaidex-sdk';
 import KardiaClient from 'kardia-js-sdk';
 import SWAPABI from './swapABI.json'
 import { FACTORY_SMC, LIMIT_ORDER_SMC, SWAP_ROUTER_SMC, WKAI_SMC } from '../../config';
-import { RPC_ENDPOINT } from '../config';
+import { DEX_ENDPOINT, RPC_ENDPOINT } from '../config';
 import KRC20ABI from '../krc20/KRC20ABI.json';
 import { cellValueWithDecimals } from '../../utils/number';
+import { requestWithTimeOut } from '../util';
 
 export const calculateDexExchangeRate = async (
   tokenFrom: PairToken,
@@ -34,7 +35,6 @@ export const calculateDexExchangeRate = async (
       tokenAddress: tokenTo.hash,
       decimals: tokenTo.decimals
     })
-  
     return rate 
   } catch (error) {
     console.log(error)
@@ -84,6 +84,9 @@ export const calculateDexAmountOut = async (
     return rs
   } catch (error) {
     console.log(error)
+    if (error.message === 'invalid opcode: opcode 0xfe not defined') {
+      return '-1'
+    }
     return '1'
   }
 }
@@ -123,6 +126,27 @@ export const approveToken = async (token: PairToken, amount: string | number, wa
   const rs = invocation.send(wallet.privateKey!, token.hash)
   
   return rs;
+}
+
+export const getTotalVolume = async (pairAddress: string) => {
+  const requestOptions = {
+    method: 'GET',
+    redirect: 'follow',
+  };
+  try {
+    const response = await requestWithTimeOut(
+      fetch(
+        `${DEX_ENDPOINT}chart/${pairAddress}/volume`,
+        requestOptions,
+      ),
+      50 * 1000,
+    );
+    const responseJSON = await response.json();
+    return responseJSON.data[responseJSON.data.length - 1].data
+  } catch (error) {
+    console.log('Get total volume fail')
+    console.log(error)
+  }
 }
 
 export const swapTokens = async (params: Record<string, any>, wallet: Wallet) => {

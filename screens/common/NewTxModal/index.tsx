@@ -179,17 +179,17 @@ const NewTxModal = ({
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: keyboardShown ? 470 : 500,
+        height: keyboardShown ? 440 : 500,
         backgroundColor: 'rgba(58, 59, 60, 1)',
       };
     } else {
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: 480,
+        height: keyboardShown ? 440 : 500,
         backgroundColor: 'rgba(58, 59, 60, 1)',
-        marginBottom: keyboardOffset - (keyboardShown ? 100 : 0),
-        marginTop: -keyboardOffset - (keyboardShown ? 100 : 0),
+        marginBottom: keyboardOffset,
+        marginTop: -keyboardOffset,
       };
     }
   };

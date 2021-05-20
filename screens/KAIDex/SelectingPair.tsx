@@ -8,16 +8,16 @@ import { useFocusEffect } from '@react-navigation/native';
 import CustomText from '../../components/Text';
 import { getLanguageString } from '../../utils/lang';
 import { languageAtom } from '../../atoms/language';
-import { useQuery } from '@apollo/client';
-import { GET_PAIRS } from '../../services/dex/queries';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import List from '../../components/List';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import { formatDexToken } from '../../services/dex';
 
-export default ({goBack, onSelect}: {
+export default ({goBack, onSelect, pairData, loading}: {
   goBack: () => void;
-  onSelect: (from: PairToken, to: PairToken, liquidityFrom: string, liquidityTo: string) => void;
+  onSelect: (from: PairToken, to: PairToken, liquidityFrom: string, liquidityTo: string, pairAddress: string) => void;
+  pairData: any;
+  loading: boolean;
 }) => {
   const theme = useContext(ThemeContext);
 
@@ -27,7 +27,7 @@ export default ({goBack, onSelect}: {
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
 
-  const { loading, error, data: pairData } = useQuery(GET_PAIRS);
+  // const { loading, error, data: pairData } = useQuery(GET_PAIRS);
 
   useFocusEffect(
     useCallback(() => {
@@ -59,7 +59,7 @@ export default ({goBack, onSelect}: {
                     marginBottom: 12,
                   }}
                   onPress={() => {
-                    onSelect(item.t1, item.t2, item.token1_liquidity, item.token2_liquidity)
+                    onSelect(formatDexToken(item.t1, wallets[selectedWallet]), formatDexToken(item.t2, wallets[selectedWallet]), item.token1_liquidity, item.token2_liquidity, item.contract_address)
                   }}
                 >
                   <View style={{flexDirection: 'row', marginRight: 12}}>

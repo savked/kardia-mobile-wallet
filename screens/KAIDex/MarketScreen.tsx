@@ -9,21 +9,22 @@ import Button from '../../components/Button';
 import Divider from '../../components/Divider';
 import CustomText from '../../components/Text';
 import CustomTextInput from '../../components/TextInput';
-import { approveToken, calculateDexAmountOut, calculateDexExchangeRate, calculateTransactionDeadline, formatDexToken } from '../../services/dex';
+import { approveToken, calculateDexAmountOut, calculateDexExchangeRate, calculateTransactionDeadline, formatDexToken, getTotalVolume } from '../../services/dex';
 import { getBalance } from '../../services/krc20';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
 import { getSelectedWallet, getWallets } from '../../utils/local';
-import { formatNumberString, getDigit, isNumber, parseDecimals } from '../../utils/number';
+import { formatNumberString, getDecimalCount, getDigit, isNumber, parseDecimals } from '../../utils/number';
 import { swapTokens } from '../../services/dex';
 import { useNavigation } from '@react-navigation/core';
 
-export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, tokenFromLiquidity: _tokenFromLiquidity, tokenToLiquidity: _tokenToLiquidity}: {
+export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, tokenFromLiquidity: _tokenFromLiquidity, tokenToLiquidity: _tokenToLiquidity, pairAddress}: {
   triggerSelectPair: () => void;
   tokenFrom?: PairToken;
   tokenTo?: PairToken;
-  tokenFromLiquidity?: string;
-  tokenToLiquidity?: string;
+  tokenFromLiquidity: string;
+  tokenToLiquidity: string;
+  pairAddress: string;
 }) => {
   const navigation = useNavigation()
   const wallets = useRecoilValue(walletsAtom)
@@ -40,6 +41,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   const [tokenToLiquidity, setTokenToLiquidity] = useState(_tokenToLiquidity)
   const [amountTo, setAmountTo] = useState('0')
   const [balanceTo, setBalanceTo] = useState('0');
+  const [volume, setVolume] = useState('0');
 
   const [editting, setEditting] = useState('');
   const [processing, setProcessing] = useState(false)
@@ -50,6 +52,14 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   const [slippageTolerance, setSlippageTolerance] = useState('1')
 
   const [showTxSettingModal, setShowTxSettingModal] = useState(false)
+
+  useEffect(() => {
+    setTokenFromLiquidity(_tokenFromLiquidity)
+  }, [_tokenFromLiquidity])
+
+  useEffect(() => {
+    setTokenToLiquidity(_tokenToLiquidity)
+  }, [_tokenToLiquidity])
 
   useEffect(() => {
     if (!_tokenFrom) return
@@ -93,27 +103,27 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
 
   useEffect(() => {
     (async () => {
-      if (!tokenFrom || !tokenTo) return;
-      const wallets = await getWallets();
-      const selectedWallet = await getSelectedWallet();
-      const _rate = await calculateDexExchangeRate(tokenFrom, tokenTo, wallets[selectedWallet])
-      setRate(new BigNumber(_rate.rateAB))
+      if (!_tokenFromLiquidity || !_tokenToLiquidity || !pairAddress) return;
+      const _volume = await getTotalVolume(pairAddress)
+      setVolume(_volume);
+      const bnFrom = new BigNumber(_tokenFromLiquidity)
+      const bnTo = new BigNumber(_tokenToLiquidity)
+      const _rate = bnTo.dividedBy(bnFrom)
+      setRate(_rate)
     })()
-  }, [])
+  }, [_tokenFromLiquidity, _tokenToLiquidity])
 
   useEffect(() => {
     (async () => {
-      if (editting === 'from' && rate && tokenFrom && tokenTo) {
-        if (amountFrom === '0' || amountFrom === '') {
+      if (editting === 'from' && rate && _tokenFrom && _tokenTo) {
+        if (getDigit(amountFrom, false) === '0' || getDigit(amountFrom, false) === '') {
           setAmountTo('0');
           return;
         }
         const _wallets = await getWallets();
         const _selectedWallet = await getSelectedWallet();
-        const _newTo = await calculateDexAmountOut(amountFrom, "AMOUNT", tokenFrom, tokenTo, _wallets[_selectedWallet])
+        const _newTo = await calculateDexAmountOut(getDigit(amountFrom, false), "TOTAL", _tokenTo, _tokenFrom, _wallets[_selectedWallet])
         setAmountTo(formatNumberString(_newTo))
-        // const newTo = (new BigNumber(getDigit(amountFrom))).multipliedBy(rate)
-        // setAmountTo(formatNumberString(newTo.toFixed()))
       }
     })()
   }, [amountFrom, rate])
@@ -121,13 +131,13 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   useEffect(() => {
     (async () => {
       if (editting === 'to' && rate && tokenFrom && tokenTo) {
-        if (amountTo === '0' || amountTo === '') {
+        if (getDigit(amountTo, false) === '0' || getDigit(amountTo, false) === '') {
           setAmountFrom('0');
           return;
         }
         const _wallets = await getWallets();
         const _selectedWallet = await getSelectedWallet();
-        const _newFrom = await calculateDexAmountOut(amountTo, "TOTAL", tokenFrom, tokenTo, _wallets[_selectedWallet])
+        const _newFrom = await calculateDexAmountOut(getDigit(amountTo, false), "AMOUNT", tokenTo, tokenFrom, _wallets[_selectedWallet])
         setAmountFrom(formatNumberString(_newFrom))
       }
     })()
@@ -147,8 +157,8 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
     setTokenFromLiquidity(_toLiquidity)
     setTokenToLiquidity(_fromLiquidity)
 
-    const _rate = await calculateDexExchangeRate(_from, _to, wallets[selectedWallet])
-    setRate(new BigNumber(_rate.rateBA))
+    // const _rate = await calculateDexExchangeRate(_from, _to, wallets[selectedWallet])
+    // setRate(new BigNumber(_rate.rateBA))
 
     if (mode === 'BUY') {
       setMode('SELL')
@@ -165,22 +175,22 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
       const _wallets = await getWallets();
       const _selectedWalelt = await getSelectedWallet();
       // Approve token before swap
-      await approveToken(tokenFrom, getDigit(amountFrom), _wallets[_selectedWalelt])
+      await approveToken(tokenTo, getDigit(amountTo), _wallets[_selectedWalelt])
 
       // Swap token
       const swapParams = {
-        amountIn: getDigit(amountFrom),
-        amountOut: getDigit(amountTo),
+        amountIn: getDigit(amountTo),
+        amountOut: getDigit(amountFrom),
         tokenIn: {
-          tokenAddress: tokenFrom.hash,
-          decimals: tokenFrom.decimals
-        },
-        tokenOut: {
           tokenAddress: tokenTo.hash,
           decimals: tokenTo.decimals
         },
+        tokenOut: {
+          tokenAddress: tokenFrom.hash,
+          decimals: tokenFrom.decimals
+        },
         addressTo: _wallets[_selectedWalelt].address,
-        inputType: editting === 'to' ? 1 : 0,
+        inputType: editting === 'to' ? 0 : 1,
         slippageTolerance,
         txDeadline: await calculateTransactionDeadline(txDeadline),
       }
@@ -194,14 +204,16 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           screen: 'SuccessTx',
           params: {
             type: 'dex',
-            dexAmount: mode === 'SELL' ? getDigit(amountFrom) : getDigit(amountTo),
-            tokenSymbol: mode === 'SELL' ? tokenFrom.symbol : tokenTo.symbol,
+            dexAmount: mode === 'SELL' ? getDigit(amountTo) : getDigit(amountFrom),
+            tokenSymbol: mode === 'SELL' ? tokenTo.symbol : tokenFrom.symbol,
             dexMode: `DEX_MODE_${mode}`,
             txHash: txResult.transactionHash
           },
         });
       } else {
         // Handling fail tx
+        console.log('Swap fail')
+        console.log(txResult)
       }
 
     } catch (error) {
@@ -211,14 +223,14 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   }
 
   const renderRate = () => {
-    if (tokenFrom && tokenTo && tokenFromLiquidity && tokenToLiquidity && rate) {
+    if (_tokenFrom && _tokenTo && rate) {
       return (
         <View style={{marginTop: 12}}>
           <CustomText style={{color: theme.textColor}}>
             1{' '}
-            <CustomText style={{color: theme.mutedTextColor}}>{tokenFrom.symbol}</CustomText>{' '}={' '}
+            <CustomText style={{color: theme.mutedTextColor}}>{_tokenFrom.symbol}</CustomText>{' '}={' '}
             <CustomText style={{color: theme.textColor}}>~ {formatNumberString(rate.toFixed())}</CustomText>
-            <CustomText style={{color: theme.mutedTextColor}}> {tokenTo.symbol}</CustomText>
+            <CustomText style={{color: theme.mutedTextColor}}> {_tokenTo.symbol}</CustomText>
           </CustomText>
         </View>
       )
@@ -284,17 +296,17 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
       >
         <View style={{flexDirection: 'row', marginRight: 12}}>
           {
-            tokenFrom && (
+            _tokenFrom && (
               <View style={{width: 32, height: 32, backgroundColor: '#FFFFFF', borderRadius: 16}}>
                 <Image
-                  source={{uri: tokenFrom.logo}}
+                  source={{uri: _tokenFrom.logo}}
                   style={{width: 32, height: 32}}
                 />
               </View>
             )
           }
           {
-            tokenTo && (
+            _tokenTo && (
               <View 
                 style={{
                   width: 32,
@@ -313,7 +325,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                 }}
               >
                 <Image
-                  source={{uri: tokenTo.logo}}
+                  source={{uri: _tokenTo.logo}}
                   style={{width: 32, height: 32}}
                 />
               </View>
@@ -321,9 +333,18 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           }
         </View>
         <View style={{flex: 1}}>
-          {tokenFrom && tokenTo && <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 4}}>{tokenFrom.symbol} / {tokenTo.symbol}</CustomText>}
+          {_tokenFrom && _tokenTo && <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 4}}>{_tokenFrom.symbol} / {_tokenTo.symbol}</CustomText>}
           <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
-            {getLanguageString(language, 'CLICK_TO_SELECT_PAIR')}
+            {
+              tokenFrom && tokenTo ? 
+                <CustomText>
+                  {getLanguageString(language, 'VOLUME_24H')}{' '}
+                  <CustomText style={{color: theme.textColor}}>
+                    ${formatNumberString(volume, 6)}
+                  </CustomText>
+                </CustomText>
+                : getLanguageString(language, 'CLICK_TO_SELECT_PAIR')
+            }
           </CustomText>
         </View>
         <Image
@@ -331,8 +352,8 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           style={{width: 20, height: 20}}
         />
       </TouchableOpacity>
-      {tokenFrom && (
-        <View style={{width: '100%'}}>
+      {tokenTo && (
+        <View style={{width: '100%', marginTop: 12}}>
           <CustomText 
             style={{
               color: theme.textColor,
@@ -346,128 +367,25 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           </CustomText>
           <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
             <CustomTextInput
-              value={amountFrom}
-              onChangeText={(newValue) => {
-                // setAmountFrom(formatNumberString(getDigit(newValue)))
-                const digitOnly = getDigit(newValue);
-                if (digitOnly === '') {
-                  setAmountFrom('0')
-                }
-                if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)))) {
-                  setAmountFrom(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)).toFixed())
-                  return;
-                }
-              
-                if (isNumber(digitOnly)) {
-                  let formatedValue = formatNumberString(digitOnly);
-                  if (newValue[newValue.length - 1] === '.') formatedValue += '.'
-                  setAmountFrom(formatedValue)
-                }
-              }}
-              containerStyle={{width: '100%'}}
-              inputStyle={{
-                backgroundColor: 'rgba(96, 99, 108, 1)',
-                color: theme.textColor,
-                paddingRight: 90
-              }}
-              onFocus={() => {
-                setEditting('from')
-              }}
-              onBlur={() => {
-                setEditting('')
-                setAmountFrom(formatNumberString(getDigit(amountFrom)))
-              }}
-            />
-            <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', width: 60}}>
-              {
-                tokenFrom && (
-                  <>
-                    <View style={{width: 20, height: 20, backgroundColor: '#FFFFFF', borderRadius: 10, marginRight: 8}}>
-                      <Image
-                        source={{uri: tokenFrom.logo}}
-                        style={{width: 20, height: 20}}
-                      />
-                    </View>
-                    <CustomText style={{color: theme.textColor}}>{tokenFrom.symbol}</CustomText>
-                  </>
-                )
-              }
-            </View>
-          </View>
-          <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
-            {getLanguageString(language, 'BALANCE')}:{' '}
-            <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceFrom, tokenFrom.decimals), 6)}</CustomText>
-          </CustomText>
-          <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
-            Liquidity:{' '}
-            <CustomText style={{color: theme.textColor}}>
-              {formatNumberString(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)).toFixed(), 6)}
-            </CustomText>
-          </CustomText>
-        </View>
-      )}
-      {
-        tokenFrom && tokenTo && (
-          <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 16}}>
-            <Divider height={0.5} style={{width: '100%', backgroundColor: '#F0F1F2'}} />
-            <TouchableOpacity 
-              style={{
-                backgroundColor: 'rgba(96, 99, 108, 1)',
-                width: 24,
-                height: 24,
-                borderRadius: 12,
-                alignItems: 'center',
-                justifyContent: 'center',
-                position: 'absolute',
-                shadowColor: 'rgba(0, 0, 0, 0.3)',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 2,
-                shadowRadius: 4,
-                elevation: 9,
-              }}
-              onPress={handleSwitchToken}
-            >
-              <Image 
-                source={require('../../assets/icon/swap_dark.png')}
-                style={{width: 16, height: 16}}
-              />
-            </TouchableOpacity>
-          </View>
-        )
-      }
-      {tokenTo && (
-        <View style={{width: '100%', marginTop: 12}}>
-          <CustomText 
-            style={{
-              color: theme.textColor,
-              fontSize: theme.defaultFontSize + 1,
-              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-              fontWeight: '500',
-              marginBottom: 6
-            }}
-          >
-            {getLanguageString(language, 'TO')}
-          </CustomText>
-          <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
-            <CustomTextInput
               value={amountTo}
               // editable={false}
               onChangeText={(newValue) => {
-                const digitOnly = getDigit(newValue);
+                
+                const digitOnly = getDigit(newValue, tokenTo.decimals === 0 ? false : true);
                 if (digitOnly === '') {
                   setAmountTo('0')
                 }
+                if (getDecimalCount(newValue) > tokenTo.decimals) {
+                  return;
+                }
                 if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)))) {
-                  setAmountFrom(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)).toFixed())
+                  // setAmountFrom(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)).toFixed())
                   return;
                 }
               
                 if (isNumber(digitOnly)) {
                   let formatedValue = formatNumberString(digitOnly);
-                  if (newValue[newValue.length - 1] === '.') formatedValue += '.'
+                  if (newValue[newValue.length - 1] === '.' && tokenTo.decimals !== 0) formatedValue += '.'
                   setAmountTo(formatedValue)
                 }
               }}
@@ -515,6 +433,116 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           </CustomText>
         </View>
       )}
+      {
+        tokenFrom && tokenTo && (
+          <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 16}}>
+            <Divider height={0.5} style={{width: '100%', backgroundColor: '#F0F1F2'}} />
+            <TouchableOpacity 
+              style={{
+                backgroundColor: 'rgba(96, 99, 108, 1)',
+                width: 24,
+                height: 24,
+                borderRadius: 12,
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'absolute',
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 2,
+                shadowRadius: 4,
+                elevation: 9,
+              }}
+              onPress={handleSwitchToken}
+            >
+              <Image 
+                source={require('../../assets/icon/swap_dark.png')}
+                style={{width: 16, height: 16}}
+              />
+            </TouchableOpacity>
+          </View>
+        )
+      }
+      {tokenFrom && (
+        <View style={{width: '100%'}}>
+          <CustomText 
+            style={{
+              color: theme.textColor,
+              fontSize: theme.defaultFontSize + 1,
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+              fontWeight: '500',
+              marginBottom: 6
+            }}
+          >
+            {getLanguageString(language, 'TO')}
+          </CustomText>
+          <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
+            <CustomTextInput
+              value={amountFrom}
+              onChangeText={(newValue) => {
+                // setAmountFrom(formatNumberString(getDigit(newValue)))
+                const digitOnly = getDigit(newValue, tokenFrom.decimals === 0 ? false : true);
+                if (digitOnly === '') {
+                  setAmountFrom('0')
+                }
+                if (getDecimalCount(newValue) > tokenFrom.decimals) {
+                  return;
+                }
+                if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)))) {
+                  // setAmountFrom(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)).toFixed())
+                  return;
+                }
+              
+                if (isNumber(digitOnly)) {
+                  let formatedValue = formatNumberString(digitOnly);
+                  if (newValue[newValue.length - 1] === '.' && tokenFrom.decimals !== 0) formatedValue += '.'
+                  setAmountFrom(formatedValue)
+                }
+              }}
+              containerStyle={{width: '100%'}}
+              inputStyle={{
+                backgroundColor: 'rgba(96, 99, 108, 1)',
+                color: theme.textColor,
+                paddingRight: 90
+              }}
+              onFocus={() => {
+                setEditting('from')
+              }}
+              onBlur={() => {
+                setEditting('')
+                setAmountFrom(formatNumberString(getDigit(amountFrom)))
+              }}
+            />
+            <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', width: 60}}>
+              {
+                tokenFrom && (
+                  <>
+                    <View style={{width: 20, height: 20, backgroundColor: '#FFFFFF', borderRadius: 10, marginRight: 8}}>
+                      <Image
+                        source={{uri: tokenFrom.logo}}
+                        style={{width: 20, height: 20}}
+                      />
+                    </View>
+                    <CustomText style={{color: theme.textColor}}>{tokenFrom.symbol}</CustomText>
+                  </>
+                )
+              }
+            </View>
+          </View>
+          <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
+            {getLanguageString(language, 'BALANCE')}:{' '}
+            <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceFrom, tokenFrom.decimals), 6)}</CustomText>
+          </CustomText>
+          <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
+            Liquidity:{' '}
+            <CustomText style={{color: theme.textColor}}>
+              {formatNumberString(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)).toFixed(), 6)}
+            </CustomText>
+          </CustomText>
+        </View>
+      )}
       {renderRate()}
       {renderSetting()}
       {
@@ -525,8 +553,8 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
             disabled={processing}
             title={
               mode === 'BUY' ? 
-              `${getLanguageString(language, 'BUY')} ${tokenTo.symbol}` : 
-              `${getLanguageString(language, 'SELL')} ${tokenFrom.symbol}`
+              `${getLanguageString(language, 'BUY')} ${tokenFrom.symbol}` : 
+              `${getLanguageString(language, 'SELL')} ${tokenTo.symbol}`
             }
             type="secondary"
             onPress={handleSubmitMarket}

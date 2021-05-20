@@ -4,7 +4,7 @@ export const isNumber = (val: string) => {
   return /^\d+(,\d{3})*(\.\d*)?$/.test(val);
 };
 
-export const getDigit = (val: string) => {
+export const getDigit = (val: string, editting = true) => {
   let result = '';
   for (let index = 0; index < val.length; index++) {
     const char = val.charAt(index);
@@ -17,11 +17,18 @@ export const getDigit = (val: string) => {
   if (result[0] === '0' && result[1] !== '.') {
     result = result.slice(1);
   }
-  // if (result[result.length - 1] === '.') {
-  //   result += '0';
-  // }
+  if (result[result.length - 1] === '.' && !editting) {
+    result = result.slice(0, result.length - 1)
+  }
   return result;
 };
+
+export const getDecimalCount = (val: string) => {
+  const digitOnly = getDigit(val);
+  const parts = digitOnly.split('.');
+  if (parts.length < 2) return 0
+  return parts[1].length
+}
 
 export const format = (val: number, options?: Intl.NumberFormatOptions) => {
   let defaultOption = {
@@ -53,7 +60,7 @@ export const parseDecimals = (kaiAmount: number | string, decimals: number) => {
 
 export const cellValueWithDecimals = (amount: number | string, decimals: number) => {
   const rawValue = new BigNumber(amount);
-  return rawValue.multipliedBy(new BigNumber(10 ** decimals)).toFixed()
+  return rawValue.multipliedBy(new BigNumber(10 ** decimals)).toFixed(0, 1)
   // return kaiAmount / 10 ** decimals;
 }
 

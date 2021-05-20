@@ -27,4 +27,5 @@ interface Pair {
   total_liquidity: string;
   t1: PairToken;
   t2: PairToken;
+  contract_address: string;
 }

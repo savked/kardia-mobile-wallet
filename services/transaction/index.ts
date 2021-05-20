@@ -15,7 +15,6 @@ export const getTxByAddress = async (address: string, page = 1, size = 10) => {
     `${ENDPOINT}addresses/${address}/txs?page=${page}&limit=${size}`,
     options,
   );
-  console.log(`${ENDPOINT}addresses/${address}/txs?page=${page}&limit=${size}`)
   try {
     const responseJSON = await response.json();
     const rawTxs = responseJSON?.data?.data || [];
