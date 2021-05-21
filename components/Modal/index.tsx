@@ -9,12 +9,14 @@ import {
   Dimensions,
   View,
   BackHandler,
+  Keyboard,
 } from 'react-native';
 import {BlurView} from '@react-native-community/blur';
 import Portal from '@burstware/react-native-portal';
 import {styles} from './style';
 import IconButton from '../IconButton';
 import {ThemeContext} from '../../ThemeContext';
+import useIsKeyboardShown from '../../hooks/isKeyboardShown';
 
 const {height: viewportHeight} = Dimensions.get('window');
 
@@ -34,6 +36,7 @@ const CustomModal = ({
 }: CustomModalProps & {
   contentStyle?: any;
 }) => {
+  const keyboardShown = useIsKeyboardShown()
   const theme = useContext(ThemeContext);
   // let endFlex = DEFAULT_HEIGHT_MODAL;
   let endHeight = DEFAULT_HEIGHT_MODAL_IN_PIXEL;
@@ -137,7 +140,13 @@ const CustomModal = ({
   return (
     <Portal>
       <BlurView blurType="dark" blurAmount={50} style={styles.absolute}>
-        <TouchableOpacity style={styles.container} onPress={onClose}>
+        <TouchableOpacity style={styles.container} onPress={() => {
+          if (keyboardShown) {
+            Keyboard.dismiss()
+          } else {
+            onClose()
+          }
+        }}>
           <TouchableWithoutFeedback onPress={() => {}}>
             {renderContent()}
           </TouchableWithoutFeedback>

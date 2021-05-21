@@ -310,6 +310,10 @@ export default ({
             </View>
             <TextInput
               message={amountError}
+              inputStyle={{
+                backgroundColor: 'rgba(96, 99, 108, 1)',
+                color: theme.textColor,
+              }}
               // headline={getLanguageString(language, 'STAKING_AMOUNT')}
               headlineStyle={{fontWeight: 'normal'}}
               keyboardType="numeric"

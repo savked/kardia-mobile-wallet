@@ -6,6 +6,7 @@ export const lang: Language = {
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:
+    UNDER_MAINTAINENCE_DESC: 'Chúng tôi đang thực hiện vài thay đổi để bạn có trải nghiệm tốt nhất.',
     COMING_SOON_DESC: 'Chỉ vài ngày nữa thôi!! Kiên nhẫn nào',
     COPIED: 'Sao chép thành công',
     PICKER_TITLE: 'Chọn hình',
@@ -267,6 +268,7 @@ export const lang: Language = {
     DEX_TX_SUCCESS: '{{DEX_MODE}} {{TOKEN_AMOUNT}} {{TOKEN_SYMBOL}} thành công',
     MINS: 'phút',
     TX_SETTING: 'Cài đặt lệnh giao dịch',
-    VOLUME_24H: 'Giao dịch (24h):'
+    VOLUME_24H: 'Giao dịch (24h):',
+    SWAP_GENERAL_ERROR: 'Giao dịch thất bại. Vui lòng điều chỉnh thời gian, giới hạn trượt giá và thử lại.'
   },
 };

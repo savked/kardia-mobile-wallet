@@ -158,13 +158,17 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
                   'UNDELEGATE_AMOUNT_PLACEHOLDER',
                 )}
               </CustomText>
-              <TouchableOpacity onPress={() => setUndelegateAmount(stakedAmountInKAI)}>
-                <CustomText style={{fontSize: theme.defaultFontSize + 1, color: theme.urlColor}} allowFontScaling={false}>{formatNumberString(stakedAmountInKAI)} KAI</CustomText>
+              <TouchableOpacity onPress={() => setUndelegateAmount(formatNumberString(stakedAmountInKAI))}>
+                <CustomText style={{fontSize: theme.defaultFontSize + 1, color: theme.urlColor}} allowFontScaling={false}>{formatNumberString(stakedAmountInKAI, 6)} KAI</CustomText>
               </TouchableOpacity>
             </View>
             <CustomTextInput
               keyboardType="numeric"
               message={undelegateError}
+              inputStyle={{
+                backgroundColor: 'rgba(96, 99, 108, 1)',
+                color: theme.textColor,
+              }}
               onChangeText={(newAmount) => {
                 const digitOnly = getDigit(newAmount);
                 if (Number(digitOnly) > Number(stakedAmountInKAI)) {

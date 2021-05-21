@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {
   TouchableWithoutFeedback,
   View,
-  Text,
   Keyboard,
   Platform,
   TouchableOpacity,
@@ -21,7 +20,6 @@ import {toChecksum, truncate} from '../../../utils/string';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import {getBalance} from '../../../services/account';
 import {createTx} from '../../../services/transaction';
-import {saveWallets} from '../../../utils/local';
 import {weiToKAI} from '../../../services/transaction/amount';
 import ListCard from './ListCard';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -110,7 +108,7 @@ const NewTxModal = ({
 
       newWallets[selectedWallet].balance = newBallance;
       setWallets(newWallets);
-      saveWallets(newWallets);
+      // saveWallets(newWallets);
 
       setLoading(false);
       navigation.navigate('SuccessTx', {txHash: txHash});

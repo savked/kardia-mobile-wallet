@@ -25,8 +25,6 @@ import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native'
 import {
   getWallets,
   saveMnemonic,
-  saveSelectedWallet,
-  saveWallets,
 } from '../../utils/local';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -85,10 +83,10 @@ const SelectWallet = () => {
     );
     const _wallets = JSON.parse(JSON.stringify(localWallets));
     _wallets.push(wallet);
-    await saveWallets(_wallets);
-    await saveSelectedWallet(_wallets.length - 1);
-    setWallets(_wallets);
+    // await saveWallets(_wallets);
+    // await saveSelectedWallet(_wallets.length - 1);
     setSelectedWallet(_wallets.length - 1);
+    setWallets(_wallets);
     if (params && (params as any).fromNoWallet) {
       return;
     } 

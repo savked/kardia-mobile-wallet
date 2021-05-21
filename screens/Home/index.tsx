@@ -10,9 +10,7 @@ import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {
   getAppPasscodeSetting,
   getSelectedWallet,
-  getWalkThroughView,
   getWallets,
-  saveWallets,
 } from '../../utils/local';
 import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
@@ -91,7 +89,7 @@ const HomeScreen = () => {
         }
       });
       setWallets(newWallets);
-      saveWallets(newWallets);
+      // saveWallets(newWallets);
       _selectedWallet !== selectedWallet && setSelectedWallet(_selectedWallet);
     } catch (error) {
       console.error(error);

@@ -6,9 +6,6 @@ import {useRecoilState, useRecoilValue} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {truncate} from '../../utils/string';
 import {styles} from './style';
-import {
-  saveSelectedWallet,
-} from '../../utils/local';
 import {tokenInfoAtom} from '../../atoms/token';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString, parseCardAvatar} from '../../utils/lang';
@@ -117,17 +114,25 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
   };
 
   useEffect(() => {
-    (async () => {
-      saveSelectedWallet(selectedWallet);
-      if (carouselRef.current && carouselRef.current.currentIndex !== selectedWallet) {
-        // react-native-snap-carousel issue. TODO: wait for issue resolved and update
-        setTimeout(() => {
-          if (carouselRef.current) {
-            carouselRef.current.snapToItem(selectedWallet);
-          }
-        }, 300);
-      }
-    })()
+    // (async () => {
+    //   // saveSelectedWallet(selectedWallet);
+    //   if (carouselRef.current && carouselRef.current.currentIndex !== selectedWallet) {
+    //     // react-native-snap-carousel issue. TODO: wait for issue resolved and update
+    //     setTimeout(() => {
+    //       if (carouselRef.current) {
+    //         carouselRef.current.snapToItem(selectedWallet);
+    //       }
+    //     }, 300);
+    //   }
+    // })()
+    if (carouselRef.current && carouselRef.current.currentIndex !== selectedWallet) {
+      // react-native-snap-carousel issue. TODO: wait for issue resolved and update
+      setTimeout(() => {
+        if (carouselRef.current) {
+          carouselRef.current.snapToItem(selectedWallet);
+        }
+      }, 300);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
 

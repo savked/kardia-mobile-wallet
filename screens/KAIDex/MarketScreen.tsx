@@ -31,15 +31,18 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   const selectedWallet = useRecoilValue(selectedWalletAtom)
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom)
+  
 
   const [tokenFrom, setTokenFrom] = useState<PairToken | undefined>(_tokenFrom)
   const [tokenFromLiquidity, setTokenFromLiquidity] = useState(_tokenFromLiquidity)
   const [amountFrom, setAmountFrom] = useState('0')
+  const [amountFromTimeout, setAmountFromTimeout] = useState<any>()
   const [balanceFrom, setBalanceFrom] = useState('0');
 
   const [tokenTo, setTokenTo] = useState<PairToken | undefined>(_tokenTo)
   const [tokenToLiquidity, setTokenToLiquidity] = useState(_tokenToLiquidity)
   const [amountTo, setAmountTo] = useState('0')
+  const [amountToTimeout, setAmountToTimeout] = useState<any>()
   const [balanceTo, setBalanceTo] = useState('0');
   const [volume, setVolume] = useState('0');
 
@@ -52,6 +55,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   const [slippageTolerance, setSlippageTolerance] = useState('1')
 
   const [showTxSettingModal, setShowTxSettingModal] = useState(false)
+  const [swapError, setSwappError] = useState('');
 
   useEffect(() => {
     setTokenFromLiquidity(_tokenFromLiquidity)
@@ -116,14 +120,23 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   useEffect(() => {
     (async () => {
       if (editting === 'from' && rate && _tokenFrom && _tokenTo) {
-        if (getDigit(amountFrom, false) === '0' || getDigit(amountFrom, false) === '') {
+        const _amountFrom = getDigit(amountFrom, false)
+        if (_amountFrom === '0' || _amountFrom === '') {
           setAmountTo('0');
           return;
         }
-        const _wallets = await getWallets();
-        const _selectedWallet = await getSelectedWallet();
-        const _newTo = await calculateDexAmountOut(getDigit(amountFrom, false), "TOTAL", _tokenTo, _tokenFrom, _wallets[_selectedWallet])
-        setAmountTo(formatNumberString(_newTo))
+
+        if (amountToTimeout) {
+          clearTimeout(amountToTimeout)
+        }
+
+        const timeoutId = setTimeout(async () => {
+          const _newTo = await calculateDexAmountOut(_amountFrom, "TOTAL", _tokenTo, _tokenFrom)
+          setAmountTo(formatNumberString(_newTo))
+          clearTimeout(timeoutId)
+          setAmountToTimeout(null)
+        }, 1500)
+        setAmountToTimeout(timeoutId)
       }
     })()
   }, [amountFrom, rate])
@@ -131,14 +144,23 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   useEffect(() => {
     (async () => {
       if (editting === 'to' && rate && tokenFrom && tokenTo) {
-        if (getDigit(amountTo, false) === '0' || getDigit(amountTo, false) === '') {
+        const _amountTo = getDigit(amountTo, false)
+        if (_amountTo === '0' || _amountTo === '') {
           setAmountFrom('0');
           return;
         }
-        const _wallets = await getWallets();
-        const _selectedWallet = await getSelectedWallet();
-        const _newFrom = await calculateDexAmountOut(getDigit(amountTo, false), "AMOUNT", tokenTo, tokenFrom, _wallets[_selectedWallet])
-        setAmountFrom(formatNumberString(_newFrom))
+
+        if (amountFromTimeout) {
+          clearTimeout(amountFromTimeout)
+        }
+        const timeoutId = setTimeout(async () => {
+          const _newFrom = await calculateDexAmountOut(_amountTo, "AMOUNT", tokenTo, tokenFrom)
+          setAmountFrom(formatNumberString(_newFrom))
+          clearTimeout(timeoutId)
+          setAmountToTimeout(null)
+        }, 1500)
+
+        setAmountFromTimeout(timeoutId)
       }
     })()
   }, [amountTo, rate])
@@ -157,7 +179,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
     setTokenFromLiquidity(_toLiquidity)
     setTokenToLiquidity(_fromLiquidity)
 
-    // const _rate = await calculateDexExchangeRate(_from, _to, wallets[selectedWallet])
+    // const _rate = await calculateDexExchangeRate(_from, _to)
     // setRate(new BigNumber(_rate.rateBA))
 
     if (mode === 'BUY') {
@@ -176,16 +198,15 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
       const _selectedWalelt = await getSelectedWallet();
       // Approve token before swap
       await approveToken(tokenTo, getDigit(amountTo), _wallets[_selectedWalelt])
-
       // Swap token
       const swapParams = {
         amountIn: getDigit(amountTo),
         amountOut: getDigit(amountFrom),
-        tokenIn: {
+        inputToken: {
           tokenAddress: tokenTo.hash,
           decimals: tokenTo.decimals
         },
-        tokenOut: {
+        outputToken: {
           tokenAddress: tokenFrom.hash,
           decimals: tokenFrom.decimals
         },
@@ -194,6 +215,8 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
         slippageTolerance,
         txDeadline: await calculateTransactionDeadline(txDeadline),
       }
+
+      console.log('swapParams', swapParams)
 
       const txResult = await swapTokens(swapParams, _wallets[_selectedWalelt])
       setProcessing(false)
@@ -214,6 +237,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
         // Handling fail tx
         console.log('Swap fail')
         console.log(txResult)
+        setSwappError(getLanguageString(language, 'SWAP_GENERAL_ERROR'))
       }
 
     } catch (error) {
@@ -271,7 +295,8 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
         alignItems: 'center',
         backgroundColor: theme.backgroundFocusColor,
         paddingHorizontal: 16,
-        paddingVertical: 24,
+        paddingTop: 24,
+        paddingBottom: 12,
         borderRadius: 12,
         shadowColor: 'rgba(0, 0, 0, 0.4)',
         shadowOffset: {
@@ -370,7 +395,6 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               value={amountTo}
               // editable={false}
               onChangeText={(newValue) => {
-                
                 const digitOnly = getDigit(newValue, tokenTo.decimals === 0 ? false : true);
                 if (digitOnly === '') {
                   setAmountTo('0')
@@ -385,7 +409,23 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               
                 if (isNumber(digitOnly)) {
                   let formatedValue = formatNumberString(digitOnly);
-                  if (newValue[newValue.length - 1] === '.' && tokenTo.decimals !== 0) formatedValue += '.'
+                  
+                  if (tokenTo.decimals == 0) {
+                    setAmountTo(formatedValue);
+                    return
+                  }
+
+                  const [numParts, decimalParts] = digitOnly.split('.')
+
+                  if (!decimalParts && decimalParts !== "") {
+                    setAmountTo(formatedValue);
+                    return
+                  }
+
+                  formatedValue = formatNumberString(numParts) + '.' + decimalParts
+
+                  // if (newValue[newValue.length - 1] === '.') formatedValue += '.'
+                  // else if (newValue[newValue.length - 2] === '.' && newValue[newValue.length - 1] === '0') formatedValue += '.0'
                   setAmountTo(formatedValue)
                 }
               }}
@@ -405,7 +445,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                 setAmountTo(formatNumberString(getDigit(amountTo)))
               }}
             />
-            <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', width: 60}}>
+            <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: 60}}>
               {
                 tokenTo && (
                   <>
@@ -497,7 +537,23 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               
                 if (isNumber(digitOnly)) {
                   let formatedValue = formatNumberString(digitOnly);
-                  if (newValue[newValue.length - 1] === '.' && tokenFrom.decimals !== 0) formatedValue += '.'
+                  
+                  if (tokenFrom.decimals == 0) {
+                    setAmountFrom(formatedValue);
+                    return
+                  }
+
+                  const [numParts, decimalParts] = digitOnly.split('.')
+
+                  if (!decimalParts && decimalParts !== "") {
+                    setAmountFrom(formatedValue);
+                    return
+                  }
+
+                  formatedValue = formatNumberString(numParts) + '.' + decimalParts
+
+                  // if (newValue[newValue.length - 1] === '.') formatedValue += '.'
+                  // else if (newValue[newValue.length - 2] === '.' && newValue[newValue.length - 1] === '0') formatedValue += '.0'
                   setAmountFrom(formatedValue)
                 }
               }}
@@ -515,7 +571,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                 setAmountFrom(formatNumberString(getDigit(amountFrom)))
               }}
             />
-            <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', width: 60}}>
+            <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: 60}}>
               {
                 tokenFrom && (
                   <>
@@ -572,6 +628,17 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           />
         )
       }
+      <CustomText
+        style={{
+          color: 'rgba(255, 66, 67, 1)',
+          marginTop: swapError ? 12 : 0,
+          fontSize: theme.defaultFontSize + 1,
+          textAlign: 'left',
+          width: '100%'
+        }}
+      >
+        {swapError}
+      </CustomText>
     </View>
   )
 }

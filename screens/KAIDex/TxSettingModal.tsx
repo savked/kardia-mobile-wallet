@@ -87,6 +87,10 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
             headlineStyle={{
               fontWeight: 'normal',
             }}
+            inputStyle={{
+              backgroundColor: 'rgba(96, 99, 108, 1)',
+              color: theme.textColor,
+            }}
           />
           <View style={{flexDirection: 'row', marginTop: 12}}>
             <Tags content={`2 ${getLanguageString(language, 'MINS')}`} active={deadline === '2'} containerStyle={{marginRight: 12}} onPress={() => setDeadline('2')} />
@@ -102,6 +106,10 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
             headline={`${getLanguageString(language, 'SLIPPAGE_TOLERANCE')} (%)`}
             headlineStyle={{
               fontWeight: 'normal',
+            }}
+            inputStyle={{
+              backgroundColor: 'rgba(96, 99, 108, 1)',
+              color: theme.textColor,
             }}
           />
           <View style={{flexDirection: 'row', marginTop: 12}}>

@@ -15,6 +15,8 @@ import { useQuery } from '@apollo/client';
 import { GET_PAIRS } from '../../services/dex/queries';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import { formatDexToken } from '../../services/dex';
+import UnderMaintainence from '../common/UnderMaintainence';
+import { dexStatusAtom } from '../../atoms/dexStatus';
 
 export default () => {
   const theme = useContext(ThemeContext);
@@ -31,6 +33,7 @@ export default () => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom)
   const wallets = useRecoilValue(walletsAtom)
   const selectedWallet = useRecoilValue(selectedWalletAtom)
+  const dexStatus = useRecoilValue(dexStatusAtom)
 
   const { loading, error, data: pairData } = useQuery(GET_PAIRS);
 
@@ -59,6 +62,10 @@ export default () => {
       setTabBarVisible(true)
     }
   }, [selectingPair])
+
+  if (dexStatus === 'OFFLINE') {
+    return <UnderMaintainence />
+  }
 
   if (selectingPair) {
     return (

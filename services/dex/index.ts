@@ -1,24 +1,47 @@
 import KaidexClient from 'kaidex-sdk';
 import KardiaClient from 'kardia-js-sdk';
 import SWAPABI from './swapABI.json'
-import { FACTORY_SMC, LIMIT_ORDER_SMC, SWAP_ROUTER_SMC, WKAI_SMC } from '../../config';
+import { KAI_TOKEN_NAME, KAI_TOKEN_SYMBOL } from '../../config';
 import { DEX_ENDPOINT, RPC_ENDPOINT } from '../config';
 import KRC20ABI from '../krc20/KRC20ABI.json';
 import { cellValueWithDecimals } from '../../utils/number';
 import { requestWithTimeOut } from '../util';
+import { isKAI } from '../../utils/dex';
+
+let SWAP_ROUTER_SMC = ''
+let FACTORY_SMC = ''
+let WKAI_SMC = ''
+let LIMIT_ORDER_SMC = ''
+
+export const initDexConfig = async () => {
+  const requestOptions = {
+    method: 'GET',
+    redirect: 'follow',
+  };
+
+  const response = await requestWithTimeOut(
+    fetch(
+      `${DEX_ENDPOINT}cfg/info`,
+      requestOptions,
+    ),
+    50 * 1000,
+  );
+  
+  const responseJSON = await response.json();
+
+  SWAP_ROUTER_SMC = responseJSON.data.router_smc
+  FACTORY_SMC = responseJSON.data.factory_smc
+  WKAI_SMC = responseJSON.data.wkai_smc
+  LIMIT_ORDER_SMC = responseJSON.data.settlement_smc
+}
 
 export const calculateDexExchangeRate = async (
   tokenFrom: PairToken,
   tokenTo: PairToken,
-  wallet: Wallet
 ) => {
   try {
     const client = new KaidexClient({
       rpcEndpoint: RPC_ENDPOINT,
-      account: {
-        publicKey: wallet.address,
-        privateKey: wallet.privateKey,
-      },
       smcAddresses: {
         router: SWAP_ROUTER_SMC,
         factory: FACTORY_SMC,
@@ -30,10 +53,14 @@ export const calculateDexExchangeRate = async (
   
     const rate = await client.calculateExchangeRate({
       tokenAddress: tokenFrom.hash,
-      decimals: tokenFrom.decimals
+      decimals: tokenFrom.decimals,
+      name: tokenFrom.name,
+      symbol: tokenFrom.symbol
     }, {
       tokenAddress: tokenTo.hash,
-      decimals: tokenTo.decimals
+      decimals: tokenTo.decimals,
+      name: tokenTo.name,
+      symbol: tokenTo.symbol
     })
     return rate 
   } catch (error) {
@@ -49,16 +76,11 @@ export const calculateDexAmountOut = async (
   amount: number | string,
   tradeInputType: 'AMOUNT' | 'TOTAL',
   tokenFrom: PairToken,
-  tokenTo: PairToken,
-  wallet: Wallet
+  tokenTo: PairToken
 ) => {
   try {
     const client = new KaidexClient({
       rpcEndpoint: RPC_ENDPOINT,
-      account: {
-        publicKey: wallet.address,
-        privateKey: wallet.privateKey,
-      },
       smcAddresses: {
         router: SWAP_ROUTER_SMC,
         factory: FACTORY_SMC,
@@ -71,16 +93,20 @@ export const calculateDexAmountOut = async (
     const rs = await client.calculateOutputAmount({
       amount: amount,
       inputType: tradeInputType === "AMOUNT" ? 0 : 1,
-      tokenIn: {
+      inputToken: {
         tokenAddress: tokenFrom.hash,
-        decimals: tokenFrom.decimals
+        decimals: tokenFrom.decimals,
+        name: tokenFrom.name,
+        symbol: tokenFrom.symbol
       },
-      tokenOut: {
+      outputToken: {
         tokenAddress: tokenTo.hash,
-        decimals: tokenTo.decimals
+        decimals: tokenTo.decimals,
+        name: tokenTo.name,
+        symbol: tokenTo.symbol
       }
     })
-  
+
     return rs
   } catch (error) {
     console.log(error)
@@ -92,25 +118,15 @@ export const calculateDexAmountOut = async (
 }
 
 export const formatDexToken = (token: PairToken, wallet: Wallet) => {
-  const client = new KaidexClient({
-    rpcEndpoint: RPC_ENDPOINT,
-    account: {
-      publicKey: wallet.address,
-      privateKey: wallet.privateKey,
-    },
-    smcAddresses: {
-      router: SWAP_ROUTER_SMC,
-      factory: FACTORY_SMC,
-      // kaiSwapper?: string;
-      limitOrder: LIMIT_ORDER_SMC,
-      wkai: WKAI_SMC
-    }
-  })
-
-  return client.prepareTokenFormat({
+    return isKAI(token.hash) ? {
     ...token,
-    tokenAddress: token.hash
-  })
+    tokenAddress: WKAI_SMC,
+    name: KAI_TOKEN_NAME,
+    symbol: KAI_TOKEN_SYMBOL,
+    logo: token.logo,
+    wKAI: true,
+    decimals: 18
+  } : token
 }
 
 export const approveToken = async (token: PairToken, amount: string | number, wallet: Wallet) => {
@@ -152,10 +168,6 @@ export const getTotalVolume = async (pairAddress: string) => {
 export const swapTokens = async (params: Record<string, any>, wallet: Wallet) => {
   const client = new KaidexClient({
     rpcEndpoint: RPC_ENDPOINT,
-    account: {
-      publicKey: wallet.address,
-      privateKey: wallet.privateKey,
-    },
     smcAddresses: {
       router: SWAP_ROUTER_SMC,
       factory: FACTORY_SMC,

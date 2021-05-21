@@ -14,7 +14,7 @@ export const getDigit = (val: string, editting = true) => {
       result += char;
     }
   }
-  if (result[0] === '0' && result[1] !== '.') {
+  if (result[0] === '0' && result[1] !== '.' && !editting) {
     result = result.slice(1);
   }
   if (result[result.length - 1] === '.' && !editting) {

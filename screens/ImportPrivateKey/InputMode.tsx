@@ -13,8 +13,6 @@ import {getStakingAmount} from '../../services/staking';
 import {
   getWallets,
   saveMnemonic,
-  saveSelectedWallet,
-  saveWallets,
 } from '../../utils/local';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {useNavigation} from '@react-navigation/native';
@@ -96,12 +94,13 @@ export default () => {
       await saveMnemonic(walletAddress, 'FROM_PK');
       const _wallets = JSON.parse(JSON.stringify(wallets));
       _wallets.push(wallet);
-      await saveWallets(_wallets);
-      await saveSelectedWallet(_wallets.length - 1);
+      // await saveWallets(_wallets);
+      // await saveSelectedWallet(_wallets.length - 1);
+      setSelectedWallet(_wallets.length - 1);
       setWallets((_) => {
         return _wallets;
       });
-      setSelectedWallet(_wallets.length - 1);
+      
       setLoading(false)
       navigation.reset({
         index: 0,

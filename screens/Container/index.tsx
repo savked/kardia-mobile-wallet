@@ -17,6 +17,7 @@ import {
   getWallets,
   saveSelectedWallet,
   saveTokenList,
+  saveWallets,
 } from '../../utils/local';
 import {styles} from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
@@ -45,6 +46,8 @@ import { INFO_DATA } from '../Setting';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import KAIDex from '../KAIDex';
+import { dexStatusAtom } from '../../atoms/dexStatus';
+import { initDexConfig } from '../../services/dex';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -240,16 +243,26 @@ const AppContainer = () => {
   const [inited, setInited] = useState(0);
   const [appStatus, setAppStatus] = useState('OK')
 
+  const setDexStatus = useSetRecoilState(dexStatusAtom)
+
   const theme = useContext(ThemeContext);
 
   useEffect(() => {
     (async () => {
+      if (!inited) return;
       let _selectedWallet = await getSelectedWallet();
-      if (_selectedWallet !== selectedWallet && inited) {
+      if (_selectedWallet !== selectedWallet) {
         await saveSelectedWallet(selectedWallet);
       }
     })();
   }, [selectedWallet, inited]);
+
+  useEffect(() => {
+    (async () => {
+      if (!inited) return;
+      await saveWallets(wallets);
+    })();
+  }, [wallets, inited]);
 
   const handleAppStateChange = useCallback(
     (state: string) => {
@@ -307,6 +320,16 @@ const AppContainer = () => {
       if (serverStatus.status === 'UNDER_MAINTAINANCE') {
         setAppStatus('UNDER_MAINTAINANCE');
         return;
+      }
+      
+      try {
+        // Init dex config
+        await initDexConfig()
+        setDexStatus('ONLINE')
+      } catch (error) {
+        setDexStatus('OFFLINE')
+        console.error('Init Dex config fail');
+        console.log(error)
       }
 
       const compareResult = compareVersion(INFO_DATA.version, serverStatus.appVersion)

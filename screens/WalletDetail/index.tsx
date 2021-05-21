@@ -8,7 +8,6 @@ import { showTabBarAtom } from '../../atoms/showTabBar';
 import { ThemeContext } from '../../ThemeContext';
 import { styles } from './style';
 import numeral from 'numeral';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { getLanguageString, parseCardAvatar, parseCardAvatarColor } from '../../utils/lang';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import { languageAtom } from '../../atoms/language';
@@ -18,13 +17,10 @@ import { tokenInfoAtom } from '../../atoms/token';
 import QRModal from '../common/AddressQRCode';
 import CustomTextInput from '../../components/TextInput';
 import Button from '../../components/Button';
-import { getSelectedWallet, getWallets, saveSelectedWallet, saveWallets } from '../../utils/local';
+import { getSelectedWallet, getWallets } from '../../utils/local';
 import Modal from '../../components/Modal';
-import CardTypeModal from '../common/CardTypeModal';
 import { ScrollView } from 'react-native-gesture-handler';
-import IconButton from '../../components/IconButton';
 import AuthModal from '../common/AuthModal';
-import { HEADER_HEIGHT } from '../../theme';
 import CustomText from '../../components/Text';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
@@ -98,12 +94,12 @@ export default () => {
     const localSelectedWallet = await getSelectedWallet();
     let newWallets: Wallet[] = JSON.parse(JSON.stringify(localWallets));
     newWallets = newWallets.filter((w) => w.address !== address)
-    await saveWallets(newWallets);
+    // await saveWallets(newWallets);
     if (newWallets.length === 0) {
-      await saveSelectedWallet(0);
+      // await saveSelectedWallet(0);
       setSelectedWallet(0);
     } else if (localSelectedWallet > newWallets.length - 1) {
-      await saveSelectedWallet(newWallets.length - 1);
+      // await saveSelectedWallet(newWallets.length - 1);
       setSelectedWallet(newWallets.length - 1);
     }
     navigation.goBack();
@@ -117,7 +113,7 @@ export default () => {
     const index = newWallets.findIndex(w => w.address === address)
     newWallets[index].name = name;
     newWallets[index].cardAvatarID = cardAvatarID;
-    await saveWallets(newWallets);
+    // await saveWallets(newWallets);
     setWallets(newWallets);
     navigation.goBack();
   };

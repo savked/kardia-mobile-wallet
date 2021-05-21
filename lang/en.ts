@@ -6,6 +6,7 @@ export const lang: Language = {
   tag: ['en_US', 'US', 'en', 'US English'],
   mapping: {
     // Common key:
+    UNDER_MAINTAINENCE_DESC: 'We are trying to bring the best experience for you.',
     COMING_SOON_DESC: 'On the way already!! Be patient',
     COPIED: 'Copied',
     PICKER_TITLE: 'Choose image',
@@ -274,6 +275,7 @@ export const lang: Language = {
     DEX_TX_SUCCESS: '{{DEX_MODE}} {{TOKEN_AMOUNT}} {{TOKEN_SYMBOL}} successfully',
     MINS: 'mins',
     TX_SETTING: 'Transaction settings',
-    VOLUME_24H: 'Volume (24h):'
+    VOLUME_24H: 'Volume (24h):',
+    SWAP_GENERAL_ERROR: 'Transaction failed. Please try setting deadline and slippage tolerance then try again.'
   },
 };
