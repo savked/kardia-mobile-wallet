@@ -28,8 +28,7 @@ import {ThemeContext} from '../../ThemeContext';
 import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
 import {copyToClipboard, getTxURL, truncate} from '../../utils/string';
 import {styles} from './style';
-import {parseDecimals} from '../../utils/number';
-import numeral from 'numeral';
+import {formatNumberString, parseDecimals} from '../../utils/number';
 import TextAvatar from '../../components/TextAvatar';
 import CustomText from '../../components/Text';
 import Toast from 'react-native-toast-message';
@@ -49,7 +48,9 @@ export default () => {
   const claimAmount = params ? (params as any).claimAmount : '';
   const undelegateAmount = params ? (params as any).undelegateAmount : '';
   const withdrawAmount = params ? (params as any).withdrawAmount : '';
-
+  const dexMode = params ? (params as any).dexMode : '';
+  const dexAmount = params ? (params as any).dexAmount : '';
+  
   const theme = useContext(ThemeContext);
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
@@ -114,7 +115,7 @@ export default () => {
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {numeral(txObj.amount).format('0,0.00')}
+              {formatNumberString(txObj.amount)}
             </CustomText>
             <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
@@ -150,7 +151,7 @@ export default () => {
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {numeral(claimAmount).format('0,0.00')}
+              {formatNumberString(claimAmount)}
             </CustomText>
             <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
@@ -168,7 +169,7 @@ export default () => {
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {numeral(withdrawAmount).format('0,0.00')}
+              {formatNumberString(withdrawAmount)}
             </CustomText>
             <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
@@ -186,13 +187,31 @@ export default () => {
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {numeral(undelegateAmount).format('0,0.00')}
+              {formatNumberString(undelegateAmount)}
             </CustomText>
             <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
             </CustomText>
           </View>
         );
+      case 'dex':
+        return (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+            }}>
+            <CustomText
+              allowFontScaling={false}
+              style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
+              {formatNumberString(dexAmount, 2)}
+            </CustomText>
+            <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+              {tokenSymbol}
+            </CustomText>
+          </View>
+        )
       default:
         return (
           <View
@@ -204,7 +223,7 @@ export default () => {
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {numeral(txObj.amount).format('0,0.00')}
+              {formatNumberString(txObj.amount)}
             </CustomText>
             <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
@@ -300,6 +319,8 @@ export default () => {
             </View>
           </View>
         );
+      case 'dex':
+        return null;
       default:
         return (
           <View style={styles.addressContainer}>
@@ -355,9 +376,14 @@ export default () => {
       case 'delegate':
         return getLanguageString(language, 'DELEGATE_SUCCESS');
       case 'undelegate':
-        return getLanguageString(language, 'UNDELEGATE_SUCCESS').replace(/{{KAI_AMOUNT}}/g, numeral(undelegateAmount).format('0,0.00'));
+        return getLanguageString(language, 'UNDELEGATE_SUCCESS').replace(/{{KAI_AMOUNT}}/g, formatNumberString(undelegateAmount));
       case 'withdraw': 
-        return getLanguageString(language, 'WITHDRAW_SUCCESS').replace(/{{KAI_AMOUNT}}/g, numeral(withdrawAmount).format('0,0.00'))
+        return getLanguageString(language, 'WITHDRAW_SUCCESS').replace(/{{KAI_AMOUNT}}/g, formatNumberString(withdrawAmount))
+      case 'dex':
+        return getLanguageString(language, 'DEX_TX_SUCCESS')
+                .replace(/{{TOKEN_AMOUNT}}/g, formatNumberString(dexAmount))
+                .replace(/{{DEX_MODE}}/g, getLanguageString(language, dexMode))
+                .replace(/{{TOKEN_SYMBOL}}/g, tokenSymbol)
       default:
         return getLanguageString(language, 'TX_SUCCESS');
     }
@@ -393,6 +419,12 @@ export default () => {
               }
             }
           ],
+        });
+        break;
+      case 'dex':
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'DEX'}],
         });
         break;
       default:

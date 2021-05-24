@@ -14,7 +14,7 @@ import { weiToKAI } from '../../../services/transaction/amount';
 import { ThemeContext } from '../../../ThemeContext';
 import { getLanguageString } from '../../../utils/lang';
 import { getSelectedWallet, getWallets } from '../../../utils/local';
-import { format, getDigit, isNumber } from '../../../utils/number';
+import { format, formatNumberString, getDigit, isNumber } from '../../../utils/number';
 import CustomText from '../../../components/Text';
 
 export default ({visible, onClose, validatorItem, onSuccess}: {
@@ -127,7 +127,7 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
   const getModalStyle = () => {
     if (Platform.OS === 'android') {
       return {
-        height: 300,
+        height: 340,
         backgroundColor: theme.backgroundFocusColor,
         alignItems: 'center',
         justifyContent: 'flex-start',
@@ -135,7 +135,7 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
       };
     } else {
       return {
-        height: 280,
+        height: 320,
         justifyContent: 'flex-start',
         backgroundColor: theme.backgroundFocusColor,
         alignItems: 'center',
@@ -158,13 +158,17 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
                   'UNDELEGATE_AMOUNT_PLACEHOLDER',
                 )}
               </CustomText>
-              <TouchableOpacity onPress={() => setUndelegateAmount(format(Number(stakedAmountInKAI)))}>
-                <CustomText style={{fontSize: theme.defaultFontSize + 1, color: theme.urlColor}} allowFontScaling={false}>{numeral(stakedAmountInKAI).format('0,0.00')} KAI</CustomText>
+              <TouchableOpacity onPress={() => setUndelegateAmount(formatNumberString(stakedAmountInKAI))}>
+                <CustomText style={{fontSize: theme.defaultFontSize + 1, color: theme.urlColor}} allowFontScaling={false}>{formatNumberString(stakedAmountInKAI, 6)} KAI</CustomText>
               </TouchableOpacity>
             </View>
             <CustomTextInput
               keyboardType="numeric"
               message={undelegateError}
+              inputStyle={{
+                backgroundColor: 'rgba(96, 99, 108, 1)',
+                color: theme.textColor,
+              }}
               onChangeText={(newAmount) => {
                 const digitOnly = getDigit(newAmount);
                 if (Number(digitOnly) > Number(stakedAmountInKAI)) {

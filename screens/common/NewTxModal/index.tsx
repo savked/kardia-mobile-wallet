@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {
   TouchableWithoutFeedback,
   View,
-  Text,
   Keyboard,
   Platform,
   TouchableOpacity,
@@ -21,11 +20,10 @@ import {toChecksum, truncate} from '../../../utils/string';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import {getBalance} from '../../../services/account';
 import {createTx} from '../../../services/transaction';
-import {saveWallets} from '../../../utils/local';
 import {weiToKAI} from '../../../services/transaction/amount';
 import ListCard from './ListCard';
 // import Icon from 'react-native-vector-icons/FontAwesome';
-import {getDigit, isNumber, format, parseKaiBalance, parseDecimals} from '../../../utils/number';
+import {getDigit, isNumber, format, parseKaiBalance, parseDecimals, formatNumberString} from '../../../utils/number';
 import AddressBookModal from '../AddressBookModal';
 import ScanQRAddressModal from '../ScanQRAddressModal';
 import {theme} from '../../../theme/dark';
@@ -110,7 +108,7 @@ const NewTxModal = ({
 
       newWallets[selectedWallet].balance = newBallance;
       setWallets(newWallets);
-      saveWallets(newWallets);
+      // saveWallets(newWallets);
 
       setLoading(false);
       navigation.navigate('SuccessTx', {txHash: txHash});
@@ -179,17 +177,17 @@ const NewTxModal = ({
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: keyboardShown ? 470 : 500,
+        height: keyboardShown ? 440 : 500,
         backgroundColor: 'rgba(58, 59, 60, 1)',
       };
     } else {
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: 480,
+        height: keyboardShown ? 440 : 500,
         backgroundColor: 'rgba(58, 59, 60, 1)',
-        marginBottom: keyboardOffset - (keyboardShown ? 100 : 0),
-        marginTop: -keyboardOffset - (keyboardShown ? 100 : 0),
+        marginBottom: keyboardOffset,
+        marginTop: -keyboardOffset,
       };
     }
   };
@@ -367,7 +365,7 @@ const NewTxModal = ({
           <View style={{marginBottom: 10}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <CustomText style={{color: theme.textColor, marginBottom: 5, fontWeight: '500', fontSize: theme.defaultFontSize + 1}}>{getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}</CustomText>
-              <TouchableOpacity onPress={() => setAmount(format(parseDecimals(_getBalance(), 18)))}>
+              <TouchableOpacity onPress={() => setAmount(formatNumberString(parseDecimals(_getBalance(), 18)))}>
                 <CustomText style={{color: theme.urlColor}}>
                   {parseKaiBalance(_getBalance())} KAI
                 </CustomText>

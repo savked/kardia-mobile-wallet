@@ -1,7 +1,7 @@
 import {format} from 'date-fns';
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {View, Text, Image, Linking, TouchableOpacity} from 'react-native';
+import {View, Text, Image, Linking, TouchableOpacity, Platform} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {addressBookAtom} from '../../../atoms/addressBook';
 import {languageAtom} from '../../../atoms/language';
@@ -196,7 +196,7 @@ export default ({
       visible={visible}
       onClose={onClose}
       showCloseButton={false}
-      contentStyle={{backgroundColor: theme.backgroundFocusColor, height: 520}}>
+      contentStyle={{backgroundColor: theme.backgroundFocusColor, height: 530}}>
       <View style={[styles.container]}>
         <View
           style={{
@@ -243,8 +243,8 @@ export default ({
             {txObj.tokenSymbol}
           </CustomText>
         </View>
-        <TouchableOpacity onPress={() => handleClickLink(getTxURL(txObj.hash))}>
-          <CustomText style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</CustomText>
+        <TouchableOpacity onPress={() => handleClickLink(getTxURL(txObj.transactionHash))}>
+          <CustomText style={styles.txhash}>{truncate(txObj.transactionHash, 14, 14)}</CustomText>
         </TouchableOpacity>
         <View>
           <View
@@ -300,7 +300,10 @@ export default ({
           type="primary"
           block={true}
           onPress={onClose}
-          // textStyle={{fontWeight: 'bold'}}
+          textStyle={{
+            fontWeight: '500',
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+          }}
         />
       </View>
     </Modal>

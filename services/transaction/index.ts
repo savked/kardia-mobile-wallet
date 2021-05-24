@@ -12,23 +12,34 @@ export const getTxByAddress = async (address: string, page = 1, size = 10) => {
     method: 'GET',
   };
   const response = await fetch(
-    `${ENDPOINT}addresses/${address}/txs?page=${page - 1}&limit=${size}`,
+    `${ENDPOINT}addresses/${address}/txs?page=${page}&limit=${size}`,
     options,
   );
   try {
     const responseJSON = await response.json();
     const rawTxs = responseJSON?.data?.data || [];
-    return rawTxs.map((item: Record<string, any>) => {
-      return {
-        from: item.from,
-        to: item.to,
-        hash: item.hash,
-        amount: item.value,
-        date: new Date(item.time),
-        txFee: item.txFee,
-        status: item.status,
-      };
-    });
+    let haveMore = true
+    if (responseJSON?.data?.total >= 0 && rawTxs.length === 0) {
+      haveMore = false
+    } else if (responseJSON?.data?.total > rawTxs.length * (responseJSON?.data?.page)) {
+      haveMore = true
+    }
+    return {
+      data: rawTxs.map((item: Record<string, any>) => {
+        return {
+          from: item.from,
+          to: item.to,
+          hash: item.hash,
+          amount: item.value,
+          date: new Date(item.time),
+          txFee: item.txFee,
+          status: item.status,
+          toName: item.toName,
+          decodedInputData: item.decodedInputData
+        };
+      }),
+      haveMore: haveMore
+    };
   } catch (error) {
     console.error('Error getting TX from backend');
     throw error;

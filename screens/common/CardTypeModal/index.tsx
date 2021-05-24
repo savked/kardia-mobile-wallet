@@ -31,7 +31,7 @@ export default ({ visible, onClose, cardAvatarID }: {
       }}>
       <CustomText style={{ fontSize: 15, color: 'rgba(252, 252, 252, 0.54)', marginBottom: 16 }}>Select card</CustomText>
       <View style={{ flex: 1 }}>
-        <ScrollView horizontal>
+        <ScrollView showsHorizontalScrollIndicator={false} horizontal>
           {[0, 1, 2, 3].map((item, index) => {
             return (
               <ImageBackground 

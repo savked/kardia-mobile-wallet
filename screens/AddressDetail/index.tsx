@@ -100,6 +100,8 @@ const AddressDetail = () => {
       blockHash: tx.blockHash || '',
       blockNumber: tx.blockNumber || '',
       status: tx.status,
+      toName: tx.toName,
+      decodedInputData: tx.decodedInputData,
       type:
         wallets[selectedWallet] && tx.from === wallets[selectedWallet].address
           ? 'OUT'
@@ -126,7 +128,7 @@ const AddressDetail = () => {
         1000,
       );
       setTxList(
-        newTxList
+        newTxList.data
           // .filter((txItem: Transaction) => {
           //   return (
           //     txItem.from === addressData?.address ||
@@ -191,10 +193,10 @@ const AddressDetail = () => {
 
   useEffect(() => {
     getTX();
-    const getTxInterval = setInterval(() => {
-      getTX();
-    }, 3000);
-    return () => clearInterval(getTxInterval);
+    // const getTxInterval = setInterval(() => {
+    //   getTX();
+    // }, 3000);
+    // return () => clearInterval(getTxInterval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -229,9 +231,11 @@ const AddressDetail = () => {
   }
 
   const filteredList = txList.filter((txItem: Transaction) => {
-    return (
-      txItem.from === addressData?.address || txItem.to === addressData?.address
-    );
+    if (txItem.from === addressData?.address || txItem.to === addressData?.address) return true;
+    if (txItem.decodedInputData && txItem.toName) {
+      return txItem.decodedInputData.arguments._receiver === addressData?.address
+    } 
+    return false;
   });
 
   return (
@@ -392,84 +396,84 @@ const AddressDetail = () => {
             {getLanguageString(language, 'NO_TRANSACTION')}
           </CustomText>
         )}
-        <ScrollView>
-
-       
-        {groupByDate(filteredList, 'date').map((txsByDate) => {
-          const dateLocale = getDateFNSLocale(language);
-          return (
-            <React.Fragment key={`transaction-by-${txsByDate.date.getTime()}`}>
-              <CustomText
-                style={{
-                  color: theme.textColor,
-                }}>
-                {format(txsByDate.date, 'E, dd/MM/yyyy', {locale: dateLocale})}
-              </CustomText>
-              {txsByDate.items.map((item: any, index: number) => {
-                return (
-                  <View
-                    key={`group-${index}`}
-                    style={{
-                      paddingVertical: 12,
-                      paddingHorizontal: 16,
-                      // marginHorizontal: 20,
-                      marginVertical: 8,
-                      borderRadius: 8,
-                      backgroundColor: theme.backgroundFocusColor,
-                    }}>
-                    <TouchableOpacity
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+        >
+          {groupByDate(filteredList, 'date').map((txsByDate) => {
+            const dateLocale = getDateFNSLocale(language);
+            return (
+              <React.Fragment key={`transaction-by-${txsByDate.date.getTime()}`}>
+                <CustomText
+                  style={{
+                    color: theme.textColor,
+                  }}>
+                  {format(txsByDate.date, 'E, dd/MM/yyyy', {locale: dateLocale})}
+                </CustomText>
+                {txsByDate.items.map((item: any, index: number) => {
+                  return (
+                    <View
+                      key={`group-${index}`}
                       style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}
-                      onPress={() => {
-                        setTxObjForDetail(item);
-                        setShowTxDetail(true);
+                        paddingVertical: 12,
+                        paddingHorizontal: 16,
+                        // marginHorizontal: 20,
+                        marginVertical: 8,
+                        borderRadius: 8,
+                        backgroundColor: theme.backgroundFocusColor,
                       }}>
-                      {renderIcon(item.status, item.type)}
-                      <View
+                      <TouchableOpacity
                         style={{
-                          flexDirection: 'column',
-                          flex: 4,
-                          paddingHorizontal: 14,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                        onPress={() => {
+                          setTxObjForDetail(item);
+                          setShowTxDetail(true);
                         }}>
-                        <CustomText style={{color: '#FFFFFF'}}>
-                          {item.type === 'IN'
-                            ? getLanguageString(language, 'TX_TYPE_RECEIVED')
-                            : getLanguageString(language, 'TX_TYPE_SEND')}
-                        </CustomText>
-                        <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
-                          {truncate(item.label, 8, 10)}
-                        </CustomText>
-                      </View>
-                      <View
-                        style={{
-                          flex: 3,
-                          alignItems: 'flex-end',
-                        }}>
-                        <CustomText
-                          style={[
-                            styles.kaiAmount,
-                            item.type === 'IN'
-                              ? {color: '#53B680'}
-                              : {color: 'red'},
-                          ]}>
-                          {item.type === 'IN' ? '+' : '-'}
-                          {parseKaiBalance(item.amount, true)} KAI
-                        </CustomText>
-                        <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
-                          {format(item.date, 'hh:mm aa')}
-                        </CustomText>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                );
-              })}
-            </React.Fragment>
-          );
-        })}
-         </ScrollView>
+                        {renderIcon(item.status, item.type)}
+                        <View
+                          style={{
+                            flexDirection: 'column',
+                            flex: 4,
+                            paddingHorizontal: 14,
+                          }}>
+                          <CustomText style={{color: '#FFFFFF'}}>
+                            {item.type === 'IN'
+                              ? getLanguageString(language, 'TX_TYPE_RECEIVED')
+                              : getLanguageString(language, 'TX_TYPE_SEND')}
+                          </CustomText>
+                          <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
+                            {truncate(item.label, 8, 10)}
+                          </CustomText>
+                        </View>
+                        <View
+                          style={{
+                            flex: 3,
+                            alignItems: 'flex-end',
+                          }}>
+                          <CustomText
+                            style={[
+                              styles.kaiAmount,
+                              item.type === 'IN'
+                                ? {color: '#53B680'}
+                                : {color: 'red'},
+                            ]}>
+                            {item.type === 'IN' ? '+' : '-'}
+                            {parseKaiBalance(item.amount, true)} KAI
+                          </CustomText>
+                          <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
+                            {format(item.date, 'hh:mm aa')}
+                          </CustomText>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })}
+              </React.Fragment>
+            );
+          })}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

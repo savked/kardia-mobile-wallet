@@ -1,8 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {TextInput, View, Text, StyleProp, TextStyle, ViewStyle} from 'react-native';
+import {TextInput, View, Text, StyleProp, TextStyle, ViewStyle, ActivityIndicator} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ThemeContext} from '../../ThemeContext';
+import { mergeObjArr } from '../../utils/object';
 import CustomText from '../Text';
 import {styles} from './style';
 
@@ -29,12 +30,14 @@ const CustomTextInput = ({
   inputRef,
   containerStyle,
   autoFocus,
+  loading = false,
 }: CustomTextInputProps & {
   headlineStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<TextStyle>;
   inputRef?: React.RefObject<TextInput>;
   autoFocus?: boolean;
+  loading?: boolean
 }) => {
   const theme = useContext(ThemeContext);
 
@@ -47,6 +50,13 @@ const CustomTextInput = ({
     }
     return message();
   };
+
+  const calculatedStyle = mergeObjArr([
+    styles.input,
+    multiline ? styles.multiline : null,
+    // block ? {width: '100%'} : null,
+    inputStyle,
+  ])
 
   return (
     <>
@@ -64,26 +74,32 @@ const CustomTextInput = ({
         ]}>
         <TextInput
           allowFontScaling={false}
-          style={[
-            styles.input,
-            multiline ? styles.multiline : null,
-            // block ? {width: '100%'} : null,
-            inputStyle,
-          ]}
+          style={calculatedStyle}
           ref={inputRef}
           keyboardType={keyboardType as any}
           onChangeText={onChangeText}
-          value={value}
+          value={loading ? '' : value}
           multiline={multiline}
           numberOfLines={multiline ? numberOfLines : 1}
-          editable={editable}
+          editable={editable && loading === false}
           placeholder={placeholder}
           onBlur={onBlur}
           autoCapitalize={autoCapitalize}
           onFocus={onFocus}
           placeholderTextColor={placeholderTextColor}
           autoFocus={autoFocus}
+          keyboardAppearance="dark"
         />
+        {
+          loading && (
+            <View style={{position: 'absolute', left: calculatedStyle.paddingLeft || calculatedStyle.paddingHorizontal}}>
+              <ActivityIndicator
+                size="small"
+                color="#FFFFFF"
+              />
+            </View>
+          )
+        }
         {iconName && (
           <Icon
             onPress={onIconPress}

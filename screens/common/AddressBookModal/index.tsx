@@ -34,7 +34,7 @@ const AddressBookModal = ({
       contentStyle={{
         paddingHorizontal: 0,
         height: 500,
-        backgroundColor: theme.backgroundColor
+        backgroundColor: theme.backgroundFocusColor
       }}
     >
       <CustomText style={{color: theme.textColor, fontSize: 15}}>{getLanguageString(language, 'SELECT_ADDRESS')}</CustomText>

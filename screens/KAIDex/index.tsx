@@ -1,142 +1,133 @@
-import React, { useContext, useState } from 'react';
-import { Image, Platform, Text, TouchableOpacity, View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRecoilValue } from 'recoil';
-import { krc20ListAtom } from '../../atoms/krc20';
-import Divider from '../../components/Divider';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { showTabBarAtom } from '../../atoms/showTabBar';
 import CustomText from '../../components/Text';
-import CustomTextInput from '../../components/TextInput';
 import { ThemeContext } from '../../ThemeContext';
+import ExchangeScreen from './LimitScreen';
+import SelectingPair from './SelectingPair';
+import MarketScreen from './MarketScreen';
+import { getLanguageString } from '../../utils/lang';
+import { languageAtom } from '../../atoms/language';
+import { useQuery } from '@apollo/client';
+import { GET_PAIRS } from '../../services/dex/queries';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import { formatDexToken } from '../../services/dex';
+import UnderMaintainence from '../common/UnderMaintainence';
+import { dexStatusAtom } from '../../atoms/dexStatus';
 import ComingSoon from '../common/ComingSoon';
 
 export default () => {
   const theme = useContext(ThemeContext);
+  const language = useRecoilValue(languageAtom);
 
-  const [type, setType] = useState('SWAP');
-  const [amountFrom, setAmountFrom] = useState('0')
+  const [type, setType] = useState('MARKET');
+  const [selectingPair, setSelectingPair] = useState(false)
 
-  const krc20List = useRecoilValue(krc20ListAtom)
+  const [tokenFrom, setTokenFrom] = useState<PairToken>()
+  const [tokenFromLiquidity, setTokenFromLiquidity] = useState('');
+  const [tokenTo, setTokenTo] = useState<PairToken>()
+  const [tokenToLiquidity, setTokenToLiquidity] = useState('');
+  const [pairAddress, setPairAddress] = useState('');
+  const setTabBarVisible = useSetRecoilState(showTabBarAtom)
+  const wallets = useRecoilValue(walletsAtom)
+  const selectedWallet = useRecoilValue(selectedWalletAtom)
+  const dexStatus = useRecoilValue(dexStatusAtom)
+
+  const { loading, error, data: pairData } = useQuery(GET_PAIRS);
+
+  useFocusEffect(
+    useCallback(() => {
+      setTabBarVisible(true);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+
+  useEffect(() => {
+    if (pairData && pairData.pairs) {
+      const pair = pairData.pairs[0]
+      if (!pair) return
+      setTokenFrom(formatDexToken(pair.t1, wallets[selectedWallet]));
+      setTokenTo(formatDexToken(pair.t2, wallets[selectedWallet]));
+      setTokenFromLiquidity(pair.token1_liquidity);
+      setTokenToLiquidity(pair.token2_liquidity)
+      setPairAddress(pair.contract_address)
+      setSelectingPair(false)
+    }
+  }, [pairData])
+
+  useEffect(() => {
+    if (!selectingPair) {
+      setTabBarVisible(true)
+    }
+  }, [selectingPair])
+
+  if (dexStatus === 'OFFLINE') {
+    return <UnderMaintainence />
+  }
+
+  if (dexStatus === 'COMING_SOON') {
+    return <ComingSoon />
+  }
+
+  if (selectingPair) {
+    return (
+      <SelectingPair
+        pairData={pairData}
+        loading={loading}
+        goBack={() => setSelectingPair(false)}
+        onSelect={(from: PairToken, to: PairToken, liquidityFrom, liquidityTo, pairAddress) => {
+          setTokenFrom(from);
+          setTokenTo(to);
+          setSelectingPair(false);
+          setTokenFromLiquidity(liquidityFrom);
+          setTokenToLiquidity(liquidityTo)
+          setPairAddress(pairAddress)
+        }}
+      />
+    )
+  }
 
   return (
     <SafeAreaView style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20}}>
-      {/* <View style={{width: '100%', alignItems: 'center'}}>
-        <View style={{borderRadius: 12, borderColor: 'rgba(96, 99, 108, 1)', borderWidth: 1.5, padding: 4, flexDirection: 'row', marginBottom: 32}}>
-          <TouchableOpacity 
-            style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'SWAP' ? theme.backgroundFocusColor : 'transparent'}}
-            onPress={() => setType('SWAP')}
-          >
-            <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'SWAP' ? 'bold' : undefined}}>Swap</CustomText>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'EX' ? theme.backgroundFocusColor : 'transparent'}}
-            onPress={() => setType('EX')}
-          >
-            <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'EX' ? 'bold' : undefined}}>Exchange</CustomText>
-          </TouchableOpacity>
-        </View>
-        <View style={{width: '100%'}}>
-          <CustomText 
-            style={{
-              color: theme.textColor,
-              fontSize: theme.defaultFontSize + 1,
-              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-              fontWeight: '500',
-              marginBottom: 6
-            }}
-          >
-            Swap from
-          </CustomText>
-          <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
-            <CustomTextInput
-              value={amountFrom}
-              onChangeText={setAmountFrom}
-              containerStyle={{width: '70%'}}
-              inputStyle={{
-                backgroundColor: 'rgba(96, 99, 108, 1)',
-                color: theme.textColor,
-              }}
-            />
-            <TouchableOpacity style={{width: '25%', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
-              <Image
-                source={{uri: krc20List[0].avatar}}
-                style={{width: 32, height: 32, marginRight: 8}}
-              />
-              <CustomText style={{color: theme.textColor}}>BNB</CustomText>
-              <Image
-                source={require('../../assets/icon/chevron-right.png')}
-                style={{width: 20, height: 20}}
-              />
-            </TouchableOpacity>
-          </View>
-          <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
-            Balance:{' '}
-            <CustomText style={{color: theme.textColor}}>100</CustomText>
-          </CustomText>
-        </View>
-        <View style={{width: '100%', justifyContent: 'center'}}>
-          <Divider style={{width: '100%', backgroundColor: '#F0F1F2'}} />
-          <View style={{width: 32, height: 32, position: 'absolute',
-                right: 20 + 29.5 + 8, justifyContent: 'center'}}>
-            <TouchableOpacity 
-              style={{
-                width: 24,
-                height: 24,
-                borderRadius: 12,
-                backgroundColor: 'rgba(51, 96, 255, 1)',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Image
-                source={require('../../assets/icon/swap_dark.png')}
-                style={{
-                  width: 15, height: 15
-                }}
-              />
-            </TouchableOpacity>
+      {/* <ExchangeScreen /> */}
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={{flex: 1}}>
+          <View style={{width: '100%', alignItems: 'center'}}>
+            <View style={{borderRadius: 12, borderColor: 'rgba(96, 99, 108, 1)', borderWidth: 1.5, padding: 4, flexDirection: 'row', marginBottom: 32}}>
+              <TouchableOpacity 
+                style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'MARKET' ? theme.backgroundFocusColor : 'transparent'}}
+                onPress={() => setType('MARKET')}
+              >
+                <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'MARKET' ? '500' : undefined, fontFamily: type === 'MARKET' && Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
+                  {getLanguageString(language, 'MARKET_TITLE')}
+                </CustomText>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'LIMIT' ? theme.backgroundFocusColor : 'transparent'}}
+                onPress={() => setType('LIMIT')}
+              >
+                <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'LIMIT' ? '500' : undefined, fontFamily: type === 'LIMIT' && Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
+                  {getLanguageString(language, 'LIMIT_TITLE')}
+                </CustomText>
+              </TouchableOpacity>
             </View>
-        </View>
-        <View style={{width: '100%'}}>
-          <CustomText 
-            style={{
-              color: theme.textColor,
-              fontSize: theme.defaultFontSize + 1,
-              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-              fontWeight: '500',
-              marginBottom: 6
-            }}
-          >
-            Swap to
-          </CustomText>
-          <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
-            <CustomTextInput
-              value={amountFrom}
-              onChangeText={setAmountFrom}
-              containerStyle={{width: '70%'}}
-              inputStyle={{
-                backgroundColor: 'rgba(96, 99, 108, 1)',
-                color: theme.textColor,
-              }}
-            />
-            <TouchableOpacity style={{width: '25%', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
-              <Image
-                source={{uri: krc20List[0].avatar}}
-                style={{width: 32, height: 32, marginRight: 8}}
-              />
-              <CustomText style={{color: theme.textColor}}>BNB</CustomText>
-              <Image
-                source={require('../../assets/icon/chevron-right.png')}
-                style={{width: 20, height: 20}}
-              />
-            </TouchableOpacity>
           </View>
-          <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
-            Balance:{' '}
-            <CustomText style={{color: theme.textColor}}>100</CustomText>
-          </CustomText>
+          {type === 'MARKET' ? 
+            <MarketScreen 
+              triggerSelectPair={() => setSelectingPair(true)} 
+              tokenFrom={tokenFrom}
+              tokenTo={tokenTo}
+              tokenFromLiquidity={tokenFromLiquidity}
+              tokenToLiquidity={tokenToLiquidity}
+              pairAddress={pairAddress}
+            /> 
+            : 
+            <ExchangeScreen />}
         </View>
-      </View> */}
-      <ComingSoon />
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   )
 };

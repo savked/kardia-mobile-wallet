@@ -17,7 +17,7 @@ import { fontSizeAtom } from '../../atoms/fontSize';
 import { saveFontSize } from '../../utils/local';
 
 export const INFO_DATA = {
-  version: '2.1.2',
+  version: '2.2.0',
 };
 
 const SettingScreen = () => {
@@ -76,7 +76,9 @@ const SettingScreen = () => {
           onPress={() => navigation.navigate('Notification')}
         /> */}
       </View>
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+      >
         <View style={{flex: 1}}>
           <CustomText
             style={{
@@ -152,7 +154,7 @@ const SettingScreen = () => {
                   </CustomText>
                 </View>
                 <View style={{width: 32, height: 32, alignItems: 'center', justifyContent: 'center'}}>
-                  <CustomText style={{color: fontSize === 'large' ? theme.textColor : theme.mutedTextColor, fontSize: (theme.defaultFontSize + 2) * 1.2}}>
+                  <CustomText style={{color: fontSize === 'large' ? theme.textColor : theme.mutedTextColor, fontSize: (theme.defaultFontSize + 2) * 1.4}}>
                     aA
                   </CustomText>
                 </View>
