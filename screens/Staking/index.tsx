@@ -113,7 +113,7 @@ const StakingScreen = () => {
     const rs = currentStaking.reduce((total, item) => {
       return total.plus(new BigNumber(item.claimableRewards));
     }, new BigNumber(0));
-    return weiToKAI(rs)
+    return rs.dividedBy(new BigNumber(10 ** 18)).toFixed()
   };
 
   return (
@@ -157,7 +157,7 @@ const StakingScreen = () => {
           </CustomText>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <CustomText style={[styles.totalSaving, Platform.OS === 'android' ? {color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {color: theme.textColor, fontWeight: '500'}]}>
-              {formatNumberString(getTotalSaving().toString(), 2)} KAI
+              {formatNumberString(getTotalSaving(), 2)} KAI
             </CustomText>
             <CustomText style={{fontSize: theme.defaultFontSize + 6, color: 'rgba(252, 252, 252, 0.54)', fontWeight: '500', fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
               KAI
