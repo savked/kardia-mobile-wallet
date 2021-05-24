@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {TouchableOpacity, View, Image, ActivityIndicator, Platform} from 'react-native';
-import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
+import {TouchableOpacity, View, Image, ActivityIndicator, Platform, RefreshControl} from 'react-native';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {truncate} from '../../utils/string';
@@ -11,7 +11,6 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import {getTxByAddress} from '../../services/transaction';
 import {parseKaiBalance} from '../../utils/number';
 import {format} from 'date-fns';
-import IconButton from '../../components/IconButton';
 import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import NewTxModal from '../common/NewTxModal';
@@ -24,37 +23,92 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import CustomText from '../../components/Text';
 import { statusBarColorAtom } from '../../atoms/statusBar';
+import CustomTextInput from '../../components/TextInput';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [gettingMore, setGettingMore] = useState(false);
+  const [haveMore, setHaveMore] = useState(false);
 
-  const [wallets] = useRecoilState(walletsAtom);
-  const [selectedWallet] = useRecoilState(selectedWalletAtom);
+  const [searchString, setSearchString] = useState('');
   const [txList, setTxList] = useState([] as any[]);
   const [showNewTxModal, setShowNewTxModal] = useState(false);
   const language = useRecoilValue(languageAtom);
 
   const [showTxDetail, setShowTxDetail] = useState(false);
   const [txObjForDetail, setTxObjForDetail] = useState();
+  const [page, setPage] = useState(1)
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   const insets = useSafeAreaInsets();
 
+  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: any) => {
+    const paddingToBottom = 550;
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
+  };
+
+  const getTX = async (page: number) => {
+    let shouldFetch = false
+    if (page === 1 || !gettingMore) {
+      shouldFetch = true
+    }
+    if (!shouldFetch) {
+      return;
+    }
+    const SIZE = 30;
+    const localWallets = await getWallets();
+    const localSelectedWallet = await getSelectedWallet();
+    if (
+      !localWallets[localSelectedWallet] ||
+      !localWallets[localSelectedWallet].address
+    ) {
+      return;
+    }
+    try {
+      const {haveMore: _haveMore, data: newTxList} = await getTxByAddress(
+        localWallets[localSelectedWallet].address,
+        page,
+        SIZE,
+      );
+      if (page === 1) {
+        setTxList(newTxList.map((i: any) => parseTXForList(i, localWallets[localSelectedWallet].address)));
+      } else {
+        setTxList([...txList, ...newTxList.map((i: any) => parseTXForList(i, localWallets[localSelectedWallet].address))]);
+      }
+      setHaveMore(_haveMore);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(true);
       setStatusBarColor(theme.backgroundColor);
-
+      setLoading(true);
+      setPage(1)
+      getTX(1);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [showNewTxModal]),
+    }, []),
   );
 
-  const parseTXForList = (tx: Transaction) => {
+  useEffect(() => {
+    (async () => {
+      setGettingMore(true);
+      await getTX(page);
+      setGettingMore(false)
+    })()
+  }, [page])
+
+  const parseTXForList = (tx: Transaction, address: string) => {
     return {
       label: tx.hash,
       value: tx.hash,
@@ -68,32 +122,10 @@ const TransactionScreen = () => {
       blockNumber: tx.blockNumber || '',
       status: tx.status,
       type:
-        wallets[selectedWallet] && tx.from === wallets[selectedWallet].address
+        tx.from === address
           ? 'OUT'
           : 'IN',
     };
-  };
-
-  const getTX = async () => {
-    const localWallets = await getWallets();
-    const localSelectedWallet = await getSelectedWallet();
-    if (
-      !localWallets[localSelectedWallet] ||
-      !localWallets[localSelectedWallet].address
-    ) {
-      return;
-    }
-    try {
-      const newTxList = await getTxByAddress(
-        localWallets[localSelectedWallet].address,
-        1,
-        1000,
-      );
-      setTxList(newTxList.map(parseTXForList));
-      setLoading(false)
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   const renderIcon = (status: number, type: 'IN' | 'OUT') => {
@@ -134,15 +166,11 @@ const TransactionScreen = () => {
     );
   };
 
-  useEffect(() => {
-    setLoading(true);
-    getTX();
-    const getTxInterval = setInterval(() => {
-      getTX();
-    }, 3000);
-    return () => clearInterval(getTxInterval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const onRefresh = async () => {
+    setRefreshing(true)
+    await getTX(1);
+    setRefreshing(false)
+  }
 
   if (loading) {
     return (
@@ -156,10 +184,14 @@ const TransactionScreen = () => {
   return (
     <View
       style={[styles.container, {backgroundColor: theme.backgroundColor, paddingTop: insets.top}]}>
-      <NewTxModal
-        visible={showNewTxModal}
-        onClose={() => setShowNewTxModal(false)}
-      />
+      {
+        showNewTxModal && (
+          <NewTxModal
+            visible={showNewTxModal}
+            onClose={() => setShowNewTxModal(false)}
+          />
+        )
+      }
       <TxDetailModal
         visible={showTxDetail}
         onClose={() => setShowTxDetail(false)}
@@ -176,6 +208,12 @@ const TransactionScreen = () => {
           onPress={() => navigation.navigate('Notification')}
         /> */}
       </View>
+      {/* <View style={{marginHorizontal: 20, marginBottom: 22}}>
+        <CustomTextInput
+          value={searchString}
+          onChangeText={setSearchString}
+        />
+      </View> */}
       {groupByDate(txList, 'date').length === 0 && (
         <View style={styles.noTXContainer}>
           <Image
@@ -213,7 +251,26 @@ const TransactionScreen = () => {
           />
         </View>
       )}
-      <ScrollView style={{flex: 1}}>
+      <ScrollView 
+        showsVerticalScrollIndicator={false}
+        scrollEventThrottle={8}
+        onScroll={({nativeEvent}) => {
+          if (!haveMore || gettingMore) return;
+          if (isCloseToBottom(nativeEvent)) {
+            setPage(page + 1)
+          }
+        }}
+        style={{flex: 1}}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[theme.textColor]}
+            tintColor={theme.textColor}
+            titleColor={theme.textColor}
+          />
+        }
+      >
         {groupByDate(txList, 'date').map((txsByDate) => {
           const dateLocale = getDateFNSLocale(language);
           return (
@@ -223,7 +280,7 @@ const TransactionScreen = () => {
                   marginHorizontal: 20,
                   color: theme.textColor,
                 }}>
-                {format(txsByDate.date, 'E, dd/MM/yyyy', {locale: dateLocale})}
+                {format(new Date(txsByDate.date), 'E, dd/MM/yyyy', {locale: dateLocale})}
               </CustomText>
               {txsByDate.items.map((item: any, index: number) => {
                 return (
@@ -280,7 +337,7 @@ const TransactionScreen = () => {
                           </CustomText>
                         </CustomText>
                         <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
-                          {format(item.date, 'hh:mm aa')}
+                          {format(new Date(item.date), 'hh:mm aa')}
                         </CustomText>
                       </View>
                     </TouchableOpacity>
@@ -290,6 +347,11 @@ const TransactionScreen = () => {
             </React.Fragment>
           );
         })}
+        {gettingMore && (
+          <View style={{paddingVertical: 12}}>
+            <ActivityIndicator color={theme.textColor} size="small" />
+          </View>
+        )}
       </ScrollView>
       {txList.length > 0 && (
         <Button

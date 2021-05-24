@@ -24,6 +24,7 @@ import {parseDecimals} from '../../../utils/number';
 import numeral from 'numeral';
 import {ThemeContext} from '../../../ThemeContext';
 import CustomText from '../../../components/Text';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 
 const NewTokenModal = ({
   visible,
@@ -51,6 +52,8 @@ const NewTokenModal = ({
   const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const setKRC20List = useSetRecoilState(krc20ListAtom);
+  const wallets = useRecoilValue(walletsAtom)
+  const selectedWallet = useRecoilValue(selectedWalletAtom)
 
   useEffect(() => {
     (async () => {
@@ -119,7 +122,7 @@ const NewTokenModal = ({
       tokenAddress.length === 42 ? tokenAddress : `0x${tokenAddress}`;
 
     let localTokens = await getTokenList();
-    const existed = localTokens.some((i) => i.address === _tokenAddress);
+    const existed = localTokens.some((i) => i.address === _tokenAddress && i.walletOwnerAddress === wallets[selectedWallet].address);
     if (existed) {
       setErrorAddress(getLanguageString(language, 'TOKEN_EXISTS'));
       return;
@@ -134,6 +137,7 @@ const NewTokenModal = ({
       decimals,
       avatar,
       id: `${Date.now()}`,
+      walletOwnerAddress: wallets[selectedWallet].address
     });
 
     const DEFAULT_ID = DEFAULT_KRC20_TOKENS.map((i) => i.id);

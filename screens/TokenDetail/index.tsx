@@ -28,6 +28,7 @@ import numeral from 'numeral';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomText from '../../components/Text';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -50,6 +51,8 @@ const TokenDetail = () => {
   const setTokenList = useSetRecoilState(krc20ListAtom);
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+  const wallets = useRecoilValue(walletsAtom)
+  const selectedWallet = useRecoilValue(selectedWalletAtom)
 
   useFocusEffect(
     useCallback(() => {
@@ -66,13 +69,16 @@ const TokenDetail = () => {
     setTokenBalance(_balance);
   };
 
+  const shouldRemove = (item: KRC20, tokenAddressToRemove: string) => {
+    return item.address === tokenAddressToRemove && item.walletOwnerAddress === wallets[selectedWallet].address
+  }
+
   const removeToken = async (_tokenAddress: string) => {
     const localTokens = await getTokenList();
-
     const DEFAULT_ID = DEFAULT_KRC20_TOKENS.map((i) => i.id);
 
     const newLocalTokens = localTokens.filter(
-      (i) => i.address !== _tokenAddress && !DEFAULT_ID.includes(i.address),
+      (i) => !shouldRemove(i, _tokenAddress) && !DEFAULT_ID.includes(i.address),
     );
     await saveTokenList(newLocalTokens);
 
@@ -83,12 +89,12 @@ const TokenDetail = () => {
   useEffect(() => {
     (async () => {
       await fetchBalance();
-      const intervalId = setInterval(async () => {
-        await fetchBalance();
-      }, 2000);
-      return () => {
-        clearInterval(intervalId);
-      };
+      // const intervalId = setInterval(async () => {
+      //   await fetchBalance();
+      // }, 2000);
+      // return () => {
+      //   clearInterval(intervalId);
+      // };
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tokenAddress]);
@@ -149,7 +155,7 @@ const TokenDetail = () => {
             <View>{renderIcon(tokenAvatar)}</View>
             <TouchableOpacity onPress={() => removeToken(tokenAddress)}>
               <Image
-                source={require('../../assets/icon/lock_dark.png')}
+                source={require('../../assets/icon/remove_dark.png')}
                 style={{width: 24, height: 24}}
               />
             </TouchableOpacity>

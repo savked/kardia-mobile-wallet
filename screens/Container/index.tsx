@@ -16,6 +16,8 @@ import {
   getTokenList,
   getWallets,
   saveSelectedWallet,
+  saveTokenList,
+  saveWallets,
 } from '../../utils/local';
 import {styles} from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
@@ -44,6 +46,8 @@ import { INFO_DATA } from '../Setting';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import KAIDex from '../KAIDex';
+import { dexStatusAtom } from '../../atoms/dexStatus';
+import { initDexConfig } from '../../services/dex';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -239,16 +243,26 @@ const AppContainer = () => {
   const [inited, setInited] = useState(0);
   const [appStatus, setAppStatus] = useState('OK')
 
+  const setDexStatus = useSetRecoilState(dexStatusAtom)
+
   const theme = useContext(ThemeContext);
 
   useEffect(() => {
     (async () => {
+      if (!inited || appStatus !== 'OK') return;
       let _selectedWallet = await getSelectedWallet();
-      if (_selectedWallet !== selectedWallet && inited) {
+      if (_selectedWallet !== selectedWallet) {
         await saveSelectedWallet(selectedWallet);
       }
     })();
   }, [selectedWallet, inited]);
+
+  useEffect(() => {
+    (async () => {
+      if (!inited || appStatus !== 'OK') return;
+      await saveWallets(wallets);
+    })();
+  }, [wallets, inited]);
 
   const handleAppStateChange = useCallback(
     (state: string) => {
@@ -303,9 +317,21 @@ const AppContainer = () => {
       // Get app status
       const serverStatus = await getAppStatus();
 
+      console.log(serverStatus)
+
       if (serverStatus.status === 'UNDER_MAINTAINANCE') {
-        setAppStatus('UNDER_MAINTAINANCE');
+        setAppStatus('UNDER_MAINTAINANCE')
         return;
+      }
+      
+      try {
+        // Init dex config
+        await initDexConfig()
+        setDexStatus(serverStatus.dexStatus)
+      } catch (error) {
+        setDexStatus('OFFLINE')
+        console.error('Init Dex config fail');
+        console.log(error)
       }
 
       const compareResult = compareVersion(INFO_DATA.version, serverStatus.appVersion)
@@ -361,7 +387,14 @@ const AppContainer = () => {
 
       // Get local KRC20 list
       const krc20List = await getTokenList();
-      setKRC20TokenList(krc20List);
+      const filteredList = krc20List.filter((item) => !!item.walletOwnerAddress)
+      if (filteredList.length === krc20List.length) {
+        console.log('No old token found')
+      } else {
+        console.log('Clear old token')
+        await saveTokenList(filteredList);
+      }
+      setKRC20TokenList(filteredList);
 
       // Get font size setting
       const fontSizeSetting = await getFontSize();

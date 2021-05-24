@@ -88,7 +88,9 @@ const AddressBookSetting = () => {
           />
         </View>
       )}
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+      >
         {groupByAlphabet(addressBook, 'name').map((group) => {
           return (
             <React.Fragment key={`address-group-${group.char}`}>

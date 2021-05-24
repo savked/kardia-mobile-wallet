@@ -18,7 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 import UndelegateModal from '../UndelegateModal';
 import CustomText from '../../../components/Text';
 import { getLatestBlock } from '../../../services/blockchain';
-import { getDigit } from '../../../utils/number';
+import { formatNumberString, getDigit } from '../../../utils/number';
 import { BLOCK_TIME } from '../../../config';
 
 const showButton = (value: any) => {
@@ -68,10 +68,11 @@ export default ({
   };
 
   const getSelectedStakedAmount = () => {
-    const formatted = numeral(weiToKAI(validatorItem.stakedAmount)).format(
-      '0,0.00',
-    );
-    return formatted === 'NaN' ? '0 KAI' : `${formatted} KAI`;
+    return `${formatNumberString(weiToKAI(validatorItem.stakedAmount))} KAI`
+    // const formatted = numeral(weiToKAI(validatorItem.stakedAmount)).format(
+    //   '0,0.00',
+    // );
+    // return formatted === 'NaN' ? '0 KAI' : `${formatted} KAI`;
   };
 
   const handleClose = () => {
@@ -279,7 +280,7 @@ export default ({
             {getLanguageString(language, 'CLAIMABLE')}
           </CustomText>
           <CustomText style={[{color: theme.textColor, fontWeight: '500'}]}>
-            {numeral(weiToKAI(validatorItem.claimableRewards)).format('0,0.00')}{' '}
+            {formatNumberString(weiToKAI(validatorItem.claimableRewards))}{' '}
             KAI
           </CustomText>
         </View>

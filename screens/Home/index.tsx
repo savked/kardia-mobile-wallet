@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, Dimensions, Image, ImageBackground, Linking, Platform, RefreshControl, ScrollView, Text, View} from 'react-native';
+import {ActivityIndicator, Alert, Dimensions, Image, ImageBackground, Linking, Platform, RefreshControl, ScrollView, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
@@ -10,7 +10,6 @@ import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {
   getAppPasscodeSetting,
   getSelectedWallet,
-  getWalkThroughView,
   getWallets,
 } from '../../utils/local';
 import {ThemeContext} from '../../ThemeContext';
@@ -27,10 +26,10 @@ import {showTabBarAtom} from '../../atoms/showTabBar';
 import {tokenInfoAtom} from '../../atoms/token';
 import {weiToKAI} from '../../services/transaction/amount';
 import Button from '../../components/Button';
-import { SIMPLEX_URL } from '../../config';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { HEADER_HEIGHT } from '../../theme';
 import CustomText from '../../components/Text';
+import { SIMPLEX_URL } from '../../services/config';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
@@ -90,6 +89,7 @@ const HomeScreen = () => {
         }
       });
       setWallets(newWallets);
+      // saveWallets(newWallets);
       _selectedWallet !== selectedWallet && setSelectedWallet(_selectedWallet);
     } catch (error) {
       console.error(error);
@@ -167,6 +167,7 @@ const HomeScreen = () => {
         style={{width: viewportWidth, height: viewportHeight - tabBarHeight - HEADER_HEIGHT - 48}}
       >
         <ScrollView 
+          showsVerticalScrollIndicator={false}
           style={[styles.bodyContainer]} 
           refreshControl={
             <RefreshControl

@@ -26,8 +26,6 @@ export const styles = StyleSheet.create({
     padding: 15,
   },
   kaiAmount: {
-    fontWeight: 'bold',
-    fontSize: 16,
     textAlign: 'right',
   },
   kaiCardContainer: {

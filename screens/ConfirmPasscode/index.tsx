@@ -45,10 +45,8 @@ const ConfirmPasscode = () => {
         // Success code
         if (biometryType === 'FaceID') {
           setTouchType(biometryType);
-          console.log('FaceID is supported.');
         } else {
           setTouchType('TouchID');
-          console.log('TouchID is supported.');
         }
         setTouchSupported(true);
       })

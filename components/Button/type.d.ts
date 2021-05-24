@@ -12,4 +12,5 @@ interface ButtonProps {
   block?: boolean;
   loading?: boolean;
   disabled?: boolean;
+  loadingColor?: string;
 }

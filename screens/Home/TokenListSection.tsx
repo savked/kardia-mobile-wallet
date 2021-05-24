@@ -5,29 +5,29 @@ import {ActivityIndicator, Image, TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
 // import List from '../../components/List';
 import {styles} from './style';
-import {parseDecimals} from '../../utils/number';
+import {formatNumberString, parseDecimals} from '../../utils/number';
 import Button from '../../components/Button';
 import {useRecoilValue} from 'recoil';
 import numeral from 'numeral';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
-// import {getTokenList} from '../../utils/local';
-// import NewTokenModal from '../common/NewTokenModal';
-import {krc20ListAtom} from '../../atoms/krc20';
+import {filterByOwnerSelector, krc20ListAtom} from '../../atoms/krc20';
 import {getBalance} from '../../services/krc20';
 import {getSelectedWallet, getWallets} from '../../utils/local';
-import {selectedWalletAtom} from '../../atoms/wallets';
+import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import CustomText from '../../components/Text';
 
 const TokenListSection = () => {
   const navigation = useNavigation();
   const theme = useContext(ThemeContext);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
+  const wallets = useRecoilValue(walletsAtom)
 
   const language = useRecoilValue(languageAtom);
   const [loading, setLoading] = useState(true);
   const [balance, setBalance] = useState<number[]>([]);
-  const tokenList = useRecoilValue(krc20ListAtom);
+  // const tokenList = useRecoilValue(krc20ListAtom);
+  const tokenList = useRecoilValue(filterByOwnerSelector(wallets[selectedWallet].address))
 
   useEffect(() => {
     (async () => {
@@ -132,9 +132,7 @@ const TokenListSection = () => {
               justifyContent: 'center',
             }}>
             <CustomText style={[styles.kaiAmount, {color: theme.textColor}]}>
-              {numeral(
-                parseDecimals(balance[index], item.decimals),
-              ).format('0,0.00')}
+              {formatNumberString(parseDecimals(balance[index], item.decimals), 2)}
             </CustomText>
             <CustomText style={{color: theme.ghostTextColor}}>
               {item.symbol}

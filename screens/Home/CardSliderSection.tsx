@@ -6,21 +6,13 @@ import {useRecoilState, useRecoilValue} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {truncate} from '../../utils/string';
 import {styles} from './style';
-import {
-  getSelectedWallet,
-  getWallets,
-  saveSelectedWallet,
-  saveWallets,
-} from '../../utils/local';
 import {tokenInfoAtom} from '../../atoms/token';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString, parseCardAvatar} from '../../utils/lang';
-import Modal from '../../components/Modal';
 import NewTxModal from '../common/NewTxModal';
 import numeral from 'numeral';
 import {weiToKAI} from '../../services/transaction/amount';
 import {ThemeContext} from '../../ThemeContext';
-import Button from '../../components/Button';
 import CustomText from '../../components/Text';
 
 const {width: viewportWidth} = Dimensions.get('window');
@@ -30,12 +22,11 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
   const theme = useContext(ThemeContext);
   const [showNewTxModal, setShowNewTxModal] = useState(false);
   const carouselRef = useRef<Carousel<Wallet>>(null);
-  const [wallets, setWallets] = useRecoilState(walletsAtom);
-  const [tokenInfo] = useRecoilState(tokenInfoAtom);
+  const wallets = useRecoilValue(walletsAtom);
+  const tokenInfo = useRecoilValue(tokenInfoAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(
     selectedWalletAtom,
   );
-  const [removeIndex, setRemoveIndex] = useState(-1);
   const language = useRecoilValue(languageAtom);
 
   const renderWalletItem = ({item: wallet}: any) => {
@@ -123,42 +114,28 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
   };
 
   useEffect(() => {
-    saveSelectedWallet(selectedWallet);
-    if (carouselRef.current) {
-      if (removeIndex >= 0) {
-        carouselRef.current.triggerRenderingHack();
-        setRemoveIndex(-1);
-      } else if (carouselRef.current.currentIndex !== selectedWallet) {
-        // react-native-snap-carousel issue. TODO: wait for issue resolved and update
-        setTimeout(() => {
-          if (carouselRef.current) {
-            carouselRef.current.snapToItem(selectedWallet);
-          }
-        }, 300);
-      }
+    // (async () => {
+    //   // saveSelectedWallet(selectedWallet);
+    //   if (carouselRef.current && carouselRef.current.currentIndex !== selectedWallet) {
+    //     // react-native-snap-carousel issue. TODO: wait for issue resolved and update
+    //     setTimeout(() => {
+    //       if (carouselRef.current) {
+    //         carouselRef.current.snapToItem(selectedWallet);
+    //       }
+    //     }, 300);
+    //   }
+    // })()
+    if (carouselRef.current && carouselRef.current.currentIndex !== selectedWallet) {
+      // react-native-snap-carousel issue. TODO: wait for issue resolved and update
+      setTimeout(() => {
+        if (carouselRef.current) {
+          carouselRef.current.snapToItem(selectedWallet);
+        }
+      }, 300);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
 
-  const removeWallet = async () => {
-    // setShouldFetchBalance(false);
-    const localWallets = await getWallets();
-    const localSelectedWallet = await getSelectedWallet();
-    const newWallets: Wallet[] = JSON.parse(JSON.stringify(localWallets));
-    newWallets.splice(removeIndex, 1);
-    await saveWallets(newWallets);
-    setWallets(newWallets);
-    if (newWallets.length === 0) {
-      await saveSelectedWallet(0);
-      setSelectedWallet(0);
-    } else if (localSelectedWallet > newWallets.length - 1) {
-      await saveSelectedWallet(newWallets.length - 1);
-      setSelectedWallet(newWallets.length - 1);
-    } else {
-      await saveSelectedWallet(selectedWallet);
-      setRemoveIndex(-1);
-    }
-  };
 
   return (
     <View style={styles.kaiCardSlider}>
@@ -196,53 +173,6 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
         inactiveDotOpacity={0.4}
         inactiveDotScale={1}
       />
-      <Modal
-        visible={removeIndex >= 0}
-        showCloseButton={false}
-        onClose={() => setRemoveIndex(-1)}
-        contentStyle={{
-          backgroundColor: theme.backgroundFocusColor,
-          height: 450,
-          justifyContent: 'center',
-        }}>
-        <Image
-          style={{width: 101, height: 152}}
-          source={require('../../assets/trash_dark.png')}
-        />
-        <CustomText
-          style={{
-            textAlign: 'center',
-            fontSize: 22,
-            fontWeight: 'bold',
-            marginVertical: 20,
-            color: theme.textColor,
-          }}>
-          {getLanguageString(language, 'ARE_YOU_SURE')}
-        </CustomText>
-        <Button
-          block
-          title={getLanguageString(language, 'CANCEL')}
-          type="outline"
-          textStyle={{
-            fontWeight: 'bold',
-          }}
-          onPress={() => setRemoveIndex(-1)}
-        />
-        <Button
-          block
-          title={getLanguageString(language, 'CONFIRM')}
-          type="ghost"
-          style={{
-            marginTop: 12,
-            backgroundColor: 'rgba(208, 37, 38, 1)',
-          }}
-          textStyle={{
-            color: '#FFFFFF',
-            fontWeight: 'bold',
-          }}
-          onPress={removeWallet}
-        />
-      </Modal>
     </View>
   );
 };

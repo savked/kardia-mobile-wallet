@@ -28,6 +28,7 @@ const Button = ({
   iconColor,
   disabled,
   loading = false,
+  loadingColor,
 }: ButtonProps & {
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
@@ -185,7 +186,7 @@ const Button = ({
         block ? {width: '100%'} : null,
         style,
       ]}>
-      {loading && <ActivityIndicator color={textTypeStyle.color} />}
+      {loading && <ActivityIndicator color={loadingColor || textTypeStyle.color} />}
       {!loading && renderIcon()}
       {/* <Icon name={iconName} size={size} color={color} style={{marginRight:8}}/> */}
       {!loading && title && (

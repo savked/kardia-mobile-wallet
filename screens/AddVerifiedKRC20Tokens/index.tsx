@@ -4,7 +4,7 @@ import { Image, Platform, TouchableOpacity, View } from 'react-native';
 import ENIcon from 'react-native-vector-icons/Entypo';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ToggleSwitch from 'toggle-switch-react-native';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { languageAtom } from '../../atoms/language';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
@@ -17,12 +17,15 @@ import List from '../../components/List';
 import { getTokenList, saveTokenList } from '../../utils/local';
 import { krc20ListAtom } from '../../atoms/krc20';
 import Button from '../../components/Button';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 
 export default () => {
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
   const navigation = useNavigation();
 
+  const wallets = useRecoilValue(walletsAtom)
+  const selectedWallet = useRecoilValue(selectedWalletAtom)
   const setTabBarVisible = useSetRecoilState(showTabBarAtom)
 
   const [loading, setLoading] = useState(true);
@@ -108,13 +111,20 @@ export default () => {
   const toggleToken = (item: KRC20) => {
     setTouched(true)
     const _localList: KRC20[] = JSON.parse(JSON.stringify(localKRC20List))
-    const index = _localList.findIndex((i) => i.address === item.address)
+    const index = _localList.findIndex((i) => i.address === item.address && i.walletOwnerAddress === wallets[selectedWallet].address)
     if (index > -1) {
       _localList.splice(index, 1)
     } else {
-      _localList.push(item);
+      _localList.push({...item, ...{walletOwnerAddress: wallets[selectedWallet].address}});
     }
     setLocalKRC20List(_localList)
+  }
+
+  const isOn = (item: KRC20) => {
+    const addressList = localKRC20List.filter((i) => i.walletOwnerAddress === wallets[selectedWallet].address).map((i) => i.address)
+    if (!addressList.includes(item.address)) return false
+    if (!item.walletOwnerAddress) return true
+    return true
   }
 
   return (
@@ -192,7 +202,7 @@ export default () => {
                     <ToggleSwitch 
                       size="small" 
                       onColor="rgba(102, 136, 255, 1)" 
-                      isOn={localKRC20List.map((i) => i.address).includes(item.address)} 
+                      isOn={isOn(item)} 
                       offColor="rgba(96, 99, 108, 1)"
                       onToggle={() => toggleToken(item)}
                     />

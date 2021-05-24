@@ -8,7 +8,7 @@ import {generateMnemonic, getWalletFromMnemonic} from '../../utils/blockchain';
 import AlertModal from '../../components/AlertModal';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import {walletsAtom} from '../../atoms/wallets';
-import {saveMnemonic, saveWallets} from '../../utils/local';
+import {saveMnemonic} from '../../utils/local';
 import {ThemeContext} from '../../ThemeContext';
 import List from '../../components/List';
 import {getLanguageString} from '../../utils/lang';
@@ -34,22 +34,6 @@ const CreateWithMnemonicPhrase = () => {
 
   const handleAccess = async () => {
     setLoading(true);
-    // const interactionPromise = InteractionManager.runAfterInteractions(
-    //   async () => {
-    //     const newWallet = await getWalletFromMnemonic(mnemonic.trim());
-    //     if (!newWallet) {
-    //       setMnemonicError('Error happen!');
-    //       return;
-    //     }
-    //     await saveMnemonic(newWallet.address, mnemonic.trim());
-    //     const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
-    //     _wallets.push(newWallet as Wallet);
-    //     await saveWallets(_wallets);
-    //     setLoading(false);
-    //     setWallets(_wallets);
-    //   },
-    // );
-    // return () => interactionPromise.cancel();
     setTimeout(async () => {
       const newWallet = await getWalletFromMnemonic(mnemonic.trim());
       if (!newWallet) {
@@ -57,11 +41,15 @@ const CreateWithMnemonicPhrase = () => {
         return;
       }
       await saveMnemonic(newWallet.address, mnemonic.trim());
-      const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
-      _wallets.push(newWallet as Wallet);
-      await saveWallets(_wallets);
+      // const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
+      // _wallets.push(newWallet as Wallet);
+      setWallets((oldWallets) => [
+        ...oldWallets,
+        newWallet
+      ]);
+      // await saveWallets(_wallets);
       setLoading(false);
-      setWallets(_wallets);
+      // setWallets(_wallets);
     }, 1);
   };
 
