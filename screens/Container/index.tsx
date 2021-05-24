@@ -249,7 +249,7 @@ const AppContainer = () => {
 
   useEffect(() => {
     (async () => {
-      if (!inited) return;
+      if (!inited || appStatus !== 'OK') return;
       let _selectedWallet = await getSelectedWallet();
       if (_selectedWallet !== selectedWallet) {
         await saveSelectedWallet(selectedWallet);
@@ -259,7 +259,7 @@ const AppContainer = () => {
 
   useEffect(() => {
     (async () => {
-      if (!inited) return;
+      if (!inited || appStatus !== 'OK') return;
       await saveWallets(wallets);
     })();
   }, [wallets, inited]);
@@ -317,15 +317,17 @@ const AppContainer = () => {
       // Get app status
       const serverStatus = await getAppStatus();
 
+      console.log(serverStatus)
+
       if (serverStatus.status === 'UNDER_MAINTAINANCE') {
-        setAppStatus('UNDER_MAINTAINANCE');
+        setAppStatus('UNDER_MAINTAINANCE')
         return;
       }
       
       try {
         // Init dex config
         await initDexConfig()
-        setDexStatus('ONLINE')
+        setDexStatus(serverStatus.dexStatus)
       } catch (error) {
         setDexStatus('OFFLINE')
         console.error('Init Dex config fail');

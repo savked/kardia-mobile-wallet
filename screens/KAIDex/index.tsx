@@ -17,6 +17,7 @@ import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import { formatDexToken } from '../../services/dex';
 import UnderMaintainence from '../common/UnderMaintainence';
 import { dexStatusAtom } from '../../atoms/dexStatus';
+import ComingSoon from '../common/ComingSoon';
 
 export default () => {
   const theme = useContext(ThemeContext);
@@ -65,6 +66,10 @@ export default () => {
 
   if (dexStatus === 'OFFLINE') {
     return <UnderMaintainence />
+  }
+
+  if (dexStatus === 'COMING_SOON') {
+    return <ComingSoon />
   }
 
   if (selectingPair) {

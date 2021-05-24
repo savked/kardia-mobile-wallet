@@ -58,10 +58,18 @@ export const parseDecimals = (kaiAmount: number | string, decimals: number) => {
   // return kaiAmount / 10 ** decimals;
 };
 
-export const cellValueWithDecimals = (amount: number | string, decimals: number) => {
+export const cellValueWithDecimals = (amount: number | string, decimals: number, returnType = 'string') => {
   const rawValue = new BigNumber(amount);
+  if (returnType === 'bignum') {
+    return rawValue.multipliedBy(new BigNumber(10 ** decimals))
+  }
   return rawValue.multipliedBy(new BigNumber(10 ** decimals)).toFixed(0, 1)
   // return kaiAmount / 10 ** decimals;
+}
+
+export const getPartial = (value: string, partial: number, decimals: number) => {
+  return (new BigNumber(value)).multipliedBy(new BigNumber(partial)).toFixed(decimals, 1)
+  // return (cellValueWithDecimals(value, decimals, 'bignum') as BigNumber).multipliedBy(new BigNumber(partial)).toFixed(decimals, 1)
 }
 
 export const formatNumberString = (numberString: string, fragtionsCount?: number) => {

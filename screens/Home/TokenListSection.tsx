@@ -5,7 +5,7 @@ import {ActivityIndicator, Image, TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
 // import List from '../../components/List';
 import {styles} from './style';
-import {parseDecimals} from '../../utils/number';
+import {formatNumberString, parseDecimals} from '../../utils/number';
 import Button from '../../components/Button';
 import {useRecoilValue} from 'recoil';
 import numeral from 'numeral';
@@ -132,9 +132,7 @@ const TokenListSection = () => {
               justifyContent: 'center',
             }}>
             <CustomText style={[styles.kaiAmount, {color: theme.textColor}]}>
-              {numeral(
-                parseDecimals(balance[index], item.decimals),
-              ).format('0,0.00')}
+              {formatNumberString(parseDecimals(balance[index], item.decimals), 2)}
             </CustomText>
             <CustomText style={{color: theme.ghostTextColor}}>
               {item.symbol}

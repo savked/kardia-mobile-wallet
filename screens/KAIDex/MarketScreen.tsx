@@ -9,14 +9,15 @@ import Button from '../../components/Button';
 import Divider from '../../components/Divider';
 import CustomText from '../../components/Text';
 import CustomTextInput from '../../components/TextInput';
-import { approveToken, calculateDexAmountOut, calculateDexExchangeRate, calculateTransactionDeadline, formatDexToken, getTotalVolume } from '../../services/dex';
+import { approveToken, calculateDexAmountOut, calculateTransactionDeadline, formatDexToken, getTotalVolume } from '../../services/dex';
 import { getBalance } from '../../services/krc20';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
 import { getSelectedWallet, getWallets } from '../../utils/local';
-import { formatNumberString, getDecimalCount, getDigit, isNumber, parseDecimals } from '../../utils/number';
+import { formatNumberString, getDecimalCount, getDigit, getPartial, isNumber, parseDecimals } from '../../utils/number';
 import { swapTokens } from '../../services/dex';
 import { useNavigation } from '@react-navigation/core';
+import Tags from '../../components/Tags';
 
 export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, tokenFromLiquidity: _tokenFromLiquidity, tokenToLiquidity: _tokenToLiquidity, pairAddress}: {
   triggerSelectPair: () => void;
@@ -38,6 +39,8 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   const [amountFrom, setAmountFrom] = useState('0')
   const [amountFromTimeout, setAmountFromTimeout] = useState<any>()
   const [balanceFrom, setBalanceFrom] = useState('0');
+  const [loadingFrom, setLoadingFrom] = useState(false);
+  const [loadingTo, setLoadingTo] = useState(false);
 
   const [tokenTo, setTokenTo] = useState<PairToken | undefined>(_tokenTo)
   const [tokenToLiquidity, setTokenToLiquidity] = useState(_tokenToLiquidity)
@@ -93,25 +96,26 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
     (async () => {
       if (!tokenTo) return;
 
-      const wallets = await getWallets();
-      const selectedWallet = await getSelectedWallet();
+      const wallets: Wallet[] = await getWallets();
+      const selectedWallet: number = await getSelectedWallet();
 
       if (tokenTo.symbol === 'KAI') {
-        setBalanceTo(wallets[selectedWallet].balance)
+        setBalanceTo(wallets[selectedWallet].balance.toString())
       } else if (tokenTo.symbol !== 'WKAI') {
         const balance = await getBalance(tokenTo.hash, wallets[selectedWallet].address)
-        setBalanceTo(balance)
+        setBalanceTo(balance.toString())
       }
     })()
   }, [tokenTo])
 
   useEffect(() => {
     (async () => {
-      if (!_tokenFromLiquidity || !_tokenToLiquidity || !pairAddress) return;
+      if (!_tokenFromLiquidity || !_tokenToLiquidity || !pairAddress || !_tokenFrom || !_tokenTo) return;
       const _volume = await getTotalVolume(pairAddress)
       setVolume(_volume);
-      const bnFrom = new BigNumber(_tokenFromLiquidity)
-      const bnTo = new BigNumber(_tokenToLiquidity)
+
+      const bnFrom = new BigNumber(_tokenFromLiquidity).dividedBy(10 ** _tokenFrom.decimals)
+      const bnTo = new BigNumber(_tokenToLiquidity).dividedBy(10 ** _tokenTo.decimals)
       const _rate = bnTo.dividedBy(bnFrom)
       setRate(_rate)
     })()
@@ -126,6 +130,8 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           return;
         }
 
+        setLoadingTo(true)
+
         if (amountToTimeout) {
           clearTimeout(amountToTimeout)
         }
@@ -133,9 +139,10 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
         const timeoutId = setTimeout(async () => {
           const _newTo = await calculateDexAmountOut(_amountFrom, "TOTAL", _tokenTo, _tokenFrom)
           setAmountTo(formatNumberString(_newTo))
+          setLoadingTo(false)
           clearTimeout(timeoutId)
           setAmountToTimeout(null)
-        }, 1500)
+        }, 1000)
         setAmountToTimeout(timeoutId)
       }
     })()
@@ -150,15 +157,18 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           return;
         }
 
+        setLoadingFrom(true)
+
         if (amountFromTimeout) {
           clearTimeout(amountFromTimeout)
         }
         const timeoutId = setTimeout(async () => {
           const _newFrom = await calculateDexAmountOut(_amountTo, "AMOUNT", tokenTo, tokenFrom)
           setAmountFrom(formatNumberString(_newFrom))
+          setLoadingFrom(false)
           clearTimeout(timeoutId)
           setAmountToTimeout(null)
-        }, 1500)
+        }, 1000)
 
         setAmountFromTimeout(timeoutId)
       }
@@ -215,8 +225,6 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
         slippageTolerance,
         txDeadline: await calculateTransactionDeadline(txDeadline),
       }
-
-      console.log('swapParams', swapParams)
 
       const txResult = await swapTokens(swapParams, _wallets[_selectedWalelt])
       setProcessing(false)
@@ -393,7 +401,8 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
             <CustomTextInput
               value={amountTo}
-              // editable={false}
+              editable={editting !== 'from'}
+              loading={loadingTo}
               onChangeText={(newValue) => {
                 const digitOnly = getDigit(newValue, tokenTo.decimals === 0 ? false : true);
                 if (digitOnly === '') {
@@ -461,6 +470,47 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               }
             </View>
           </View>
+          <View style={{flexDirection: 'row', marginTop: 12}}>
+            <Tags 
+              content={`25 %`} 
+              active={balanceTo !== '0' && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.25, tokenTo.decimals), tokenTo.decimals) } 
+              containerStyle={{marginRight: 12}} 
+              onPress={() => {
+                setEditting('to')
+                const partialValue = getPartial(balanceTo, 0.25, tokenTo.decimals)
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+              }} 
+            />
+            <Tags 
+              content={`50 %`} 
+              active={balanceTo !== '0' && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.5, tokenTo.decimals), tokenTo.decimals) } 
+              containerStyle={{marginRight: 12}} 
+              onPress={() => {
+                setEditting('to')
+                const partialValue = getPartial(balanceTo, 0.5, tokenTo.decimals)
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+              }}
+            />
+            <Tags 
+              content={`75 %`} 
+              active={balanceTo !== '0' && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.75, tokenTo.decimals), tokenTo.decimals) } 
+              containerStyle={{marginRight: 12}} 
+              onPress={() => {
+                setEditting('to')
+                const partialValue = getPartial(balanceTo, 0.75, tokenTo.decimals)
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+              }}
+            />
+            <Tags 
+              content={`100 %`} 
+              active={balanceTo !== '0' && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 1, tokenTo.decimals), tokenTo.decimals) } 
+              onPress={() => {
+                setEditting('to')
+                const partialValue = getPartial(balanceTo, 1, tokenTo.decimals)
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+              }} 
+            />
+          </View>
           <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
             {getLanguageString(language, 'BALANCE')}:{' '}
             <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceTo, tokenTo.decimals), 6)}</CustomText>
@@ -521,6 +571,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
             <CustomTextInput
               value={amountFrom}
+              loading={loadingFrom}
               onChangeText={(newValue) => {
                 // setAmountFrom(formatNumberString(getDigit(newValue)))
                 const digitOnly = getDigit(newValue, tokenFrom.decimals === 0 ? false : true);
@@ -589,7 +640,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           </View>
           <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
             {getLanguageString(language, 'BALANCE')}:{' '}
-            <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceFrom, tokenFrom.decimals), 6)}</CustomText>
+            <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceFrom, tokenFrom.decimals))}</CustomText>
           </CustomText>
           <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
             Liquidity:{' '}
