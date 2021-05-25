@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 const removeTrailingZeros = (value: any) => {
   const regEx1 = /^[0]+/;
   const regEx2 = /[0]+$/;
@@ -36,10 +38,11 @@ export const weiToKAI = (value: any): string => {
     return '0';
   }
 
-  value = value.toLocaleString('en-US', {useGrouping: false});
+  const bnValue = new BigNumber(value) 
+  // value.toLocaleString('en-US', {useGrouping: false});
 
-  const cellString = value.toString().padStart(36, '0');
-  const kaiNumString = parseInt(cellString.slice(0, 18), 10);
-  const kaiDecimalString = cellString.slice(-18);
-  return `${removeTrailingZeros(`${kaiNumString}.${kaiDecimalString}`)}`;
+  // const cellString = value.toString().padStart(36, '0');
+  // const kaiNumString = parseInt(cellString.slice(0, 18), 10);
+  // const kaiDecimalString = cellString.slice(-18);
+  return bnValue.dividedBy(new BigNumber(10 ** 18)).toFixed();
 };
