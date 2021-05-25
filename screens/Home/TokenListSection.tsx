@@ -17,7 +17,9 @@ import {getSelectedWallet, getWallets} from '../../utils/local';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import CustomText from '../../components/Text';
 
-const TokenListSection = () => {
+const TokenListSection = ({refreshTime}: {
+  refreshTime: number
+}) => {
   const navigation = useNavigation();
   const theme = useContext(ThemeContext);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
@@ -29,19 +31,21 @@ const TokenListSection = () => {
   // const tokenList = useRecoilValue(krc20ListAtom);
   const tokenList = useRecoilValue(filterByOwnerSelector(wallets[selectedWallet].address))
 
+  const updateBalanceAll = async () => {
+    setLoading(true);
+    const _wallets = await getWallets();
+    const _selectedWallet = await getSelectedWallet();
+    const promiseArr = tokenList.map((i) => {
+      return getBalance(i.address, _wallets[_selectedWallet].address);
+    });
+    const balanceArr = await Promise.all(promiseArr);
+    setBalance(balanceArr);
+    setLoading(false);
+  }
+
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const _wallets = await getWallets();
-      const _selectedWallet = await getSelectedWallet();
-      const promiseArr = tokenList.map((i) => {
-        return getBalance(i.address, _wallets[_selectedWallet].address);
-      });
-      const balanceArr = await Promise.all(promiseArr);
-      setBalance(balanceArr);
-      setLoading(false);
-    })();
-  }, [tokenList, selectedWallet]);
+    updateBalanceAll();
+  }, [tokenList, selectedWallet, refreshTime]);
 
   const renderIcon = (avatar: string) => {
     return (

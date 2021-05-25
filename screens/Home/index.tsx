@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, Dimensions, Image, ImageBackground, Linking, Platform, RefreshControl, ScrollView, View} from 'react-native';
+import {ActivityIndicator, Dimensions, Image, ImageBackground, Linking, Platform, RefreshControl, ScrollView, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
@@ -39,6 +39,7 @@ const HomeScreen = () => {
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
   const [inited, setInited] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [refreshTime, setRefreshTime] = useState(Date.now())
 
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(
@@ -141,18 +142,9 @@ const HomeScreen = () => {
     return wallets[selectedWallet].balance;
   }
 
-  const _getStaked = () => {
-    if (!wallets[selectedWallet]) return 0;
-    return wallets[selectedWallet].staked;
-  }
-
-  const _getUndelegating = () => {
-    if (!wallets[selectedWallet]) return 0;
-    return wallets[selectedWallet].undelegating;
-  }
-
   const onRefresh = async () => {
     setRefreshing(true)
+    setRefreshTime(Date.now())
     await updateWalletBalance();
     setRefreshing(false)
   }
@@ -229,7 +221,7 @@ const HomeScreen = () => {
               style={{paddingHorizontal: 16, paddingVertical: 8}}
             />
           </View>
-          <TokenListSection />
+          <TokenListSection refreshTime={refreshTime} />
         </ScrollView>
       </ImageBackground>
     </SafeAreaView>
