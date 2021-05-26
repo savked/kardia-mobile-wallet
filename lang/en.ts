@@ -277,6 +277,10 @@ export const lang: Language = {
     MINS: 'mins',
     TX_SETTING: 'Transaction settings',
     VOLUME_24H: 'Volume (24h):',
-    SWAP_GENERAL_ERROR: 'Transaction failed. Please try setting deadline and slippage tolerance then try again.'
+    SWAP_GENERAL_ERROR: 'Transaction failed. Please try setting deadline and slippage tolerance then try again.',
+    ENTER_AMOUNT: 'Enter amount',
+    NOT_ENOUGH_KRC20_FOR_TX: 'Insufficient {{SYMBOL}} Balance',
+    APPROVE: 'Approve',
+    APPROVE_NOTE: 'Approving will NOT cost you any token.'
   },
 };

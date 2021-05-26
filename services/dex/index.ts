@@ -4,9 +4,10 @@ import SWAPABI from './swapABI.json'
 import { KAI_TOKEN_NAME, KAI_TOKEN_SYMBOL } from '../../config';
 import { DEX_ENDPOINT, RPC_ENDPOINT } from '../config';
 import KRC20ABI from '../krc20/KRC20ABI.json';
-import { cellValueWithDecimals } from '../../utils/number';
+// import { cellValueWithDecimals } from '../../utils/number';
 import { requestWithTimeOut } from '../util';
 import { isKAI } from '../../utils/dex';
+import BigNumber from 'bignumber.js';
 
 let SWAP_ROUTER_SMC = ''
 let FACTORY_SMC = ''
@@ -129,16 +130,46 @@ export const formatDexToken = (token: PairToken, wallet: Wallet) => {
   } : token
 }
 
+export const getApproveState = async (token: PairToken, amount: string | number, wallet: Wallet) => {
+  if (amount === '0' || amount === 0) {
+    return false
+  }
+  const client = new KaidexClient({
+    rpcEndpoint: RPC_ENDPOINT,
+    smcAddresses: {
+      router: SWAP_ROUTER_SMC,
+      factory: FACTORY_SMC,
+      // kaiSwapper?: string;
+      limitOrder: LIMIT_ORDER_SMC,
+      wkai: WKAI_SMC
+    }
+  })
+
+  const approveState = await client.getApprovalState({
+    tokenAddr: token.hash,
+    decimals: token.decimals,
+    walletAddress: wallet.address,
+    spenderAddress: SWAP_ROUTER_SMC,
+    amountToCheck: amount
+  })
+
+  return approveState
+}
+
 export const approveToken = async (token: PairToken, amount: string | number, wallet: Wallet) => {
 
   const sdkClient = new KardiaClient({endpoint: RPC_ENDPOINT});
   const smcInstance = sdkClient.contract
-
+ 
   smcInstance.updateAbi(KRC20ABI)
 
-  const cellValue = cellValueWithDecimals(amount, token.decimals)
+  // const cellValue = cellValueWithDecimals(amount, token.decimals)
 
-  const invocation = smcInstance.invokeContract('approve', [wallet.address, cellValue]);
+  const totalSupply = await smcInstance.invokeContract('totalSupply', []).call(token.hash);
+  const bnTotalSypply = new BigNumber(totalSupply);
+
+  // const invocation = smcInstance.invokeContract('approve', [SWAP_ROUTER_SMC, `${cellValue}00`]);
+  const invocation = smcInstance.invokeContract('approve', [SWAP_ROUTER_SMC, bnTotalSypply.toFixed()]);
   const rs = invocation.send(wallet.privateKey!, token.hash)
   
   return rs;

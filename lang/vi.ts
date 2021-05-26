@@ -270,6 +270,10 @@ export const lang: Language = {
     MINS: 'phút',
     TX_SETTING: 'Cài đặt lệnh giao dịch',
     VOLUME_24H: 'Giao dịch (24h):',
-    SWAP_GENERAL_ERROR: 'Giao dịch thất bại. Vui lòng điều chỉnh thời gian, giới hạn trượt giá và thử lại.'
+    SWAP_GENERAL_ERROR: 'Giao dịch thất bại. Vui lòng điều chỉnh thời gian, giới hạn trượt giá và thử lại.',
+    ENTER_AMOUNT: 'Nhập số token',
+    NOT_ENOUGH_KRC20_FOR_TX: 'Ví không đủ {{SYMBOL}}',
+    APPROVE: 'Cấp quyền',
+    APPROVE_NOTE: 'Thao tác cấp quyền sẽ không ảnh hưởng đến token của bạn.'
   },
 };

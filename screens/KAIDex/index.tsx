@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -23,6 +23,8 @@ export default () => {
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
 
+  const {params} = useRoute();
+
   const [type, setType] = useState('MARKET');
   const [selectingPair, setSelectingPair] = useState(false)
 
@@ -46,6 +48,25 @@ export default () => {
   );
 
   useEffect(() => {
+    if (!params || loading || error) return;
+    if (!pairData.pairs) return;
+    const _pairAddress = (params as any).pairAddress
+
+    const item = pairData.pairs.find((i: any) => {
+      return i.contract_address === _pairAddress
+    })
+
+    if (!item) return;
+    setTokenFrom(formatDexToken(item.t1, wallets[selectedWallet]));
+    setTokenTo(formatDexToken(item.t2, wallets[selectedWallet]));
+    setTokenFromLiquidity(item.token1_liquidity);
+    setTokenToLiquidity(item.token2_liquidity)
+    setPairAddress(item.contract_address)
+    setSelectingPair(false)
+  }, [params])
+
+  useEffect(() => {
+    if (params) return
     if (pairData && pairData.pairs) {
       const pair = pairData.pairs[0]
       if (!pair) return

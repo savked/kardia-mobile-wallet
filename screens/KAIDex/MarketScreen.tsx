@@ -9,7 +9,7 @@ import Button from '../../components/Button';
 import Divider from '../../components/Divider';
 import CustomText from '../../components/Text';
 import CustomTextInput from '../../components/TextInput';
-import { approveToken, calculateDexAmountOut, calculateTransactionDeadline, formatDexToken, getTotalVolume } from '../../services/dex';
+import { approveToken, calculateDexAmountOut, calculateTransactionDeadline, formatDexToken, getApproveState, getTotalVolume } from '../../services/dex';
 import { getBalance } from '../../services/krc20';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
@@ -41,6 +41,9 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   const [balanceFrom, setBalanceFrom] = useState('0');
   const [loadingFrom, setLoadingFrom] = useState(false);
   const [loadingTo, setLoadingTo] = useState(false);
+
+  const [approvedState, setApprovedState] = useState(true)
+  const [approving, setApproving] = useState(false);
 
   const [tokenTo, setTokenTo] = useState<PairToken | undefined>(_tokenTo)
   const [tokenToLiquidity, setTokenToLiquidity] = useState(_tokenToLiquidity)
@@ -104,6 +107,9 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
       } else if (tokenTo.symbol !== 'WKAI') {
         const balance = await getBalance(tokenTo.hash, wallets[selectedWallet].address)
         setBalanceTo(balance.toString())
+
+        const _approveState = await getApproveState(tokenTo, getDigit(amountTo), wallets[selectedWallet])
+        setApprovedState(_approveState)
       }
     })()
   }, [tokenTo])
@@ -123,7 +129,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
 
   useEffect(() => {
     (async () => {
-      if (editting === 'from' && rate && _tokenFrom && _tokenTo) {
+      if (editting === 'from' && rate && tokenFrom && tokenTo) {
         const _amountFrom = getDigit(amountFrom, false)
         if (_amountFrom === '0' || _amountFrom === '') {
           setAmountTo('0');
@@ -137,7 +143,13 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
         }
 
         const timeoutId = setTimeout(async () => {
-          const _newTo = await calculateDexAmountOut(_amountFrom, "TOTAL", _tokenTo, _tokenFrom)
+          const _newTo = await calculateDexAmountOut(_amountFrom, "TOTAL", tokenTo, tokenFrom)
+
+          if (tokenTo) {
+            const _approveState = await getApproveState(tokenTo, _newTo, wallets[selectedWallet])
+            setApprovedState(_approveState)
+          }
+
           setAmountTo(formatNumberString(_newTo))
           setLoadingTo(false)
           clearTimeout(timeoutId)
@@ -163,11 +175,15 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           clearTimeout(amountFromTimeout)
         }
         const timeoutId = setTimeout(async () => {
+          const _approveState = await getApproveState(tokenTo, _amountTo, wallets[selectedWallet])
+          setApprovedState(_approveState)
+
           const _newFrom = await calculateDexAmountOut(_amountTo, "AMOUNT", tokenTo, tokenFrom)
           setAmountFrom(formatNumberString(_newFrom))
           setLoadingFrom(false)
           clearTimeout(timeoutId)
           setAmountToTimeout(null)
+
         }, 1000)
 
         setAmountFromTimeout(timeoutId)
@@ -199,15 +215,37 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
     }
   }
 
+  const handleApprove = async () => {
+    if (!tokenFrom || !tokenTo) return;
+
+    setApproving(true)
+
+    const _wallets = await getWallets();
+    const _selectedWalelt = await getSelectedWallet();
+    
+    await approveToken(tokenTo, getDigit(amountTo), _wallets[_selectedWalelt])
+    
+    const _approveState = await getApproveState(tokenTo, getDigit(amountTo), wallets[selectedWallet])
+    setApprovedState(_approveState)
+    setApproving(false)
+  }
+
   const handleSubmitMarket = async () => {
     if (!tokenFrom || !tokenTo) return;
+    const bnTo = new BigNumber(getDigit(amountTo))
+    const bnBalanceTo = new BigNumber(parseDecimals(getDigit(balanceTo), tokenTo.decimals))
+    if (bnTo.isGreaterThan(bnBalanceTo)) {
+      setSwappError(getLanguageString(language, 'NOT_ENOUGH_KRC20_FOR_TX').replace('{{SYMBOL}}', tokenTo.symbol))
+      return;
+    }
+
     setProcessing(true)
+    setSwappError('')
 
     try {
       const _wallets = await getWallets();
       const _selectedWalelt = await getSelectedWallet();
-      // Approve token before swap
-      await approveToken(tokenTo, getDigit(amountTo), _wallets[_selectedWalelt])
+      
       // Swap token
       const swapParams = {
         amountIn: getDigit(amountTo),
@@ -231,10 +269,14 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
 
       if (txResult.status === 1) {
         // Handling success tx
+        setAmountFrom('0')
+        setAmountTo('0')
+        setSwappError('')
         navigation.navigate('Transaction', {
           screen: 'SuccessTx',
           params: {
             type: 'dex',
+            pairAddress,
             dexAmount: mode === 'SELL' ? getDigit(amountTo) : getDigit(amountFrom),
             tokenSymbol: mode === 'SELL' ? tokenTo.symbol : tokenFrom.symbol,
             dexMode: `DEX_MODE_${mode}`,
@@ -292,6 +334,89 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
             <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'TX_SETTING')}</CustomText>
           </TouchableOpacity>
         </View>
+      )
+    }
+  }
+
+  const renderButton = () => {
+    if (!tokenFrom || !tokenTo) return null;
+
+    if (amountFrom === '0' || amountTo === '0') {
+      return (
+        <Button
+          title={getLanguageString(language, 'ENTER_AMOUNT')}
+          disabled={true}
+          onPress={() => {}}
+          style={{
+            marginTop: 32,
+            width: '100%',
+          }}
+          textStyle={{
+            fontWeight: '500',
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+          }}
+        />
+      )
+    }
+
+    if (!approvedState) {
+      return (
+        <View
+          style={{
+            marginTop: 24,
+            width: '100%',
+          }}
+        >
+          <CustomText
+            style={{
+              color: theme.textColor,
+              fontSize: theme.defaultFontSize + 1,
+              fontStyle: 'italic'
+            }}
+          >
+            {getLanguageString(language, 'APPROVE_NOTE')}
+          </CustomText>
+          <Button
+            title={getLanguageString(language, 'APPROVE')}
+            loading={approving}
+            disabled={approving}
+            onPress={handleApprove}
+            style={{
+              marginTop: 8,
+              width: '100%',
+            }}
+            textStyle={{
+              fontWeight: '500',
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+            }}
+          />
+        </View>
+      )
+    } else {
+      return (
+        <Button
+          loadingColor={mode === 'BUY' ? '#000000' : '#FFFFFF'}
+          loading={processing}
+          disabled={processing}
+          title={
+            mode === 'BUY' ? 
+            `${getLanguageString(language, 'BUY')} ${tokenFrom.symbol}` : 
+            `${getLanguageString(language, 'SELL')} ${tokenTo.symbol}`
+          }
+          type="secondary"
+          onPress={handleSubmitMarket}
+          style={{
+            marginTop: 32,
+            width: '100%',
+            backgroundColor: mode === 'BUY' ? 'rgba(105, 235, 102, 1)' : 'rgba(255, 66, 67, 1)'
+          }}
+          textStyle={{
+            fontSize: theme.defaultFontSize + 3,
+            fontWeight: '500',
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+            color: mode === 'BUY' ? '#000000' : '#FFFFFF'
+          }}
+        />
       )
     }
   }
@@ -401,6 +526,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
             <CustomTextInput
               value={amountTo}
+              keyboardType="numeric"
               editable={editting !== 'from'}
               loading={loadingTo}
               onChangeText={(newValue) => {
@@ -571,6 +697,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
             <CustomTextInput
               value={amountFrom}
+              keyboardType="numeric"
               loading={loadingFrom}
               onChangeText={(newValue) => {
                 // setAmountFrom(formatNumberString(getDigit(newValue)))
@@ -652,33 +779,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
       )}
       {renderRate()}
       {renderSetting()}
-      {
-        tokenFrom && tokenTo && (
-          <Button
-            loadingColor={mode === 'BUY' ? '#000000' : '#FFFFFF'}
-            loading={processing}
-            disabled={processing}
-            title={
-              mode === 'BUY' ? 
-              `${getLanguageString(language, 'BUY')} ${tokenFrom.symbol}` : 
-              `${getLanguageString(language, 'SELL')} ${tokenTo.symbol}`
-            }
-            type="secondary"
-            onPress={handleSubmitMarket}
-            style={{
-              marginTop: 32,
-              width: '100%',
-              backgroundColor: mode === 'BUY' ? 'rgba(105, 235, 102, 1)' : 'rgba(255, 66, 67, 1)'
-            }}
-            textStyle={{
-              fontSize: theme.defaultFontSize + 3,
-              fontWeight: '500',
-              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-              color: mode === 'BUY' ? '#000000' : '#FFFFFF'
-            }}
-          />
-        )
-      }
+      {renderButton()}
       <CustomText
         style={{
           color: 'rgba(255, 66, 67, 1)',

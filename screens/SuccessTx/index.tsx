@@ -50,6 +50,7 @@ export default () => {
   const withdrawAmount = params ? (params as any).withdrawAmount : '';
   const dexMode = params ? (params as any).dexMode : '';
   const dexAmount = params ? (params as any).dexAmount : '';
+  const pairAddress = params ? (params as any).pairAddress : '';
   
   const theme = useContext(ThemeContext);
 
@@ -424,7 +425,7 @@ export default () => {
       case 'dex':
         navigation.reset({
           index: 0,
-          routes: [{name: 'DEX'}],
+          routes: [{name: 'DEX', params: {pairAddress}}],
         });
         break;
       default:
