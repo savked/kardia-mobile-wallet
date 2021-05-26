@@ -6,6 +6,7 @@ export const lang: Language = {
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:
+    CREATE: 'Tạo',
     UNDER_MAINTAINENCE_DESC: 'Chúng tôi đang thực hiện vài thay đổi để bạn có trải nghiệm tốt nhất.',
     COMING_SOON_DESC: 'Chỉ vài ngày nữa thôi!! Kiên nhẫn nào',
     COPIED: 'Sao chép thành công',

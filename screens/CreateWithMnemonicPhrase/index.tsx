@@ -6,22 +6,23 @@ import {styles} from './style';
 import Button from '../../components/Button';
 import {generateMnemonic, getWalletFromMnemonic} from '../../utils/blockchain';
 import AlertModal from '../../components/AlertModal';
-import {useRecoilState, useRecoilValue} from 'recoil';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {walletsAtom} from '../../atoms/wallets';
 import {saveMnemonic} from '../../utils/local';
 import {ThemeContext} from '../../ThemeContext';
 import List from '../../components/List';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
-import {useNavigation} from '@react-navigation/core';
+import {useNavigation, useRoute} from '@react-navigation/core';
 import CustomText from '../../components/Text';
 
 const CreateWithMnemonicPhrase = () => {
+  const {params} = useRoute();
   const navigation = useNavigation();
   const theme = useContext(ThemeContext);
   const [mnemonic, setMnemonic] = useState('');
   const [mnemonicError, setMnemonicError] = useState('');
-  const [wallets, setWallets] = useRecoilState(walletsAtom);
+  const setWallets = useSetRecoilState(walletsAtom);
   const [loading, setLoading] = useState(false);
   // const [showConfirm, setShowConfirm] = useState(false);
 
@@ -49,6 +50,11 @@ const CreateWithMnemonicPhrase = () => {
       ]);
       // await saveWallets(_wallets);
       setLoading(false);
+
+      if (params && (params as any).backOnSuccess) {
+        navigation.goBack()
+      }
+
       // setWallets(_wallets);
     }, 1);
   };

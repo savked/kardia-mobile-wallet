@@ -16,6 +16,7 @@ import KRC20Tokens from './screens/KRC20Tokens';
 import AddVerifiedKRC20Tokens from './screens/AddVerifiedKRC20Tokens';
 import AddKRC20Tokens from './screens/AddKRC20Tokens';
 import SettingStackScreen from './SettingStack';
+import CreateWithMnemonicPhrase from './screens/CreateWithMnemonicPhrase';
 
 const HomeStack = createStackNavigator();
 
@@ -64,6 +65,11 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name="AddVerifiedKRC20Tokens"
         component={AddVerifiedKRC20Tokens}
+        options={{headerShown: false}}
+      />
+      <HomeStack.Screen
+        name="CreateWithMnemonicPhrase"
+        component={CreateWithMnemonicPhrase}
         options={{headerShown: false}}
       />
       <HomeStack.Screen
