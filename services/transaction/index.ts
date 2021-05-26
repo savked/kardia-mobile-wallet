@@ -46,11 +46,18 @@ export const getTxByAddress = async (address: string, page = 1, size = 10) => {
   }
 };
 
+export const getRecomendedGasPrice = async () => {
+  const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
+  const gasPrice = await kardiaClient.kaiChain.getGasPrice()
+
+  return Number(gasPrice)
+}
+
 export const createTx = async (
   wallet: Wallet,
   receiver: string,
   amount: number,
-  gasPrice = 1,
+  gasPrice = 1 * (10 ** 9),
 ) => {
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
   const nonce = await kardiaClient.account.getNonce(wallet.address.trim());
@@ -58,7 +65,7 @@ export const createTx = async (
     receiver,
     gas: 50000,
     nonce,
-    gasPrice: gasPrice * 10 ** 9,
+    gasPrice,
     amount: cellValue(amount),
   };
   if (!wallet.privateKey) {

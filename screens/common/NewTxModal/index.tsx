@@ -19,7 +19,7 @@ import {getLanguageString, parseError} from '../../../utils/lang';
 import {toChecksum, truncate} from '../../../utils/string';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import {getBalance} from '../../../services/account';
-import {createTx} from '../../../services/transaction';
+import {createTx, getRecomendedGasPrice} from '../../../services/transaction';
 import {weiToKAI} from '../../../services/transaction/amount';
 import ListCard from './ListCard';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -96,12 +96,22 @@ const NewTxModal = ({
     setLoading(true);
     const wallet = wallets[selectedWallet];
     const _txAmount = Number(amount.replace(/,/g, ''));
+
+    let calculatedGasPrice = await getRecomendedGasPrice();
+
+    if (gasPrice === 1 && calculatedGasPrice) {
+      const _calculated = Math.ceil(calculatedGasPrice * 0.75)
+      calculatedGasPrice = _calculated >= 10**9 ? _calculated : calculatedGasPrice
+    } else if (gasPrice === 3) {
+      calculatedGasPrice = Math.ceil(calculatedGasPrice * 1.25)
+    }
+
     try {
       const txHash = await createTx(
         wallet,
         toChecksum(address.trim()),
         _txAmount,
-        gasPrice,
+        calculatedGasPrice,
       );
       const newBallance = await getBalance(wallet.address);
       const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
