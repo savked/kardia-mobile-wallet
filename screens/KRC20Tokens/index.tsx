@@ -7,7 +7,7 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import ENIcon from 'react-native-vector-icons/Entypo';
 import numeral from 'numeral';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { krc20ListAtom } from '../../atoms/krc20';
+import { filterByOwnerSelector, krc20ListAtom } from '../../atoms/krc20';
 import { languageAtom } from '../../atoms/language';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
@@ -16,7 +16,7 @@ import { getBalance } from '../../services/krc20';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
 import { getSelectedWallet, getWallets } from '../../utils/local';
-import { parseDecimals } from '../../utils/number';
+import { formatNumberString, parseDecimals } from '../../utils/number';
 import {styles} from './style';
 import Button from '../../components/Button';
 import CustomText from '../../components/Text';
@@ -29,7 +29,7 @@ export default () => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const wallets = useRecoilValue(walletsAtom);
-  const tokenList = useRecoilValue(krc20ListAtom);
+  const tokenList = useRecoilValue(filterByOwnerSelector(wallets[selectedWallet].address))
 
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState<number[]>([]);
@@ -168,9 +168,10 @@ export default () => {
                     justifyContent: 'center',
                   }}>
                   <CustomText style={[styles.kaiAmount, {color: theme.textColor}]}>
-                    {numeral(
+                    {/* {numeral(
                       parseDecimals(balance[index], item.decimals),
-                    ).format('0,0.00')}
+                    ).format('0,0.00')} */}
+                    {formatNumberString(parseDecimals(balance[index], item.decimals), 2)}
                   </CustomText>
                   <CustomText style={{color: theme.ghostTextColor}}>
                     {item.symbol}
