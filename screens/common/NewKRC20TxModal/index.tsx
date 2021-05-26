@@ -35,7 +35,7 @@ import AuthModal from '../AuthModal';
 import {useNavigation} from '@react-navigation/native';
 import CustomText from '../../../components/Text';
 
-const MAX_AMOUNT = 5000000000;
+// const MAX_AMOUNT = 5000000000;
 
 const NewKRC20TxModal = ({
   visible,
@@ -397,9 +397,9 @@ const NewKRC20TxModal = ({
               }}
               onChangeText={(newAmount) => {
                 const digitOnly = getDigit(newAmount);
-                if (Number(digitOnly) > MAX_AMOUNT) {
-                  return;
-                }
+                // if (Number(digitOnly) > MAX_AMOUNT) {
+                //   return;
+                // }
                 if (digitOnly === '') {
                   setAmount('0');
                   return;
