@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useContext} from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Image, ScrollView, TouchableOpacity, View} from 'react-native';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import Icon from 'react-native-vector-icons/Entypo';
 import {showTabBarAtom} from '../../atoms/showTabBar';
@@ -47,51 +47,57 @@ export default () => {
         }}>
         {getLanguageString(language, 'IMPORT_WALLET_DESCRIPTION')}
       </CustomText>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('CreateWithMnemonicPhrase', {
-          backOnSuccess: true
-        })}
-        style={[
-          styles.cardWrapper,
-          {backgroundColor: theme.backgroundFocusColor},
-        ]}>
-        <View style={{marginBottom: 24, marginLeft: 18}}>
-          <CustomText
-            allowFontScaling={false}
-            style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
-            {getLanguageString(language, 'CREATE')}
-          </CustomText>
-          <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
-            {getLanguageString(language, 'BY_SEED_PHRASE')}
-          </CustomText>
-        </View>
-        <Image
-          style={{width: 185, height: 162}}
-          source={require('../../assets/create_new_wallet.png')}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('ImportPrivateKey')}
-        style={[
-          styles.cardWrapper,
-          {backgroundColor: theme.backgroundFocusColor},
-        ]}>
-        <View style={{marginBottom: 24, marginLeft: 18}}>
-          <CustomText
-            allowFontScaling={false}
-            style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
-            Import
-          </CustomText>
-          <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
-            {getLanguageString(language, 'BY_PRIVATE_KEY')}
-          </CustomText>
-        </View>
-        <Image
-          style={{width: 185, height: 162}}
-          source={require('../../assets/import_private_key.png')}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{
+          flex: 1,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => navigation.navigate('CreateWithMnemonicPhrase', {
+            backOnSuccess: true
+          })}
+          style={[
+            styles.cardWrapper,
+            {backgroundColor: theme.backgroundFocusColor},
+          ]}>
+          <View style={{marginBottom: 24, marginLeft: 18}}>
+            <CustomText
+              allowFontScaling={false}
+              style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
+              {getLanguageString(language, 'CREATE')}
+            </CustomText>
+            <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+              {getLanguageString(language, 'BY_SEED_PHRASE')}
+            </CustomText>
+          </View>
+          <Image
+            style={{width: 185, height: 162}}
+            source={require('../../assets/create_new_wallet.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ImportPrivateKey')}
+          style={[
+            styles.cardWrapper,
+            {backgroundColor: theme.backgroundFocusColor},
+          ]}>
+          <View style={{marginBottom: 24, marginLeft: 18}}>
+            <CustomText
+              allowFontScaling={false}
+              style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
+              Import
+            </CustomText>
+            <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+              {getLanguageString(language, 'BY_PRIVATE_KEY')}
+            </CustomText>
+          </View>
+          <Image
+            style={{width: 185, height: 162}}
+            source={require('../../assets/import_private_key.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
         onPress={() => navigation.navigate('ImportMnemonic')}
         style={[
           styles.cardWrapper,
@@ -112,6 +118,7 @@ export default () => {
           source={require('../../assets/import_seed_phrase.png')}
         />
       </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 };
