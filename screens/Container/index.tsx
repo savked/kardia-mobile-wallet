@@ -194,6 +194,7 @@ const Wrap = () => {
           backgroundColor: theme.backgroundFocusColor,
           borderTopColor: theme.backgroundFocusColor,
           paddingBottom: 4,
+          elevation: 24,
         },
         labelStyle: {
           fontWeight: 'bold',
@@ -209,7 +210,6 @@ const Wrap = () => {
           },
           shadowOpacity: 2,
           shadowRadius: 4,
-          elevation: 9,
         },
 
         // showLabel: false,
@@ -314,16 +314,9 @@ const AppContainer = () => {
 
   useEffect(() => {
     (async () => {
-      // Get app status
-      const serverStatus = await getAppStatus();
-
-      console.log(serverStatus)
-
-      if (serverStatus.status === 'UNDER_MAINTAINANCE') {
-        setAppStatus('UNDER_MAINTAINANCE')
-        return;
-      }
-      
+      if (!wallets || !selectedWallet || !wallets[selectedWallet]) return
+      const serverStatus = await getAppStatus(wallets[selectedWallet].address);
+      console.log('dex status', serverStatus.dexStatus)
       try {
         // Init dex config
         await initDexConfig()
@@ -333,6 +326,33 @@ const AppContainer = () => {
         console.error('Init Dex config fail');
         console.log(error)
       }
+  
+    })()
+  }, [selectedWallet, wallets])
+
+  useEffect(() => {
+    (async () => {
+      const _wallets = await getWallets();
+      const _selectedWallet = await getSelectedWallet();
+      // Get app status
+      const serverStatus = await getAppStatus(_wallets[_selectedWallet].address);
+
+      console.log(serverStatus)
+
+      if (serverStatus.status === 'UNDER_MAINTAINANCE') {
+        setAppStatus('UNDER_MAINTAINANCE')
+        return;
+      }
+      
+      // try {
+      //   // Init dex config
+      //   await initDexConfig()
+      //   setDexStatus(serverStatus.dexStatus)
+      // } catch (error) {
+      //   setDexStatus('OFFLINE')
+      //   console.error('Init Dex config fail');
+      //   console.log(error)
+      // }
 
       const compareResult = compareVersion(INFO_DATA.version, serverStatus.appVersion)
       setAppStatus(compareResult)
