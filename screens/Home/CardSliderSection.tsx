@@ -29,6 +29,8 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
   );
   const language = useRecoilValue(languageAtom);
 
+  const [snapTimeoutId, setSnapTimeoutId] = useState<any>()
+
   const renderWalletItem = ({item: wallet}: any) => {
     return (
       <View style={styles.kaiCardContainer}>
@@ -126,12 +128,21 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
     //   }
     // })()
     if (carouselRef.current && carouselRef.current.currentIndex !== selectedWallet) {
+
+      if (snapTimeoutId) {
+        clearTimeout(snapTimeoutId)
+      }
+
       // react-native-snap-carousel issue. TODO: wait for issue resolved and update
-      setTimeout(() => {
+      const snap = setTimeout(() => {
         if (carouselRef.current) {
           carouselRef.current.snapToItem(selectedWallet);
+          clearTimeout(snap)
+          setSnapTimeoutId(undefined)
         }
       }, 300);
+
+      setSnapTimeoutId(snap)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedWallet]);
