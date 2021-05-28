@@ -334,8 +334,10 @@ const AppContainer = () => {
     (async () => {
       const _wallets = await getWallets();
       const _selectedWallet = await getSelectedWallet();
-      // Get app status
-      const serverStatus = await getAppStatus(_wallets[_selectedWallet].address);
+
+      const address = _wallets && _selectedWallet && _wallets[_selectedWallet].address ? _wallets[_selectedWallet].address : ''
+
+      const serverStatus = await getAppStatus(address);
 
       console.log(serverStatus)
 
@@ -343,16 +345,6 @@ const AppContainer = () => {
         setAppStatus('UNDER_MAINTAINANCE')
         return;
       }
-      
-      // try {
-      //   // Init dex config
-      //   await initDexConfig()
-      //   setDexStatus(serverStatus.dexStatus)
-      // } catch (error) {
-      //   setDexStatus('OFFLINE')
-      //   console.error('Init Dex config fail');
-      //   console.log(error)
-      // }
 
       const compareResult = compareVersion(INFO_DATA.version, serverStatus.appVersion)
       setAppStatus(compareResult)
