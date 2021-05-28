@@ -314,9 +314,8 @@ const AppContainer = () => {
 
   useEffect(() => {
     (async () => {
-      if (!wallets || !selectedWallet || !wallets[selectedWallet]) return
+      if (!wallets || !wallets[selectedWallet]) return
       const serverStatus = await getAppStatus(wallets[selectedWallet].address);
-      console.log('dex status', serverStatus.dexStatus)
       try {
         // Init dex config
         await initDexConfig()
@@ -335,7 +334,7 @@ const AppContainer = () => {
       const _wallets = await getWallets();
       const _selectedWallet = await getSelectedWallet();
 
-      const address = _wallets && _selectedWallet && _wallets[_selectedWallet].address ? _wallets[_selectedWallet].address : ''
+      const address = _wallets && _wallets[_selectedWallet] ? _wallets[_selectedWallet].address : ''
 
       const serverStatus = await getAppStatus(address);
 
