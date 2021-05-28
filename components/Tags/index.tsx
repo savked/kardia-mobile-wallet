@@ -22,7 +22,7 @@ export default ({active, content, containerStyle, onPress}: {
         backgroundColor: active ? 'rgba(51, 96, 255, 1)' : 'transparent',
         alignItems: 'center',
         justifyContent: 'center',
-        width: 70,
+        width: 73,
         height: 28
       }]}
     >
