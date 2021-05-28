@@ -18,6 +18,7 @@ import { formatDexToken } from '../../services/dex';
 import UnderMaintainence from '../common/UnderMaintainence';
 import { dexStatusAtom } from '../../atoms/dexStatus';
 import ComingSoon from '../common/ComingSoon';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 
 export default () => {
   const theme = useContext(ThemeContext);
@@ -38,11 +39,14 @@ export default () => {
   const selectedWallet = useRecoilValue(selectedWalletAtom)
   const dexStatus = useRecoilValue(dexStatusAtom)
 
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
+
   const { loading, error, data: pairData } = useQuery(GET_PAIRS);
 
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(true);
+      setStatusBarColor(theme.backgroundColor);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
@@ -113,49 +117,54 @@ export default () => {
 
   return (
     <SafeAreaView style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20}}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          flex: 1,
-        }}
-      >
-        {/* <ExchangeScreen /> */}
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-          <View style={{flex: 1}}>
-            <View style={{width: '100%', alignItems: 'center'}}>
-              <View style={{borderRadius: 12, borderColor: 'rgba(96, 99, 108, 1)', borderWidth: 1.5, padding: 4, flexDirection: 'row', marginBottom: 32}}>
-                <TouchableOpacity 
-                  style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'MARKET' ? theme.backgroundFocusColor : 'transparent'}}
-                  onPress={() => setType('MARKET')}
-                >
-                  <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'MARKET' ? '500' : undefined, fontFamily: type === 'MARKET' && Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
-                    {getLanguageString(language, 'MARKET_TITLE')}
-                  </CustomText>
-                </TouchableOpacity>
-                <TouchableOpacity 
-                  style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'LIMIT' ? theme.backgroundFocusColor : 'transparent'}}
-                  onPress={() => setType('LIMIT')}
-                >
-                  <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'LIMIT' ? '500' : undefined, fontFamily: type === 'LIMIT' && Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
-                    {getLanguageString(language, 'LIMIT_TITLE')}
-                  </CustomText>
-                </TouchableOpacity>
-              </View>
+      {/* <ExchangeScreen /> */}
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={{flex: 1}}>
+          <View style={{width: '100%', alignItems: 'center'}}>
+            <View style={{borderRadius: 12, borderColor: 'rgba(96, 99, 108, 1)', borderWidth: 1.5, padding: 4, flexDirection: 'row', marginBottom: 32}}>
+              <TouchableOpacity 
+                style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'MARKET' ? theme.backgroundFocusColor : 'transparent'}}
+                onPress={() => setType('MARKET')}
+              >
+                <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'MARKET' ? '500' : undefined, fontFamily: type === 'MARKET' && Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
+                  {getLanguageString(language, 'MARKET_TITLE')}
+                </CustomText>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'LIMIT' ? theme.backgroundFocusColor : 'transparent'}}
+                onPress={() => setType('LIMIT')}
+              >
+                <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'LIMIT' ? '500' : undefined, fontFamily: type === 'LIMIT' && Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
+                  {getLanguageString(language, 'LIMIT_TITLE')}
+                </CustomText>
+              </TouchableOpacity>
             </View>
-            {type === 'MARKET' ? 
-              <MarketScreen 
-                triggerSelectPair={() => setSelectingPair(true)} 
-                tokenFrom={tokenFrom}
-                tokenTo={tokenTo}
-                tokenFromLiquidity={tokenFromLiquidity}
-                tokenToLiquidity={tokenToLiquidity}
-                pairAddress={pairAddress}
-              /> 
-              : 
-              <ExchangeScreen />}
           </View>
-        </TouchableWithoutFeedback>
-      </ScrollView>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              style={{
+                flex: 1,
+              }}
+              contentContainerStyle={{
+                paddingBottom: 12
+              }}
+            >
+              <View onStartShouldSetResponder={() => true}>
+              {type === 'MARKET' ? 
+                <MarketScreen 
+                  triggerSelectPair={() => setSelectingPair(true)} 
+                  tokenFrom={tokenFrom}
+                  tokenTo={tokenTo}
+                  tokenFromLiquidity={tokenFromLiquidity}
+                  tokenToLiquidity={tokenToLiquidity}
+                  pairAddress={pairAddress}
+                /> 
+                : 
+                <ExchangeScreen />}
+              </View>
+            </ScrollView>
+        </View>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   )
 };
