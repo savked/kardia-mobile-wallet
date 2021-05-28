@@ -94,14 +94,11 @@ export const getCurrentStaking = async (address: string) => {
 
 export const getStakingAmount = async (address: string) => {
   try {
-    console.log('start get staking')
     const _staking: Staking[] = await getCurrentStaking(address);
-    console.log('end get staking')
     let total = 0;
     _staking.forEach((item) => {
       total += Number(weiToKAI(item.stakedAmount));
     });
-    console.log('end parse get staking')
     return total;
   } catch (error) {
     console.error('Get staking amount error for address ', address);
@@ -134,7 +131,7 @@ export const withdrawReward = async (valSmcAddr: string, wallet: Wallet) => {
         gasPrice: DEFAULT_GAS_PRICE,
       });
     if (rs.status === 0) {
-      throw new Error(`Withdraw reward TX Fail: ${rs.transactionHash}`);
+      throw new Error(`Withdraw reward TX Fail: ${rs}`);
     } else {
       return rs;
     }
@@ -182,7 +179,7 @@ export const undelegateWithAmount = async (
         gasPrice: DEFAULT_GAS_PRICE,
       });
     if (rs.status === 0) {
-      throw new Error(`Undelegate TX Fail: ${rs.transactionHash}`);
+      throw new Error(`Undelegate TX Fail: ${rs}`);
     } else {
       return rs;
     }
@@ -202,7 +199,7 @@ export const undelegateAll = async (valSmcAddr: string, wallet: Wallet) => {
         gasPrice: DEFAULT_GAS_PRICE,
       });
     if (rs.status === 0) {
-      throw new Error(`Undelegate TX Fail: ${rs.transactionHash}`);
+      throw new Error(`Undelegate TX Fail: ${rs}`);
     } else {
       return rs;
     }
