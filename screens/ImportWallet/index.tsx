@@ -52,6 +52,9 @@ export default () => {
         style={{
           flex: 1,
         }}
+        contentContainerStyle={{
+          paddingBottom: 12
+        }}
       >
         <TouchableOpacity
           onPress={() => navigation.navigate('CreateWithMnemonicPhrase', {
@@ -68,7 +71,7 @@ export default () => {
               {getLanguageString(language, 'CREATE')}
             </CustomText>
             <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
-              {getLanguageString(language, 'BY_SEED_PHRASE')}
+              {getLanguageString(language, 'CREATE_DESC')}
             </CustomText>
           </View>
           <Image
