@@ -1,4 +1,4 @@
-import { ENDPOINT } from "./config";
+import { ENDPOINT, PROXY_ENDPOINT } from "./config";
 
 const DEFAULT_TIMEOUT = 15 * 1000;
 
@@ -16,14 +16,18 @@ export const requestWithTimeOut = (promise: Promise<any>, timeout?: number) => {
   return Promise.race([timeoutPromise, promise]);
 };
 
-export const getAppStatus = async () => {
+export const getAppStatus = async (address: string) => {
   const requestOptions = {
     method: 'GET',
     redirect: 'follow',
+    headers: new Headers({
+      'DeviceID': address, 
+    })
   };
 
   const response = await requestWithTimeOut(
-    fetch(`${ENDPOINT}status`, requestOptions),
+    // fetch(`${ENDPOINT}status`, requestOptions),
+    fetch(`${PROXY_ENDPOINT}mobile/status`, requestOptions),
     50 * 1000,
   )
 
