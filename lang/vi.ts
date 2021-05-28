@@ -7,6 +7,7 @@ export const lang: Language = {
   mapping: {
     // Common key:
     CREATE: 'Tạo',
+    CREATE_DESC: 'ví mới',
     UNDER_MAINTAINENCE_DESC: 'Chúng tôi đang thực hiện vài thay đổi để bạn có trải nghiệm tốt nhất.',
     COMING_SOON_DESC: 'Chỉ vài ngày nữa thôi!! Kiên nhẫn nào',
     COPIED: 'Sao chép thành công',
@@ -26,7 +27,7 @@ export const lang: Language = {
     CREATE_NEW_WALLET: 'Tạo ví mới',
     IMPORT_WALLET: 'Import ví',
     IMPORT_WALLET_DESCRIPTION:
-      'Import ví của bạn để  sử dụng và quản lý KAI và các đồng chạy trên KardiaChain',
+      'Tạo hoặc Import ví của bạn để  sử dụng và quản lý KAI và các token chạy trên KardiaChain',
     WELCOME: 'Chào mừng đến với Kardia Wallet',
     GETTING_STARTED_DESCRIPTION:
       'Để  bắt đầu, chọn 1 trong các lựa chọn sau đây',
@@ -230,7 +231,7 @@ export const lang: Language = {
     ENTER_PIN_CODE: 'Nhập mã PIN để tiếp tục',
     WRONG_PIN: 'Mã PIN không đúng',
     // Scan QR screen
-    SCAN_QR_TITLE: 'Quét QR code',
+    SCAN_QR_TITLE: 'Quét mã QR',
     LOAD_MORE_WALLET: 'Xem thêm (+5)',
     INVALID_PHRASE: 'Chuỗi khóa không hợp lệ',
     INVALID_PRIVATE_KEY: 'Private Key không hợp lệ',
@@ -238,8 +239,8 @@ export const lang: Language = {
     ENTER_QR_MNEMONIC: 'Nhập 12 từ khoá bí mật, hoặc quét mã QR để tránh sai sót',
     SCAN_QR_PRIVATE_KEY: 'Quét QR code chứa private key để tiếp tục.',
     ENTER_QR_PRIVATE_KEY: 'Nhập private key để tiếp tục, hoặc quét mã QR để tránh sai sót',
-    SCAN_MODE: 'Quét QR code',
-    INPUT_MODE: 'Nhập thủ công',
+    SCAN_MODE: 'Quét mã',
+    INPUT_MODE: 'Nhập mã',
     // Tab nav:
     HOME: 'Ví',
     TRANSACTIONS: 'Giao dịch',

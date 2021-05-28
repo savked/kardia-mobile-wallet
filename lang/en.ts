@@ -7,6 +7,7 @@ export const lang: Language = {
   mapping: {
     // Common key:
     CREATE: 'Create',
+    CREATE_DESC: 'a brand new Wallet',
     UNDER_MAINTAINENCE_DESC: 'We are trying to bring the best experience for you.',
     COMING_SOON_DESC: 'On the way already!! Be patient',
     COPIED: 'Copied',
@@ -24,9 +25,9 @@ export const lang: Language = {
     AGO: 'ago',
     GO_BACK: 'Go back',
     CREATE_NEW_WALLET: 'Create New Wallet',
-    IMPORT_WALLET: 'Access My Wallet',
+    IMPORT_WALLET: 'New Wallet',
     IMPORT_WALLET_DESCRIPTION:
-      'Import your wallets to start sending & receiving digital currency',
+      'Create or Import your wallets to start sending & receiving digital currency',
     WELCOME: 'Welcome to Kardia Wallet',
     GETTING_STARTED_DESCRIPTION:
       'To get started, choose one of the following options',
@@ -245,8 +246,8 @@ export const lang: Language = {
     ENTER_QR_MNEMONIC: 'Input your 12-words secret seed phrase manually, or just scan the QR code.',
     SCAN_QR_PRIVATE_KEY: 'Scan QR code containing wallet\'s private key to import.',
     ENTER_QR_PRIVATE_KEY: 'Input your private key manually, or just scan the QR code.',
-    SCAN_MODE: 'Scan QR code',
-    INPUT_MODE: 'Enter manually',
+    SCAN_MODE: 'Scan code',
+    INPUT_MODE: 'Enter code',
     // Tab nav:
     HOME: 'My Wallet',
     TRANSACTIONS: 'Transactions',
