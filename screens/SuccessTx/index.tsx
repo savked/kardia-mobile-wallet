@@ -90,14 +90,17 @@ export default () => {
           tx = await getKRC20TxDetail(tokenAddress, userAddress, txHash);
         } else {
           tx = await getTxDetail(txHash);
+          // console.log('get tx success', tx)
         }
         if (tx && tx.hash) {
+          // console.log('tx mined')
           const rs = addressBook.filter((item) => item.address === tx.to);
           setAddress(rs[0] || {});
           setTxObj(tx);
           setLoading(false);
           break;
         }
+        // console.log('tx not mined', txHash)
       }
     })();
   }, [addressBook, tokenAddress, txHash, type, userAddress]);
@@ -152,7 +155,7 @@ export default () => {
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {formatNumberString(claimAmount)}
+              {formatNumberString(claimAmount, 6)}
             </CustomText>
             <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               KAI
@@ -376,6 +379,8 @@ export default () => {
         return getLanguageString(language, 'TX_SUCCESS');
       case 'delegate':
         return getLanguageString(language, 'DELEGATE_SUCCESS');
+      case 'claim':
+        return getLanguageString(language, 'CLAIM_SUCCESS').replace(/{{KAI_AMOUNT}}/g, formatNumberString(claimAmount, 6));
       case 'undelegate':
         return getLanguageString(language, 'UNDELEGATE_SUCCESS').replace(/{{KAI_AMOUNT}}/g, formatNumberString(undelegateAmount));
       case 'withdraw': 
