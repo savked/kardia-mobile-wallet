@@ -397,16 +397,21 @@ const NewKRC20TxModal = ({
               }}
               onChangeText={(newAmount) => {
                 const digitOnly = getDigit(newAmount);
-                // if (Number(digitOnly) > MAX_AMOUNT) {
-                //   return;
-                // }
                 if (digitOnly === '') {
                   setAmount('0');
                   return;
                 }
                 if (isNumber(digitOnly)) {
-                  let formatedValue = format((Number(digitOnly)));
-                  if (newAmount[newAmount.length - 1] === '.') formatedValue += '.'
+                  let formatedValue = formatNumberString(digitOnly);
+
+                  const [numParts, decimalParts] = digitOnly.split('.')
+                  if (!decimalParts && decimalParts !== "") {
+                    setAmount(formatedValue);
+                    return
+                  }
+
+                  formatedValue = formatNumberString(numParts) + '.' + decimalParts
+
                   setAmount(formatedValue);
                 }
                 // isNumber(digitOnly) && setAmount(digitOnly);

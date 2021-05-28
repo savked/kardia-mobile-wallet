@@ -111,7 +111,7 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
         screen: 'SuccessTx',
         params: {
           type: 'undelegate',
-          txHash: rs.transactionHash,
+          txHash: rs,
           validatorItem: validatorItem,
           undelegateAmount: _undelegateValue,
         },

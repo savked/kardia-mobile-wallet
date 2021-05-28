@@ -10,7 +10,7 @@ import TextAvatar from '../../../components/TextAvatar';
 import TextInput from '../../../components/TextInput';
 import {ThemeContext} from '../../../ThemeContext';
 import {getLanguageString, parseError} from '../../../utils/lang';
-import {getDigit, isNumber, format, parseKaiBalance, parseDecimals} from '../../../utils/number';
+import {getDigit, isNumber, format, parseKaiBalance, parseDecimals, formatNumberString} from '../../../utils/number';
 import {styles} from './style';
 import {weiToKAI} from '../../../services/transaction/amount';
 import Button from '../../../components/Button';
@@ -239,7 +239,7 @@ export default ({
         navigation.navigate('Transaction', {
           screen: 'SuccessTx',
           params: {
-            txHash: rs.transactionHash,
+            txHash: rs,
             type: 'delegate',
             validatorItem: validatorItem,
           },
@@ -319,15 +319,27 @@ export default ({
               keyboardType="numeric"
               value={amount}
               onChangeText={(newAmount) => {
-                const digitOnly = getDigit(newAmount);
-                // if (Number(digitOnly) > wallets[selectedWallet].balance) {
-                //   return;
-                // }
+                const digitOnly = getDigit(newAmount, true);
+
                 if (digitOnly === '') {
                   setAmount('0');
                   return;
                 }
-                isNumber(digitOnly) && setAmount(digitOnly);
+                if (isNumber(digitOnly)) {
+                  
+                  let formatedValue = formatNumberString(digitOnly);
+
+                  const [numParts, decimalParts] = digitOnly.split('.')
+                  if (!decimalParts && decimalParts !== "") {
+                    setAmount(formatedValue);
+                    return
+                  }
+
+                  formatedValue = formatNumberString(numParts) + '.' + decimalParts
+
+                  setAmount(formatedValue);
+                }
+                // isNumber(digitOnly) && setAmount(digitOnly);
               }}
               onBlur={() => setAmount(format(Number(amount)))}
             />

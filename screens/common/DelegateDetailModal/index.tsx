@@ -67,8 +67,8 @@ export default ({
     return formatted === 'NaN' ? '0 %' : `${formatted} %`;
   };
 
-  const getSelectedStakedAmount = () => {
-    return `${formatNumberString(weiToKAI(validatorItem.stakedAmount))} KAI`
+  const getSelectedStakedAmount = (fragtionCount?: number) => {
+    return `${formatNumberString(weiToKAI(validatorItem.stakedAmount), fragtionCount)} KAI`
     // const formatted = numeral(weiToKAI(validatorItem.stakedAmount)).format(
     //   '0,0.00',
     // );
@@ -121,7 +121,7 @@ export default ({
         screen: 'SuccessTx',
         params: {
           type: 'claim',
-          txHash: rs.transactionHash,
+          txHash: rs,
           validatorItem: validatorItem,
           claimAmount: weiToKAI(validatorItem.claimableRewards),
         },
@@ -149,7 +149,7 @@ export default ({
         screen: 'SuccessTx',
         params: {
           type: 'withdraw',
-          txHash: rs.transactionHash,
+          txHash: rs,
           validatorItem: validatorItem,
           withdrawAmount: weiToKAI(validatorItem.withdrawableAmount),
         },
@@ -262,7 +262,7 @@ export default ({
             {getLanguageString(language, 'TOTAL_STAKED_AMOUNT')}
           </CustomText>
           <CustomText style={[{color: theme.textColor, fontWeight: '500'}]}>
-            {getSelectedStakedAmount()}
+            {getSelectedStakedAmount(6)}
           </CustomText>
         </View>
         {showButton(validatorItem.stakedAmount) && (
@@ -280,7 +280,7 @@ export default ({
             {getLanguageString(language, 'CLAIMABLE')}
           </CustomText>
           <CustomText style={[{color: theme.textColor, fontWeight: '500'}]}>
-            {formatNumberString(weiToKAI(validatorItem.claimableRewards))}{' '}
+            {formatNumberString(weiToKAI(validatorItem.claimableRewards), 6)}{' '}
             KAI
           </CustomText>
         </View>
