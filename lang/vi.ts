@@ -21,6 +21,7 @@ export const lang: Language = {
     OK_TEXT: 'Hoàn tất',
     TOTAL_BALANCE: 'Tổng số dư',
     BALANCE: 'Số dư khả dụng',
+    CURRENT_BALANCE: 'Số dư',
     STAKED_AMOUNT: 'Số KAI đã đầu tư',
     AGO: 'trước',
     GO_BACK: 'Trở lại',

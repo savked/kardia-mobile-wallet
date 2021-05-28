@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
   },
   headline: {
-    fontWeight: 'bold',
+    // fontWeight: '500',
     marginBottom: 5,
   },
 });

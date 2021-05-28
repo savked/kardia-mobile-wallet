@@ -34,6 +34,7 @@ import {theme} from '../../../theme/dark';
 import AuthModal from '../AuthModal';
 import {useNavigation} from '@react-navigation/native';
 import CustomText from '../../../components/Text';
+import { getRecomendedGasPrice } from '../../../services/transaction';
 
 // const MAX_AMOUNT = 5000000000;
 
@@ -117,6 +118,16 @@ const NewKRC20TxModal = ({
     const _wallets = await getWallets();
     const _selectedWallet = await getSelectedWallet();
     const wallet: Wallet = _wallets[_selectedWallet];
+
+    let calculatedGasPrice = await getRecomendedGasPrice();
+
+    if (gasPrice === 1 && calculatedGasPrice) {
+      const _calculated = Math.ceil(calculatedGasPrice * 0.75)
+      calculatedGasPrice = _calculated >= 10**9 ? _calculated : calculatedGasPrice
+    } else if (gasPrice === 3) {
+      calculatedGasPrice = Math.ceil(calculatedGasPrice * 1.25)
+    }
+
     const _txAmount = Number(amount.replace(/,/g, ''));
     try {
       const txResult = await transferKRC20(
@@ -124,12 +135,13 @@ const NewKRC20TxModal = ({
         wallet.privateKey || '',
         toChecksum(address),
         _txAmount,
+        {gasPrice: calculatedGasPrice}
       );
       setLoading(false);
       navigation.navigate('Transaction', {
         screen: 'SuccessTx',
         params: {
-          txHash: txResult.transactionHash,
+          txHash: txResult,
           type: 'krc20',
           tokenAddress: tokenAddress,
           tokenDecimals: tokenDecimals,

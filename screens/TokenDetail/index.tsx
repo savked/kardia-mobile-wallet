@@ -21,7 +21,7 @@ import {
   saveTokenList,
 } from '../../utils/local';
 import {parseDecimals} from '../../utils/number';
-import AddressQRModal from '../common/AddressQRCode';
+import KRC20AddressQRModal from '../common/KRC20AddressQRCode';
 import {styles} from './style';
 import TokenTxList from './TokenTxList';
 import numeral from 'numeral';
@@ -47,7 +47,7 @@ const TokenDetail = () => {
   const language = useRecoilValue(languageAtom);
 
   const [showAddressQR, setShowAddressQR] = useState(false);
-  const [tokenBalance, setTokenBalance] = useState(0);
+  const [tokenBalance, setTokenBalance] = useState('0');
   const setTokenList = useSetRecoilState(krc20ListAtom);
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
@@ -129,9 +129,12 @@ const TokenDetail = () => {
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <AddressQRModal
+      <KRC20AddressQRModal
         visible={showAddressQR}
         onClose={() => setShowAddressQR(false)}
+        tokenSymbol={tokenSymbol}
+        tokenDecimals={tokenDecimals}
+        tokenBalance={tokenBalance}
       />
       <ENIcon.Button
         style={{paddingHorizontal: 20}}
@@ -168,7 +171,7 @@ const TokenDetail = () => {
             }}>
             <View>
               <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, lineHeight: 16}}>
-                {getLanguageString(language, 'BALANCE').toUpperCase()}
+                {getLanguageString(language, 'CURRENT_BALANCE').toUpperCase()}
               </CustomText>
               <CustomText style={{fontSize: 24, color: 'white', fontWeight: 'bold'}}>
                 {numeral(

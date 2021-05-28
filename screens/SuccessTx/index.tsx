@@ -90,7 +90,7 @@ export default () => {
           tx = await getKRC20TxDetail(tokenAddress, userAddress, txHash);
         } else {
           tx = await getTxDetail(txHash);
-          // console.log('get tx success', tx)
+          
         }
         if (tx && tx.hash) {
           // console.log('tx mined')

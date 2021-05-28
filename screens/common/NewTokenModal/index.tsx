@@ -200,7 +200,7 @@ const NewTokenModal = ({
         <View style={[styles.container]}>
           <View style={{marginBottom: 0}}>
             <View>
-              <CustomText style={[styles.headline, {color: theme.textColor}]}>
+              <CustomText style={[styles.headline, {color: theme.textColor, fontSize: theme.defaultFontSize + 1}]}>
                 {getLanguageString(language, 'TOKEN_ADDRESS')}
               </CustomText>
             </View>
@@ -220,6 +220,8 @@ const NewTokenModal = ({
                     backgroundColor: 'rgba(96, 99, 108, 1)',
                     color: theme.textColor,
                   }}
+                  placeholder={getLanguageString(language, 'TOKEN_ADDRESS')}
+                  placeholderTextColor={theme.mutedTextColor}
                 />
               </View>
               <TouchableOpacity
@@ -281,14 +283,20 @@ const NewTokenModal = ({
             <Button
               title={getLanguageString(language, 'CANCEL')}
               style={{marginBottom: 8, marginTop: showTokenData() ? 12 : 36}}
-              textStyle={{fontWeight: 'bold'}}
+              textStyle={{
+                fontWeight: '500',
+                fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+              }}
               type="outline"
               onPress={onClose}
               disabled={loading}
             />
             <Button
               title={getLanguageString(language, 'ADD_TOKEN')}
-              // textStyle={{fontWeight: 'bold'}}
+              textStyle={{
+                fontWeight: '500',
+                fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+              }}
               onPress={handleImport}
               loading={loading}
               disabled={loading}

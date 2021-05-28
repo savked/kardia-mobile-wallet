@@ -21,6 +21,7 @@ export const lang: Language = {
     OK_TEXT: 'Ok! Got it',
     TOTAL_BALANCE: 'Total balance',
     BALANCE: 'Available balance',
+    CURRENT_BALANCE: 'Current balance',
     STAKED_AMOUNT: 'Staked',
     AGO: 'ago',
     GO_BACK: 'Go back',
