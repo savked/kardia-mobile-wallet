@@ -27,6 +27,7 @@ export const lang: Language = {
     GO_BACK: 'Trở lại',
     CREATE_NEW_WALLET: 'Tạo ví mới',
     IMPORT_WALLET: 'Import ví',
+    IMPORT_YOUR_WALLET: 'Import ví',
     IMPORT_WALLET_DESCRIPTION:
       'Tạo hoặc Import ví của bạn để  sử dụng và quản lý KAI và các token chạy trên KardiaChain',
     WELCOME: 'Chào mừng đến với Kardia Wallet',
