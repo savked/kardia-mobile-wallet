@@ -119,7 +119,18 @@ export const calculateDexAmountOut = async (
 }
 
 export const formatDexToken = (token: PairToken, wallet: Wallet) => {
-    return isKAI(token.hash) ? {
+  const client = new KaidexClient({
+    rpcEndpoint: RPC_ENDPOINT,
+    smcAddresses: {
+      router: SWAP_ROUTER_SMC,
+      factory: FACTORY_SMC,
+      // kaiSwapper?: string;
+      limitOrder: LIMIT_ORDER_SMC,
+      wkai: WKAI_SMC
+    }
+  })
+
+    return client.isKAI(token.hash) ? {
     ...token,
     tokenAddress: WKAI_SMC,
     name: KAI_TOKEN_NAME,
