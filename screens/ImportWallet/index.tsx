@@ -12,6 +12,7 @@ import {languageAtom} from '../../atoms/language';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { statusBarColorAtom } from '../../atoms/statusBar';
 import CustomText from '../../components/Text';
+import { walletsAtom } from '../../atoms/wallets';
 
 export default () => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
@@ -19,6 +20,8 @@ export default () => {
   const navigation = useNavigation();
   const language = useRecoilValue(languageAtom);
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
+
+  const wallets = useRecoilValue(walletsAtom)
 
   useFocusEffect(
     useCallback(() => {
@@ -36,7 +39,7 @@ export default () => {
         backgroundColor="transparent"
       />
       <CustomText style={[styles.title, {color: theme.textColor}]}>
-        {getLanguageString(language, 'IMPORT_WALLET')}
+        {getLanguageString(language, wallets.length > 0 ? 'IMPORT_WALLET' : 'IMPORT_YOUR_WALLET')}
       </CustomText>
       <CustomText
         style={{
@@ -56,29 +59,31 @@ export default () => {
           paddingBottom: 12
         }}
       >
-        <TouchableOpacity
-          onPress={() => navigation.navigate('CreateWithMnemonicPhrase', {
-            backOnSuccess: true
-          })}
-          style={[
-            styles.cardWrapper,
-            {backgroundColor: theme.backgroundFocusColor},
-          ]}>
-          <View style={{marginBottom: 24, marginLeft: 18}}>
-            <CustomText
-              allowFontScaling={false}
-              style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
-              {getLanguageString(language, 'CREATE')}
-            </CustomText>
-            <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
-              {getLanguageString(language, 'CREATE_DESC')}
-            </CustomText>
-          </View>
-          <Image
-            style={{width: 185, height: 162}}
-            source={require('../../assets/create_new_wallet.png')}
-          />
-        </TouchableOpacity>
+        {wallets.length > 0 && (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('CreateWithMnemonicPhrase', {
+              backOnSuccess: true
+            })}
+            style={[
+              styles.cardWrapper,
+              {backgroundColor: theme.backgroundFocusColor},
+            ]}>
+            <View style={{marginBottom: 24, marginLeft: 18}}>
+              <CustomText
+                allowFontScaling={false}
+                style={{fontSize: 24, color: theme.textColor, fontWeight: 'bold'}}>
+                {getLanguageString(language, 'CREATE')}
+              </CustomText>
+              <CustomText style={{fontSize: 15, color: 'rgba(252, 252, 252, 0.54)'}}>
+                {getLanguageString(language, 'CREATE_DESC')}
+              </CustomText>
+            </View>
+            <Image
+              style={{width: 185, height: 162}}
+              source={require('../../assets/create_new_wallet.png')}
+            />
+          </TouchableOpacity>
+        )}
         <TouchableOpacity
           onPress={() => navigation.navigate('ImportPrivateKey')}
           style={[
