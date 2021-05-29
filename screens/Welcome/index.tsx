@@ -77,7 +77,7 @@ const Welcome = () => {
           style={{width: 300}}
         />
         <Button
-          title={getLanguageString(language, 'IMPORT_WALLET')}
+          title={getLanguageString(language, 'IMPORT_YOUR_WALLET')}
           type="primary"
           onPress={() => navigation.navigate('ImportWallet')}
         />
