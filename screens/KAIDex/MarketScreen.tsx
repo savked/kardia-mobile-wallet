@@ -267,7 +267,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
       const txResult = await swapTokens(swapParams, _wallets[_selectedWalelt])
       setProcessing(false)
 
-      if (txResult.status === 1) {
+      if (txResult) {
         // Handling success tx
         setAmountFrom('0')
         setAmountTo('0')
@@ -280,7 +280,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
             dexAmount: mode === 'SELL' ? getDigit(amountTo) : getDigit(amountFrom),
             tokenSymbol: mode === 'SELL' ? tokenTo.symbol : tokenFrom.symbol,
             dexMode: `DEX_MODE_${mode}`,
-            txHash: txResult.transactionHash
+            txHash: txResult
           },
         });
       } else {
