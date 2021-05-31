@@ -181,7 +181,7 @@ export const approveToken = async (token: PairToken, amount: string | number, wa
 
   // const invocation = smcInstance.invokeContract('approve', [SWAP_ROUTER_SMC, `${cellValue}00`]);
   const invocation = smcInstance.invokeContract('approve', [SWAP_ROUTER_SMC, bnTotalSypply.toFixed()]);
-  const rs = invocation.send(wallet.privateKey!, token.hash)
+  const rs = invocation.send(wallet.privateKey!, token.hash, {}, true)
   
   return rs;
 }
