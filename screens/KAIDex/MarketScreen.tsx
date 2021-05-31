@@ -18,6 +18,7 @@ import { formatNumberString, getDecimalCount, getDigit, getPartial, isNumber, pa
 import { swapTokens } from '../../services/dex';
 import { useNavigation } from '@react-navigation/core';
 import Tags from '../../components/Tags';
+import AuthModal from '../common/AuthModal';
 
 export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, tokenFromLiquidity: _tokenFromLiquidity, tokenToLiquidity: _tokenToLiquidity, pairAddress}: {
   triggerSelectPair: () => void;
@@ -62,6 +63,17 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
 
   const [showTxSettingModal, setShowTxSettingModal] = useState(false)
   const [swapError, setSwappError] = useState('');
+
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  // const [onAuthSuccess, setOnAuthSuccess] = useState<() => void>(() => {})
+
+  const onAuthSuccess = () => {
+    if (!approvedState) {
+      handleApprove()
+    } else {
+      handleSubmitMarket()
+    }
+  }
 
   useEffect(() => {
     setTokenFromLiquidity(_tokenFromLiquidity)
@@ -230,6 +242,11 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
     setApproving(false)
   }
 
+  const authForApprove = () => {
+    setShowAuthModal(true)
+    // setOnAuthSuccess(handleApprove)
+  }
+
   const handleSubmitMarket = async () => {
     if (!tokenFrom || !tokenTo) return;
     const bnTo = new BigNumber(getDigit(amountTo))
@@ -244,7 +261,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
 
     try {
       const _wallets = await getWallets();
-      const _selectedWalelt = await getSelectedWallet();
+      const _selectedWallet = await getSelectedWallet();
       
       // Swap token
       const swapParams = {
@@ -258,13 +275,13 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           tokenAddress: tokenFrom.hash,
           decimals: tokenFrom.decimals
         },
-        addressTo: _wallets[_selectedWalelt].address,
+        addressTo: _wallets[_selectedWallet].address,
         inputType: editting === 'to' ? 0 : 1,
         slippageTolerance,
         txDeadline: await calculateTransactionDeadline(txDeadline),
       }
 
-      const txResult = await swapTokens(swapParams, _wallets[_selectedWalelt])
+      const txResult = await swapTokens(swapParams, _wallets[_selectedWallet])
       setProcessing(false)
 
       if (txResult) {
@@ -294,6 +311,11 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
       console.log(error)
       setProcessing(false);
     }
+  }
+
+  const authForSubmitMarket = () => {
+    setShowAuthModal(true)
+    // setOnAuthSuccess(() => handleSubmitMarket())
   }
 
   const renderRate = () => {
@@ -380,7 +402,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
             title={getLanguageString(language, 'APPROVE')}
             loading={approving}
             disabled={approving}
-            onPress={handleApprove}
+            onPress={authForApprove}
             style={{
               marginTop: 8,
               width: '100%',
@@ -404,7 +426,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
             `${getLanguageString(language, 'SELL')} ${tokenTo.symbol}`
           }
           type="secondary"
-          onPress={handleSubmitMarket}
+          onPress={authForSubmitMarket}
           style={{
             marginTop: 32,
             width: '100%',
@@ -452,6 +474,13 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
         }}
         onPress={triggerSelectPair}
       >
+        <AuthModal
+          visible={showAuthModal}
+          onClose={() => {
+            setShowAuthModal(false)
+          }}
+          onSuccess={onAuthSuccess}
+        />
         <View style={{flexDirection: 'row', marginRight: 12}}>
           {
             _tokenFrom && (
