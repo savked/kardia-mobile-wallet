@@ -566,10 +566,10 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                 if (getDecimalCount(newValue) > tokenTo.decimals) {
                   return;
                 }
-                if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)))) {
-                  // setAmountFrom(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)).toFixed())
-                  return;
-                }
+                // if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)))) {
+                //   // setAmountFrom(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)).toFixed())
+                //   return;
+                // }
               
                 if (isNumber(digitOnly)) {
                   let formatedValue = formatNumberString(digitOnly);
