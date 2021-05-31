@@ -79,13 +79,15 @@ export default () => {
     if (pairData && pairData.pairs) {
       let pair = pairData.pairs[0]
 
-      const _pairAddress = (params as any).pairAddress
+      if (params) {
+        const _pairAddress = (params as any).pairAddress
 
-      const item = pairData.pairs.find((i: any) => {
-        return i.contract_address === _pairAddress
-      })
+        const item = pairData.pairs.find((i: any) => {
+          return i.contract_address === _pairAddress
+        })
 
-      if (item) pair = item
+        if (item) pair = item
+      }
 
       if (!pair) return
       setTokenFrom(formatDexToken(pair.t1, wallets[selectedWallet]));
