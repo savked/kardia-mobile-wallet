@@ -132,11 +132,13 @@ export default ({
         height: 370,
         backgroundColor: theme.backgroundFocusColor,
         alignItems: 'center',
+        justifyContent: 'flex-start',
       };
     } else {
       return {
         height: 350,
         backgroundColor: theme.backgroundFocusColor,
+        justifyContent: 'flex-start',
         alignItems: 'center',
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,
