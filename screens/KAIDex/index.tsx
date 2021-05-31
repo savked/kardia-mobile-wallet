@@ -1,6 +1,6 @@
 import { useFocusEffect, useRoute } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Keyboard, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Keyboard, Platform, RefreshControl, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { showTabBarAtom } from '../../atoms/showTabBar';
@@ -28,6 +28,7 @@ export default () => {
 
   const [type, setType] = useState('MARKET');
   const [selectingPair, setSelectingPair] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
 
   const [tokenFrom, setTokenFrom] = useState<PairToken>()
   const [tokenFromLiquidity, setTokenFromLiquidity] = useState('');
@@ -128,6 +129,12 @@ export default () => {
     )
   }
 
+  const onRefresh = async () => {
+    setRefreshing(true)
+    await refetch()
+    setRefreshing(false)
+  }
+
   return (
     <SafeAreaView style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20}}>
       {/* <ExchangeScreen /> */}
@@ -161,6 +168,15 @@ export default () => {
               contentContainerStyle={{
                 paddingBottom: 12
               }}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  colors={[theme.textColor]}
+                  tintColor={theme.textColor}
+                  titleColor={theme.textColor}
+                />
+              }
             >
               <View onStartShouldSetResponder={() => true}>
               {type === 'MARKET' ? 
