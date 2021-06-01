@@ -138,12 +138,12 @@ export default () => {
   }
 
   return (
-    <SafeAreaView style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20}}>
+    <SafeAreaView style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20, paddingTop: 28}}>
       {/* <ExchangeScreen /> */}
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{flex: 1}}>
           <View style={{width: '100%', alignItems: 'center'}}>
-            <View style={{borderRadius: 12, borderColor: 'rgba(96, 99, 108, 1)', borderWidth: 1.5, padding: 4, flexDirection: 'row', marginBottom: 32}}>
+            <View style={{borderRadius: 12, borderColor: 'rgba(96, 99, 108, 1)', borderWidth: 1.5, padding: 4, flexDirection: 'row', marginBottom: 24}}>
               <TouchableOpacity 
                 style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'MARKET' ? theme.backgroundFocusColor : 'transparent'}}
                 onPress={() => setType('MARKET')}
@@ -168,7 +168,7 @@ export default () => {
                 flex: 1,
               }}
               contentContainerStyle={{
-                paddingBottom: 12
+                paddingBottom: 28
               }}
               refreshControl={
                 <RefreshControl
