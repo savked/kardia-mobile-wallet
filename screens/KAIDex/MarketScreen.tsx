@@ -19,6 +19,7 @@ import { swapTokens } from '../../services/dex';
 import { useNavigation } from '@react-navigation/core';
 import Tags from '../../components/Tags';
 import AuthModal from '../common/AuthModal';
+import { getErrorKey } from '../../utils/error';
 
 export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, tokenFromLiquidity: _tokenFromLiquidity, tokenToLiquidity: _tokenToLiquidity, pairAddress}: {
   triggerSelectPair: () => void;
@@ -308,7 +309,8 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
       }
 
     } catch (error) {
-      console.log(error)
+      const ERROR_KEY = error.message ? getErrorKey(error.message) : 'SWAP_GENERAL_ERROR'
+      setSwappError(getLanguageString(language, ERROR_KEY))
       setProcessing(false);
     }
   }
@@ -661,7 +663,12 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               active={balanceTo !== '0' && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 1, tokenTo.decimals), tokenTo.decimals) } 
               onPress={() => {
                 setEditting('to')
-                const partialValue = getPartial(balanceTo, 1, tokenTo.decimals)
+                let partialValue = getPartial(balanceTo, 1, tokenTo.decimals)
+                if (tokenTo.symbol === 'KAI') {
+                  const bnPartialValue = new BigNumber(partialValue)
+                  const bn1KAI = new BigNumber(10 ** (tokenTo.decimals))
+                  partialValue = bnPartialValue.minus(bn1KAI).toFixed(tokenTo.decimals, 1)
+                }
                 setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
               }} 
             />
