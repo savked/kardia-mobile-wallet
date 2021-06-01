@@ -211,7 +211,7 @@ export const lang: Language = {
     ERROR_BOUNDARY_TITLE: 'Oops, có lỗi xảy ra.',
     ERROR_BOUNDARY_DESCRIPTION:
       'Chúng tôi rất xin lỗi vì sự bất tiện này. Lỗi đã được gửi cho admin để xử lý',
-    NOT_ENOUGH_BALANCE: 'Giao dịch vượt quá số tiền trong ví.',
+    NOT_ENOUGH_BALANCE: 'Giao dịch vượt quá số dư ví.',
     GENERAL_ERROR: 'Có lỗi xảy ra, vui lòng thử lại sau',
     // KRC20 key
     KRC20_TOKENS_SECTION_TITLE: 'Tokens',
