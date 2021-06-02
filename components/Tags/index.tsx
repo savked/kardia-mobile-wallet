@@ -14,7 +14,7 @@ export default ({active, content, containerStyle, onPress}: {
     <TouchableOpacity
       onPress={onPress}
       style={[containerStyle, {
-        paddingHorizontal: 12,
+        paddingHorizontal: 8,
         paddingVertical: 4,
         borderRadius: 8,
         borderWidth: 1,
@@ -22,7 +22,7 @@ export default ({active, content, containerStyle, onPress}: {
         backgroundColor: active ? 'rgba(51, 96, 255, 1)' : 'transparent',
         alignItems: 'center',
         justifyContent: 'center',
-        width: 73,
+        width: 70,
         height: 28
       }]}
     >
