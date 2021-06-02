@@ -9,7 +9,7 @@ import Button from '../../components/Button';
 import Divider from '../../components/Divider';
 import CustomText from '../../components/Text';
 import CustomTextInput from '../../components/TextInput';
-import { approveToken, calculateDexAmountOut, calculateTransactionDeadline, formatDexToken, getApproveState, getTotalVolume } from '../../services/dex';
+import { approveToken, calculateDexAmountOut, calculatePriceImpact, calculateTransactionDeadline, formatDexToken, getApproveState, getTotalVolume } from '../../services/dex';
 import { getBalance } from '../../services/krc20';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
@@ -67,6 +67,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
 
   const [showAuthModal, setShowAuthModal] = useState(false);
   // const [onAuthSuccess, setOnAuthSuccess] = useState<() => void>(() => {})
+  const [priceImpact, setPriceImpact] = useState('0');
 
   const onAuthSuccess = () => {
     if (!approvedState) {
@@ -163,7 +164,16 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
             setApprovedState(_approveState)
           }
 
-          setAmountTo(formatNumberString(_newTo))
+          const impact = await calculatePriceImpact(
+            tokenTo,
+            tokenFrom,
+            getDigit(_newTo),
+            getDigit(amountFrom)
+          )
+
+          setPriceImpact(impact)
+
+          setAmountTo(formatNumberString(_newTo, 6))
           setLoadingTo(false)
           clearTimeout(timeoutId)
           setAmountToTimeout(null)
@@ -192,7 +202,17 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           setApprovedState(_approveState)
 
           const _newFrom = await calculateDexAmountOut(_amountTo, "AMOUNT", tokenTo, tokenFrom)
-          setAmountFrom(formatNumberString(_newFrom))
+
+          const impact = await calculatePriceImpact(
+            tokenTo,
+            tokenFrom,
+            getDigit(amountTo),
+            getDigit(_newFrom)
+          )
+
+          setPriceImpact(impact)
+
+          setAmountFrom(formatNumberString(_newFrom, 6))
           setLoadingFrom(false)
           clearTimeout(timeoutId)
           setAmountToTimeout(null)
@@ -334,7 +354,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <CustomText style={{color: theme.textColor}}>
             1{' '}
             <CustomText style={{color: theme.mutedTextColor}}>{_tokenFrom.symbol}</CustomText>{' '}={' '}
-            <CustomText style={{color: theme.textColor}}>~ {formatNumberString(rate.toFixed())}</CustomText>
+            <CustomText style={{color: theme.textColor}}>~ {formatNumberString(rate.toFixed(), 6)}</CustomText>
             <CustomText style={{color: theme.mutedTextColor}}> {_tokenTo.symbol}</CustomText>
           </CustomText>
         </View>
@@ -359,6 +379,9 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               setShowTxSettingModal(false);
             }}
           />
+          <CustomText style={{color: theme.textColor, textAlign: 'left', width: '100%', marginTop: 8}}>
+            {getLanguageString(language, 'PRICE_IMPACT')}: {priceImpact} %
+          </CustomText>
           <Divider height={0.5} style={{width: '100%', backgroundColor: 'rgba(96, 99, 108, 1)', height: 2}} />
           <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', width: '100%'}} onPress={() => setShowTxSettingModal(true)}>
             <Image style={{width: 16, height: 16, marginRight: 4}} source={require('../../assets/icon/setting_dark.png')} />
@@ -581,7 +604,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                 // }
               
                 if (isNumber(digitOnly)) {
-                  let formatedValue = formatNumberString(digitOnly);
+                  let formatedValue = formatNumberString(digitOnly, 6);
                   
                   if (tokenTo.decimals == 0) {
                     setAmountTo(formatedValue);
@@ -615,7 +638,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               }}
               onBlur={() => {
                 setEditting('')
-                setAmountTo(formatNumberString(getDigit(amountTo)))
+                setAmountTo(formatNumberString(getDigit(amountTo), 6))
               }}
             />
             <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: 60}}>
@@ -642,7 +665,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 const partialValue = getPartial(balanceTo, 0.25, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), 6))
               }} 
             />
             <Tags 
@@ -652,7 +675,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 const partialValue = getPartial(balanceTo, 0.5, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), 6))
               }}
             />
             <Tags 
@@ -662,7 +685,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 const partialValue = getPartial(balanceTo, 0.75, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), 6))
               }}
             />
             <Tags 
@@ -671,12 +694,13 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 let partialValue = getPartial(balanceTo, 1, tokenTo.decimals)
+                console.log('partialValue 1', partialValue)
                 if (tokenTo.symbol === 'KAI') {
                   const bnPartialValue = new BigNumber(partialValue)
                   const bn1KAI = new BigNumber(10 ** (tokenTo.decimals))
                   partialValue = bnPartialValue.minus(bn1KAI).toFixed(tokenTo.decimals, 1)
                 }
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), 6))
               }} 
             />
           </View>
@@ -743,7 +767,6 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               keyboardType="numeric"
               loading={loadingFrom}
               onChangeText={(newValue) => {
-                // setAmountFrom(formatNumberString(getDigit(newValue)))
                 const digitOnly = getDigit(newValue, tokenFrom.decimals === 0 ? false : true);
                 if (digitOnly === '') {
                   setAmountFrom('0')
@@ -757,7 +780,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                 }
               
                 if (isNumber(digitOnly)) {
-                  let formatedValue = formatNumberString(digitOnly);
+                  let formatedValue = formatNumberString(digitOnly, 6);
                   
                   if (tokenFrom.decimals == 0) {
                     setAmountFrom(formatedValue);
@@ -789,7 +812,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               }}
               onBlur={() => {
                 setEditting('')
-                setAmountFrom(formatNumberString(getDigit(amountFrom)))
+                setAmountFrom(formatNumberString(getDigit(amountFrom), 6))
               }}
             />
             <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: 60}}>
@@ -810,7 +833,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           </View>
           <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
             {getLanguageString(language, 'BALANCE')}:{' '}
-            <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceFrom, tokenFrom.decimals))}</CustomText>
+            <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceFrom, tokenFrom.decimals), 6)}</CustomText>
           </CustomText>
           <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
             Liquidity:{' '}
