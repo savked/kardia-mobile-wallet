@@ -9,6 +9,7 @@ import CustomText from '../../components/Text';
 import CustomTextInput from '../../components/TextInput';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
+import { getDigit } from '../../utils/number';
 
 export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolerance: _slippageTolerance}: {
   visible: boolean;
@@ -22,6 +23,7 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
 
   const [deadline, setDeadline] = useState(_deadline)
   const [slippageTolerance, setSlippageTolerance] = useState(_slippageTolerance)
+  const [errorSlippageTolerance, setErrorSlippageTolerance] = useState('')
 
   // const [keyboardShown, setKeyboardShown] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
@@ -77,6 +79,17 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
     onClose();
   }
 
+  const validate = () => {
+    setErrorSlippageTolerance('');
+    if (getDigit(slippageTolerance).length === 0) {
+      setErrorSlippageTolerance(getLanguageString(language, 'SLIPPAGE_ERROR'))
+      return false
+    }
+    if (Number(getDigit(slippageTolerance)) <= 100) return true
+    setErrorSlippageTolerance(getLanguageString(language, 'SLIPPAGE_ERROR'))
+    return false
+  }
+
   return (
     <CustomModal
       showCloseButton={false}
@@ -87,6 +100,7 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
       <View style={{width: '100%'}}>
         <View style={{width: '100%'}}>
           <CustomTextInput
+            keyboardType="numeric"
             value={deadline}
             onChangeText={setDeadline}
             headline={`${getLanguageString(language, 'TX_DEADLINE')} (${getLanguageString(language, 'MINS')})`}
@@ -107,6 +121,7 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
         </View>
         <View style={{width: '100%', marginTop: 18}}>
           <CustomTextInput
+            keyboardType="numeric"
             value={slippageTolerance}
             onChangeText={setSlippageTolerance}
             headline={`${getLanguageString(language, 'SLIPPAGE_TOLERANCE')} (%)`}
@@ -124,12 +139,25 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
             <Tags content={`5 %`} active={slippageTolerance === '5'} containerStyle={{marginRight: 12}} onPress={() => setSlippageTolerance('5')} />
             <Tags content={`10 %`} active={slippageTolerance === '10'} onPress={() => setSlippageTolerance('10')} />
           </View>
+          <CustomText
+            style={{
+              color: 'rgba(255, 66, 67, 1)',
+              marginTop: errorSlippageTolerance ? 12 : 0,
+              fontSize: theme.defaultFontSize + 1,
+              textAlign: 'left',
+              width: '100%'
+            }}
+          >
+            {errorSlippageTolerance}
+          </CustomText>
         </View>
       </View>
       <Button
         title={getLanguageString(language, 'CONFIRM')}
         onPress={() => {
-          onSubmit(deadline, slippageTolerance)
+          if (validate()) {
+            onSubmit(deadline, slippageTolerance)
+          }
         }}
         style={{marginBottom: 40}}
         textStyle={{
