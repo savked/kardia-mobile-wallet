@@ -236,3 +236,35 @@ export const calculateTransactionDeadline = async (txDeadlineInMinute: string): 
   const latestBlock = await sdkClient.kaiChain.getBlockHeaderByHash('latest')
   return (new Date(latestBlock.time)).getTime() + Number(txDeadlineInMinute) * 60 * 1000;
 } 
+
+export const calculatePriceImpact = async (tokenFrom: PairToken, tokenTo: PairToken, amountIn: string, amountOut: string) => {
+  const client = new KaidexClient({
+    rpcEndpoint: RPC_ENDPOINT,
+    smcAddresses: {
+      router: SWAP_ROUTER_SMC,
+      factory: FACTORY_SMC,
+      // kaiSwapper?: string;
+      limitOrder: LIMIT_ORDER_SMC,
+      wkai: WKAI_SMC
+    }
+  })
+
+  const priceImpact = await client.calculatePriceImpact({
+    inputToken: {
+      tokenAddress: tokenFrom.hash,
+      name: tokenFrom.name,
+      symbol: tokenFrom.symbol,
+      decimals: tokenFrom.decimals
+    },
+    outputToken: {
+      tokenAddress: tokenTo.hash,
+      name: tokenTo.name,
+      symbol: tokenTo.symbol,
+      decimals: tokenTo.decimals
+    },
+    amountIn,
+    amountOut
+  })
+
+  return priceImpact
+}
