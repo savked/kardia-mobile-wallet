@@ -341,7 +341,7 @@ export default ({
                 }
                 // isNumber(digitOnly) && setAmount(digitOnly);
               }}
-              onBlur={() => setAmount(format(Number(amount)))}
+              onBlur={() => setAmount(formatNumberString(getDigit(amount)))}
             />
           </View>
           <View style={{width: '100%', marginTop: 12}}>
