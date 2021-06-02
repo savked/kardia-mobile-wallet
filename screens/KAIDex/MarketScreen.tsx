@@ -694,7 +694,6 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 let partialValue = getPartial(balanceTo, 1, tokenTo.decimals)
-                console.log('partialValue 1', partialValue)
                 if (tokenTo.symbol === 'KAI') {
                   const bnPartialValue = new BigNumber(partialValue)
                   const bn1KAI = new BigNumber(10 ** (tokenTo.decimals))
