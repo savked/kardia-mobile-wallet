@@ -285,6 +285,8 @@ export const lang: Language = {
     NOT_ENOUGH_KRC20_FOR_TX: 'Insufficient {{SYMBOL}} Balance',
     APPROVE: 'Approve',
     APPROVE_NOTE: 'Approving will NOT cost you any token.',
-    APPROVE_ERROR: 'Error approving your tokens, please try again later.'
+    APPROVE_ERROR: 'Error approving your tokens, please try again later.',
+    PRICE_IMPACT: 'Price impact',
+    SLIPPAGE_ERROR: 'Invalid slippage tolerance',
   },
 };

@@ -278,6 +278,8 @@ export const lang: Language = {
     NOT_ENOUGH_KRC20_FOR_TX: 'Ví không đủ {{SYMBOL}}',
     APPROVE: 'Cấp quyền',
     APPROVE_NOTE: 'Thao tác cấp quyền sẽ không ảnh hưởng đến token của bạn.',
-    APPROVE_ERROR: 'Có lỗi xảy ra, vui lòng thử lại sau.'
+    APPROVE_ERROR: 'Có lỗi xảy ra, vui lòng thử lại sau.',
+    PRICE_IMPACT: 'Ảnh hưởng giá',
+    SLIPPAGE_ERROR: 'Giới hạn trượt giá không đúng',
   },
 };
