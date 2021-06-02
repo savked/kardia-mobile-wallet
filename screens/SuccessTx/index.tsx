@@ -209,7 +209,7 @@ export default () => {
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
-              {formatNumberString(dexAmount, 2)}
+              {formatNumberString(dexAmount, 6)}
             </CustomText>
             <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
               {tokenSymbol}
@@ -387,7 +387,7 @@ export default () => {
         return getLanguageString(language, 'WITHDRAW_SUCCESS').replace(/{{KAI_AMOUNT}}/g, formatNumberString(withdrawAmount))
       case 'dex':
         return getLanguageString(language, 'DEX_TX_SUCCESS')
-                .replace(/{{TOKEN_AMOUNT}}/g, formatNumberString(dexAmount))
+                .replace(/{{TOKEN_AMOUNT}}/g, formatNumberString(dexAmount, 6))
                 .replace(/{{DEX_MODE}}/g, getLanguageString(language, dexMode))
                 .replace(/{{TOKEN_SYMBOL}}/g, tokenSymbol)
       default:
