@@ -277,6 +277,7 @@ export const lang: Language = {
     ENTER_AMOUNT: 'Nhập số token',
     NOT_ENOUGH_KRC20_FOR_TX: 'Ví không đủ {{SYMBOL}}',
     APPROVE: 'Cấp quyền',
-    APPROVE_NOTE: 'Thao tác cấp quyền sẽ không ảnh hưởng đến token của bạn.'
+    APPROVE_NOTE: 'Thao tác cấp quyền sẽ không ảnh hưởng đến token của bạn.',
+    APPROVE_ERROR: 'Có lỗi xảy ra, vui lòng thử lại sau.'
   },
 };

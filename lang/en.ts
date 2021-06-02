@@ -284,6 +284,7 @@ export const lang: Language = {
     ENTER_AMOUNT: 'Enter amount',
     NOT_ENOUGH_KRC20_FOR_TX: 'Insufficient {{SYMBOL}} Balance',
     APPROVE: 'Approve',
-    APPROVE_NOTE: 'Approving will NOT cost you any token.'
+    APPROVE_NOTE: 'Approving will NOT cost you any token.',
+    APPROVE_ERROR: 'Error approving your tokens, please try again later.'
   },
 };

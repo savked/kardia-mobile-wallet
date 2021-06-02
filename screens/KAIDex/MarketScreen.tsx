@@ -217,6 +217,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
     setTokenFrom(_to)
     setTokenFromLiquidity(_toLiquidity)
     setTokenToLiquidity(_fromLiquidity)
+    setSwappError('')
 
     // const _rate = await calculateDexExchangeRate(_from, _to)
     // setRate(new BigNumber(_rate.rateBA))
@@ -230,17 +231,23 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
 
   const handleApprove = async () => {
     if (!tokenFrom || !tokenTo) return;
-
+    setSwappError('')
     setApproving(true)
 
-    const _wallets = await getWallets();
-    const _selectedWalelt = await getSelectedWallet();
-    
-    await approveToken(tokenTo, getDigit(amountTo), _wallets[_selectedWalelt])
-    
-    const _approveState = await getApproveState(tokenTo, getDigit(amountTo), wallets[selectedWallet])
-    setApprovedState(_approveState)
-    setApproving(false)
+    try {
+      const _wallets = await getWallets();
+      const _selectedWalelt = await getSelectedWallet();
+      
+      await approveToken(tokenTo, getDigit(amountTo), _wallets[_selectedWalelt])
+      
+      const _approveState = await getApproveState(tokenTo, getDigit(amountTo), wallets[selectedWallet])
+      setApprovedState(_approveState)
+      setApproving(false) 
+    } catch (error) {
+      setApprovedState(false)
+      setApproving(false)
+      setSwappError(getLanguageString(language, 'APPROVE_ERROR'))
+    }
   }
 
   const authForApprove = () => {
