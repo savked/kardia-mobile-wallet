@@ -58,6 +58,12 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
   }, []);
 
   const getContentStyle = () => {
+    if (Platform.OS === 'android') {
+      return {
+        backgroundColor: theme.backgroundFocusColor,
+        height: 420,
+      }
+    }
     return {
       backgroundColor: theme.backgroundFocusColor,
       height: 420,
