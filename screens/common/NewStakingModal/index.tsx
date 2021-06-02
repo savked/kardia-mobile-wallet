@@ -273,13 +273,15 @@ export default ({
       return {
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
-        height: 620,
+        height: 590,
+        marginBottom: keyboardShown ? -180 : 0,
+        marginTop: keyboardShown ? 180 : 0,
       };
     } else {
       return {
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
-        height: 540,
+        height: 560,
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,
       };
