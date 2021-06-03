@@ -93,7 +93,6 @@ export default () => {
           
         }
         if (tx && tx.hash) {
-          // console.log('tx mined')
           const rs = addressBook.filter((item) => item.address === tx.to);
           setAddress(rs[0] || {});
           setTxObj(tx);
