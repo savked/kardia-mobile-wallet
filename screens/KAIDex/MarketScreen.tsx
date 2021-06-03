@@ -604,7 +604,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                 // }
               
                 if (isNumber(digitOnly)) {
-                  let formatedValue = formatNumberString(digitOnly, 6);
+                  let formatedValue = formatNumberString(digitOnly);
                   
                   if (tokenTo.decimals == 0) {
                     setAmountTo(formatedValue);
@@ -638,7 +638,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               }}
               onBlur={() => {
                 setEditting('')
-                setAmountTo(formatNumberString(getDigit(amountTo), 6))
+                setAmountTo(formatNumberString(getDigit(amountTo)))
               }}
             />
             <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: 60}}>
@@ -779,7 +779,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                 }
               
                 if (isNumber(digitOnly)) {
-                  let formatedValue = formatNumberString(digitOnly, 6);
+                  let formatedValue = formatNumberString(digitOnly);
                   
                   if (tokenFrom.decimals == 0) {
                     setAmountFrom(formatedValue);
@@ -811,7 +811,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               }}
               onBlur={() => {
                 setEditting('')
-                setAmountFrom(formatNumberString(getDigit(amountFrom), 6))
+                setAmountFrom(formatNumberString(getDigit(amountFrom)))
               }}
             />
             <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: 60}}>
