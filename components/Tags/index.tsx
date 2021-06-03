@@ -14,7 +14,7 @@ export default ({active, content, containerStyle, onPress}: {
     <TouchableOpacity
       onPress={onPress}
       style={[containerStyle, {
-        paddingHorizontal: 8,
+        paddingHorizontal: 6,
         paddingVertical: 4,
         borderRadius: 8,
         borderWidth: 1,
