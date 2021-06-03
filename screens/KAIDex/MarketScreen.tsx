@@ -321,7 +321,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
             dexAmount: mode === 'SELL' ? getDigit(amountTo) : getDigit(amountFrom),
             tokenSymbol: mode === 'SELL' ? tokenTo.symbol : tokenFrom.symbol,
             dexMode: `DEX_MODE_${mode}`,
-            txHash: txResult
+            txHash: typeof txResult === 'string' ? txResult : txResult.transactionHash
           },
         });
       } else {
