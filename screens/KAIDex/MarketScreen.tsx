@@ -98,23 +98,18 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   useEffect(() => {
     (async () => {
       if (!tokenFrom) return;
-      const wallets = await getWallets();
-      const selectedWallet = await getSelectedWallet();
       if (tokenFrom.symbol === 'KAI') {
-        setBalanceFrom(wallets[selectedWallet].balance)
+        setBalanceFrom(wallets[selectedWallet].balance.toString())
       } else if (tokenFrom.symbol !== 'WKAI') {
         const balance = await getBalance(tokenFrom.hash, wallets[selectedWallet].address)
         setBalanceFrom(balance)
       }
     })()
-  }, [tokenFrom])
+  }, [tokenFrom, wallets, selectedWallet])
 
   useEffect(() => {
     (async () => {
       if (!tokenTo) return;
-
-      const wallets: Wallet[] = await getWallets();
-      const selectedWallet: number = await getSelectedWallet();
 
       if (tokenTo.symbol === 'KAI') {
         setBalanceTo(wallets[selectedWallet].balance.toString())
@@ -126,7 +121,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
         setApprovedState(_approveState)
       }
     })()
-  }, [tokenTo])
+  }, [tokenTo, wallets, selectedWallet])
 
   useEffect(() => {
     (async () => {
