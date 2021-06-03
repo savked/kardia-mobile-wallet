@@ -233,6 +233,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
     setTokenFromLiquidity(_toLiquidity)
     setTokenToLiquidity(_fromLiquidity)
     setSwappError('')
+    setPriceImpact('0')
 
     // const _rate = await calculateDexExchangeRate(_from, _to)
     // setRate(new BigNumber(_rate.rateBA))
