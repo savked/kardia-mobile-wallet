@@ -10,7 +10,7 @@ export const getDigit = (val: string, editting = true) => {
     const char = val.charAt(index);
     if (/\d/.test(char)) {
       result += char;
-    } else if (char === '.' || char === 'e' || char === '+') {
+    } else if (char === '.' || char === 'e' || char === '+' || char === '-') {
       result += char;
     }
   }

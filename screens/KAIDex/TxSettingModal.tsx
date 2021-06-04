@@ -22,6 +22,7 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
   const language = useRecoilValue(languageAtom)
 
   const [deadline, setDeadline] = useState(_deadline)
+  const [errorDeadline, setErrorDeadline] = useState('')
   const [slippageTolerance, setSlippageTolerance] = useState(_slippageTolerance)
   const [errorSlippageTolerance, setErrorSlippageTolerance] = useState('')
 
@@ -80,14 +81,26 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
   }
 
   const validate = () => {
+    let isValid = true
     setErrorSlippageTolerance('');
+    setErrorDeadline('')
     if (getDigit(slippageTolerance).length === 0) {
       setErrorSlippageTolerance(getLanguageString(language, 'SLIPPAGE_ERROR'))
-      return false
+      isValid = false
     }
-    if (Number(getDigit(slippageTolerance)) <= 100 && Number(getDigit(slippageTolerance)) > 0) return true
-    setErrorSlippageTolerance(getLanguageString(language, 'SLIPPAGE_ERROR'))
-    return false
+    if (Number(getDigit(slippageTolerance)) >= 100 || Number(getDigit(slippageTolerance)) <= 0) {
+      setErrorSlippageTolerance(getLanguageString(language, 'SLIPPAGE_ERROR'))
+      isValid = false
+    }
+    if (getDigit(deadline).length === 0) {
+      setErrorDeadline(getLanguageString(language, 'DEADLINE_ERROR'))
+      isValid = false
+    }
+    if (Number(getDigit(deadline)) < 0) {
+      setErrorDeadline(getLanguageString(language, 'DEADLINE_ERROR'))
+      isValid = false
+    }
+    return isValid
   }
 
   return (
@@ -118,6 +131,17 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
             <Tags content={`10 ${getLanguageString(language, 'MINS')}`} active={deadline === '10'} containerStyle={{marginRight: 12}} onPress={() => setDeadline('10')} />
             <Tags content={`15 ${getLanguageString(language, 'MINS')}`} active={deadline === '15'} onPress={() => setDeadline('15')} />
           </View>
+          <CustomText
+            style={{
+              color: 'rgba(255, 66, 67, 1)',
+              marginTop: errorDeadline ? 12 : 0,
+              fontSize: theme.defaultFontSize + 1,
+              textAlign: 'left',
+              width: '100%'
+            }}
+          >
+            {errorDeadline}
+          </CustomText>
         </View>
         <View style={{width: '100%', marginTop: 18}}>
           <CustomTextInput
