@@ -140,7 +140,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
     (async () => {
       if (editting === 'from' && rate && tokenFrom && tokenTo) {
         const _amountFrom = getDigit(amountFrom, false)
-        if (_amountFrom === '0' || _amountFrom === '') {
+        if (_amountFrom === '0' || _amountFrom === '' || Number(_amountFrom) === 0) {
           setAmountTo('0');
           return;
         }
@@ -182,7 +182,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
     (async () => {
       if (editting === 'to' && rate && tokenFrom && tokenTo) {
         const _amountTo = getDigit(amountTo, false)
-        if (_amountTo === '0' || _amountTo === '') {
+        if (_amountTo === '0' || _amountTo === '' || Number(_amountTo) === 0) {
           setAmountFrom('0');
           return;
         }
