@@ -661,7 +661,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 const partialValue = getPartial(balanceTo, 0.25, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), 6))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
               }} 
             />
             <Tags 
@@ -671,7 +671,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 const partialValue = getPartial(balanceTo, 0.5, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), 6))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
               }}
             />
             <Tags 
@@ -681,7 +681,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 const partialValue = getPartial(balanceTo, 0.75, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), 6))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
               }}
             />
             <Tags 
@@ -695,7 +695,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                   const bn1KAI = new BigNumber(10 ** (tokenTo.decimals))
                   partialValue = bnPartialValue.minus(bn1KAI).toFixed(tokenTo.decimals, 1)
                 }
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), 6))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
               }} 
             />
           </View>
