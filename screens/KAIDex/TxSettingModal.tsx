@@ -85,7 +85,7 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
       setErrorSlippageTolerance(getLanguageString(language, 'SLIPPAGE_ERROR'))
       return false
     }
-    if (Number(getDigit(slippageTolerance)) <= 100) return true
+    if (Number(getDigit(slippageTolerance)) <= 100 && Number(getDigit(slippageTolerance)) > 0) return true
     setErrorSlippageTolerance(getLanguageString(language, 'SLIPPAGE_ERROR'))
     return false
   }
