@@ -151,7 +151,7 @@ export default ({
   }
 
   const _getBalance = () => {
-    if (!wallets[selectedWallet]) return 0;
+    if (!wallets[selectedWallet]) return '0';
     return wallets[selectedWallet].balance;
   }
 

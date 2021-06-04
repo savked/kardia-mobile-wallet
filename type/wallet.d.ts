@@ -3,7 +3,7 @@ interface Wallet {
   mnemonic?: string;
   address: string;
   privateKey?: string;
-  balance: number;
+  balance: string;
   staked: number;
   undelegating: number;
   cardAvatarID?: number;

@@ -27,7 +27,7 @@ export const getKRC20TokenInfo = async (address: string) => {
   return info;
 };
 
-export const getBalance = async (tokenAddress: string, userAddress: string) => {
+export const getBalance = async (tokenAddress: string, userAddress: string): Promise<string> => {
   try {
     const client = new KardiaClient({endpoint: RPC_ENDPOINT});
     const krc20 = client.krc20;
@@ -36,7 +36,7 @@ export const getBalance = async (tokenAddress: string, userAddress: string) => {
     return balance;
   } catch (error) {
     console.log('error', userAddress, tokenAddress)
-    return 0
+    return '0'
   }
 };
 

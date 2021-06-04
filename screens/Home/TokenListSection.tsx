@@ -27,7 +27,7 @@ const TokenListSection = ({refreshTime}: {
 
   const language = useRecoilValue(languageAtom);
   const [loading, setLoading] = useState(true);
-  const [balance, setBalance] = useState<number[]>([]);
+  const [balance, setBalance] = useState<string[]>([]);
   // const tokenList = useRecoilValue(krc20ListAtom);
   const tokenList = useRecoilValue(filterByOwnerSelector(wallets[selectedWallet].address))
 
