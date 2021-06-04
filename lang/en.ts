@@ -288,5 +288,6 @@ export const lang: Language = {
     APPROVE_ERROR: 'Error approving your tokens, please try again later.',
     PRICE_IMPACT: 'Price impact',
     SLIPPAGE_ERROR: 'Invalid slippage tolerance',
+    DEADLINE_ERROR: 'Invalid transaction deadline'
   },
 };

@@ -281,5 +281,6 @@ export const lang: Language = {
     APPROVE_ERROR: 'Có lỗi xảy ra, vui lòng thử lại sau.',
     PRICE_IMPACT: 'Ảnh hưởng giá',
     SLIPPAGE_ERROR: 'Giới hạn trượt giá không đúng',
+    DEADLINE_ERROR: 'Thời gian tối đa không hợp lệ.'
   },
 };
