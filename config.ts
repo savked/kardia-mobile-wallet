@@ -14,5 +14,5 @@ export const FACTORY_SMC = '0x488056D93c1Ac82354ec70B4e43140F689Cb2292';
 export const LIMIT_ORDER_SMC = '0x3E88CE7E64Bb2763CB8e40CF0d6eb9669f391A6b';
 export const WKAI_SMC = '0x02655eEF130e5F37F8b648BD9c8D10aA2e6bf698';
 
-export const KAI_TOKEN_NAME = "Kardiachain";
+export const KAI_TOKEN_NAME = "KardiaChain";
 export const KAI_TOKEN_SYMBOL = "KAI";
