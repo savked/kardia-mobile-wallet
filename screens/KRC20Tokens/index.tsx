@@ -7,7 +7,7 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import ENIcon from 'react-native-vector-icons/Entypo';
 import numeral from 'numeral';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { filterByOwnerSelector, krc20ListAtom } from '../../atoms/krc20';
+import { filterByOwnerSelector } from '../../atoms/krc20';
 import { languageAtom } from '../../atoms/language';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
@@ -32,7 +32,7 @@ export default () => {
   const tokenList = useRecoilValue(filterByOwnerSelector(wallets[selectedWallet].address))
 
   const [loading, setLoading] = useState(false);
-  const [balance, setBalance] = useState<number[]>([]);
+  const [balance, setBalance] = useState<string[]>([]);
 
   useFocusEffect(
     useCallback(() => {

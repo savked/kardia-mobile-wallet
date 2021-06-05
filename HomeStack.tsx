@@ -7,7 +7,6 @@ import HomeScreen from './screens/Home';
 import TokenDetail from './screens/TokenDetail';
 import {ThemeContext} from './ThemeContext';
 import TokenTxDetail from './screens/TokenTxDetail';
-import CreateKRC20TxScreen from './screens/CreateKRC20Transaction';
 import ImportWallet from './screens/ImportWallet';
 import ImportMnemonic from './screens/ImportMnemonic';
 import SelectWallet from './screens/SelectWallet';
@@ -52,11 +51,11 @@ const HomeStackScreen = () => {
         component={TokenTxDetail}
         options={{headerShown: false}}
       />
-      <HomeStack.Screen
+      {/* <HomeStack.Screen
         name="NewKRC20Tx"
         component={CreateKRC20TxScreen}
         options={{headerShown: false}}
-      />
+      /> */}
       <HomeStack.Screen
         name="NewKRC20Tokens"
         component={AddKRC20Tokens}

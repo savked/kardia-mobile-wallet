@@ -20,7 +20,6 @@ import {getLanguageString, parseError} from '../../../utils/lang';
 import {toChecksum, truncate} from '../../../utils/string';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import {
-  getBalance,
   getBalance as getKRC20Balance,
   transferKRC20,
 } from '../../../services/krc20';
@@ -58,7 +57,7 @@ const NewKRC20TxModal = ({
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const [address, setAddress] = useState('');
   const [amount, setAmount] = useState('0');
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState('0');
   const [showQRModal, setShowQRModal] = useState(false);
   const [showAddressBookModal, setShowAddressBookModal] = useState(false);
   const [gasPrice, setGasPrice] = useState(1);
@@ -75,7 +74,7 @@ const NewKRC20TxModal = ({
   const language = useRecoilValue(languageAtom);
 
   const _getKRC20Balance = async () => {
-    const balance = await getBalance(tokenAddress, wallets[selectedWallet].address);
+    const balance = await getKRC20Balance(tokenAddress, wallets[selectedWallet].address);
     setBalance(balance)
   }
 

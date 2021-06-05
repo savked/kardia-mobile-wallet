@@ -27,7 +27,6 @@ import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
 import {tokenInfoAtom} from '../../atoms/token';
 import {getTokenInfo} from '../../services/token';
-import SettingStackScreen from '../../SettingStack';
 import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import {localAuthAtom, localAuthEnabledAtom} from '../../atoms/localAuth';
