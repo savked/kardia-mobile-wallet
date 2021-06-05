@@ -373,6 +373,9 @@ export default () => {
   };
 
   const renderSuccessDesc = () => {
+    if (txObj.status === 0) {
+      return getLanguageString(language, 'GENERAL_FAIL_DESC');
+    }
     switch (type) {
       case 'normal':
         return getLanguageString(language, 'TX_SUCCESS');
@@ -466,15 +469,15 @@ export default () => {
           <ImageBackground
             imageStyle={{resizeMode: 'contain'}}
             style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end'}}
-            source={require('../../assets/success_tx.png')}>
+            source={txObj.status === 1 ? require('../../assets/success_tx.png') : require('../../assets/fail_tx.png')}>
             <Image
               style={{width: 86, height: 86}}
-              source={require('../../assets/icon/success_tx_icon.png')}
+              source={txObj.status === 1 ? require('../../assets/icon/success_tx_icon.png') : require('../../assets/icon/fail_tx_icon.png')}
             />
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, fontWeight: 'bold'}}>
-              {getLanguageString(language, 'SUCCESS')}
+              {getLanguageString(language, txObj.status === 1 ? 'SUCCESS' : 'FAIL')}
             </CustomText>
             <CustomText style={{color: theme.textColor, fontSize: 15, marginTop: 8, textAlign: 'center', paddingHorizontal: 18}}>
               {renderSuccessDesc()}
