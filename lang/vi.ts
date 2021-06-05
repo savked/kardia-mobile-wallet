@@ -145,14 +145,16 @@ export const lang: Language = {
     UNDELEGATE: 'Rút tiền stake',
     WITHDRAW: 'Rút về ví',
     SUCCESS: 'Thành công',
+    FAIL: 'Thất bại',
+    GENERAL_FAIL_DESC: 'Vui lòng gửi mã giao dịch cho admin để được hỗ trợ.',
     DELEGATE_SUCCESS: 'Bạn đã đầu tư vào',
     CLAIM_SUCCESS: '{{KAI_AMOUNT}} KAI đã được rút thành công',
     WITHDRAW_SUCCESS: '{{KAI_AMOUNT}} KAI đã được rút về ví',
     UNDELEGATE_SUCCESS:
       'KAI đã được rút. Sau 7 ngày bạn có thể rút số KAI này về ví.',
     UNDELEGATE_AMOUNT_TOO_MUCH: 'Số KAI rút phải nhỏ hơn số KAI đã stake',
-    UNDELEGATE_AMOUNT_REMAIN_1000:
-      'Cần giữ lại ít nhất 1.000 KAI hoặc rút hết KAI.',
+    UNDELEGATE_AMOUNT_REMAIN_MIN:
+      'Cần giữ lại ít nhất {{MIN_KAI}} KAI hoặc rút hết KAI.',
     UNDELEGATE_AMOUNT_PLACEHOLDER: 'Số KAI muốn rút từ stake...',
     YOUR_INVESTMENTS: 'Đầu tư của tôi',
     TOTAL_EARNING: 'Lợi nhuận',

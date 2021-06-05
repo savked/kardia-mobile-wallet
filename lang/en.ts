@@ -150,6 +150,8 @@ export const lang: Language = {
     UNDELEGATE: 'Undelegate',
     WITHDRAW: 'Withdraw',
     SUCCESS: 'Success',
+    FAIL: 'Fail',
+    GENERAL_FAIL_DESC: 'Please send transaction hash to admin for support.',
     DELEGATE_SUCCESS: 'You have just delegated to',
     CLAIM_SUCCESS: '{{KAI_AMOUNT}} KAI successfully claimed to your wallet.',
     WITHDRAW_SUCCESS:
@@ -157,8 +159,8 @@ export const lang: Language = {
     UNDELEGATE_SUCCESS:
       '{{KAI_AMOUNT}} KAI is undelegated. You will need to wait 7 days to withdraw {{KAI_AMOUNT}} KAI back to your wallet.',
     UNDELEGATE_AMOUNT_TOO_MUCH: 'Must be less than your staked KAI amount.',
-    UNDELEGATE_AMOUNT_REMAIN_1000:
-      'You must keep at least 1.000 KAI in staking, or undelegate all KAI.',
+    UNDELEGATE_AMOUNT_REMAIN_MIN:
+      'You must keep at least {{MIN_KAI}} KAI in staking, or undelegate all KAI.',
     UNDELEGATE_AMOUNT_PLACEHOLDER: 'Amount to Undelegate:',
     YOUR_INVESTMENTS: 'My Investments',
     TOTAL_EARNING: 'Total Earnings', // Your Total Return?
