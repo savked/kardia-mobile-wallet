@@ -57,6 +57,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   const [editting, setEditting] = useState('');
   const [processing, setProcessing] = useState(false)
   const [mode, setMode] = useState('BUY')
+  const [inputType, setInputType] = useState(0)
 
   const [rate, setRate] = useState<BigNumber | number>();
   const [txDeadline, setTxDeadline] = useState('2')
@@ -300,7 +301,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           decimals: tokenFrom.decimals
         },
         addressTo: _wallets[_selectedWallet].address,
-        inputType: editting === 'to' ? 0 : 1,
+        inputType,
         slippageTolerance,
         txDeadline: await calculateTransactionDeadline(txDeadline),
       }
@@ -587,6 +588,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               editable={editting !== 'from'}
               loading={loadingTo}
               onChangeText={(newValue) => {
+                setInputType(0)
                 const digitOnly = getDigit(newValue, tokenTo.decimals === 0 ? false : true);
                 if (digitOnly === '') {
                   setAmountTo('0')
@@ -762,6 +764,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               keyboardType="numeric"
               loading={loadingFrom}
               onChangeText={(newValue) => {
+                setInputType(1)
                 const digitOnly = getDigit(newValue, tokenFrom.decimals === 0 ? false : true);
                 if (digitOnly === '') {
                   setAmountFrom('0')
