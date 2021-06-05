@@ -15,11 +15,9 @@ import {styles} from './style';
 import StakingItem from './StakingItem';
 import AlertModal from '../../components/AlertModal';
 import {useNavigation} from '@react-navigation/native';
-import {weiToKAI} from '../../services/transaction/amount';
 import Button from '../../components/Button';
 import {statusBarColorAtom} from '../../atoms/statusBar';
 import {getSelectedWallet, getWallets} from '../../utils/local';
-import UndelegateModal from './UndelegateModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import CustomText from '../../components/Text';
@@ -252,20 +250,6 @@ const StakingScreen = () => {
           visible={true}
         />
       )}
-      <UndelegateModal
-        item={
-          undelegatingIndex >= 0
-            ? currentStaking.map(parseStakingItemForList)[undelegatingIndex]
-            : {}
-        }
-        showModal={(_message: string, _messageType: string) => {
-          setUndelegatingIndex(-1);
-          setMessage(_message);
-          setMessageType(_messageType);
-        }}
-        visible={undelegatingIndex >= 0}
-        onClose={() => setUndelegatingIndex(-1)}
-      />
     </SafeAreaView>
   );
 };

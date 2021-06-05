@@ -7,7 +7,6 @@ import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
 import Modal from '../../../components/Modal';
 import CustomTextInput from '../../../components/TextInput';
-import numeral from 'numeral';
 import { MIN_DELEGATE } from '../../../config';
 import { undelegateAll, undelegateWithAmount } from '../../../services/staking';
 import { weiToKAI } from '../../../services/transaction/amount';
@@ -88,7 +87,7 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
         Number(stakedAmountInKAI) - _undelegateValue > 0
       ) {
         setUndelegateError(
-          getLanguageString(language, 'UNDELEGATE_AMOUNT_REMAIN_1000'),
+          getLanguageString(language, 'UNDELEGATE_AMOUNT_REMAIN_MIN').replace('{{MIN_KAI}}', formatNumberString(MIN_DELEGATE.toString())),
         );
         setSubmitting(false);
         return;
