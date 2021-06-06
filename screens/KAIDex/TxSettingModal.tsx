@@ -77,6 +77,8 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
   const handleClose = () => {
     setDeadline(_deadline)
     setSlippageTolerance(_slippageTolerance)
+    setErrorSlippageTolerance('')
+    setErrorDeadline('')
     onClose();
   }
 
@@ -84,7 +86,7 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
     let isValid = true
     setErrorSlippageTolerance('');
     setErrorDeadline('')
-    if (getDigit(slippageTolerance).length === 0) {
+    if (!getDigit(slippageTolerance) || getDigit(slippageTolerance).length === 0) {
       setErrorSlippageTolerance(getLanguageString(language, 'SLIPPAGE_ERROR'))
       isValid = false
     }
@@ -92,7 +94,7 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
       setErrorSlippageTolerance(getLanguageString(language, 'SLIPPAGE_ERROR'))
       isValid = false
     }
-    if (getDigit(deadline).length === 0) {
+    if (!getDigit(deadline) || getDigit(deadline).length === 0) {
       setErrorDeadline(getLanguageString(language, 'DEADLINE_ERROR'))
       isValid = false
     }
