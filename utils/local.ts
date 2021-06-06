@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import { DEFAULT_CACHE } from '../atoms/cache';
 import {DEFAULT_KRC20_TOKENS} from '../config';
 
 const _getWallets = async () => {
@@ -332,6 +333,50 @@ export const saveFontSize = async (fontSize: 'small' | 'large') => {
     await AsyncStorage.setItem(
       '@kardia_font_size',
       fontSize,
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
+export const getCache = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@kardia_cache');
+    if (!value) return DEFAULT_CACHE
+    const jsonValue = JSON.parse(value)
+    return {...DEFAULT_CACHE, ...jsonValue}
+    // return JSON.parse(value)
+  } catch (e) {
+    console.error(e);
+    return {};
+    // error reading value
+  }
+}
+
+export const saveAllCache = async (cacheObj: Record<string, any>) => {
+  try {
+    await AsyncStorage.setItem(
+      '@kardia_cache',
+      JSON.stringify({...DEFAULT_CACHE, ...cacheObj}),
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
+export const saveCacheByKey = async (key: string, value: any) => {
+  try {
+    const currentCache = await getCache()
+    if (value) {
+      currentCache[key] = value
+    }
+    await AsyncStorage.setItem(
+      '@kardia_cache',
+      JSON.stringify(currentCache),
     );
     return true;
   } catch (e) {

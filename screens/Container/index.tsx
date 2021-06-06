@@ -10,11 +10,13 @@ import TransactionStackScreen from '../../TransactionStack';
 import {
   getAddressBook,
   getAppPasscodeSetting,
+  getCache,
   getFontSize,
   getLanguageSetting,
   getSelectedWallet,
   getTokenList,
   getWallets,
+  saveAllCache,
   saveSelectedWallet,
   saveTokenList,
   saveWallets,
@@ -47,6 +49,7 @@ import Button from '../../components/Button';
 import KAIDex from '../KAIDex';
 import { dexStatusAtom } from '../../atoms/dexStatus';
 import { initDexConfig } from '../../services/dex';
+import { cacheAtom } from '../../atoms/cache';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -243,8 +246,13 @@ const AppContainer = () => {
   const [appStatus, setAppStatus] = useState('OK')
 
   const setDexStatus = useSetRecoilState(dexStatusAtom)
+  const [cache, setCache] = useRecoilState(cacheAtom)
 
   const theme = useContext(ThemeContext);
+
+  useEffect(() => {
+    saveAllCache(cache)
+  }, [cache])
 
   useEffect(() => {
     (async () => {
@@ -375,6 +383,13 @@ const AppContainer = () => {
       try {
         let _selectedWallet = await getSelectedWallet();
         setSelectedWallet(_selectedWallet);
+      } catch (error) {
+        console.error(error);
+      }
+
+      try {
+        const localCache = await getCache();
+        setCache(localCache)
       } catch (error) {
         console.error(error);
       }

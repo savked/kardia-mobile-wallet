@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
 import { Image, Platform, TouchableOpacity, View } from 'react-native';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { languageAtom } from '../../atoms/language';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import TxSettingModal from './TxSettingModal'
@@ -20,6 +20,7 @@ import { useNavigation } from '@react-navigation/core';
 import Tags from '../../components/Tags';
 import AuthModal from '../common/AuthModal';
 import { getErrorKey } from '../../utils/error';
+import { cacheSelector } from '../../atoms/cache';
 
 export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, tokenFromLiquidity: _tokenFromLiquidity, tokenToLiquidity: _tokenToLiquidity, pairAddress}: {
   triggerSelectPair: () => void;
@@ -60,8 +61,10 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   const [inputType, setInputType] = useState(0)
 
   const [rate, setRate] = useState<BigNumber | number>();
-  const [txDeadline, setTxDeadline] = useState('2')
-  const [slippageTolerance, setSlippageTolerance] = useState('1')
+  // const [txDeadline, setTxDeadline] = useState('2')
+  const [txDeadline, setTxDeadline] = useRecoilState(cacheSelector('txDeadline'))
+  // const [slippageTolerance, setSlippageTolerance] = useState('1')
+  const [slippageTolerance, setSlippageTolerance] = useRecoilState(cacheSelector('slippageTolerance'))
 
   const [showTxSettingModal, setShowTxSettingModal] = useState(false)
   const [swapError, setSwappError] = useState('');
@@ -303,7 +306,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
         addressTo: _wallets[_selectedWallet].address,
         inputType,
         slippageTolerance,
-        txDeadline: await calculateTransactionDeadline(txDeadline),
+        txDeadline: await calculateTransactionDeadline(txDeadline as string),
       }
 
       const txResult = await swapTokens(swapParams, _wallets[_selectedWallet])
@@ -365,8 +368,8 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
         <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 16}}>
           <TxSettingModal
             visible={showTxSettingModal}
-            slippageTolerance={slippageTolerance}
-            deadline={txDeadline}
+            slippageTolerance={slippageTolerance as string}
+            deadline={txDeadline as string}
             onClose={() => {
               setShowTxSettingModal(false);
             }}
