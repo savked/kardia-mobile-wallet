@@ -469,10 +469,10 @@ export default () => {
           <ImageBackground
             imageStyle={{resizeMode: 'contain'}}
             style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end'}}
-            source={txObj.status === 1 ? require('../../assets/success_tx.png') : require('../../assets/fail_tx.png')}>
+            source={txObj.status !== 0 ? require('../../assets/success_tx.png') : require('../../assets/fail_tx.png')}>
             <Image
               style={{width: 86, height: 86}}
-              source={txObj.status === 1 ? require('../../assets/icon/success_tx_icon.png') : require('../../assets/icon/fail_tx_icon.png')}
+              source={txObj.status !== 0 ? require('../../assets/icon/success_tx_icon.png') : require('../../assets/icon/fail_tx_icon.png')}
             />
             <CustomText
               allowFontScaling={false}

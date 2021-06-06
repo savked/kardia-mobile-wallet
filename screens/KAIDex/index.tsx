@@ -59,19 +59,6 @@ export default () => {
     if (_pairAddress) {
       refetch()
     }
-    // setPairAddress(_pairAddress)
-
-    // const item = pairData.pairs.find((i: any) => {
-    //   return i.contract_address === _pairAddress
-    // })
-
-    // if (!item) return;
-    // setTokenFrom(formatDexToken(item.t1, wallets[selectedWallet]));
-    // setTokenTo(formatDexToken(item.t2, wallets[selectedWallet]));
-    // setTokenFromLiquidity(item.token1_liquidity);
-    // setTokenToLiquidity(item.token2_liquidity)
-    // setPairAddress(item.contract_address)
-    // setSelectingPair(false)
   }, [params])
 
   useEffect(() => {
