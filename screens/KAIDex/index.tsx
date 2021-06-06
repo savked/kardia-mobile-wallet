@@ -2,7 +2,7 @@ import { useFocusEffect, useRoute } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Keyboard, Platform, RefreshControl, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import CustomText from '../../components/Text';
 import { ThemeContext } from '../../ThemeContext';
@@ -19,6 +19,7 @@ import UnderMaintainence from '../common/UnderMaintainence';
 import { dexStatusAtom } from '../../atoms/dexStatus';
 import ComingSoon from '../common/ComingSoon';
 import { statusBarColorAtom } from '../../atoms/statusBar';
+import { getBalance } from '../../services/account';
 
 export default () => {
   const theme = useContext(ThemeContext);
@@ -36,7 +37,7 @@ export default () => {
   const [tokenToLiquidity, setTokenToLiquidity] = useState('');
   const [pairAddress, setPairAddress] = useState('');
   const setTabBarVisible = useSetRecoilState(showTabBarAtom)
-  const wallets = useRecoilValue(walletsAtom)
+  const [wallets, setWallets] = useRecoilState(walletsAtom)
   const selectedWallet = useRecoilValue(selectedWalletAtom)
   const dexStatus = useRecoilValue(dexStatusAtom)
 
@@ -62,28 +63,40 @@ export default () => {
   }, [params])
 
   useEffect(() => {
-    // if (params) return
-    if (pairData && pairData.pairs) {
-      let pair = pairData.pairs[0]
+    (async () => {
+      // if (params) return
+      if (pairData && pairData.pairs) {
+        let pair = pairData.pairs[0]
 
-      if (params) {
-        const _pairAddress = (params as any).pairAddress
+        if (params) {
+          const _pairAddress = (params as any).pairAddress
 
-        const item = pairData.pairs.find((i: any) => {
-          return i.contract_address === _pairAddress
-        })
+          const item = pairData.pairs.find((i: any) => {
+            return i.contract_address === _pairAddress
+          })
 
-        if (item) pair = item
+          if (item) pair = item
+        }
+
+        if (!pair) return
+
+        setTokenFrom(formatDexToken(pair.t1, wallets[selectedWallet]));
+        setTokenTo(formatDexToken(pair.t2, wallets[selectedWallet]));
+        setTokenFromLiquidity(pair.token1_liquidity);
+        setTokenToLiquidity(pair.token2_liquidity)
+        setPairAddress(pair.contract_address)
+        setSelectingPair(false)
+
+        const balance = await getBalance(wallets[selectedWallet].address);
+        const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
+        newWallets.forEach((walletItem, index) => {
+          if (walletItem.address === wallets[selectedWallet].address) {
+            newWallets[index].balance = balance;
+          }
+        });
+        setWallets(newWallets);
       }
-
-      if (!pair) return
-      setTokenFrom(formatDexToken(pair.t1, wallets[selectedWallet]));
-      setTokenTo(formatDexToken(pair.t2, wallets[selectedWallet]));
-      setTokenFromLiquidity(pair.token1_liquidity);
-      setTokenToLiquidity(pair.token2_liquidity)
-      setPairAddress(pair.contract_address)
-      setSelectingPair(false)
-    }
+    })()
   }, [pairData, params])
 
   useEffect(() => {

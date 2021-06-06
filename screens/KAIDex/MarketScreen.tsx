@@ -10,7 +10,7 @@ import Divider from '../../components/Divider';
 import CustomText from '../../components/Text';
 import CustomTextInput from '../../components/TextInput';
 import { approveToken, calculateDexAmountOut, calculatePriceImpact, calculateTransactionDeadline, formatDexToken, getApproveState, getTotalVolume } from '../../services/dex';
-import { getBalance } from '../../services/krc20';
+import { getBalance as getKRC20Balance } from '../../services/krc20';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
 import { getSelectedWallet, getWallets } from '../../utils/local';
@@ -105,7 +105,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
       if (tokenFrom.symbol === 'KAI') {
         setBalanceFrom(wallets[selectedWallet].balance.toString())
       } else if (tokenFrom.symbol !== 'WKAI') {
-        const balance = await getBalance(tokenFrom.hash, wallets[selectedWallet].address)
+        const balance = await getKRC20Balance(tokenFrom.hash, wallets[selectedWallet].address)
         setBalanceFrom(balance)
       }
     })()
@@ -114,11 +114,11 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   useEffect(() => {
     (async () => {
       if (!tokenTo) return;
-
+      
       if (tokenTo.symbol === 'KAI') {
         setBalanceTo(wallets[selectedWallet].balance.toString())
       } else if (tokenTo.symbol !== 'WKAI') {
-        const balance = await getBalance(tokenTo.hash, wallets[selectedWallet].address)
+        const balance = await getKRC20Balance(tokenTo.hash, wallets[selectedWallet].address)
         setBalanceTo(balance.toString())
 
         const _approveState = await getApproveState(tokenTo, getDigit(amountTo), wallets[selectedWallet])
