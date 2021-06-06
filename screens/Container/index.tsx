@@ -251,6 +251,7 @@ const AppContainer = () => {
   const theme = useContext(ThemeContext);
 
   useEffect(() => {
+    if (!inited || appStatus !== 'OK') return;
     saveAllCache(cache)
   }, [cache])
 
