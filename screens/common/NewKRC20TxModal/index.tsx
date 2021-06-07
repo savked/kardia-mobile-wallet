@@ -34,6 +34,7 @@ import AuthModal from '../AuthModal';
 import {useNavigation} from '@react-navigation/native';
 import CustomText from '../../../components/Text';
 import { getRecomendedGasPrice } from '../../../services/transaction';
+import { KardiaAccount } from 'kardia-js-sdk';
 
 // const MAX_AMOUNT = 5000000000;
 
@@ -177,6 +178,10 @@ const NewKRC20TxModal = ({
     let isValid = true;
     if (address === '') {
       setErrorAddress(getLanguageString(language, 'REQUIRED_FIELD'));
+      isValid = false;
+    }
+    if (!KardiaAccount.isAddress(address)) {
+      setErrorAddress(getLanguageString(language, 'INVALID_ADDRESS'));
       isValid = false;
     }
     if (amount === '' || amount === '0') {
