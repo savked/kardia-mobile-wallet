@@ -6,11 +6,15 @@ export const isNumber = (val: string) => {
 
 export const getDigit = (val: string, editting = true) => {
   let result = '';
+  let decimalPointExists = false
   for (let index = 0; index < val.length; index++) {
     const char = val.charAt(index);
     if (/\d/.test(char)) {
       result += char;
-    } else if (char === '.' || char === 'e' || char === '+' || char === '-') {
+    } else if (char === '.' && !decimalPointExists) {
+      result += char;
+      decimalPointExists = true
+    } else if (char === 'e' || char === '+' || char === '-') {
       result += char;
     }
   }

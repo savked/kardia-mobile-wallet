@@ -149,7 +149,9 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
           <CustomTextInput
             keyboardType="numeric"
             value={slippageTolerance}
-            onChangeText={setSlippageTolerance}
+            onChangeText={(newVal) => {
+              setSlippageTolerance(getDigit(newVal, true))
+            }}
             headline={`${getLanguageString(language, 'SLIPPAGE_TOLERANCE')} (%)`}
             headlineStyle={{
               fontWeight: 'normal',
