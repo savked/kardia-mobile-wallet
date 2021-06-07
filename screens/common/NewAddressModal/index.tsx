@@ -25,6 +25,7 @@ import {addressBookAtom} from '../../../atoms/addressBook';
 import {saveAddressBook} from '../../../utils/local';
 import {toChecksum} from '../../../utils/string';
 import CustomText from '../../../components/Text';
+import { KardiaAccount } from 'kardia-js-sdk';
 
 export default ({
   name = '',
@@ -112,6 +113,10 @@ export default ({
       setErrAddress(getLanguageString(language, 'REQUIRED_FIELD'));
       isValid = false;
     }
+    if (!KardiaAccount.isAddress(toChecksum(abAddress.toLowerCase()))) {
+      setErrAddress(getLanguageString(language, 'INVALID_ADDRESS'));
+      isValid = false;
+    }
 
     if (!isValid) {
       return;
@@ -124,7 +129,7 @@ export default ({
         setErrAddress(getLanguageString(language, 'ADDRESS_NOT_FOUND'));
         return;
       }
-      currentAB[index].address = toChecksum(abAddress);
+      currentAB[index].address = toChecksum(abAddress.toLowerCase());
       currentAB[index].name = abName;
       currentAB[index].avatar = abAvatar.uri ? abAvatar.uri : '';
     } else {
