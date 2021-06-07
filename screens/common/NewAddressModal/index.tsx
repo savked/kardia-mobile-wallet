@@ -113,7 +113,7 @@ export default ({
       setErrAddress(getLanguageString(language, 'REQUIRED_FIELD'));
       isValid = false;
     }
-    if (!KardiaAccount.isAddress(toChecksum(abAddress.toLowerCase()))) {
+    if (!KardiaAccount.isAddress(abAddress)) {
       setErrAddress(getLanguageString(language, 'INVALID_ADDRESS'));
       isValid = false;
     }
