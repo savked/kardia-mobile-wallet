@@ -182,7 +182,7 @@ export default ({
       visible={visible}
       onClose={onClose}
       showCloseButton={false}
-      contentStyle={{backgroundColor: theme.backgroundFocusColor, height: 520}}>
+      contentStyle={{backgroundColor: theme.backgroundFocusColor, height: Platform.OS === 'android' ? 540 : 520}}>
       <View style={[styles.container]}>
         <View
           style={{

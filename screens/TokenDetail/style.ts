@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
   },
   noTXContainer: {
     // flex: 1,
-    // paddingHorizontal: 83,
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
