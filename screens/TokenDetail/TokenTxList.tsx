@@ -189,7 +189,7 @@ const TokenTxList = ({
           <CustomText style={[styles.noTXText, {color: theme.textColor, fontSize: 24, fontWeight: 'bold'}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
           </CustomText>
-          <CustomText style={{color: theme.textColor}}>
+          <CustomText style={{color: theme.textColor, textAlign: 'center'}}>
             {getLanguageString(language, 'NO_KRC20_TRANSACTION_SUB_TEXT')}
           </CustomText>
           <View style={{marginHorizontal: 83, marginTop: 32}}>
