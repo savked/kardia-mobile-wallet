@@ -477,7 +477,7 @@ export default () => {
             <CustomText
               allowFontScaling={false}
               style={{color: theme.textColor, fontSize: 32, fontWeight: 'bold'}}>
-              {getLanguageString(language, txObj.status === 1 ? 'SUCCESS' : 'FAIL')}
+              {getLanguageString(language, txObj.status !== 0 ? 'SUCCESS' : 'FAIL')}
             </CustomText>
             <CustomText style={{color: theme.textColor, fontSize: 15, marginTop: 8, textAlign: 'center', paddingHorizontal: 18}}>
               {renderSuccessDesc()}

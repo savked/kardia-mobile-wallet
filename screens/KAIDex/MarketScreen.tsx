@@ -475,6 +475,18 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
     }
   }
 
+  const shouldHighight = () => {
+    if (!tokenTo) return false
+    const val14 = parseDecimals(getPartial(balanceTo, 0.25, tokenTo.decimals), tokenTo.decimals)
+    const val24 = parseDecimals(getPartial(balanceTo, 0.5, tokenTo.decimals), tokenTo.decimals)
+    const val34 = parseDecimals(getPartial(balanceTo, 0.75, tokenTo.decimals), tokenTo.decimals)
+    const val44 = parseDecimals(getPartial(balanceTo, 1, tokenTo.decimals), tokenTo.decimals)
+    if (val14 === val24 || val14 === val34 || val14 === val44) return false
+    if (val24 === val34 || val24 === val44) return false
+    if (val34 === val44) return false
+    return true
+  }
+
   return (
     <View 
       style={{
@@ -661,7 +673,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <View style={{flexDirection: 'row', marginTop: 12}}>
             <Tags 
               content={`25 %`} 
-              active={balanceTo !== '0' && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.25, tokenTo.decimals), tokenTo.decimals) } 
+              active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.25, tokenTo.decimals), tokenTo.decimals) } 
               containerStyle={{marginRight: 12}} 
               onPress={() => {
                 setEditting('to')
@@ -671,7 +683,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
             />
             <Tags 
               content={`50 %`} 
-              active={balanceTo !== '0' && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.5, tokenTo.decimals), tokenTo.decimals) } 
+              active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.5, tokenTo.decimals), tokenTo.decimals) } 
               containerStyle={{marginRight: 12}} 
               onPress={() => {
                 setEditting('to')
@@ -681,7 +693,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
             />
             <Tags 
               content={`75 %`} 
-              active={balanceTo !== '0' && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.75, tokenTo.decimals), tokenTo.decimals) } 
+              active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.75, tokenTo.decimals), tokenTo.decimals) } 
               containerStyle={{marginRight: 12}} 
               onPress={() => {
                 setEditting('to')
@@ -691,7 +703,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
             />
             <Tags 
               content={`100 %`} 
-              active={balanceTo !== '0' && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 1, tokenTo.decimals), tokenTo.decimals) } 
+              active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 1, tokenTo.decimals), tokenTo.decimals) } 
               onPress={() => {
                 setEditting('to')
                 let partialValue = getPartial(balanceTo, 1, tokenTo.decimals)

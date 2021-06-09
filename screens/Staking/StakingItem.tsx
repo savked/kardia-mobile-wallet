@@ -172,7 +172,7 @@ const StakingItem = ({
                 color: 'rgba(252, 252, 252, 0.54)',
                 fontSize: theme.defaultFontSize,
               }}>
-              {formatNumberString(stakedAmountInKAI, 6)} KAI
+              {formatNumberString(stakedAmountInKAI, 3)} KAI
             </CustomText>
           </View>
         </View>
