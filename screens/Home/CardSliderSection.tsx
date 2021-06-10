@@ -4,23 +4,21 @@ import {Dimensions, Image, Platform, TouchableOpacity, View} from 'react-native'
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {truncate} from '../../utils/string';
+import {copyToClipboard, truncate} from '../../utils/string';
 import {styles} from './style';
 import {tokenInfoAtom} from '../../atoms/token';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString, parseCardAvatar} from '../../utils/lang';
-import NewTxModal from '../common/NewTxModal';
 import numeral from 'numeral';
 import {weiToKAI} from '../../services/transaction/amount';
 import {ThemeContext} from '../../ThemeContext';
 import CustomText from '../../components/Text';
+import Toast from 'react-native-toast-message';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
-const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
-  // const navigation = useNavigation();
+const CardSliderSection = () => {
   const theme = useContext(ThemeContext);
-  const [showNewTxModal, setShowNewTxModal] = useState(false);
   const carouselRef = useRef<Carousel<Wallet>>(null);
   const wallets = useRecoilValue(walletsAtom);
   const tokenInfo = useRecoilValue(tokenInfoAtom);
@@ -86,11 +84,24 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
               </CustomText>
             </View>
             <TouchableOpacity
-              onPress={() => showQRModal()}
+              onPress={() => {
+                copyToClipboard(
+                  wallets[selectedWallet] ? wallets[selectedWallet].address : '',
+                )
+                Toast.show({
+                  type: 'success',
+                  topOffset: 70,
+                  text1: getLanguageString(language, 'COPIED'),
+                  props: {
+                    backgroundColor: theme.backgroundFocusColor,
+                    textColor: theme.textColor
+                  }
+                });
+              }}
               style={{
-                width: 52,
-                height: 52,
-                borderRadius: 26,
+                width: 44,
+                height: 44,
+                borderRadius: 22,
                 backgroundColor: '#FFFFFF',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -104,10 +115,9 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
                 elevation: 9,
               }}>
               <Image
-                source={require('../../assets/icon/qr_dark.png')}
-                style={{width: 30, height: 30, marginRight: 2, marginTop: 2}}
+                source={require('../../assets/icon/copy_dark.png')}
+                style={{width: 20, height: 20, marginRight: 2, marginTop: 2}}
               />
-              {/* <Icon size={30} name="qrcode" /> */}
             </TouchableOpacity>
           </View>
         </View>
@@ -116,17 +126,6 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
   };
 
   useEffect(() => {
-    // (async () => {
-    //   // saveSelectedWallet(selectedWallet);
-    //   if (carouselRef.current && carouselRef.current.currentIndex !== selectedWallet) {
-    //     // react-native-snap-carousel issue. TODO: wait for issue resolved and update
-    //     setTimeout(() => {
-    //       if (carouselRef.current) {
-    //         carouselRef.current.snapToItem(selectedWallet);
-    //       }
-    //     }, 300);
-    //   }
-    // })()
     if (carouselRef.current && carouselRef.current.currentIndex !== selectedWallet) {
 
       if (snapTimeoutId) {
@@ -150,10 +149,6 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
 
   return (
     <View style={styles.kaiCardSlider}>
-      <NewTxModal
-        visible={showNewTxModal}
-        onClose={() => setShowNewTxModal(false)}
-      />
       <Carousel
         ref={carouselRef}
         data={wallets}

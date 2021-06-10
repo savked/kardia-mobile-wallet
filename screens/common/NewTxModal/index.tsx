@@ -16,7 +16,7 @@ import {useRecoilState, useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
 import Button from '../../../components/Button';
 import {getLanguageString, parseError} from '../../../utils/lang';
-import {toChecksum, truncate} from '../../../utils/string';
+import {getFromClipboard, toChecksum, truncate} from '../../../utils/string';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import {getBalance} from '../../../services/account';
 import {createTx, getRecomendedGasPrice} from '../../../services/transaction';
@@ -332,10 +332,29 @@ const NewTxModal = ({
                 inputStyle={{
                   backgroundColor: 'rgba(96, 99, 108, 1)',
                   color: theme.textColor,
+                  paddingRight: 60
                 }}
                 placeholder={getLanguageString(language, 'CREATE_TX_ADDRESS_PLACEHOLDER')}
                 placeholderTextColor={theme.mutedTextColor}
                 // headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
+                icons={() => {
+                  return (
+                    <TouchableOpacity
+                      style={{position: 'absolute', right: 10}}
+                      onPress={async () => setAddress(await getFromClipboard())}
+                    >
+                      <CustomText
+                        style={{
+                          color: theme.textColor,
+                          fontWeight: '500',
+                          fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                        }}
+                      >
+                        Paste
+                      </CustomText>
+                    </TouchableOpacity>
+                  )
+                }}
               />
             </View>
             <TouchableOpacity
@@ -393,6 +412,7 @@ const NewTxModal = ({
               inputStyle={{
                 backgroundColor: 'rgba(96, 99, 108, 1)',
                 color: theme.textColor,
+                paddingRight: 60
               }}
               onChangeText={(newAmount) => {
                 const digitOnly = getDigit(newAmount);
@@ -419,6 +439,24 @@ const NewTxModal = ({
               }}
               onBlur={() => setAmount(format(Number(getDigit(amount))))}
               value={amount}
+              icons={() => {
+                return (
+                  <TouchableOpacity 
+                    style={{position: 'absolute', right: 10}}
+                    onPress={() => setAmount(formatNumberString(parseDecimals(_getBalance(), 18)))}
+                  >
+                    <CustomText 
+                      style={{
+                        color: theme.textColor,
+                        fontWeight: '500',
+                        fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                      }}
+                    >
+                      MAX
+                    </CustomText>
+                  </TouchableOpacity>
+                )
+              }}
             />
           </View>
 

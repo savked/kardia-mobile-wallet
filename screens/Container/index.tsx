@@ -6,7 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import TransactionStackScreen from '../../TransactionStack';
+// import TransactionStackScreen from '../../TransactionStack';
 import {
   getAddressBook,
   getAppPasscodeSetting,
@@ -50,6 +50,7 @@ import KAIDex from '../KAIDex';
 import { dexStatusAtom } from '../../atoms/dexStatus';
 import { initDexConfig } from '../../services/dex';
 import { cacheAtom } from '../../atoms/cache';
+import SettingStackScreen from '../../SettingStack';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -218,12 +219,12 @@ const Wrap = () => {
       }}>
       {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
       <Tab.Screen name="Home" component={HomeStackScreen} />
-      <Tab.Screen name="Transaction" component={TransactionStackScreen} />
-      <Tab.Screen name="DEX" component={KAIDex} />
+      {/* <Tab.Screen name="Transaction" component={TransactionStackScreen} /> */}
       <Tab.Screen name="Staking" component={StakingStackScreen} />
+      <Tab.Screen name="DEX" component={KAIDex} />
       <Tab.Screen name="Address" component={AddressStackScreen} />
       {/* <Tab.Screen name="News" component={NewsScreen} /> */}
-      {/* <Tab.Screen name="Setting" component={SettingStackScreen} /> */}
+      <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>
   );
 };

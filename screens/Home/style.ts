@@ -157,4 +157,20 @@ export const styles = StyleSheet.create({
   tokenListContainer: {
     flex: 1,
   },
+  controlButton: {
+    width: '31%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 14,
+    borderRadius: 12,
+    flexDirection: 'row',
+    shadowColor: 'rgba(0, 0, 0, 0.3)',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 12,
+    shadowRadius: 8,
+    elevation: 9,
+  },
 });

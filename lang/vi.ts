@@ -92,7 +92,7 @@ export const lang: Language = {
     NO_TRANSACTION_SUB_TEXT: 'Có vẻ như chưa có bất kỳ giao dịch nào.',
     NO_KRC20_TRANSACTION_SUB_TEXT: 'Có vẻ như chưa có bất kỳ giao dịch nào.',
     SEARCH_TRANSACTION_PLACEHOLDER: 'Tìm kiếm...',
-    VIEW_ALL: 'Tất cả',
+    VIEW_ALL: 'Quản lý',
     SEND: 'Gửi KAI',
     SEND_NOW: 'Gửi ngay',
     CANCEL: 'Hủy',
@@ -216,7 +216,7 @@ export const lang: Language = {
     NOT_ENOUGH_BALANCE: 'Giao dịch vượt quá số dư ví.',
     GENERAL_ERROR: 'Có lỗi xảy ra, vui lòng thử lại sau',
     // KRC20 key
-    KRC20_TOKENS_SECTION_TITLE: 'Tokens',
+    KRC20_TOKENS_SECTION_TITLE: 'Tokens của tôi',
     ADD_TOKEN: 'Thêm token',
     ADD_CUSTOM_TOKEN: 'Token mới',
     TOKEN_ADDRESS: 'Địa chỉ token',

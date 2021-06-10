@@ -12,6 +12,7 @@ export const theme = {
   linkTextColor: '#FFFFFF',
   backgroundColor: '#181818',
   backgroundFocusColor: 'rgba(58, 59, 60, 1)',
+  backgroundStrongColor: 'rgba(33, 33, 33, 1)',
   textColor: '#F7F7F7',
   urlColor: 'rgba(128, 156, 255, 1)',
   mutedTextColor: 'rgba(252, 252, 252, 0.54)',

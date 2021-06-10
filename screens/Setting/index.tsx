@@ -34,7 +34,7 @@ const SettingScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      setTabBarVisible(false);
+      setTabBarVisible(true);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
@@ -52,19 +52,6 @@ const SettingScreen = () => {
   return (
     <SafeAreaView
       style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <View
-        style={{
-          flexDirection: 'row',
-          width: '100%',
-          justifyContent: 'flex-start',
-        }}>
-        <ENIcon.Button
-          style={{paddingLeft: 20}}
-          name="chevron-left"
-          onPress={() => navigation.goBack()}
-          backgroundColor="transparent"
-        />
-      </View>
       <View style={styles.header}>
         <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'SETTING_SCREEN_TITLE')}
@@ -149,12 +136,12 @@ const SettingScreen = () => {
               </View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View style={{width: 32, height: 32, alignItems: 'center', justifyContent: 'center'}}>
-                  <CustomText style={{color: fontSize === 'small' ? theme.textColor : theme.mutedTextColor, fontSize: theme.defaultFontSize + 2}}>
+                  <CustomText keepFontSize={true} style={{color: fontSize === 'small' ? theme.textColor : theme.mutedTextColor, fontSize: 14}}>
                     aA
                   </CustomText>
                 </View>
                 <View style={{width: 32, height: 32, alignItems: 'center', justifyContent: 'center'}}>
-                  <CustomText style={{color: fontSize === 'large' ? theme.textColor : theme.mutedTextColor, fontSize: (theme.defaultFontSize + 2) * 1.4}}>
+                  <CustomText keepFontSize={true} style={{color: fontSize === 'large' ? theme.textColor : theme.mutedTextColor, fontSize: 18}}>
                     aA
                   </CustomText>
                 </View>

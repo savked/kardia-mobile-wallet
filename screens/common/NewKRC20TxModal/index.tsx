@@ -138,17 +138,14 @@ const NewKRC20TxModal = ({
         {gasPrice: calculatedGasPrice}
       );
       setLoading(false);
-      navigation.navigate('Transaction', {
-        screen: 'SuccessTx',
-        params: {
-          txHash: txResult,
-          type: 'krc20',
-          tokenAddress: tokenAddress,
-          tokenDecimals: tokenDecimals,
-          tokenAvatar: tokenAvatar,
-          userAddress: _wallets[_selectedWallet].address,
-          tokenSymbol: tokenSymbol,
-        },
+      navigation.navigate('SuccessTx', {
+        txHash: txResult,
+        type: 'krc20',
+        tokenAddress: tokenAddress,
+        tokenDecimals: tokenDecimals,
+        tokenAvatar: tokenAvatar,
+        userAddress: _wallets[_selectedWallet].address,
+        tokenSymbol: tokenSymbol,
       });
       resetState();
       onClose();

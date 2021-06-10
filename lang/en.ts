@@ -91,13 +91,13 @@ export const lang: Language = {
     BY_PRIVATE_KEY: 'by Private Key',
     BY_SEED_PHRASE: 'by Seed Phrase',
     // Transaction key
-    RECENT_TRANSACTION: 'Transactions',
+    RECENT_TRANSACTION: 'History',
     NO_TRANSACTION: 'No transaction',
     NO_TRANSACTION_SUB_TEXT: 'Hello!? Anybody home ??',
     NO_KRC20_TRANSACTION_SUB_TEXT: 'Looks like we don’t have any transaction for this token...yet',
     SEARCH_TRANSACTION_PLACEHOLDER:
       'Search with address / hash / block number...',
-    VIEW_ALL: 'View All',
+    VIEW_ALL: 'Manage',
     SEND: 'Send',
     SEND_NOW: 'Send Now',
     CANCEL: 'Cancel',
@@ -223,7 +223,7 @@ export const lang: Language = {
       'The amount requested exceeds your current wallet balance.',
     GENERAL_ERROR: 'An error occured. Please try again later.',
     // KRC20 key
-    KRC20_TOKENS_SECTION_TITLE: 'Tokens',
+    KRC20_TOKENS_SECTION_TITLE: 'My Tokens',
     ADD_TOKEN: 'Add token',
     ADD_CUSTOM_TOKEN: 'Custom token',
     TOKEN_ADDRESS: 'Token address',

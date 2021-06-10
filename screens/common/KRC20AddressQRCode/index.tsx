@@ -46,58 +46,68 @@ const QRModal = ({
       contentStyle={{
         paddingHorizontal: 20,
         backgroundColor: theme.backgroundFocusColor,
-        height: 730,
+        height: 640,
+        justifyContent: 'flex-start'
       }}
       onClose={onClose}>
       <View
         style={{
           padding: 32,
-          backgroundColor: theme.backgroundColor,
+          backgroundColor: theme.backgroundStrongColor,
           borderRadius: 12,
+          marginBottom: 16
         }}>
         <QRCode
           size={viewportWidth - 104}
           value={wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
           color={theme.textColor}
-          backgroundColor={theme.backgroundColor}
+          backgroundColor={theme.backgroundStrongColor}
         />
       </View>
-      <ImageBackground
-        source={require('../../../assets/address_qr_balance_background.png')}
-        imageStyle={{
-          resizeMode: 'cover',
-          // width: '100%',
-          height: 139,
-          borderRadius: 12,
-          // marginHorizontal: 18,
-        }}
+      <View
+        // source={require('../../../assets/address_qr_balance_background.png')}
+        // imageStyle={{
+        //   resizeMode: 'cover',
+        //   // width: '100%',
+        //   height: 76,
+        //   borderRadius: 12,
+        //   // marginHorizontal: 18,
+        // }}
         style={{
           width: '100%',
-          height: 139,
+          height: 76,
           borderRadius: 12,
           alignItems: 'flex-start',
           justifyContent: 'center',
           // paddingHorizontal: 18,
+          backgroundColor: theme.backgroundStrongColor,
+          shadowColor: 'rgba(0, 0, 0, 0.3)',
+          shadowOffset: {
+            width: 0,
+            height: 4,
+          },
+          shadowOpacity: 12,
+          shadowRadius: 8,
+          elevation: 9,
         }}
       >
-        <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4, textAlign: 'left', paddingHorizontal: 20}}>
-          {getLanguageString(language, 'BALANCE').toUpperCase()}
-        </CustomText>
-        <CustomText style={{fontSize: 24, color: 'white', paddingHorizontal: 20}}>
-          {formatNumberString(parseDecimals(tokenBalance, tokenDecimals), 6)}{' '}{tokenSymbol}
-        </CustomText>
         <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', width: '100%', paddingHorizontal: 20}}>
-          <CustomText style={{
-              color: '#FFFFFF',
-              fontSize: 16,
-              marginRight: 8,
-            }}>
-            {truncate(
-              wallet.address,
-              viewportWidth >= 432 ? 14 : 10,
-              viewportWidth >= 432 ? 14 : 12,
-            )}
-          </CustomText>
+          <View>
+            <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4, textAlign: 'left'}}>
+              {getLanguageString(language, 'ADDRESS').toUpperCase()}
+            </CustomText>
+            <CustomText style={{
+                color: '#FFFFFF',
+                fontSize: 16,
+                marginRight: 8,
+              }}>
+              {truncate(
+                wallet.address,
+                viewportWidth >= 432 ? 14 : 10,
+                viewportWidth >= 432 ? 14 : 12,
+              )}
+            </CustomText>
+          </View>
           <TouchableOpacity
             onPress={() => {
               copyToClipboard(
@@ -124,12 +134,12 @@ const QRModal = ({
             <Image source={require('../../../assets/icon/copy_dark.png')} style={{width: 20, height: 20}} />
           </TouchableOpacity>
         </View>
-      </ImageBackground>
+      </View>
       <Button
         title={getLanguageString(language, 'DONE')}
         onPress={onClose}
         block
-        style={{marginTop: 32}}
+        style={{marginTop: 16}}
         textStyle={{
           fontWeight: '500',
           fontSize: theme.defaultFontSize + 3,

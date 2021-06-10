@@ -30,11 +30,12 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { HEADER_HEIGHT } from '../../theme';
 import CustomText from '../../components/Text';
 import { SIMPLEX_URL } from '../../services/config';
+import ControlSection from './ControlSection';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
 const HomeScreen = () => {
-  const [showQRModal, setShowQRModal] = useState(false);
+  
   const tokenInfo = useRecoilValue(tokenInfoAtom);
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
   const [inited, setInited] = useState(false);
@@ -152,7 +153,6 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
       <HomeHeader />
-      <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
       <ImageBackground
         source={require('../../assets/home_background.jpg')}
         imageStyle={{width: viewportWidth, height: viewportHeight, resizeMode: 'cover'}}
@@ -171,56 +171,70 @@ const HomeScreen = () => {
             />
           }
         >
-          <CardSliderSection showQRModal={() => setShowQRModal(true)} />
-          <View
-            style={{
-              paddingVertical: 24,
-              paddingHorizontal: 16,
-              backgroundColor: 'rgba(58, 59, 60, 0.42)',
+          <CardSliderSection />
+          <ControlSection />
+          <ImageBackground
+            source={require('../../assets/kai_balance_outline.png')}
+            imageStyle={{
+              resizeMode: 'cover',
               borderRadius: 12,
-              marginHorizontal: 20,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+            }}
+            style={{
+              flex: 1,
+              marginHorizontal: 20
+            }}
+          >
             <View
               style={{
+                padding: 16,
+                margin: 1.5,
+                backgroundColor: 'rgba(58, 59, 60, 1)',
+                borderRadius: 12,
+                // marginHorizontal: 20,
                 flexDirection: 'row',
-                justifyContent: 'flex-start',
                 alignItems: 'center',
+                justifyContent: 'space-between',
               }}>
-              <Image
-                style={{width: 32, height: 32, marginRight: 12}}
-                source={require('../../assets/logo_dark.png')}
-              />
-              <View>
-                <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 14}}>
-                  {getLanguageString(language, 'BALANCE').toUpperCase()}
-                </CustomText>
-                <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold'}}>
-                  {
-                    numeral(Number(weiToKAI(_getBalance()))).format('0,0.00')}{' '}
-                  <CustomText style={{color: theme.mutedTextColor, fontWeight: '500'}}>KAI</CustomText>
-                </CustomText>
-                <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 14}}>
-                  $
-                  {numeral(
-                    tokenInfo.price *
-                      Number(weiToKAI(_getBalance())),
-                  ).format('0,0.00')}
-                </CustomText>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  style={{width: 32, height: 32, marginRight: 12}}
+                  source={require('../../assets/logo_dark.png')}
+                />
+                <View>
+                  <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+                    {getLanguageString(language, 'BALANCE').toUpperCase()}
+                  </CustomText>
+                  <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold'}}>
+                    {
+                      numeral(Number(weiToKAI(_getBalance()))).format('0,0.00')}{' '}
+                    <CustomText style={{color: theme.mutedTextColor, fontWeight: '500'}}>KAI</CustomText>
+                  </CustomText>
+                  <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+                    $
+                    {numeral(
+                      tokenInfo.price *
+                        Number(weiToKAI(_getBalance())),
+                    ).format('0,0.00')}
+                  </CustomText>
+                </View>
               </View>
+              <Button
+                title={getLanguageString(language, 'BUY_KAI')}
+                // onPress={() => Alert.alert('Coming soon')}
+                onPress={() => Linking.openURL(SIMPLEX_URL)}
+                type="ghost"
+                size="small"
+                textStyle={Platform.OS === 'android' ? {color: '#000000', fontFamily: 'WorkSans-SemiBold'} : {color: '#000000', fontWeight: '500'}}
+                style={{paddingHorizontal: 16, paddingVertical: 8}}
+              />
             </View>
-            <Button
-              title={getLanguageString(language, 'BUY_KAI')}
-              // onPress={() => Alert.alert('Coming soon')}
-              onPress={() => Linking.openURL(SIMPLEX_URL)}
-              type="ghost"
-              size="small"
-              textStyle={Platform.OS === 'android' ? {color: '#000000', fontFamily: 'WorkSans-SemiBold'} : {color: '#000000', fontWeight: '500'}}
-              style={{paddingHorizontal: 16, paddingVertical: 8}}
-            />
-          </View>
+          </ImageBackground>
+          
           <TokenListSection refreshTime={refreshTime} />
         </ScrollView>
       </ImageBackground>

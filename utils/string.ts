@@ -50,6 +50,10 @@ export const copyToClipboard = (str: string) => {
   Clipboard.setString(str);
 };
 
+export const getFromClipboard = () => {
+  return Clipboard.getString()
+}
+
 /**
  * Checks if the given string is an address
  *
