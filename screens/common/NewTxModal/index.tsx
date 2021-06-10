@@ -345,7 +345,7 @@ const NewTxModal = ({
                     >
                       <CustomText
                         style={{
-                          color: theme.textColor,
+                          color: theme.urlColor,
                           fontWeight: '500',
                           fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
                         }}
@@ -447,7 +447,7 @@ const NewTxModal = ({
                   >
                     <CustomText 
                       style={{
-                        color: theme.textColor,
+                        color: theme.urlColor,
                         fontWeight: '500',
                         fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
                       }}
