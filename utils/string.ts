@@ -147,3 +147,7 @@ export const groupByAlphabet = (
     return 0
   });
 };
+
+export const getLogoURL = (tokenAddress: string) => {
+  return `https://kardiachain-explorer.s3-ap-southeast-1.amazonaws.com/explorer.kardiachain.io/logo/${toChecksum(tokenAddress).replace('0x', '')}.png`
+}

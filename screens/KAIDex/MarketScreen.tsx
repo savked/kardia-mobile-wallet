@@ -22,13 +22,14 @@ import AuthModal from '../common/AuthModal';
 import { getErrorKey } from '../../utils/error';
 import { cacheSelector } from '../../atoms/cache';
 
-export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, tokenFromLiquidity: _tokenFromLiquidity, tokenToLiquidity: _tokenToLiquidity, pairAddress}: {
+export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, tokenFromLiquidity: _tokenFromLiquidity, tokenToLiquidity: _tokenToLiquidity, pairAddress, totalVolume}: {
   triggerSelectPair: () => void;
   tokenFrom?: PairToken;
   tokenTo?: PairToken;
   tokenFromLiquidity: string;
   tokenToLiquidity: string;
   pairAddress: string;
+  totalVolume: string;
 }) => {
   const navigation = useNavigation()
   const wallets = useRecoilValue(walletsAtom)
@@ -130,11 +131,11 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   useEffect(() => {
     (async () => {
       if (!_tokenFromLiquidity || !_tokenToLiquidity || !pairAddress || !_tokenFrom || !_tokenTo) return;
-      const _volume = await getTotalVolume(pairAddress)
-      setVolume(_volume);
+      // const _volume = await getTotalVolume(pairAddress)
+      setVolume(totalVolume);
 
-      const bnFrom = new BigNumber(_tokenFromLiquidity).dividedBy(10 ** _tokenFrom.decimals)
-      const bnTo = new BigNumber(_tokenToLiquidity).dividedBy(10 ** _tokenTo.decimals)
+      const bnFrom = new BigNumber(_tokenFromLiquidity)
+      const bnTo = new BigNumber(_tokenToLiquidity)
       const _rate = bnTo.dividedBy(bnFrom)
       setRate(_rate)
     })()
@@ -723,7 +724,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
             Liquidity:{' '}
             <CustomText style={{color: theme.textColor}}>
-              {formatNumberString(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)).toFixed(), 6)}
+              {formatNumberString(tokenToLiquidity, 6)}
             </CustomText>
           </CustomText>
         </View>
@@ -851,7 +852,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
             Liquidity:{' '}
             <CustomText style={{color: theme.textColor}}>
-              {formatNumberString(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)).toFixed(), 6)}
+              {formatNumberString(tokenFromLiquidity, 6)}
             </CustomText>
           </CustomText>
         </View>
