@@ -131,8 +131,8 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   useEffect(() => {
     (async () => {
       if (!_tokenFromLiquidity || !_tokenToLiquidity || !pairAddress || !_tokenFrom || !_tokenTo) return;
-      // const _volume = await getTotalVolume(pairAddress)
-      setVolume(totalVolume);
+      const _volume = await getTotalVolume(totalVolume, pairAddress)
+      setVolume(_volume.toString());
 
       const bnFrom = new BigNumber(_tokenFromLiquidity)
       const bnTo = new BigNumber(_tokenToLiquidity)

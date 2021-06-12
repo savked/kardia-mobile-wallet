@@ -84,7 +84,7 @@ export default () => {
 
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
-  const { loading, error, data: _pairData, refetch } = useQuery(GET_PAIRS);
+  const { loading, error, data: _pairData, refetch } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
 
   useFocusEffect(
     useCallback(() => {

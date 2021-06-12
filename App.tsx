@@ -23,15 +23,16 @@ import CustomText from './components/Text';
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { HASURA_CREDENTIALS, HASURA_ENDPOINT } from './services/config';
+import { apolloKaiDexClient } from './services/dex/apolloClient';
 
 // Initialize Apollo Client
-const client = new ApolloClient({
-  uri: HASURA_ENDPOINT,
-  cache: new InMemoryCache(),
-  headers: {
-    'x-hasura-admin-secret': HASURA_CREDENTIALS
-  }
-});
+// const client = new ApolloClient({
+//   uri: HASURA_ENDPOINT,
+//   cache: new InMemoryCache(),
+//   headers: {
+//     'x-hasura-admin-secret': HASURA_CREDENTIALS
+//   }
+// });
 
 
 declare const global: { HermesInternal: null | {} };
@@ -42,7 +43,7 @@ export { ThemeContext };
 const App = () => {
   return (
     <RecoilRoot>
-      <ApolloProvider client={client}>
+      <ApolloProvider client={apolloKaiDexClient}>
         <ThemeContext.Provider value={DEFAULT_THEME}>
           <GlobalStatusBar />
           <SafeAreaProvider>

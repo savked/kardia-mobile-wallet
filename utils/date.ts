@@ -1,4 +1,5 @@
 import {format} from 'date-fns';
+import dayjs from "dayjs"
 
 export const getMonthName = (month: number) => {
   switch (month) {
@@ -48,3 +49,14 @@ export const groupByDate = (data: Record<string, any>[], dateField: string) => {
     };
   });
 };
+
+export const getDeltaTimestamps = (): number[] => {
+  const utcCurrentTime = dayjs()
+  const t24 = utcCurrentTime.subtract(1, 'day').startOf('minute').unix()
+  const t48 = utcCurrentTime.subtract(2, 'day').startOf('minute').unix()
+  const tWeek = utcCurrentTime.subtract(1, 'week').startOf('minute').unix()
+
+  const yesterday = utcCurrentTime.subtract(0, 'day').startOf('day').unix()
+
+  return [t24, t48, tWeek, yesterday]
+}
