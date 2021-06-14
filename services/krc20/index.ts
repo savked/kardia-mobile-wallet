@@ -74,7 +74,7 @@ export const getTx = async (tokenAddress: string, userAddress: string, page: num
     method: 'GET',
     redirect: 'follow',
   };
-  const response = await requestWithTimeOut(
+  const response: any = await requestWithTimeOut(
     fetch(
       `${ENDPOINT}token/txs?page=${page}&limit=5&address=${userAddress}&contractAddress=${tokenAddress}`,
       requestOptions,
@@ -133,7 +133,7 @@ export const getVerifiedTokenList = async () => {
     method: 'GET',
     redirect: 'follow',
   };
-  const response = await requestWithTimeOut(
+  const response: any = await requestWithTimeOut(
     fetch(`${ENDPOINT}contracts?page=1&limit=25&type=KRC20&status=Verified`, requestOptions),
     50 * 1000,
   );

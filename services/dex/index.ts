@@ -7,6 +7,9 @@ import KRC20ABI from '../krc20/KRC20ABI.json';
 // import { cellValueWithDecimals } from '../../utils/number';
 import { requestWithTimeOut } from '../util';
 import BigNumber from 'bignumber.js';
+import { getDeltaTimestamps } from '../../utils/date';
+import { apolloKaiBlockClient, apolloKaiDexClient } from './apolloClient';
+import { GET_BLOCKS_BY_TIMESTAMPS, PAIR_LIST_BY_BLOCK_NUMBER } from './queries';
 
 let SWAP_ROUTER_SMC = ''
 let FACTORY_SMC = ''
@@ -185,25 +188,40 @@ export const approveToken = async (token: PairToken, amount: string | number, wa
   return rs;
 }
 
-export const getTotalVolume = async (pairAddress: string) => {
-  const requestOptions = {
-    method: 'GET',
-    redirect: 'follow',
-  };
+const queryBlockNumbers = (timestamp: number[]) => apolloKaiBlockClient.query({query: GET_BLOCKS_BY_TIMESTAMPS(timestamp)})
+
+const getBlock = async (timeStamp: number[]) => {
+  const { data: fetchedData } = await queryBlockNumbers(timeStamp)
+  const blocks: any[] = []
   try {
-    const response = await requestWithTimeOut(
-      fetch(
-        `${DEX_ENDPOINT}chart/${pairAddress}/volume`,
-        requestOptions,
-      ),
-      50 * 1000,
-    );
-    const responseJSON = await response.json();
-    return responseJSON.data[responseJSON.data.length - 1].data
-  } catch (error) {
-    console.log('Get total volume fail')
-    console.log(error)
-  }
+      if (fetchedData) {
+          for (const t in fetchedData) {
+              const item = (fetchedData as any)[t]
+              if (item.length > 0) {
+                  blocks.push({
+                      timestamp: t.split('t')[1],
+                      number: item[0]['number'],
+                  })
+              }
+          }
+      }
+  } catch (error) { }
+  return blocks
+}
+
+const queryPairsByBlockNumber = (blocks: any[]) => apolloKaiDexClient.query({ query: PAIR_LIST_BY_BLOCK_NUMBER(blocks) })
+
+export const getTotalVolume = async (volumeUSD: string, pairID: string) => {
+  const [t24] = getDeltaTimestamps()
+
+  const _24h_blocks = await getBlock([t24])
+  const { data: pairsByBlock1 } = await queryPairsByBlockNumber(_24h_blocks)
+  const onedayPairs = pairsByBlock1[`t${_24h_blocks[0].timestamp}`]
+  const _oneDayPair = onedayPairs && Array.isArray(onedayPairs) ? onedayPairs.filter(item => item.id === pairID)[0] : null
+
+  let volume24hr = _oneDayPair && _oneDayPair.volumeUSD ? parseFloat(volumeUSD) - parseFloat(_oneDayPair.volumeUSD) : parseFloat(volumeUSD)
+
+  return volume24hr
 }
 
 export const swapTokens = async (params: Record<string, any>, wallet: Wallet) => {

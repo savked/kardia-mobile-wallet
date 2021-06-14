@@ -20,6 +20,45 @@ import { dexStatusAtom } from '../../atoms/dexStatus';
 import ComingSoon from '../common/ComingSoon';
 import { statusBarColorAtom } from '../../atoms/statusBar';
 import { getBalance } from '../../services/account';
+import { getLogoURL } from '../../utils/string';
+import { toChecksumAddress } from 'ethereumjs-util';
+
+const pairMapper = (pairs: any[]) => {
+  return pairs.map((item) => {
+    const invert = item.pairIdentity.invert
+
+    let t1 = {
+      hash: toChecksumAddress(item.token0.id),
+      name: item.token0.name,
+      logo: getLogoURL(item.token0.id),
+      symbol: item.token0.symbol,
+      decimals: Number(item.token0.decimals)
+    }
+
+    let t2 = {
+      hash: toChecksumAddress(item.token1.id),
+      name: item.token1.name,
+      logo: getLogoURL(item.token1.id),
+      symbol: item.token1.symbol,
+      decimals: Number(item.token1.decimals)
+    }
+
+    return {
+      decimals: '',
+      contract_address: item.id,
+      last_updated: null,
+      pair_name: '',
+      token1: {},
+      token1_liquidity: !invert ? item.reserve0 : item.reserve1,
+      token2: {},
+      token2_liquidity: !invert ? item.reserve1 : item.reserve0,
+      total_liquidity: '',
+      t1: invert ? t2 : t1,
+      t2: invert ? t1: t2,
+      volumeUSD: item.volumeUSD
+    }
+  })
+}
 
 export default () => {
   const theme = useContext(ThemeContext);
@@ -30,12 +69,14 @@ export default () => {
   const [type, setType] = useState('MARKET');
   const [selectingPair, setSelectingPair] = useState(false)
   const [refreshing, setRefreshing] = useState(false);
+  const [pairData, setPairData] = useState({pairs: [] as any[]})
 
   const [tokenFrom, setTokenFrom] = useState<PairToken>()
   const [tokenFromLiquidity, setTokenFromLiquidity] = useState('');
   const [tokenTo, setTokenTo] = useState<PairToken>()
   const [tokenToLiquidity, setTokenToLiquidity] = useState('');
   const [pairAddress, setPairAddress] = useState('');
+  const [volumeUSD, setVolumeUSD] = useState('')
   const setTabBarVisible = useSetRecoilState(showTabBarAtom)
   const [wallets, setWallets] = useRecoilState(walletsAtom)
   const selectedWallet = useRecoilValue(selectedWalletAtom)
@@ -43,7 +84,7 @@ export default () => {
 
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
-  const { loading, error, data: pairData, refetch } = useQuery(GET_PAIRS);
+  const { loading, error, data: _pairData, refetch } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
 
   useFocusEffect(
     useCallback(() => {
@@ -85,6 +126,7 @@ export default () => {
         setTokenFromLiquidity(pair.token1_liquidity);
         setTokenToLiquidity(pair.token2_liquidity)
         setPairAddress(pair.contract_address)
+        setVolumeUSD(pair.volumeUSD)
         setSelectingPair(false)
 
         const balance = await getBalance(wallets[selectedWallet].address);
@@ -98,6 +140,13 @@ export default () => {
       }
     })()
   }, [pairData, params])
+
+  useEffect(() => {
+    if (!_pairData || !_pairData.pairs) return
+    setPairData({
+      pairs: pairMapper(_pairData.pairs)
+    })
+  }, [_pairData])
 
   useEffect(() => {
     if (!selectingPair) {
@@ -119,13 +168,14 @@ export default () => {
         pairData={pairData}
         loading={loading}
         goBack={() => setSelectingPair(false)}
-        onSelect={(from: PairToken, to: PairToken, liquidityFrom, liquidityTo, pairAddress) => {
+        onSelect={(from: PairToken, to: PairToken, liquidityFrom, liquidityTo, pairAddress, volumeUSD) => {
           setTokenFrom(from);
           setTokenTo(to);
           setSelectingPair(false);
           setTokenFromLiquidity(liquidityFrom);
           setTokenToLiquidity(liquidityTo)
           setPairAddress(pairAddress)
+          setVolumeUSD(volumeUSD)
         }}
       />
     )
@@ -189,6 +239,7 @@ export default () => {
                   tokenFromLiquidity={tokenFromLiquidity}
                   tokenToLiquidity={tokenToLiquidity}
                   pairAddress={pairAddress}
+                  totalVolume={volumeUSD}
                 /> 
                 : 
                 <ExchangeScreen />}

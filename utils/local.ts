@@ -38,7 +38,7 @@ export const getWallets = async () => {
     } else {
       // Migrate old value
       const oldValue = await _getWallets();
-      if (oldValue !== null) {
+      if (oldValue.length !== 0) {
         await saveWallets(oldValue)
         // Remove old value
         await AsyncStorage.removeItem('@kardia_wallets')
@@ -53,16 +53,6 @@ export const getWallets = async () => {
     // error reading value
   }
 };
-
-// const _saveWallets = async (wallets: Wallet[]) => {
-//   try {
-//     await AsyncStorage.setItem('@kardia_wallets', JSON.stringify(wallets));
-//     return true;
-//   } catch (e) {
-//     console.error(e);
-//     return false;
-//   }
-// };
 
 export const saveWallets = async (wallets: Wallet[]) => {
   try {

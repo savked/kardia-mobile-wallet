@@ -15,7 +15,7 @@ import { formatDexToken } from '../../services/dex';
 
 export default ({goBack, onSelect, pairData, loading}: {
   goBack: () => void;
-  onSelect: (from: PairToken, to: PairToken, liquidityFrom: string, liquidityTo: string, pairAddress: string) => void;
+  onSelect: (from: PairToken, to: PairToken, liquidityFrom: string, liquidityTo: string, pairAddress: string, volumeUSD: string) => void;
   pairData: any;
   loading: boolean;
 }) => {
@@ -46,11 +46,11 @@ export default ({goBack, onSelect, pairData, loading}: {
         <View>
           <List
             items={list}
-            keyExtractor={(item: Pair) => item.pair_name}
+            keyExtractor={(item: Pair) => item.contract_address}
             render={(item: Pair) => {
               return (
                 <TouchableOpacity 
-                  key={item.pair_name} 
+                  key={item.contract_address} 
                   style={{
                     backgroundColor: theme.backgroundFocusColor,
                     padding: 12,
@@ -59,7 +59,14 @@ export default ({goBack, onSelect, pairData, loading}: {
                     marginBottom: 12,
                   }}
                   onPress={() => {
-                    onSelect(formatDexToken(item.t1, wallets[selectedWallet]), formatDexToken(item.t2, wallets[selectedWallet]), item.token1_liquidity, item.token2_liquidity, item.contract_address)
+                    onSelect(
+                      formatDexToken(item.t1, wallets[selectedWallet]),
+                      formatDexToken(item.t2, wallets[selectedWallet]),
+                      item.token1_liquidity,
+                      item.token2_liquidity,
+                      item.contract_address,
+                      item.volumeUSD
+                    )
                   }}
                 >
                   <View style={{flexDirection: 'row', marginRight: 12}}>

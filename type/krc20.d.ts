@@ -28,4 +28,5 @@ interface Pair {
   t1: PairToken;
   t2: PairToken;
   contract_address: string;
+  volumeUSD: string;
 }

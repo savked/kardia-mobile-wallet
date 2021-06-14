@@ -48,7 +48,6 @@ const CreateWithMnemonicPhrase = () => {
         ...oldWallets,
         newWallet
       ]);
-      // await saveWallets(_wallets);
       setLoading(false);
 
       if (params && (params as any).backOnSuccess) {

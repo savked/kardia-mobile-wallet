@@ -22,13 +22,14 @@ import AuthModal from '../common/AuthModal';
 import { getErrorKey } from '../../utils/error';
 import { cacheSelector } from '../../atoms/cache';
 
-export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, tokenFromLiquidity: _tokenFromLiquidity, tokenToLiquidity: _tokenToLiquidity, pairAddress}: {
+export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, tokenFromLiquidity: _tokenFromLiquidity, tokenToLiquidity: _tokenToLiquidity, pairAddress, totalVolume}: {
   triggerSelectPair: () => void;
   tokenFrom?: PairToken;
   tokenTo?: PairToken;
   tokenFromLiquidity: string;
   tokenToLiquidity: string;
   pairAddress: string;
+  totalVolume: string;
 }) => {
   const navigation = useNavigation()
   const wallets = useRecoilValue(walletsAtom)
@@ -130,11 +131,11 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   useEffect(() => {
     (async () => {
       if (!_tokenFromLiquidity || !_tokenToLiquidity || !pairAddress || !_tokenFrom || !_tokenTo) return;
-      const _volume = await getTotalVolume(pairAddress)
-      setVolume(_volume);
+      const _volume = await getTotalVolume(totalVolume, pairAddress)
+      setVolume(_volume.toString());
 
-      const bnFrom = new BigNumber(_tokenFromLiquidity).dividedBy(10 ** _tokenFrom.decimals)
-      const bnTo = new BigNumber(_tokenToLiquidity).dividedBy(10 ** _tokenTo.decimals)
+      const bnFrom = new BigNumber(_tokenFromLiquidity)
+      const bnTo = new BigNumber(_tokenToLiquidity)
       const _rate = bnTo.dividedBy(bnFrom)
       setRate(_rate)
     })()
@@ -706,11 +707,13 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 1, tokenTo.decimals), tokenTo.decimals) } 
               onPress={() => {
                 setEditting('to')
+                
                 let partialValue = getPartial(balanceTo, 1, tokenTo.decimals)
                 if (tokenTo.symbol === 'KAI') {
                   const bnPartialValue = new BigNumber(partialValue)
-                  const bn1KAI = new BigNumber(10 ** (tokenTo.decimals))
-                  partialValue = bnPartialValue.minus(bn1KAI).toFixed(tokenTo.decimals, 1)
+                  // const bn110KAI = new BigNumber(10 ** (tokenTo.decimals))
+                  const bn110KAI = new BigNumber(partialValue).multipliedBy(new BigNumber(0.1))
+                  partialValue = bnPartialValue.minus(bn110KAI).toFixed(tokenTo.decimals, 1)
                 }
                 setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
               }} 
@@ -723,7 +726,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
             Liquidity:{' '}
             <CustomText style={{color: theme.textColor}}>
-              {formatNumberString(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)).toFixed(), 6)}
+              {formatNumberString(tokenToLiquidity, 6)}
             </CustomText>
           </CustomText>
         </View>
@@ -851,7 +854,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
             Liquidity:{' '}
             <CustomText style={{color: theme.textColor}}>
-              {formatNumberString(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)).toFixed(), 6)}
+              {formatNumberString(tokenFromLiquidity, 6)}
             </CustomText>
           </CustomText>
         </View>

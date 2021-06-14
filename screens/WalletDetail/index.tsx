@@ -94,7 +94,6 @@ export default () => {
     const localSelectedWallet = await getSelectedWallet();
     let newWallets: Wallet[] = JSON.parse(JSON.stringify(localWallets));
     newWallets = newWallets.filter((w) => w.address !== address)
-    // await saveWallets(newWallets);
     if (newWallets.length === 0) {
       // await saveSelectedWallet(0);
       setSelectedWallet(0);
@@ -113,7 +112,6 @@ export default () => {
     const index = newWallets.findIndex(w => w.address === address)
     newWallets[index].name = name;
     newWallets[index].cardAvatarID = cardAvatarID;
-    // await saveWallets(newWallets);
     setWallets(newWallets);
     navigation.goBack();
   };
