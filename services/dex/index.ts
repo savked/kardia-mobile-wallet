@@ -6,7 +6,6 @@ import { DEX_ENDPOINT, RPC_ENDPOINT } from '../config';
 import KRC20ABI from '../krc20/KRC20ABI.json';
 // import { cellValueWithDecimals } from '../../utils/number';
 import { requestWithTimeOut } from '../util';
-import { isKAI } from '../../utils/dex';
 import BigNumber from 'bignumber.js';
 
 let SWAP_ROUTER_SMC = ''
