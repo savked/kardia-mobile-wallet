@@ -84,8 +84,6 @@ const SelectWallet = () => {
     );
     const _wallets = JSON.parse(JSON.stringify(localWallets));
     _wallets.push(wallet);
-    // await saveWallets(_wallets);
-    // await saveSelectedWallet(_wallets.length - 1);
     setSelectedWallet(_wallets.length - 1);
     setWallets(_wallets);
     if (params && (params as any).fromNoWallet) {

@@ -119,7 +119,6 @@ const NewTxModal = ({
 
       newWallets[selectedWallet].balance = newBallance;
       setWallets(newWallets);
-      // saveWallets(newWallets);
 
       setLoading(false);
       navigation.navigate('SuccessTx', {txHash: txHash});

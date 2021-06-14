@@ -90,7 +90,6 @@ const HomeScreen = () => {
         }
       });
       setWallets(newWallets);
-      // saveWallets(newWallets);
       _selectedWallet !== selectedWallet && setSelectedWallet(_selectedWallet);
     } catch (error) {
       console.error(error);

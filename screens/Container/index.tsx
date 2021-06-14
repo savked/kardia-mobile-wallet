@@ -412,15 +412,19 @@ const AppContainer = () => {
       languageSetting && setLanguage(languageSetting);
 
       // Get local KRC20 list
-      const krc20List = await getTokenList();
-      const filteredList = krc20List.filter((item) => !!item.walletOwnerAddress)
-      if (filteredList.length === krc20List.length) {
-        console.log('No old token found')
-      } else {
-        console.log('Clear old token')
-        await saveTokenList(filteredList);
+      try {
+        const krc20List = await getTokenList();
+        const filteredList = krc20List.filter((item) => !!item.walletOwnerAddress)
+        if (filteredList.length === krc20List.length) {
+          console.log('No old token found')
+        } else {
+          console.log('Clear old token')
+          await saveTokenList(filteredList);
+        }
+        setKRC20TokenList(filteredList); 
+      } catch (error) {
+        console.error(error);
       }
-      setKRC20TokenList(filteredList);
 
       // Get font size setting
       const fontSizeSetting = await getFontSize();
