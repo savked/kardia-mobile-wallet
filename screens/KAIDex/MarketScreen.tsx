@@ -707,11 +707,13 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 1, tokenTo.decimals), tokenTo.decimals) } 
               onPress={() => {
                 setEditting('to')
+                
                 let partialValue = getPartial(balanceTo, 1, tokenTo.decimals)
                 if (tokenTo.symbol === 'KAI') {
                   const bnPartialValue = new BigNumber(partialValue)
-                  const bn1KAI = new BigNumber(10 ** (tokenTo.decimals))
-                  partialValue = bnPartialValue.minus(bn1KAI).toFixed(tokenTo.decimals, 1)
+                  // const bn110KAI = new BigNumber(10 ** (tokenTo.decimals))
+                  const bn110KAI = new BigNumber(partialValue).multipliedBy(new BigNumber(0.1))
+                  partialValue = bnPartialValue.minus(bn110KAI).toFixed(tokenTo.decimals, 1)
                 }
                 setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
               }} 
