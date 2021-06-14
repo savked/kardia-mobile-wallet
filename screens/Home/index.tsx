@@ -4,13 +4,13 @@ import {ActivityIndicator, Dimensions, Image, ImageBackground, Linking, Platform
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
-import QRModal from '../common/AddressQRCode';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {
   getAppPasscodeSetting,
   getSelectedWallet,
   getWallets,
+  saveWallets,
 } from '../../utils/local';
 import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
@@ -30,7 +30,6 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { HEADER_HEIGHT } from '../../theme';
 import CustomText from '../../components/Text';
 import { SIMPLEX_URL } from '../../services/config';
-import ControlSection from './ControlSection';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
@@ -90,6 +89,7 @@ const HomeScreen = () => {
           newWallets[index].undelegating = undelegating;
         }
       });
+      await saveWallets(newWallets)
       setWallets(newWallets);
       _selectedWallet !== selectedWallet && setSelectedWallet(_selectedWallet);
     } catch (error) {
@@ -171,7 +171,6 @@ const HomeScreen = () => {
           }
         >
           <CardSliderSection />
-          <ControlSection />
           <ImageBackground
             source={require('../../assets/kai_balance_outline.png')}
             imageStyle={{

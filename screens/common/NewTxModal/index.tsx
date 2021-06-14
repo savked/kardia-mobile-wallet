@@ -31,6 +31,7 @@ import AuthModal from '../AuthModal';
 import {useNavigation} from '@react-navigation/native';
 import CustomText from '../../../components/Text';
 import { KardiaAccount } from 'kardia-js-sdk';
+import { saveWallets } from '../../../utils/local';
 
 const MAX_AMOUNT = 5000000000;
 
@@ -118,6 +119,7 @@ const NewTxModal = ({
       const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
 
       newWallets[selectedWallet].balance = newBallance;
+      await saveWallets(newWallets)
       setWallets(newWallets);
 
       setLoading(false);

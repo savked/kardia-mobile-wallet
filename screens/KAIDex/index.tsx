@@ -22,6 +22,7 @@ import { statusBarColorAtom } from '../../atoms/statusBar';
 import { getBalance } from '../../services/account';
 import { getLogoURL } from '../../utils/string';
 import { toChecksumAddress } from 'ethereumjs-util';
+import { saveWallets } from '../../utils/local';
 
 const pairMapper = (pairs: any[]) => {
   return pairs.map((item) => {
@@ -136,6 +137,7 @@ export default () => {
             newWallets[index].balance = balance;
           }
         });
+        await saveWallets(newWallets)
         setWallets(newWallets);
       }
     })()

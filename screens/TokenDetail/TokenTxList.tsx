@@ -287,21 +287,18 @@ const TokenTxList = ({
                             {
                               fontWeight: '500',
                               fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-                              color: theme.textColor,
+                              color: item.type === 'IN' ? '#53B680' : theme.textColor,
                               fontSize: theme.defaultFontSize + 1
                             }
-                            // item.type === 'IN'
-                            //   ? {color: '#53B680'}
-                            //   : {color: 'red'},
                           ]}>
-                          {/* {item.type === 'IN' ? '+' : '-'} */}
+                          {item.type === 'IN' ? '+' : '-'}
                           {formatNumberString(parseDecimals(Number(item.value), tokenDecimals), 8)}
                           {' '}
-                          <CustomText style={{fontWeight: 'normal', color: theme.mutedTextColor}}>{tokenSymbol}</CustomText>
+                          <CustomText style={{fontWeight: 'normal', color: item.type === 'IN' ? '#53B680' : theme.mutedTextColor}}>{tokenSymbol}</CustomText>
                         </CustomText>
-                        <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
+                        {/* <CustomText style={{color: '#DBDBDB', fontSize: 12}}>
                           {format(item.date, 'hh:mm aa')}
-                        </CustomText>
+                        </CustomText> */}
                       </View>
                     </TouchableOpacity>
                   </View>

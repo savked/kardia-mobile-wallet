@@ -1,10 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Dimensions, Image, Platform, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, Platform, View} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {copyToClipboard, truncate} from '../../utils/string';
 import {styles} from './style';
 import {tokenInfoAtom} from '../../atoms/token';
 import {languageAtom} from '../../atoms/language';
@@ -14,6 +13,7 @@ import {weiToKAI} from '../../services/transaction/amount';
 import {ThemeContext} from '../../ThemeContext';
 import CustomText from '../../components/Text';
 import Toast from 'react-native-toast-message';
+import ControlSection from './ControlSection';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -40,50 +40,41 @@ const CardSliderSection = () => {
           />
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <View>
-              <CustomText allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: theme.defaultFontSize}}>
-                {getLanguageString(language, 'TOTAL_BALANCE').toUpperCase()}
-              </CustomText>
-              <CustomText allowFontScaling={false} style={Platform.OS === 'android' ? {fontSize: 24, color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {fontSize: 24, color: theme.textColor, fontWeight: '500'}}>
-                $
-                {numeral(
-                  tokenInfo.price *
-                    (Number(weiToKAI(wallet.balance)) + wallet.staked + wallet.undelegating),
-                ).format('0,0.00')}
-              </CustomText>
-            </View>
-            {/* <IconButton
-              onPress={() => setRemoveIndex(selectedWallet)}
-              name="trash"
-              color={theme.textColor}
-              size={20}
-            /> */}
+            <CustomText allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: theme.defaultFontSize}}>
+              {getLanguageString(language, 'TOTAL_BALANCE').toUpperCase()}
+            </CustomText>
+            <CustomText allowFontScaling={false} style={Platform.OS === 'android' ? {fontSize: 24, color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {fontSize: 24, color: theme.textColor, fontWeight: '500'}}>
+              $
+              {numeral(
+                tokenInfo.price *
+                  (Number(weiToKAI(wallet.balance)) + wallet.staked + wallet.undelegating),
+              ).format('0,0.00')}
+            </CustomText>
           </View>
 
-          <View style={{flexDirection: 'row', alignItems: 'flex-end', flex: 1}}>
-            <CustomText allowFontScaling={false} style={styles.kaiCardText}>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            {/* <CustomText allowFontScaling={false} style={styles.kaiCardText}>
               {truncate(
                 wallet.address,
                 viewportWidth >= 432 ? 14 : 10,
                 viewportWidth >= 432 ? 14 : 12,
               )}
-            </CustomText>
+            </CustomText> */}
+            <ControlSection />
           </View>
 
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
             <View>
-              <CustomText style={{fontSize: theme.defaultFontSize, color: 'rgba(252, 252, 252, 0.54)'}}>
+              {/* <CustomText style={{fontSize: theme.defaultFontSize, color: 'rgba(252, 252, 252, 0.54)'}}>
                 {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
-              </CustomText>
+              </CustomText> */}
               <CustomText style={Platform.OS === 'android' ? {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontFamily: 'WorkSans-SemiBold'} : {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontWeight: '500'}}>
                 {wallet.name ? wallet.name.toUpperCase() : getLanguageString(language,'NEW_WALLET').toUpperCase()}
               </CustomText>
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 copyToClipboard(
                   wallets[selectedWallet] ? wallets[selectedWallet].address : '',
@@ -118,7 +109,7 @@ const CardSliderSection = () => {
                 source={require('../../assets/icon/copy_dark.png')}
                 style={{width: 20, height: 20, marginRight: 2, marginTop: 2}}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>

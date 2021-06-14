@@ -6,6 +6,7 @@ export const lang: Language = {
   tag: ['en_US', 'US', 'en', 'US English'],
   mapping: {
     // Common key:
+    RECEIVE_ANY_TOKEN: 'This wallet can receive KAI and any KRC20 Tokens',
     CREATE: 'Create',
     CREATE_DESC: 'a brand new Wallet',
     UNDER_MAINTAINENCE_DESC: 'We are trying to bring the best experience for you.',
@@ -53,7 +54,7 @@ export const lang: Language = {
     SCAN_QR_FOR_ADDRESS_DESCRIPTION:
       'Scan QR code containing address to import',
     ERC20_WARNING:
-      'Please DO NOT send ERC20 KAI to this wallet.',
+      'Please DO NOT send ERC20 KAI to this wallet. Sending any others may result permanent loss.',
     LATER: 'Later',
     SET_APP_PASSCODE: 'Set Passcode',
     NO_PASSCODE: "You haven't set your app passcode yet.",

@@ -6,6 +6,7 @@ export const lang: Language = {
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:
+    RECEIVE_ANY_TOKEN: 'Ví này được dùng cho KAI và tất cả các token KRC20',
     CREATE: 'Tạo',
     CREATE_DESC: 'ví mới',
     UNDER_MAINTAINENCE_DESC: 'Chúng tôi đang thực hiện vài thay đổi để bạn có trải nghiệm tốt nhất.',
@@ -51,7 +52,7 @@ export const lang: Language = {
     CONFIRM_REMOVE_ADDRESS: 'Bạn chắc chắn muốn xóa địa chỉ này khỏi danh bạ?',
     SCAN_QR_FOR_ADDRESS: 'Địa chỉ ví của bạn',
     SCAN_QR_FOR_ADDRESS_DESCRIPTION: 'Quét mã QR code chứa địa chỉ',
-    ERC20_WARNING: 'KHÔNG gửi KAI từ ví ERC20 đến ví này.',
+    ERC20_WARNING: 'KHÔNG gửi KAI từ ví ERC20 đến ví này. KAI ERC20 gửi đến ví này sẽ bị mất vĩnh viễn.',
     LATER: 'Để sau',
     SET_APP_PASSCODE: 'Cài đặt mật khẩu',
     NO_PASSCODE: 'Bạn chưa cài mật khẩu cho ví',

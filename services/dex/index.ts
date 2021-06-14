@@ -22,7 +22,7 @@ export const initDexConfig = async () => {
     redirect: 'follow',
   };
 
-  const response = await requestWithTimeOut(
+  const response: any = await requestWithTimeOut(
     fetch(
       `${DEX_ENDPOINT}cfg/info`,
       requestOptions,

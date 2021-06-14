@@ -318,16 +318,13 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
         setAmountFrom('0')
         setAmountTo('0')
         setSwappError('')
-        navigation.navigate('Transaction', {
-          screen: 'SuccessTx',
-          params: {
-            type: 'dex',
-            pairAddress,
-            dexAmount: mode === 'SELL' ? getDigit(amountTo) : getDigit(amountFrom),
-            tokenSymbol: mode === 'SELL' ? tokenTo.symbol : tokenFrom.symbol,
-            dexMode: `DEX_MODE_${mode}`,
-            txHash: typeof txResult === 'string' ? txResult : txResult.transactionHash
-          },
+        navigation.navigate('SuccessTx', {
+          type: 'dex',
+          pairAddress,
+          dexAmount: mode === 'SELL' ? getDigit(amountTo) : getDigit(amountFrom),
+          tokenSymbol: mode === 'SELL' ? tokenTo.symbol : tokenFrom.symbol,
+          dexMode: `DEX_MODE_${mode}`,
+          txHash: typeof txResult === 'string' ? txResult : txResult.transactionHash
         });
       } else {
         // Handling fail tx
@@ -612,10 +609,6 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                 if (getDecimalCount(newValue) > tokenTo.decimals) {
                   return;
                 }
-                // if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)))) {
-                //   // setAmountFrom(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)).toFixed())
-                //   return;
-                // }
               
                 if (isNumber(digitOnly)) {
                   let formatedValue = formatNumberString(digitOnly);
@@ -790,7 +783,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                 if (getDecimalCount(newValue) > tokenFrom.decimals) {
                   return;
                 }
-                if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)))) {
+                if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(tokenFromLiquidity))) {
                   // setAmountFrom(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)).toFixed())
                   return;
                 }

@@ -3,7 +3,7 @@ export const theme = {
   // primaryColor: '#AD182A',
   primaryColor: '#FFFFFF',
   primaryTextColor: 'rgba(28, 28, 40, 1)',
-  secondaryColor: '#FADACF',
+  secondaryColor: 'rgba(135, 135, 135, 1)',
   secondaryTextColor: '#AD182A',
   outlineBorderColor: '#C9CED6',
   outlineTextColor: '#C9CED6',

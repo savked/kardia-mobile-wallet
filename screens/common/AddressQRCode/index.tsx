@@ -39,7 +39,7 @@ const QRModal = ({
       contentStyle={{
         paddingHorizontal: 20,
         backgroundColor: theme.backgroundFocusColor,
-        height: 670,
+        height: 600,
         justifyContent: 'flex-start'
       }}
       onClose={onClose}>
@@ -48,36 +48,28 @@ const QRModal = ({
           padding: 32,
           backgroundColor: theme.backgroundStrongColor,
           borderRadius: 12,
+          marginHorizontal: 50,
         }}>
         <QRCode
-          size={viewportWidth - 104}
+          size={viewportWidth - 214}
           value={wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
           color={theme.textColor}
           backgroundColor={theme.backgroundStrongColor}
         />
       </View>
       <View style={{flexDirection: 'row', paddingVertical: 16, paddingHorizontal: 20, alignItems: 'center'}}>
-        <Image source={require('../../../assets/icon/warning.png')} style={{width: 20, height: 20, marginRight: 8}} />
         <CustomText
           style={{
             fontWeight: '500',
             fontSize: 13,            
-            color: theme.warningTextColor,
-            textAlign: 'left',
+            color: theme.textColor,
+            textAlign: 'center',
             width: '100%',
           }}>
-          {getLanguageString(language, 'ERC20_WARNING')}
+          {getLanguageString(language, 'RECEIVE_ANY_TOKEN')}
         </CustomText>
       </View>
       <View
-        // source={require('../../../assets/address_qr_balance_background.png')}
-        // imageStyle={{
-        //   resizeMode: 'cover',
-        //   // width: '100%',
-        //   height: 76,
-        //   borderRadius: 12,
-        //   // marginHorizontal: 18,
-        // }}
         style={{
           width: '100%',
           height: 76,
@@ -140,11 +132,25 @@ const QRModal = ({
           </TouchableOpacity>
         </View>
       </View>
+      <View style={{paddingVertical: 16, paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center', width: '100%'}}>
+        <Image source={require('../../../assets/icon/warning.png')} style={{width: 20, height: 20, marginRight: 8}} />
+        <CustomText
+          style={{
+            fontWeight: '500',
+            fontSize: 13,            
+            color: theme.warningTextColor,
+            textAlign: 'center',
+            width: '100%',
+            flexShrink: 1,
+          }}>
+          {getLanguageString(language, 'ERC20_WARNING')}
+        </CustomText>
+      </View>
       <Button
         title={getLanguageString(language, 'DONE')}
         onPress={onClose}
         block
-        style={{marginTop: 32}}
+        // style={{marginTop: 32}}
         textStyle={{
           fontWeight: '500',
           fontSize: theme.defaultFontSize + 3,

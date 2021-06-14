@@ -51,6 +51,7 @@ import { dexStatusAtom } from '../../atoms/dexStatus';
 import { initDexConfig } from '../../services/dex';
 import { cacheAtom } from '../../atoms/cache';
 import SettingStackScreen from '../../SettingStack';
+import DEXStackScreen from '../../DEXStack';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -221,7 +222,7 @@ const Wrap = () => {
       <Tab.Screen name="Home" component={HomeStackScreen} />
       {/* <Tab.Screen name="Transaction" component={TransactionStackScreen} /> */}
       <Tab.Screen name="Staking" component={StakingStackScreen} />
-      <Tab.Screen name="DEX" component={KAIDex} />
+      <Tab.Screen name="DEX" component={DEXStackScreen} />
       <Tab.Screen name="Address" component={AddressStackScreen} />
       {/* <Tab.Screen name="News" component={NewsScreen} /> */}
       <Tab.Screen name="Setting" component={SettingStackScreen} />
@@ -266,12 +267,12 @@ const AppContainer = () => {
     })();
   }, [selectedWallet, inited]);
 
-  useEffect(() => {
-    (async () => {
-      if (!inited || appStatus !== 'OK') return;
-      await saveWallets(wallets);
-    })();
-  }, [wallets, inited]);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (!inited || appStatus !== 'OK') return;
+  //     await saveWallets(wallets);
+  //   })();
+  // }, [wallets, inited]);
 
   const handleAppStateChange = useCallback(
     (state: string) => {
