@@ -597,7 +597,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
             <CustomTextInput
               value={amountTo}
-              keyboardType="numeric"
+              keyboardType="decimal-pad"
               editable={editting !== 'from'}
               loading={loadingTo}
               onChangeText={(newValue) => {
@@ -672,7 +672,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 const partialValue = getPartial(balanceTo, 0.25, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
               }} 
             />
             <Tags 
@@ -682,7 +682,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 const partialValue = getPartial(balanceTo, 0.5, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
               }}
             />
             <Tags 
@@ -692,7 +692,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 const partialValue = getPartial(balanceTo, 0.75, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
               }}
             />
             <Tags 
@@ -708,7 +708,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                   const bn110KAI = new BigNumber(partialValue).multipliedBy(new BigNumber(0.1))
                   partialValue = bnPartialValue.minus(bn110KAI).toFixed(tokenTo.decimals, 1)
                 }
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
               }} 
             />
           </View>
@@ -772,7 +772,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
             <CustomTextInput
               value={amountFrom}
-              keyboardType="numeric"
+              keyboardType="decimal-pad"
               loading={loadingFrom}
               onChangeText={(newValue) => {
                 setInputType(1)

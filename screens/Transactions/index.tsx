@@ -220,12 +220,8 @@ const TransactionScreen = () => {
       {groupByDate(txList, 'date').length === 0 && (
         <View style={styles.noTXContainer}>
           <Image
-            style={{width: 87, height: 66, marginBottom: 23, marginTop: 70}}
-            source={require('../../assets/no_tx_butterfly.png')}
-          />
-          <Image
-            style={{width: 170, height: 140}}
-            source={require('../../assets/no_tx_box.png')}
+            style={{width: 224, height: 222, marginBottom: 23, marginTop: 70}}
+            source={require('../../assets/no_tx.png')}
           />
           <CustomText style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}

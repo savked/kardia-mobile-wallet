@@ -39,7 +39,7 @@ const QRModal = ({
       contentStyle={{
         paddingHorizontal: 20,
         backgroundColor: theme.backgroundFocusColor,
-        height: 600,
+        height: 630,
         justifyContent: 'flex-start'
       }}
       onClose={onClose}>
@@ -138,7 +138,7 @@ const QRModal = ({
           style={{
             fontWeight: '500',
             fontSize: 13,            
-            color: theme.warningTextColor,
+            color: theme.textColor,
             textAlign: 'center',
             width: '100%',
             flexShrink: 1,

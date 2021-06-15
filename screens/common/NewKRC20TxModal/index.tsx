@@ -421,7 +421,7 @@ const NewKRC20TxModal = ({
             </View>
             <TextInput
               // headlineStyle={{color: 'black'}}
-              keyboardType="numeric"
+              keyboardType="decimal-pad"
               message={errorAmount}
               inputStyle={{
                 backgroundColor: 'rgba(96, 99, 108, 1)',

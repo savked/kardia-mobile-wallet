@@ -20,7 +20,7 @@ export const lang: Language = {
     DONE: 'Done',
     BUY_KAI: 'Buy KAI',
     OK_TEXT: 'Ok! Got it',
-    TOTAL_BALANCE: 'Total balance',
+    TOTAL_BALANCE: 'Total value',
     BALANCE: 'Available balance',
     CURRENT_BALANCE: 'Current balance',
     STAKED_AMOUNT: 'Staked',
@@ -54,7 +54,7 @@ export const lang: Language = {
     SCAN_QR_FOR_ADDRESS_DESCRIPTION:
       'Scan QR code containing address to import',
     ERC20_WARNING:
-      'Please DO NOT send ERC20 KAI to this wallet. Sending any others may result permanent loss.',
+      'Please DO NOT send ERC20 KAI to this wallet.\nSending any others may result permanent loss.',
     LATER: 'Later',
     SET_APP_PASSCODE: 'Set Passcode',
     NO_PASSCODE: "You haven't set your app passcode yet.",
@@ -92,6 +92,7 @@ export const lang: Language = {
     BY_PRIVATE_KEY: 'by Private Key',
     BY_SEED_PHRASE: 'by Seed Phrase',
     // Transaction key
+    HISTORY: 'History',
     RECENT_TRANSACTION: 'History',
     NO_TRANSACTION: 'No transaction',
     NO_TRANSACTION_SUB_TEXT: 'Hello!? Anybody home ??',
@@ -230,7 +231,9 @@ export const lang: Language = {
     TOKEN_ADDRESS: 'Token address',
     SEND_TOKEN: 'Send {{TOKEN_SYMBOL}}',
     RECEIVE_TOKEN: 'Receive {{TOKEN_SYMBOL}}',
-    REMOVE_TOKEN: 'Remove token',
+    REMOVE_TOKEN: 'Hide token',
+    HIDE_NOW: 'Hide this token',
+    CONFIRM_REMOVE_TOKEN: 'Hide {{SPLIT_HERE}} from the list.\nYou can add it again anytime.',
     NO_TOKENS: 'No Tokens',
     NO_TOKENS_SUB_TEXT: 'Add your tokens and manage them easily.',
     ERROR_FETCH_KRC20_DATA: "Couldn't get tokens data.",

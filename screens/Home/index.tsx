@@ -16,26 +16,18 @@ import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
 import CardSliderSection from './CardSliderSection';
 import {languageAtom} from '../../atoms/language';
-import numeral from 'numeral';
-import {getLanguageString} from '../../utils/lang';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 // import RemindPasscodeModal from '../common/RemindPasscodeModal';
 import {getStakingAmount, getUndelegatingAmount} from '../../services/staking';
 import TokenListSection from './TokenListSection';
 import {showTabBarAtom} from '../../atoms/showTabBar';
-import {tokenInfoAtom} from '../../atoms/token';
-import {weiToKAI} from '../../services/transaction/amount';
-import Button from '../../components/Button';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { HEADER_HEIGHT } from '../../theme';
-import CustomText from '../../components/Text';
-import { SIMPLEX_URL } from '../../services/config';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
 const HomeScreen = () => {
   
-  const tokenInfo = useRecoilValue(tokenInfoAtom);
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
   const [inited, setInited] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -137,11 +129,6 @@ const HomeScreen = () => {
     });
   }
 
-  const _getBalance = () => {
-    if (!wallets[selectedWallet]) return '0';
-    return wallets[selectedWallet].balance;
-  }
-
   const onRefresh = async () => {
     setRefreshing(true)
     setRefreshTime(Date.now())
@@ -171,67 +158,7 @@ const HomeScreen = () => {
           }
         >
           <CardSliderSection />
-          <ImageBackground
-            source={require('../../assets/kai_balance_outline.png')}
-            imageStyle={{
-              resizeMode: 'cover',
-              borderRadius: 12,
-            }}
-            style={{
-              flex: 1,
-              marginHorizontal: 20
-            }}
-          >
-            <View
-              style={{
-                padding: 16,
-                margin: 1.5,
-                backgroundColor: 'rgba(58, 59, 60, 1)',
-                borderRadius: 12,
-                // marginHorizontal: 20,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                }}>
-                <Image
-                  style={{width: 32, height: 32, marginRight: 12}}
-                  source={require('../../assets/logo_dark.png')}
-                />
-                <View>
-                  <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
-                    {getLanguageString(language, 'BALANCE').toUpperCase()}
-                  </CustomText>
-                  <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold'}}>
-                    {
-                      numeral(Number(weiToKAI(_getBalance()))).format('0,0.00')}{' '}
-                    <CustomText style={{color: theme.mutedTextColor, fontWeight: '500'}}>KAI</CustomText>
-                  </CustomText>
-                  <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
-                    $
-                    {numeral(
-                      tokenInfo.price *
-                        Number(weiToKAI(_getBalance())),
-                    ).format('0,0.00')}
-                  </CustomText>
-                </View>
-              </View>
-              <Button
-                title={getLanguageString(language, 'BUY_KAI')}
-                // onPress={() => Alert.alert('Coming soon')}
-                onPress={() => Linking.openURL(SIMPLEX_URL)}
-                type="ghost"
-                size="small"
-                textStyle={Platform.OS === 'android' ? {color: '#000000', fontFamily: 'WorkSans-SemiBold'} : {color: '#000000', fontWeight: '500'}}
-                style={{paddingHorizontal: 16, paddingVertical: 8}}
-              />
-            </View>
-          </ImageBackground>
+          
           
           <TokenListSection refreshTime={refreshTime} />
         </ScrollView>

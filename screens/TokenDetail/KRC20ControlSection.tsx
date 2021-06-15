@@ -1,30 +1,49 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useState } from 'react';
 import { Image, Platform, TouchableOpacity, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../atoms/language';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import CustomText from '../../components/Text';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
+import { copyToClipboard } from '../../utils/string';
 import QRModal from '../common/AddressQRCode';
-import NewTxModal from '../common/NewTxModal';
+import NewKRC20TxModal from '../common/NewKRC20TxModal';
 import {styles} from './style'
 
-export default () => {
-  const navigation = useNavigation()
+export default ({
+  tokenAvatar,
+  tokenAddress,
+  tokenSymbol,
+  tokenDecimals
+}: {
+  tokenAvatar: string;
+  tokenAddress: string;
+  tokenSymbol: string;
+  tokenDecimals: number
+}) => {
   const theme = useContext(ThemeContext)
   const language = useRecoilValue(languageAtom)
 
   const [showNewTxModal, setShowNewTxModal] = useState(false)
   const [showQRModal, setShowQRModal] = useState(false);
+  const wallets = useRecoilValue(walletsAtom)
+  const selectedWallet = useRecoilValue(selectedWalletAtom)
 
   return (
-    <View style={{width: '100%', flexDirection: 'row', paddingHorizontal: 60, paddingTop: 30, paddingBottom: 16, justifyContent: 'space-between'}}>
+    <View style={{width: '100%', flexDirection: 'row', paddingVertical: 20, paddingHorizontal: 40, justifyContent: 'center'}}>
       {
         showNewTxModal && (
-          <NewTxModal
+          <NewKRC20TxModal
             visible={showNewTxModal}
-            onClose={() => setShowNewTxModal(false)}
+            tokenAvatar={tokenAvatar}
+            onClose={() => {
+              setShowNewTxModal(false);
+            }}
+            tokenAddress={tokenAddress}
+            tokenSymbol={tokenSymbol}
+            tokenDecimals={tokenDecimals}
           />
         )
       }
@@ -81,10 +100,23 @@ export default () => {
       <View style={{alignItems: 'center', justifyContent: 'center', width: '33%'}}>
         <TouchableOpacity
           style={[styles.controlButton, {backgroundColor: theme.secondaryColor}]}
-          onPress={() => navigation.navigate('TransactionList')}
+          onPress={() => {
+            copyToClipboard(
+              wallets[selectedWallet] ? wallets[selectedWallet].address : '',
+            )
+            Toast.show({
+              type: 'success',
+              topOffset: 70,
+              text1: getLanguageString(language, 'COPIED'),
+              props: {
+                backgroundColor: theme.backgroundFocusColor,
+                textColor: theme.textColor
+              }
+            });
+          }}
         >
           <Image
-            source={require('../../assets/icon/transaction_dark.png')}
+            source={require('../../assets/icon/copy.png')}
             style={{
               width: 20,
               height: 20,
@@ -99,7 +131,7 @@ export default () => {
             fontSize: theme.defaultFontSize + 1
           }}
         >
-          {getLanguageString(language, 'HISTORY')}
+          Copy
         </CustomText>
       </View>
     </View>

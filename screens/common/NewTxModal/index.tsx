@@ -326,7 +326,6 @@ const NewTxModal = ({
             }}>
             <View style={{flex: 3}}>
               <TextInput
-                // headlineStyle={{color: 'black'}}
                 onChangeText={setAddress}
                 message={errorAddress}
                 value={address}
@@ -408,7 +407,7 @@ const NewTxModal = ({
             </View>
             <TextInput
               // headlineStyle={{color: 'black'}}
-              keyboardType="numeric"
+              keyboardType="decimal-pad"
               message={errorAmount}
               inputStyle={{
                 backgroundColor: 'rgba(96, 99, 108, 1)',

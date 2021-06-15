@@ -76,7 +76,7 @@ export const getTx = async (tokenAddress: string, userAddress: string, page: num
   };
   const response: any = await requestWithTimeOut(
     fetch(
-      `${ENDPOINT}token/txs?page=${page}&limit=5&address=${userAddress}&contractAddress=${tokenAddress}`,
+      `${ENDPOINT}token/txs?page=${page}&limit=15&address=${userAddress}&contractAddress=${tokenAddress}`,
       requestOptions,
     ),
     50 * 1000,

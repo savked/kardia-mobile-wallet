@@ -1,7 +1,7 @@
 import KaidexClient from 'kaidex-sdk';
 import KardiaClient from 'kardia-js-sdk';
 import SWAPABI from './swapABI.json'
-import { KAI_TOKEN_NAME, KAI_TOKEN_SYMBOL } from '../../config';
+import { BLOCK_TIME, KAI_TOKEN_NAME, KAI_TOKEN_SYMBOL } from '../../config';
 import { DEX_ENDPOINT, RPC_ENDPOINT } from '../config';
 import KRC20ABI from '../krc20/KRC20ABI.json';
 // import { cellValueWithDecimals } from '../../utils/number';
@@ -15,6 +15,8 @@ let SWAP_ROUTER_SMC = ''
 let FACTORY_SMC = ''
 let WKAI_SMC = ''
 let LIMIT_ORDER_SMC = ''
+
+let reserve: Record<string, any> = {}
 
 export const initDexConfig = async () => {
   const requestOptions = {
@@ -75,6 +77,47 @@ export const calculateDexExchangeRate = async (
   }
 }
 
+const getReserve = async (tokenInAddress: string, tokenOutAddress: string) => {
+  const key = `${tokenInAddress}-${tokenOutAddress}`
+  const reverseKey = `${tokenOutAddress}-${tokenInAddress}`
+
+  if (reserve[key] && (reserve[key].lastUpdated > Date.now() - BLOCK_TIME * 1000)) {
+    return reserve[key].reserve
+  }
+
+  const client = new KaidexClient({
+    rpcEndpoint: RPC_ENDPOINT,
+    smcAddresses: {
+      router: SWAP_ROUTER_SMC,
+      factory: FACTORY_SMC,
+      // kaiSwapper?: string;
+      limitOrder: LIMIT_ORDER_SMC,
+      wkai: WKAI_SMC
+    }
+  })
+
+  const {reserveA: reserveIn, reserveB: reserveOut} = await client.getReserves(tokenInAddress, tokenOutAddress)
+  reserve[key] = {
+    lastUpdated: Date.now(),
+    reserve: {
+      reserveIn,
+      reserveOut
+    }
+  }
+  reserve[reverseKey] = {
+    lastUpdated: Date.now(),
+    reserve: {
+      reserveIn: reserveOut,
+      reserveOut: reserveIn
+    }
+  }
+
+  return {
+    reserveIn,
+    reserveOut
+  }
+};
+
 export const calculateDexAmountOut = async (
   amount: number | string,
   tradeInputType: 'AMOUNT' | 'TOTAL',
@@ -92,8 +135,10 @@ export const calculateDexAmountOut = async (
         wkai: WKAI_SMC
       }
     })
+
+    const {reserveIn, reserveOut} = await getReserve(tokenFrom.hash, tokenTo.hash)
   
-    const rs = await client.calculateOutputAmount({
+    const rs = client.calculateOutputAmount({
       amount: amount,
       inputType: tradeInputType === "AMOUNT" ? 0 : 1,
       inputToken: {
@@ -102,12 +147,14 @@ export const calculateDexAmountOut = async (
         name: tokenFrom.name,
         symbol: tokenFrom.symbol
       },
+      reserveIn,
       outputToken: {
         tokenAddress: tokenTo.hash,
         decimals: tokenTo.decimals,
         name: tokenTo.name,
         symbol: tokenTo.symbol
-      }
+      },
+      reserveOut
     })
 
     return rs

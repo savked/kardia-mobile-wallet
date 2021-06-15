@@ -313,7 +313,7 @@ const TokenTxList = ({
           </View>
         )}
       </ScrollView>
-      {txList.length > 0 && (
+      {/* {txList.length > 0 && (
         <Button
           type="primary"
           icon={<AntIcon name="plus" size={24} />}
@@ -321,7 +321,7 @@ const TokenTxList = ({
           onPress={() => setShowNewTxModal(true)}
           style={styles.floatingButton}
         />
-      )}
+      )} */}
     </>
   );
 };

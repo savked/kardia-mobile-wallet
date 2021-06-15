@@ -41,7 +41,7 @@
     "graphql": "^15.5.0",
     "https-browserify": "^0.0.1",
     "js-sha3": "^0.8.0",
-    "kaidex-sdk": "^0.1.5",
+    "kaidex-sdk": "^0.1.7",
     "kardia-js-sdk": "^0.4.0",
     "numeral": "^2.0.6",
     "process": "^0.11.10",
