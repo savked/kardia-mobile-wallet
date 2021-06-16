@@ -15,6 +15,8 @@ import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import CustomText from '../../components/Text';
+import { submitReferal } from '../../services/dex';
+import { referralCodeAtom } from '../../atoms/referralCode';
 
 const CreateWithMnemonicPhrase = () => {
   const {params} = useRoute();
@@ -28,6 +30,7 @@ const CreateWithMnemonicPhrase = () => {
   const setSelectedWallet = useSetRecoilState(selectedWalletAtom)
 
   const language = useRecoilValue(languageAtom);
+  const referralCode = useRecoilValue(referralCodeAtom)
 
   useEffect(() => {
     const mn = generateMnemonic();
@@ -48,7 +51,11 @@ const CreateWithMnemonicPhrase = () => {
       await saveWallets(_wallets)
       setWallets(_wallets);
       setSelectedWallet(_wallets.length - 1)
+
+      await submitReferal(referralCode, newWallet)
+      
       setLoading(false);
+      
 
       if (params && (params as any).backOnSuccess) {
         navigation.goBack()

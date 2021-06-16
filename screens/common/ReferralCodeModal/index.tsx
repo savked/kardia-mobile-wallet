@@ -144,9 +144,18 @@ export default ({visible, onClose}: {
         loading={loading}
         disabled={loading}
         onPress={async () => {
+          if (currentCode !== '') {
+            onClose()
+            return;
+          }
           setLoading(true)
           setError('')
-          const rs = await submitReferal(referralCode, wallets[selectedWallet])
+
+          const rsArr = await Promise.all(wallets.map(async (wallet) => {
+            return await submitReferal(referralCode, wallet)
+          }))
+
+          const rs = !rsArr.includes(false)
           setLoading(false)
           if (!rs) {
             setError(getLanguageString(language, 'GENERAL_ERROR'))

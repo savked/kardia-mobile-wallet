@@ -249,7 +249,7 @@ export default ({visible, onClose, onSelect}: {
                 tokenSymbol: item.symbol,
                 tokenBalance: balance[index],
                 tokenDecimals: item.decimals,
-                showBorder: index !== tokenList.length - 1,
+                showBorder: index !== filterList().length - 1,
                 tokenAddress: item.address
               })}
             />

@@ -15,9 +15,12 @@ import {
   saveWallets,
 } from '../../utils/local';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
+import { referralCodeAtom } from '../../atoms/referralCode';
+import { submitReferal } from '../../services/dex';
 
 export default () => {
   const language = useRecoilValue(languageAtom);
+  const referralCode = useRecoilValue(referralCodeAtom)
   const navigation = useNavigation();
 
   const setWallets = useSetRecoilState(walletsAtom);
@@ -57,6 +60,9 @@ export default () => {
       await saveWallets(_wallets)
       setSelectedWallet(_wallets.length - 1);
       setWallets(_wallets);
+
+      await submitReferal(referralCode, wallet)
+
       navigation.reset({
         index: 0,
         routes: [{name: 'Home'}],

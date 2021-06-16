@@ -17,6 +17,8 @@ import {
 } from '../../utils/local';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {useNavigation} from '@react-navigation/native';
+import { submitReferal } from '../../services/dex';
+import { referralCodeAtom } from '../../atoms/referralCode';
 
 export default () => {
   const navigation = useNavigation();
@@ -26,6 +28,7 @@ export default () => {
   // const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const language = useRecoilValue(languageAtom);
+  const referralCode = useRecoilValue(referralCodeAtom)
 
   const setWallets = useSetRecoilState(walletsAtom);
   const setSelectedWallet = useSetRecoilState(selectedWalletAtom);
@@ -99,6 +102,8 @@ export default () => {
       setSelectedWallet(_wallets.length - 1);
       setWallets(_wallets);
       
+      await submitReferal(referralCode, wallet)
+
       setLoading(false)
       navigation.reset({
         index: 0,
