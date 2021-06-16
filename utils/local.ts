@@ -374,3 +374,28 @@ export const saveCacheByKey = async (key: string, value: any) => {
     return false;
   }
 }
+
+export const saveRefCode = async (code: string) => {
+  try {
+    await AsyncStorage.setItem(
+      '@kardia_ref_code',
+      code,
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
+export const getRefCode = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@kardia_ref_code');
+    if (!value) return ''
+    return value
+  } catch (e) {
+    console.error(e);
+    return '';
+    // error reading value
+  }
+}

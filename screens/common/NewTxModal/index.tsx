@@ -38,9 +38,11 @@ const MAX_AMOUNT = 5000000000;
 const NewTxModal = ({
   visible,
   onClose,
+  beforeShowSuccess
 }: {
   visible: boolean;
   onClose: () => void;
+  beforeShowSuccess?: () => void
 }) => {
   const navigation = useNavigation();
   const [wallets, setWallets] = useRecoilState(walletsAtom);
@@ -123,6 +125,7 @@ const NewTxModal = ({
       setWallets(newWallets);
 
       setLoading(false);
+      beforeShowSuccess && beforeShowSuccess()
       navigation.navigate('SuccessTx', {txHash: txHash});
       resetState();
       onClose();

@@ -49,7 +49,7 @@ export const getTxDetail = async (
     method: 'GET',
     redirect: 'follow',
   };
-  const response = await requestWithTimeOut(
+  const response: any = await requestWithTimeOut(
     fetch(
       `${ENDPOINT}token/txs?page=1&limit=1&txHash=${transactionHash}&address=${userAddress}&contractAddress=${tokenAddress}`,
       requestOptions,

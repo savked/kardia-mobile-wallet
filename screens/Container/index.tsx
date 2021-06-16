@@ -13,6 +13,7 @@ import {
   getCache,
   getFontSize,
   getLanguageSetting,
+  getRefCode,
   getSelectedWallet,
   getTokenList,
   getWallets,
@@ -52,6 +53,7 @@ import { initDexConfig } from '../../services/dex';
 import { cacheAtom } from '../../atoms/cache';
 import SettingStackScreen from '../../SettingStack';
 import DEXStackScreen from '../../DEXStack';
+import { referralCodeAtom } from '../../atoms/referralCode';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -236,6 +238,7 @@ const AppContainer = () => {
   const setAddressBook = useSetRecoilState(addressBookAtom);
   const setKRC20TokenList = useSetRecoilState(krc20ListAtom);
   const setFontSize = useSetRecoilState(fontSizeAtom);
+  const setRefCode = useSetRecoilState(referralCodeAtom)
   const [selectedWallet, setSelectedWallet] = useRecoilState(
     selectedWalletAtom,
   );
@@ -366,6 +369,10 @@ const AppContainer = () => {
       // Get local auth setting
       const enabled = await getAppPasscodeSetting();
       setLocalAuthEnabled(enabled);
+
+      // Get local ref code
+      const refCode = await getRefCode()
+      setRefCode(refCode)
 
       // Get local wallets data
       try {

@@ -294,6 +294,13 @@ export const lang: Language = {
     APPROVE_ERROR: 'Error approving your tokens, please try again later.',
     PRICE_IMPACT: 'Price impact',
     SLIPPAGE_ERROR: 'Invalid slippage tolerance',
-    DEADLINE_ERROR: 'Invalid transaction deadline'
+    DEADLINE_ERROR: 'Invalid transaction deadline',
+    SEARCH_FOR_TOKEN: 'Search for token',
+    // Referral key
+    REFERRAL_CODE: 'Referral Code',
+    REFERRAL_CODE_TITLE: 'Referral',
+    REFERRAL_CODE_DESCRIPTION: 'Paste your code here',
+    REFERRAL_CODE_PLACEHOLDER: 'Referral Code',
+    REFERRAL_CODE_NOTE: 'Be careful. This referral code can NOT be changed in the future.'
   },
 };

@@ -55,61 +55,15 @@ const CardSliderSection = () => {
           </View>
 
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1}}>
-            {/* <CustomText allowFontScaling={false} style={styles.kaiCardText}>
-              {truncate(
-                wallet.address,
-                viewportWidth >= 432 ? 14 : 10,
-                viewportWidth >= 432 ? 14 : 12,
-              )}
-            </CustomText> */}
             <ControlSection />
           </View>
 
           <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
             <View>
-              {/* <CustomText style={{fontSize: theme.defaultFontSize, color: 'rgba(252, 252, 252, 0.54)'}}>
-                {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
-              </CustomText> */}
               <CustomText style={Platform.OS === 'android' ? {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontFamily: 'WorkSans-SemiBold'} : {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontWeight: '500'}}>
                 {wallet.name ? wallet.name.toUpperCase() : getLanguageString(language,'NEW_WALLET').toUpperCase()}
               </CustomText>
             </View>
-            {/* <TouchableOpacity
-              onPress={() => {
-                copyToClipboard(
-                  wallets[selectedWallet] ? wallets[selectedWallet].address : '',
-                )
-                Toast.show({
-                  type: 'success',
-                  topOffset: 70,
-                  text1: getLanguageString(language, 'COPIED'),
-                  props: {
-                    backgroundColor: theme.backgroundFocusColor,
-                    textColor: theme.textColor
-                  }
-                });
-              }}
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: 22,
-                backgroundColor: '#FFFFFF',
-                alignItems: 'center',
-                justifyContent: 'center',
-                shadowColor: 'rgba(0, 0, 0, 0.3)',
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                shadowOpacity: 2,
-                shadowRadius: 4,
-                elevation: 9,
-              }}>
-              <Image
-                source={require('../../assets/icon/copy_dark.png')}
-                style={{width: 20, height: 20, marginRight: 2, marginTop: 2}}
-              />
-            </TouchableOpacity> */}
           </View>
         </View>
       </View>

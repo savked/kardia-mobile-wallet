@@ -24,5 +24,6 @@ export const SUBGRAPH_BLOCKLYTICS_KAIBLOCK = 'https://exchange-graph.kardiachain
 export const EXPLORER_URL = 'https://explorer.kardiachain.io';
 export const HASURA_CREDENTIALS = 'ZjE0ZDgzMWNlOWNlNTY0YmRlMGNiYjJl';
 export const PROXY_ENDPOINT = 'https://backend-proxy.kardiachain.io/api/';
+export const EXCHANGE_REST = 'https://exchange-rest.kardiachain.io/';
 
 export const SIMPLEX_URL = 'https://buy.chainbits.com/?crypto=KAI';

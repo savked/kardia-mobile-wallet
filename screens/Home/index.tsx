@@ -158,8 +158,6 @@ const HomeScreen = () => {
           }
         >
           <CardSliderSection />
-          
-          
           <TokenListSection refreshTime={refreshTime} />
         </ScrollView>
       </ImageBackground>

@@ -37,6 +37,7 @@ export default () => {
   const {params} = useRoute();
   const navigation = useNavigation();
 
+  const fromHome = params ? (params as any).fromHome : false;
   const txHash = params ? (params as any).txHash : '';
   const type = params ? (params as any).type : 'normal';
   const userAddress = params ? (params as any).userAddress : '';
@@ -412,18 +413,25 @@ export default () => {
         });
         break;
       case 'krc20':
+        const routes: any[] = [{name: 'HomeScreen'}]
+        if (!fromHome) {
+          routes.push({
+            name: 'TokenDetail', 
+            params: {
+              symbol: tokenSymbol,
+              tokenAddress,
+              decimals: tokenDecimals,
+              avatar: tokenAvatar,
+            }
+          })
+        }
         navigation.reset({
           index: 0,
           routes: [
             {
               name: 'Home',
               state: {
-                routes: [{name: 'HomeScreen'}, {name: 'TokenDetail', params: {
-                  symbol: tokenSymbol,
-                  tokenAddress,
-                  decimals: tokenDecimals,
-                  avatar: tokenAvatar,
-                }}],
+                routes,
               }
             }
           ],

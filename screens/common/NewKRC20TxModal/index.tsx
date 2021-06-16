@@ -45,6 +45,8 @@ const NewKRC20TxModal = ({
   tokenSymbol,
   tokenDecimals,
   tokenAvatar,
+  fromHome = false,
+  beforeShowSuccess
 }: {
   visible: boolean;
   onClose: () => void;
@@ -52,6 +54,8 @@ const NewKRC20TxModal = ({
   tokenSymbol: string;
   tokenDecimals: number;
   tokenAvatar: string;
+  fromHome?: boolean
+  beforeShowSuccess?: () => void
 }) => {
   const navigation = useNavigation();
   const wallets = useRecoilValue(walletsAtom);
@@ -138,6 +142,7 @@ const NewKRC20TxModal = ({
         {gasPrice: calculatedGasPrice}
       );
       setLoading(false);
+      beforeShowSuccess && beforeShowSuccess()
       navigation.navigate('SuccessTx', {
         txHash: txResult,
         type: 'krc20',
@@ -146,6 +151,7 @@ const NewKRC20TxModal = ({
         tokenAvatar: tokenAvatar,
         userAddress: _wallets[_selectedWallet].address,
         tokenSymbol: tokenSymbol,
+        fromHome
       });
       resetState();
       onClose();

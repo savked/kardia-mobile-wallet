@@ -287,6 +287,13 @@ export const lang: Language = {
     APPROVE_ERROR: 'Có lỗi xảy ra, vui lòng thử lại sau.',
     PRICE_IMPACT: 'Ảnh hưởng giá',
     SLIPPAGE_ERROR: 'Giới hạn trượt giá không đúng',
-    DEADLINE_ERROR: 'Thời gian tối đa không hợp lệ.'
+    DEADLINE_ERROR: 'Thời gian tối đa không hợp lệ.',
+    SEARCH_FOR_TOKEN: 'Tìm token',
+    // Referral key
+    REFERRAL_CODE: 'Mã giới thiệu',
+    REFERRAL_CODE_TITLE: 'Mã giới thiệu',
+    REFERRAL_CODE_DESCRIPTION: 'Nhập mã giới thiệu ở đây',
+    REFERRAL_CODE_PLACEHOLDER: 'Mã giới thiệu',
+    REFERRAL_CODE_NOTE: 'Lưu ý: Mã giới thiệu này không thể thay đỏi.'
   },
 };

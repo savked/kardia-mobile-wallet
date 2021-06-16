@@ -7,7 +7,9 @@ import CustomText from '../../components/Text';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
 import QRModal from '../common/AddressQRCode';
+import NewKRC20TxModal from '../common/NewKRC20TxModal';
 import NewTxModal from '../common/NewTxModal';
+import SelecTokenForTxModal from '../common/SelecTokenForTxModal';
 import {styles} from './style'
 
 export default () => {
@@ -16,7 +18,13 @@ export default () => {
   const language = useRecoilValue(languageAtom)
 
   const [showNewTxModal, setShowNewTxModal] = useState(false)
+  const [showNewKRC20TxModal, setShowKRC20NewTxModal] = useState(false)
   const [showQRModal, setShowQRModal] = useState(false);
+  const [showSelectToken, setShowSelectToken] = useState(false);
+  const [tokenAddress, setTokenAddress] = useState('')
+  const [tokenSymbol, setTokenSymbol] = useState('')
+  const [tokenDecimals, setTokenDecimals] = useState(0)
+  const [tokenAvatar, setTokenAvatar] = useState('')
 
   return (
     <View style={{width: '100%', flexDirection: 'row', paddingHorizontal: 60, paddingTop: 30, paddingBottom: 16, justifyContent: 'space-between'}}>
@@ -25,14 +33,56 @@ export default () => {
           <NewTxModal
             visible={showNewTxModal}
             onClose={() => setShowNewTxModal(false)}
+            beforeShowSuccess={() => setShowSelectToken(false)}
           />
         )
       }
+      {
+        showNewKRC20TxModal && (
+          <NewKRC20TxModal
+            visible={showNewKRC20TxModal}
+            onClose={() => setShowKRC20NewTxModal(false)}
+            tokenAddress={tokenAddress}
+            tokenSymbol={tokenSymbol}
+            tokenDecimals={tokenDecimals}
+            tokenAvatar={tokenAvatar}
+            fromHome={true}
+            beforeShowSuccess={() => setShowSelectToken(false)}
+          />
+        )
+      }
+      <SelecTokenForTxModal
+        visible={showSelectToken}
+        onClose={() => setShowSelectToken(false)}
+        onSelect={({
+          selectKAI,
+          tokenAddress: _tokenAddress = '',
+          tokenSymbol: _tokenSymbol = '',
+          tokenDecimals: _tokenDecimals = 0,
+          tokenAvatar: _tokenAvatar = ''
+        }: {
+          selectKAI: boolean, 
+          tokenAddress?: string, 
+          tokenSymbol?: string, 
+          tokenDecimals?: number, 
+          tokenAvatar?: string
+        }) => {
+          if (selectKAI) {
+            setShowNewTxModal(true)
+          } else {
+            setTokenAddress(_tokenAddress)
+            setTokenSymbol(_tokenSymbol)
+            setTokenDecimals(_tokenDecimals)
+            setTokenAvatar(_tokenAvatar)
+            setShowKRC20NewTxModal(true)
+          }
+        }}
+      />
       <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
       <View style={{alignItems: 'center', justifyContent: 'center', width: '33%'}}>
         <TouchableOpacity
           style={[styles.controlButton, {backgroundColor: theme.secondaryColor}]}
-          onPress={() => setShowNewTxModal(true)}
+          onPress={() => setShowSelectToken(true)}
         >
           <Image
             source={require('../../assets/icon/send_button.png')}

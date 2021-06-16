@@ -43,7 +43,9 @@ export default ({goBack, onSelect, pairData, loading}: {
     if (pairData) {
       const list = pairData.pairs
       return (
-        <View>
+        <View
+          style={{flex: 1}}
+        >
           <List
             items={list}
             keyExtractor={(item: Pair) => item.contract_address}
