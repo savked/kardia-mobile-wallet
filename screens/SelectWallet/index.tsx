@@ -92,7 +92,9 @@ const SelectWallet = () => {
     setSelectedWallet(_wallets.length - 1);
     setWallets(_wallets);
 
-    await submitReferal(referralCode, wallet)
+    if (referralCode) {
+      await submitReferal(referralCode, wallet)
+    }
 
     if (params && (params as any).fromNoWallet) {
       return;

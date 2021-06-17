@@ -341,6 +341,7 @@ export const calculatePriceImpact = async (tokenFrom: PairToken, tokenTo: PairTo
 
 export const submitReferal = async (referalCode: string, wallet: Wallet) => {
   if (!wallet.privateKey) return false
+  if (!referalCode) return false
 
   // Get ref address
   try {

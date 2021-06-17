@@ -52,7 +52,9 @@ const CreateWithMnemonicPhrase = () => {
       setWallets(_wallets);
       setSelectedWallet(_wallets.length - 1)
 
-      await submitReferal(referralCode, newWallet)
+      if (referralCode) {
+        await submitReferal(referralCode, newWallet)
+      }
       
       setLoading(false);
       

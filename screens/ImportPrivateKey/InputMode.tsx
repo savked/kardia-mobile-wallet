@@ -102,7 +102,9 @@ export default () => {
       setSelectedWallet(_wallets.length - 1);
       setWallets(_wallets);
       
-      await submitReferal(referralCode, wallet)
+      if (referralCode) {
+        await submitReferal(referralCode, wallet)
+      }
 
       setLoading(false)
       navigation.reset({

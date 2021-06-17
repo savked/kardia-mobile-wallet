@@ -148,6 +148,11 @@ export default ({visible, onClose}: {
             onClose()
             return;
           }
+
+          if (!referralCode) {
+            setError(getLanguageString(language, 'REQUIRED_FIELD'))
+          }
+
           setLoading(true)
           setError('')
 
