@@ -361,7 +361,7 @@ export const submitReferal = async (referalCode: string, wallet: Wallet) => {
     }
     const refAddressObj = rsJSON[0];
     const refAddress = refAddressObj.address
-    const parentId = refAddressObj.parent_id
+    const parentId = refAddressObj.id
     const message = `${wallet.address}-${referalCode}`
     const web3 = new Web3()
     const {signature} = web3.eth.accounts.sign(message, wallet.privateKey!)
