@@ -11,6 +11,7 @@ import {useRecoilValue} from 'recoil';
 import {languageAtom} from './atoms/language';
 import {ThemeContext} from './ThemeContext';
 import SuccessTx from './screens/SuccessTx';
+import DAppBrowser from './screens/DAppBrowser';
 
 const StakingStack = createStackNavigator();
 
@@ -32,7 +33,8 @@ const StakingStackScreen = () => {
       }}>
       <StakingStack.Screen
         name="StakingList"
-        component={StakingScreen}
+        // component={StakingScreen}
+        component={DAppBrowser}
         options={{headerShown: false}}
       />
       <StakingStack.Screen
