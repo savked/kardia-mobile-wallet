@@ -11,7 +11,7 @@ export const getKRC20TokenInfo = async (address: string) => {
     method: 'GET',
     redirect: 'follow',
   };
-  const response = await requestWithTimeOut(
+  const response: any = await requestWithTimeOut(
     fetch(`${ENDPOINT}contracts/${address}`, requestOptions),
     50 * 1000,
   );

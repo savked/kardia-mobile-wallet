@@ -103,7 +103,7 @@ export const isChecksumAddress = (address: string) => {
 };
 
 export const toChecksum = (address: string) => {
-  if (typeof address === 'undefined') {
+  if (typeof address === 'undefined' || address === '') {
     return '';
   }
 
