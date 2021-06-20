@@ -1,12 +1,15 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import loadLocalResource from 'react-native-local-resource'
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { useRecoilValue } from 'recoil';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import CustomTextInput from '../../components/TextInput';
 import { RPC_ENDPOINT } from '../../services/config';
 import { ThemeContext } from '../../ThemeContext';
+import { parseError, parseRun } from '../../utils/dapp';
+import { parseURL } from '../../utils/string';
 import ConfirmTxFromBrowserModal from '../common/ConfirmTxFromBrowserModal';
 // @ts-ignore
 const myResource = require('./kardia-web3-mobile-provider-min.jsstring');
@@ -19,8 +22,12 @@ export default () => {
   const [confirmModalVisible, setConfirmModalVisible] = useState(false)
   const [requestIdForCallback, setRequestIdForCallback] = useState(0)
   const [txObj, setTxObj] = useState<Record<string, any>>({})
+  const [url, setURL] = useState('');
+  const [submittedURL, setSubmittedURL] = useState('')
+  const [loadingURL, setLoadingURL] = useState(false)
 
   const webRef = useRef<any>()
+  const insets = useSafeAreaInsets();
 
   const wallets = useRecoilValue(walletsAtom)
   const selectedWallet = useRecoilValue(selectedWalletAtom)
@@ -28,7 +35,6 @@ export default () => {
   const handleConfirmTx = (txHash: string) => {
     const codeToRun = parseRun(requestIdForCallback, txHash)
     if (webRef && webRef.current) {
-      console.log('found ref', codeToRun)
       webRef.current.injectJavaScript(codeToRun);
     }
   }
@@ -40,26 +46,12 @@ export default () => {
     }
   }
 
-  const parseRun = (id: any, result: any) => {
-    const parsedResult = typeof result === 'string' ? `'${result}'` : JSON.stringify(result)
-    return `
-      window.kardiachain.sendResponse(${id}, ${parsedResult})
-    `
-  }
-
-  const parseError = (id: any, errMessage: any) => {
-    return `
-      window.kardiachain.sendError(${id}, '${errMessage}')
-    `
-  }
-
   const handleLog = (logData: any) => {
-    console.log(logData)
+    // console.log('Log from frame', logData)
   }
 
   const handleRPC = (requestId: number, method: string, params: Record<string, any>) => {
     if (!method) return
-    console.log('Method in handleRPC', method)
     switch (method) {
       case 'requestAccounts':
         const codeToRun = parseRun(requestId, [wallets[selectedWallet].address])
@@ -91,7 +83,6 @@ export default () => {
         if (requestId) {
           setRequestIdForCallback(requestId)
         }
-        console.log('received params', params)
         handleRPC(requestId, method, params)
       } catch (error) {
         codeToRun = parseError(requestId, error)
@@ -103,6 +94,7 @@ export default () => {
   }
 
   useEffect(() => {
+    setLoading(true)
     loadLocalResource(myResource)
       .then((myResourceContent: any) => {
         setResource(
@@ -113,7 +105,7 @@ export default () => {
         setLoading(false)
       }
     )
-  }, [])
+  }, [wallets, selectedWallet])
 
   if (loading) {
     return (
@@ -122,7 +114,7 @@ export default () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.backgroundColor, paddingTop: insets.top}]}>
       <ConfirmTxFromBrowserModal
         visible={confirmModalVisible}
         onClose={() => {
@@ -135,15 +127,54 @@ export default () => {
         }}
         txObj={txObj}
       />
-      <WebView
-        ref={webRef}
-        injectedJavaScript={ resource }
-        onMessage={onMessage}
-        source={{ uri: 'http://10.10.0.61:3000' }}
-        // source={{ uri: 'https://becoswap.com' }}
-        style={styles.webview}
-        contentMode="desktop"
-     />
-    </SafeAreaView>
+      <View style={{
+        padding: 18
+      }}>
+        <CustomTextInput
+          autoCompleteType="off"
+          autoCorrect={false}
+          autoCapitalize="none"
+          onSubmitEditing={(e) => {
+            if (!e.nativeEvent.text) return;
+            const parsedURL = parseURL(e.nativeEvent.text)
+            setURL(parsedURL)
+            setSubmittedURL(parsedURL)
+            // setLoadingURL(true)
+          }}
+          value={url}
+          onChangeText={setURL}
+          icons={() => {
+            if (!loadingURL) return null
+            return (
+              <View style={{position: 'absolute', right: 10}}>
+                <ActivityIndicator color="#000" />
+              </View>
+            )
+          }}
+        />
+      </View>
+      {
+        submittedURL === '' ? 
+        <View>
+
+        </View>
+        :
+        <WebView
+          ref={webRef}
+          javaScriptEnabled={true}
+          automaticallyAdjustContentInsets={false}
+          injectedJavaScript={ resource }
+          onMessage={onMessage}
+          onLoadStart={() => setLoadingURL(true)}
+          onLoadEnd={() => setLoadingURL(false)}
+          // source={{ uri: 'https://becoswap.com' }}
+          source={{ uri: submittedURL }}
+          style={styles.webview}
+          containerStyle={{
+            flex: 1,
+          }}
+        /> 
+      }
+    </View>
   )  
 }

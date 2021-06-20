@@ -11,9 +11,8 @@ import {useRecoilValue} from 'recoil';
 import numeral from 'numeral';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
-import {filterByOwnerSelector, krc20ListAtom} from '../../atoms/krc20';
+import {filterByOwnerSelector} from '../../atoms/krc20';
 import {getBalance} from '../../services/krc20';
-import {getSelectedWallet, getWallets} from '../../utils/local';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import CustomText from '../../components/Text';
 import { weiToKAI } from '../../services/transaction/amount';
@@ -37,10 +36,8 @@ const TokenListSection = ({refreshTime}: {
 
   const updateBalanceAll = async () => {
     setLoading(true);
-    const _wallets = await getWallets();
-    const _selectedWallet = await getSelectedWallet();
     const promiseArr = tokenList.map((i) => {
-      return getBalance(i.address, _wallets[_selectedWallet].address);
+      return getBalance(i.address, wallets[selectedWallet].address);
     });
     const balanceArr = await Promise.all(promiseArr);
     setBalance(balanceArr);

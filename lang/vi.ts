@@ -294,6 +294,8 @@ export const lang: Language = {
     REFERRAL_CODE_TITLE: 'Mã giới thiệu',
     REFERRAL_CODE_DESCRIPTION: 'Nhập mã giới thiệu ở đây',
     REFERRAL_CODE_PLACEHOLDER: 'Mã giới thiệu',
-    REFERRAL_CODE_NOTE: 'Lưu ý: Mã giới thiệu này không thể thay đỏi.'
+    REFERRAL_CODE_NOTE: 'Lưu ý: Mã giới thiệu này không thể thay đỏi.',
+    // DApp
+    DAPP: 'Dapp'
   },
 };

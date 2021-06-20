@@ -43,7 +43,7 @@ export default ({visible, onClose, txObj, onConfirm}: {
     try {
       setLoading(true)
 
-      const txHash = await sendRawTx(txObj, wallet)
+      const txHash = await sendRawTx(txObj, wallet, true)
 
       setLoading(false)
       onConfirm(txHash) 

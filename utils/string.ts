@@ -155,3 +155,11 @@ export const groupByAlphabet = (
 export const getLogoURL = (tokenAddress: string) => {
   return `https://kardiachain-explorer.s3-ap-southeast-1.amazonaws.com/explorer.kardiachain.io/logo/${toChecksum(tokenAddress).replace('0x', '')}.png`
 }
+
+export const parseURL = (raw: string) => {
+  let url = raw;
+  if (!url.includes('http://') && !url.includes('https://')) {
+    url = `https://${url}`
+  }
+  return url
+}

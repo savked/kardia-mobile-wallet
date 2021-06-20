@@ -167,6 +167,7 @@ var RPCServer = /*#__PURE__*/function () {
   }, {
     key: "call",
     value: function call(payload) {
+      console.log(payload);
       return fetch(this.rpcUrl, {
         method: "POST",
         headers: {
@@ -177,6 +178,8 @@ var RPCServer = /*#__PURE__*/function () {
       }).then(function (response) {
         return response.json();
       }).then(function (json) {
+        console.log(json);
+
         if (!json.result && json.error) {
           throw new Error(json.error.message || "rpc error");
         }
@@ -7207,36 +7210,55 @@ module.exports = function (secp256k1) {
 };
 },{}],"node_modules/elliptic/package.json":[function(require,module,exports) {
 module.exports = {
-  "name": "elliptic",
-  "version": "6.5.4",
-  "description": "EC cryptography",
-  "main": "lib/elliptic.js",
-  "files": [
-    "lib"
+  "_args": [
+    [
+      "elliptic@6.5.4",
+      "/Users/mvvk2/Desktop/Projects/kardia-web3-mobile-provider"
+    ]
   ],
-  "scripts": {
-    "lint": "eslint lib test",
-    "lint:fix": "npm run lint -- --fix",
-    "unit": "istanbul test _mocha --reporter=spec test/index.js",
-    "test": "npm run lint && npm run unit",
-    "version": "grunt dist && git add dist/"
+  "_from": "elliptic@6.5.4",
+  "_id": "elliptic@6.5.4",
+  "_inBundle": false,
+  "_integrity": "sha512-iLhC6ULemrljPZb+QutR5TQGB+pdW6KGD5RSegS+8sorOZT+rdQFbsQFJgvN3eRqNALqJer4oQ16YvJHlU8hzQ==",
+  "_location": "/elliptic",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "elliptic@6.5.4",
+    "name": "elliptic",
+    "escapedName": "elliptic",
+    "rawSpec": "6.5.4",
+    "saveSpec": null,
+    "fetchSpec": "6.5.4"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:indutny/elliptic"
-  },
-  "keywords": [
-    "EC",
-    "Elliptic",
-    "curve",
-    "Cryptography"
+  "_requiredBy": [
+    "/browserify-sign",
+    "/create-ecdh",
+    "/eth-sig-util/ethereumjs-util",
+    "/ethereumjs-abi/ethereumjs-util",
+    "/secp256k1"
   ],
-  "author": "Fedor Indutny <fedor@indutny.com>",
-  "license": "MIT",
+  "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.5.4.tgz",
+  "_spec": "6.5.4",
+  "_where": "/Users/mvvk2/Desktop/Projects/kardia-web3-mobile-provider",
+  "author": {
+    "name": "Fedor Indutny",
+    "email": "fedor@indutny.com"
+  },
   "bugs": {
     "url": "https://github.com/indutny/elliptic/issues"
   },
-  "homepage": "https://github.com/indutny/elliptic",
+  "dependencies": {
+    "bn.js": "^4.11.9",
+    "brorand": "^1.1.0",
+    "hash.js": "^1.0.0",
+    "hmac-drbg": "^1.0.1",
+    "inherits": "^2.0.4",
+    "minimalistic-assert": "^1.0.1",
+    "minimalistic-crypto-utils": "^1.0.1"
+  },
+  "description": "EC cryptography",
   "devDependencies": {
     "brfs": "^2.0.2",
     "coveralls": "^3.1.0",
@@ -7252,15 +7274,31 @@ module.exports = {
     "istanbul": "^0.4.5",
     "mocha": "^8.0.1"
   },
-  "dependencies": {
-    "bn.js": "^4.11.9",
-    "brorand": "^1.1.0",
-    "hash.js": "^1.0.0",
-    "hmac-drbg": "^1.0.1",
-    "inherits": "^2.0.4",
-    "minimalistic-assert": "^1.0.1",
-    "minimalistic-crypto-utils": "^1.0.1"
-  }
+  "files": [
+    "lib"
+  ],
+  "homepage": "https://github.com/indutny/elliptic",
+  "keywords": [
+    "EC",
+    "Elliptic",
+    "curve",
+    "Cryptography"
+  ],
+  "license": "MIT",
+  "main": "lib/elliptic.js",
+  "name": "elliptic",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/indutny/elliptic.git"
+  },
+  "scripts": {
+    "lint": "eslint lib test",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "npm run lint && npm run unit",
+    "unit": "istanbul test _mocha --reporter=spec test/index.js",
+    "version": "grunt dist && git add dist/"
+  },
+  "version": "6.5.4"
 }
 ;
 },{}],"node_modules/bn.js/lib/bn.js":[function(require,module,exports) {
@@ -30563,8 +30601,6 @@ var KardiaChainWeb3Provider = /*#__PURE__*/function (_EventEmitter) {
 
         _this2.wrapResults.set(payload.id, wrapResult);
 
-        if (payload.method === 'eth_getTransactionReceipt') console.log('here 1');
-
         switch (payload.method) {
           case "eth_accounts":
             return _this2.sendResponse(payload.id, _this2.eth_accounts());
@@ -30754,6 +30790,23 @@ var KardiaChainWeb3Provider = /*#__PURE__*/function (_EventEmitter) {
         this.sendError(id, new _error.default(4100, "provider is not ready"));
       }
     }
+  }, {
+    key: "remoteEmit",
+    value: function remoteEmit(eventName, message) {
+      var dataToEmit;
+
+      if (typeof message === 'string') {
+        try {
+          dataToEmit = JSON.parse(message);
+        } catch (error) {
+          dataToEmit = message;
+        }
+      } else {
+        dataToEmit = message;
+      }
+
+      this.emit(eventName, dataToEmit);
+    }
     /**
      * @private Internal native result -> js
      */
@@ -30900,7 +30953,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52428" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63671" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

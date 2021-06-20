@@ -54,6 +54,7 @@ import { cacheAtom } from '../../atoms/cache';
 import SettingStackScreen from '../../SettingStack';
 import DEXStackScreen from '../../DEXStack';
 import { referralCodeAtom } from '../../atoms/referralCode';
+import DAppStackScreen from '../../DAppStack';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -108,6 +109,12 @@ const Wrap = () => {
                 {getLanguageString(language, 'KAI_DEX')}
               </CustomText>
             )
+          } else if (route.name === 'DApp') {
+            return (
+              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+                {getLanguageString(language, 'DAPP')}
+              </CustomText>
+            )
           }
         },
         tabBarIcon: ({color, size, focused}) => {
@@ -137,8 +144,6 @@ const Wrap = () => {
                 }
               />
             );
-          } else if (route.name === 'DApp') {
-            iconName = 'th-large';
           } else if (route.name === 'Setting') {
             return (
               <Image
@@ -173,6 +178,17 @@ const Wrap = () => {
               />
             );
           } else if (route.name === 'DEX') {
+            return (
+              <Image
+                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
+                source={
+                  focused
+                    ? require('../../assets/icon/kai_dex_dark.png')
+                    : require('../../assets/icon/kai_dex_dark_inactive.png')
+                }
+              />
+            )
+          } else if (route.name === 'DApp') {
             return (
               <Image
                 style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
@@ -226,6 +242,7 @@ const Wrap = () => {
       <Tab.Screen name="Staking" component={StakingStackScreen} />
       <Tab.Screen name="DEX" component={DEXStackScreen} />
       <Tab.Screen name="Address" component={AddressStackScreen} />
+      {/* <Tab.Screen name="DApp" component={DAppStackScreen} /> */}
       {/* <Tab.Screen name="News" component={NewsScreen} /> */}
       <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>

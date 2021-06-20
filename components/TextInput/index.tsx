@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {TextInput, View, Text, StyleProp, TextStyle, ViewStyle, ActivityIndicator} from 'react-native';
+import {TextInput, View, Text, StyleProp, TextStyle, ViewStyle, ActivityIndicator, TextInputKeyPressEventData, NativeSyntheticEvent, TextInputSubmitEditingEventData} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ThemeContext} from '../../ThemeContext';
 import { mergeObjArr } from '../../utils/object';
@@ -31,13 +31,21 @@ const CustomTextInput = ({
   containerStyle,
   autoFocus,
   loading = false,
+  onKeyPress,
+  onSubmitEditing,
+  autoCompleteType,
+  autoCorrect
 }: CustomTextInputProps & {
   headlineStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<TextStyle>;
   inputRef?: React.RefObject<TextInput>;
   autoFocus?: boolean;
-  loading?: boolean
+  loading?: boolean;
+  onKeyPress?: (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => void;
+  onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
+  autoCompleteType?: string;
+  autoCorrect?: boolean
 }) => {
   const theme = useContext(ThemeContext);
 
@@ -73,7 +81,11 @@ const CustomTextInput = ({
           containerStyle,
         ]}>
         <TextInput
+          autoCorrect={autoCorrect}
+          autoCompleteType={autoCompleteType as any}
           allowFontScaling={false}
+          onKeyPress={onKeyPress}
+          onSubmitEditing={onSubmitEditing}
           style={calculatedStyle}
           ref={inputRef}
           keyboardType={keyboardType as any}

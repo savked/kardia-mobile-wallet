@@ -301,6 +301,8 @@ export const lang: Language = {
     REFERRAL_CODE_TITLE: 'Referral',
     REFERRAL_CODE_DESCRIPTION: 'Paste your code here',
     REFERRAL_CODE_PLACEHOLDER: 'Referral Code',
-    REFERRAL_CODE_NOTE: 'Be careful. This referral code can NOT be changed in the future.'
+    REFERRAL_CODE_NOTE: 'Be careful. This referral code can NOT be changed in the future.',
+    // DApp
+    DAPP: 'Dapp'
   },
 };
