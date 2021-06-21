@@ -213,6 +213,7 @@ const TokenDetail = () => {
           <View
             style={{
               width: '100%',
+              alignItems: 'center'
             }}
           >
             <KRC20ControlSection

@@ -27,7 +27,7 @@ export default () => {
   const [tokenAvatar, setTokenAvatar] = useState('')
 
   return (
-    <View style={{width: '100%', flexDirection: 'row', paddingHorizontal: 60, paddingTop: 30, paddingBottom: 16, justifyContent: 'space-between'}}>
+    <View style={{ flexDirection: 'row', width: 180, paddingTop: 30, paddingBottom: 16, justifyContent: 'space-between'}}>
       {
         showNewTxModal && (
           <NewTxModal
@@ -51,33 +51,37 @@ export default () => {
           />
         )
       }
-      <SelecTokenForTxModal
-        visible={showSelectToken}
-        onClose={() => setShowSelectToken(false)}
-        onSelect={({
-          selectKAI,
-          tokenAddress: _tokenAddress = '',
-          tokenSymbol: _tokenSymbol = '',
-          tokenDecimals: _tokenDecimals = 0,
-          tokenAvatar: _tokenAvatar = ''
-        }: {
-          selectKAI: boolean, 
-          tokenAddress?: string, 
-          tokenSymbol?: string, 
-          tokenDecimals?: number, 
-          tokenAvatar?: string
-        }) => {
-          if (selectKAI) {
-            setShowNewTxModal(true)
-          } else {
-            setTokenAddress(_tokenAddress)
-            setTokenSymbol(_tokenSymbol)
-            setTokenDecimals(_tokenDecimals)
-            setTokenAvatar(_tokenAvatar)
-            setShowKRC20NewTxModal(true)
-          }
-        }}
-      />
+      {
+        showSelectToken && (
+          <SelecTokenForTxModal
+            visible={showSelectToken}
+            onClose={() => setShowSelectToken(false)}
+            onSelect={({
+              selectKAI,
+              tokenAddress: _tokenAddress = '',
+              tokenSymbol: _tokenSymbol = '',
+              tokenDecimals: _tokenDecimals = 0,
+              tokenAvatar: _tokenAvatar = ''
+            }: {
+              selectKAI: boolean, 
+              tokenAddress?: string, 
+              tokenSymbol?: string, 
+              tokenDecimals?: number, 
+              tokenAvatar?: string
+            }) => {
+              if (selectKAI) {
+                setShowNewTxModal(true)
+              } else {
+                setTokenAddress(_tokenAddress)
+                setTokenSymbol(_tokenSymbol)
+                setTokenDecimals(_tokenDecimals)
+                setTokenAvatar(_tokenAvatar)
+                setShowKRC20NewTxModal(true)
+              }
+            }}
+          />
+        )
+      }
       <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
       <View style={{alignItems: 'center', justifyContent: 'center', width: '33%'}}>
         <TouchableOpacity

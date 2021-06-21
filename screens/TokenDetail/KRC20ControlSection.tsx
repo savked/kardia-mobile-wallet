@@ -32,7 +32,7 @@ export default ({
   const selectedWallet = useRecoilValue(selectedWalletAtom)
 
   return (
-    <View style={{width: '100%', flexDirection: 'row', paddingVertical: 20, paddingHorizontal: 40, justifyContent: 'center'}}>
+    <View style={{width: 180, flexDirection: 'row', paddingVertical: 20, justifyContent: 'space-between'}}>
       {
         showNewTxModal && (
           <NewKRC20TxModal
