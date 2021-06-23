@@ -8,7 +8,6 @@ import {styles} from './style';
 import {formatNumberString, parseDecimals} from '../../utils/number';
 import Button from '../../components/Button';
 import {useRecoilValue} from 'recoil';
-import numeral from 'numeral';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import {filterByOwnerSelector} from '../../atoms/krc20';
@@ -215,15 +214,17 @@ const TokenListSection = ({refreshTime}: {
               </CustomText>
               <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold'}}>
                 {
-                  numeral(Number(weiToKAI(_getBalance()))).format('0,0.00')}{' '}
+                  formatNumberString(weiToKAI(_getBalance()), 2, 0)}{' '}
                 <CustomText style={{color: theme.mutedTextColor, fontWeight: '500'}}>KAI</CustomText>
               </CustomText>
               <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
                 $
-                {numeral(
-                  tokenInfo.price *
-                    Number(weiToKAI(_getBalance())),
-                ).format('0,0.00')}
+                {formatNumberString(
+                  (tokenInfo.price *
+                    Number(weiToKAI(_getBalance()))).toString(),
+                  2, 
+                  0
+                )}
               </CustomText>
             </View>
           </View>

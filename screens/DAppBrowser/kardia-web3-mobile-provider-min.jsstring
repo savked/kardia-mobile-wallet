@@ -30465,9 +30465,9 @@ var KardiaChainWeb3Provider = /*#__PURE__*/function (_EventEmitter) {
       for (var i = 0; i < window.frames.length; i++) {
         var frame = window.frames[i];
 
-        if (frame.ethereum && frame.ethereum.isKaiWallet) {
-          frame.ethereum.address = lowerAddress;
-          frame.ethereum.ready = !!address;
+        if (frame.kardiachain && frame.kardiachain.isKaiWallet) {
+          frame.kardiachain.address = lowerAddress;
+          frame.kardiachain.ready = !!address;
         }
       }
     }
@@ -30486,7 +30486,7 @@ var KardiaChainWeb3Provider = /*#__PURE__*/function (_EventEmitter) {
       var that = this;
 
       if (!(this instanceof KardiaChainWeb3Provider)) {
-        that = window.ethereum;
+        that = window.kardiachain;
       }
 
       return that._request(payload, false);
@@ -30953,7 +30953,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63671" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64906" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,29 +1,35 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { useRoute } from '@react-navigation/core';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Alert, View } from 'react-native';
 import loadLocalResource from 'react-native-local-resource'
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
-import CustomTextInput from '../../components/TextInput';
+import ENIcon from 'react-native-vector-icons/Entypo';
 import { RPC_ENDPOINT } from '../../services/config';
 import { ThemeContext } from '../../ThemeContext';
 import { parseError, parseRun } from '../../utils/dapp';
-import { parseURL } from '../../utils/string';
 import ConfirmTxFromBrowserModal from '../common/ConfirmTxFromBrowserModal';
 // @ts-ignore
 const myResource = require('./kardia-web3-mobile-provider-min.jsstring');
 import {styles} from './style'
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import CustomText from '../../components/Text';
+import { showTabBarAtom } from '../../atoms/showTabBar';
 
 export default () => {
+  const {params} = useRoute()
+  const navigation = useNavigation()
+
+  const appURL = params ? (params as any).appURL : ''
+
   const theme = useContext(ThemeContext)
   const [resource, setResource] = useState('')
   const [loading, setLoading] = useState(true)
   const [confirmModalVisible, setConfirmModalVisible] = useState(false)
   const [requestIdForCallback, setRequestIdForCallback] = useState(0)
   const [txObj, setTxObj] = useState<Record<string, any>>({})
-  const [url, setURL] = useState('');
-  const [submittedURL, setSubmittedURL] = useState('')
   const [loadingURL, setLoadingURL] = useState(false)
 
   const webRef = useRef<any>()
@@ -47,7 +53,7 @@ export default () => {
   }
 
   const handleLog = (logData: any) => {
-    // console.log('Log from frame', logData)
+    console.log('Log from frame', logData)
   }
 
   const handleRPC = (requestId: number, method: string, params: Record<string, any>) => {
@@ -107,6 +113,15 @@ export default () => {
     )
   }, [wallets, selectedWallet])
 
+  const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+
+  useFocusEffect(
+    useCallback(() => {
+      setTabBarVisible(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+  )
+
   if (loading) {
     return (
       <ActivityIndicator size="large" color={theme.textColor} />
@@ -127,54 +142,35 @@ export default () => {
         }}
         txObj={txObj}
       />
-      <View style={{
-        padding: 18
-      }}>
-        <CustomTextInput
-          autoCompleteType="off"
-          autoCorrect={false}
-          autoCapitalize="none"
-          onSubmitEditing={(e) => {
-            if (!e.nativeEvent.text) return;
-            const parsedURL = parseURL(e.nativeEvent.text)
-            setURL(parsedURL)
-            setSubmittedURL(parsedURL)
-            // setLoadingURL(true)
-          }}
-          value={url}
-          onChangeText={setURL}
-          icons={() => {
-            if (!loadingURL) return null
-            return (
-              <View style={{position: 'absolute', right: 10}}>
-                <ActivityIndicator color="#000" />
-              </View>
-            )
-          }}
+      <View style={{width: '100%', backgroundColor: theme.backgroundColor, flexDirection: 'row', alignItems: 'center'}}>
+        <ENIcon.Button
+          style={{paddingLeft: 20}}
+          name="chevron-left"
+          onPress={() => navigation.goBack()}
+          backgroundColor="transparent"
         />
+        <CustomText style={{color: theme.textColor}}>KardiaChain Wallet</CustomText>
       </View>
       {
-        submittedURL === '' ? 
-        <View>
-
-        </View>
-        :
-        <WebView
-          ref={webRef}
-          javaScriptEnabled={true}
-          automaticallyAdjustContentInsets={false}
-          injectedJavaScript={ resource }
-          onMessage={onMessage}
-          onLoadStart={() => setLoadingURL(true)}
-          onLoadEnd={() => setLoadingURL(false)}
-          // source={{ uri: 'https://becoswap.com' }}
-          source={{ uri: submittedURL }}
-          style={styles.webview}
-          containerStyle={{
-            flex: 1,
-          }}
-        /> 
+        loadingURL &&
+          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <ActivityIndicator size="large" />
+          </View>
       }
+      <WebView
+        ref={webRef}
+        javaScriptEnabled={true}
+        automaticallyAdjustContentInsets={false}
+        injectedJavaScriptBeforeContentLoaded={ resource }
+        onMessage={onMessage}
+        onLoadStart={() => setLoadingURL(true)}
+        onLoadEnd={() => setLoadingURL(false)}
+        source={{ uri: appURL }}
+        style={styles.webview}
+        containerStyle={{
+          flex: loadingURL ? 0 : 1,
+        }}
+      /> 
     </View>
   )  
 }

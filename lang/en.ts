@@ -303,6 +303,7 @@ export const lang: Language = {
     REFERRAL_CODE_PLACEHOLDER: 'Referral Code',
     REFERRAL_CODE_NOTE: 'Be careful. This referral code can NOT be changed in the future.',
     // DApp
-    DAPP: 'Dapp'
+    DAPP: 'DApp',
+    SEARCH_DAPP_PLACEHOLDER: 'Search or enter DApp URL'
   },
 };

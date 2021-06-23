@@ -194,8 +194,8 @@ const Wrap = () => {
                 style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
                 source={
                   focused
-                    ? require('../../assets/icon/kai_dex_dark.png')
-                    : require('../../assets/icon/kai_dex_dark_inactive.png')
+                    ? require('../../assets/icon/dapp.png')
+                    : require('../../assets/icon/dapp_inactive.png')
                 }
               />
             )
@@ -242,7 +242,7 @@ const Wrap = () => {
       <Tab.Screen name="Staking" component={StakingStackScreen} />
       <Tab.Screen name="DEX" component={DEXStackScreen} />
       <Tab.Screen name="Address" component={AddressStackScreen} />
-      {/* <Tab.Screen name="DApp" component={DAppStackScreen} /> */}
+      <Tab.Screen name="DApp" component={DAppStackScreen} />
       {/* <Tab.Screen name="News" component={NewsScreen} /> */}
       <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>

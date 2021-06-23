@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {Keyboard, Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
+import {Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
 import numeral from 'numeral';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';

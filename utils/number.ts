@@ -80,7 +80,7 @@ export const getPartial = (value: string, partial: number, decimals: number) => 
   // return (cellValueWithDecimals(value, decimals, 'bignum') as BigNumber).multipliedBy(new BigNumber(partial)).toFixed(decimals, 1)
 }
 
-export const formatNumberString = (numberString: string, fragtionsCount?: number) => {
+export const formatNumberString = (numberString: string, fragtionsCount?: number, roundMode: BigNumber.RoundingMode = 1) => {
   if (!numberString) return '0'
   if (typeof numberString !== 'string') {
     numberString = (new BigNumber(numberString)).toFixed()
@@ -97,6 +97,6 @@ export const formatNumberString = (numberString: string, fragtionsCount?: number
     suffix: ''
   }
   BigNumber.config({ FORMAT: fmt })
-  if (fragtionsCount) return (new BigNumber(numberString)).toFormat(fragtionsCount, 1)
+  if (fragtionsCount) return (new BigNumber(numberString)).toFormat(fragtionsCount, roundMode)
   return (new BigNumber(numberString)).toFormat()
 }

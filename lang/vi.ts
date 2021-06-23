@@ -296,6 +296,7 @@ export const lang: Language = {
     REFERRAL_CODE_PLACEHOLDER: 'Mã giới thiệu',
     REFERRAL_CODE_NOTE: 'Lưu ý: Mã giới thiệu này không thể thay đỏi.',
     // DApp
-    DAPP: 'Dapp'
+    DAPP: 'DApp',
+    SEARCH_DAPP_PLACEHOLDER: 'Tìm hoặc nhập địa chỉ DApp'
   },
 };
