@@ -1,6 +1,6 @@
 import { useRoute } from '@react-navigation/core';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, View } from 'react-native';
+import { ActivityIndicator, Alert, Platform, View } from 'react-native';
 import loadLocalResource from 'react-native-local-resource'
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
@@ -31,6 +31,7 @@ export default () => {
   const [requestIdForCallback, setRequestIdForCallback] = useState(0)
   const [txObj, setTxObj] = useState<Record<string, any>>({})
   const [loadingURL, setLoadingURL] = useState(false)
+  const [error, setError] = useState('')
 
   const webRef = useRef<any>()
   const insets = useSafeAreaInsets();
@@ -168,7 +169,26 @@ export default () => {
         source={{ uri: appURL }}
         style={styles.webview}
         containerStyle={{
-          flex: loadingURL ? 0 : 1,
+          flex: loadingURL || error !== '' ? 0 : 1,
+        }}
+        renderError={(errorName) => {
+          if (!errorName) return <CustomText>{''}</CustomText>;
+          setError(errorName)
+          return (
+            <View style={{backgroundColor: '#FFFFFF', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+              <CustomText 
+                style={{
+                  fontSize: 30,
+                  marginBottom: 30,
+                  fontWeight: '500',
+                  fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                }}
+              >
+                Error loading your DApp
+              </CustomText>
+              <CustomText>Error code: {errorName}</CustomText>
+            </View>
+          )
         }}
       /> 
     </View>

@@ -239,7 +239,7 @@ const TokenListSection = ({refreshTime}: {
           />
         </View>
       </ImageBackground>
-      {tokenList.length === 0 && !loading && (
+      {/* {tokenList.length === 0 && !loading && (
         <View style={{alignItems: 'center', marginTop: 45, marginBottom: 30}}>
           <Image
             style={{width: 111, height: 52}}
@@ -259,7 +259,7 @@ const TokenListSection = ({refreshTime}: {
             title={`+ ${getLanguageString(language, 'ADD_TOKEN')}`}
           />
         </View>
-      )}
+      )} */}
       {loading ? <ActivityIndicator color={theme.textColor} size="large" /> : (
         renderTokenList()
       )}

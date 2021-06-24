@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { useRecoilValue } from 'recoil'
 import BigNumber from 'bignumber.js'
@@ -13,7 +13,8 @@ import { formatNumberString } from '../../../utils/number'
 import Button from '../../../components/Button'
 import AuthModal from '../AuthModal'
 import { walletsAtom } from '../../../atoms/wallets'
-import { sendRawTx } from '../../../services/transaction'
+import { estimateGas, sendRawTx } from '../../../services/transaction'
+import { DEFAULT_GAS_LIMIT } from '../../../config'
 
 export default ({visible, onClose, txObj, onConfirm}: {
   visible: boolean;
@@ -26,6 +27,7 @@ export default ({visible, onClose, txObj, onConfirm}: {
 
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [loading, setLoading] = useState(false)
+  const [tx, setTx] = useState<Record<string, any>>({})
   const wallets = useRecoilValue(walletsAtom)
 
   const getContentStyle = () => {
@@ -51,6 +53,21 @@ export default ({visible, onClose, txObj, onConfirm}: {
       console.log('error', error)
     }
   }
+
+  useEffect(() => {
+    (async () => {
+      if (!txObj.gas) {
+        let estimatedGas: number = await estimateGas(txObj, txObj.data)
+        if (!estimatedGas) {
+          estimatedGas = DEFAULT_GAS_LIMIT
+        } else {
+          estimatedGas = Math.round(estimatedGas * 1.2)
+        }
+        txObj.gas = `0x${estimatedGas.toString(16)}`
+      }
+      setTx(txObj)
+    })()
+  }, [])
 
   if (showAuthModal) {
     return (
@@ -84,27 +101,27 @@ export default ({visible, onClose, txObj, onConfirm}: {
       </CustomText>
       <View style={styles.group}>
         <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'FROM')}:</CustomText>
-        <CustomText style={{color: theme.textColor}}>{truncate(toChecksum((txObj.from || '').toLowerCase()), 10, 10)}</CustomText>
+        <CustomText style={{color: theme.textColor}}>{truncate(toChecksum((tx.from || '').toLowerCase()), 10, 10)}</CustomText>
       </View>
       <View style={styles.group}>
         <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'TO')}:</CustomText>
-        <CustomText style={{color: theme.textColor}}>{truncate(toChecksum((txObj.to || '').toLowerCase()), 10, 10)}</CustomText>
+        <CustomText style={{color: theme.textColor}}>{truncate(toChecksum((tx.to || '').toLowerCase()), 10, 10)}</CustomText>
       </View>
       <View style={styles.group}>
         <CustomText style={{color: theme.textColor}}>Gas:</CustomText>
-        <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(txObj.gas, 16)).toFixed())}</CustomText>
+        <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(tx.gas, 16)).toFixed())}</CustomText>
       </View>
       <View style={styles.group}>
         <CustomText style={{color: theme.textColor}}>Gas Price:</CustomText>
-        <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(txObj.gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed())} OXY</CustomText>
+        <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(tx.gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed())} OXY</CustomText>
       </View>
       <View style={styles.group}>
         <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:</CustomText>
-        <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(txObj.value || '0x0', 16)).dividedBy(new BigNumber(10 ** 18)).toFixed())} KAI</CustomText>
+        <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(tx.value || '0x0', 16)).dividedBy(new BigNumber(10 ** 18)).toFixed())} KAI</CustomText>
       </View>
       <View style={styles.group}>
         <CustomText style={{color: theme.textColor}}>Data:</CustomText>
-        <CustomText style={{color: theme.textColor}}>{truncate(txObj.data, 10, 10)}</CustomText>
+        <CustomText style={{color: theme.textColor}}>{truncate(tx.data, 10, 10)}</CustomText>
       </View>
       <Button
         title={getLanguageString(language, 'CANCEL')}

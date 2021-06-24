@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     flex: 1
   },
   webview: {
-    flex: 1,
-    flexGrow: 1
+    // flex: 1,
+    // flexGrow: 1
   }
 });
