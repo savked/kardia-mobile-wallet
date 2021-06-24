@@ -704,9 +704,14 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                 let partialValue = getPartial(balanceTo, 1, tokenTo.decimals)
                 if (tokenTo.symbol === 'KAI') {
                   const bnPartialValue = new BigNumber(partialValue)
+                  const ONE_KAI = new BigNumber(10 ** 18)
                   // const bn110KAI = new BigNumber(10 ** (tokenTo.decimals))
                   const bn110KAI = new BigNumber(partialValue).multipliedBy(new BigNumber(0.1))
-                  partialValue = bnPartialValue.minus(bn110KAI).toFixed(tokenTo.decimals, 1)
+                  if (bnPartialValue.isGreaterThan(ONE_KAI)) {
+                    partialValue = bnPartialValue.minus(new BigNumber(10 ** 16)).toFixed(tokenTo.decimals, 1)
+                  } else {
+                    partialValue = bnPartialValue.minus(bn110KAI).toFixed(tokenTo.decimals, 1)
+                  }
                 }
                 setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
               }} 
