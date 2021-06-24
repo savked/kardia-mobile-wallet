@@ -1,9 +1,27 @@
 import {ENDPOINT, RPC_ENDPOINT} from '../config';
 import KardiaClient from 'kardia-js-sdk';
 import {cellValue, weiToKAI} from './amount';
+import { BigNumber } from 'bignumber.js';
+import { isHexString } from '@ethersproject/bytes';
 
 export const estimateGas = async (payload: Record<string, any>, data = '') => {
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
+
+  if (payload.value && isHexString(payload.value)) {
+    const bnValue = new BigNumber(payload.value, 16)
+    payload.value = bnValue.toFixed()
+  }
+
+  if (payload.gas && isHexString(payload.gas)) {
+    const bnValue = new BigNumber(payload.gas, 16)
+    payload.gas = bnValue.toNumber()
+  }
+
+  if (payload.gasPrice && isHexString(payload.gasPrice)) {
+    const bnValue = new BigNumber(payload.gasPrice, 16)
+    payload.gasPrice = bnValue.toNumber()
+  }
+
   return kardiaClient.transaction.estimateGas(payload, data);
 };
 

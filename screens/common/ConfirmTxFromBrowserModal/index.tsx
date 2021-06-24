@@ -67,7 +67,7 @@ export default ({visible, onClose, txObj, onConfirm}: {
       }
       setTx(txObj)
     })()
-  }, [])
+  }, [txObj])
 
   if (showAuthModal) {
     return (
