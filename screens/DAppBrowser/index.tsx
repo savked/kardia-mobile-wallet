@@ -1,6 +1,6 @@
 import { useRoute } from '@react-navigation/core';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, Platform, View } from 'react-native';
+import { ActivityIndicator, Platform, View } from 'react-native';
 import loadLocalResource from 'react-native-local-resource'
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
@@ -146,7 +146,7 @@ export default () => {
       <View style={{width: '100%', backgroundColor: theme.backgroundColor, flexDirection: 'row', alignItems: 'center'}}>
         <ENIcon.Button
           style={{paddingLeft: 20}}
-          name="chevron-left"
+          name="cross"
           onPress={() => navigation.goBack()}
           backgroundColor="transparent"
         />
