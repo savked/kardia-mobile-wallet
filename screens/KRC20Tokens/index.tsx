@@ -183,15 +183,13 @@ export default () => {
         }}
         ListEmptyComponent={null}
       />
-      {tokenList.length > 0 && (
-        <Button
-          type="primary"
-          icon={<AntIcon name="plus" size={24} />}
-          size="small"
-          onPress={() => navigation.navigate('NewKRC20Tokens')}
-          style={styles.floatingButton}
-        />
-      )}
+      <Button
+        type="primary"
+        icon={<AntIcon name="plus" size={24} />}
+        size="small"
+        onPress={() => navigation.navigate('NewKRC20Tokens')}
+        style={styles.floatingButton}
+      />
     </SafeAreaView>
   );
 };

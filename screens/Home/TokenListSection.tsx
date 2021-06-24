@@ -167,13 +167,11 @@ const TokenListSection = ({refreshTime}: {
         <CustomText style={{fontSize: 18, fontWeight: 'bold', color: theme.textColor}}>
           {getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}
         </CustomText>
-        {tokenList.length > 0 && (
-          <TouchableOpacity onPress={() => navigation.navigate('KRC20Tokens')}>
-            <CustomText style={{fontSize: theme.defaultFontSize, color: theme.textColor}}>
-              {getLanguageString(language, 'VIEW_ALL')} ({tokenList.length})
-            </CustomText>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity onPress={() => navigation.navigate('KRC20Tokens')}>
+          <CustomText style={{fontSize: theme.defaultFontSize, color: theme.textColor}}>
+            {getLanguageString(language, 'VIEW_ALL')} ({tokenList.length + 1})
+          </CustomText>
+        </TouchableOpacity>
       </View>
       <ImageBackground
         source={require('../../assets/kai_balance_outline.png')}
