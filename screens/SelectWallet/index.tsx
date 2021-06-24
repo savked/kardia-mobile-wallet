@@ -25,18 +25,22 @@ import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native'
 import {
   getWallets,
   saveMnemonic,
+  saveWallets,
 } from '../../utils/local';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomText from '../../components/Text';
 import { statusBarColorAtom } from '../../atoms/statusBar';
 import { sleep } from '../../utils/promiseHelper';
+import { referralCodeAtom } from '../../atoms/referralCode';
+import { submitReferal } from '../../services/dex';
 
 const SelectWallet = () => {
   const [startIndex, setStartIndex] = useState(0);
   const [walletList, setWalletList] = useState<Wallet[]>([]);
   const [loading, setLoading] = useState(true);
   const language = useRecoilValue(languageAtom);
+  const referralCode = useRecoilValue(referralCodeAtom)
   const theme = useContext(ThemeContext);
 
   const navigation = useNavigation();
@@ -84,11 +88,17 @@ const SelectWallet = () => {
     );
     const _wallets = JSON.parse(JSON.stringify(localWallets));
     _wallets.push(wallet);
+    await saveWallets(_wallets)
     setSelectedWallet(_wallets.length - 1);
     setWallets(_wallets);
+
+    if (referralCode) {
+      await submitReferal(referralCode, wallet)
+    }
+
     if (params && (params as any).fromNoWallet) {
       return;
-    } 
+    }
     navigation.reset({
       index: 0,
       routes: [{name: 'Home'}],

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useContext} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, TouchableOpacity, Image, ScrollView, Platform} from 'react-native';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -15,9 +15,10 @@ import {walletsAtom} from '../../atoms/wallets';
 import CustomText from '../../components/Text';
 import { fontSizeAtom } from '../../atoms/fontSize';
 import { saveFontSize } from '../../utils/local';
+import ReferralCodeModal from '../common/ReferralCodeModal';
 
 export const INFO_DATA = {
-  version: '2.2.16',
+  version: '2.2.18',
 };
 
 const SettingScreen = () => {
@@ -31,10 +32,11 @@ const SettingScreen = () => {
   const wallets = useRecoilValue(walletsAtom);
 
   const [fontSize, setFontSize] = useRecoilState(fontSizeAtom)
+  const [showReferralModal, setShowReferralModal] = useState(false)
 
   useFocusEffect(
     useCallback(() => {
-      setTabBarVisible(false);
+      setTabBarVisible(true);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
@@ -52,19 +54,6 @@ const SettingScreen = () => {
   return (
     <SafeAreaView
       style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <View
-        style={{
-          flexDirection: 'row',
-          width: '100%',
-          justifyContent: 'flex-start',
-        }}>
-        <ENIcon.Button
-          style={{paddingLeft: 20}}
-          name="chevron-left"
-          onPress={() => navigation.goBack()}
-          backgroundColor="transparent"
-        />
-      </View>
       <View style={styles.header}>
         <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'SETTING_SCREEN_TITLE')}
@@ -79,6 +68,10 @@ const SettingScreen = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
       >
+        <ReferralCodeModal
+          visible={showReferralModal}
+          onClose={() => setShowReferralModal(false)}
+        />
         <View style={{flex: 1}}>
           <CustomText
             style={{
@@ -127,7 +120,8 @@ const SettingScreen = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.settingItemContainer, {marginTop: 28}]}
-              onPress={toggleFontSize}>
+              onPress={toggleFontSize}
+            >
               <View
                 style={{
                   width: 32,
@@ -149,17 +143,41 @@ const SettingScreen = () => {
               </View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View style={{width: 32, height: 32, alignItems: 'center', justifyContent: 'center'}}>
-                  <CustomText style={{color: fontSize === 'small' ? theme.textColor : theme.mutedTextColor, fontSize: theme.defaultFontSize + 2}}>
+                  <CustomText keepFontSize={true} style={{color: fontSize === 'small' ? theme.textColor : theme.mutedTextColor, fontSize: 14}}>
                     aA
                   </CustomText>
                 </View>
                 <View style={{width: 32, height: 32, alignItems: 'center', justifyContent: 'center'}}>
-                  <CustomText style={{color: fontSize === 'large' ? theme.textColor : theme.mutedTextColor, fontSize: (theme.defaultFontSize + 2) * 1.4}}>
+                  <CustomText keepFontSize={true} style={{color: fontSize === 'large' ? theme.textColor : theme.mutedTextColor, fontSize: 18}}>
                     aA
                   </CustomText>
                 </View>
               </View>
               {/* <ENIcon name="chevron-right" color={theme.textColor} size={20} /> */}
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.settingItemContainer, {marginTop: 28}]}
+              onPress={() => setShowReferralModal(true)}>
+              <View
+                style={{
+                  width: 32,
+                  height: 32,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#695EB5',
+                  borderRadius: 12,
+                }}>
+                <Image
+                  source={require('../../assets/icon/referral_code.png')}
+                  style={{width: 20, height: 20, resizeMode: 'contain'}}
+                />
+              </View>
+              <View style={{alignItems: 'flex-start', flex: 1}}>
+                <CustomText style={[styles.settingTitle, {color: theme.textColor, fontWeight: '500', fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}]}>
+                  {getLanguageString(language, 'REFERRAL_CODE')}
+                </CustomText>
+              </View>
+              <ENIcon name="chevron-right" color={theme.textColor} size={20} />
             </TouchableOpacity>
           </View>
           <CustomText

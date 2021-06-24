@@ -1,10 +1,30 @@
 import {ENDPOINT, RPC_ENDPOINT} from '../config';
 import KardiaClient from 'kardia-js-sdk';
 import {cellValue, weiToKAI} from './amount';
+import { BigNumber } from 'bignumber.js';
+import { isHexString } from '@ethersproject/bytes';
 
 export const estimateGas = async (payload: Record<string, any>, data = '') => {
+  const _payload = JSON.parse(JSON.stringify(payload))
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
-  return kardiaClient.transaction.estimateGas(payload, data);
+
+  if (_payload.value && isHexString(_payload.value)) {
+    const bnValue = new BigNumber(_payload.value, 16)
+    _payload.value = bnValue.toFixed()
+  }
+
+  if (_payload.gas && isHexString(_payload.gas)) {
+    const bnValue = new BigNumber(_payload.gas, 16)
+    _payload.gas = bnValue.toNumber()
+  }
+
+  if (_payload.gasPrice && isHexString(_payload.gasPrice)) {
+    const bnValue = new BigNumber(_payload.gasPrice)
+    console.log('lolo', bnValue)
+    _payload.gasPrice = bnValue.toNumber()
+  }
+
+  return kardiaClient.transaction.estimateGas(_payload, data);
 };
 
 export const getTxByAddress = async (address: string, page = 1, size = 10) => {
@@ -51,6 +71,21 @@ export const getRecomendedGasPrice = async () => {
   const gasPrice = await kardiaClient.kaiChain.getGasPrice()
 
   return Number(gasPrice)
+}
+
+export const sendRawTx = async (txObj: Record<string, any>, wallet: Wallet, waitUntilmined = false) => {
+  const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
+  const nonce = await kardiaClient.account.getNonce(wallet.address.trim());
+
+  txObj.nonce = nonce
+
+  const txResult = await kardiaClient.transaction.sendTransaction(
+    txObj,
+    wallet.privateKey!,
+    waitUntilmined
+  );
+
+  return txResult.transactionHash;
 }
 
 export const createTx = async (

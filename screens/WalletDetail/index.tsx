@@ -7,7 +7,6 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import { ThemeContext } from '../../ThemeContext';
 import { styles } from './style';
-import numeral from 'numeral';
 import { getLanguageString, parseCardAvatar, parseCardAvatarColor } from '../../utils/lang';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import { languageAtom } from '../../atoms/language';
@@ -17,11 +16,12 @@ import { tokenInfoAtom } from '../../atoms/token';
 import QRModal from '../common/AddressQRCode';
 import CustomTextInput from '../../components/TextInput';
 import Button from '../../components/Button';
-import { getSelectedWallet, getWallets } from '../../utils/local';
+import { getSelectedWallet, getWallets, saveWallets } from '../../utils/local';
 import Modal from '../../components/Modal';
 import { ScrollView } from 'react-native-gesture-handler';
 import AuthModal from '../common/AuthModal';
 import CustomText from '../../components/Text';
+import { formatNumberString } from '../../utils/number';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
@@ -101,6 +101,7 @@ export default () => {
       // await saveSelectedWallet(newWallets.length - 1);
       setSelectedWallet(newWallets.length - 1);
     }
+    await saveWallets(newWallets)
     navigation.goBack();
     setWallets(newWallets);
   };
@@ -112,6 +113,7 @@ export default () => {
     const index = newWallets.findIndex(w => w.address === address)
     newWallets[index].name = name;
     newWallets[index].cardAvatarID = cardAvatarID;
+    await saveWallets(newWallets)
     setWallets(newWallets);
     navigation.goBack();
   };
@@ -175,10 +177,10 @@ export default () => {
                       </CustomText>
                       <CustomText style={{ fontSize: 30, color: 'white' }}>
                         $
-                        {numeral(
-                        tokenInfo.price *
-                        (Number(weiToKAI(wallet.balance)) + wallet.staked),
-                      ).format('0,0.00')}
+                        {formatNumberString(
+                        (tokenInfo.price *
+                        (Number(weiToKAI(wallet.balance)) + wallet.staked)).toString(), 2, 0
+                        )}
                       </CustomText>
                     </View>
                     <View style={{flexDirection: 'row'}}>

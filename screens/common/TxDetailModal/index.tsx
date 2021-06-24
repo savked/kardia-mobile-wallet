@@ -16,7 +16,7 @@ import {
   getLanguageString,
   parseCardAvatar,
 } from '../../../utils/lang';
-import {parseKaiBalance} from '../../../utils/number';
+import {formatNumberString, parseDecimals, parseKaiBalance} from '../../../utils/number';
 import {
   getFromAddressBook,
   getAddressAvatar,
@@ -104,6 +104,16 @@ export default ({
   };
 
   const renderOtherAddress = (address: string) => {
+    let isContract = false
+    let name = ''
+    if (txObj && txObj.toName && !txObj.isKRC20) {
+      isContract = true
+      name = txObj.toName
+    } else if (isNewContact()) {
+      name = getLanguageString(language, 'NEW_CONTACT')
+    } else {
+      name = getFromAddressBook(addressBook, address)
+    }
     return (
       <View
         style={{
@@ -139,15 +149,13 @@ export default ({
           </View>
         <View>
           <CustomText style={{color: '#FFFFFF', fontWeight: 'bold'}}>
-            {isNewContact()
-              ? getLanguageString(language, 'NEW_CONTACT')
-              : getFromAddressBook(addressBook, address)}
+            {name}
           </CustomText>
           <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
             {truncate(address, 10, 10)}
           </CustomText>
         </View>
-        {isNewContact() && (
+        {isNewContact() && !isContract && (
           <View style={{alignItems: 'flex-end', flex: 1}}>
             <Button
               title={getLanguageString(language, 'SAVE_TO_ADDRESS_BOOK')}
@@ -226,9 +234,10 @@ export default ({
               styles.amountText,
               {color: theme.textColor, marginRight: 12},
             ]}>
-            {parseKaiBalance(txObj.amount, true)}
+            {/* {parseKaiBalance(txObj.amount, true)} */}
+            {formatNumberString(parseDecimals(txObj.amount, txObj.decimals), 4)}
           </CustomText>
-          <CustomText style={{color: theme.textColor, fontSize: 18}}>KAI</CustomText>
+          <CustomText style={{color: theme.textColor, fontSize: 18}}>{txObj.symbol || 'KAI'}</CustomText>
         </View>
         <TouchableOpacity onPress={() => handleClickLink(getTxURL(txObj.hash))}>
           <CustomText style={styles.txhash}>{truncate(txObj.hash, 14, 14)}</CustomText>
@@ -278,7 +287,7 @@ export default ({
             {getLanguageString(language, 'TRANSACTION_FEE')}
           </CustomText>
           <CustomText style={{color: theme.textColor, fontSize: 15}}>
-            {parseKaiBalance(txObj.txFee, true)} KAI
+            {formatNumberString(parseDecimals(txObj.txFee, 18))} KAI
           </CustomText>
         </View>
         <Divider style={{width: '100%', backgroundColor: '#60636C'}} />

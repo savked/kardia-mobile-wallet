@@ -1,4 +1,8 @@
 rootProject.name = 'KardiaChainWallet'
+include ':react-native-local-resource'
+project(':react-native-local-resource').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-local-resource/android')
+include ':react-native-web3-webview'
+project(':react-native-web3-webview').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-web3-webview/android')
 include ':react-native-touch-id'
 project(':react-native-touch-id').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-touch-id/android')
 include ':react-native-svg'

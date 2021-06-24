@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
 import {Image, TouchableOpacity, View} from 'react-native';
-import IconButton from '../../components/IconButton';
 import {styles} from './style';
 import {useNavigation} from '@react-navigation/native';
 import {ThemeContext} from '../../ThemeContext';
@@ -45,12 +44,12 @@ const HomeHeader = () => {
             style={{width: 24, height: 24, marginRight: 8}}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Setting')}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('Setting')}>
           <Image 
             source={require('../../assets/icon/setting_dark.png')}
             style={{width: 24, height: 24}}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

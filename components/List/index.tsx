@@ -29,6 +29,8 @@ const List = ({
     <>
       {header && <View style={[styles.list, listStyle]}>{header}</View>}
       <FlatList
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={containerStyle}
         style={[styles.list, listStyle]}
         data={items}

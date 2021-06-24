@@ -6,15 +6,17 @@ import {styles} from './style';
 import Button from '../../components/Button';
 import {generateMnemonic, getWalletFromMnemonic} from '../../utils/blockchain';
 import AlertModal from '../../components/AlertModal';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {walletsAtom} from '../../atoms/wallets';
-import {saveMnemonic} from '../../utils/local';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
+import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
+import {saveMnemonic, saveWallets} from '../../utils/local';
 import {ThemeContext} from '../../ThemeContext';
 import List from '../../components/List';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import CustomText from '../../components/Text';
+import { submitReferal } from '../../services/dex';
+import { referralCodeAtom } from '../../atoms/referralCode';
 
 const CreateWithMnemonicPhrase = () => {
   const {params} = useRoute();
@@ -22,11 +24,13 @@ const CreateWithMnemonicPhrase = () => {
   const theme = useContext(ThemeContext);
   const [mnemonic, setMnemonic] = useState('');
   const [mnemonicError, setMnemonicError] = useState('');
-  const setWallets = useSetRecoilState(walletsAtom);
+  const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [loading, setLoading] = useState(false);
   // const [showConfirm, setShowConfirm] = useState(false);
+  const setSelectedWallet = useSetRecoilState(selectedWalletAtom)
 
   const language = useRecoilValue(languageAtom);
+  const referralCode = useRecoilValue(referralCodeAtom)
 
   useEffect(() => {
     const mn = generateMnemonic();
@@ -42,19 +46,22 @@ const CreateWithMnemonicPhrase = () => {
         return;
       }
       await saveMnemonic(newWallet.address, mnemonic.trim());
-      // const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
-      // _wallets.push(newWallet as Wallet);
-      setWallets((oldWallets) => [
-        ...oldWallets,
-        newWallet
-      ]);
+      const _wallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
+      _wallets.push(newWallet as Wallet);
+      await saveWallets(_wallets)
+      setWallets(_wallets);
+      setSelectedWallet(_wallets.length - 1)
+
+      if (referralCode) {
+        await submitReferal(referralCode, newWallet)
+      }
+      
       setLoading(false);
+      
 
       if (params && (params as any).backOnSuccess) {
         navigation.goBack()
       }
-
-      // setWallets(_wallets);
     }, 1);
   };
 

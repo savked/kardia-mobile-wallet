@@ -318,16 +318,13 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
         setAmountFrom('0')
         setAmountTo('0')
         setSwappError('')
-        navigation.navigate('Transaction', {
-          screen: 'SuccessTx',
-          params: {
-            type: 'dex',
-            pairAddress,
-            dexAmount: mode === 'SELL' ? getDigit(amountTo) : getDigit(amountFrom),
-            tokenSymbol: mode === 'SELL' ? tokenTo.symbol : tokenFrom.symbol,
-            dexMode: `DEX_MODE_${mode}`,
-            txHash: typeof txResult === 'string' ? txResult : txResult.transactionHash
-          },
+        navigation.navigate('SuccessTx', {
+          type: 'dex',
+          pairAddress,
+          dexAmount: mode === 'SELL' ? getDigit(amountTo) : getDigit(amountFrom),
+          tokenSymbol: mode === 'SELL' ? tokenTo.symbol : tokenFrom.symbol,
+          dexMode: `DEX_MODE_${mode}`,
+          txHash: typeof txResult === 'string' ? txResult : txResult.transactionHash
         });
       } else {
         // Handling fail tx
@@ -600,7 +597,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
             <CustomTextInput
               value={amountTo}
-              keyboardType="numeric"
+              keyboardType="decimal-pad"
               editable={editting !== 'from'}
               loading={loadingTo}
               onChangeText={(newValue) => {
@@ -612,10 +609,6 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                 if (getDecimalCount(newValue) > tokenTo.decimals) {
                   return;
                 }
-                // if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)))) {
-                //   // setAmountFrom(new BigNumber(parseDecimals(tokenToLiquidity!, tokenTo.decimals)).toFixed())
-                //   return;
-                // }
               
                 if (isNumber(digitOnly)) {
                   let formatedValue = formatNumberString(digitOnly);
@@ -679,7 +672,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 const partialValue = getPartial(balanceTo, 0.25, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
               }} 
             />
             <Tags 
@@ -689,7 +682,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 const partialValue = getPartial(balanceTo, 0.5, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
               }}
             />
             <Tags 
@@ -699,7 +692,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={() => {
                 setEditting('to')
                 const partialValue = getPartial(balanceTo, 0.75, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
               }}
             />
             <Tags 
@@ -715,7 +708,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                   const bn110KAI = new BigNumber(partialValue).multipliedBy(new BigNumber(0.1))
                   partialValue = bnPartialValue.minus(bn110KAI).toFixed(tokenTo.decimals, 1)
                 }
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals)))
+                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
               }} 
             />
           </View>
@@ -779,7 +772,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
             <CustomTextInput
               value={amountFrom}
-              keyboardType="numeric"
+              keyboardType="decimal-pad"
               loading={loadingFrom}
               onChangeText={(newValue) => {
                 setInputType(1)
@@ -790,7 +783,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
                 if (getDecimalCount(newValue) > tokenFrom.decimals) {
                   return;
                 }
-                if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)))) {
+                if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(tokenFromLiquidity))) {
                   // setAmountFrom(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)).toFixed())
                   return;
                 }

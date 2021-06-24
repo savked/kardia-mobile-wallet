@@ -1,21 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Image, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, Image, ImageBackground, Linking, Platform, TouchableOpacity, View} from 'react-native';
 import {ThemeContext} from '../../ThemeContext';
 // import List from '../../components/List';
 import {styles} from './style';
 import {formatNumberString, parseDecimals} from '../../utils/number';
 import Button from '../../components/Button';
 import {useRecoilValue} from 'recoil';
-import numeral from 'numeral';
 import {getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
-import {filterByOwnerSelector, krc20ListAtom} from '../../atoms/krc20';
+import {filterByOwnerSelector} from '../../atoms/krc20';
 import {getBalance} from '../../services/krc20';
-import {getSelectedWallet, getWallets} from '../../utils/local';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import CustomText from '../../components/Text';
+import { weiToKAI } from '../../services/transaction/amount';
+import { tokenInfoAtom } from '../../atoms/token';
+import { SIMPLEX_URL } from '../../services/config';
 
 const TokenListSection = ({refreshTime}: {
   refreshTime: number
@@ -24,6 +25,7 @@ const TokenListSection = ({refreshTime}: {
   const theme = useContext(ThemeContext);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const wallets = useRecoilValue(walletsAtom)
+  const tokenInfo = useRecoilValue(tokenInfoAtom);
 
   const language = useRecoilValue(languageAtom);
   const [loading, setLoading] = useState(true);
@@ -33,10 +35,8 @@ const TokenListSection = ({refreshTime}: {
 
   const updateBalanceAll = async () => {
     setLoading(true);
-    const _wallets = await getWallets();
-    const _selectedWallet = await getSelectedWallet();
     const promiseArr = tokenList.map((i) => {
-      return getBalance(i.address, _wallets[_selectedWallet].address);
+      return getBalance(i.address, wallets[selectedWallet].address);
     });
     const balanceArr = await Promise.all(promiseArr);
     setBalance(balanceArr);
@@ -147,6 +147,11 @@ const TokenListSection = ({refreshTime}: {
     })
   }
 
+  const _getBalance = () => {
+    if (!wallets[selectedWallet]) return '0';
+    return wallets[selectedWallet].balance;
+  }
+
   return (
     <View style={styles.tokenListContainer}>
       {/* <NewTokenModal visible={showModal} onClose={() => setShowModal(false)} /> */}
@@ -170,7 +175,71 @@ const TokenListSection = ({refreshTime}: {
           </TouchableOpacity>
         )}
       </View>
-      {tokenList.length === 0 && !loading && (
+      <ImageBackground
+        source={require('../../assets/kai_balance_outline.png')}
+        imageStyle={{
+          resizeMode: 'cover',
+          borderRadius: 12,
+        }}
+        style={{
+          flex: 1,
+          marginHorizontal: 20,
+          marginBottom: 4
+        }}
+      >
+        <View
+          style={{
+            padding: 16,
+            margin: 1.5,
+            backgroundColor: theme.backgroundStrongColor,
+            borderRadius: 12,
+            // marginHorizontal: 20,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+            }}>
+            <Image
+              style={{width: 32, height: 32, marginRight: 12}}
+              source={require('../../assets/logo_dark.png')}
+            />
+            <View>
+              <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+                {getLanguageString(language, 'BALANCE').toUpperCase()}
+              </CustomText>
+              <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold'}}>
+                {
+                  formatNumberString(weiToKAI(_getBalance()), 2, 0)}{' '}
+                <CustomText style={{color: theme.mutedTextColor, fontWeight: '500'}}>KAI</CustomText>
+              </CustomText>
+              <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+                $
+                {formatNumberString(
+                  (tokenInfo.price *
+                    Number(weiToKAI(_getBalance()))).toString(),
+                  2, 
+                  0
+                )}
+              </CustomText>
+            </View>
+          </View>
+          <Button
+            title={getLanguageString(language, 'BUY_KAI')}
+            // onPress={() => Alert.alert('Coming soon')}
+            onPress={() => Linking.openURL(SIMPLEX_URL)}
+            type="ghost"
+            size="small"
+            textStyle={Platform.OS === 'android' ? {color: '#000000', fontFamily: 'WorkSans-SemiBold'} : {color: '#000000', fontWeight: '500'}}
+            style={{paddingHorizontal: 16, paddingVertical: 8}}
+          />
+        </View>
+      </ImageBackground>
+      {/* {tokenList.length === 0 && !loading && (
         <View style={{alignItems: 'center', marginTop: 45, marginBottom: 30}}>
           <Image
             style={{width: 111, height: 52}}
@@ -190,7 +259,7 @@ const TokenListSection = ({refreshTime}: {
             title={`+ ${getLanguageString(language, 'ADD_TOKEN')}`}
           />
         </View>
-      )}
+      )} */}
       {loading ? <ActivityIndicator color={theme.textColor} size="large" /> : (
         renderTokenList()
       )}

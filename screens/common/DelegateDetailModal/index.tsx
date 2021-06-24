@@ -117,14 +117,11 @@ export default ({
       const selectedWallet = await getSelectedWallet();
       const rs = await withdrawReward(validatorItem.value, wallets[selectedWallet]);
       setClaiming(false);
-      navigation.navigate('Transaction', {
-        screen: 'SuccessTx',
-        params: {
-          type: 'claim',
-          txHash: rs,
-          validatorItem: validatorItem,
-          claimAmount: weiToKAI(validatorItem.claimableRewards),
-        },
+      navigation.navigate('SuccessTx', {
+        type: 'claim',
+        txHash: rs,
+        validatorItem: validatorItem,
+        claimAmount: weiToKAI(validatorItem.claimableRewards),
       });
       onClose();
     } catch (err) {
@@ -145,14 +142,11 @@ export default ({
       const selectedWallet = await getSelectedWallet();
       const rs = await withdrawDelegatedAmount(validatorItem.value, wallets[selectedWallet]);
       setWithdrawing(false);
-      navigation.navigate('Transaction', {
-        screen: 'SuccessTx',
-        params: {
-          type: 'withdraw',
-          txHash: rs,
-          validatorItem: validatorItem,
-          withdrawAmount: weiToKAI(validatorItem.withdrawableAmount),
-        },
+      navigation.navigate('SuccessTx', {
+        type: 'withdraw',
+        txHash: rs,
+        validatorItem: validatorItem,
+        withdrawAmount: weiToKAI(validatorItem.withdrawableAmount),
       });
       onClose();
     } catch (err) {

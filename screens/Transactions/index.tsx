@@ -1,33 +1,31 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {TouchableOpacity, View, Image, ActivityIndicator, Platform, RefreshControl} from 'react-native';
+import {TouchableOpacity, View, Image, ActivityIndicator, RefreshControl} from 'react-native';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
+import ENIcon from 'react-native-vector-icons/Entypo';
 import {truncate} from '../../utils/string';
 import {styles} from './style';
-import AntIcon from 'react-native-vector-icons/AntDesign';
 import {getTxByAddress} from '../../services/transaction';
-import {parseKaiBalance} from '../../utils/number';
+import {formatNumberString, parseDecimals, parseKaiBalance} from '../../utils/number';
 import {format} from 'date-fns';
 import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
 import {languageAtom} from '../../atoms/language';
-import NewTxModal from '../common/NewTxModal';
 import {ThemeContext} from '../../ThemeContext';
 import {getSelectedWallet, getWallets} from '../../utils/local';
-import Button from '../../components/Button';
 import {groupByDate} from '../../utils/date';
 import TxDetailModal from '../common/TxDetailModal';
 import {ScrollView} from 'react-native-gesture-handler';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import CustomText from '../../components/Text';
 import { statusBarColorAtom } from '../../atoms/statusBar';
-import CustomTextInput from '../../components/TextInput';
+import { isKRC20Tx } from '../../utils/transaction';
+import { getKRC20TokenInfo } from '../../services/krc20';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -36,7 +34,6 @@ const TransactionScreen = () => {
 
   const [searchString, setSearchString] = useState('');
   const [txList, setTxList] = useState([] as any[]);
-  const [showNewTxModal, setShowNewTxModal] = useState(false);
   const language = useRecoilValue(languageAtom);
 
   const [showTxDetail, setShowTxDetail] = useState(false);
@@ -78,9 +75,11 @@ const TransactionScreen = () => {
         SIZE,
       );
       if (page === 1) {
-        setTxList(newTxList.map((i: any) => parseTXForList(i, localWallets[localSelectedWallet].address)));
+        const rs = await Promise.all(newTxList.map(async (i: any) => await parseTXForList(i, localWallets[localSelectedWallet].address)))
+        setTxList(rs);
       } else {
-        setTxList([...txList, ...newTxList.map((i: any) => parseTXForList(i, localWallets[localSelectedWallet].address))]);
+        const rs = await Promise.all(newTxList.map(async (i: any) => await parseTXForList(i, localWallets[localSelectedWallet].address)))
+        setTxList([...txList, ...rs]);
       }
       setHaveMore(_haveMore);
       setLoading(false);
@@ -91,7 +90,7 @@ const TransactionScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      setTabBarVisible(true);
+      setTabBarVisible(false);
       setStatusBarColor(theme.backgroundColor);
       setLoading(true);
       setPage(1)
@@ -108,19 +107,37 @@ const TransactionScreen = () => {
     })()
   }, [page])
 
-  const parseTXForList = (tx: Transaction, address: string) => {
+  const parseTXForList = async (tx: Record<string, any>, address: string) => {
+    let to = tx.to
+    let symbol = ''
+    let decimals = 18
+    let amount = tx.amount
+    
+    const isKRC20 = isKRC20Tx(tx)
+    if (isKRC20) {
+      to = tx.decodedInputData.arguments._receiver
+      const tokenInfo = await getKRC20TokenInfo(tx.to)
+      symbol = tokenInfo.symbol
+      decimals = tokenInfo.decimals
+      amount = tx.decodedInputData.arguments._amount
+    }
+    
     return {
       label: tx.hash,
       value: tx.hash,
-      amount: tx.amount,
+      isKRC20,
+      amount,
       date: tx.date,
       from: tx.from,
-      to: tx.to,
+      to,
+      toName: tx.toName,
+      decimals,
       hash: tx.hash,
-      txFee: tx.fee,
+      txFee: tx.fee || tx.txFee,
       blockHash: tx.blockHash || '',
       blockNumber: tx.blockNumber || '',
       status: tx.status,
+      symbol,
       type:
         tx.from === address
           ? 'OUT'
@@ -184,45 +201,27 @@ const TransactionScreen = () => {
   return (
     <View
       style={[styles.container, {backgroundColor: theme.backgroundColor, paddingTop: insets.top}]}>
-      {
-        showNewTxModal && (
-          <NewTxModal
-            visible={showNewTxModal}
-            onClose={() => setShowNewTxModal(false)}
-          />
-        )
-      }
       <TxDetailModal
         visible={showTxDetail}
         onClose={() => setShowTxDetail(false)}
         txObj={txObjForDetail}
       />
+      <ENIcon.Button
+        style={{paddingHorizontal: 20}}
+        name="chevron-left"
+        onPress={() => navigation.goBack()}
+        backgroundColor="transparent"
+      />
       <View style={styles.header}>
         <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'RECENT_TRANSACTION')}
         </CustomText>
-        {/* <IconButton
-          name="bell-o"
-          color={theme.textColor}
-          size={20}
-          onPress={() => navigation.navigate('Notification')}
-        /> */}
       </View>
-      {/* <View style={{marginHorizontal: 20, marginBottom: 22}}>
-        <CustomTextInput
-          value={searchString}
-          onChangeText={setSearchString}
-        />
-      </View> */}
       {groupByDate(txList, 'date').length === 0 && (
         <View style={styles.noTXContainer}>
           <Image
-            style={{width: 87, height: 66, marginBottom: 23, marginTop: 70}}
-            source={require('../../assets/no_tx_butterfly.png')}
-          />
-          <Image
-            style={{width: 170, height: 140}}
-            source={require('../../assets/no_tx_box.png')}
+            style={{width: 224, height: 222, marginBottom: 23, marginTop: 70}}
+            source={require('../../assets/no_tx.png')}
           />
           <CustomText style={[styles.noTXText, {color: theme.textColor}]}>
             {getLanguageString(language, 'NO_TRANSACTION')}
@@ -230,25 +229,6 @@ const TransactionScreen = () => {
           <CustomText style={{color: theme.mutedTextColor, fontSize: 15, marginBottom: 32}}>
             {getLanguageString(language, 'NO_TRANSACTION_SUB_TEXT')}
           </CustomText>
-          <Button
-            type="primary"
-            onPress={() => setShowNewTxModal(true)}
-            title={getLanguageString(language, 'SEND_NOW')}
-            textStyle={{
-              fontWeight: '500',
-              fontSize: theme.defaultFontSize + 4,
-              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-            }}
-            style={{width: 248}}
-            icon={
-              <AntIcon
-                name="plus"
-                size={20}
-                color={'#000000'}
-                style={{marginRight: 8}}
-              />
-            }
-          />
         </View>
       )}
       <ScrollView 
@@ -312,9 +292,12 @@ const TransactionScreen = () => {
                           paddingHorizontal: 4,
                         }}>
                         <CustomText style={{color: '#FFFFFF', fontSize: theme.defaultFontSize + 1, fontWeight: '500'}}>
-                          {item.type === 'IN'
-                            ? getLanguageString(language, 'TX_TYPE_RECEIVED')
-                            : getLanguageString(language, 'TX_TYPE_SEND')}
+                          {
+                            item.toName === 'KAIDEX: Router' ? item.toName :
+                              item.type === 'IN'
+                              ? getLanguageString(language, 'TX_TYPE_RECEIVED')
+                              : getLanguageString(language, 'TX_TYPE_SEND')
+                          }
                         </CustomText>
                         <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
                           {truncate(item.label, 8, 10)}
@@ -331,9 +314,10 @@ const TransactionScreen = () => {
                             {color: theme.textColor, fontSize: theme.defaultFontSize + 1}
                           ]}>
                           {/* {item.type === 'IN' ? '+' : '-'} */}
-                          {parseKaiBalance(item.amount, true)}{' '}
+                          {/* {parseKaiBalance(item.amount, true)}{' '} */}
+                          {formatNumberString(parseDecimals(item.amount, item.decimals), 4)}{' '}
                           <CustomText style={{color: theme.mutedTextColor}}>
-                            KAI
+                            {item.symbol || 'KAI'}
                           </CustomText>
                         </CustomText>
                         <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
@@ -353,15 +337,6 @@ const TransactionScreen = () => {
           </View>
         )}
       </ScrollView>
-      {txList.length > 0 && (
-        <Button
-          type="primary"
-          icon={<AntIcon name="plus" size={24} />}
-          size="small"
-          onPress={() => setShowNewTxModal(true)}
-          style={styles.floatingButton}
-        />
-      )}
     </View>
   );
 };

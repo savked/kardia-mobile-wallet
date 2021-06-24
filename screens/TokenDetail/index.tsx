@@ -5,7 +5,7 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Image, TouchableOpacity, View, Dimensions} from 'react-native';
+import {Image, TouchableOpacity, View, Dimensions, Platform} from 'react-native';
 import ENIcon from 'react-native-vector-icons/Entypo';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {krc20ListAtom} from '../../atoms/krc20';
@@ -14,21 +14,23 @@ import {DEFAULT_KRC20_TOKENS} from '../../config';
 import {getBalance} from '../../services/krc20';
 import {ThemeContext} from '../../ThemeContext';
 import {getLanguageString} from '../../utils/lang';
+import Modal from '../../components/Modal';
 import {
   getSelectedWallet,
   getTokenList,
   getWallets,
   saveTokenList,
 } from '../../utils/local';
-import {parseDecimals} from '../../utils/number';
+import {formatNumberString, parseDecimals} from '../../utils/number';
 import KRC20AddressQRModal from '../common/KRC20AddressQRCode';
 import {styles} from './style';
 import TokenTxList from './TokenTxList';
-import numeral from 'numeral';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomText from '../../components/Text';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import KRC20ControlSection from './KRC20ControlSection';
+import Button from '../../components/Button';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
@@ -43,11 +45,13 @@ const TokenDetail = () => {
     ? (params as Record<string, any>).tokenAddress
     : '';
   const tokenDecimals = params ? (params as Record<string, any>).decimals : 18;
+  const tokenName = params ? (params as Record<string, any>).name : '';
 
   const language = useRecoilValue(languageAtom);
 
   const [showAddressQR, setShowAddressQR] = useState(false);
   const [tokenBalance, setTokenBalance] = useState('0');
+  const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
   const setTokenList = useSetRecoilState(krc20ListAtom);
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
@@ -89,12 +93,6 @@ const TokenDetail = () => {
   useEffect(() => {
     (async () => {
       await fetchBalance();
-      // const intervalId = setInterval(async () => {
-      //   await fetchBalance();
-      // }, 2000);
-      // return () => {
-      //   clearInterval(intervalId);
-      // };
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tokenAddress]);
@@ -127,6 +125,32 @@ const TokenDetail = () => {
     );
   };
 
+  const renderHideDesc = () => {
+    const strArr = getLanguageString(language, 'CONFIRM_REMOVE_TOKEN').split('{{SPLIT_HERE}}')
+    return (
+      <CustomText
+        style={{
+          textAlign: 'center',
+          fontSize: 15,
+          marginBottom: 36,
+          color: theme.mutedTextColor,
+          lineHeight: 26
+        }}>
+        {strArr[0]}
+        <CustomText
+          style={{
+            color: theme.textColor,
+            fontWeight: '500',
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+          }}
+        >
+          [{tokenName} ({tokenSymbol})]
+        </CustomText>
+        {strArr[1]}
+      </CustomText>
+    )
+  }
+
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <KRC20AddressQRModal
@@ -152,57 +176,52 @@ const TokenDetail = () => {
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: 'center',
               alignItems: 'flex-start',
+              width: '100%'
             }}>
-            <View>{renderIcon(tokenAvatar)}</View>
-            <TouchableOpacity onPress={() => removeToken(tokenAddress)}>
+            <TouchableOpacity 
+              style={{
+                position: 'absolute',
+                left: 0
+              }}
+              onPress={() => setShowRemoveConfirm(true)}>
               <Image
-                source={require('../../assets/icon/remove_dark.png')}
+                source={require('../../assets/icon/hide_dark.png')}
                 style={{width: 24, height: 24}}
               />
             </TouchableOpacity>
+            <View>{renderIcon(tokenAvatar)}</View>
           </View>
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'flex-end',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%'
             }}>
             <View>
-              <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, lineHeight: 16}}>
-                {getLanguageString(language, 'CURRENT_BALANCE').toUpperCase()}
-              </CustomText>
-              <CustomText style={{fontSize: 24, color: 'white', fontWeight: 'bold'}}>
-                {numeral(
-                  parseDecimals(Number(tokenBalance), tokenDecimals),
-                ).format('0,0.00')}{' '}
+              <CustomText style={{fontSize: 24, color: 'white', fontWeight: 'bold', textAlign: 'center'}}>
+                {formatNumberString(
+                  parseDecimals(tokenBalance, tokenDecimals),
+                  6
+                )}{' '}
                 {tokenSymbol}
               </CustomText>
             </View>
-            <TouchableOpacity
-              onPress={() => setShowAddressQR(true)}
-              style={{
-                width: 52,
-                height: 52,
-                borderRadius: 26,
-                backgroundColor: '#FFFFFF',
-                alignItems: 'center',
-                justifyContent: 'center',
-                shadowColor: 'rgba(0, 0, 0, 0.3)',
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                shadowOpacity: 2,
-                shadowRadius: 4,
-                elevation: 9,
-              }}>
-              <Image
-                source={require('../../assets/icon/qr_dark.png')}
-                style={{width: 30, height: 30, marginRight: 2, marginTop: 2}}
-              />
-            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              width: '100%',
+              alignItems: 'center'
+            }}
+          >
+            <KRC20ControlSection
+              tokenAddress={tokenAddress}
+              tokenAvatar={tokenAvatar}
+              tokenSymbol={tokenSymbol}
+              tokenDecimals={tokenDecimals}
+            />
           </View>
         </View>
       </View>
@@ -225,6 +244,55 @@ const TokenDetail = () => {
           tokenDecimals={tokenDecimals}
         />
       </View>
+      <Modal
+        visible={showRemoveConfirm}
+        showCloseButton={false}
+        onClose={() => setShowRemoveConfirm(false)}
+        contentStyle={{
+          backgroundColor: theme.backgroundFocusColor,
+          height: 370,
+          justifyContent: 'center',
+        }}>
+        <CustomText
+          style={{
+            textAlign: 'center',
+            fontSize: 22,
+            fontWeight: 'bold',
+            marginTop: 20,
+            marginBottom: 12,
+            color: theme.textColor,
+          }}>
+        {getLanguageString(language, 'REMOVE_TOKEN')}
+        </CustomText>
+        {renderHideDesc()}
+        <Button
+          block
+          title={getLanguageString(language, 'KEEP_IT')}
+          type="outline"
+          textStyle={{
+            fontWeight: '500',
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+            fontSize: theme.defaultFontSize + 3
+          }}
+          onPress={() => setShowRemoveConfirm(false)}
+        />
+        <Button
+          block
+          title={getLanguageString(language, 'HIDE_NOW')}
+          type="ghost"
+          style={{
+            marginTop: 12,
+            backgroundColor: 'rgba(208, 37, 38, 1)',
+          }}
+          textStyle={{
+            color: '#FFFFFF',
+            fontWeight: '500',
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+            fontSize: theme.defaultFontSize + 3
+          }}
+          onPress={() => removeToken(tokenAddress)}
+        />
+      </Modal>
     </SafeAreaView>
   );
 };

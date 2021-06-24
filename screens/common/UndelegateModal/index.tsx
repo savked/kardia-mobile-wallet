@@ -106,14 +106,11 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
       }
       setSubmitting(false);
       setUndelegateAmount('');
-      navigation.navigate('Transaction', {
-        screen: 'SuccessTx',
-        params: {
-          type: 'undelegate',
-          txHash: rs,
-          validatorItem: validatorItem,
-          undelegateAmount: _undelegateValue,
-        },
+      navigation.navigate('SuccessTx', {
+        type: 'undelegate',
+        txHash: rs,
+        validatorItem: validatorItem,
+        undelegateAmount: _undelegateValue,
       });
       onSuccess();
     } catch (err) {

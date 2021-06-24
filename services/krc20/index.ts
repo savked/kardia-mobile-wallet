@@ -11,7 +11,7 @@ export const getKRC20TokenInfo = async (address: string) => {
     method: 'GET',
     redirect: 'follow',
   };
-  const response = await requestWithTimeOut(
+  const response: any = await requestWithTimeOut(
     fetch(`${ENDPOINT}contracts/${address}`, requestOptions),
     50 * 1000,
   );
@@ -49,7 +49,7 @@ export const getTxDetail = async (
     method: 'GET',
     redirect: 'follow',
   };
-  const response = await requestWithTimeOut(
+  const response: any = await requestWithTimeOut(
     fetch(
       `${ENDPOINT}token/txs?page=1&limit=1&txHash=${transactionHash}&address=${userAddress}&contractAddress=${tokenAddress}`,
       requestOptions,
@@ -76,7 +76,7 @@ export const getTx = async (tokenAddress: string, userAddress: string, page: num
   };
   const response: any = await requestWithTimeOut(
     fetch(
-      `${ENDPOINT}token/txs?page=${page}&limit=5&address=${userAddress}&contractAddress=${tokenAddress}`,
+      `${ENDPOINT}token/txs?page=${page}&limit=15&address=${userAddress}&contractAddress=${tokenAddress}`,
       requestOptions,
     ),
     50 * 1000,

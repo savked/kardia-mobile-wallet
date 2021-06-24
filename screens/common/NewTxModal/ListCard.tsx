@@ -56,7 +56,7 @@ const ListCard = ({
               borderRadius: 8,
               width: 114,
               alignItems: 'center',
-              justifyContent: 'space-between',
+              justifyContent: 'flex-start',
               flexDirection: 'row',
               shadowColor: '#000',
               shadowOffset: {
@@ -72,6 +72,7 @@ const ListCard = ({
               style={{
                 borderRadius: 8,
                 padding: 8,
+                marginRight: 4,
                 backgroundColor: active
                   ? 'rgba(51, 96, 255, 1)'
                   : 'rgba(58, 59, 60, 1)',
@@ -86,13 +87,13 @@ const ListCard = ({
                 }}>
                 {item.title}
               </CustomText>
-              <CustomText
+              {/* <CustomText
                 style={{
                   textAlign: 'center',
                   color: active ? theme.textColor : theme.ghostTextColor,
                 }}>
                 {item.time}
-              </CustomText>
+              </CustomText> */}
             </View>
           </TouchableOpacity>
         );

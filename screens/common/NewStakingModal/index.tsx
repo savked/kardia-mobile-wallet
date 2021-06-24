@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {Keyboard, Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
+import {Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
 import numeral from 'numeral';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
@@ -236,13 +236,10 @@ export default ({
         setDelegating(false);
       } else {
         setDelegating(false);
-        navigation.navigate('Transaction', {
-          screen: 'SuccessTx',
-          params: {
-            txHash: rs,
-            type: 'delegate',
-            validatorItem: validatorItem,
-          },
+        navigation.navigate('SuccessTx', {
+          txHash: rs,
+          type: 'delegate',
+          validatorItem: validatorItem,
         });
         resetState();
         onClose();
@@ -282,8 +279,8 @@ export default ({
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
         height: 560,
-        marginBottom: keyboardOffset,
-        marginTop: -keyboardOffset,
+        marginBottom: keyboardOffset - 30,
+        marginTop: -keyboardOffset - 30,
       };
     }
   };
@@ -318,7 +315,7 @@ export default ({
               }}
               // headline={getLanguageString(language, 'STAKING_AMOUNT')}
               headlineStyle={{fontWeight: 'normal'}}
-              keyboardType="numeric"
+              keyboardType="decimal-pad"
               value={amount}
               onChangeText={(newAmount) => {
                 const digitOnly = getDigit(newAmount, true);

@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { fontSizeAtom } from '../../atoms/fontSize';
 
-const CustomText = ({children, style, ...rest}: any) => {
+const CustomText = ({children, style, keepFontSize = false, ...rest}: any) => {
 
   const fontSizeSetting = useRecoilValue(fontSizeAtom)
 
@@ -39,7 +39,7 @@ const CustomText = ({children, style, ...rest}: any) => {
     }
   }
 
-  if (finalFontSize) {
+  if (finalFontSize && !keepFontSize) {
     if (Array.isArray(finalStyle)) {
       finalStyle.push({fontSize: fontSizeSetting === 'small' ? finalFontSize : finalFontSize * 1.2})
     } else {

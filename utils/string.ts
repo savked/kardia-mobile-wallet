@@ -50,6 +50,10 @@ export const copyToClipboard = (str: string) => {
   Clipboard.setString(str);
 };
 
+export const getFromClipboard = () => {
+  return Clipboard.getString()
+}
+
 /**
  * Checks if the given string is an address
  *
@@ -99,7 +103,7 @@ export const isChecksumAddress = (address: string) => {
 };
 
 export const toChecksum = (address: string) => {
-  if (typeof address === 'undefined') {
+  if (typeof address === 'undefined' || address === '') {
     return '';
   }
 
@@ -150,4 +154,26 @@ export const groupByAlphabet = (
 
 export const getLogoURL = (tokenAddress: string) => {
   return `https://kardiachain-explorer.s3-ap-southeast-1.amazonaws.com/explorer.kardiachain.io/logo/${toChecksum(tokenAddress).replace('0x', '')}.png`
+}
+
+export const parseURL = (raw: string) => {
+  let url = raw;
+  if (!url.includes('http://') && !url.includes('https://')) {
+    url = `https://${url}`
+  }
+  return url
+}
+
+export const isURL = (str: string) => {
+  const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+  '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+  '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+  '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+}
+
+export const getSearchURL = (keyword: string) => {
+  return `https://www.google.com/search?q=${keyword}`
 }

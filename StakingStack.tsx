@@ -10,6 +10,7 @@ import {getLanguageString} from './utils/lang';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from './atoms/language';
 import {ThemeContext} from './ThemeContext';
+import SuccessTx from './screens/SuccessTx';
 
 const StakingStack = createStackNavigator();
 
@@ -57,6 +58,7 @@ const StakingStackScreen = () => {
           headerTintColor: theme.textColor,
         }}
       />
+      <StakingStack.Screen options={{headerShown: false}} name="SuccessTx" component={SuccessTx} />
     </StakingStack.Navigator>
   );
 };

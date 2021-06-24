@@ -1,8 +1,8 @@
 import KaidexClient from 'kaidex-sdk';
 import KardiaClient from 'kardia-js-sdk';
 import SWAPABI from './swapABI.json'
-import { KAI_TOKEN_NAME, KAI_TOKEN_SYMBOL } from '../../config';
-import { DEX_ENDPOINT, RPC_ENDPOINT } from '../config';
+import { BLOCK_TIME, KAI_TOKEN_NAME, KAI_TOKEN_SYMBOL } from '../../config';
+import { DEX_ENDPOINT, EXCHANGE_REST, RPC_ENDPOINT } from '../config';
 import KRC20ABI from '../krc20/KRC20ABI.json';
 // import { cellValueWithDecimals } from '../../utils/number';
 import { requestWithTimeOut } from '../util';
@@ -10,11 +10,19 @@ import BigNumber from 'bignumber.js';
 import { getDeltaTimestamps } from '../../utils/date';
 import { apolloKaiBlockClient, apolloKaiDexClient } from './apolloClient';
 import { GET_BLOCKS_BY_TIMESTAMPS, PAIR_LIST_BY_BLOCK_NUMBER } from './queries';
+import { getLogoURL } from '../../utils/string';
+import Web3 from 'web3'
 
 let SWAP_ROUTER_SMC = ''
 let FACTORY_SMC = ''
 let WKAI_SMC = ''
 let LIMIT_ORDER_SMC = ''
+
+let reserve: Record<string, any> = {}
+
+export const getKAILogo = () => {
+  return getLogoURL(WKAI_SMC)
+}
 
 export const initDexConfig = async () => {
   const requestOptions = {
@@ -22,7 +30,7 @@ export const initDexConfig = async () => {
     redirect: 'follow',
   };
 
-  const response = await requestWithTimeOut(
+  const response: any = await requestWithTimeOut(
     fetch(
       `${DEX_ENDPOINT}cfg/info`,
       requestOptions,
@@ -75,6 +83,47 @@ export const calculateDexExchangeRate = async (
   }
 }
 
+const getReserve = async (tokenInAddress: string, tokenOutAddress: string) => {
+  const key = `${tokenInAddress}-${tokenOutAddress}`
+  const reverseKey = `${tokenOutAddress}-${tokenInAddress}`
+
+  if (reserve[key] && (reserve[key].lastUpdated > Date.now() - BLOCK_TIME * 1000)) {
+    return reserve[key].reserve
+  }
+
+  const client = new KaidexClient({
+    rpcEndpoint: RPC_ENDPOINT,
+    smcAddresses: {
+      router: SWAP_ROUTER_SMC,
+      factory: FACTORY_SMC,
+      // kaiSwapper?: string;
+      limitOrder: LIMIT_ORDER_SMC,
+      wkai: WKAI_SMC
+    }
+  })
+
+  const {reserveA: reserveIn, reserveB: reserveOut} = await client.getReserves(tokenInAddress, tokenOutAddress)
+  reserve[key] = {
+    lastUpdated: Date.now(),
+    reserve: {
+      reserveIn,
+      reserveOut
+    }
+  }
+  reserve[reverseKey] = {
+    lastUpdated: Date.now(),
+    reserve: {
+      reserveIn: reserveOut,
+      reserveOut: reserveIn
+    }
+  }
+
+  return {
+    reserveIn,
+    reserveOut
+  }
+};
+
 export const calculateDexAmountOut = async (
   amount: number | string,
   tradeInputType: 'AMOUNT' | 'TOTAL',
@@ -92,8 +141,10 @@ export const calculateDexAmountOut = async (
         wkai: WKAI_SMC
       }
     })
+
+    const {reserveIn, reserveOut} = await getReserve(tokenFrom.hash, tokenTo.hash)
   
-    const rs = await client.calculateOutputAmount({
+    const rs = client.calculateOutputAmount({
       amount: amount,
       inputType: tradeInputType === "AMOUNT" ? 0 : 1,
       inputToken: {
@@ -102,12 +153,14 @@ export const calculateDexAmountOut = async (
         name: tokenFrom.name,
         symbol: tokenFrom.symbol
       },
+      reserveIn,
       outputToken: {
         tokenAddress: tokenTo.hash,
         decimals: tokenTo.decimals,
         name: tokenTo.name,
         symbol: tokenTo.symbol
-      }
+      },
+      reserveOut
     })
 
     return rs
@@ -284,4 +337,70 @@ export const calculatePriceImpact = async (tokenFrom: PairToken, tokenTo: PairTo
   })
 
   return priceImpact
+}
+
+export const submitReferal = async (referalCode: string, wallet: Wallet) => {
+  if (!wallet.privateKey) return false
+  if (!referalCode) return false
+
+  // Get ref address
+  try {
+    const requestOptions = {
+      method: 'GET',
+    };
+    const rs: any = await requestWithTimeOut(
+      fetch(`${EXCHANGE_REST}refs?and=(short.eq.${referalCode},parent_id.eq.0)`, requestOptions),
+      50 * 1000,
+    )
+
+    const rsJSON = await rs.json()
+    if (!rsJSON || !Array.isArray(rsJSON)) {
+      return false
+    }
+    if (rsJSON.length === 0) {
+      return false
+    }
+    const refAddressObj = rsJSON[0];
+    const refAddress = refAddressObj.address
+    const parentId = refAddressObj.id
+    const message = `${wallet.address}-${referalCode}`
+    const web3 = new Web3()
+    const {signature} = web3.eth.accounts.sign(message, wallet.privateKey!)
+    const address = web3.eth.accounts.recover(message, signature)
+    if (address !== wallet.address) {
+      return false
+    } 
+    
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      "address": wallet.address,
+      "ref": refAddress,
+      "parent_id": parentId,
+      "signature": signature,
+      "short": referalCode
+    });
+
+    const postOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw
+    };
+
+    // const refRs = await requestWithTimeOut(
+    //   fetch(`${EXCHANGE_REST}refs`, postOptions),
+    //   50 * 1000,
+    // )
+
+    const refRs = await fetch(`${EXCHANGE_REST}refs`, postOptions)
+    if (refRs.ok) {
+      return true
+    }
+    return false
+
+  } catch (error) {
+    console.log(error)
+    return false
+  }
 }

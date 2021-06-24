@@ -17,7 +17,7 @@ import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
 import Button from '../../../components/Button';
 import {getLanguageString, parseError} from '../../../utils/lang';
-import {toChecksum, truncate} from '../../../utils/string';
+import {getFromClipboard, toChecksum, truncate} from '../../../utils/string';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import {
   getBalance as getKRC20Balance,
@@ -45,6 +45,8 @@ const NewKRC20TxModal = ({
   tokenSymbol,
   tokenDecimals,
   tokenAvatar,
+  fromHome = false,
+  beforeShowSuccess
 }: {
   visible: boolean;
   onClose: () => void;
@@ -52,6 +54,8 @@ const NewKRC20TxModal = ({
   tokenSymbol: string;
   tokenDecimals: number;
   tokenAvatar: string;
+  fromHome?: boolean
+  beforeShowSuccess?: () => void
 }) => {
   const navigation = useNavigation();
   const wallets = useRecoilValue(walletsAtom);
@@ -138,17 +142,16 @@ const NewKRC20TxModal = ({
         {gasPrice: calculatedGasPrice}
       );
       setLoading(false);
-      navigation.navigate('Transaction', {
-        screen: 'SuccessTx',
-        params: {
-          txHash: txResult,
-          type: 'krc20',
-          tokenAddress: tokenAddress,
-          tokenDecimals: tokenDecimals,
-          tokenAvatar: tokenAvatar,
-          userAddress: _wallets[_selectedWallet].address,
-          tokenSymbol: tokenSymbol,
-        },
+      beforeShowSuccess && beforeShowSuccess()
+      navigation.navigate('SuccessTx', {
+        txHash: txResult,
+        type: 'krc20',
+        tokenAddress: tokenAddress,
+        tokenDecimals: tokenDecimals,
+        tokenAvatar: tokenAvatar,
+        userAddress: _wallets[_selectedWallet].address,
+        tokenSymbol: tokenSymbol,
+        fromHome
       });
       resetState();
       onClose();
@@ -351,8 +354,27 @@ const NewKRC20TxModal = ({
                 inputStyle={{
                   backgroundColor: 'rgba(96, 99, 108, 1)',
                   color: theme.textColor,
+                  paddingRight: 60
                 }}
                 // headline={getLanguageString(language, 'CREATE_TX_ADDRESS')}
+                icons={() => {
+                  return (
+                    <TouchableOpacity
+                      style={{position: 'absolute', right: 10}}
+                      onPress={async () => setAddress(await getFromClipboard())}
+                    >
+                      <CustomText
+                        style={{
+                          color: theme.urlColor,
+                          fontWeight: '500',
+                          fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                        }}
+                      >
+                        Paste
+                      </CustomText>
+                    </TouchableOpacity>
+                  )
+                }}
               />
             </View>
             <TouchableOpacity
@@ -405,11 +427,12 @@ const NewKRC20TxModal = ({
             </View>
             <TextInput
               // headlineStyle={{color: 'black'}}
-              keyboardType="numeric"
+              keyboardType="decimal-pad"
               message={errorAmount}
               inputStyle={{
                 backgroundColor: 'rgba(96, 99, 108, 1)',
                 color: theme.textColor,
+                paddingRight: 60
               }}
               onChangeText={(newAmount) => {
                 const digitOnly = getDigit(newAmount);
@@ -435,6 +458,24 @@ const NewKRC20TxModal = ({
               onBlur={() => setAmount(format(Number(getDigit(amount))))}
               value={amount}
               // headline={getLanguageString(language, 'CREATE_TX_KRC20_AMOUNT')}
+              icons={() => {
+                return (
+                  <TouchableOpacity 
+                    style={{position: 'absolute', right: 10}}
+                    onPress={() => setAmount(formatNumberString(parseDecimals(balance, tokenDecimals)))}
+                  >
+                    <CustomText 
+                      style={{
+                        color: theme.urlColor,
+                        fontWeight: '500',
+                        fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                      }}
+                    >
+                      MAX
+                    </CustomText>
+                  </TouchableOpacity>
+                )
+              }}
             />
           </View>
 

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.igorbelyayev.rnlocalresource.RNLocalResourcePackage;
 import com.rnfingerprint.FingerprintAuthPackage;
 import com.horcrux.svg.SvgPackage;
 import com.cmcewen.blurview.BlurViewPackage;

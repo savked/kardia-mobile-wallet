@@ -121,6 +121,9 @@ export const getUndelegatingAmount = async (address: string) => {
 };
 
 export const withdrawReward = async (valSmcAddr: string, wallet: Wallet) => {
+  if (!valSmcAddr || valSmcAddr === '') {
+    throw new Error('Invalid [valSmcAddr]')
+  }
   try {
     kardiaContract.updateAbi(VALIDATOR_ABI);
     const rs = await kardiaContract
@@ -144,6 +147,9 @@ export const withdrawDelegatedAmount = async (
   valSmcAddr: string,
   wallet: Wallet,
 ) => {
+  if (!valSmcAddr || valSmcAddr === '') {
+    throw new Error('Invalid [valSmcAddr]')
+  }
   try {
     kardiaContract.updateAbi(VALIDATOR_ABI);
     const rs = await kardiaContract
@@ -168,6 +174,9 @@ export const undelegateWithAmount = async (
   amountUndel: number,
   wallet: Wallet,
 ) => {
+  if (!valSmcAddr || valSmcAddr === '') {
+    throw new Error('Invalid [valSmcAddr]')
+  }
   try {
     const amountUndelDec = cellValue(amountUndel);
     kardiaContract.updateAbi(VALIDATOR_ABI);
@@ -189,6 +198,9 @@ export const undelegateWithAmount = async (
 };
 
 export const undelegateAll = async (valSmcAddr: string, wallet: Wallet) => {
+  if (!valSmcAddr || valSmcAddr === '') {
+    throw new Error('Invalid [valSmcAddr]')
+  }
   try {
     kardiaContract.updateAbi(VALIDATOR_ABI);
     const rs = await kardiaContract
@@ -213,6 +225,9 @@ export const delegateAction = async (
   wallet: Wallet,
   amountDel: number,
 ) => {
+  if (!valSmcAddr || valSmcAddr === '') {
+    throw new Error('Invalid [valSmcAddr]')
+  }
   try {
     const cellAmountDel = cellValue(amountDel);
     kardiaContract.updateAbi(VALIDATOR_ABI);

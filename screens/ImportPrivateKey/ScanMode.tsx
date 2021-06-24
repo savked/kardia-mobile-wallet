@@ -12,11 +12,15 @@ import {getStakingAmount} from '../../services/staking';
 import {
   getWallets,
   saveMnemonic,
+  saveWallets,
 } from '../../utils/local';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
+import { referralCodeAtom } from '../../atoms/referralCode';
+import { submitReferal } from '../../services/dex';
 
 export default () => {
   const language = useRecoilValue(languageAtom);
+  const referralCode = useRecoilValue(referralCodeAtom)
   const navigation = useNavigation();
 
   const setWallets = useSetRecoilState(walletsAtom);
@@ -53,10 +57,14 @@ export default () => {
       await saveMnemonic(walletAddress, 'FROM_PK');
       const _wallets = JSON.parse(JSON.stringify(wallets));
       _wallets.push(wallet);
+      await saveWallets(_wallets)
       setSelectedWallet(_wallets.length - 1);
-      setWallets((_) => {
-        return _wallets;
-      });
+      setWallets(_wallets);
+
+      if (referralCode) {
+        await submitReferal(referralCode, wallet)
+      }
+
       navigation.reset({
         index: 0,
         routes: [{name: 'Home'}],

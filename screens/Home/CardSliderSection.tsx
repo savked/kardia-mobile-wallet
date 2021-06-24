@@ -1,26 +1,24 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Dimensions, Image, Platform, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, Platform, View} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {truncate} from '../../utils/string';
 import {styles} from './style';
 import {tokenInfoAtom} from '../../atoms/token';
 import {languageAtom} from '../../atoms/language';
 import {getLanguageString, parseCardAvatar} from '../../utils/lang';
-import NewTxModal from '../common/NewTxModal';
 import numeral from 'numeral';
 import {weiToKAI} from '../../services/transaction/amount';
 import {ThemeContext} from '../../ThemeContext';
 import CustomText from '../../components/Text';
+import Toast from 'react-native-toast-message';
+import ControlSection from './ControlSection';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
-const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
-  // const navigation = useNavigation();
+const CardSliderSection = () => {
   const theme = useContext(ThemeContext);
-  const [showNewTxModal, setShowNewTxModal] = useState(false);
   const carouselRef = useRef<Carousel<Wallet>>(null);
   const wallets = useRecoilValue(walletsAtom);
   const tokenInfo = useRecoilValue(tokenInfoAtom);
@@ -42,73 +40,30 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
           />
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <View>
-              <CustomText allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: theme.defaultFontSize}}>
-                {getLanguageString(language, 'TOTAL_BALANCE').toUpperCase()}
-              </CustomText>
-              <CustomText allowFontScaling={false} style={Platform.OS === 'android' ? {fontSize: 24, color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {fontSize: 24, color: theme.textColor, fontWeight: '500'}}>
-                $
-                {numeral(
-                  tokenInfo.price *
-                    (Number(weiToKAI(wallet.balance)) + wallet.staked + wallet.undelegating),
-                ).format('0,0.00')}
-              </CustomText>
-            </View>
-            {/* <IconButton
-              onPress={() => setRemoveIndex(selectedWallet)}
-              name="trash"
-              color={theme.textColor}
-              size={20}
-            /> */}
-          </View>
-
-          <View style={{flexDirection: 'row', alignItems: 'flex-end', flex: 1}}>
-            <CustomText allowFontScaling={false} style={styles.kaiCardText}>
-              {truncate(
-                wallet.address,
-                viewportWidth >= 432 ? 14 : 10,
-                viewportWidth >= 432 ? 14 : 12,
-              )}
+            <CustomText allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: theme.defaultFontSize}}>
+              {getLanguageString(language, 'TOTAL_BALANCE').toUpperCase()}
+            </CustomText>
+            <CustomText allowFontScaling={false} style={Platform.OS === 'android' ? {fontSize: 24, color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {fontSize: 24, color: theme.textColor, fontWeight: '500'}}>
+              $
+              {numeral(
+                tokenInfo.price *
+                  (Number(weiToKAI(wallet.balance)) + wallet.staked + wallet.undelegating),
+              ).format('0,0.00')}
             </CustomText>
           </View>
 
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end'}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            <ControlSection />
+          </View>
+
+          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
             <View>
-              <CustomText style={{fontSize: theme.defaultFontSize, color: 'rgba(252, 252, 252, 0.54)'}}>
-                {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
-              </CustomText>
               <CustomText style={Platform.OS === 'android' ? {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontFamily: 'WorkSans-SemiBold'} : {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontWeight: '500'}}>
                 {wallet.name ? wallet.name.toUpperCase() : getLanguageString(language,'NEW_WALLET').toUpperCase()}
               </CustomText>
             </View>
-            <TouchableOpacity
-              onPress={() => showQRModal()}
-              style={{
-                width: 52,
-                height: 52,
-                borderRadius: 26,
-                backgroundColor: '#FFFFFF',
-                alignItems: 'center',
-                justifyContent: 'center',
-                shadowColor: 'rgba(0, 0, 0, 0.3)',
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                shadowOpacity: 2,
-                shadowRadius: 4,
-                elevation: 9,
-              }}>
-              <Image
-                source={require('../../assets/icon/qr_dark.png')}
-                style={{width: 30, height: 30, marginRight: 2, marginTop: 2}}
-              />
-              {/* <Icon size={30} name="qrcode" /> */}
-            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -116,17 +71,6 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
   };
 
   useEffect(() => {
-    // (async () => {
-    //   // saveSelectedWallet(selectedWallet);
-    //   if (carouselRef.current && carouselRef.current.currentIndex !== selectedWallet) {
-    //     // react-native-snap-carousel issue. TODO: wait for issue resolved and update
-    //     setTimeout(() => {
-    //       if (carouselRef.current) {
-    //         carouselRef.current.snapToItem(selectedWallet);
-    //       }
-    //     }, 300);
-    //   }
-    // })()
     if (carouselRef.current && carouselRef.current.currentIndex !== selectedWallet) {
 
       if (snapTimeoutId) {
@@ -150,10 +94,6 @@ const CardSliderSection = ({showQRModal}: {showQRModal: () => void}) => {
 
   return (
     <View style={styles.kaiCardSlider}>
-      <NewTxModal
-        visible={showNewTxModal}
-        onClose={() => setShowNewTxModal(false)}
-      />
       <Carousel
         ref={carouselRef}
         data={wallets}

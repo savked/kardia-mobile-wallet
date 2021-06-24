@@ -6,13 +6,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import TransactionStackScreen from '../../TransactionStack';
+// import TransactionStackScreen from '../../TransactionStack';
 import {
   getAddressBook,
   getAppPasscodeSetting,
   getCache,
   getFontSize,
   getLanguageSetting,
+  getRefCode,
   getSelectedWallet,
   getTokenList,
   getWallets,
@@ -50,6 +51,10 @@ import KAIDex from '../KAIDex';
 import { dexStatusAtom } from '../../atoms/dexStatus';
 import { initDexConfig } from '../../services/dex';
 import { cacheAtom } from '../../atoms/cache';
+import SettingStackScreen from '../../SettingStack';
+import DEXStackScreen from '../../DEXStack';
+import { referralCodeAtom } from '../../atoms/referralCode';
+import DAppStackScreen from '../../DAppStack';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -104,6 +109,12 @@ const Wrap = () => {
                 {getLanguageString(language, 'KAI_DEX')}
               </CustomText>
             )
+          } else if (route.name === 'DApp') {
+            return (
+              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
+                {getLanguageString(language, 'DAPP')}
+              </CustomText>
+            )
           }
         },
         tabBarIcon: ({color, size, focused}) => {
@@ -133,8 +144,6 @@ const Wrap = () => {
                 }
               />
             );
-          } else if (route.name === 'DApp') {
-            iconName = 'th-large';
           } else if (route.name === 'Setting') {
             return (
               <Image
@@ -179,6 +188,17 @@ const Wrap = () => {
                 }
               />
             )
+          } else if (route.name === 'DApp') {
+            return (
+              <Image
+                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
+                source={
+                  focused
+                    ? require('../../assets/icon/dapp.png')
+                    : require('../../assets/icon/dapp_inactive.png')
+                }
+              />
+            )
           }
 
           // You can return any component that you like here!
@@ -218,12 +238,13 @@ const Wrap = () => {
       }}>
       {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
       <Tab.Screen name="Home" component={HomeStackScreen} />
-      <Tab.Screen name="Transaction" component={TransactionStackScreen} />
-      <Tab.Screen name="DEX" component={KAIDex} />
+      {/* <Tab.Screen name="Transaction" component={TransactionStackScreen} /> */}
       <Tab.Screen name="Staking" component={StakingStackScreen} />
+      <Tab.Screen name="DEX" component={DEXStackScreen} />
       <Tab.Screen name="Address" component={AddressStackScreen} />
+      <Tab.Screen name="DApp" component={DAppStackScreen} />
       {/* <Tab.Screen name="News" component={NewsScreen} /> */}
-      {/* <Tab.Screen name="Setting" component={SettingStackScreen} /> */}
+      <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>
   );
 };
@@ -234,6 +255,7 @@ const AppContainer = () => {
   const setAddressBook = useSetRecoilState(addressBookAtom);
   const setKRC20TokenList = useSetRecoilState(krc20ListAtom);
   const setFontSize = useSetRecoilState(fontSizeAtom);
+  const setRefCode = useSetRecoilState(referralCodeAtom)
   const [selectedWallet, setSelectedWallet] = useRecoilState(
     selectedWalletAtom,
   );
@@ -265,12 +287,12 @@ const AppContainer = () => {
     })();
   }, [selectedWallet, inited]);
 
-  useEffect(() => {
-    (async () => {
-      if (!inited || appStatus !== 'OK') return;
-      await saveWallets(wallets);
-    })();
-  }, [wallets, inited]);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (!inited || appStatus !== 'OK') return;
+  //     await saveWallets(wallets);
+  //   })();
+  // }, [wallets, inited]);
 
   const handleAppStateChange = useCallback(
     (state: string) => {
@@ -364,6 +386,10 @@ const AppContainer = () => {
       // Get local auth setting
       const enabled = await getAppPasscodeSetting();
       setLocalAuthEnabled(enabled);
+
+      // Get local ref code
+      const refCode = await getRefCode()
+      setRefCode(refCode)
 
       // Get local wallets data
       try {

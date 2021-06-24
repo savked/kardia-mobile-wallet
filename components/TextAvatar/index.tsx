@@ -10,15 +10,17 @@ const TextAvatar = ({
   size = 50,
   style,
   textStyle,
+  type = 'circle',
 }: TextAvatarProps & {
   textStyle?: StyleProp<TextStyle>;
   style?: StyleProp<ViewStyle>;
+  type?: 'circle' | 'square'
 }) => {
   const containerStyle = {
     backgroundColor,
     width: size,
     height: size,
-    borderRadius: size / 2,
+    borderRadius: type === 'circle' ? size / 2 : 8,
   };
   const _textStyle = {
     color: textColor,

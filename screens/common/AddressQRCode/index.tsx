@@ -9,11 +9,9 @@ import { tokenInfoAtom } from '../../../atoms/token';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
-import { weiToKAI } from '../../../services/transaction/amount';
 import {ThemeContext} from '../../../ThemeContext';
 import {getLanguageString} from '../../../utils/lang';
 import {copyToClipboard, truncate} from '../../../utils/string';
-import numeral from 'numeral'
 import CustomText from '../../../components/Text';
 
 const {width: viewportWidth} = Dimensions.get('window');
@@ -41,75 +39,72 @@ const QRModal = ({
       contentStyle={{
         paddingHorizontal: 20,
         backgroundColor: theme.backgroundFocusColor,
-        height: 730,
+        height: 630,
+        justifyContent: 'flex-start'
       }}
       onClose={onClose}>
       <View
         style={{
           padding: 32,
-          backgroundColor: theme.backgroundColor,
+          backgroundColor: theme.backgroundStrongColor,
           borderRadius: 12,
+          marginHorizontal: 50,
         }}>
         <QRCode
-          size={viewportWidth - 104}
+          size={viewportWidth - 214}
           value={wallets[selectedWallet] ? wallets[selectedWallet].address : ''}
           color={theme.textColor}
-          backgroundColor={theme.backgroundColor}
+          backgroundColor={theme.backgroundStrongColor}
         />
       </View>
-      <View style={{flexDirection: 'row', paddingVertical: 0, paddingHorizontal: 20, alignItems: 'center'}}>
-        <Image source={require('../../../assets/icon/warning.png')} style={{width: 20, height: 20, marginRight: 8}} />
+      <View style={{flexDirection: 'row', paddingVertical: 16, paddingHorizontal: 20, alignItems: 'center'}}>
         <CustomText
           style={{
             fontWeight: '500',
             fontSize: 13,            
-            color: theme.warningTextColor,
-            textAlign: 'left',
+            color: theme.textColor,
+            textAlign: 'center',
             width: '100%',
           }}>
-          {getLanguageString(language, 'ERC20_WARNING')}
+          {getLanguageString(language, 'RECEIVE_ANY_TOKEN')}
         </CustomText>
       </View>
-      <ImageBackground
-        source={require('../../../assets/address_qr_balance_background.png')}
-        imageStyle={{
-          resizeMode: 'cover',
-          // width: '100%',
-          height: 139,
-          borderRadius: 12,
-          // marginHorizontal: 18,
-        }}
+      <View
         style={{
           width: '100%',
-          height: 139,
+          height: 76,
           borderRadius: 12,
           alignItems: 'flex-start',
           justifyContent: 'center',
           // paddingHorizontal: 18,
+          backgroundColor: theme.backgroundStrongColor,
+          shadowColor: 'rgba(0, 0, 0, 0.3)',
+          shadowOffset: {
+            width: 0,
+            height: 4,
+          },
+          shadowOpacity: 12,
+          shadowRadius: 8,
+          elevation: 9,
         }}
       >
-        <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4, textAlign: 'left', paddingHorizontal: 20}}>
-          {getLanguageString(language, 'BALANCE').toUpperCase()}
-        </CustomText>
-        <CustomText style={{fontSize: 24, color: 'white', paddingHorizontal: 20}}>
-          $
-          {numeral(
-            tokenInfo.price *
-              (Number(weiToKAI(wallet.balance)) + wallet.staked),
-          ).format('0,0.00')}
-        </CustomText>
-        <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', width: '100%', paddingHorizontal: 20}}>
-          <CustomText style={{
-              color: '#FFFFFF',
-              fontSize: 16,
-              marginRight: 8,
-            }}>
-            {truncate(
-              wallet.address,
-              viewportWidth >= 432 ? 14 : 10,
-              viewportWidth >= 432 ? 14 : 12,
-            )}
-          </CustomText>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', paddingHorizontal: 20, paddingTop: 2}}>
+          <View style={{justifyContent: 'space-between', flex: 1}}>
+            <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 10, marginBottom: 4, textAlign: 'left'}}>
+              {getLanguageString(language, 'ADDRESS').toUpperCase()}
+            </CustomText>
+            <CustomText style={{
+                color: '#FFFFFF',
+                fontSize: 16,
+                marginRight: 8,
+              }}>
+              {truncate(
+                wallet.address,
+                viewportWidth >= 432 ? 14 : 10,
+                viewportWidth >= 432 ? 14 : 12,
+              )}
+            </CustomText>
+          </View>
           <TouchableOpacity
             onPress={() => {
               copyToClipboard(
@@ -136,12 +131,26 @@ const QRModal = ({
             <Image source={require('../../../assets/icon/copy_dark.png')} style={{width: 20, height: 20}} />
           </TouchableOpacity>
         </View>
-      </ImageBackground>
+      </View>
+      <View style={{paddingVertical: 16, paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center', width: '100%'}}>
+        <Image source={require('../../../assets/icon/warning.png')} style={{width: 20, height: 20, marginRight: 8}} />
+        <CustomText
+          style={{
+            fontWeight: '500',
+            fontSize: 13,            
+            color: theme.textColor,
+            textAlign: 'center',
+            width: '100%',
+            flexShrink: 1,
+          }}>
+          {getLanguageString(language, 'ERC20_WARNING')}
+        </CustomText>
+      </View>
       <Button
         title={getLanguageString(language, 'DONE')}
         onPress={onClose}
         block
-        style={{marginTop: 32}}
+        // style={{marginTop: 32}}
         textStyle={{
           fontWeight: '500',
           fontSize: theme.defaultFontSize + 3,

@@ -6,6 +6,7 @@ export const lang: Language = {
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:
+    RECEIVE_ANY_TOKEN: 'Ví này được dùng cho KAI và tất cả các token KRC20',
     CREATE: 'Tạo',
     CREATE_DESC: 'ví mới',
     UNDER_MAINTAINENCE_DESC: 'Chúng tôi đang thực hiện vài thay đổi để bạn có trải nghiệm tốt nhất.',
@@ -51,7 +52,7 @@ export const lang: Language = {
     CONFIRM_REMOVE_ADDRESS: 'Bạn chắc chắn muốn xóa địa chỉ này khỏi danh bạ?',
     SCAN_QR_FOR_ADDRESS: 'Địa chỉ ví của bạn',
     SCAN_QR_FOR_ADDRESS_DESCRIPTION: 'Quét mã QR code chứa địa chỉ',
-    ERC20_WARNING: 'KHÔNG gửi KAI từ ví ERC20 đến ví này.',
+    ERC20_WARNING: 'KHÔNG gửi KAI từ ví ERC20 đến ví này.\nKAI ERC20 gửi đến ví này sẽ bị mất vĩnh viễn.',
     LATER: 'Để sau',
     SET_APP_PASSCODE: 'Cài đặt mật khẩu',
     NO_PASSCODE: 'Bạn chưa cài mật khẩu cho ví',
@@ -87,16 +88,17 @@ export const lang: Language = {
     BY_PRIVATE_KEY: 'bằng Private Key',
     BY_SEED_PHRASE: 'bằng chuỗi khóa',
     // Transaction key
+    HISTORY: 'Lịch sử',
     RECENT_TRANSACTION: 'Giao dịch',
     NO_TRANSACTION: '0 giao dịch',
     NO_TRANSACTION_SUB_TEXT: 'Có vẻ như chưa có bất kỳ giao dịch nào.',
     NO_KRC20_TRANSACTION_SUB_TEXT: 'Có vẻ như chưa có bất kỳ giao dịch nào.',
     SEARCH_TRANSACTION_PLACEHOLDER: 'Tìm kiếm...',
-    VIEW_ALL: 'Tất cả',
-    SEND: 'Gửi KAI',
+    VIEW_ALL: 'Quản lý',
+    SEND: 'Gửi',
     SEND_NOW: 'Gửi ngay',
     CANCEL: 'Hủy',
-    RECEIVE: 'Nhận KAI',
+    RECEIVE: 'Nhận',
     TX_TYPE_RECEIVED: 'Nhận',
     TX_TYPE_SEND: 'Gửi',
     TRANSACTION_HASH: 'Mã giao dịch',
@@ -216,13 +218,15 @@ export const lang: Language = {
     NOT_ENOUGH_BALANCE: 'Giao dịch vượt quá số dư ví.',
     GENERAL_ERROR: 'Có lỗi xảy ra, vui lòng thử lại sau',
     // KRC20 key
-    KRC20_TOKENS_SECTION_TITLE: 'Tokens',
+    KRC20_TOKENS_SECTION_TITLE: 'Tokens của tôi',
     ADD_TOKEN: 'Thêm token',
     ADD_CUSTOM_TOKEN: 'Token mới',
     TOKEN_ADDRESS: 'Địa chỉ token',
     SEND_TOKEN: 'Gửi {{TOKEN_SYMBOL}}',
     RECEIVE_TOKEN: 'Nhận {{TOKEN_SYMBOL}}',
-    REMOVE_TOKEN: 'Xóa token',
+    REMOVE_TOKEN: 'Ẩn token',
+    HIDE_NOW: 'Ẩn token',
+    CONFIRM_REMOVE_TOKEN: 'Ẩn {{SPLIT_HERE}} khỏi danh sách.\nBạn vẫn có thể thêm token này lại ở menu quản lý.',
     NO_TOKENS: 'Chưa có tokens',
     NO_TOKENS_SUB_TEXT: 'Thêm và quản lý token dễ dàng.',
     ERROR_FETCH_KRC20_DATA: 'Không lấy được dữ liệu tokens.',
@@ -283,6 +287,16 @@ export const lang: Language = {
     APPROVE_ERROR: 'Có lỗi xảy ra, vui lòng thử lại sau.',
     PRICE_IMPACT: 'Ảnh hưởng giá',
     SLIPPAGE_ERROR: 'Giới hạn trượt giá không đúng',
-    DEADLINE_ERROR: 'Thời gian tối đa không hợp lệ.'
+    DEADLINE_ERROR: 'Thời gian tối đa không hợp lệ.',
+    SEARCH_FOR_TOKEN: 'Tìm token',
+    // Referral key
+    REFERRAL_CODE: 'Mã giới thiệu',
+    REFERRAL_CODE_TITLE: 'Mã giới thiệu',
+    REFERRAL_CODE_DESCRIPTION: 'Nhập mã giới thiệu ở đây',
+    REFERRAL_CODE_PLACEHOLDER: 'Mã giới thiệu',
+    REFERRAL_CODE_NOTE: 'Lưu ý: Mã giới thiệu này không thể thay đỏi.',
+    // DApp
+    DAPP: 'DApp',
+    SEARCH_DAPP_PLACEHOLDER: 'Tìm hoặc nhập địa chỉ DApp'
   },
 };

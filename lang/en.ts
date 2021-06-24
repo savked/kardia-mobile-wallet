@@ -6,6 +6,7 @@ export const lang: Language = {
   tag: ['en_US', 'US', 'en', 'US English'],
   mapping: {
     // Common key:
+    RECEIVE_ANY_TOKEN: 'This wallet can receive KAI and any KRC20 Tokens',
     CREATE: 'Create',
     CREATE_DESC: 'a brand new Wallet',
     UNDER_MAINTAINENCE_DESC: 'We are trying to bring the best experience for you.',
@@ -19,7 +20,7 @@ export const lang: Language = {
     DONE: 'Done',
     BUY_KAI: 'Buy KAI',
     OK_TEXT: 'Ok! Got it',
-    TOTAL_BALANCE: 'Total balance',
+    TOTAL_BALANCE: 'Total value',
     BALANCE: 'Available balance',
     CURRENT_BALANCE: 'Current balance',
     STAKED_AMOUNT: 'Staked',
@@ -53,7 +54,7 @@ export const lang: Language = {
     SCAN_QR_FOR_ADDRESS_DESCRIPTION:
       'Scan QR code containing address to import',
     ERC20_WARNING:
-      'Please DO NOT send ERC20 KAI to this wallet.',
+      'Please DO NOT send ERC20 KAI to this wallet.\nSending any others may result permanent loss.',
     LATER: 'Later',
     SET_APP_PASSCODE: 'Set Passcode',
     NO_PASSCODE: "You haven't set your app passcode yet.",
@@ -91,13 +92,14 @@ export const lang: Language = {
     BY_PRIVATE_KEY: 'by Private Key',
     BY_SEED_PHRASE: 'by Seed Phrase',
     // Transaction key
-    RECENT_TRANSACTION: 'Transactions',
+    HISTORY: 'History',
+    RECENT_TRANSACTION: 'History',
     NO_TRANSACTION: 'No transaction',
     NO_TRANSACTION_SUB_TEXT: 'Hello!? Anybody home ??',
     NO_KRC20_TRANSACTION_SUB_TEXT: 'Looks like we don’t have any transaction for this token...yet',
     SEARCH_TRANSACTION_PLACEHOLDER:
       'Search with address / hash / block number...',
-    VIEW_ALL: 'View All',
+    VIEW_ALL: 'Manage',
     SEND: 'Send',
     SEND_NOW: 'Send Now',
     CANCEL: 'Cancel',
@@ -223,13 +225,15 @@ export const lang: Language = {
       'The amount requested exceeds your current wallet balance.',
     GENERAL_ERROR: 'An error occured. Please try again later.',
     // KRC20 key
-    KRC20_TOKENS_SECTION_TITLE: 'Tokens',
+    KRC20_TOKENS_SECTION_TITLE: 'My Tokens',
     ADD_TOKEN: 'Add token',
     ADD_CUSTOM_TOKEN: 'Custom token',
     TOKEN_ADDRESS: 'Token address',
     SEND_TOKEN: 'Send {{TOKEN_SYMBOL}}',
     RECEIVE_TOKEN: 'Receive {{TOKEN_SYMBOL}}',
-    REMOVE_TOKEN: 'Remove token',
+    REMOVE_TOKEN: 'Hide token',
+    HIDE_NOW: 'Hide this token',
+    CONFIRM_REMOVE_TOKEN: 'Hide {{SPLIT_HERE}} from the list.\nYou can add it again anytime.',
     NO_TOKENS: 'No Tokens',
     NO_TOKENS_SUB_TEXT: 'Add your tokens and manage them easily.',
     ERROR_FETCH_KRC20_DATA: "Couldn't get tokens data.",
@@ -290,6 +294,16 @@ export const lang: Language = {
     APPROVE_ERROR: 'Error approving your tokens, please try again later.',
     PRICE_IMPACT: 'Price impact',
     SLIPPAGE_ERROR: 'Invalid slippage tolerance',
-    DEADLINE_ERROR: 'Invalid transaction deadline'
+    DEADLINE_ERROR: 'Invalid transaction deadline',
+    SEARCH_FOR_TOKEN: 'Search for token',
+    // Referral key
+    REFERRAL_CODE: 'Referral Code',
+    REFERRAL_CODE_TITLE: 'Referral',
+    REFERRAL_CODE_DESCRIPTION: 'Paste your code here',
+    REFERRAL_CODE_PLACEHOLDER: 'Referral Code',
+    REFERRAL_CODE_NOTE: 'Be careful. This referral code can NOT be changed in the future.',
+    // DApp
+    DAPP: 'DApp',
+    SEARCH_DAPP_PLACEHOLDER: 'Search or enter DApp URL'
   },
 };

@@ -1,41 +1,33 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Dimensions, Image, ImageBackground, Linking, Platform, RefreshControl, ScrollView, View} from 'react-native';
+import {ActivityIndicator, Dimensions, ImageBackground, RefreshControl, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
-import QRModal from '../common/AddressQRCode';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {
   getAppPasscodeSetting,
   getSelectedWallet,
   getWallets,
+  saveWallets,
 } from '../../utils/local';
 import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
 import CardSliderSection from './CardSliderSection';
 import {languageAtom} from '../../atoms/language';
-import numeral from 'numeral';
-import {getLanguageString} from '../../utils/lang';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 // import RemindPasscodeModal from '../common/RemindPasscodeModal';
 import {getStakingAmount, getUndelegatingAmount} from '../../services/staking';
 import TokenListSection from './TokenListSection';
 import {showTabBarAtom} from '../../atoms/showTabBar';
-import {tokenInfoAtom} from '../../atoms/token';
-import {weiToKAI} from '../../services/transaction/amount';
-import Button from '../../components/Button';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { HEADER_HEIGHT } from '../../theme';
-import CustomText from '../../components/Text';
-import { SIMPLEX_URL } from '../../services/config';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
 const HomeScreen = () => {
-  const [showQRModal, setShowQRModal] = useState(false);
-  const tokenInfo = useRecoilValue(tokenInfoAtom);
+  
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
   const [inited, setInited] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -89,6 +81,7 @@ const HomeScreen = () => {
           newWallets[index].undelegating = undelegating;
         }
       });
+      await saveWallets(newWallets)
       setWallets(newWallets);
       _selectedWallet !== selectedWallet && setSelectedWallet(_selectedWallet);
     } catch (error) {
@@ -136,11 +129,6 @@ const HomeScreen = () => {
     });
   }
 
-  const _getBalance = () => {
-    if (!wallets[selectedWallet]) return '0';
-    return wallets[selectedWallet].balance;
-  }
-
   const onRefresh = async () => {
     setRefreshing(true)
     setRefreshTime(Date.now())
@@ -151,7 +139,6 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
       <HomeHeader />
-      <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
       <ImageBackground
         source={require('../../assets/home_background.jpg')}
         imageStyle={{width: viewportWidth, height: viewportHeight, resizeMode: 'cover'}}
@@ -170,56 +157,7 @@ const HomeScreen = () => {
             />
           }
         >
-          <CardSliderSection showQRModal={() => setShowQRModal(true)} />
-          <View
-            style={{
-              paddingVertical: 24,
-              paddingHorizontal: 16,
-              backgroundColor: 'rgba(58, 59, 60, 0.42)',
-              borderRadius: 12,
-              marginHorizontal: 20,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-              }}>
-              <Image
-                style={{width: 32, height: 32, marginRight: 12}}
-                source={require('../../assets/logo_dark.png')}
-              />
-              <View>
-                <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 14}}>
-                  {getLanguageString(language, 'BALANCE').toUpperCase()}
-                </CustomText>
-                <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold'}}>
-                  {
-                    numeral(Number(weiToKAI(_getBalance()))).format('0,0.00')}{' '}
-                  <CustomText style={{color: theme.mutedTextColor, fontWeight: '500'}}>KAI</CustomText>
-                </CustomText>
-                <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 14}}>
-                  $
-                  {numeral(
-                    tokenInfo.price *
-                      Number(weiToKAI(_getBalance())),
-                  ).format('0,0.00')}
-                </CustomText>
-              </View>
-            </View>
-            <Button
-              title={getLanguageString(language, 'BUY_KAI')}
-              // onPress={() => Alert.alert('Coming soon')}
-              onPress={() => Linking.openURL(SIMPLEX_URL)}
-              type="ghost"
-              size="small"
-              textStyle={Platform.OS === 'android' ? {color: '#000000', fontFamily: 'WorkSans-SemiBold'} : {color: '#000000', fontWeight: '500'}}
-              style={{paddingHorizontal: 16, paddingVertical: 8}}
-            />
-          </View>
+          <CardSliderSection />
           <TokenListSection refreshTime={refreshTime} />
         </ScrollView>
       </ImageBackground>

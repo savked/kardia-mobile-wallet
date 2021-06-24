@@ -13,9 +13,12 @@ import {getStakingAmount} from '../../services/staking';
 import {
   getWallets,
   saveMnemonic,
+  saveWallets,
 } from '../../utils/local';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import {useNavigation} from '@react-navigation/native';
+import { submitReferal } from '../../services/dex';
+import { referralCodeAtom } from '../../atoms/referralCode';
 
 export default () => {
   const navigation = useNavigation();
@@ -25,6 +28,7 @@ export default () => {
   // const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const language = useRecoilValue(languageAtom);
+  const referralCode = useRecoilValue(referralCodeAtom)
 
   const setWallets = useSetRecoilState(walletsAtom);
   const setSelectedWallet = useSetRecoilState(selectedWalletAtom);
@@ -94,11 +98,14 @@ export default () => {
       await saveMnemonic(walletAddress, 'FROM_PK');
       const _wallets = JSON.parse(JSON.stringify(wallets));
       _wallets.push(wallet);
+      await saveWallets(_wallets)
       setSelectedWallet(_wallets.length - 1);
-      setWallets((_) => {
-        return _wallets;
-      });
+      setWallets(_wallets);
       
+      if (referralCode) {
+        await submitReferal(referralCode, wallet)
+      }
+
       setLoading(false)
       navigation.reset({
         index: 0,
