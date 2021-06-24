@@ -5,24 +5,26 @@ import { BigNumber } from 'bignumber.js';
 import { isHexString } from '@ethersproject/bytes';
 
 export const estimateGas = async (payload: Record<string, any>, data = '') => {
+  const _payload = JSON.parse(JSON.stringify(payload))
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
 
-  if (payload.value && isHexString(payload.value)) {
-    const bnValue = new BigNumber(payload.value, 16)
-    payload.value = bnValue.toFixed()
+  if (_payload.value && isHexString(_payload.value)) {
+    const bnValue = new BigNumber(_payload.value, 16)
+    _payload.value = bnValue.toFixed()
   }
 
-  if (payload.gas && isHexString(payload.gas)) {
-    const bnValue = new BigNumber(payload.gas, 16)
-    payload.gas = bnValue.toNumber()
+  if (_payload.gas && isHexString(_payload.gas)) {
+    const bnValue = new BigNumber(_payload.gas, 16)
+    _payload.gas = bnValue.toNumber()
   }
 
-  if (payload.gasPrice && isHexString(payload.gasPrice)) {
-    const bnValue = new BigNumber(payload.gasPrice, 16)
-    payload.gasPrice = bnValue.toNumber()
+  if (_payload.gasPrice && isHexString(_payload.gasPrice)) {
+    const bnValue = new BigNumber(_payload.gasPrice)
+    console.log('lolo', bnValue)
+    _payload.gasPrice = bnValue.toNumber()
   }
 
-  return kardiaClient.transaction.estimateGas(payload, data);
+  return kardiaClient.transaction.estimateGas(_payload, data);
 };
 
 export const getTxByAddress = async (address: string, page = 1, size = 10) => {
