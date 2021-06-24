@@ -100,7 +100,6 @@ export default () => {
           setLoading(false);
           break;
         }
-        // console.log('tx not mined', txHash)
       }
     })();
   }, [addressBook, tokenAddress, txHash, type, userAddress]);

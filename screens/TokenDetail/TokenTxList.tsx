@@ -96,7 +96,6 @@ const TokenTxList = ({
       }
       setHaveMore(txRs.haveMore)
       setGettingMore(false)
-      // console.log(_txList)
     })()
   }, [page])
 
