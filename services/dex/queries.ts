@@ -47,17 +47,61 @@ export const PAIR_LIST_BY_BLOCK_NUMBER = (blocks: any[]) => {
   queryString += blocks.map(
     (block) => `
       t${block.timestamp}: pairs (block: { number: ${block.number} }) { 
-              id
-              reserve0
-              reserve1
-              reserveUSD
-              volumeUSD
-              pairIdentity {
-                  invert
-              }
+          id
+          reserve0
+          reserve1
+          reserveUSD
+          volumeUSD
+          pairIdentity {
+            invert
           }
+        }
       `
   )
   queryString += '}'
   return gql(queryString)
 }
+
+export const MY_ORDER_HISTORY = gql`
+  query MyOrderHistory ($actorAddress: String!) {
+    swaps(orderBy:timestamp, orderDirection:desc, where: {
+      from: $actorAddress
+    }) {
+      pair {
+        id
+        pairIdentity {
+            invert
+        }
+        token0 { 
+          symbol
+          name
+          decimals
+          id
+        }
+        token1 {
+          symbol
+          name
+          decimals
+          id
+        }
+        token0Price
+        token1Price
+        reserveUSD
+        reserve0
+        reserve1
+      }
+      timestamp
+      id
+      amount0In
+      amount0Out
+      amount1In
+      amount1Out
+      amountUSD
+      to
+      sender
+      transaction{
+          id
+      }
+    }
+  } 
+`

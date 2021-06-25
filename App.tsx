@@ -21,8 +21,7 @@ import GlobalStatusBar from './GlobalStatusBar';
 import { Platform, View } from 'react-native';
 import CustomText from './components/Text';
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { HASURA_CREDENTIALS, HASURA_ENDPOINT } from './services/config';
+import { ApolloProvider } from '@apollo/client';
 import { apolloKaiDexClient } from './services/dex/apolloClient';
 
 // Initialize Apollo Client

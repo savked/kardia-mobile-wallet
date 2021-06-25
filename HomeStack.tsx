@@ -18,6 +18,8 @@ import SettingStackScreen from './SettingStack';
 import CreateWithMnemonicPhrase from './screens/CreateWithMnemonicPhrase';
 import TransactionScreen from './screens/Transactions';
 import SuccessTx from './screens/SuccessTx';
+import AddressBookSetting from './screens/AddressBookSetting';
+import AddressDetail from './screens/AddressDetail';
 
 const HomeStack = createStackNavigator();
 
@@ -104,6 +106,20 @@ const HomeStackScreen = () => {
         component={TransactionScreen}
       />
       <HomeStack.Screen name="SuccessTx" component={SuccessTx} />
+      <HomeStack.Screen
+        name="AddressBook"
+        component={AddressBookSetting}
+        options={{
+          headerShown: false
+        }}
+      />
+      <HomeStack.Screen
+        name="AddressDetail"
+        component={AddressDetail}
+        options={{
+          headerShown: false,
+        }}
+      />
     </HomeStack.Navigator>
   );
 };

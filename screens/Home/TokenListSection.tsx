@@ -81,7 +81,7 @@ const TokenListSection = ({refreshTime}: {
   const renderTokenList = () => {
     return tokenList.slice(0, 7).map((item, index) => {
       return <View
-        key={item.name}
+        key={item.address}
         style={{
           padding: 15,
           marginHorizontal: 20,

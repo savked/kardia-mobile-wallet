@@ -289,6 +289,9 @@ export const lang: Language = {
     SLIPPAGE_ERROR: 'Giới hạn trượt giá không đúng',
     DEADLINE_ERROR: 'Thời gian tối đa không hợp lệ.',
     SEARCH_FOR_TOKEN: 'Tìm token',
+    ORDER_HISTORY: 'Lệnh đã đặt',
+    ADD_LIQUIDITY: 'Thanh khoản',
+    TRADE: 'Giao dịch',
     // Referral key
     REFERRAL_CODE: 'Mã giới thiệu',
     REFERRAL_CODE_TITLE: 'Mã giới thiệu',
@@ -296,7 +299,7 @@ export const lang: Language = {
     REFERRAL_CODE_PLACEHOLDER: 'Mã giới thiệu',
     REFERRAL_CODE_NOTE: 'Lưu ý: Mã giới thiệu này không thể thay đỏi.',
     // DApp
-    DAPP: 'DApp',
+    DAPP: 'DApps',
     SEARCH_DAPP_PLACEHOLDER: 'Tìm hoặc nhập địa chỉ DApp'
   },
 };

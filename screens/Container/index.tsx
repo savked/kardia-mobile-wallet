@@ -29,7 +29,7 @@ import Notification from '../Notification';
 import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
 import {tokenInfoAtom} from '../../atoms/token';
-import {getTokenInfo} from '../../services/token';
+import {getKRC20TokensProces, getTokenInfo} from '../../services/token';
 import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import {localAuthAtom, localAuthEnabledAtom} from '../../atoms/localAuth';
@@ -37,7 +37,7 @@ import ConfirmPasscode from '../ConfirmPasscode';
 import StakingStackScreen from '../../StakingStack';
 import {getLanguageString} from '../../utils/lang';
 import Portal from '@burstware/react-native-portal';
-import {krc20ListAtom} from '../../atoms/krc20';
+import {krc20ListAtom, krc20PricesAtom} from '../../atoms/krc20';
 import HomeStackScreen from '../../HomeStack';
 import AddressStackScreen from '../../AddressStack';
 import {showTabBarAtom} from '../../atoms/showTabBar';
@@ -241,8 +241,8 @@ const Wrap = () => {
       {/* <Tab.Screen name="Transaction" component={TransactionStackScreen} /> */}
       <Tab.Screen name="Staking" component={StakingStackScreen} />
       <Tab.Screen name="DEX" component={DEXStackScreen} />
-      <Tab.Screen name="Address" component={AddressStackScreen} />
       <Tab.Screen name="DApp" component={DAppStackScreen} />
+      {/* <Tab.Screen name="Address" component={AddressStackScreen} /> */}
       {/* <Tab.Screen name="News" component={NewsScreen} /> */}
       <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>
@@ -254,6 +254,7 @@ const AppContainer = () => {
   const setTokenInfo = useSetRecoilState(tokenInfoAtom);
   const setAddressBook = useSetRecoilState(addressBookAtom);
   const setKRC20TokenList = useSetRecoilState(krc20ListAtom);
+  const setKRC20Prices = useSetRecoilState(krc20PricesAtom);
   const setFontSize = useSetRecoilState(fontSizeAtom);
   const setRefCode = useSetRecoilState(referralCodeAtom)
   const [selectedWallet, setSelectedWallet] = useRecoilState(
@@ -425,6 +426,14 @@ const AppContainer = () => {
       try {
         const info = await getTokenInfo();
         setTokenInfo(info);
+      } catch (error) {
+        console.error(error);
+      }
+
+      // Get KRC20 tokens price
+      try {
+        const krc20Price = await getKRC20TokensProces();
+        setKRC20Prices(krc20Price);
       } catch (error) {
         console.error(error);
       }

@@ -8,6 +8,7 @@ import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import CustomImagePicker from '../../components/ImagePicker';
 import AntIcon from 'react-native-vector-icons/AntDesign';
+import ENIcon from 'react-native-vector-icons/Entypo';
 import {getLanguageString} from '../../utils/lang';
 import {groupByAlphabet, truncate} from '../../utils/string';
 import {styles} from './style';
@@ -34,7 +35,7 @@ const AddressBookSetting = () => {
 
   useFocusEffect(
     useCallback(() => {
-      setTabBarVisible(true);
+      setTabBarVisible(false);
       setStatusBarColor(theme.backgroundColor);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
@@ -46,6 +47,12 @@ const AddressBookSetting = () => {
       <NewAddressModal
         visible={showNewAddressModal}
         onClose={() => setShowNewAddressModal(false)}
+      />
+      <ENIcon.Button
+        style={{paddingHorizontal: 20}}
+        name="chevron-left"
+        onPress={() => navigation.goBack()}
+        backgroundColor="transparent"
       />
       <View style={styles.header}>
         <CustomText style={[styles.headline, {color: theme.textColor}]}>

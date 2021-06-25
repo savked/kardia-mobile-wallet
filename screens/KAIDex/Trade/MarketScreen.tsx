@@ -2,25 +2,25 @@ import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
 import { Image, Platform, TouchableOpacity, View } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { languageAtom } from '../../atoms/language';
-import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
-import TxSettingModal from './TxSettingModal'
-import Button from '../../components/Button';
-import Divider from '../../components/Divider';
-import CustomText from '../../components/Text';
-import CustomTextInput from '../../components/TextInput';
-import { approveToken, calculateDexAmountOut, calculatePriceImpact, calculateTransactionDeadline, formatDexToken, getApproveState, getTotalVolume } from '../../services/dex';
-import { getBalance as getKRC20Balance } from '../../services/krc20';
-import { ThemeContext } from '../../ThemeContext';
-import { getLanguageString } from '../../utils/lang';
-import { getSelectedWallet, getWallets } from '../../utils/local';
-import { formatNumberString, getDecimalCount, getDigit, getPartial, isNumber, parseDecimals } from '../../utils/number';
-import { swapTokens } from '../../services/dex';
+import { languageAtom } from '../../../atoms/language';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
+import TxSettingModal from '../TxSettingModal'
+import Button from '../../../components/Button';
+import Divider from '../../../components/Divider';
+import CustomText from '../../../components/Text';
+import CustomTextInput from '../../../components/TextInput';
+import { approveToken, calculateDexAmountOut, calculatePriceImpact, calculateTransactionDeadline, formatDexToken, getApproveState, getTotalVolume } from '../../../services/dex';
+import { getBalance as getKRC20Balance } from '../../../services/krc20';
+import { ThemeContext } from '../../../ThemeContext';
+import { getLanguageString } from '../../../utils/lang';
+import { getSelectedWallet, getWallets } from '../../../utils/local';
+import { formatNumberString, getDecimalCount, getDigit, getPartial, isNumber, parseDecimals } from '../../../utils/number';
+import { swapTokens } from '../../../services/dex';
 import { useNavigation } from '@react-navigation/core';
-import Tags from '../../components/Tags';
-import AuthModal from '../common/AuthModal';
-import { getErrorKey } from '../../utils/error';
-import { cacheSelector } from '../../atoms/cache';
+import Tags from '../../../components/Tags';
+import AuthModal from '../../common/AuthModal';
+import { getErrorKey } from '../../../utils/error';
+import { cacheSelector } from '../../../atoms/cache';
 
 export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, tokenFromLiquidity: _tokenFromLiquidity, tokenToLiquidity: _tokenToLiquidity, pairAddress, totalVolume}: {
   triggerSelectPair: () => void;
@@ -382,7 +382,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           </CustomText>
           <Divider height={0.5} style={{width: '100%', backgroundColor: 'rgba(96, 99, 108, 1)', height: 2}} />
           <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', width: '100%'}} onPress={() => setShowTxSettingModal(true)}>
-            <Image style={{width: 16, height: 16, marginRight: 4}} source={require('../../assets/icon/setting_dark.png')} />
+            <Image style={{width: 16, height: 16, marginRight: 4}} source={require('../../../assets/icon/setting_dark.png')} />
             <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'TX_SETTING')}</CustomText>
           </TouchableOpacity>
         </View>
@@ -577,7 +577,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           </CustomText>
         </View>
         <Image
-          source={require('../../assets/icon/chevron-right.png')}
+          source={require('../../../assets/icon/chevron-right.png')}
           style={{width: 20, height: 20}}
         />
       </TouchableOpacity>
@@ -754,7 +754,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
               onPress={handleSwitchToken}
             >
               <Image 
-                source={require('../../assets/icon/swap_dark.png')}
+                source={require('../../../assets/icon/swap_dark.png')}
                 style={{width: 16, height: 16}}
               />
             </TouchableOpacity>

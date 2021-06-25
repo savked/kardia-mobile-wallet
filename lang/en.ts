@@ -296,6 +296,9 @@ export const lang: Language = {
     SLIPPAGE_ERROR: 'Invalid slippage tolerance',
     DEADLINE_ERROR: 'Invalid transaction deadline',
     SEARCH_FOR_TOKEN: 'Search for token',
+    ORDER_HISTORY: 'My orders',
+    ADD_LIQUIDITY: 'Liquidity',
+    TRADE: 'Trade',
     // Referral key
     REFERRAL_CODE: 'Referral Code',
     REFERRAL_CODE_TITLE: 'Referral',
@@ -303,7 +306,7 @@ export const lang: Language = {
     REFERRAL_CODE_PLACEHOLDER: 'Referral Code',
     REFERRAL_CODE_NOTE: 'Be careful. This referral code can NOT be changed in the future.',
     // DApp
-    DAPP: 'DApp',
+    DAPP: 'DApps',
     SEARCH_DAPP_PLACEHOLDER: 'Search or enter DApp URL'
   },
 };

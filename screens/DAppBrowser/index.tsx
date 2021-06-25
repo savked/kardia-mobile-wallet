@@ -18,6 +18,8 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomText from '../../components/Text';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 
+const SCALE_FOR_DESKTOP = `const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=1'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta); `
+
 export default () => {
   const {params} = useRoute()
   const navigation = useNavigation()
@@ -32,6 +34,8 @@ export default () => {
   const [txObj, setTxObj] = useState<Record<string, any>>({})
   const [loadingURL, setLoadingURL] = useState(false)
   const [error, setError] = useState('')
+  const [viewMode, setViewMode] = useState('MOBILE')
+  const [reloadWebView, setReloadWebView] = useState(Date.now())
 
   const webRef = useRef<any>()
   const insets = useSafeAreaInsets();
@@ -114,6 +118,10 @@ export default () => {
     )
   }, [wallets, selectedWallet])
 
+  useEffect(() => {
+    setReloadWebView(Date.now())
+  }, [viewMode])
+
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
 
   useFocusEffect(
@@ -143,14 +151,27 @@ export default () => {
         }}
         txObj={txObj}
       />
-      <View style={{width: '100%', backgroundColor: theme.backgroundColor, flexDirection: 'row', alignItems: 'center'}}>
-        <ENIcon.Button
-          style={{paddingLeft: 20}}
-          name="cross"
-          onPress={() => navigation.goBack()}
-          backgroundColor="transparent"
-        />
-        <CustomText style={{color: theme.textColor}}>KardiaChain Wallet</CustomText>
+      <View style={{width: '100%', backgroundColor: theme.backgroundColor, flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <ENIcon.Button
+            style={{paddingLeft: 20}}
+            name="cross"
+            onPress={() => navigation.goBack()}
+            backgroundColor="transparent"
+          />
+          <CustomText style={{color: theme.textColor}}>KardiaChain Wallet</CustomText>  
+        </View>
+        <View>
+          <ENIcon.Button
+            style={{paddingLeft: 20}}
+            name={viewMode === 'MOBILE' ? 'laptop' : 'mobile'}
+            onPress={() => {
+              setReloadWebView(-1)
+              viewMode === 'MOBILE' ? setViewMode('DESKTOP') : setViewMode('MOBILE')
+            }}
+            backgroundColor="transparent"
+          />
+        </View>
       </View>
       {
         loadingURL &&
@@ -158,39 +179,49 @@ export default () => {
             <ActivityIndicator size="large" />
           </View>
       }
-      <WebView
-        ref={webRef}
-        javaScriptEnabled={true}
-        automaticallyAdjustContentInsets={false}
-        injectedJavaScriptBeforeContentLoaded={ resource }
-        onMessage={onMessage}
-        onLoadStart={() => setLoadingURL(true)}
-        onLoadEnd={() => setLoadingURL(false)}
-        source={{ uri: appURL }}
-        style={styles.webview}
-        containerStyle={{
-          flex: loadingURL || error !== '' ? 0 : 1,
-        }}
-        renderError={(errorName) => {
-          if (!errorName) return <CustomText>{''}</CustomText>;
-          setError(errorName)
-          return (
-            <View style={{backgroundColor: '#FFFFFF', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
-              <CustomText 
-                style={{
-                  fontSize: 30,
-                  marginBottom: 30,
-                  fontWeight: '500',
-                  fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-                }}
-              >
-                Error loading your DApp
-              </CustomText>
-              <CustomText>Error code: {errorName}</CustomText>
-            </View>
-          )
-        }}
-      /> 
+      {
+        reloadWebView > 0 &&
+          <WebView
+          ref={webRef}
+          userAgent={
+            viewMode === 'DESKTOP' ?
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2564.109 Safari/537.36"
+            : undefined
+          }
+          scalesPageToFit={true}
+          javaScriptEnabled={true}
+          automaticallyAdjustContentInsets={false}
+          injectedJavaScriptBeforeContentLoaded={ resource }
+          injectedJavaScript={ viewMode === 'DESKTOP' ? SCALE_FOR_DESKTOP : '' }
+          onMessage={onMessage}
+          onLoadStart={() => setLoadingURL(true)}
+          onLoadEnd={() => setLoadingURL(false)}
+          source={{ uri: appURL }}
+          style={styles.webview}
+          containerStyle={{
+            flex: loadingURL || error !== '' ? 0 : 1,
+          }}
+          renderError={(errorName) => {
+            if (!errorName) return <CustomText>{''}</CustomText>;
+            setError(errorName)
+            return (
+              <View style={{backgroundColor: '#FFFFFF', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+                <CustomText 
+                  style={{
+                    fontSize: 30,
+                    marginBottom: 30,
+                    fontWeight: '500',
+                    fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                  }}
+                >
+                  Error loading your DApp
+                </CustomText>
+                <CustomText>Error code: {errorName}</CustomText>
+              </View>
+            )
+          }}
+        /> 
+      }
     </View>
   )  
 }

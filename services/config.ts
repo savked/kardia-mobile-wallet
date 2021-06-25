@@ -20,6 +20,7 @@ export const DEX_ENDPOINT = 'https://exchange-backend.kardiachain.io/api/v1/';
 export const ENDPOINT = 'https://backend.kardiachain.io/api/v1/';
 export const RPC_ENDPOINT = 'https://rpc.kardiachain.io';
 export const HASURA_ENDPOINT = 'https://exchange-graph.kardiachain.io/subgraphs/name/kai/dex';
+export const HASURA_WS_ENDPOINT = 'wss://exchange-graph.kardiachain.io/subgraphs/name/kai/dex';
 export const SUBGRAPH_BLOCKLYTICS_KAIBLOCK = 'https://exchange-graph.kardiachain.io/subgraphs/name/blocklytics/kai-blocks';
 export const EXPLORER_URL = 'https://explorer.kardiachain.io';
 export const HASURA_CREDENTIALS = 'ZjE0ZDgzMWNlOWNlNTY0YmRlMGNiYjJl';

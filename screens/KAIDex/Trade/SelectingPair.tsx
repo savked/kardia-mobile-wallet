@@ -1,17 +1,17 @@
 import React, { useCallback, useContext } from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ThemeContext } from '../../ThemeContext';
+import { ThemeContext } from '../../../ThemeContext';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { showTabBarAtom } from '../../atoms/showTabBar';
+import { showTabBarAtom } from '../../../atoms/showTabBar';
 import { useFocusEffect } from '@react-navigation/native';
-import CustomText from '../../components/Text';
-import { getLanguageString } from '../../utils/lang';
-import { languageAtom } from '../../atoms/language';
+import CustomText from '../../../components/Text';
+import { getLanguageString } from '../../../utils/lang';
+import { languageAtom } from '../../../atoms/language';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
-import List from '../../components/List';
-import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
-import { formatDexToken } from '../../services/dex';
+import List from '../../../components/List';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
+import { formatDexToken } from '../../../services/dex';
 
 export default ({goBack, onSelect, pairData, loading}: {
   goBack: () => void;

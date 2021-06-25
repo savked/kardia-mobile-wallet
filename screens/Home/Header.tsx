@@ -44,6 +44,12 @@ const HomeHeader = () => {
             style={{width: 24, height: 24, marginRight: 8}}
           />
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('AddressBook')}>
+          <Image 
+            source={require('../../assets/icon/address_book_dark.png')}
+            style={{width: 24, height: 24, marginRight: 8}}
+          />
+        </TouchableOpacity>
         {/* <TouchableOpacity onPress={() => navigation.navigate('Setting')}>
           <Image 
             source={require('../../assets/icon/setting_dark.png')}
