@@ -63,10 +63,16 @@ export const PAIR_LIST_BY_BLOCK_NUMBER = (blocks: any[]) => {
 }
 
 export const MY_ORDER_HISTORY = gql`
-  query MyOrderHistory ($actorAddress: String!) {
-    swaps(orderBy:timestamp, orderDirection:desc, where: {
-      from: $actorAddress
-    }) {
+  query MyOrderHistory ($actorAddress: String!, $skip: Int!, $first: Int!) {
+    swaps(
+      orderBy:timestamp,
+      orderDirection:desc,
+      where: {
+        from: $actorAddress
+      },
+      skip: $skip,
+      first: $first
+    ) {
       pair {
         id
         pairIdentity {
