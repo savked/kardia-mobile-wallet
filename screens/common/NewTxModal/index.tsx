@@ -410,7 +410,7 @@ const NewTxModal = ({
             </View>
             <TextInput
               // headlineStyle={{color: 'black'}}
-              keyboardType="decimal-pad"
+              keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
               message={errorAmount}
               inputStyle={{
                 backgroundColor: 'rgba(96, 99, 108, 1)',

@@ -315,7 +315,7 @@ export default ({
               }}
               // headline={getLanguageString(language, 'STAKING_AMOUNT')}
               headlineStyle={{fontWeight: 'normal'}}
-              keyboardType="decimal-pad"
+              keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
               value={amount}
               onChangeText={(newAmount) => {
                 const digitOnly = getDigit(newAmount, true);

@@ -597,7 +597,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
             <CustomTextInput
               value={amountTo}
-              keyboardType="decimal-pad"
+              keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
               editable={editting !== 'from'}
               loading={loadingTo}
               onChangeText={(newValue) => {
@@ -777,7 +777,7 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
           <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
             <CustomTextInput
               value={amountFrom}
-              keyboardType="decimal-pad"
+              keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
               loading={loadingFrom}
               onChangeText={(newValue) => {
                 setInputType(1)

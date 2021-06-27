@@ -277,6 +277,10 @@ export const getTotalVolume = async (volumeUSD: string, pairID: string) => {
   return volume24hr
 }
 
+const isBossDoge = (tokenAddress: string) => {
+  return tokenAddress.toLowerCase() === '0x5995F16246DfA676A44B8bD7E751C1226093dcd7'.toLowerCase()
+}
+
 export const swapTokens = async (params: Record<string, any>, wallet: Wallet) => {
   const client = new KaidexClient({
     rpcEndpoint: RPC_ENDPOINT,
@@ -288,6 +292,11 @@ export const swapTokens = async (params: Record<string, any>, wallet: Wallet) =>
       wkai: WKAI_SMC
     }
   })
+
+  if (isBossDoge(params.inputToken.tokenAddress) || isBossDoge(params.outputToken.tokenAddress)) {
+    params.feeOnTransfer = true
+  }
+
   const parsedParam = client.marketSwapCallParameters(params as any);
   const sdkClient = new KardiaClient({endpoint: RPC_ENDPOINT});
   const smcInstance = sdkClient.contract
