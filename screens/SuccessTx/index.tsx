@@ -114,7 +114,8 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
-              paddingHorizontal: 20,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
             }}>
             <CustomText
               allowFontScaling={false}
@@ -133,7 +134,8 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
-              paddingHorizontal: 20,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
             }}>
             <CustomText
               allowFontScaling={false}
@@ -152,7 +154,8 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
-              paddingHorizontal: 20,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
             }}>
             <CustomText
               allowFontScaling={false}
@@ -171,7 +174,8 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
-              paddingHorizontal: 20,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
             }}>
             <CustomText
               allowFontScaling={false}
@@ -190,7 +194,8 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
-              paddingHorizontal: 20,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
             }}>
             <CustomText
               allowFontScaling={false}
@@ -209,7 +214,8 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
-              paddingHorizontal: 20,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
             }}>
             <CustomText
               allowFontScaling={false}
@@ -228,7 +234,8 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
-              paddingHorizontal: 20,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
             }}>
             <CustomText
               allowFontScaling={false}
@@ -446,7 +453,7 @@ export default () => {
       case 'dex':
         navigation.reset({
           index: 0,
-          routes: [{name: 'DEX', params: {pairAddress}}],
+          routes: [{name: 'DEXHome', params: {pairAddress}}],
         });
         break;
       default:
