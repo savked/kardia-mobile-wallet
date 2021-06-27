@@ -114,6 +114,7 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
+              paddingHorizontal: 20,
             }}>
             <CustomText
               allowFontScaling={false}
@@ -132,6 +133,7 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
+              paddingHorizontal: 20,
             }}>
             <CustomText
               allowFontScaling={false}
@@ -150,6 +152,7 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
+              paddingHorizontal: 20,
             }}>
             <CustomText
               allowFontScaling={false}
@@ -168,6 +171,7 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
+              paddingHorizontal: 20,
             }}>
             <CustomText
               allowFontScaling={false}
@@ -186,6 +190,7 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
+              paddingHorizontal: 20,
             }}>
             <CustomText
               allowFontScaling={false}
@@ -204,6 +209,7 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
+              paddingHorizontal: 20,
             }}>
             <CustomText
               allowFontScaling={false}
@@ -222,6 +228,7 @@ export default () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginVertical: 10,
+              paddingHorizontal: 20,
             }}>
             <CustomText
               allowFontScaling={false}
