@@ -240,9 +240,6 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
     setSwappError('')
     setPriceImpact('0')
 
-    // const _rate = await calculateDexExchangeRate(_from, _to)
-    // setRate(new BigNumber(_rate.rateBA))
-
     if (mode === 'BUY') {
       setMode('SELL')
     } else {
