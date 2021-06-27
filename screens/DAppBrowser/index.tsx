@@ -72,7 +72,7 @@ export default () => {
         break;
       case 'eth_sendTransaction':
       case 'signTransaction':
-        setTxObj(params)
+        setTxObj(JSON.parse(JSON.stringify(params)))
         setConfirmModalVisible(true);
         break;
       default:
