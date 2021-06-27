@@ -10,11 +10,6 @@
 				"internalType": "address",
 				"name": "_WKAI",
 				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "_swapSettlement",
-				"type": "address"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -454,7 +449,7 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "amountKAIMin",
+				"name": "amountETHMin",
 				"type": "uint256"
 			},
 			{
@@ -466,112 +461,13 @@
 				"internalType": "uint256",
 				"name": "deadline",
 				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "approveMax",
-				"type": "bool"
-			},
-			{
-				"internalType": "uint8",
-				"name": "v",
-				"type": "uint8"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "r",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "s",
-				"type": "bytes32"
 			}
 		],
-		"name": "removeLiquidityKAIWithPermit",
+		"name": "removeLiquidityKAISupportingFeeOnTransferTokens",
 		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "amountToken",
-				"type": "uint256"
-			},
 			{
 				"internalType": "uint256",
 				"name": "amountKAI",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "tokenA",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "tokenB",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "liquidity",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amountAMin",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amountBMin",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "deadline",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "approveMax",
-				"type": "bool"
-			},
-			{
-				"internalType": "uint8",
-				"name": "v",
-				"type": "uint8"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "r",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "s",
-				"type": "bytes32"
-			}
-		],
-		"name": "removeLiquidityWithPermit",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "amountA",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amountB",
 				"type": "uint256"
 			}
 		],
@@ -609,6 +505,34 @@
 				"type": "uint256[]"
 			}
 		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amountOutMin",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address[]",
+				"name": "path",
+				"type": "address[]"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "deadline",
+				"type": "uint256"
+			}
+		],
+		"name": "swapExactKAIForTokensSupportingFeeOnTransferTokens",
+		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
 	},
@@ -679,6 +603,39 @@
 				"type": "uint256"
 			}
 		],
+		"name": "swapExactTokensForKAISupportingFeeOnTransferTokens",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amountIn",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amountOutMin",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address[]",
+				"name": "path",
+				"type": "address[]"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "deadline",
+				"type": "uint256"
+			}
+		],
 		"name": "swapExactTokensForTokens",
 		"outputs": [
 			{
@@ -688,6 +645,39 @@
 			}
 		],
 		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amountIn",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amountOutMin",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address[]",
+				"name": "path",
+				"type": "address[]"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "deadline",
+				"type": "uint256"
+			}
+		],
+		"name": "swapExactTokensForTokensSupportingFeeOnTransferTokens",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -722,19 +712,6 @@
 			}
 		],
 		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "swapSettlement",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
