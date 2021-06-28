@@ -53,11 +53,17 @@ export default ({visible, onClose, onSelect}: {
     updateBalanceAll();
   }, [tokenList, selectedWallet]);
 
+  const getBalanceInArr = (tokenAddress: string) => {
+    if (tokenAddress === 'KAI') return balance[0]
+    const index = tokenList.findIndex((i) => i.address === tokenAddress)
+    return balance[index + 1]
+  }
+
   const filterList = () => {
     const _tokenList = [
       ...[
         {
-          address: '',
+          address: 'KAI',
           id: 'KAI',
           name: 'KardiaChain',
           symbol: 'KAI',
@@ -247,7 +253,7 @@ export default ({visible, onClose, onSelect}: {
                 tokenAvatar: item.avatar || '',
                 tokenName: item.name,
                 tokenSymbol: item.symbol,
-                tokenBalance: balance[index],
+                tokenBalance: getBalanceInArr(item.address),
                 tokenDecimals: item.decimals,
                 showBorder: index !== filterList().length - 1,
                 tokenAddress: item.address
