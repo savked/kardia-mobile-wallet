@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ENIcon from 'react-native-vector-icons/Entypo';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { languageAtom } from '../../atoms/language';
 import CustomText from '../../components/Text';
@@ -9,7 +10,7 @@ import {styles} from './style';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import CustomTextInput from '../../components/TextInput';
 import { getSearchURL, isURL, parseURL } from '../../utils/string';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import FavoriteDapp from '../DAppBrowser/FavoriteDapp';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 
@@ -66,6 +67,29 @@ const DAppHome = () => {
           inputStyle={{
             backgroundColor: theme.backgroundFocusColor,
             color: theme.textColor
+          }}
+          icons={() => {
+            if (url !== '') {
+              return (
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    right: 10,
+                  }}
+                  onPress={() => setURL('')}
+                >
+                  <ENIcon
+                    size={20}
+                    style={{
+                      color: theme.textColor,
+                    }}
+                    name="cross"
+                  />
+                </TouchableOpacity>
+              )
+            } else {
+              return null
+            }
           }}
         />
       </View>
