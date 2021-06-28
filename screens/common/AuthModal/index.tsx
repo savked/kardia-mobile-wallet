@@ -96,6 +96,12 @@ export default ({
     otpRef && otpRef.current && otpRef.current.reset();
   }, []);
 
+  useEffect(() => {
+    if (visible && touchSupported) {
+      authByTouchID()
+    }
+  }, [visible, touchSupported])
+
   const verify = async () => {
     const localPass = await getAppPasscode();
     if (localPass !== passcode) {
