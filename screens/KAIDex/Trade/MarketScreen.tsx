@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Platform, TouchableOpacity, View } from 'react-native';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { Image, Platform, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { languageAtom } from '../../../atoms/language';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 import TxSettingModal from '../TxSettingModal'
@@ -13,7 +13,7 @@ import { approveToken, calculateDexAmountOut, calculatePriceImpact, calculateTra
 import { getBalance as getKRC20Balance } from '../../../services/krc20';
 import { ThemeContext } from '../../../ThemeContext';
 import { getLanguageString } from '../../../utils/lang';
-import { getSelectedWallet, getWallets } from '../../../utils/local';
+import { getSelectedWallet, getWallets, saveWallets } from '../../../utils/local';
 import { formatNumberString, getDecimalCount, getDigit, getPartial, isNumber, parseDecimals } from '../../../utils/number';
 import { swapTokens } from '../../../services/dex';
 import { useNavigation } from '@react-navigation/core';
@@ -21,36 +21,94 @@ import Tags from '../../../components/Tags';
 import AuthModal from '../../common/AuthModal';
 import { getErrorKey } from '../../../utils/error';
 import { cacheSelector } from '../../../atoms/cache';
+import SelectingPair from './SelectingPair';
+import { useQuery } from '@apollo/client';
+import { GET_PAIRS } from '../../../services/dex/queries';
+import { toChecksumAddress } from 'ethereumjs-util';
+import { getLogoURL } from '../../../utils/string';
+import { getBalance } from '../../../services/account';
+import { showTabBarAtom } from '../../../atoms/showTabBar';
 
-export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, tokenFromLiquidity: _tokenFromLiquidity, tokenToLiquidity: _tokenToLiquidity, pairAddress, totalVolume}: {
-  triggerSelectPair: () => void;
-  tokenFrom?: PairToken;
-  tokenTo?: PairToken;
-  tokenFromLiquidity: string;
-  tokenToLiquidity: string;
-  pairAddress: string;
-  totalVolume: string;
+let _tokenFrom: PairToken
+let _tokenTo: PairToken
+let _tokenFromLiquidity: string
+let _tokenToLiquidity: string
+
+const pairMapper = (pairs: any[]) => {
+  return pairs.map((item) => {
+    const invert = item.pairIdentity.invert
+
+    let t1 = {
+      hash: toChecksumAddress(item.token0.id),
+      name: item.token0.name,
+      logo: getLogoURL(item.token0.id),
+      symbol: item.token0.symbol,
+      decimals: Number(item.token0.decimals)
+    }
+
+    let t2 = {
+      hash: toChecksumAddress(item.token1.id),
+      name: item.token1.name,
+      logo: getLogoURL(item.token1.id),
+      symbol: item.token1.symbol,
+      decimals: Number(item.token1.decimals)
+    }
+
+    return {
+      decimals: '',
+      contract_address: item.id,
+      last_updated: null,
+      pair_name: '',
+      token1: {},
+      token1_liquidity: !invert ? item.reserve0 : item.reserve1,
+      token2: {},
+      token2_liquidity: !invert ? item.reserve1 : item.reserve0,
+      total_liquidity: '',
+      t1: invert ? t2 : t1,
+      t2: invert ? t1: t2,
+      volumeUSD: item.volumeUSD
+    }
+  })
+}
+
+export default ({
+  toggleMenu,
+  params
+}: {
+  params: any;
+  toggleMenu: () => void;
 }) => {
   const navigation = useNavigation()
-  const wallets = useRecoilValue(walletsAtom)
+  const [wallets, setWallets] = useRecoilState(walletsAtom)
   const selectedWallet = useRecoilValue(selectedWalletAtom)
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom)
+  const setTabBarVisible = useSetRecoilState(showTabBarAtom)
   
-
-  const [tokenFrom, setTokenFrom] = useState<PairToken | undefined>(_tokenFrom)
-  const [tokenFromLiquidity, setTokenFromLiquidity] = useState(_tokenFromLiquidity)
+  const [volumeUSD, setVolumeUSD] = useState('') //
+  const [pairAddress, setPairAddress] = useState(''); //
+  const [pairData, setPairData] = useState({pairs: [] as any[]}) //
+  const [selectingPair, setSelectingPair] = useState(false) //
+  // const [tokenFrom, setTokenFrom] = useState<PairToken | undefined>(_tokenFrom)
+  const [tokenFrom, setTokenFrom] = useState<PairToken | undefined>()
+  // const [tokenFromLiquidity, setTokenFromLiquidity] = useState(_tokenFromLiquidity)
+  const [tokenFromLiquidity, setTokenFromLiquidity] = useState('')
   const [amountFrom, setAmountFrom] = useState('0')
   const [amountFromTimeout, setAmountFromTimeout] = useState<any>()
   const [balanceFrom, setBalanceFrom] = useState('0');
   const [loadingFrom, setLoadingFrom] = useState(false);
   const [loadingTo, setLoadingTo] = useState(false);
 
+  const [inited, setInited] = useState(false)
+
+  const [refreshing, setRefreshing] = useState(false); //
   const [approvedState, setApprovedState] = useState(true)
   const [approving, setApproving] = useState(false);
 
-  const [tokenTo, setTokenTo] = useState<PairToken | undefined>(_tokenTo)
-  const [tokenToLiquidity, setTokenToLiquidity] = useState(_tokenToLiquidity)
+  // const [tokenTo, setTokenTo] = useState<PairToken | undefined>(_tokenTo)
+  const [tokenTo, setTokenTo] = useState<PairToken | undefined>()
+  // const [tokenToLiquidity, setTokenToLiquidity] = useState(_tokenToLiquidity)
+  const [tokenToLiquidity, setTokenToLiquidity] = useState('')
   const [amountTo, setAmountTo] = useState('0')
   const [amountToTimeout, setAmountToTimeout] = useState<any>()
   const [balanceTo, setBalanceTo] = useState('0');
@@ -74,6 +132,8 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   // const [onAuthSuccess, setOnAuthSuccess] = useState<() => void>(() => {})
   const [priceImpact, setPriceImpact] = useState('0');
 
+  const { loading, error, data: _pairData, refetch } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
+
   const onAuthSuccess = () => {
     if (!approvedState) {
       handleApprove()
@@ -81,6 +141,13 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
       handleSubmitMarket()
     }
   }
+
+
+  useEffect(() => {
+    if (!selectingPair) {
+      setTabBarVisible(true)
+    }
+  }, [selectingPair])
 
   useEffect(() => {
     setTokenFromLiquidity(_tokenFromLiquidity)
@@ -113,6 +180,15 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   }, [tokenFrom, wallets, selectedWallet])
 
   useEffect(() => {
+    if (!params || loading || error) return;
+    if (!pairData.pairs) return;
+    const _pairAddress = (params as any).pairAddress
+    if (_pairAddress) {
+      refetch()
+    }
+  }, [params])
+
+  useEffect(() => {
     (async () => {
       if (!tokenTo) return;
       
@@ -129,9 +205,73 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
   }, [tokenTo, wallets, selectedWallet])
 
   useEffect(() => {
+    if (!params || loading || error) return;
+    if (!pairData.pairs) return;
+    const _pairAddress = (params as any).pairAddress
+    if (_pairAddress) {
+      refetch()
+    }
+  }, [params])
+
+  useEffect(() => {
+    (async () => {
+      // if (params) return
+      if (pairData && pairData.pairs) {
+        let pair = pairData.pairs[0]
+
+        if (params) {
+          const _pairAddress = (params as any).pairAddress
+
+          const item = pairData.pairs.find((i: any) => {
+            return i.contract_address === _pairAddress
+          })
+
+          if (item) pair = item
+        }
+
+        if (!pair) return
+
+        _tokenFrom = JSON.parse(JSON.stringify(formatDexToken(pair.t1, wallets[selectedWallet])))
+        setTokenFrom(formatDexToken(pair.t1, wallets[selectedWallet]));
+
+        _tokenTo = JSON.parse(JSON.stringify(formatDexToken(pair.t2, wallets[selectedWallet])))
+        setTokenTo(formatDexToken(pair.t2, wallets[selectedWallet]));
+
+        _tokenFromLiquidity = pair.token1_liquidity
+        setTokenFromLiquidity(pair.token1_liquidity);
+
+        _tokenToLiquidity = pair.token2_liquidity
+        setTokenToLiquidity(pair.token2_liquidity)
+
+        setPairAddress(pair.contract_address)
+        setVolumeUSD(pair.volumeUSD)
+        setSelectingPair(false)
+
+        const balance = await getBalance(wallets[selectedWallet].address);
+        const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
+        newWallets.forEach((walletItem, index) => {
+          if (walletItem.address === wallets[selectedWallet].address) {
+            newWallets[index].balance = balance;
+          }
+        });
+        await saveWallets(newWallets)
+        setWallets(newWallets);
+        setInited(true)
+      }
+    })()
+  }, [pairData, params])
+
+  useEffect(() => {
+    if (!_pairData || !_pairData.pairs) return
+    setPairData({
+      pairs: pairMapper(_pairData.pairs)
+    })
+  }, [_pairData])
+
+  useEffect(() => {
     (async () => {
       if (!_tokenFromLiquidity || !_tokenToLiquidity || !pairAddress || !_tokenFrom || !_tokenTo) return;
-      const _volume = await getTotalVolume(totalVolume, pairAddress)
+      const _volume = await getTotalVolume(volumeUSD, pairAddress)
       setVolume(_volume.toString());
 
       const bnFrom = new BigNumber(_tokenFromLiquidity)
@@ -482,392 +622,449 @@ export default ({triggerSelectPair, tokenFrom: _tokenFrom, tokenTo: _tokenTo, to
     return true
   }
 
-  return (
-    <View 
-      style={{
-        width: '100%',
-        alignItems: 'center',
-        backgroundColor: theme.backgroundFocusColor,
-        paddingHorizontal: 16,
-        paddingTop: 24,
-        paddingBottom: 12,
-        borderRadius: 12,
-        shadowColor: 'rgba(0, 0, 0, 0.4)',
-        shadowOffset: {
-          width: 0,
-          height: 6,
-        },
-        shadowOpacity: 12,
-        shadowRadius: 8,
-        elevation: 11,
-      }}>
-      <TouchableOpacity 
-        style={{
-          backgroundColor: theme.backgroundColor,
-          padding: 16, 
-          width: '100%',
-          borderRadius: 12,
-          marginBottom: tokenFrom && tokenTo ? 12 : 0,
-          flexDirection: 'row',
-          alignItems: 'center'
+  if (selectingPair) {
+    return (
+      <SelectingPair
+        pairData={pairData}
+        loading={loading}
+        goBack={() => {
+          setSelectingPair(false)
+          toggleMenu()
         }}
-        onPress={triggerSelectPair}
-      >
-        <AuthModal
-          visible={showAuthModal}
-          onClose={() => {
-            setShowAuthModal(false)
-          }}
-          onSuccess={onAuthSuccess}
+        onSelect={(from: PairToken, to: PairToken, liquidityFrom, liquidityTo, pairAddress, volumeUSD) => {
+          _tokenFrom = JSON.parse(JSON.stringify(from))
+          setTokenFrom(from);
+          _tokenTo = JSON.parse(JSON.stringify(to))
+          setTokenTo(to);
+          setSelectingPair(false);
+          _tokenFromLiquidity = liquidityFrom
+          setTokenFromLiquidity(liquidityFrom);
+          _tokenToLiquidity = liquidityTo
+          setTokenToLiquidity(liquidityTo)
+          setPairAddress(pairAddress)
+          setVolumeUSD(volumeUSD)
+          toggleMenu()
+        }}
+      />
+    )
+  }
+
+  const onRefresh = async () => {
+    setRefreshing(true)
+    await refetch()
+    setRefreshing(false)
+  }
+
+  return (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{
+        flex: 1,
+      }}
+      contentContainerStyle={{
+        paddingBottom: 28
+      }}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={[theme.textColor]}
+          tintColor={theme.textColor}
+          titleColor={theme.textColor}
         />
-        <View style={{flexDirection: 'row', marginRight: 12}}>
-          {
-            _tokenFrom && (
-              <View style={{width: 32, height: 32, backgroundColor: '#FFFFFF', borderRadius: 16}}>
-                <Image
-                  source={{uri: _tokenFrom.logo}}
-                  style={{width: 32, height: 32}}
-                />
-              </View>
-            )
-          }
-          {
-            _tokenTo && (
-              <View 
+      }
+    >
+      <View onStartShouldSetResponder={() => true}>
+        <View 
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            backgroundColor: theme.backgroundFocusColor,
+            paddingHorizontal: 16,
+            paddingTop: 24,
+            paddingBottom: 12,
+            borderRadius: 12,
+            shadowColor: 'rgba(0, 0, 0, 0.4)',
+            shadowOffset: {
+              width: 0,
+              height: 6,
+            },
+            shadowOpacity: 12,
+            shadowRadius: 8,
+            elevation: 11,
+          }}>
+          <TouchableOpacity 
+            style={{
+              backgroundColor: theme.backgroundColor,
+              padding: 16, 
+              width: '100%',
+              borderRadius: 12,
+              marginBottom: tokenFrom && tokenTo ? 12 : 0,
+              flexDirection: 'row',
+              alignItems: 'center'
+            }}
+            onPress={() => {
+              toggleMenu()
+              setSelectingPair(true)
+            }}
+          >
+            <AuthModal
+              visible={showAuthModal}
+              onClose={() => {
+                setShowAuthModal(false)
+              }}
+              onSuccess={onAuthSuccess}
+            />
+            <View style={{flexDirection: 'row', marginRight: 12}}>
+              {
+                _tokenFrom && (
+                  <View style={{width: 32, height: 32, backgroundColor: '#FFFFFF', borderRadius: 16}}>
+                    <Image
+                      source={{uri: _tokenFrom.logo}}
+                      style={{width: 32, height: 32}}
+                    />
+                  </View>
+                )
+              }
+              {
+                _tokenTo && (
+                  <View 
+                    style={{
+                      width: 32,
+                      height: 32,
+                      backgroundColor: '#FFFFFF',
+                      borderRadius: 16,
+                      marginLeft: -8,
+                      shadowColor: 'rgba(0, 0, 0, 0.3)',
+                      shadowOffset: {
+                        width: -6,
+                        height: 0,
+                      },
+                      shadowOpacity: 12,
+                      shadowRadius: 8,
+                      elevation: 11,
+                    }}
+                  >
+                    <Image
+                      source={{uri: _tokenTo.logo}}
+                      style={{width: 32, height: 32}}
+                    />
+                  </View>
+                )
+              }
+            </View>
+            <View style={{flex: 1}}>
+              {_tokenFrom && _tokenTo && <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 4}}>{_tokenFrom.symbol} / {_tokenTo.symbol}</CustomText>}
+              <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
+                {
+                  tokenFrom && tokenTo ? 
+                    <CustomText>
+                      {getLanguageString(language, 'VOLUME_24H')}{' '}
+                      <CustomText style={{color: theme.textColor}}>
+                        ${formatNumberString(volume, 6)}
+                      </CustomText>
+                    </CustomText>
+                    : getLanguageString(language, 'CLICK_TO_SELECT_PAIR')
+                }
+              </CustomText>
+            </View>
+            <Image
+              source={require('../../../assets/icon/chevron-right.png')}
+              style={{width: 20, height: 20}}
+            />
+          </TouchableOpacity>
+          {tokenTo && (
+            <View style={{width: '100%', marginTop: 12}}>
+              <CustomText 
                 style={{
-                  width: 32,
-                  height: 32,
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: 16,
-                  marginLeft: -8,
-                  shadowColor: 'rgba(0, 0, 0, 0.3)',
-                  shadowOffset: {
-                    width: -6,
-                    height: 0,
-                  },
-                  shadowOpacity: 12,
-                  shadowRadius: 8,
-                  elevation: 11,
+                  color: theme.textColor,
+                  fontSize: theme.defaultFontSize + 1,
+                  fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+                  fontWeight: '500',
+                  marginBottom: 6
                 }}
               >
-                <Image
-                  source={{uri: _tokenTo.logo}}
-                  style={{width: 32, height: 32}}
+                {getLanguageString(language, 'FROM')}
+              </CustomText>
+              <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
+                <CustomTextInput
+                  value={amountTo}
+                  keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
+                  editable={editting !== 'from'}
+                  loading={loadingTo}
+                  onChangeText={(newValue) => {
+                    setInputType(0)
+                    const digitOnly = getDigit(newValue, tokenTo.decimals === 0 ? false : true);
+                    if (digitOnly === '') {
+                      setAmountTo('0')
+                    }
+                    if (getDecimalCount(newValue) > tokenTo.decimals) {
+                      return;
+                    }
+                  
+                    if (isNumber(digitOnly)) {
+                      let formatedValue = formatNumberString(digitOnly);
+                      
+                      if (tokenTo.decimals == 0) {
+                        setAmountTo(formatedValue);
+                        return
+                      }
+
+                      const [numParts, decimalParts] = digitOnly.split('.')
+
+                      if (!decimalParts && decimalParts !== "") {
+                        setAmountTo(formatedValue);
+                        return
+                      }
+
+                      formatedValue = formatNumberString(numParts) + '.' + decimalParts
+
+                      // if (newValue[newValue.length - 1] === '.') formatedValue += '.'
+                      // else if (newValue[newValue.length - 2] === '.' && newValue[newValue.length - 1] === '0') formatedValue += '.0'
+                      setAmountTo(formatedValue)
+                    }
+                  }}
+                  containerStyle={{width: '100%'}}
+                  inputStyle={{
+                    // backgroundColor: 'rgba(184, 184, 184, 1)',
+                    // color: 'rgba(28, 28, 40, 0.36)',
+                    backgroundColor: 'rgba(96, 99, 108, 1)',
+                    color: theme.textColor,
+                    paddingRight: 90
+                  }}
+                  onFocus={() => {
+                    setEditting('to')
+                  }}
+                  onBlur={() => {
+                    setEditting('')
+                    setAmountTo(formatNumberString(getDigit(amountTo)))
+                  }}
                 />
+                <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: 60}}>
+                  {
+                    tokenTo && (
+                      <>
+                        <View style={{width: 20, height: 20, backgroundColor: '#FFFFFF', borderRadius: 10, marginRight: 8}}>
+                          <Image
+                            source={{uri: tokenTo.logo}}
+                            style={{width: 20, height: 20}}
+                          />
+                        </View>
+                        <CustomText style={{color: theme.textColor}}>{tokenTo.symbol}</CustomText>
+                      </>
+                    )
+                  }
+                </View>
+              </View>
+              <View style={{flexDirection: 'row', marginTop: 12}}>
+                <Tags 
+                  content={`25 %`} 
+                  active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.25, tokenTo.decimals), tokenTo.decimals) } 
+                  containerStyle={{marginRight: 12}} 
+                  onPress={() => {
+                    setEditting('to')
+                    const partialValue = getPartial(balanceTo, 0.25, tokenTo.decimals)
+                    setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
+                  }} 
+                />
+                <Tags 
+                  content={`50 %`} 
+                  active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.5, tokenTo.decimals), tokenTo.decimals) } 
+                  containerStyle={{marginRight: 12}} 
+                  onPress={() => {
+                    setEditting('to')
+                    const partialValue = getPartial(balanceTo, 0.5, tokenTo.decimals)
+                    setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
+                  }}
+                />
+                <Tags 
+                  content={`75 %`} 
+                  active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.75, tokenTo.decimals), tokenTo.decimals) } 
+                  containerStyle={{marginRight: 12}} 
+                  onPress={() => {
+                    setEditting('to')
+                    const partialValue = getPartial(balanceTo, 0.75, tokenTo.decimals)
+                    setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
+                  }}
+                />
+                <Tags 
+                  content={`100 %`} 
+                  active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 1, tokenTo.decimals), tokenTo.decimals) } 
+                  onPress={() => {
+                    setEditting('to')
+                    
+                    let partialValue = getPartial(balanceTo, 1, tokenTo.decimals)
+                    if (tokenTo.symbol === 'KAI') {
+                      const bnPartialValue = new BigNumber(partialValue)
+                      const ONE_KAI = new BigNumber(10 ** 18)
+                      // const bn110KAI = new BigNumber(10 ** (tokenTo.decimals))
+                      const bn110KAI = new BigNumber(partialValue).multipliedBy(new BigNumber(0.1))
+                      if (bnPartialValue.isGreaterThan(ONE_KAI)) {
+                        partialValue = bnPartialValue.minus(new BigNumber(10 ** 16)).toFixed(tokenTo.decimals, 1)
+                      } else {
+                        partialValue = bnPartialValue.minus(bn110KAI).toFixed(tokenTo.decimals, 1)
+                      }
+                    }
+                    setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
+                  }} 
+                />
+              </View>
+              <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
+                {getLanguageString(language, 'BALANCE')}:{' '}
+                <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceTo, tokenTo.decimals), 6)}</CustomText>
+              </CustomText>
+              <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
+                Liquidity:{' '}
+                <CustomText style={{color: theme.textColor}}>
+                  {formatNumberString(tokenToLiquidity, 6)}
+                </CustomText>
+              </CustomText>
+            </View>
+          )}
+          {
+            tokenFrom && tokenTo && (
+              <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 16}}>
+                <Divider height={0.5} style={{width: '100%', backgroundColor: '#F0F1F2'}} />
+                <TouchableOpacity 
+                  style={{
+                    backgroundColor: 'rgba(96, 99, 108, 1)',
+                    width: 24,
+                    height: 24,
+                    borderRadius: 12,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    shadowColor: 'rgba(0, 0, 0, 0.3)',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 2,
+                    shadowRadius: 4,
+                    elevation: 9,
+                  }}
+                  onPress={handleSwitchToken}
+                >
+                  <Image 
+                    source={require('../../../assets/icon/swap_dark.png')}
+                    style={{width: 16, height: 16}}
+                  />
+                </TouchableOpacity>
               </View>
             )
           }
-        </View>
-        <View style={{flex: 1}}>
-          {_tokenFrom && _tokenTo && <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 4}}>{_tokenFrom.symbol} / {_tokenTo.symbol}</CustomText>}
-          <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
-            {
-              tokenFrom && tokenTo ? 
-                <CustomText>
-                  {getLanguageString(language, 'VOLUME_24H')}{' '}
-                  <CustomText style={{color: theme.textColor}}>
-                    ${formatNumberString(volume, 6)}
-                  </CustomText>
+          {tokenFrom && (
+            <View style={{width: '100%'}}>
+              <CustomText 
+                style={{
+                  color: theme.textColor,
+                  fontSize: theme.defaultFontSize + 1,
+                  fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+                  fontWeight: '500',
+                  marginBottom: 6
+                }}
+              >
+                {getLanguageString(language, 'TO')}
+              </CustomText>
+              <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
+                <CustomTextInput
+                  value={amountFrom}
+                  keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
+                  loading={loadingFrom}
+                  onChangeText={(newValue) => {
+                    setInputType(1)
+                    const digitOnly = getDigit(newValue, tokenFrom.decimals === 0 ? false : true);
+                    if (digitOnly === '') {
+                      setAmountFrom('0')
+                    }
+                    if (getDecimalCount(newValue) > tokenFrom.decimals) {
+                      return;
+                    }
+                    if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(tokenFromLiquidity))) {
+                      // setAmountFrom(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)).toFixed())
+                      return;
+                    }
+                  
+                    if (isNumber(digitOnly)) {
+                      let formatedValue = formatNumberString(digitOnly);
+                      
+                      if (tokenFrom.decimals == 0) {
+                        setAmountFrom(formatedValue);
+                        return
+                      }
+
+                      const [numParts, decimalParts] = digitOnly.split('.')
+
+                      if (!decimalParts && decimalParts !== "") {
+                        setAmountFrom(formatedValue);
+                        return
+                      }
+
+                      formatedValue = formatNumberString(numParts) + '.' + decimalParts
+
+                      // if (newValue[newValue.length - 1] === '.') formatedValue += '.'
+                      // else if (newValue[newValue.length - 2] === '.' && newValue[newValue.length - 1] === '0') formatedValue += '.0'
+                      setAmountFrom(formatedValue)
+                    }
+                  }}
+                  containerStyle={{width: '100%'}}
+                  inputStyle={{
+                    backgroundColor: 'rgba(96, 99, 108, 1)',
+                    color: theme.textColor,
+                    paddingRight: 90
+                  }}
+                  onFocus={() => {
+                    setEditting('from')
+                  }}
+                  onBlur={() => {
+                    setEditting('')
+                    setAmountFrom(formatNumberString(getDigit(amountFrom)))
+                  }}
+                />
+                <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: 60}}>
+                  {
+                    tokenFrom && (
+                      <>
+                        <View style={{width: 20, height: 20, backgroundColor: '#FFFFFF', borderRadius: 10, marginRight: 8}}>
+                          <Image
+                            source={{uri: tokenFrom.logo}}
+                            style={{width: 20, height: 20}}
+                          />
+                        </View>
+                        <CustomText style={{color: theme.textColor}}>{tokenFrom.symbol}</CustomText>
+                      </>
+                    )
+                  }
+                </View>
+              </View>
+              <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
+                {getLanguageString(language, 'BALANCE')}:{' '}
+                <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceFrom, tokenFrom.decimals), 6)}</CustomText>
+              </CustomText>
+              <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
+                Liquidity:{' '}
+                <CustomText style={{color: theme.textColor}}>
+                  {formatNumberString(tokenFromLiquidity, 6)}
                 </CustomText>
-                : getLanguageString(language, 'CLICK_TO_SELECT_PAIR')
-            }
-          </CustomText>
-        </View>
-        <Image
-          source={require('../../../assets/icon/chevron-right.png')}
-          style={{width: 20, height: 20}}
-        />
-      </TouchableOpacity>
-      {tokenTo && (
-        <View style={{width: '100%', marginTop: 12}}>
-          <CustomText 
+              </CustomText>
+            </View>
+          )}
+          {renderRate()}
+          {renderSetting()}
+          {inited && renderButton()}
+          <CustomText
             style={{
-              color: theme.textColor,
+              color: 'rgba(255, 66, 67, 1)',
+              marginTop: swapError ? 12 : 0,
               fontSize: theme.defaultFontSize + 1,
-              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-              fontWeight: '500',
-              marginBottom: 6
+              textAlign: 'left',
+              width: '100%'
             }}
           >
-            {getLanguageString(language, 'FROM')}
-          </CustomText>
-          <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
-            <CustomTextInput
-              value={amountTo}
-              keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
-              editable={editting !== 'from'}
-              loading={loadingTo}
-              onChangeText={(newValue) => {
-                setInputType(0)
-                const digitOnly = getDigit(newValue, tokenTo.decimals === 0 ? false : true);
-                if (digitOnly === '') {
-                  setAmountTo('0')
-                }
-                if (getDecimalCount(newValue) > tokenTo.decimals) {
-                  return;
-                }
-              
-                if (isNumber(digitOnly)) {
-                  let formatedValue = formatNumberString(digitOnly);
-                  
-                  if (tokenTo.decimals == 0) {
-                    setAmountTo(formatedValue);
-                    return
-                  }
-
-                  const [numParts, decimalParts] = digitOnly.split('.')
-
-                  if (!decimalParts && decimalParts !== "") {
-                    setAmountTo(formatedValue);
-                    return
-                  }
-
-                  formatedValue = formatNumberString(numParts) + '.' + decimalParts
-
-                  // if (newValue[newValue.length - 1] === '.') formatedValue += '.'
-                  // else if (newValue[newValue.length - 2] === '.' && newValue[newValue.length - 1] === '0') formatedValue += '.0'
-                  setAmountTo(formatedValue)
-                }
-              }}
-              containerStyle={{width: '100%'}}
-              inputStyle={{
-                // backgroundColor: 'rgba(184, 184, 184, 1)',
-                // color: 'rgba(28, 28, 40, 0.36)',
-                backgroundColor: 'rgba(96, 99, 108, 1)',
-                color: theme.textColor,
-                paddingRight: 90
-              }}
-              onFocus={() => {
-                setEditting('to')
-              }}
-              onBlur={() => {
-                setEditting('')
-                setAmountTo(formatNumberString(getDigit(amountTo)))
-              }}
-            />
-            <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: 60}}>
-              {
-                tokenTo && (
-                  <>
-                    <View style={{width: 20, height: 20, backgroundColor: '#FFFFFF', borderRadius: 10, marginRight: 8}}>
-                      <Image
-                        source={{uri: tokenTo.logo}}
-                        style={{width: 20, height: 20}}
-                      />
-                    </View>
-                    <CustomText style={{color: theme.textColor}}>{tokenTo.symbol}</CustomText>
-                  </>
-                )
-              }
-            </View>
-          </View>
-          <View style={{flexDirection: 'row', marginTop: 12}}>
-            <Tags 
-              content={`25 %`} 
-              active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.25, tokenTo.decimals), tokenTo.decimals) } 
-              containerStyle={{marginRight: 12}} 
-              onPress={() => {
-                setEditting('to')
-                const partialValue = getPartial(balanceTo, 0.25, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
-              }} 
-            />
-            <Tags 
-              content={`50 %`} 
-              active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.5, tokenTo.decimals), tokenTo.decimals) } 
-              containerStyle={{marginRight: 12}} 
-              onPress={() => {
-                setEditting('to')
-                const partialValue = getPartial(balanceTo, 0.5, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
-              }}
-            />
-            <Tags 
-              content={`75 %`} 
-              active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.75, tokenTo.decimals), tokenTo.decimals) } 
-              containerStyle={{marginRight: 12}} 
-              onPress={() => {
-                setEditting('to')
-                const partialValue = getPartial(balanceTo, 0.75, tokenTo.decimals)
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
-              }}
-            />
-            <Tags 
-              content={`100 %`} 
-              active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 1, tokenTo.decimals), tokenTo.decimals) } 
-              onPress={() => {
-                setEditting('to')
-                
-                let partialValue = getPartial(balanceTo, 1, tokenTo.decimals)
-                if (tokenTo.symbol === 'KAI') {
-                  const bnPartialValue = new BigNumber(partialValue)
-                  const ONE_KAI = new BigNumber(10 ** 18)
-                  // const bn110KAI = new BigNumber(10 ** (tokenTo.decimals))
-                  const bn110KAI = new BigNumber(partialValue).multipliedBy(new BigNumber(0.1))
-                  if (bnPartialValue.isGreaterThan(ONE_KAI)) {
-                    partialValue = bnPartialValue.minus(new BigNumber(10 ** 16)).toFixed(tokenTo.decimals, 1)
-                  } else {
-                    partialValue = bnPartialValue.minus(bn110KAI).toFixed(tokenTo.decimals, 1)
-                  }
-                }
-                setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
-              }} 
-            />
-          </View>
-          <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
-            {getLanguageString(language, 'BALANCE')}:{' '}
-            <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceTo, tokenTo.decimals), 6)}</CustomText>
-          </CustomText>
-          <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
-            Liquidity:{' '}
-            <CustomText style={{color: theme.textColor}}>
-              {formatNumberString(tokenToLiquidity, 6)}
-            </CustomText>
+            {swapError}
           </CustomText>
         </View>
-      )}
-      {
-        tokenFrom && tokenTo && (
-          <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 16}}>
-            <Divider height={0.5} style={{width: '100%', backgroundColor: '#F0F1F2'}} />
-            <TouchableOpacity 
-              style={{
-                backgroundColor: 'rgba(96, 99, 108, 1)',
-                width: 24,
-                height: 24,
-                borderRadius: 12,
-                alignItems: 'center',
-                justifyContent: 'center',
-                position: 'absolute',
-                shadowColor: 'rgba(0, 0, 0, 0.3)',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 2,
-                shadowRadius: 4,
-                elevation: 9,
-              }}
-              onPress={handleSwitchToken}
-            >
-              <Image 
-                source={require('../../../assets/icon/swap_dark.png')}
-                style={{width: 16, height: 16}}
-              />
-            </TouchableOpacity>
-          </View>
-        )
-      }
-      {tokenFrom && (
-        <View style={{width: '100%'}}>
-          <CustomText 
-            style={{
-              color: theme.textColor,
-              fontSize: theme.defaultFontSize + 1,
-              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-              fontWeight: '500',
-              marginBottom: 6
-            }}
-          >
-            {getLanguageString(language, 'TO')}
-          </CustomText>
-          <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
-            <CustomTextInput
-              value={amountFrom}
-              keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
-              loading={loadingFrom}
-              onChangeText={(newValue) => {
-                setInputType(1)
-                const digitOnly = getDigit(newValue, tokenFrom.decimals === 0 ? false : true);
-                if (digitOnly === '') {
-                  setAmountFrom('0')
-                }
-                if (getDecimalCount(newValue) > tokenFrom.decimals) {
-                  return;
-                }
-                if (new BigNumber(digitOnly).isGreaterThan(new BigNumber(tokenFromLiquidity))) {
-                  // setAmountFrom(new BigNumber(parseDecimals(tokenFromLiquidity!, tokenFrom.decimals)).toFixed())
-                  return;
-                }
-              
-                if (isNumber(digitOnly)) {
-                  let formatedValue = formatNumberString(digitOnly);
-                  
-                  if (tokenFrom.decimals == 0) {
-                    setAmountFrom(formatedValue);
-                    return
-                  }
-
-                  const [numParts, decimalParts] = digitOnly.split('.')
-
-                  if (!decimalParts && decimalParts !== "") {
-                    setAmountFrom(formatedValue);
-                    return
-                  }
-
-                  formatedValue = formatNumberString(numParts) + '.' + decimalParts
-
-                  // if (newValue[newValue.length - 1] === '.') formatedValue += '.'
-                  // else if (newValue[newValue.length - 2] === '.' && newValue[newValue.length - 1] === '0') formatedValue += '.0'
-                  setAmountFrom(formatedValue)
-                }
-              }}
-              containerStyle={{width: '100%'}}
-              inputStyle={{
-                backgroundColor: 'rgba(96, 99, 108, 1)',
-                color: theme.textColor,
-                paddingRight: 90
-              }}
-              onFocus={() => {
-                setEditting('from')
-              }}
-              onBlur={() => {
-                setEditting('')
-                setAmountFrom(formatNumberString(getDigit(amountFrom)))
-              }}
-            />
-            <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: 60}}>
-              {
-                tokenFrom && (
-                  <>
-                    <View style={{width: 20, height: 20, backgroundColor: '#FFFFFF', borderRadius: 10, marginRight: 8}}>
-                      <Image
-                        source={{uri: tokenFrom.logo}}
-                        style={{width: 20, height: 20}}
-                      />
-                    </View>
-                    <CustomText style={{color: theme.textColor}}>{tokenFrom.symbol}</CustomText>
-                  </>
-                )
-              }
-            </View>
-          </View>
-          <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
-            {getLanguageString(language, 'BALANCE')}:{' '}
-            <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceFrom, tokenFrom.decimals), 6)}</CustomText>
-          </CustomText>
-          <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
-            Liquidity:{' '}
-            <CustomText style={{color: theme.textColor}}>
-              {formatNumberString(tokenFromLiquidity, 6)}
-            </CustomText>
-          </CustomText>
-        </View>
-      )}
-      {renderRate()}
-      {renderSetting()}
-      {renderButton()}
-      <CustomText
-        style={{
-          color: 'rgba(255, 66, 67, 1)',
-          marginTop: swapError ? 12 : 0,
-          fontSize: theme.defaultFontSize + 1,
-          textAlign: 'left',
-          width: '100%'
-        }}
-      >
-        {swapError}
-      </CustomText>
-    </View>
+      </View>
+    </ScrollView>
   )
 }

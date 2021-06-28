@@ -116,7 +116,7 @@ export default ({goBack, onSelect, pairData, loading}: {
   }
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor, paddingHorizontal: 20}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
       <Icon.Button
         style={{paddingLeft: 0}}
         name="chevron-left"
