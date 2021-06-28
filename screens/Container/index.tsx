@@ -239,9 +239,9 @@ const Wrap = () => {
       {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
       <Tab.Screen name="Home" component={HomeStackScreen} />
       {/* <Tab.Screen name="Transaction" component={TransactionStackScreen} /> */}
-      <Tab.Screen name="Staking" component={StakingStackScreen} />
-      <Tab.Screen name="DEX" component={DEXStackScreen} />
       <Tab.Screen name="DApp" component={DAppStackScreen} />
+      <Tab.Screen name="DEX" component={DEXStackScreen} />
+      <Tab.Screen name="Staking" component={StakingStackScreen} />
       {/* <Tab.Screen name="Address" component={AddressStackScreen} /> */}
       {/* <Tab.Screen name="News" component={NewsScreen} /> */}
       <Tab.Screen name="Setting" component={SettingStackScreen} />
