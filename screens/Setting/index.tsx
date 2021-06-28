@@ -260,7 +260,7 @@ const SettingScreen = () => {
           fontSize: theme.defaultFontSize,
           marginBottom: 24,
         }}>
-        Kardiachain©2020 - Version {INFO_DATA.version}
+        Kardiachain©2021 - Version {INFO_DATA.version}
       </CustomText>
     </SafeAreaView>
   );
