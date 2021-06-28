@@ -30,12 +30,13 @@ export default ({visible, onClose, txObj, onConfirm}: {
 
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const wallets = useRecoilValue(walletsAtom)
 
   const getContentStyle = () => {
     return {
       backgroundColor: theme.backgroundFocusColor,
-      height: 430,
+      height: 440,
       justifyContent: 'flex-start'
     }
   }
@@ -54,6 +55,8 @@ export default ({visible, onClose, txObj, onConfirm}: {
       onConfirm(txHash) 
     } catch (error) {
       console.log('error', error)
+      setLoading(false)
+      setError(getLanguageString(language, 'GENERAL_ERROR'))
     }
   }
 
@@ -171,6 +174,20 @@ export default ({visible, onClose, txObj, onConfirm}: {
       {
         preparing ? <ActivityIndicator color={theme.textColor} size="large" /> : 
         renderTx()
+      }
+      {
+        error !== '' && 
+        <CustomText
+          style={{
+            color: 'red',
+            textAlign: 'left',
+            width: '100%',
+            marginTop: 8,
+            fontStyle: 'italic'
+          }}
+        >
+          {error}
+        </CustomText>
       }
     </CustomModal>
   )

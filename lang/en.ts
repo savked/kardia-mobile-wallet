@@ -299,6 +299,8 @@ export const lang: Language = {
     ORDER_HISTORY: 'My orders',
     ADD_LIQUIDITY: 'Liquidity',
     TRADE: 'Trade',
+    ORDER_TYPE_BUY: 'Buy',
+    ORDER_TYPE_SELL: 'Sell',
     // Referral key
     REFERRAL_CODE: 'Referral Code',
     REFERRAL_CODE_TITLE: 'Referral',
@@ -307,6 +309,7 @@ export const lang: Language = {
     REFERRAL_CODE_NOTE: 'Be careful. This referral code can NOT be changed in the future.',
     // DApp
     DAPP: 'DApps',
-    SEARCH_DAPP_PLACEHOLDER: 'Search or enter DApp URL'
+    SEARCH_DAPP_PLACEHOLDER: 'Search or enter DApp URL',
+    DAPP_ERROR: 'Error confirming your transaction. Please try again later or contact admin for support.'
   },
 };

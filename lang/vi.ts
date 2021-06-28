@@ -292,6 +292,8 @@ export const lang: Language = {
     ORDER_HISTORY: 'Lệnh đã đặt',
     ADD_LIQUIDITY: 'Thanh khoản',
     TRADE: 'Giao dịch',
+    ORDER_TYPE_BUY: 'Mua',
+    ORDER_TYPE_SELL: 'Bán',
     // Referral key
     REFERRAL_CODE: 'Mã giới thiệu',
     REFERRAL_CODE_TITLE: 'Mã giới thiệu',
@@ -300,6 +302,7 @@ export const lang: Language = {
     REFERRAL_CODE_NOTE: 'Lưu ý: Mã giới thiệu này không thể thay đỏi.',
     // DApp
     DAPP: 'DApps',
-    SEARCH_DAPP_PLACEHOLDER: 'Tìm hoặc nhập địa chỉ DApp'
+    SEARCH_DAPP_PLACEHOLDER: 'Tìm hoặc nhập địa chỉ DApp',
+    DAPP_ERROR: 'Có lỗi xảy ra. Vui lòng thử lại sau hoặc liên hệ admin để được hỗ trợ.'
   },
 };
