@@ -369,8 +369,6 @@ const AppContainer = () => {
 
       const serverStatus = await getAppStatus(address);
 
-      console.log(serverStatus)
-
       if (serverStatus.status === 'UNDER_MAINTAINANCE') {
         setAppStatus('UNDER_MAINTAINANCE')
         return;
