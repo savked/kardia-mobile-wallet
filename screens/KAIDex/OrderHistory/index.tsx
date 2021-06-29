@@ -141,23 +141,16 @@ export default () => {
 
   return (
 		<View style={{flex: 1}}>
-			<ComingSoon />
-			{/* <ScrollView 
+			<ScrollView 
         showsVerticalScrollIndicator={false}
 				scrollEventThrottle={8}
         onScroll={({nativeEvent}) => {
-					console.log('scroll detected')
           if (!haveMore || gettingMore) return;
           if (isCloseToBottom(nativeEvent)) {
-						console.log('here fetch')
 						setGettingMore(true)
             setPage(page + 1)
           }
         }}
-				contentContainerStyle={{
-					// height: ITEM_HEIGHT * SIZE - 150
-					// flex: 1
-				}}
         style={{
 					height: ITEM_HEIGHT * SIZE - 150,
 					// flex: 1
@@ -255,7 +248,7 @@ export default () => {
             <ActivityIndicator color={theme.textColor} size="small" />
           </View>
         )}
-			</ScrollView> */}
+			</ScrollView>
 		</View>
 	)
 };
