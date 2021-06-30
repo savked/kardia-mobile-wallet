@@ -301,6 +301,11 @@ export const lang: Language = {
     TRADE: 'Trade',
     ORDER_TYPE_BUY: 'Buy',
     ORDER_TYPE_SELL: 'Sell',
+    BUY_AT: 'Buy at',
+    SELL_AT: 'Sell at',
+    PAIR: 'Pair',
+    PRICE: 'Price',
+    AMOUNT: 'Amount',
     // Referral key
     REFERRAL_CODE: 'Referral Code',
     REFERRAL_CODE_TITLE: 'Referral',

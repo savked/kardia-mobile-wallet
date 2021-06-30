@@ -14,6 +14,8 @@ import { languageAtom } from '../../../atoms/language';
 import { formatNumberString, parseDecimals } from '../../../utils/number';
 import { groupByDate } from '../../../utils/date';
 import { truncate } from '../../../utils/string';
+import { getOrderPrice, isBuy, parseSymbolWKAI } from '../../../utils/dex';
+import OrderDetailModal from '../../common/OrderDetailModal';
 
 const SIZE = 10
 const ITEM_HEIGHT = 93
@@ -30,10 +32,10 @@ export default () => {
   const [haveMore, setHaveMore] = useState(true);
 	const [refreshing, setRefreshing] = useState(false);
 
-	const [showTxDetail, setShowTxDetail] = useState(false);
-  const [txObjForDetail, setTxObjForDetail] = useState();
+	const [showOrderDetail, setShowOrderDetail] = useState(false);
+  const [orderObjForDetail, setOrderObjForDetail] = useState<any>();
 
-	const { loading, error, data, refetch } = useQuery(
+	const { loading, error, data } = useQuery(
 		MY_ORDER_HISTORY, 
 		{
 			fetchPolicy: 'no-cache',
@@ -61,10 +63,6 @@ export default () => {
       contentSize.height - paddingToBottom;
   };
 
-	const isBuy = (amount0In: string) => {
-		return amount0In === "0"
-	}
-
 	const onRefresh = async () => {
 		setRefreshing(true)
 		console.log('here refresh')
@@ -81,6 +79,7 @@ export default () => {
 					date: new Date(item.timestamp * 1000)
 				}
 			})
+      console.log(parsedData[0])
 			setGettingMore(false)
 			if (parsedData.length === 0) {
 				setHaveMore(false);
@@ -141,23 +140,21 @@ export default () => {
 
   return (
 		<View style={{flex: 1}}>
-			<ComingSoon />
-			{/* <ScrollView 
+      <OrderDetailModal
+        visible={showOrderDetail}
+        onClose={() => setShowOrderDetail(false)}
+        orderObj={orderObjForDetail}
+      />
+			<ScrollView 
         showsVerticalScrollIndicator={false}
 				scrollEventThrottle={8}
         onScroll={({nativeEvent}) => {
-					console.log('scroll detected')
           if (!haveMore || gettingMore) return;
           if (isCloseToBottom(nativeEvent)) {
-						console.log('here fetch')
 						setGettingMore(true)
             setPage(page + 1)
           }
         }}
-				contentContainerStyle={{
-					// height: ITEM_HEIGHT * SIZE - 150
-					// flex: 1
-				}}
         style={{
 					height: ITEM_HEIGHT * SIZE - 150,
 					// flex: 1
@@ -202,10 +199,10 @@ export default () => {
                         alignItems: 'center',
                       }}
                       onPress={() => {
-                        setTxObjForDetail(item);
-                        setShowTxDetail(true);
+                        setOrderObjForDetail(item);
+                        setShowOrderDetail(true);
                       }}>
-                      {renderIcon(item.status, isBuy(item.amount0In) ? 'IN' : 'OUT')}
+                      {renderIcon(item.status, isBuy(item) ? 'IN' : 'OUT')}
                       <View
                         style={{
                           flexDirection: 'column',
@@ -213,13 +210,18 @@ export default () => {
                           paddingHorizontal: 4,
                         }}>
                         <CustomText style={{color: '#FFFFFF', fontSize: theme.defaultFontSize + 1, fontWeight: '500'}}>
-                          {
+                          {/* {
                             isBuy(item.amount0In) ? getLanguageString(language, 'ORDER_TYPE_BUY')
                               : getLanguageString(language, 'ORDER_TYPE_SELL')
-                          }
+                          } */}
+                          {parseSymbolWKAI(item.pair.token0.symbol)} / {parseSymbolWKAI(item.pair.token1.symbol)}
                         </CustomText>
                         <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
-                          {truncate(item.transaction.id, 8, 10)}
+                          {/* {truncate(item.transaction.id, 8, 10)} */}
+                          {getLanguageString(language, isBuy(item) ? 'BUY_AT' : 'SELL_AT')}{' '}
+                          <CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize}}>
+                            {formatNumberString(getOrderPrice(item).toFixed(), 6)}
+                          </CustomText>
                         </CustomText>
                       </View>
                       <View
@@ -232,11 +234,11 @@ export default () => {
                             {color: theme.textColor, fontSize: theme.defaultFontSize + 1}
                           ]}>
                           {formatNumberString(
-														isBuy(item.amount0In) ? item.amount0Out : item.amount0In, 
+														isBuy(item) ? item.amount0Out : item.amount0In, 
 														4
 													)}{' '}
                           <CustomText style={{color: theme.mutedTextColor}}>
-                            {item.pair.token0.symbol}
+                            {parseSymbolWKAI(item.pair.token0.symbol)}
                           </CustomText>
                         </CustomText>
                         <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
@@ -255,7 +257,7 @@ export default () => {
             <ActivityIndicator color={theme.textColor} size="small" />
           </View>
         )}
-			</ScrollView> */}
+			</ScrollView>
 		</View>
 	)
 };

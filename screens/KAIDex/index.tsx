@@ -1,66 +1,19 @@
 import { useFocusEffect, useRoute } from '@react-navigation/native';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Keyboard, Platform, RefreshControl, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useCallback, useContext, useState } from 'react';
+import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { showTabBarAtom } from '../../atoms/showTabBar';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import CustomText from '../../components/Text';
 import { ThemeContext } from '../../ThemeContext';
 import ExchangeScreen from './Trade/LimitScreen';
-import SelectingPair from './Trade/SelectingPair';
 import MarketScreen from './Trade/MarketScreen';
 import { getLanguageString } from '../../utils/lang';
 import { languageAtom } from '../../atoms/language';
-import { useQuery } from '@apollo/client';
-import { GET_PAIRS } from '../../services/dex/queries';
-import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
-import { formatDexToken } from '../../services/dex';
 import UnderMaintainence from '../common/UnderMaintainence';
 import { dexStatusAtom } from '../../atoms/dexStatus';
 import ComingSoon from '../common/ComingSoon';
 import { statusBarColorAtom } from '../../atoms/statusBar';
-import { getBalance } from '../../services/account';
-import { getLogoURL } from '../../utils/string';
-import { toChecksumAddress } from 'ethereumjs-util';
-import { saveWallets } from '../../utils/local';
 import OrderHistory from './OrderHistory';
-
-const pairMapper = (pairs: any[]) => {
-  return pairs.map((item) => {
-    const invert = item.pairIdentity.invert
-
-    let t1 = {
-      hash: toChecksumAddress(item.token0.id),
-      name: item.token0.name,
-      logo: getLogoURL(item.token0.id),
-      symbol: item.token0.symbol,
-      decimals: Number(item.token0.decimals)
-    }
-
-    let t2 = {
-      hash: toChecksumAddress(item.token1.id),
-      name: item.token1.name,
-      logo: getLogoURL(item.token1.id),
-      symbol: item.token1.symbol,
-      decimals: Number(item.token1.decimals)
-    }
-
-    return {
-      decimals: '',
-      contract_address: item.id,
-      last_updated: null,
-      pair_name: '',
-      token1: {},
-      token1_liquidity: !invert ? item.reserve0 : item.reserve1,
-      token2: {},
-      token2_liquidity: !invert ? item.reserve1 : item.reserve0,
-      total_liquidity: '',
-      t1: invert ? t2 : t1,
-      t2: invert ? t1: t2,
-      volumeUSD: item.volumeUSD
-    }
-  })
-}
 
 export default () => {
   const theme = useContext(ThemeContext);
@@ -69,95 +22,21 @@ export default () => {
   const {params} = useRoute();
 
   const [type, setType] = useState('TRADE');
-  const [selectingPair, setSelectingPair] = useState(false) //
-  const [refreshing, setRefreshing] = useState(false); //
-  const [pairData, setPairData] = useState({pairs: [] as any[]}) //
-
-  const [tokenFrom, setTokenFrom] = useState<PairToken>() //
-  const [tokenFromLiquidity, setTokenFromLiquidity] = useState(''); //
-  const [tokenTo, setTokenTo] = useState<PairToken>() //
-  const [tokenToLiquidity, setTokenToLiquidity] = useState(''); //
-  const [pairAddress, setPairAddress] = useState(''); //
-  const [volumeUSD, setVolumeUSD] = useState('') //
-  const setTabBarVisible = useSetRecoilState(showTabBarAtom)
-  const [wallets, setWallets] = useRecoilState(walletsAtom)
-  const selectedWallet = useRecoilValue(selectedWalletAtom)
+  const [showMenu, setShowMenu] = useState(true);
+  
   const dexStatus = useRecoilValue(dexStatusAtom)
 
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   const insets = useSafeAreaInsets();
 
-  const { loading, error, data: _pairData, refetch } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
-
   useFocusEffect(
     useCallback(() => {
-      setTabBarVisible(true);
       setStatusBarColor(theme.backgroundColor);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
 
-  useEffect(() => {
-    if (!params || loading || error) return;
-    if (!pairData.pairs) return;
-    const _pairAddress = (params as any).pairAddress
-    if (_pairAddress) {
-      refetch()
-    }
-  }, [params])
-
-  useEffect(() => {
-    (async () => {
-      // if (params) return
-      if (pairData && pairData.pairs) {
-        let pair = pairData.pairs[0]
-
-        if (params) {
-          const _pairAddress = (params as any).pairAddress
-
-          const item = pairData.pairs.find((i: any) => {
-            return i.contract_address === _pairAddress
-          })
-
-          if (item) pair = item
-        }
-
-        if (!pair) return
-
-        setTokenFrom(formatDexToken(pair.t1, wallets[selectedWallet]));
-        setTokenTo(formatDexToken(pair.t2, wallets[selectedWallet]));
-        setTokenFromLiquidity(pair.token1_liquidity);
-        setTokenToLiquidity(pair.token2_liquidity)
-        setPairAddress(pair.contract_address)
-        setVolumeUSD(pair.volumeUSD)
-        setSelectingPair(false)
-
-        const balance = await getBalance(wallets[selectedWallet].address);
-        const newWallets: Wallet[] = JSON.parse(JSON.stringify(wallets));
-        newWallets.forEach((walletItem, index) => {
-          if (walletItem.address === wallets[selectedWallet].address) {
-            newWallets[index].balance = balance;
-          }
-        });
-        await saveWallets(newWallets)
-        setWallets(newWallets);
-      }
-    })()
-  }, [pairData, params])
-
-  useEffect(() => {
-    if (!_pairData || !_pairData.pairs) return
-    setPairData({
-      pairs: pairMapper(_pairData.pairs)
-    })
-  }, [_pairData])
-
-  useEffect(() => {
-    if (!selectingPair) {
-      setTabBarVisible(true)
-    }
-  }, [selectingPair])
 
   if (dexStatus === 'OFFLINE') {
     return <UnderMaintainence />
@@ -167,98 +46,52 @@ export default () => {
     return <ComingSoon />
   }
 
-  if (selectingPair) {
-    return (
-      <SelectingPair
-        pairData={pairData}
-        loading={loading}
-        goBack={() => setSelectingPair(false)}
-        onSelect={(from: PairToken, to: PairToken, liquidityFrom, liquidityTo, pairAddress, volumeUSD) => {
-          setTokenFrom(from);
-          setTokenTo(to);
-          setSelectingPair(false);
-          setTokenFromLiquidity(liquidityFrom);
-          setTokenToLiquidity(liquidityTo)
-          setPairAddress(pairAddress)
-          setVolumeUSD(volumeUSD)
-        }}
-      />
-    )
-  }
-
-  const onRefresh = async () => {
-    setRefreshing(true)
-    await refetch()
-    setRefreshing(false)
-  }
-
   return (
-    <View style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20, paddingTop: 28 + insets.top}}>
-      {/* <ExchangeScreen /> */}
+    <View style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20, paddingTop: showMenu ? 28 + insets.top : 0}}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{flex: 1}}>
-          <View style={{width: '100%', alignItems: 'center'}}>
-            <View style={{borderRadius: 12, borderColor: 'rgba(96, 99, 108, 1)', borderWidth: 1.5, padding: 4, flexDirection: 'row', marginBottom: 24}}>
-              <TouchableOpacity 
-                style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'TRADE' ? theme.backgroundFocusColor : 'transparent'}}
-                onPress={() => setType('TRADE')}
-              >
-                <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'TRADE' ? '500' : undefined, fontFamily: type === 'TRADE' && Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
-                  {getLanguageString(language, 'TRADE')}
-                </CustomText>
-              </TouchableOpacity>
-              <TouchableOpacity 
-                style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'LIQUIDITY' ? theme.backgroundFocusColor : 'transparent'}}
-                onPress={() => setType('LIQUIDITY')}
-              >
-                <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'LIQUIDITY' ? '500' : undefined, fontFamily: type === 'LIQUIDITY' && Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
-                  {getLanguageString(language, 'ADD_LIQUIDITY')}
-                </CustomText>
-              </TouchableOpacity>
-              <TouchableOpacity 
-                style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'ORDER_HISTORY' ? theme.backgroundFocusColor : 'transparent'}}
-                onPress={() => setType('ORDER_HISTORY')}
-              >
-                <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'ORDER_HISTORY' ? '500' : undefined, fontFamily: type === 'ORDER_HISTORY' && Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
-                  {getLanguageString(language, 'ORDER_HISTORY')}
-                </CustomText>
-              </TouchableOpacity>
-            </View>
-          </View>
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              style={{
-                flex: 1,
-              }}
-              contentContainerStyle={{
-                paddingBottom: 28
-              }}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  colors={[theme.textColor]}
-                  tintColor={theme.textColor}
-                  titleColor={theme.textColor}
-                />
-              }
-            >
-              <View onStartShouldSetResponder={() => true}>
-              {type === 'TRADE' && 
-                <MarketScreen 
-                  triggerSelectPair={() => setSelectingPair(true)} 
-                  tokenFrom={tokenFrom}
-                  tokenTo={tokenTo}
-                  tokenFromLiquidity={tokenFromLiquidity}
-                  tokenToLiquidity={tokenToLiquidity}
-                  pairAddress={pairAddress}
-                  totalVolume={volumeUSD}
-                />
-              }
-              {type === 'LIQUIDITY' && <ExchangeScreen />}
-              {type === 'ORDER_HISTORY' && <OrderHistory />}
+          {
+            showMenu && (
+              <View style={{width: '100%', alignItems: 'center'}}>
+                <View style={{borderRadius: 12, borderColor: 'rgba(96, 99, 108, 1)', borderWidth: 1.5, padding: 4, flexDirection: 'row', marginBottom: 24}}>
+                  <TouchableOpacity 
+                    style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'TRADE' ? theme.backgroundFocusColor : 'transparent'}}
+                    onPress={() => setType('TRADE')}
+                  >
+                    <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'TRADE' ? '500' : undefined, fontFamily: type === 'TRADE' && Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
+                      {getLanguageString(language, 'TRADE')}
+                    </CustomText>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'LIQUIDITY' ? theme.backgroundFocusColor : 'transparent'}}
+                    onPress={() => setType('LIQUIDITY')}
+                  >
+                    <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'LIQUIDITY' ? '500' : undefined, fontFamily: type === 'LIQUIDITY' && Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
+                      {getLanguageString(language, 'ADD_LIQUIDITY')}
+                    </CustomText>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={{paddingVertical: 10, paddingHorizontal: 8, borderRadius: 8, width: 116, height: 36, backgroundColor: type === 'ORDER_HISTORY' ? theme.backgroundFocusColor : 'transparent'}}
+                    onPress={() => setType('ORDER_HISTORY')}
+                  >
+                    <CustomText style={{color: theme.textColor, textAlign: 'center', fontWeight: type === 'ORDER_HISTORY' ? '500' : undefined, fontFamily: type === 'ORDER_HISTORY' && Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
+                      {getLanguageString(language, 'ORDER_HISTORY')}
+                    </CustomText>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </ScrollView>
+            )
+          }
+          {type === 'TRADE' && 
+            <MarketScreen 
+              toggleMenu={() => {
+                setShowMenu(!showMenu)
+              }}
+              params={params}
+            />
+          }
+          {type === 'LIQUIDITY' && <ExchangeScreen />}
+          {type === 'ORDER_HISTORY' && <OrderHistory />}
         </View>
       </TouchableWithoutFeedback>
     </View>

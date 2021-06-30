@@ -74,8 +74,8 @@ export default ({visible, onClose, onSelect}: {
       ...tokenList]
     if (!searchQuery) return _tokenList
     return _tokenList.filter((item) => {
-      if (item.name.includes(searchQuery)) return true
-      if (item.symbol.includes(searchQuery)) return true
+      if (item.name.toLowerCase().includes(searchQuery.toLowerCase())) return true
+      if (item.symbol.toLowerCase().includes(searchQuery.toLowerCase())) return true
       return false
     })
   }

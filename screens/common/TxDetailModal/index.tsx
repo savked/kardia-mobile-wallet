@@ -1,7 +1,7 @@
 import {format} from 'date-fns';
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {View, Text, Image, Linking, TouchableOpacity, Platform} from 'react-native';
+import {View, Image, Linking, TouchableOpacity, Platform} from 'react-native';
 import {useRecoilValue} from 'recoil';
 import {addressBookAtom} from '../../../atoms/addressBook';
 import {languageAtom} from '../../../atoms/language';
@@ -16,7 +16,7 @@ import {
   getLanguageString,
   parseCardAvatar,
 } from '../../../utils/lang';
-import {formatNumberString, parseDecimals, parseKaiBalance} from '../../../utils/number';
+import {formatNumberString, parseDecimals} from '../../../utils/number';
 import {
   getFromAddressBook,
   getAddressAvatar,
