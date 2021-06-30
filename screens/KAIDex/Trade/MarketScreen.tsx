@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Platform, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, Platform, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { languageAtom } from '../../../atoms/language';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
@@ -1051,7 +1051,10 @@ export default ({
           )}
           {renderRate()}
           {renderSetting()}
-          {inited && renderButton()}
+          {inited ? 
+            renderButton() : 
+            <ActivityIndicator color={theme.textColor} size="large" />
+          }
           <CustomText
             style={{
               color: 'rgba(255, 66, 67, 1)',

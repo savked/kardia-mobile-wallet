@@ -294,6 +294,11 @@ export const lang: Language = {
     TRADE: 'Giao dịch',
     ORDER_TYPE_BUY: 'Mua',
     ORDER_TYPE_SELL: 'Bán',
+    BUY_AT: 'Mua với giá',
+    SELL_AT: 'Bán với giá',
+    PAIR: 'Cặp',
+    PRICE: 'Giá',
+    AMOUNT: 'Số lượng',
     // Referral key
     REFERRAL_CODE: 'Mã giới thiệu',
     REFERRAL_CODE_TITLE: 'Mã giới thiệu',
