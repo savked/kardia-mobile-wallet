@@ -114,7 +114,7 @@ export default ({
         </View>
 				<View style={{backgroundColor: '#212121', paddingHorizontal: 16, paddingVertical: 12, borderRadius: 8, marginTop: 20, width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
           <CustomText style={{color: theme.textColor}}>
-            {truncate(orderObj.transaction.id, 16, 16)}
+            {truncate(orderObj.transaction.id, 14, 14)}
           </CustomText>
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity onPress={() => {
