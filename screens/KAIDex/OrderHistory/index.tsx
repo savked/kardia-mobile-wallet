@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, Image, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { useQuery } from '@apollo/client';
 import {ScrollView} from 'react-native-gesture-handler';
-import ComingSoon from '../../common/ComingSoon';
 import {format} from 'date-fns';
 import { MY_ORDER_HISTORY } from '../../../services/dex/queries';
 import { useRecoilValue } from 'recoil';
@@ -11,9 +10,8 @@ import { ThemeContext } from '../../../ThemeContext';
 import { getDateFNSLocale, getLanguageString } from '../../../utils/lang';
 import CustomText from '../../../components/Text';
 import { languageAtom } from '../../../atoms/language';
-import { formatNumberString, parseDecimals } from '../../../utils/number';
+import { formatNumberString } from '../../../utils/number';
 import { groupByDate } from '../../../utils/date';
-import { truncate } from '../../../utils/string';
 import { getOrderPrice, isBuy, parseSymbolWKAI } from '../../../utils/dex';
 import OrderDetailModal from '../../common/OrderDetailModal';
 
