@@ -12,14 +12,14 @@ import CustomTextInput from '../../../components/TextInput';
 import { approveToken, calculateDexAmountOut, calculatePriceImpact, calculateTransactionDeadline, formatDexToken, getApproveState, getTotalVolume } from '../../../services/dex';
 import { getBalance as getKRC20Balance } from '../../../services/krc20';
 import { ThemeContext } from '../../../ThemeContext';
-import { getLanguageString } from '../../../utils/lang';
+import { getLanguageString, parseError } from '../../../utils/lang';
 import { getSelectedWallet, getWallets, saveWallets } from '../../../utils/local';
 import { formatNumberString, getDecimalCount, getDigit, getPartial, isNumber, parseDecimals } from '../../../utils/number';
 import { swapTokens } from '../../../services/dex';
 import { useNavigation } from '@react-navigation/core';
 import Tags from '../../../components/Tags';
 import AuthModal from '../../common/AuthModal';
-import { getErrorKey } from '../../../utils/error';
+import { getErrorKey, isRecognizedError } from '../../../utils/error';
 import { cacheSelector } from '../../../atoms/cache';
 import SelectingPair from './SelectingPair';
 import { useQuery } from '@apollo/client';
@@ -368,7 +368,12 @@ export default ({
     } catch (error) {
       setApprovedState(false)
       setApproving(false)
-      setSwappError(getLanguageString(language, 'APPROVE_ERROR'))
+
+      if (isRecognizedError(error.message)) {
+        setSwappError(parseError(error.message, language))
+      } else {
+        setSwappError(getLanguageString(language, 'APPROVE_ERROR'))
+      }
     }
   }
 

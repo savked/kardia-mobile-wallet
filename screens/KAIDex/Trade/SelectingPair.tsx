@@ -103,7 +103,7 @@ export default ({goBack, onSelect, pairData, loading}: {
                   </View>
                   <View style={{flex: 1, justifyContent: 'center'}}>
                     <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 4}}>
-                      {formatDexToken(item.t1)} / {formatDexToken(item.t2).symbol}
+                      {formatDexToken(item.t1).symbol} / {formatDexToken(item.t2).symbol}
                     </CustomText>
                   </View>
                 </TouchableOpacity>
