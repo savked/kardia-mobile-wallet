@@ -28,48 +28,12 @@ import { toChecksumAddress } from 'ethereumjs-util';
 import { getLogoURL } from '../../../utils/string';
 import { getBalance } from '../../../services/account';
 import { showTabBarAtom } from '../../../atoms/showTabBar';
+import { pairMapper } from '../../../utils/dex';
 
 let _tokenFrom: PairToken
 let _tokenTo: PairToken
 let _tokenFromLiquidity: string
 let _tokenToLiquidity: string
-
-const pairMapper = (pairs: any[]) => {
-  return pairs.map((item) => {
-    const invert = item.pairIdentity.invert
-
-    let t1 = {
-      hash: toChecksumAddress(item.token0.id),
-      name: item.token0.name,
-      logo: getLogoURL(item.token0.id),
-      symbol: item.token0.symbol,
-      decimals: Number(item.token0.decimals)
-    }
-
-    let t2 = {
-      hash: toChecksumAddress(item.token1.id),
-      name: item.token1.name,
-      logo: getLogoURL(item.token1.id),
-      symbol: item.token1.symbol,
-      decimals: Number(item.token1.decimals)
-    }
-
-    return {
-      decimals: '',
-      contract_address: item.id,
-      last_updated: null,
-      pair_name: '',
-      token1: {},
-      token1_liquidity: !invert ? item.reserve0 : item.reserve1,
-      token2: {},
-      token2_liquidity: !invert ? item.reserve1 : item.reserve0,
-      total_liquidity: '',
-      t1: invert ? t2 : t1,
-      t2: invert ? t1: t2,
-      volumeUSD: item.volumeUSD
-    }
-  })
-}
 
 export default ({
   toggleMenu,
@@ -159,12 +123,12 @@ export default ({
 
   useEffect(() => {
     if (!_tokenFrom) return
-    setTokenFrom(formatDexToken(_tokenFrom, wallets[selectedWallet]))
+    setTokenFrom(formatDexToken(_tokenFrom))
   }, [_tokenFrom])
 
   useEffect(() => {
     if (!_tokenTo) return
-    setTokenTo(formatDexToken(_tokenTo, wallets[selectedWallet]))
+    setTokenTo(formatDexToken(_tokenTo))
   }, [_tokenTo])
 
   useEffect(() => {
@@ -231,11 +195,11 @@ export default ({
 
         if (!pair) return
 
-        _tokenFrom = JSON.parse(JSON.stringify(formatDexToken(pair.t1, wallets[selectedWallet])))
-        setTokenFrom(formatDexToken(pair.t1, wallets[selectedWallet]));
+        _tokenFrom = JSON.parse(JSON.stringify(formatDexToken(pair.t1)))
+        setTokenFrom(formatDexToken(pair.t1));
 
-        _tokenTo = JSON.parse(JSON.stringify(formatDexToken(pair.t2, wallets[selectedWallet])))
-        setTokenTo(formatDexToken(pair.t2, wallets[selectedWallet]));
+        _tokenTo = JSON.parse(JSON.stringify(formatDexToken(pair.t2)))
+        setTokenTo(formatDexToken(pair.t2));
 
         _tokenFromLiquidity = pair.token1_liquidity
         setTokenFromLiquidity(pair.token1_liquidity);

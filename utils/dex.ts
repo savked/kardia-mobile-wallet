@@ -1,5 +1,7 @@
 import BigNumber from "bignumber.js";
+import { toChecksumAddress } from "ethereumjs-util";
 import { WKAI_SMC } from "../config";
+import { getLogoURL } from "./string";
 
 export const isKAI = (tokenAddr: string): boolean => !!(tokenAddr && WKAI_SMC && tokenAddr.toLowerCase() === WKAI_SMC.toLowerCase())
 
@@ -19,4 +21,41 @@ export const getOrderTotal = (order: Record<string, any>) => {
 
 export const isBuy = (item: Record<string, any>) => {
 	return item.amount0In === "0"
+}
+
+export const pairMapper = (pairs: any[]): Pair[] => {
+  return pairs.map((item) => {
+    const invert = item.pairIdentity.invert
+
+    let t1 = {
+      hash: toChecksumAddress(item.token0.id),
+      name: item.token0.name,
+      logo: getLogoURL(item.token0.id),
+      symbol: item.token0.symbol,
+      decimals: Number(item.token0.decimals)
+    }
+
+    let t2 = {
+      hash: toChecksumAddress(item.token1.id),
+      name: item.token1.name,
+      logo: getLogoURL(item.token1.id),
+      symbol: item.token1.symbol,
+      decimals: Number(item.token1.decimals)
+    }
+
+    return {
+      decimals: 0,
+      contract_address: item.id,
+      last_updated: null,
+      pair_name: '',
+      token1: invert ? t2.hash : t1.hash,
+      token1_liquidity: !invert ? item.reserve0 : item.reserve1,
+      token2: invert ? t1.hash : t2.hash,
+      token2_liquidity: !invert ? item.reserve1 : item.reserve0,
+      total_liquidity: '',
+      t1: invert ? t2 : t1,
+      t2: invert ? t1: t2,
+      volumeUSD: item.volumeUSD
+    }
+  })
 }

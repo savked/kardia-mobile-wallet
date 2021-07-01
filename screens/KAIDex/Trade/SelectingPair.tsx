@@ -62,8 +62,8 @@ export default ({goBack, onSelect, pairData, loading}: {
                   }}
                   onPress={() => {
                     onSelect(
-                      formatDexToken(item.t1, wallets[selectedWallet]),
-                      formatDexToken(item.t2, wallets[selectedWallet]),
+                      formatDexToken(item.t1),
+                      formatDexToken(item.t2),
                       item.token1_liquidity,
                       item.token2_liquidity,
                       item.contract_address,
@@ -103,7 +103,7 @@ export default ({goBack, onSelect, pairData, loading}: {
                   </View>
                   <View style={{flex: 1, justifyContent: 'center'}}>
                     <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 4}}>
-                      {formatDexToken(item.t1, wallets[selectedWallet]).symbol} / {formatDexToken(item.t2, wallets[selectedWallet]).symbol}
+                      {formatDexToken(item.t1)} / {formatDexToken(item.t2).symbol}
                     </CustomText>
                   </View>
                 </TouchableOpacity>

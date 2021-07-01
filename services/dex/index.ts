@@ -1,5 +1,5 @@
 import KaidexClient from 'kaidex-sdk';
-import KardiaClient from 'kardia-js-sdk';
+import KardiaClient, {KardiaAccount} from 'kardia-js-sdk';
 import SWAPABI from './swapABI.json'
 import { BLOCK_TIME, KAI_TOKEN_NAME, KAI_TOKEN_SYMBOL } from '../../config';
 import { DEX_ENDPOINT, EXCHANGE_REST, RPC_ENDPOINT } from '../config';
@@ -12,6 +12,7 @@ import { apolloKaiBlockClient, apolloKaiDexClient } from './apolloClient';
 import { GET_BLOCKS_BY_TIMESTAMPS, PAIR_LIST_BY_BLOCK_NUMBER } from './queries';
 import { getLogoURL } from '../../utils/string';
 import Web3 from 'web3'
+import { parseDecimals } from '../../utils/number';
 
 let SWAP_ROUTER_SMC = ''
 let FACTORY_SMC = ''
@@ -173,7 +174,7 @@ export const calculateDexAmountOut = async (
   }
 }
 
-export const formatDexToken = (token: PairToken, wallet: Wallet) => {
+export const formatDexToken = (token: PairToken) => {
   const client = new KaidexClient({
     rpcEndpoint: RPC_ENDPOINT,
     smcAddresses: {
@@ -412,4 +413,78 @@ export const submitReferal = async (referalCode: string, wallet: Wallet) => {
     console.log(error)
     return false
   }
+}
+
+export const getTokenBalance = (tokenAddress: string, walletAddress: string) => {
+  const client = new KaidexClient({
+    rpcEndpoint: RPC_ENDPOINT,
+    smcAddresses: {
+      router: SWAP_ROUTER_SMC,
+      factory: FACTORY_SMC,
+      // kaiSwapper?: string;
+      limitOrder: LIMIT_ORDER_SMC,
+      wkai: WKAI_SMC
+    }
+  })
+
+  const sdkClient = new KardiaClient({ endpoint: RPC_ENDPOINT })
+  sdkClient.krc20.address = tokenAddress
+
+  return client.isKAI(tokenAddress)
+      ? sdkClient.account.getBalance(walletAddress)
+      : sdkClient.krc20.balanceOf(walletAddress)
+}
+
+export const getMyPortfolio = async (pairs: Pair[], walletAddress: string) => {
+	if (!KardiaAccount.isAddress(walletAddress)) throw new Error('Invalid wallet!')
+
+  const client = new KaidexClient({
+    rpcEndpoint: RPC_ENDPOINT,
+    smcAddresses: {
+      router: SWAP_ROUTER_SMC,
+      factory: FACTORY_SMC,
+      // kaiSwapper?: string;
+      limitOrder: LIMIT_ORDER_SMC,
+      wkai: WKAI_SMC
+    }
+  })
+
+	let myLiquidityList
+	// Check liquidity balance in pool pairs
+	const checkBalancePromises = pairs.map(pair => getTokenBalance(pair.contract_address, walletAddress))
+	const balances = await Promise.all(checkBalancePromises)
+
+	// Then filter pairs with existing liquidity
+	myLiquidityList = pairs
+    .map((pair, index) => ({ ...pair, balance: balances[index] }))
+    .filter((_, index) => !!balances[index] && balances[index] !== '0')
+
+	// Update pairs with pooled Tokens
+	const pooledTokenPromises = myLiquidityList
+			.map(pair => client.getReserves(pair.t1.hash, pair.t2.hash))
+	const pooledTokens = await Promise.all(pooledTokenPromises)
+	myLiquidityList = myLiquidityList.map((pair, index) => ({
+    ...pair,
+    pooledTokens: {
+      reserveA: parseDecimals(pooledTokens[index].reserveA, pair.t1.decimals),
+      reserveB: parseDecimals(pooledTokens[index].reserveB, pair.t2.decimals)
+    }
+	}))
+
+	// Get share rates & total supplies
+	const totalSupplyPromises = myLiquidityList
+			.map(pair => client.krc20.getTotalSupply(pair.contract_address))
+	const totalSupplies = await Promise.all(totalSupplyPromises)
+	myLiquidityList = myLiquidityList.map((pair, index) => {
+    const { balance } = pair
+    const totalSupply = totalSupplies[index]
+    return {
+      ...pair,
+      provider: walletAddress,
+      totalSupply,
+      shareRate: String(Number(balance) / totalSupply * 100)
+    }
+	})
+
+	return myLiquidityList
 }

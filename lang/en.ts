@@ -306,6 +306,8 @@ export const lang: Language = {
     PAIR: 'Pair',
     PRICE: 'Price',
     AMOUNT: 'Amount',
+    SHARE: 'Share',
+    POSITION: 'Position',
     // Referral key
     REFERRAL_CODE: 'Referral Code',
     REFERRAL_CODE_TITLE: 'Referral',

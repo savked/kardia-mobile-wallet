@@ -299,6 +299,8 @@ export const lang: Language = {
     PAIR: 'Cặp',
     PRICE: 'Giá',
     AMOUNT: 'Số lượng',
+    SHARE: 'Share',
+    POSITION: 'Vị thế',
     // Referral key
     REFERRAL_CODE: 'Mã giới thiệu',
     REFERRAL_CODE_TITLE: 'Mã giới thiệu',

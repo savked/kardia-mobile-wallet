@@ -5,7 +5,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import CustomText from '../../components/Text';
 import { ThemeContext } from '../../ThemeContext';
-import ExchangeScreen from './Trade/LimitScreen';
 import MarketScreen from './Trade/MarketScreen';
 import { getLanguageString } from '../../utils/lang';
 import { languageAtom } from '../../atoms/language';
@@ -14,6 +13,7 @@ import { dexStatusAtom } from '../../atoms/dexStatus';
 import ComingSoon from '../common/ComingSoon';
 import { statusBarColorAtom } from '../../atoms/statusBar';
 import OrderHistory from './OrderHistory';
+import AddLiquidity from './AddLiquidity';
 
 export default () => {
   const theme = useContext(ThemeContext);
@@ -90,7 +90,7 @@ export default () => {
               params={params}
             />
           }
-          {type === 'LIQUIDITY' && <ExchangeScreen />}
+          {type === 'LIQUIDITY' && <AddLiquidity />}
           {type === 'ORDER_HISTORY' && <OrderHistory />}
         </View>
       </TouchableWithoutFeedback>
