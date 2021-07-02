@@ -63,7 +63,6 @@ export default () => {
 
 	const onRefresh = async () => {
 		setRefreshing(true)
-		console.log('here refresh')
     setPage(1)
   }
 
@@ -72,12 +71,25 @@ export default () => {
 			console.log(error)
 		} else if (data) {
 			const parsedData = data.swaps.map((item: any) => {
+        if (item.pair.pairIdentity.invert) {
+          const temp = JSON.parse(JSON.stringify(item.pair.token0))
+          item.pair.token0 = JSON.parse(JSON.stringify(item.pair.token1))
+          item.pair.token1 = temp
+
+          const tempAmountIn = item.amount0In
+          item.amount0In = item.amount1In
+          item.amount1In = tempAmountIn
+
+          const tempAmountOut = item.amount0Out
+          item.amount0Out = item.amount1Out
+          item.amount1Out = tempAmountOut
+        }
 				return {
 					...item,
 					date: new Date(item.timestamp * 1000)
 				}
 			})
-      console.log(parsedData[0])
+
 			setGettingMore(false)
 			if (parsedData.length === 0) {
 				setHaveMore(false);

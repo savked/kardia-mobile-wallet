@@ -10,7 +10,6 @@ import { getLanguageString } from '../../../utils/lang';
 import { languageAtom } from '../../../atoms/language';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import List from '../../../components/List';
-import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 import { formatDexToken } from '../../../services/dex';
 
 export default ({goBack, onSelect, pairData, loading}: {
@@ -23,9 +22,6 @@ export default ({goBack, onSelect, pairData, loading}: {
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom)
   const language = useRecoilValue(languageAtom)
-
-  const wallets = useRecoilValue(walletsAtom);
-  const selectedWallet = useRecoilValue(selectedWalletAtom);
 
   // const { loading, error, data: pairData } = useQuery(GET_PAIRS);
 

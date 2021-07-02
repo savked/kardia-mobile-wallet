@@ -24,8 +24,6 @@ import { cacheSelector } from '../../../atoms/cache';
 import SelectingPair from './SelectingPair';
 import { useQuery } from '@apollo/client';
 import { GET_PAIRS } from '../../../services/dex/queries';
-import { toChecksumAddress } from 'ethereumjs-util';
-import { getLogoURL } from '../../../utils/string';
 import { getBalance } from '../../../services/account';
 import { showTabBarAtom } from '../../../atoms/showTabBar';
 import { pairMapper } from '../../../utils/dex';
