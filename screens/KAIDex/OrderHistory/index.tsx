@@ -83,6 +83,14 @@ export default () => {
           const tempAmountOut = item.amount0Out
           item.amount0Out = item.amount1Out
           item.amount1Out = tempAmountOut
+
+          const tempReserve = item.reserve0
+          item.reserver0 = item.reserve1
+          item.reserve1 = tempReserve
+
+          const tempTokenPrice = item.token0Price
+          item.token0Price = item.token1Price
+          item.token1Price = tempTokenPrice
         }
 				return {
 					...item,
