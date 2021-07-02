@@ -1,6 +1,7 @@
 import { ENDPOINT, PROXY_ENDPOINT } from "./config";
 
 const DEFAULT_TIMEOUT = 15 * 1000;
+const DEFAULT_RETRY = 3;
 
 /**
  * Set timeout for HTTP request or any promise
@@ -16,6 +17,19 @@ export const requestWithTimeOut = (promise: Promise<any>, timeout?: number) => {
   return Promise.race([timeoutPromise, promise]);
 };
 
+export const requestWithRetry = async (promise: Promise<any>, retry: number = DEFAULT_RETRY): Promise<any> => {
+  try {
+    const rs = await promise
+    return rs
+  } catch (error) {
+    if (retry > 0) {
+      return requestWithRetry(promise, retry - 1)
+    } else {
+      throw (error)
+    }
+  }
+};
+
 export const getAppStatus = async (address: string) => {
   const requestOptions = {
     method: 'GET',
@@ -25,7 +39,7 @@ export const getAppStatus = async (address: string) => {
     })
   };
 
-  const response = await requestWithTimeOut(
+  const response: any = await requestWithTimeOut(
     // fetch(`${ENDPOINT}status`, requestOptions),
     fetch(`${PROXY_ENDPOINT}mobile/status`, requestOptions),
     50 * 1000,
