@@ -39,8 +39,8 @@ export default () => {
         flex: 1,
       }}
     >
-      {/* <ComingSoon /> */}
-      <List
+      <ComingSoon />
+      {/* <List
         items={lpList}
         loading={loading}
         loadingColor={theme.textColor}
@@ -104,7 +104,7 @@ export default () => {
         render={(item) => {
           return <LiquidityItem lpItem={item} />
         }}
-      />
+      /> */}
     </View>
   )
 };
