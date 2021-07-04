@@ -90,7 +90,9 @@ export default () => {
               params={params}
             />
           }
-          {type === 'LIQUIDITY' && <AddLiquidity />}
+          {type === 'LIQUIDITY' && <AddLiquidity toggleMenu={() => {
+                setShowMenu(!showMenu)
+              }} />}
           {type === 'ORDER_HISTORY' && <OrderHistory />}
         </View>
       </TouchableWithoutFeedback>

@@ -1,9 +1,6 @@
 import BigNumber from "bignumber.js";
 import { toChecksumAddress } from "ethereumjs-util";
-import { WKAI_SMC } from "../config";
 import { getLogoURL } from "./string";
-
-export const isKAI = (tokenAddr: string): boolean => !!(tokenAddr && WKAI_SMC && tokenAddr.toLowerCase() === WKAI_SMC.toLowerCase())
 
 export const parseSymbolWKAI = (symbol: string) => {
   return symbol === 'WKAI' ? 'KAI' : symbol
@@ -58,4 +55,11 @@ export const pairMapper = (pairs: any[]): Pair[] => {
       volumeUSD: item.volumeUSD
     }
   })
+}
+
+export const getPairPriceInBN = (t1Liquidity: string, t2Liquidity: string) => {
+  const bnLq1 = new BigNumber(t1Liquidity)
+  const bnLq2 = new BigNumber(t2Liquidity)
+
+  return bnLq2.dividedBy(bnLq1)
 }

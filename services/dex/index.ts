@@ -415,7 +415,7 @@ export const submitReferal = async (referalCode: string, wallet: Wallet) => {
   }
 }
 
-export const getTokenBalance = (tokenAddress: string, walletAddress: string) => {
+export const getTokenBalance = async (tokenAddress: string, walletAddress: string) => {
   const client = new KaidexClient({
     rpcEndpoint: RPC_ENDPOINT,
     smcAddresses: {
@@ -426,13 +426,14 @@ export const getTokenBalance = (tokenAddress: string, walletAddress: string) => 
       wkai: WKAI_SMC
     }
   })
-
+  
   const sdkClient = new KardiaClient({ endpoint: RPC_ENDPOINT })
   sdkClient.krc20.address = tokenAddress
 
-  return client.isKAI(tokenAddress)
-      ? sdkClient.account.getBalance(walletAddress)
-      : sdkClient.krc20.balanceOf(walletAddress)
+  const rs = client.isKAI(tokenAddress)
+      ? await sdkClient.account.getBalance(walletAddress)
+      : await sdkClient.krc20.balanceOf(walletAddress)
+  return rs
 }
 
 export const getMyPortfolio = async (pairs: Pair[], walletAddress: string) => {
