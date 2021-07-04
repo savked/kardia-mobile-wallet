@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {TextInput, View, Text, StyleProp, TextStyle, ViewStyle, ActivityIndicator, TextInputKeyPressEventData, NativeSyntheticEvent, TextInputSubmitEditingEventData} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ThemeContext} from '../../ThemeContext';
@@ -48,6 +48,7 @@ const CustomTextInput = ({
   autoCorrect?: boolean
 }) => {
   const theme = useContext(ThemeContext);
+  const [width, setWidth] = useState('99%')
 
   const renderMessage = () => {
     if (!message) {
@@ -65,6 +66,12 @@ const CustomTextInput = ({
     // block ? {width: '100%'} : null,
     inputStyle,
   ])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setWidth('100%')
+    }, 100)
+  }, [])
 
   return (
     <>
@@ -86,7 +93,7 @@ const CustomTextInput = ({
           allowFontScaling={false}
           onKeyPress={onKeyPress}
           onSubmitEditing={onSubmitEditing}
-          style={calculatedStyle}
+          style={[calculatedStyle, {width}]}
           ref={inputRef}
           keyboardType={keyboardType as any}
           onChangeText={onChangeText}

@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     backgroundColor: 'white',
-    flex: 1,
     paddingHorizontal: 10,
     color: '#000000',
   },
