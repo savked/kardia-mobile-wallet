@@ -20,4 +20,6 @@ interface ListProps {
   containerStyle?: Record<string, any>;
   ListEmptyComponent?: any;
   numColumns?: number;
+  onRefresh?: () => void;
+  refreshing?: boolean
 }

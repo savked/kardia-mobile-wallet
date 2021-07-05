@@ -1018,7 +1018,7 @@ export default ({
           )}
           {renderRate()}
           {renderSetting()}
-          {inited ? 
+          {inited && _tokenFrom && _tokenTo && rate ? 
             renderButton() : 
             <ActivityIndicator color={theme.textColor} size="large" />
           }

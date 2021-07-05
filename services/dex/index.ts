@@ -294,15 +294,35 @@ export const swapTokens = async (params: Record<string, any>, wallet: Wallet) =>
     }
   })
 
-  if (isBossDoge(params.inputToken.tokenAddress) || isBossDoge(params.outputToken.tokenAddress)) {
-    params.feeOnTransfer = true
-  }
-
-  const parsedParam = client.marketSwapCallParameters(params as any);
   const sdkClient = new KardiaClient({endpoint: RPC_ENDPOINT});
   const smcInstance = sdkClient.contract
   smcInstance.updateAbi(SWAPABI)
-  const invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
+
+  const paramsWithouFeeOnTransfer = {...params, ...{feeOnTransfer: false}}
+  let parsedParam = client.marketSwapCallParameters(paramsWithouFeeOnTransfer as any);
+  let invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
+
+  let shouldHaveFeeOnTransfer = false
+
+  try {
+    await sdkClient.transaction.estimateGas({
+      from: wallet.address,
+      to: SWAP_ROUTER_SMC,
+      value: (new BigNumber(parsedParam.amount || 0)).toNumber()
+    }, invocation.txData())
+  } catch (error) {
+    shouldHaveFeeOnTransfer = true
+  }
+
+  if (shouldHaveFeeOnTransfer) {
+    params.feeOnTransfer = true
+    parsedParam = client.marketSwapCallParameters(params as any);
+    invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
+  }
+
+  // if (isBossDoge(params.inputToken.tokenAddress) || isBossDoge(params.outputToken.tokenAddress)) {
+  //   params.feeOnTransfer = true
+  // }
   
   const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
     amount: parsedParam.amount || 0
@@ -398,11 +418,6 @@ export const submitReferal = async (referalCode: string, wallet: Wallet) => {
       body: raw
     };
 
-    // const refRs = await requestWithTimeOut(
-    //   fetch(`${EXCHANGE_REST}refs`, postOptions),
-    //   50 * 1000,
-    // )
-
     const refRs = await fetch(`${EXCHANGE_REST}refs`, postOptions)
     if (refRs.ok) {
       return true
@@ -488,4 +503,33 @@ export const getMyPortfolio = async (pairs: Pair[], walletAddress: string) => {
 	})
 
 	return myLiquidityList
+}
+
+export const addLiquidity = async (params: any, wallet: Wallet) => {
+  const client = new KaidexClient({
+    rpcEndpoint: RPC_ENDPOINT,
+    smcAddresses: {
+      router: SWAP_ROUTER_SMC,
+      factory: FACTORY_SMC,
+      // kaiSwapper?: string;
+      limitOrder: LIMIT_ORDER_SMC,
+      wkai: WKAI_SMC
+    }
+  })
+
+  console.log('SWAP_ROUTER_SMC', SWAP_ROUTER_SMC)
+
+  const parsedParam = client.addLiquidityCallParameters(params)
+  const sdkClient = new KardiaClient({ endpoint: RPC_ENDPOINT })
+
+  const smcInstance = sdkClient.contract
+  smcInstance.updateAbi(SWAPABI)
+
+  const invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
+
+  const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
+    amount: parsedParam.amount || 0
+  })
+
+  return rs
 }

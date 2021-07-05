@@ -308,6 +308,7 @@ export const lang: Language = {
     AMOUNT: 'Amount',
     SHARE: 'Share',
     POSITION: 'Position',
+    ADD_LP_SUCCESS: 'Add liquidity successfully',
     // Referral key
     REFERRAL_CODE: 'Referral Code',
     REFERRAL_CODE_TITLE: 'Referral',

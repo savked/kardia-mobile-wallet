@@ -6,7 +6,7 @@ export const getTokenInfo = async (): Promise<KAITokenInfo> => {
     const options = {
       method: 'GET',
     };
-    const response = await requestWithTimeOut(
+    const response: any = await requestWithTimeOut(
       fetch(`${ENDPOINT}dashboard/token`, options),
       10 * 1000,
     );

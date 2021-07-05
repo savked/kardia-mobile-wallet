@@ -52,6 +52,9 @@ export default () => {
   const dexMode = params ? (params as any).dexMode : '';
   const dexAmount = params ? (params as any).dexAmount : '';
   const pairAddress = params ? (params as any).pairAddress : '';
+  const lpPair: Pair = params ? (params as any).lpPair : {}
+  const token0 = params ? (params as any).token0 : ''
+  const token1 = params ? (params as any).token1 : ''
   
   const theme = useContext(ThemeContext);
 
@@ -85,6 +88,7 @@ export default () => {
 
   useEffect(() => {
     (async () => {
+      console.log('Success Tx', txHash)
       while (true) {
         let tx: Record<string, any>;
         if (type === 'krc20') {
@@ -227,6 +231,57 @@ export default () => {
             </CustomText>
           </View>
         )
+      case 'addLP':
+        return (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}
+          >
+            <View
+              style={{
+                padding: 16,
+                backgroundColor: theme.backgroundStrongColor,
+                borderRadius: 12,
+                marginRight: 4,
+                flex: 1
+              }}
+            >
+              <Image
+                source={{uri: lpPair.t1.logo}}
+                style={{
+                  width: 28,
+                  height: 28,
+                  marginBottom: 8
+                }}
+              />
+              <CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize + 8, fontWeight: 'bold'}}>{formatNumberString(token0, 6)}</CustomText>
+            </View>
+            <View
+              style={{
+                padding: 16,
+                backgroundColor: theme.backgroundStrongColor,
+                borderRadius: 12,
+                marginLeft: 4,
+                flex: 1
+              }}
+            >
+              <Image
+                source={{uri: lpPair.t2.logo}}
+                style={{
+                  width: 28,
+                  height: 28,
+                  marginBottom: 8
+                }}
+              />
+              <CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize + 8, fontWeight: 'bold'}}>{formatNumberString(token1, 6)}</CustomText>
+            </View>
+          </View>
+        )
       default:
         return (
           <View
@@ -337,6 +392,7 @@ export default () => {
           </View>
         );
       case 'dex':
+      case 'addLP':
         return null;
       default:
         return (
@@ -406,6 +462,8 @@ export default () => {
                 .replace(/{{TOKEN_AMOUNT}}/g, formatNumberString(dexAmount, 6))
                 .replace(/{{DEX_MODE}}/g, getLanguageString(language, dexMode))
                 .replace(/{{TOKEN_SYMBOL}}/g, tokenSymbol)
+      case 'addLP':
+        return getLanguageString(language, 'ADD_LP_SUCCESS')
       default:
         return getLanguageString(language, 'TX_SUCCESS');
     }

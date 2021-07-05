@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { ScrollView, View, Image, Platform } from 'react-native';
+import { ScrollView, View, Image, Platform, TouchableOpacity } from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { showTabBarAtom } from '../../../atoms/showTabBar';
@@ -15,6 +15,7 @@ import { ThemeContext } from '../../../ThemeContext';
 import { pairMapper } from '../../../utils/dex';
 import AddLiquidityModal from '../../common/AddLiquidityModal';
 import ComingSoon from '../../common/ComingSoon';
+import Icon from 'react-native-vector-icons/Ionicons'
 import LiquidityItem from './LiquidityItem';
 import SelectPairForLP from './SelectPairForLP';
 
@@ -27,6 +28,7 @@ export default ({toggleMenu}: {
   const [showNewLPModal, setShowNewLPModal] = useState(false)
   const [pairForNewLP, setPairForNewLP] = useState<Pair>()
   const [selectingPair, setSelectingPair] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const wallets = useRecoilValue(walletsAtom)
   const selectedWallet = useRecoilValue(selectedWalletAtom)
@@ -48,6 +50,16 @@ export default ({toggleMenu}: {
       }
     })()
   }, [wallets, selectedWallet, _pairData])
+
+  const handleRefresh = async () => {
+    console.log('handle refresh')
+    if (_pairData && _pairData.pairs && _pairData.pairs.length > 0) {
+      setIsRefreshing(true)
+      const rs = await getMyPortfolio(pairMapper(_pairData.pairs), wallets[selectedWallet].address)
+      setLPList(rs)
+      setIsRefreshing(false)
+    }
+  }
 
   if (selectingPair && _pairData && _pairData.pairs && _pairData.pairs.length > 0) {
     return (
@@ -84,8 +96,44 @@ export default ({toggleMenu}: {
         }}
         pair={pairForNewLP}
       />
+      {
+        !loading && lpList.length > 0 && (
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginBottom: 8
+            }}
+          >
+            <CustomText 
+              style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 6}}
+            >
+              My Porfolio
+            </CustomText>
+            <TouchableOpacity
+              style={{flexDirection: 'row', alignItems: 'center'}}
+              onPress={() => {
+                toggleMenu()
+                setSelectingPair(true)
+              }}
+            >
+              <Icon
+                name="add"
+                color={theme.textColor}
+                size={20}
+              />
+              <CustomText style={{color: theme.textColor}}>
+                Add new
+              </CustomText>
+            </TouchableOpacity>
+          </View>
+        )
+      }
       <List
         items={lpList}
+        onRefresh={handleRefresh}
+        refreshing={isRefreshing}
         loading={loading}
         loadingColor={theme.textColor}
         keyExtractor={(_) => Date.now().toString()}

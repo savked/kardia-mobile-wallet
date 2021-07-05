@@ -1,6 +1,7 @@
-import React from 'react';
-import {ActivityIndicator, Text, View} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
+import React, { useContext } from 'react';
+import {ActivityIndicator, RefreshControl, View} from 'react-native';
+import {FlatList} from 'react-native';
+import { ThemeContext } from '../../ThemeContext';
 import ListItem from './ListItem';
 import {styles} from './style';
 
@@ -21,7 +22,10 @@ const List = ({
   loading = false,
   loadingSize = 'large',
   loadingColor = '#0000ff',
+  onRefresh,
+  refreshing = false,
 }: ListProps) => {
+  const theme = useContext(ThemeContext)
   if (loading) {
     return <ActivityIndicator size={loadingSize} color={loadingColor} />;
   }
@@ -29,6 +33,15 @@ const List = ({
     <>
       {header && <View style={[styles.list, listStyle]}>{header}</View>}
       <FlatList
+        refreshControl={(
+          <RefreshControl
+            colors={[theme.textColor]}
+            tintColor={theme.textColor}
+            titleColor={theme.textColor}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        )}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={containerStyle}
