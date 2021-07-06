@@ -278,10 +278,6 @@ export const getTotalVolume = async (volumeUSD: string, pairID: string) => {
   return volume24hr
 }
 
-const isBossDoge = (tokenAddress: string) => {
-  return tokenAddress.toLowerCase() === '0x5995F16246DfA676A44B8bD7E751C1226093dcd7'.toLowerCase()
-}
-
 export const swapTokens = async (params: Record<string, any>, wallet: Wallet) => {
   const client = new KaidexClient({
     rpcEndpoint: RPC_ENDPOINT,
@@ -319,10 +315,6 @@ export const swapTokens = async (params: Record<string, any>, wallet: Wallet) =>
     parsedParam = client.marketSwapCallParameters(params as any);
     invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
   }
-
-  // if (isBossDoge(params.inputToken.tokenAddress) || isBossDoge(params.outputToken.tokenAddress)) {
-  //   params.feeOnTransfer = true
-  // }
   
   const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
     amount: parsedParam.amount || 0
@@ -479,13 +471,15 @@ export const getMyPortfolio = async (pairs: Pair[], walletAddress: string) => {
 	const pooledTokenPromises = myLiquidityList
 			.map(pair => client.getReserves(pair.t1.hash, pair.t2.hash))
 	const pooledTokens = await Promise.all(pooledTokenPromises)
-	myLiquidityList = myLiquidityList.map((pair, index) => ({
-    ...pair,
-    pooledTokens: {
-      reserveA: parseDecimals(pooledTokens[index].reserveA, pair.t1.decimals),
-      reserveB: parseDecimals(pooledTokens[index].reserveB, pair.t2.decimals)
+	myLiquidityList = myLiquidityList.map((pair, index) => {
+    return {
+      ...pair,
+      pooledTokens: {
+        reserveA: parseDecimals(pooledTokens[index].reserveA, pair.t1.decimals),
+        reserveB: parseDecimals(pooledTokens[index].reserveB, pair.t2.decimals)
+      }
     }
-	}))
+  })
 
 	// Get share rates & total supplies
 	const totalSupplyPromises = myLiquidityList
@@ -494,11 +488,19 @@ export const getMyPortfolio = async (pairs: Pair[], walletAddress: string) => {
 	myLiquidityList = myLiquidityList.map((pair, index) => {
     const { balance } = pair
     const totalSupply = totalSupplies[index]
+
+    const shareRate = Number(balance) / totalSupply * 100
+
+    const estimatedAmountA = Number(pair.pooledTokens.reserveA) * shareRate / 100
+    const estimatedAmountB = Number(pair.pooledTokens.reserveB) * shareRate / 100
+
     return {
       ...pair,
       provider: walletAddress,
       totalSupply,
-      shareRate: String(Number(balance) / totalSupply * 100)
+      shareRate: shareRate.toString(),
+      estimatedAmountA,
+      estimatedAmountB
     }
 	})
 
@@ -517,8 +519,6 @@ export const addLiquidity = async (params: any, wallet: Wallet) => {
     }
   })
 
-  console.log('SWAP_ROUTER_SMC', SWAP_ROUTER_SMC)
-
   const parsedParam = client.addLiquidityCallParameters(params)
   const sdkClient = new KardiaClient({ endpoint: RPC_ENDPOINT })
 
@@ -526,6 +526,55 @@ export const addLiquidity = async (params: any, wallet: Wallet) => {
   smcInstance.updateAbi(SWAPABI)
 
   const invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
+
+  const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
+    amount: parsedParam.amount || 0
+  })
+
+  return rs
+}
+
+export const removeLiquidity = async (params: any, wallet: Wallet) => {
+  const client = new KaidexClient({
+    rpcEndpoint: RPC_ENDPOINT,
+    smcAddresses: {
+      router: SWAP_ROUTER_SMC,
+      factory: FACTORY_SMC,
+      // kaiSwapper?: string;
+      limitOrder: LIMIT_ORDER_SMC,
+      wkai: WKAI_SMC
+    }
+  })
+
+  // const parsedParam = await client.removeLiquidityCallParameters(params)
+  const sdkClient = new KardiaClient({ endpoint: RPC_ENDPOINT })
+
+  const smcInstance = sdkClient.contract
+  smcInstance.updateAbi(SWAPABI)
+
+  const paramsWithouFeeOnTransfer = {...params, ...{feeOnTransfer: false}}
+  let parsedParam = await client.removeLiquidityCallParameters(paramsWithouFeeOnTransfer as any);
+  let invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
+
+  let shouldHaveFeeOnTransfer = false
+
+  try {
+    await sdkClient.transaction.estimateGas({
+      from: wallet.address,
+      to: SWAP_ROUTER_SMC,
+      value: (new BigNumber(parsedParam.amount || 0)).toNumber()
+    }, invocation.txData())
+  } catch (error) {
+    shouldHaveFeeOnTransfer = true
+  }
+
+  if (shouldHaveFeeOnTransfer) {
+    params.feeOnTransfer = true
+    parsedParam = await client.removeLiquidityCallParameters(params as any);
+    invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
+  }
+
+  // const invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
 
   const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
     amount: parsedParam.amount || 0

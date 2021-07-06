@@ -7,7 +7,6 @@ import {
 import {format} from 'date-fns';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {
-  Text,
   View,
   Image,
   ImageBackground,
@@ -16,6 +15,7 @@ import {
   Linking,
   Platform,
 } from 'react-native';
+import { LogBox } from 'react-native';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
@@ -32,6 +32,10 @@ import {formatNumberString, parseDecimals} from '../../utils/number';
 import TextAvatar from '../../components/TextAvatar';
 import CustomText from '../../components/Text';
 import Toast from 'react-native-toast-message';
+
+LogBox.ignoreLogs([
+ 'Non-serializable values were found in the navigation state',
+]);
 
 export default () => {
   const {params} = useRoute();
@@ -55,6 +59,7 @@ export default () => {
   const lpPair: Pair = params ? (params as any).lpPair : {}
   const token0 = params ? (params as any).token0 : ''
   const token1 = params ? (params as any).token1 : ''
+  const refreshLP = params ? (params as any).refreshLP : () => {}
   
   const theme = useContext(ThemeContext);
 
@@ -469,7 +474,7 @@ export default () => {
     }
   };
 
-  const handleBack = () => {
+  const handleBack = async () => {
     switch (type) {
       case 'normal':
         navigation.goBack()
@@ -513,6 +518,10 @@ export default () => {
           index: 0,
           routes: [{name: 'DEXHome', params: {pairAddress}}],
         });
+        break;
+      case 'addLP':
+        await refreshLP()
+        navigation.goBack()
         break;
       default:
         navigation.goBack()

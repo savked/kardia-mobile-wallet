@@ -301,7 +301,9 @@ export const lang: Language = {
     AMOUNT: 'Số lượng',
     SHARE: 'Share',
     POSITION: 'Vị thế',
-    ADD_LP_SUCCESS: 'Thêm liquidity thành công',
+    ADD_LP: 'Thêm thanh khoản',
+    ADD_LP_SUCCESS: 'Thêm thanh khoản thành công',
+    NOT_ENOUGH_LP: 'Không đủ LP tokens',
     // Referral key
     REFERRAL_CODE: 'Mã giới thiệu',
     REFERRAL_CODE_TITLE: 'Mã giới thiệu',

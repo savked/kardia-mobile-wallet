@@ -1,0 +1,290 @@
+import BigNumber from 'bignumber.js';
+import React, { useContext, useEffect, useState } from 'react';
+import { Image, Keyboard, Platform, TouchableWithoutFeedback, View } from 'react-native';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { cacheSelector } from '../../../atoms/cache';
+import { languageAtom } from '../../../atoms/language';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
+import Button from '../../../components/Button';
+import Divider from '../../../components/Divider';
+import CustomModal from '../../../components/Modal';
+import CustomText from '../../../components/Text';
+import CustomTextInput from '../../../components/TextInput';
+import useIsKeyboardShown from '../../../hooks/isKeyboardShown';
+import { calculateTransactionDeadline, removeLiquidity } from '../../../services/dex';
+import { ThemeContext } from '../../../ThemeContext';
+import { parseSymbolWKAI } from '../../../utils/dex';
+import { getLanguageString } from '../../../utils/lang';
+import { formatNumberString, getDigit, parseDecimals } from '../../../utils/number';
+import TxSettingModal from '../../KAIDex/TxSettingModal';
+import AuthModal from '../AuthModal';
+
+export default ({visible, onClose, lpItem}: {
+	visible: boolean;
+	onClose: () => void;
+	lpItem?: any
+}) => {
+
+	const theme = useContext(ThemeContext);
+	const language = useRecoilValue(languageAtom)
+	const [lpAmount, setLPAmount] = useState('')
+	const [error, setError] = useState('')
+	const [keyboardOffset, setKeyboardOffset] = useState(0);
+	const [showAuthModal, setShowAuthModal] = useState(false)
+	const [showTxSettingModal, setShowTxSettingModal] = useState(false)
+
+	const wallets = useRecoilValue(walletsAtom)
+	const selectedWallet = useRecoilValue(selectedWalletAtom)
+	const [txDeadline, setTxDeadline] = useRecoilState(cacheSelector('txDeadline'))
+  const [slippageTolerance, setSlippageTolerance] = useRecoilState(cacheSelector('slippageTolerance'))
+
+	const [withdrawing, setWithdrawing] = useState(false)
+
+	const _keyboardDidShow = (e: any) => {
+    setKeyboardOffset(e.endCoordinates.height);
+  };
+
+  const _keyboardDidHide = () => {
+    setKeyboardOffset(0);
+  };
+
+	useEffect(() => {
+		if (Platform.OS === 'ios') {
+      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
+    } else {
+      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    }
+
+    // cleanup function
+    return () => {
+      if (Platform.OS === 'ios') {
+        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
+      } else {
+        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+      }
+    };
+	}, [])
+
+	const getContentStyle = () => {
+		return {
+			backgroundColor: theme.backgroundFocusColor,
+			height: 380,
+			padding: 20,
+			paddingTop: 34,
+			justifyContent: 'flex-start',
+			marginBottom: Platform.OS === 'android' ? 0 : keyboardOffset,
+			marginTop: Platform.OS === 'android' ? 0 : -keyboardOffset
+		}
+	}
+
+	if (!lpItem) return null
+
+	const calculateRatio = () => {
+		const totalLPBN = new BigNumber(parseDecimals(lpItem.balance, 18))
+		const amountBN = new BigNumber(getDigit(lpAmount))
+		return amountBN.dividedBy(totalLPBN)
+	}
+
+	const renderOutput = (reserve: string) => {
+		if (!lpAmount) return '0'
+		const ratioBN = calculateRatio()
+		const reserveBN = new BigNumber(reserve)
+		const rs = reserveBN.multipliedBy(ratioBN)
+		return formatNumberString(rs.toFixed(), 6, 1)
+	}
+
+	const handleWithdraw = async () => {
+		try {
+			setWithdrawing(true)
+			const params = {
+				pair: {
+					balance: lpItem.balance,
+					pairAddress: lpItem.contract_address,
+					tokenA: {
+						tokenAddress: lpItem.t1.hash,
+						name: lpItem.t1.name,
+						symbol: lpItem.t1.symbol,
+						decimals: lpItem.t1.decimals
+					},
+					tokenB: {
+						tokenAddress: lpItem.t2.hash,
+						name: lpItem.t2.name,
+						symbol: lpItem.t2.symbol,
+						decimals: lpItem.t2.decimals
+					},
+					provider: lpItem.provider,
+					pooledTokens: lpItem.pooledTokens
+				},
+        withdrawAmount: (new BigNumber(getDigit(lpAmount))).multipliedBy(new BigNumber(10 ** 18)).toFixed(),
+        walletAddress: wallets[selectedWallet].address,
+        slippageTolerance,
+        txDeadline: await calculateTransactionDeadline(txDeadline as string),
+			}
+
+			const rs = await removeLiquidity(params, wallets[selectedWallet])
+
+			console.log(rs)
+			setWithdrawing(false)
+
+			// TODO: Navigate to success
+		} catch (error) {
+			console.log(error)
+			setWithdrawing(false)
+			setError(getLanguageString(language, 'GENERAL_ERROR'))
+		}
+	}
+
+	const submit = () => {
+		let isValid = true
+		setError('')
+		const totalLPBN = new BigNumber(parseDecimals(lpItem.balance, 18))
+		const amountBN = new BigNumber(getDigit(lpAmount))
+		if (amountBN.isGreaterThan(totalLPBN)) {
+			isValid = false
+			setError(getLanguageString(language, 'NOT_ENOUGH_LP'))
+		}
+
+		if (!isValid) return
+		setShowAuthModal(true)
+	}
+
+	if (showAuthModal) {
+		return (
+			<AuthModal
+				visible={showAuthModal}
+				onClose={() => {
+					setShowAuthModal(false)
+				}}
+				onSuccess={handleWithdraw}
+			/>
+		)
+	}
+
+	if (showTxSettingModal) {
+		return (
+			<TxSettingModal
+				visible={showTxSettingModal}
+				slippageTolerance={slippageTolerance as string}
+				deadline={txDeadline as string}
+				onClose={() => {
+					setShowTxSettingModal(false);
+				}}
+				onSubmit={(newDeadline, newSlippageTolerance) => {
+					setTxDeadline(newDeadline);
+					setSlippageTolerance(newSlippageTolerance);
+					setShowTxSettingModal(false);
+				}}
+			/>
+		)
+	}
+
+	return (
+		<CustomModal
+			visible={visible}
+			onClose={onClose}
+			showCloseButton={false}
+			contentStyle={getContentStyle()}
+		>
+			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+				<View style={{width: '100%'}}>
+					<View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: 8}}>
+						<CustomText
+							style={{
+								color: theme.textColor
+							}}
+						>
+							LP Tokens
+						</CustomText>
+						<CustomText
+							style={{
+								color: theme.mutedTextColor
+							}}
+						>
+							Balance:{' '}
+							<CustomText style={{
+								color: theme.textColor
+							}}>{formatNumberString(parseDecimals(lpItem.balance, 18), 6, 0)}</CustomText>
+						</CustomText>
+					</View>
+					<View style={{justifyContent: 'flex-start'}}>
+						<CustomTextInput
+							message={error}
+							value={lpAmount}
+							onChangeText={setLPAmount}
+							inputStyle={{
+								backgroundColor: 'rgba(96, 99, 108, 1)',
+								color: theme.textColor
+							}}
+						/>
+					</View>
+					<Divider height={0.5} style={{width: '100%', backgroundColor: 'rgba(96, 99, 108, 1)', height: 2}} />
+					<View style={{flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'}}>
+						<View style={{flexDirection: 'row', alignItems: 'center'}}>
+							<Image
+								source={{uri: lpItem.t1.logo}}
+								style={{
+									width: 20,
+									height: 20,
+									marginRight: 4
+								}}
+							/>
+							<CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize + 1}}>
+							{parseSymbolWKAI(lpItem.t1.symbol)}
+							</CustomText>
+						</View>
+						<CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize + 1}}>
+							{renderOutput(lpItem.estimatedAmountA)}
+						</CustomText>
+					</View>
+					<View style={{flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between', marginTop: 8}}>
+						<View style={{flexDirection: 'row', alignItems: 'center'}}>
+							<Image
+								source={{uri: lpItem.t2.logo}}
+								style={{
+									width: 20,
+									height: 20,
+									marginRight: 4
+								}}
+							/>
+							<CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize + 1}}>
+								{parseSymbolWKAI(lpItem.t2.symbol)}
+							</CustomText>
+						</View>
+						<CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize + 1}}>
+							{renderOutput(lpItem.estimatedAmountB)}
+						</CustomText>
+					</View>
+					<Divider height={0.5} style={{width: '100%', backgroundColor: 'rgba(96, 99, 108, 1)', height: 2}} />
+					<Button
+						title={getLanguageString(language, 'CANCEL')}
+						onPress={onClose}
+						disabled={withdrawing}
+						type="outline"
+						style={{
+							width: '100%',
+							marginBottom: 8
+						}}
+						textStyle={{
+							fontWeight: '500',
+							fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+						}}
+					/>
+					<Button
+						disabled={withdrawing}
+						loading={withdrawing}
+						title={getLanguageString(language, 'WITHDRAW')}
+						onPress={submit}
+						textStyle={{
+							fontWeight: '500',
+							fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+						}}
+					/>
+				</View>
+			</TouchableWithoutFeedback>
+		</CustomModal>
+	)
+}

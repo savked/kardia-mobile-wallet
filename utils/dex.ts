@@ -39,7 +39,6 @@ export const pairMapper = (pairs: any[]): Pair[] => {
       symbol: item.token1.symbol,
       decimals: Number(item.token1.decimals)
     }
-
     return {
       decimals: 0,
       contract_address: item.id,

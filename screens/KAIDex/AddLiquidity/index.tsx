@@ -18,13 +18,18 @@ import ComingSoon from '../../common/ComingSoon';
 import Icon from 'react-native-vector-icons/Ionicons'
 import LiquidityItem from './LiquidityItem';
 import SelectPairForLP from './SelectPairForLP';
+import LPDetailModal from '../../common/LPDetailModal';
+import { getLanguageString } from '../../../utils/lang';
+import { languageAtom } from '../../../atoms/language';
 
 export default ({toggleMenu}: {
   toggleMenu: () => void
 }) => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom)
   const theme = useContext(ThemeContext)
+  const language = useRecoilValue(languageAtom)
   const [lpList, setLPList] = useState<any[]>([])
+  const [lpItemForDetail, setLPItemForDetail] = useState<any>()
   const [showNewLPModal, setShowNewLPModal] = useState(false)
   const [pairForNewLP, setPairForNewLP] = useState<Pair>()
   const [selectingPair, setSelectingPair] = useState(false)
@@ -32,6 +37,7 @@ export default ({toggleMenu}: {
 
   const wallets = useRecoilValue(walletsAtom)
   const selectedWallet = useRecoilValue(selectedWalletAtom)
+  const [showLPDetailModal, setShowLPDetailModal] = useState(false)
 
   const { loading, error, data: _pairData, refetch } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
 
@@ -52,12 +58,21 @@ export default ({toggleMenu}: {
   }, [wallets, selectedWallet, _pairData])
 
   const handleRefresh = async () => {
-    console.log('handle refresh')
     if (_pairData && _pairData.pairs && _pairData.pairs.length > 0) {
       setIsRefreshing(true)
       const rs = await getMyPortfolio(pairMapper(_pairData.pairs), wallets[selectedWallet].address)
       setLPList(rs)
       setIsRefreshing(false)
+    }
+  }
+
+  const triggerAddLP = (pairAddress: string) => {
+    const allPair = pairMapper(_pairData.pairs)
+    const item = allPair.find((i) => i.contract_address === pairAddress)
+    if (item) {
+      // setShowLPDetailModal(false)
+      setPairForNewLP(item)
+      setShowNewLPModal(true)
     }
   }
 
@@ -82,6 +97,24 @@ export default ({toggleMenu}: {
     )
   }
 
+  if (showNewLPModal) {
+    return (
+      <AddLiquidityModal
+        visible={showNewLPModal}
+        onClose={() => {
+          setShowNewLPModal(false)
+        }}
+        pair={pairForNewLP}
+        refreshLP={handleRefresh}
+        closeDetail={() => {
+          if (showLPDetailModal) {
+            setShowLPDetailModal(false)
+          }
+        }}
+      />
+    )
+  }
+
   return (
     <View
       style={{
@@ -89,12 +122,11 @@ export default ({toggleMenu}: {
       }}
     >
       {/* <ComingSoon /> */}
-      <AddLiquidityModal
-        visible={showNewLPModal}
-        onClose={() => {
-          setShowNewLPModal(false)
-        }}
-        pair={pairForNewLP}
+      <LPDetailModal
+        visible={showLPDetailModal}
+        onClose={() => setShowLPDetailModal(false)}
+        lpItem={lpItemForDetail}
+        triggerAddLP={triggerAddLP}
       />
       {
         !loading && lpList.length > 0 && (
@@ -124,7 +156,7 @@ export default ({toggleMenu}: {
                 size={20}
               />
               <CustomText style={{color: theme.textColor}}>
-                Add new
+                {getLanguageString(language, 'ADD_LP')}
               </CustomText>
             </TouchableOpacity>
           </View>
@@ -200,7 +232,15 @@ export default ({toggleMenu}: {
         }
         ItemSeprator={() => <View style={{height: 6}} />}
         render={(item) => {
-          return <LiquidityItem lpItem={item} />
+          return (
+            <LiquidityItem 
+              lpItem={item} 
+              onPress={() => {
+                setLPItemForDetail(item)
+                setShowLPDetailModal(true)
+              }} 
+            />
+          )
         }}
       />
     </View>
