@@ -127,6 +127,7 @@ export const lang: Language = {
     NOT_ENOUGH_KAI_FOR_TX: 'Ví không đủ KAI',
     TX_SUCCESS: 'Bạn đã gửi thành công!',
     AUTH_TX_TOTAL_COST: 'Xác nhận tổng chi phí',
+    TOTAL_COST: 'Tổng',
     // Wallet key
     IMPORT: 'Thêm ví',
     WALLET: 'Ví',

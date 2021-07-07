@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, Platform, TouchableOpacity, View } from 'react-native'
 import { useRecoilValue } from 'recoil'
 import BigNumber from 'bignumber.js'
 import { languageAtom } from '../../../atoms/language'
@@ -16,6 +16,8 @@ import { walletsAtom } from '../../../atoms/wallets'
 import { estimateGas, getRecomendedGasPrice, sendRawTx } from '../../../services/transaction'
 import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE_HEX } from '../../../config'
 import {isNaN} from '../../../utils/number'
+import EditGasPrice from '../EditGasPriceModal'
+import EditGasLimitModal from '../EditGasLimitModal'
 
 export default ({visible, onClose, txObj, onConfirm}: {
   visible: boolean;
@@ -27,7 +29,9 @@ export default ({visible, onClose, txObj, onConfirm}: {
   const language = useRecoilValue(languageAtom)
   const [preparing, setPreparing] = useState(false)
   const [gas, setGas] = useState('0x0')
+  const [edittingGas, setEdittingGas] = useState(false)
   const [gasPrice, setGasPrice] = useState(DEFAULT_GAS_PRICE_HEX)
+  const [edittingGasPrice, setEdittingGasPrice] = useState(false)
 
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [loading, setLoading] = useState(false)
@@ -37,7 +41,7 @@ export default ({visible, onClose, txObj, onConfirm}: {
   const getContentStyle = () => {
     return {
       backgroundColor: theme.backgroundFocusColor,
-      height: 340,
+      height: 420,
       justifyContent: 'flex-start'
     }
   }
@@ -55,7 +59,6 @@ export default ({visible, onClose, txObj, onConfirm}: {
       setLoading(false)
       onConfirm(txHash) 
     } catch (error) {
-      console.log('error', error)
       setLoading(false)
       setError(getLanguageString(language, 'GENERAL_ERROR'))
     }
@@ -109,18 +112,22 @@ export default ({visible, onClose, txObj, onConfirm}: {
           <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'TO')}:</CustomText>
           <CustomText style={{color: theme.textColor}}>{truncate(toChecksum(getField('to').toLowerCase()), 10, 10)}</CustomText>
         </View>
-        {/* <View style={styles.group}>
+        <View style={styles.group}>
           <CustomText style={{color: theme.textColor}}>Gas:</CustomText>
-          <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(gas, 16)).toFixed())}</CustomText>
+          <TouchableOpacity onPress={() => setEdittingGas(true)}>
+            <CustomText style={{color: theme.urlColor}}>{formatNumberString((new BigNumber(gas, 16)).toFixed())}</CustomText>
+          </TouchableOpacity>
         </View>
         <View style={styles.group}>
           <CustomText style={{color: theme.textColor}}>Gas Price:</CustomText>
-          <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(getField('gasPrice'), 16)).dividedBy(new BigNumber(10 ** 9)).toFixed())} OXY</CustomText>
+          <TouchableOpacity onPress={() => setEdittingGasPrice(true)}>
+            <CustomText style={{color: theme.urlColor}}>{formatNumberString((new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed())} OXY</CustomText>
+          </TouchableOpacity>
         </View>
         <View style={styles.group}>
           <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:</CustomText>
           <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(getField('value'), 16)).dividedBy(new BigNumber(10 ** 18)).toFixed())} KAI</CustomText>
-        </View> */}
+        </View>
         <View style={styles.group}>
           <CustomText style={{color: theme.textColor}}>Data:</CustomText>
           <CustomText style={{color: theme.textColor}}>{truncate(getField('data'), 10, 10)}</CustomText>
@@ -134,6 +141,10 @@ export default ({visible, onClose, txObj, onConfirm}: {
             width: '100%',
             marginTop: 32
           }}
+          textStyle={{
+            fontWeight: '500',
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+          }}
         />
         <Button
           title={getLanguageString(language, 'CONFIRM')}
@@ -143,6 +154,10 @@ export default ({visible, onClose, txObj, onConfirm}: {
           style={{
             width: '100%',
             marginTop: 12
+          }}
+          textStyle={{
+            fontWeight: '500',
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
           }}
         />
       </>
@@ -160,6 +175,36 @@ export default ({visible, onClose, txObj, onConfirm}: {
         amount="0"
       />
     );
+  }
+
+  if (edittingGasPrice) {
+    return (
+      <EditGasPrice
+        visible={edittingGasPrice}
+        initGasPrice={(new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed()}
+        onClose={() => setEdittingGasPrice(false)}
+        onSuccess={(newGasPrice: string) => {
+          const bnVal = new BigNumber(newGasPrice)
+          setGasPrice(`0x${bnVal.multipliedBy(new BigNumber(10 ** 9)).toString(16)}`)
+          setEdittingGasPrice(false)
+        }}
+      />
+    )
+  }
+
+  if (edittingGas) {
+    return (
+      <EditGasLimitModal
+        visible={edittingGas}
+        initGas={(new BigNumber(gas, 16)).toFixed()}
+        onClose={() => setEdittingGas(false)}
+        onSuccess={(newGas: string) => {
+          const bnVal = new BigNumber(newGas)
+          setGas(`0x${bnVal.toString(16)}`)
+          setEdittingGas(false)
+        }}
+      />
+    )
   }
 
   return (

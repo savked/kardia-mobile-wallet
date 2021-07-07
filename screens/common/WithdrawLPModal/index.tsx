@@ -12,7 +12,7 @@ import CustomModal from '../../../components/Modal';
 import Tags from '../../../components/Tags';
 import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
-import { calculateTransactionDeadline, removeLiquidity } from '../../../services/dex';
+import { approveToken, calculateTransactionDeadline, getApproveState, removeLiquidity } from '../../../services/dex';
 import { ThemeContext } from '../../../ThemeContext';
 import { parseSymbolWKAI } from '../../../utils/dex';
 import { getLanguageString } from '../../../utils/lang';
@@ -37,12 +37,26 @@ export default ({visible, onClose, lpItem, onSuccess, refreshLP}: {
 	const [showAuthModal, setShowAuthModal] = useState(false)
 	const [showTxSettingModal, setShowTxSettingModal] = useState(false)
 
+	const [approvalState, setApprovalState] = useState(false)
+
 	const wallets = useRecoilValue(walletsAtom)
 	const selectedWallet = useRecoilValue(selectedWalletAtom)
 	const [txDeadline, setTxDeadline] = useRecoilState(cacheSelector('txDeadline'))
   const [slippageTolerance, setSlippageTolerance] = useRecoilState(cacheSelector('slippageTolerance'))
 
 	const [withdrawing, setWithdrawing] = useState(false)
+
+	useEffect(() => {
+		(async () => {
+			if (!lpItem) return
+			const state = await getApproveState({
+				hash: lpItem.contract_address,
+				decimals: 18
+			} as any, parseDecimals(lpItem.balance, 18), wallets[selectedWallet])
+
+			setApprovalState(state)
+		})()
+	}, [lpItem])
 
 	const _keyboardDidShow = (e: any) => {
     setKeyboardOffset(e.endCoordinates.height);
@@ -167,6 +181,28 @@ export default ({visible, onClose, lpItem, onSuccess, refreshLP}: {
 		setShowAuthModal(true)
 	}
 
+	const approve = async () => {
+		try {
+			setWithdrawing(true)
+			const rs = await approveToken({
+				hash: lpItem.contract_address,
+				decimals: 18
+			} as any, parseDecimals(lpItem.balance, 18), wallets[selectedWallet])
+
+			if (rs.status === 1) {
+				setWithdrawing(false)
+				setApprovalState(true)
+			} else {
+				setWithdrawing(false)
+				setError(getLanguageString(language, 'APPROVE_ERROR'))
+			}
+		} catch (error) {
+			console.log('Approve fail', error)
+			setWithdrawing(false)
+			setError(getLanguageString(language, 'APPROVE_ERROR'))
+		}
+	}
+
 	if (showAuthModal) {
 		return (
 			<AuthModal
@@ -212,7 +248,6 @@ export default ({visible, onClose, lpItem, onSuccess, refreshLP}: {
 	const getRatio = () => {
 		const lpAmountBN = new BigNumber(lpAmount)
 		const balanceBN = (new BigNumber(lpItem.balance)).dividedBy(new BigNumber(10 ** 18))
-		console.log('lpItem.balance', lpItem.balance)
 		return lpAmountBN.dividedBy(balanceBN).toNumber()
 	}
 
@@ -380,8 +415,8 @@ export default ({visible, onClose, lpItem, onSuccess, refreshLP}: {
 					<Button
 						disabled={withdrawing}
 						loading={withdrawing}
-						title={getLanguageString(language, 'WITHDRAW')}
-						onPress={submit}
+						title={approvalState === true ? getLanguageString(language, 'WITHDRAW') : getLanguageString(language, 'APPROVE')}
+						onPress={approvalState === true ? submit : approve}
 						textStyle={{
 							fontWeight: '500',
 							fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined

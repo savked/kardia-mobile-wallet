@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/core';
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome5'
 import { Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { cacheSelector } from '../../../atoms/cache';
@@ -12,7 +13,7 @@ import CustomModal from '../../../components/Modal';
 import Tags from '../../../components/Tags';
 import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
-import { addLiquidity, calculateTransactionDeadline, getTokenBalance } from '../../../services/dex';
+import { addLiquidity, approveToken, calculateTransactionDeadline, getApproveState, getTokenBalance } from '../../../services/dex';
 import { ThemeContext } from '../../../ThemeContext';
 import { getPairPriceInBN, parseSymbolWKAI } from '../../../utils/dex';
 import { getLanguageString } from '../../../utils/lang';
@@ -44,12 +45,16 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 	const [is75Balance1, setIs75Balance1] = useState(false)
 	const [is100Balance1, setIs100Balance1] = useState(false)
 	const [errorToken0, setErrorToken0] = useState('')
+	const [errorToken1, setErrorToken1] = useState('')
 	const [editting, setEditting] = useState('')
 	const [showTxSettingModal, setShowTxSettingModal] = useState(false)
 
 	const [submitting, setSubmitting] = useState(false)
 	const [showAuthModal, setShowAuthModal] = useState(false)
 	const [keyboardOffset, setKeyboardOffset] = useState(0);
+
+	const [approvalState0, setApprovalState0] = useState(false)
+	const [approvalState1, setApprovalState1] = useState(false)
 
 	const wallets = useRecoilValue(walletsAtom)
 	const selectedWallet = useRecoilValue(selectedWalletAtom)
@@ -81,8 +86,20 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 
 			const _bl1 = await getTokenBalance(pair.t2.hash, wallets[selectedWallet].address)
 			setBalance1(_bl1)
+			
+			const approval0 = await getApproveState({
+				hash: pair.t1.hash,
+				decimals: pair.t1.decimals
+			} as any, parseDecimals(_bl0, pair.t1.decimals), wallets[selectedWallet])
+			setApprovalState0(approval0)
+
+			const approval1 = await getApproveState({
+				hash: pair.t2.hash,
+				decimals: pair.t2.decimals
+			} as any, parseDecimals(_bl1, pair.t2.decimals), wallets[selectedWallet])
+			setApprovalState1(approval1)
 		})()
-	}, [])
+	}, [pair])
 
 	useEffect(() => {
 		if (editting === '0') {
@@ -164,6 +181,47 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 		return formatNumberString(priceBN.toFixed(), 6)
 	}
 
+	const handleSubmit = () => {
+		if (approvalState0 && approvalState1) {
+			setShowAuthModal(true)
+		} else {
+			handleApproveToken()
+		}
+	} 
+
+	const handleApproveToken = async () => {
+		try {
+			setSubmitting(true)
+
+			if (!approvalState0) {
+				const rs = await approveToken(pair.t1, parseDecimals(balance0, pair.t1.decimals), wallets[selectedWallet])
+
+				if (rs.status === 1) {
+					setApprovalState0(true)
+				} else {
+					setErrorToken0(getLanguageString(language, 'APPROVE_ERROR'))
+				}
+			}
+
+			if (!approvalState1) {
+				const rs1 = await approveToken(pair.t2, parseDecimals(balance1, pair.t2.decimals), wallets[selectedWallet])
+
+				if (rs1.status === 1) {
+					setApprovalState1(true)
+				} else {
+					setErrorToken1(getLanguageString(language, 'APPROVE_ERROR'))
+				}
+			}
+			setSubmitting(false)
+
+		} catch (error) {
+			console.log('Approve fail', error)
+			setSubmitting(false)
+			setErrorToken0(getLanguageString(language, 'APPROVE_ERROR'))
+			setErrorToken1(getLanguageString(language, 'APPROVE_ERROR'))
+		}
+	}
+
 	const handleAddLP = async () => {
 		setSubmitting(true)
 		try {
@@ -189,7 +247,6 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 
 			const rs = await addLiquidity(params, wallets[selectedWallet])
 			setSubmitting(false)
-			console.log('rs', rs)
 
 			if (closeDetail) {
 				closeDetail()
@@ -252,7 +309,28 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 				<View style={{width: '100%'}}>
 					<View style={{width: '100%', marginBottom: 12}}>
 						<View style={{width: '100%', marginBottom: 8, flexDirection: 'row', justifyContent: 'space-between'}}>
-							<CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize + 2}}>First token</CustomText>
+							<View style={{flexDirection: 'row'}}>
+								<CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize + 2}}>
+									First token
+								</CustomText>
+								{
+									approvalState0 && (
+										<View
+											style={{
+												paddingLeft: 8,
+												// backgroundColor: 'red',
+												height: 14
+											}}
+										>
+											<Icon
+												name="check-circle"
+												color={theme.successColor}
+												size={14}
+											/>
+										</View>
+									)
+								}
+							</View>
 							<CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize + 2}}>
 								Balance: 
 								<CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balance0, pair.t1.decimals), 6)}</CustomText>
@@ -425,7 +503,28 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 					</View>
 					<View style={{width: '100%'}}>
 						<View style={{width: '100%', marginBottom: 8, flexDirection: 'row', justifyContent: 'space-between'}}>
-							<CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize + 2}}>Second token</CustomText>
+							<View style={{flexDirection: 'row'}}>
+								<CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize + 2}}>
+									Second token
+								</CustomText>
+								{
+									approvalState1 && (
+										<View
+											style={{
+												paddingLeft: 8,
+												// backgroundColor: 'red',
+												height: 14
+											}}
+										>
+											<Icon
+												name="check-circle"
+												color={theme.successColor}
+												size={14}
+											/>
+										</View>
+									)
+								}
+							</View>
 							<CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize + 2}}>
 								Balance: 
 								<CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balance1, pair.t2.decimals), 6)}</CustomText>
@@ -465,7 +564,7 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 							}}
 							onFocus={() => setEditting('1')}
 							onBlur={() => setEditting('')}
-							message={errorToken0}
+							message={errorToken1}
 							value={token1}
 							inputStyle={{
 								backgroundColor: 'rgba(96, 99, 108, 1)',
@@ -631,10 +730,10 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 						}}
 					/>
 					<Button
-						title={getLanguageString(language, 'SUBMIT')}
+						title={approvalState0 && approvalState1 ? getLanguageString(language, 'SUBMIT') : getLanguageString(language, 'APPROVE')}
 						loading={submitting}
 						disabled={submitting}
-						onPress={() => setShowAuthModal(true)}
+						onPress={handleSubmit}
 						textStyle={{
 							fontWeight: '500',
 							fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined

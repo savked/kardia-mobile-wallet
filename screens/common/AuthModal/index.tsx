@@ -23,6 +23,7 @@ import Divider from '../../../components/Divider';
 import CustomText from '../../../components/Text';
 import { formatNumberString } from '../../../utils/number';
 import BigNumber from 'bignumber.js';
+import { DANGEROUS_KAI_AMOUNT } from '../../../config';
 
 const optionalConfigObject = {
   unifiedErrors: false, // use unified error messages (default false)
@@ -169,14 +170,14 @@ export default ({
   const getConfirmModalStyle = () => {
     if (Platform.OS === 'android') {
       return {
-        height: 390,
+        height: isDangerous() ? 420 : 390,
         backgroundColor: theme.backgroundFocusColor,
         alignItems: 'center',
         justifyContent: 'flex-start',
       };
     } else {
       return {
-        height: 390,
+        height: isDangerous() ? 420 : 390,
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -188,6 +189,10 @@ export default ({
     if (!gasLimit || !gasPrice || !amount) return ''
     const gasCostInKAI = (new BigNumber(gasPrice)).multipliedBy(new BigNumber(gasLimit)).dividedBy(new BigNumber(10 ** 9))
     return gasCostInKAI.plus(new BigNumber(amount)).toFixed()
+  }
+
+  const isDangerous = () => {
+    return Number(calculateTotalCost()) > DANGEROUS_KAI_AMOUNT
   }
 
   if (authStep === '1' && gasPrice && gasLimit && amount) {
@@ -227,7 +232,7 @@ export default ({
           </View>
         </View>
         <View style={{width: '100%', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8}}>
-          <CustomText style={{color: theme.mutedTextColor}}>Total cost</CustomText>
+          <CustomText style={{color: theme.mutedTextColor}}>{getLanguageString(language, 'TOTAL_COST')}</CustomText>
           <View style={{alignItems: 'flex-end'}}>
             <CustomText style={{color: theme.textColor}}>
               {formatNumberString(calculateTotalCost())} KAI
@@ -237,8 +242,22 @@ export default ({
               <CustomText style={{color: theme.textColor, marginTop: 4}}>{formatNumberString(amountKRC20)} {krc20Symbol}</CustomText>
             }
           </View>
-          
         </View>
+        {
+          isDangerous() && (
+            <CustomText
+              style={{
+                fontWeight: 'bold',
+                width: '100%',
+                textAlign: 'center',
+                color: theme.warningTextColor,
+                marginVertical: 12,
+              }}
+            >
+              Warning: Your transaction cost is significantly high. Please double-check the transaction.
+            </CustomText>
+          )
+        }
         <Button
           title={getLanguageString(language, 'CANCEL')}
           onPress={closeAuthModal}

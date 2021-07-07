@@ -10,7 +10,7 @@ import BigNumber from 'bignumber.js';
 import { getDeltaTimestamps } from '../../utils/date';
 import { apolloKaiBlockClient, apolloKaiDexClient } from './apolloClient';
 import { GET_BLOCKS_BY_TIMESTAMPS, PAIR_LIST_BY_BLOCK_NUMBER } from './queries';
-import { getLogoURL } from '../../utils/string';
+import { getLogoURL, toChecksum } from '../../utils/string';
 import Web3 from 'web3'
 import { parseDecimals } from '../../utils/number';
 

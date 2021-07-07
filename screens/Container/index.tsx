@@ -29,7 +29,7 @@ import Notification from '../Notification';
 import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
 import {tokenInfoAtom} from '../../atoms/token';
-import {getKRC20TokensProces, getTokenInfo} from '../../services/token';
+import {getKRC20TokensPrices, getTokenInfo} from '../../services/token';
 import {addressBookAtom} from '../../atoms/addressBook';
 import {languageAtom} from '../../atoms/language';
 import {localAuthAtom, localAuthEnabledAtom} from '../../atoms/localAuth';
@@ -430,7 +430,7 @@ const AppContainer = () => {
 
       // Get KRC20 tokens price
       try {
-        const krc20Price = await getKRC20TokensProces();
+        const krc20Price = await getKRC20TokensPrices();
         setKRC20Prices(krc20Price);
       } catch (error) {
         console.error(error);

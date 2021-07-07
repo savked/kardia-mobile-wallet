@@ -18,7 +18,7 @@ export const getTokenInfo = async (): Promise<KAITokenInfo> => {
   }
 };
 
-export const getKRC20TokensProces = async (): Promise<Record<string, any>> => {
+export const getKRC20TokensPrices = async (): Promise<Record<string, any>> => {
   try {
     const requestOptions = {
       method: 'GET',
