@@ -310,6 +310,7 @@ export const lang: Language = {
     POSITION: 'Position',
     ADD_LP: 'Add Liquidity',
     ADD_LP_SUCCESS: 'Add liquidity successfully',
+    WITHDRAW_LP_SUCCESS: 'Withdraw liquidity successfully',
     NOT_ENOUGH_LP: 'Insufficient amount of LP tokens',
     // Referral key
     REFERRAL_CODE: 'Referral Code',

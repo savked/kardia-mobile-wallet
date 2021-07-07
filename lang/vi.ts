@@ -303,6 +303,7 @@ export const lang: Language = {
     POSITION: 'Vị thế',
     ADD_LP: 'Thêm thanh khoản',
     ADD_LP_SUCCESS: 'Thêm thanh khoản thành công',
+    WITHDRAW_LP_SUCCESS: 'Rút thanh khoản thành công',
     NOT_ENOUGH_LP: 'Không đủ LP tokens',
     // Referral key
     REFERRAL_CODE: 'Mã giới thiệu',
