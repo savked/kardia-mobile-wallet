@@ -4,6 +4,12 @@ export const isNumber = (val: string) => {
   return /^\d+(,\d{3})*(\.\d*)?$/.test(val);
 };
 
+export const isNaN = (val: any) => {
+  if (typeof val === 'number') return Number.isNaN(val)
+  if (typeof val === 'string') return val.toLowerCase() === 'nan'
+  return true
+}
+
 export const getDigit = (val: string, editting = true) => {
   let result = '';
   let decimalPointExists = false

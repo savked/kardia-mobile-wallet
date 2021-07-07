@@ -15,6 +15,7 @@ import AuthModal from '../AuthModal'
 import { walletsAtom } from '../../../atoms/wallets'
 import { estimateGas, getRecomendedGasPrice, sendRawTx } from '../../../services/transaction'
 import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE_HEX } from '../../../config'
+import {isNaN} from '../../../utils/number'
 
 export default ({visible, onClose, txObj, onConfirm}: {
   visible: boolean;
@@ -76,7 +77,7 @@ export default ({visible, onClose, txObj, onConfirm}: {
         setGas(txObj.gas)
       }
 
-      if (txObj.gasPrice) {
+      if (txObj.gasPrice && !isNaN(txObj.gasPrice)) {
         setGasPrice(txObj.gasPrice)
       } else {
         try {
