@@ -54,8 +54,9 @@ export default ({
 							onPress={() => onAppSelect(item)}
 							style={{
 								width: ITEM_WIDTH, 
-								height: ITEM_WIDTH, 
-								marginLeft: index % columns === 0 ? 0 : marginLeft
+								// height: ITEM_WIDTH, 
+								marginLeft: index % columns === 0 ? 0 : marginLeft,
+								marginBottom: 8
 							}}
 						>
 							<View
