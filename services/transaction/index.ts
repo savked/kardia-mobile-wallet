@@ -3,6 +3,7 @@ import KardiaClient from 'kardia-js-sdk';
 import {cellValue, weiToKAI} from './amount';
 import { BigNumber } from 'bignumber.js';
 import { isHexString } from '@ethersproject/bytes';
+import { DEFAULT_KAI_TX_GAS_LIMIT } from '../../config';
 
 export const estimateGas = async (payload: Record<string, any>, data = '') => {
   const _payload = JSON.parse(JSON.stringify(payload))
@@ -97,7 +98,7 @@ export const createTx = async (
   const nonce = await kardiaClient.account.getNonce(wallet.address.trim());
   const txData = {
     receiver,
-    gas: 50000,
+    gas: DEFAULT_KAI_TX_GAS_LIMIT,
     nonce,
     gasPrice,
     amount: cellValue(amount),

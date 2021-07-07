@@ -21,6 +21,8 @@ import {getAppPasscode} from '../../../utils/local';
 import {styles} from './style';
 import Divider from '../../../components/Divider';
 import CustomText from '../../../components/Text';
+import { formatNumberString } from '../../../utils/number';
+import BigNumber from 'bignumber.js';
 
 const optionalConfigObject = {
   unifiedErrors: false, // use unified error messages (default false)
@@ -31,10 +33,20 @@ export default ({
   visible,
   onClose,
   onSuccess,
+  gasPrice,
+  gasLimit,
+  amount,
+  amountKRC20 = '',
+  krc20Symbol = ''
 }: {
   visible: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  gasPrice?: string;
+  gasLimit?: string;
+  amount?: string;
+  amountKRC20?: string;
+  krc20Symbol?: string;
 }) => {
   const otpRef = useRef<OtpInputsRef>(null);
   const theme = useContext(ThemeContext);
@@ -45,6 +57,8 @@ export default ({
   const [touchType, setTouchType] = useState('');
   const [keyboardShown, setKeyboardShown] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
+
+  const [authStep, setAuthStep] = useState('1')
 
   const _keyboardDidShow = (e: any) => {
     setKeyboardOffset(e.endCoordinates.height);
@@ -152,11 +166,108 @@ export default ({
     }
   };
 
+  const getConfirmModalStyle = () => {
+    if (Platform.OS === 'android') {
+      return {
+        height: 390,
+        backgroundColor: theme.backgroundFocusColor,
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+      };
+    } else {
+      return {
+        height: 390,
+        backgroundColor: theme.backgroundFocusColor,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+      };
+    }
+  }
+
+  const calculateTotalCost = () => {
+    if (!gasLimit || !gasPrice || !amount) return ''
+    const gasCostInKAI = (new BigNumber(gasPrice)).multipliedBy(new BigNumber(gasLimit)).dividedBy(new BigNumber(10 ** 9))
+    return gasCostInKAI.plus(new BigNumber(amount)).toFixed()
+  }
+
+  if (authStep === '1' && gasPrice && gasLimit && amount) {
+    return (
+      <Modal
+        visible={authStep === '1' && visible}
+        showCloseButton={false}
+        onClose={closeAuthModal}
+        contentStyle={getConfirmModalStyle()}
+      >
+        <CustomText
+          style={{
+            textAlign: 'center',
+            color: theme.textColor,
+            fontSize: 20,
+            marginBottom: 14,
+            fontWeight: 'bold'
+          }}>
+          {getLanguageString(language, 'AUTH_TX_TOTAL_COST')}
+        </CustomText>
+        <View style={{width: '100%', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginBottom: 8}}>
+          <CustomText style={{color: theme.mutedTextColor}}>{getLanguageString(language, 'GAS_PRICE')}</CustomText>
+          <CustomText style={{color: theme.textColor}}>{formatNumberString(gasPrice)} OXY</CustomText>
+        </View>
+        <View style={{width: '100%', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginBottom: 8}}>
+          <CustomText style={{color: theme.mutedTextColor}}>{getLanguageString(language, 'GAS_LIMIT')}</CustomText>
+          <CustomText style={{color: theme.textColor}}>{formatNumberString(gasLimit)}</CustomText>
+        </View>
+        <View style={{width: '100%', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8}}>
+          <CustomText style={{color: theme.mutedTextColor}}>{getLanguageString(language, 'AMOUNT')}</CustomText>
+          <View style={{alignItems: 'flex-end'}}>
+            <CustomText style={{color: theme.textColor}}>{formatNumberString(amount)} KAI</CustomText>
+            {
+              amountKRC20 !== '' && 
+              <CustomText style={{color: theme.textColor, marginTop: 4}}>{formatNumberString(amountKRC20)} {krc20Symbol}</CustomText>
+            }
+          </View>
+        </View>
+        <View style={{width: '100%', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8}}>
+          <CustomText style={{color: theme.mutedTextColor}}>Total cost</CustomText>
+          <View style={{alignItems: 'flex-end'}}>
+            <CustomText style={{color: theme.textColor}}>
+              {formatNumberString(calculateTotalCost())} KAI
+            </CustomText>
+            {
+              amountKRC20 !== '' && 
+              <CustomText style={{color: theme.textColor, marginTop: 4}}>{formatNumberString(amountKRC20)} {krc20Symbol}</CustomText>
+            }
+          </View>
+          
+        </View>
+        <Button
+          title={getLanguageString(language, 'CANCEL')}
+          onPress={closeAuthModal}
+          type="outline"
+          style={{marginBottom: 12, marginTop: 24}}
+          block
+        />
+        <Button
+          title={getLanguageString(language, 'CONFIRM')}
+          onPress={() => setAuthStep('2')}
+          textStyle={{
+            fontWeight: '500', fontSize: theme.defaultFontSize + 3,
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+          }}
+          type="primary"
+          block
+        />
+      </Modal>
+    )
+  }
+
   return (
     <Modal
       visible={visible}
       showCloseButton={false}
-      onClose={closeAuthModal}
+      onClose={() => {
+        setAuthStep('1')
+        closeAuthModal()
+      }}
       contentStyle={getModalStyle()}>
       <CustomText
         style={{
@@ -219,7 +330,10 @@ export default ({
       <View style={{width: '100%'}}>
         <Button
           title={getLanguageString(language, 'CANCEL')}
-          onPress={closeAuthModal}
+          onPress={() => {
+            setAuthStep('1')
+            closeAuthModal()
+          }}
           type="outline"
           style={{marginBottom: 12}}
           block

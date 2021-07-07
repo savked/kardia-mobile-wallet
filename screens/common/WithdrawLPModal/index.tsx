@@ -9,13 +9,14 @@ import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
 import CustomModal from '../../../components/Modal';
+import Tags from '../../../components/Tags';
 import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
 import { calculateTransactionDeadline, removeLiquidity } from '../../../services/dex';
 import { ThemeContext } from '../../../ThemeContext';
 import { parseSymbolWKAI } from '../../../utils/dex';
 import { getLanguageString } from '../../../utils/lang';
-import { formatNumberString, getDecimalCount, getDigit, isNumber, parseDecimals } from '../../../utils/number';
+import { formatNumberString, getDecimalCount, getDigit, getPartial, isNumber, parseDecimals } from '../../../utils/number';
 import TxSettingModal from '../../KAIDex/TxSettingModal';
 import AuthModal from '../AuthModal';
 
@@ -75,7 +76,7 @@ export default ({visible, onClose, lpItem, onSuccess, refreshLP}: {
 	const getContentStyle = () => {
 		return {
 			backgroundColor: theme.backgroundFocusColor,
-			height: 420,
+			height: 460,
 			padding: 20,
 			paddingTop: 34,
 			justifyContent: 'flex-start',
@@ -196,6 +197,25 @@ export default ({visible, onClose, lpItem, onSuccess, refreshLP}: {
 		)
 	}
 
+	const shouldHighight = () => {
+    if (!lpAmount) return false
+    const val14 = parseDecimals(getPartial(lpItem.balance, 0.25, 18), 18)
+    const val24 = parseDecimals(getPartial(lpItem.balance, 0.5, 18), 18)
+    const val34 = parseDecimals(getPartial(lpItem.balance, 0.75, 18), 18)
+    const val44 = parseDecimals(getPartial(lpItem.balance, 1, 18), 18)
+    if (val14 === val24 || val14 === val34 || val14 === val44) return false
+    if (val24 === val34 || val24 === val44) return false
+    if (val34 === val44) return false
+    return true
+  }
+
+	const getRatio = () => {
+		const lpAmountBN = new BigNumber(lpAmount)
+		const balanceBN = (new BigNumber(lpItem.balance)).dividedBy(new BigNumber(10 ** 18))
+		console.log('lpItem.balance', lpItem.balance)
+		return lpAmountBN.dividedBy(balanceBN).toNumber()
+	}
+
 	return (
 		<CustomModal
 			visible={visible}
@@ -258,6 +278,47 @@ export default ({visible, onClose, lpItem, onSuccess, refreshLP}: {
 								backgroundColor: 'rgba(96, 99, 108, 1)',
 								color: theme.textColor
 							}}
+						/>
+					</View>
+					<View style={{flexDirection: 'row', marginTop: 12}}>
+						<Tags 
+							content={`25 %`} 
+							active={lpItem.balance !== '0' && shouldHighight() && getRatio() === 0.25 } 
+							containerStyle={{marginRight: 12}} 
+							onPress={() => {
+
+								const partialValue = getPartial(lpItem.balance, 0.25, 18)
+								setLPAmount(formatNumberString(parseDecimals(partialValue, 18), 18))
+							}} 
+						/>
+						<Tags 
+							content={`50 %`} 
+							active={lpItem.balance !== '0' && shouldHighight() && getRatio() === 0.5 } 
+							containerStyle={{marginRight: 12}} 
+							onPress={() => {
+								
+								const partialValue = getPartial(lpItem.balance, 0.5, 18)
+								setLPAmount(formatNumberString(parseDecimals(partialValue, 18), 18))
+							}}
+						/>
+						<Tags 
+							content={`75 %`} 
+							active={lpItem.balance !== '0' && shouldHighight() && getRatio() === 0.75 } 
+							containerStyle={{marginRight: 12}} 
+							onPress={() => {
+
+								const partialValue = getPartial(lpItem.balance, 0.75, 18)
+								setLPAmount(formatNumberString(parseDecimals(partialValue, 18), 18))
+							}}
+						/>
+						<Tags 
+							content={`100 %`} 
+							active={lpItem.balance !== '0' && shouldHighight() && getRatio() === 1 } 
+							onPress={() => {
+
+								const partialValue = getPartial(lpItem.balance, 1, 18)
+								setLPAmount(formatNumberString(parseDecimals(partialValue, 18), 18))
+							}} 
 						/>
 					</View>
 					<Divider height={0.5} style={{width: '100%', backgroundColor: 'rgba(96, 99, 108, 1)', height: 2}} />

@@ -527,8 +527,11 @@ export default () => {
         await refreshLP()
         navigation.goBack()
         break;
-      default:
+      case 'withdrawLP':
         await refreshLP()
+        navigation.goBack()
+        break;
+      default:
         navigation.goBack()
         break;
     }

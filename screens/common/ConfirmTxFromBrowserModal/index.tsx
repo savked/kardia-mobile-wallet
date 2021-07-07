@@ -37,7 +37,7 @@ export default ({visible, onClose, txObj, onConfirm}: {
   const getContentStyle = () => {
     return {
       backgroundColor: theme.backgroundFocusColor,
-      height: 440,
+      height: 340,
       justifyContent: 'flex-start'
     }
   }
@@ -102,49 +102,49 @@ export default ({visible, onClose, txObj, onConfirm}: {
     return (
       <>
         <View style={styles.group}>
-        <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'FROM')}:</CustomText>
-        <CustomText style={{color: theme.textColor}}>{truncate(toChecksum(getField('from').toLowerCase()), 10, 10)}</CustomText>
-      </View>
-      <View style={styles.group}>
-        <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'TO')}:</CustomText>
-        <CustomText style={{color: theme.textColor}}>{truncate(toChecksum(getField('to').toLowerCase()), 10, 10)}</CustomText>
-      </View>
-      <View style={styles.group}>
-        <CustomText style={{color: theme.textColor}}>Gas:</CustomText>
-        <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(gas, 16)).toFixed())}</CustomText>
-      </View>
-      <View style={styles.group}>
-        <CustomText style={{color: theme.textColor}}>Gas Price:</CustomText>
-        <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(getField('gasPrice'), 16)).dividedBy(new BigNumber(10 ** 9)).toFixed())} OXY</CustomText>
-      </View>
-      <View style={styles.group}>
-        <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:</CustomText>
-        <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(getField('value'), 16)).dividedBy(new BigNumber(10 ** 18)).toFixed())} KAI</CustomText>
-      </View>
-      <View style={styles.group}>
-        <CustomText style={{color: theme.textColor}}>Data:</CustomText>
-        <CustomText style={{color: theme.textColor}}>{truncate(getField('data'), 10, 10)}</CustomText>
-      </View>
-      <Button
-        title={getLanguageString(language, 'CANCEL')}
-        type="outline"
-        disabled={loading}
-        onPress={onClose}
-        style={{
-          width: '100%',
-          marginTop: 32
-        }}
-      />
-      <Button
-        title={getLanguageString(language, 'CONFIRM')}
-        disabled={loading}
-        loading={loading}
-        onPress={() => setShowAuthModal(true)}
-        style={{
-          width: '100%',
-          marginTop: 12
-        }}
-      />
+          <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'FROM')}:</CustomText>
+          <CustomText style={{color: theme.textColor}}>{truncate(toChecksum(getField('from').toLowerCase()), 10, 10)}</CustomText>
+        </View>
+        <View style={styles.group}>
+          <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'TO')}:</CustomText>
+          <CustomText style={{color: theme.textColor}}>{truncate(toChecksum(getField('to').toLowerCase()), 10, 10)}</CustomText>
+        </View>
+        {/* <View style={styles.group}>
+          <CustomText style={{color: theme.textColor}}>Gas:</CustomText>
+          <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(gas, 16)).toFixed())}</CustomText>
+        </View>
+        <View style={styles.group}>
+          <CustomText style={{color: theme.textColor}}>Gas Price:</CustomText>
+          <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(getField('gasPrice'), 16)).dividedBy(new BigNumber(10 ** 9)).toFixed())} OXY</CustomText>
+        </View>
+        <View style={styles.group}>
+          <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'CONFIRM_KAI_AMOUNT')}:</CustomText>
+          <CustomText style={{color: theme.textColor}}>{formatNumberString((new BigNumber(getField('value'), 16)).dividedBy(new BigNumber(10 ** 18)).toFixed())} KAI</CustomText>
+        </View> */}
+        <View style={styles.group}>
+          <CustomText style={{color: theme.textColor}}>Data:</CustomText>
+          <CustomText style={{color: theme.textColor}}>{truncate(getField('data'), 10, 10)}</CustomText>
+        </View>
+        <Button
+          title={getLanguageString(language, 'CANCEL')}
+          type="outline"
+          disabled={loading}
+          onPress={onClose}
+          style={{
+            width: '100%',
+            marginTop: 32
+          }}
+        />
+        <Button
+          title={getLanguageString(language, 'CONFIRM')}
+          disabled={loading}
+          loading={loading}
+          onPress={() => setShowAuthModal(true)}
+          style={{
+            width: '100%',
+            marginTop: 12
+          }}
+        />
       </>
     )
   }
@@ -155,6 +155,9 @@ export default ({visible, onClose, txObj, onConfirm}: {
         visible={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         onSuccess={handleConfirm}
+        gasLimit={(new BigNumber(gas, 16)).toFixed()}
+        gasPrice={(new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed()}
+        amount="0"
       />
     );
   }

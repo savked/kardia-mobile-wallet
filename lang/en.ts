@@ -131,6 +131,7 @@ export const lang: Language = {
     CONFIRM_KAI_AMOUNT: 'Amount',
     NOT_ENOUGH_KAI_FOR_TX: 'Insufficient Balance',
     TX_SUCCESS: 'You have just sent to',
+    AUTH_TX_TOTAL_COST: 'Confirm your total cost',
     // Wallet key
     IMPORT: 'Import',
     WALLET: 'Wallet',

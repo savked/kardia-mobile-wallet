@@ -32,6 +32,8 @@ import {useNavigation} from '@react-navigation/native';
 import CustomText from '../../../components/Text';
 import { KardiaAccount } from 'kardia-js-sdk';
 import { saveWallets } from '../../../utils/local';
+import { DEFAULT_KAI_TX_GAS_LIMIT } from '../../../config';
+import BigNumber from 'bignumber.js';
 
 const MAX_AMOUNT = 5000000000;
 
@@ -61,6 +63,8 @@ const NewTxModal = ({
   const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [gasPriceAuth, setGasPriceAuth] = useState('');
+  const [amountAuth, setAmountAuth] = useState('')
 
   const language = useRecoilValue(languageAtom);
 
@@ -95,20 +99,25 @@ const NewTxModal = ({
     setKeyboardShown(false);
   };
 
-  async function send() {
-    setShowConfirmModal(false);
-    setLoading(true);
-    const wallet = wallets[selectedWallet];
-    const _txAmount = Number(amount.replace(/,/g, ''));
-
+  const calculateGasPrice = async () => {
     let calculatedGasPrice = await getRecomendedGasPrice();
-
     if (gasPrice === 1 && calculatedGasPrice) {
       const _calculated = Math.ceil(calculatedGasPrice * 0.75)
       calculatedGasPrice = _calculated >= 10**9 ? _calculated : calculatedGasPrice
     } else if (gasPrice === 3) {
       calculatedGasPrice = Math.ceil(calculatedGasPrice * 1.25)
     }
+
+    return calculatedGasPrice
+  }
+
+  async function send() {
+    setShowConfirmModal(false);
+    setLoading(true);
+    const wallet = wallets[selectedWallet];
+    const _txAmount = Number(amount.replace(/,/g, ''));
+
+    const calculatedGasPrice = await calculateGasPrice()
 
     try {
       const txHash = await createTx(
@@ -150,7 +159,7 @@ const NewTxModal = ({
     setShowAddressBookModal(true);
   };
 
-  const showConfirm = () => {
+  const showConfirm = async () => {
     setErrorAddress(' ');
     setErrorAmount(' ');
     let isValid = true;
@@ -176,7 +185,13 @@ const NewTxModal = ({
     if (!isValid) {
       return;
     }
+
+    // const calculatedGasPrice = await calculateGasPrice()
+    // setGasPriceAuth((new BigNumber(calculatedGasPrice)).dividedBy(new BigNumber(10 ** 9)).toFixed())
+    // setAmountAuth(amount)
+
     setShowConfirmModal(true);
+    // setShowAuthModal(true);
   };
 
   const resetState = () => {
@@ -243,6 +258,9 @@ const NewTxModal = ({
         visible={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         onSuccess={send}
+        // gasPrice={gasPriceAuth}
+        // gasLimit={DEFAULT_KAI_TX_GAS_LIMIT.toString()}
+        // amount={amountAuth}
       />
     );
   }
