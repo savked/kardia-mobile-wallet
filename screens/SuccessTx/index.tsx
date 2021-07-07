@@ -237,6 +237,7 @@ export default () => {
           </View>
         )
       case 'addLP':
+      case 'withdrawLP':
         return (
           <View
             style={{
@@ -398,6 +399,7 @@ export default () => {
         );
       case 'dex':
       case 'addLP':
+      case 'withdrawLP':
         return null;
       default:
         return (
@@ -469,6 +471,8 @@ export default () => {
                 .replace(/{{TOKEN_SYMBOL}}/g, tokenSymbol)
       case 'addLP':
         return getLanguageString(language, 'ADD_LP_SUCCESS')
+      case 'withdrawLP':
+        return getLanguageString(language, 'WITHDRAW_LP_SUCCESS')
       default:
         return getLanguageString(language, 'TX_SUCCESS');
     }
@@ -524,6 +528,7 @@ export default () => {
         navigation.goBack()
         break;
       default:
+        await refreshLP()
         navigation.goBack()
         break;
     }

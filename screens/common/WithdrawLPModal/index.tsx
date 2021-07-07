@@ -1,6 +1,7 @@
+import { useNavigation } from '@react-navigation/core';
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Keyboard, Platform, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { cacheSelector } from '../../../atoms/cache';
 import { languageAtom } from '../../../atoms/language';
@@ -10,21 +11,23 @@ import Divider from '../../../components/Divider';
 import CustomModal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
-import useIsKeyboardShown from '../../../hooks/isKeyboardShown';
 import { calculateTransactionDeadline, removeLiquidity } from '../../../services/dex';
 import { ThemeContext } from '../../../ThemeContext';
 import { parseSymbolWKAI } from '../../../utils/dex';
 import { getLanguageString } from '../../../utils/lang';
-import { formatNumberString, getDigit, parseDecimals } from '../../../utils/number';
+import { formatNumberString, getDecimalCount, getDigit, isNumber, parseDecimals } from '../../../utils/number';
 import TxSettingModal from '../../KAIDex/TxSettingModal';
 import AuthModal from '../AuthModal';
 
-export default ({visible, onClose, lpItem}: {
+export default ({visible, onClose, lpItem, onSuccess, refreshLP}: {
 	visible: boolean;
 	onClose: () => void;
-	lpItem?: any
+	lpItem?: any;
+	onSuccess: () => void
+	refreshLP: () => void
 }) => {
 
+	const navigation = useNavigation()
 	const theme = useContext(ThemeContext);
 	const language = useRecoilValue(languageAtom)
 	const [lpAmount, setLPAmount] = useState('')
@@ -72,7 +75,7 @@ export default ({visible, onClose, lpItem}: {
 	const getContentStyle = () => {
 		return {
 			backgroundColor: theme.backgroundFocusColor,
-			height: 380,
+			height: 420,
 			padding: 20,
 			paddingTop: 34,
 			justifyContent: 'flex-start',
@@ -89,11 +92,12 @@ export default ({visible, onClose, lpItem}: {
 		return amountBN.dividedBy(totalLPBN)
 	}
 
-	const renderOutput = (reserve: string) => {
+	const renderOutput = (reserve: string, raw = false) => {
 		if (!lpAmount) return '0'
 		const ratioBN = calculateRatio()
 		const reserveBN = new BigNumber(reserve)
 		const rs = reserveBN.multipliedBy(ratioBN)
+		if (raw) return rs.toFixed()
 		return formatNumberString(rs.toFixed(), 6, 1)
 	}
 
@@ -128,9 +132,19 @@ export default ({visible, onClose, lpItem}: {
 			const rs = await removeLiquidity(params, wallets[selectedWallet])
 
 			console.log(rs)
-			setWithdrawing(false)
 
-			// TODO: Navigate to success
+			setWithdrawing(false)
+			onSuccess()
+
+			navigation.navigate('SuccessTx', {
+        type: 'withdrawLP',
+        txHash: rs,
+        token0: renderOutput(lpItem.estimatedAmountA),
+				token1: renderOutput(lpItem.estimatedAmountB),
+				refreshLP,
+				lpPair: lpItem
+      });
+
 		} catch (error) {
 			console.log(error)
 			setWithdrawing(false)
@@ -214,7 +228,32 @@ export default ({visible, onClose, lpItem}: {
 						<CustomTextInput
 							message={error}
 							value={lpAmount}
-							onChangeText={setLPAmount}
+							onChangeText={(newValue) => {
+								const digitOnly = getDigit(newValue, true);
+								if (digitOnly === '') {
+									setLPAmount('0')
+								}
+								if (getDecimalCount(newValue) > 18) {
+									return;
+								}
+							
+								if (isNumber(digitOnly)) {
+									let formatedValue = formatNumberString(digitOnly);
+
+									const [numParts, decimalParts] = digitOnly.split('.')
+
+									if (!decimalParts && decimalParts !== "") {
+										setLPAmount(formatedValue);
+										return
+									}
+
+									formatedValue = formatNumberString(numParts) + '.' + decimalParts
+
+									// if (newValue[newValue.length - 1] === '.') formatedValue += '.'
+									// else if (newValue[newValue.length - 2] === '.' && newValue[newValue.length - 1] === '0') formatedValue += '.0'
+									setLPAmount(formatedValue)
+								}
+							}}
 							inputStyle={{
 								backgroundColor: 'rgba(96, 99, 108, 1)',
 								color: theme.textColor
@@ -258,6 +297,10 @@ export default ({visible, onClose, lpItem}: {
 							{renderOutput(lpItem.estimatedAmountB)}
 						</CustomText>
 					</View>
+					<TouchableOpacity style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', width: '100%', marginTop: 24}} onPress={() => setShowTxSettingModal(true)}>
+						<Image style={{width: 16, height: 16, marginRight: 4}} source={require('../../../assets/icon/setting_dark.png')} />
+						<CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'TX_SETTING')}</CustomText>
+					</TouchableOpacity>
 					<Divider height={0.5} style={{width: '100%', backgroundColor: 'rgba(96, 99, 108, 1)', height: 2}} />
 					<Button
 						title={getLanguageString(language, 'CANCEL')}

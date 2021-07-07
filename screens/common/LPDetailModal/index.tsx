@@ -13,11 +13,12 @@ import { getLanguageString } from '../../../utils/lang';
 import { formatNumberString, parseDecimals } from '../../../utils/number';
 import WithdrawLPModal from '../WithdrawLPModal';
 
-export default ({visible, onClose, lpItem, triggerAddLP}: {
+export default ({visible, onClose, lpItem, triggerAddLP, refreshLP}: {
 	visible: boolean;
 	onClose: () => void;
 	lpItem?: any;
 	triggerAddLP: (pairAddress: string) => void
+	refreshLP: () => void
 }) => {
 
 	const theme = useContext(ThemeContext)
@@ -56,6 +57,11 @@ export default ({visible, onClose, lpItem, triggerAddLP}: {
 				visible={showWithdraw}
 				onClose={() => setShowWithdraw(false)}
 				lpItem={lpItem}
+				onSuccess={() => {
+					onClose()
+					setShowWithdraw(false)
+				}}
+				refreshLP={refreshLP}
 			/>
 		)
 	}

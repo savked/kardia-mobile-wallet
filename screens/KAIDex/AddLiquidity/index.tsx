@@ -59,6 +59,8 @@ export default ({toggleMenu}: {
 
   const handleRefresh = async () => {
     if (_pairData && _pairData.pairs && _pairData.pairs.length > 0) {
+      setShowNewLPModal(false)
+      setShowLPDetailModal(false)
       setIsRefreshing(true)
       const rs = await getMyPortfolio(pairMapper(_pairData.pairs), wallets[selectedWallet].address)
       setLPList(rs)
@@ -127,6 +129,7 @@ export default ({toggleMenu}: {
         onClose={() => setShowLPDetailModal(false)}
         lpItem={lpItemForDetail}
         triggerAddLP={triggerAddLP}
+        refreshLP={handleRefresh}
       />
       {
         !loading && lpList.length > 0 && (

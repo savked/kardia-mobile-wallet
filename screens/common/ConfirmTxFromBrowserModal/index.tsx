@@ -13,7 +13,7 @@ import { formatNumberString } from '../../../utils/number'
 import Button from '../../../components/Button'
 import AuthModal from '../AuthModal'
 import { walletsAtom } from '../../../atoms/wallets'
-import { estimateGas, sendRawTx } from '../../../services/transaction'
+import { estimateGas, getRecomendedGasPrice, sendRawTx } from '../../../services/transaction'
 import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE_HEX } from '../../../config'
 
 export default ({visible, onClose, txObj, onConfirm}: {
@@ -78,6 +78,13 @@ export default ({visible, onClose, txObj, onConfirm}: {
 
       if (txObj.gasPrice) {
         setGasPrice(txObj.gasPrice)
+      } else {
+        try {
+          const gasPrice = await getRecomendedGasPrice()
+          setGasPrice(`0x${gasPrice.toString(16)}`)
+        } catch (error) {
+          console.log('Get gas price error', error)
+        }
       }
     })()
   }, [txObj])
