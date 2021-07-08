@@ -113,9 +113,12 @@ export default ({
 
   useEffect(() => {
     if (visible && touchSupported) {
-      authByTouchID()
+      if (authStep === '1' && gasPrice && gasLimit && amount) return
+      else {
+        authByTouchID()
+      }
     }
-  }, [visible, touchSupported])
+  }, [visible, touchSupported, authStep, gasPrice, gasLimit, amount])
 
   const verify = async () => {
     const localPass = await getAppPasscode();
