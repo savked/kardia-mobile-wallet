@@ -80,27 +80,34 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
         }}>
         {mnemonic.slice(0, 4).map((word, index) => {
           return (
-            <TextInput
-              autoCapitalize="none"
-              key={`word-${index}`}
-              value={word}
-              onChangeText={(newText) => {
-                updateMnemonic(newText, index + 0);
-              }}
-              inputRef={elRefs[index + 0]}
-              inputStyle={{
-                ...styles.mnemonicInput,
-                ...{
-                  backgroundColor: theme.backgroundColor,
-                  color: theme.textColor,
-                  fontSize: 15,
-                },
-              }}
-              containerStyle={{
-                minWidth: 80,
+            <View
+              style={{
+                width: 80,
                 margin: 6,
               }}
-            />
+            >
+              <TextInput
+                autoCapitalize="none"
+                key={`word-${index}`}
+                value={word}
+                onChangeText={(newText) => {
+                  updateMnemonic(newText, index + 0);
+                }}
+                inputRef={elRefs[index + 0]}
+                inputStyle={{
+                  ...styles.mnemonicInput,
+                  ...{
+                    backgroundColor: theme.backgroundColor,
+                    color: theme.textColor,
+                    fontSize: 15,
+                  },
+                }}
+                // containerStyle={{
+                //   minWidth: 80,
+                //   margin: 6,
+                // }}
+              />
+            </View>
           );
         })}
       </View>
@@ -112,27 +119,30 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
         }}>
         {mnemonic.slice(4, 8).map((word, index) => {
           return (
-            <TextInput
-              autoCapitalize="none"
-              key={`word-${index}`}
-              value={word}
-              onChangeText={(newText) => {
-                updateMnemonic(newText, index + 4);
-              }}
-              inputRef={elRefs[index + 4]}
-              inputStyle={{
-                ...styles.mnemonicInput,
-                ...{
-                  backgroundColor: theme.backgroundColor,
-                  color: theme.textColor,
-                  fontSize: 15,
-                },
-              }}
-              containerStyle={{
-                minWidth: 80,
+            <View
+              style={{
+                width: 80,
                 margin: 6,
               }}
-            />
+            >
+              <TextInput
+                autoCapitalize="none"
+                key={`word-${index}`}
+                value={word}
+                onChangeText={(newText) => {
+                  updateMnemonic(newText, index + 4);
+                }}
+                inputRef={elRefs[index + 4]}
+                inputStyle={{
+                  ...styles.mnemonicInput,
+                  ...{
+                    backgroundColor: theme.backgroundColor,
+                    color: theme.textColor,
+                    fontSize: 15,
+                  },
+                }}
+              />
+            </View>
           );
         })}
       </View>
@@ -144,27 +154,30 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
         }}>
         {mnemonic.slice(8, 12).map((word, index) => {
           return (
-            <TextInput
-              autoCapitalize="none"
-              key={`word-${index}`}
-              value={word}
-              onChangeText={(newText) => {
-                updateMnemonic(newText, index + 8);
-              }}
-              inputRef={elRefs[index + 8]}
-              inputStyle={{
-                ...styles.mnemonicInput,
-                ...{
-                  backgroundColor: theme.backgroundColor,
-                  color: theme.textColor,
-                  fontSize: 15,
-                },
-              }}
-              containerStyle={{
-                minWidth: 80,
+            <View
+              style={{
+                width: 80,
                 margin: 6,
               }}
-            />
+            >
+              <TextInput
+                autoCapitalize="none"
+                key={`word-${index}`}
+                value={word}
+                onChangeText={(newText) => {
+                  updateMnemonic(newText, index + 8);
+                }}
+                inputRef={elRefs[index + 8]}
+                inputStyle={{
+                  ...styles.mnemonicInput,
+                  ...{
+                    backgroundColor: theme.backgroundColor,
+                    color: theme.textColor,
+                    fontSize: 15,
+                  },
+                }}
+              />
+            </View>
           );
         })}
       </View>
