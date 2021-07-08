@@ -10,7 +10,7 @@ interface ListProps {
   loading?: boolean;
   loadingSize?: number | 'large' | 'small';
   loadingColor?: string;
-  keyExtractor?: (item: any) => string;
+  keyExtractor?: (item: any, index: number) => string;
   onSelect?: (itemIndex: number) => void;
   render?: (item: any, index: number) => any;
   initialNumToRender?: number;

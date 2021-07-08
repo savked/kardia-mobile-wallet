@@ -165,87 +165,93 @@ export default ({toggleMenu}: {
           </View>
         )
       }
-      <List
-        items={lpList}
-        onRefresh={handleRefresh}
-        refreshing={isRefreshing}
-        loading={loading}
-        loadingColor={theme.textColor}
-        keyExtractor={(_) => Date.now().toString()}
-        containerStyle={{
-          flex: 1
-        }}
-        ListEmptyComponent={
-          <View style={{
+      <View style={{flex: 1}}>
+        <List
+          items={lpList}
+          onRefresh={handleRefresh}
+          refreshing={isRefreshing}
+          loading={loading}
+          loadingColor={theme.textColor}
+          keyExtractor={(item, index) => index.toString()}
+          listStyle={{
             flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <Image
-              source={require('../../../assets/no_liquidity.png')}
-              style={{
-                width: 211,
-                height: 200
-              }}
-            />
-            <CustomText
-              style={{
-                color: theme.textColor,
-                marginTop: 32,
-                fontWeight: 'bold',
-                fontSize: theme.defaultFontSize + 12
-              }}
-            >
-              No Liquidity
-            </CustomText>
-            <CustomText
-              style={{
-                color: theme.mutedTextColor,
-                marginTop: 12,
-                marginBottom: 32,
-                fontWeight: '500',
-                fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-                fontSize: theme.defaultFontSize + 3,
-                textAlign: 'center'
-              }}
-            >
-              Start earning on each transaction by adding your own token pairs
-            </CustomText>
-            <Button
-              title={"Add Liquidity"}
-              onPress={() => {
-                toggleMenu()
-                setSelectingPair(true)
-              }}
-              icon={
-                <AntIcon
-                  name="plus"
-                  size={20}
-                  color={'#000000'}
-                  style={{marginRight: 8}}
-                />
-              }
-              style={{width: 192}}
-              textStyle={{
-                fontWeight: '500',
-                fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-              }}
-            />
-          </View>
-        }
-        ItemSeprator={() => <View style={{height: 6}} />}
-        render={(item) => {
-          return (
-            <LiquidityItem 
-              lpItem={item} 
-              onPress={() => {
-                setLPItemForDetail(item)
-                setShowLPDetailModal(true)
-              }} 
-            />
-          )
-        }}
-      />
+          }}
+          containerStyle={{
+            paddingBottom: 16
+          }}
+          ListEmptyComponent={
+            <View style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Image
+                source={require('../../../assets/no_liquidity.png')}
+                style={{
+                  width: 211,
+                  height: 200
+                }}
+              />
+              <CustomText
+                style={{
+                  color: theme.textColor,
+                  marginTop: 32,
+                  fontWeight: 'bold',
+                  fontSize: theme.defaultFontSize + 12
+                }}
+              >
+                No Liquidity
+              </CustomText>
+              <CustomText
+                style={{
+                  color: theme.mutedTextColor,
+                  marginTop: 12,
+                  marginBottom: 32,
+                  fontWeight: '500',
+                  fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+                  fontSize: theme.defaultFontSize + 3,
+                  textAlign: 'center'
+                }}
+              >
+                Start earning on each transaction by adding your own token pairs
+              </CustomText>
+              <Button
+                title={"Add Liquidity"}
+                onPress={() => {
+                  toggleMenu()
+                  setSelectingPair(true)
+                }}
+                icon={
+                  <AntIcon
+                    name="plus"
+                    size={20}
+                    color={'#000000'}
+                    style={{marginRight: 8}}
+                  />
+                }
+                style={{width: 192}}
+                textStyle={{
+                  fontWeight: '500',
+                  fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                }}
+              />
+            </View>
+          }
+          ItemSeprator={() => <View style={{height: 6}} />}
+          render={(item, index) => {
+            return (
+              <LiquidityItem 
+                key={index.toString()}
+                lpItem={item} 
+                onPress={() => {
+                  setLPItemForDetail(item)
+                  setShowLPDetailModal(true)
+                }} 
+              />
+            )
+          }}
+        />
+      </View>
     </View>
   )
 };
