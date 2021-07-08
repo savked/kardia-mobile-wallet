@@ -11,7 +11,7 @@ export const estimateGas = async (payload: Record<string, any>, data = '') => {
 
   if (_payload.value && isHexString(_payload.value)) {
     const bnValue = new BigNumber(_payload.value, 16)
-    _payload.value = bnValue.toFixed()
+    _payload.value = bnValue.toNumber()
   }
 
   if (_payload.gas && isHexString(_payload.gas)) {

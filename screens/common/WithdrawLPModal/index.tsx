@@ -281,6 +281,7 @@ export default ({visible, onClose, lpItem, onSuccess, refreshLP}: {
 					</View>
 					<View style={{justifyContent: 'flex-start'}}>
 						<CustomTextInput
+							keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
 							message={error}
 							value={lpAmount}
 							onChangeText={(newValue) => {

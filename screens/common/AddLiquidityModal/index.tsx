@@ -362,6 +362,7 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 							</CustomText>
 						</View>
 						<CustomTextInput
+							keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
 							onChangeText={(newValue) => {
 								const digitOnly = getDigit(newValue, pair.t1.decimals === 0 ? false : true);
 								if (digitOnly === '') {
@@ -556,6 +557,7 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 							</CustomText>
 						</View>
 						<CustomTextInput
+							keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
 							onChangeText={(newValue) => {
 								const digitOnly = getDigit(newValue, pair.t2.decimals === 0 ? false : true);
 								if (digitOnly === '') {

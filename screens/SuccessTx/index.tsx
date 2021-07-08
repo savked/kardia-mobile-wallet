@@ -524,11 +524,8 @@ export default () => {
         });
         break;
       case 'addLP':
-        await refreshLP()
-        navigation.goBack()
-        break;
       case 'withdrawLP':
-        await refreshLP()
+        refreshLP()
         navigation.goBack()
         break;
       default:
