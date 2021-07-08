@@ -66,29 +66,22 @@ export default ({visible, onClose, txObj, onConfirm}: {
 
   useEffect(() => {
     (async () => {
+      console.log('txObj', txObj)
+      if (Object.keys(txObj).length === 0) return
 
-      if (!txObj.gas) {
-        let estimatedGas: number = await estimateGas(txObj, txObj.data)
-        if (!estimatedGas) {
-          estimatedGas = DEFAULT_GAS_LIMIT
-        } else {
-          estimatedGas = Math.round(estimatedGas * 1.2)
-        }
-        setGas(`0x${estimatedGas.toString(16)}`)
-        // txObj.gas = `0x${estimatedGas.toString(16)}`
+      let estimatedGas: number = await estimateGas(txObj, txObj.data)
+      if (!estimatedGas) {
+        estimatedGas = DEFAULT_GAS_LIMIT
       } else {
-        setGas(txObj.gas)
+        estimatedGas = Math.round(estimatedGas * 1.2)
       }
+      setGas(`0x${estimatedGas.toString(16)}`)
 
-      if (txObj.gasPrice && !isNaN(txObj.gasPrice)) {
-        setGasPrice(txObj.gasPrice)
-      } else {
-        try {
-          const gasPrice = await getRecomendedGasPrice()
-          setGasPrice(`0x${gasPrice.toString(16)}`)
-        } catch (error) {
-          console.log('Get gas price error', error)
-        }
+      try {
+        const gasPrice = await getRecomendedGasPrice()
+        setGasPrice(`0x${gasPrice.toString(16)}`)
+      } catch (error) {
+        console.log('Get gas price error', error)
       }
     })()
   }, [txObj])
@@ -193,6 +186,7 @@ export default ({visible, onClose, txObj, onConfirm}: {
   }
 
   if (edittingGas) {
+    console.log('initial gas', gas)
     return (
       <EditGasLimitModal
         visible={edittingGas}

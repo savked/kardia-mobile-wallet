@@ -58,7 +58,7 @@ export default () => {
   }
 
   const handleLog = (logData: any) => {
-    console.log('Log from frame', logData)
+    // console.log('Log from frame', logData)
   }
 
   const handleRPC = (requestId: number, method: string, params: Record<string, any>) => {

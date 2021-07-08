@@ -154,8 +154,8 @@ export default ({visible, onClose, lpItem, onSuccess, refreshLP}: {
 			navigation.navigate('SuccessTx', {
         type: 'withdrawLP',
         txHash: rs,
-        token0: renderOutput(lpItem.estimatedAmountA),
-				token1: renderOutput(lpItem.estimatedAmountB),
+        token0: renderOutput(lpItem.estimatedAmountA, true),
+				token1: renderOutput(lpItem.estimatedAmountB, true),
 				refreshLP,
 				lpPair: lpItem
       });

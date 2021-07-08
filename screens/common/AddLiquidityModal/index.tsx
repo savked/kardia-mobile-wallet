@@ -183,7 +183,7 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 
 	const handleSubmit = () => {
 		if (approvalState0 && approvalState1) {
-			setShowAuthModal(true)
+			validateAddLP()
 		} else {
 			handleApproveToken()
 		}
@@ -204,8 +204,9 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 			}
 
 			if (!approvalState1) {
+				console.log('here')
 				const rs1 = await approveToken(pair.t2, parseDecimals(balance1, pair.t2.decimals), wallets[selectedWallet])
-
+				console.log('aaa', rs1)
 				if (rs1.status === 1) {
 					setApprovalState1(true)
 				} else {
@@ -222,12 +223,36 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 		}
 	}
 
+	const validateAddLP = () => {
+		setErrorToken0('')
+		setErrorToken1('')
+		let isValid = true
+		const amount0BN = new BigNumber(getDigit(token0))
+		const balance0BN = new BigNumber(getDigit(balance0))
+
+		if (amount0BN.isGreaterThan(balance0BN)) {
+			isValid = false
+			setErrorToken0(getLanguageString(language, 'NOT_ENOUGH_KRC20_FOR_TX').replace('{{SYMBOL}}', pair.t1.symbol))
+		}
+
+		const amount1BN = new BigNumber(getDigit(token1))
+		const balance1BN = new BigNumber(getDigit(balance1))
+
+		if (amount1BN.isGreaterThan(balance1BN)) {
+			isValid = false
+			setErrorToken1(getLanguageString(language, 'NOT_ENOUGH_KRC20_FOR_TX').replace('{{SYMBOL}}', pair.t2.symbol))
+		}
+
+		if (!isValid) return
+		setShowAuthModal(true)
+	}
+
 	const handleAddLP = async () => {
 		setSubmitting(true)
 		try {
 			const params = {
-				inputAmount: token0,
-        outputAmount: token1,
+				inputAmount: getDigit(token0),
+        outputAmount: getDigit(token1),
         tokenA: {
 					tokenAddress: pair.t1.hash,
 					name: pair.t1.name,
@@ -256,8 +281,8 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
         type: 'addLP',
         txHash: rs,
         lpPair: pair,
-				token0,
-				token1,
+				token0: getDigit(token0),
+				token1: getDigit(token1),
 				refreshLP
       });
 
