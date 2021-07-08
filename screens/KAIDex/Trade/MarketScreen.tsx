@@ -671,8 +671,10 @@ export default ({
               alignItems: 'center'
             }}
             onPress={() => {
-              toggleMenu()
-              setSelectingPair(true)
+              if (inited && _tokenFrom && _tokenTo && rate) {
+                toggleMenu()
+                setSelectingPair(true)
+              }
             }}
           >
             <AuthModal
