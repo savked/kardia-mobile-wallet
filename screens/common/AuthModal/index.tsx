@@ -23,7 +23,7 @@ import Divider from '../../../components/Divider';
 import CustomText from '../../../components/Text';
 import { formatNumberString } from '../../../utils/number';
 import BigNumber from 'bignumber.js';
-import { DANGEROUS_KAI_AMOUNT } from '../../../config';
+import { DANGEROUS_KAI_AMOUNT, DANGEROUS_TX_FEE_KAI } from '../../../config';
 
 const optionalConfigObject = {
   unifiedErrors: false, // use unified error messages (default false)
@@ -194,8 +194,15 @@ export default ({
     return gasCostInKAI.plus(new BigNumber(amount)).toFixed()
   }
 
+  const calculateTxFee = () => {
+    if (!gasLimit || !gasPrice || !amount) return ''
+    const gasCostInKAI = (new BigNumber(gasPrice)).multipliedBy(new BigNumber(gasLimit)).dividedBy(new BigNumber(10 ** 9))
+    return gasCostInKAI.toFixed()
+  }
+
   const isDangerous = () => {
-    return Number(calculateTotalCost()) > DANGEROUS_KAI_AMOUNT
+    // return Number(calculateTotalCost()) > DANGEROUS_KAI_AMOUNT
+    return Number(calculateTxFee()) < DANGEROUS_TX_FEE_KAI
   }
 
   if (authStep === '1' && gasPrice && gasLimit && amount) {
@@ -235,6 +242,14 @@ export default ({
           </View>
         </View>
         <View style={{width: '100%', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8}}>
+          <CustomText style={{color: theme.mutedTextColor}}>{getLanguageString(language, 'TX_FEE')}</CustomText>
+          <View style={{alignItems: 'flex-end'}}>
+            <CustomText style={{color: theme.textColor}}>
+              {formatNumberString(calculateTxFee())} KAI
+            </CustomText>
+          </View>
+        </View>
+        <View style={{width: '100%', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8}}>
           <CustomText style={{color: theme.mutedTextColor}}>{getLanguageString(language, 'TOTAL_COST')}</CustomText>
           <View style={{alignItems: 'flex-end'}}>
             <CustomText style={{color: theme.textColor}}>
@@ -257,7 +272,7 @@ export default ({
                 marginVertical: 12,
               }}
             >
-              Warning: Your transaction cost is significantly high. Please double-check the transaction.
+              {getLanguageString(language, 'TX_FEE_WARNING')}
             </CustomText>
           )
         }

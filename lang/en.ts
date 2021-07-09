@@ -133,6 +133,8 @@ export const lang: Language = {
     TX_SUCCESS: 'You have just sent to',
     AUTH_TX_TOTAL_COST: 'Confirm your total cost',
     TOTAL_COST: 'Total cost',
+    TX_FEE: 'Transaction fee',
+    TX_FEE_WARNING: 'Warning: Your transaction cost is significantly high. Please double-check the transaction.',
     // Wallet key
     IMPORT: 'Import',
     WALLET: 'Wallet',

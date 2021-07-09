@@ -66,7 +66,6 @@ export default ({visible, onClose, txObj, onConfirm}: {
 
   useEffect(() => {
     (async () => {
-      console.log('txObj', txObj)
       if (Object.keys(txObj).length === 0) return
 
       let estimatedGas: number = await estimateGas(txObj, txObj.data)
@@ -186,7 +185,6 @@ export default ({visible, onClose, txObj, onConfirm}: {
   }
 
   if (edittingGas) {
-    console.log('initial gas', gas)
     return (
       <EditGasLimitModal
         visible={edittingGas}
