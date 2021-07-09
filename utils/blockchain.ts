@@ -19,7 +19,7 @@ export const getWalletFromMnemonic = async (
     return {
       address: addressStr,
       privateKey,
-      balance: 0,
+      balance: '0',
       staked: 0,
       undelegating: 0,
     };

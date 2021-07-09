@@ -14,7 +14,12 @@ export default ({lpItem, onPress}: {
 }) => {
 	const theme = useContext(ThemeContext)
 	const language = useRecoilValue(languageAtom)
-	
+
+	const renderShareRate = () => {
+		if (lpItem.shareRate > 0.001) return `${formatNumberString(lpItem.shareRate.toString(), 2, 0)}%`
+		return '< 0.001%'
+	}
+
   return (
 		<TouchableOpacity
 			onPress={onPress}
@@ -61,7 +66,7 @@ export default ({lpItem, onPress}: {
 					{formatDexToken(lpItem.t1).symbol} / {formatDexToken(lpItem.t2).symbol}
 				</CustomText>
 				<CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize + 2}}>
-					{getLanguageString(language, 'SHARE')}: <CustomText style={{color: theme.textColor, fontWeight: 'bold'}}>{formatNumberString((lpItem.shareRate * 100).toString(), 2, 0)}%</CustomText>
+					{getLanguageString(language, 'SHARE')}: <CustomText style={{color: theme.textColor, fontWeight: 'bold'}}>{renderShareRate()}</CustomText>
 					{' | '}
 					{getLanguageString(language, 'POSITION')}:{' '}
 					<CustomText style={{color: theme.textColor, fontWeight: 'bold'}}>

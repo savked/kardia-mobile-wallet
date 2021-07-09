@@ -6,6 +6,7 @@ export const DEFAULT_GAS_PRICE_HEX = DEFAULT_GAS_PRICE.toString(16);
 export const DEFAULT_GAS_LIMIT = 500000;
 export const DEFAULT_KAI_TX_GAS_LIMIT = 50000;
 export const DANGEROUS_KAI_AMOUNT = 100000;
+export const DANGEROUS_TX_FEE_KAI = 1000;
 export const BLOCK_TIME = 5;
 // export const MIN_DELEGATE = 25000;
 export const MIN_DELEGATE = 1000;
