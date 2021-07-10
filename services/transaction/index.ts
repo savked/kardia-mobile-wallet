@@ -3,7 +3,7 @@ import KardiaClient from 'kardia-js-sdk';
 import {cellValue, weiToKAI} from './amount';
 import { BigNumber } from 'bignumber.js';
 import { isHexString } from '@ethersproject/bytes';
-import { DEFAULT_KAI_TX_GAS_LIMIT } from '../../config';
+import { DEFAULT_GAS_PRICE, DEFAULT_KAI_TX_GAS_LIMIT } from '../../config';
 
 export const estimateGas = async (payload: Record<string, any>, data = '') => {
   const _payload = JSON.parse(JSON.stringify(payload))
@@ -68,9 +68,15 @@ export const getTxByAddress = async (address: string, page = 1, size = 10) => {
 
 export const getRecomendedGasPrice = async () => {
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
-  const gasPrice = await kardiaClient.kaiChain.getGasPrice()
 
-  return Number(gasPrice)
+  try {
+    const gasPrice = await kardiaClient.kaiChain.getGasPrice()
+
+    return Number(gasPrice)
+  } catch (error) {
+    console.log(error)
+    return DEFAULT_GAS_PRICE
+  }
 }
 
 export const sendRawTx = async (txObj: Record<string, any>, wallet: Wallet, waitUntilmined = false) => {
