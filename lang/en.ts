@@ -132,7 +132,7 @@ export const lang: Language = {
     NOT_ENOUGH_KAI_FOR_TX: 'Insufficient Balance',
     TX_SUCCESS: 'You have just sent to',
     AUTH_TX_TOTAL_COST: 'Confirm your total cost',
-    TOTAL_COST: 'Total cost',
+    TOTAL_COST: 'Maximum total cost',
     TX_FEE: 'Maximum transaction fee',
     TX_FEE_WARNING: 'Warning: Your transaction cost is significantly high. Please double-check the transaction.',
     // Wallet key

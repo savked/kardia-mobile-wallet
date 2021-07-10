@@ -173,14 +173,14 @@ export default ({
   const getConfirmModalStyle = () => {
     if (Platform.OS === 'android') {
       return {
-        height: isDangerous() ? 420 : 390,
+        height: isDangerous() ? 450 : 390,
         backgroundColor: theme.backgroundFocusColor,
         alignItems: 'center',
         justifyContent: 'flex-start',
       };
     } else {
       return {
-        height: isDangerous() ? 420 : 390,
+        height: isDangerous() ? 450 : 390,
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
         alignItems: 'center',

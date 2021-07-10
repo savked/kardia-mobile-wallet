@@ -127,7 +127,7 @@ export const lang: Language = {
     NOT_ENOUGH_KAI_FOR_TX: 'Ví không đủ KAI',
     TX_SUCCESS: 'Bạn đã gửi thành công!',
     AUTH_TX_TOTAL_COST: 'Xác nhận tổng chi phí',
-    TOTAL_COST: 'Tổng',
+    TOTAL_COST: 'Tổng tối đa',
     TX_FEE: 'Phí giao dịch tối đa',
     TX_FEE_WARNING: 'Chú ý: phí giao dịch cao bất thường. Vui lòng kiểm tra lại giao dịch.',
     // Wallet key
