@@ -1,6 +1,8 @@
 import {RPC_ENDPOINT, ENDPOINT} from '../config';
 import KardiaClient from 'kardia-js-sdk';
+import abiDecoder from 'abi-decoder';
 import {requestWithTimeOut} from '../util';
+import KRC20ABI from './KRC20ABI.json'
 
 export const getKRC20TokenInfo = async (address: string) => {
   const client = new KardiaClient({endpoint: RPC_ENDPOINT});
@@ -45,28 +47,54 @@ export const getTxDetail = async (
   userAddress: string,
   transactionHash: string,
 ) => {
-  const requestOptions = {
-    method: 'GET',
-    redirect: 'follow',
-  };
-  const response: any = await requestWithTimeOut(
-    fetch(
-      `${ENDPOINT}token/txs?page=1&limit=1&txHash=${transactionHash}&address=${userAddress}&contractAddress=${tokenAddress}`,
-      requestOptions,
-    ),
-    50 * 1000,
-  );
-  const responseJSON = await response.json();
-  return responseJSON.data
-    ? responseJSON.data.data.map((i: any) => {
-        i.hash = i.transactionHash;
-        i.date = new Date(i.time);
-        i.time = new Date(i.time);
-        i.status = 1;
-        i.type = i.from === userAddress ? 'OUT' : 'IN';
-        return i;
-      })[0]
-    : {};
+
+  const client = new KardiaClient({endpoint: RPC_ENDPOINT});
+  const txReceipt = await client.transaction.getTransactionReceipt(transactionHash)
+
+  if (txReceipt) {
+    const txObj = await client.transaction.getTransaction(transactionHash)
+
+    abiDecoder.addABI(KRC20ABI)
+
+    const decoded = abiDecoder.decodeMethod(txObj.input)
+    return {
+      ...txReceipt,
+      hash: txReceipt.transactionHash,
+      date: new Date(txObj.time),
+      time: new Date(txObj.time),
+      type: txReceipt.from === userAddress ? 'OUT' : 'IN',
+      to: (decoded.params as any[]).find((item) => item.name === '_receiver').value,
+      value: (decoded.params as any[]).find((item) => item.name === '_amount').value,
+    }
+  }
+
+  return null
+
+  // const requestOptions = {
+  //   method: 'GET',
+  //   redirect: 'follow',
+  // };
+
+  // const response: any = await requestWithTimeOut(
+  //   fetch(
+  //     // `${ENDPOINT}token/txs?page=1&limit=1&txHash=${transactionHash}&address=${userAddress}&contractAddress=${tokenAddress}`,
+  //     `${ENDPOINT}token/txs?page=1&limit=1&txHash=${transactionHash}`,
+  //     requestOptions,
+  //   ),
+  //   50 * 1000,
+  // );
+  // const responseJSON = await response.json();
+
+  // return responseJSON.data
+  //   ? responseJSON.data.data.map((i: any) => {
+  //       i.hash = i.transactionHash;
+  //       i.date = new Date(i.time);
+  //       i.time = new Date(i.time);
+  //       i.status = 1;
+  //       i.type = i.from === userAddress ? 'OUT' : 'IN';
+  //       return i;
+  //     })[0]
+  //   : {};
 };
 
 export const getTx = async (tokenAddress: string, userAddress: string, page: number) => {
@@ -117,7 +145,7 @@ export const transferKRC20 = async (
   tokenAddress: string,
   privateKey: string,
   to: string,
-  amount: number,
+  amount: number | string,
   transferPayload: Record<string, any> = {},
 ) => {
   const client = new KardiaClient({endpoint: RPC_ENDPOINT});
