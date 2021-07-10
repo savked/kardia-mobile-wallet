@@ -41,7 +41,7 @@ export default ({visible, onClose, txObj, onConfirm}: {
   const getContentStyle = () => {
     return {
       backgroundColor: theme.backgroundFocusColor,
-      height: 420,
+      height: 450,
       justifyContent: 'flex-start'
     }
   }
@@ -68,13 +68,17 @@ export default ({visible, onClose, txObj, onConfirm}: {
     (async () => {
       if (Object.keys(txObj).length === 0) return
 
-      let estimatedGas: number = await estimateGas(txObj, txObj.data)
-      if (!estimatedGas) {
-        estimatedGas = DEFAULT_GAS_LIMIT
+      if (txObj.gas) {
+        setGas(txObj.gas)
       } else {
-        estimatedGas = Math.round(estimatedGas * 1.2)
+        let estimatedGas: number = await estimateGas(txObj, txObj.data)
+        if (!estimatedGas) {
+          estimatedGas = DEFAULT_GAS_LIMIT
+        } else {
+          estimatedGas = Math.round(estimatedGas * 1.2)
+        }
+        setGas(`0x${estimatedGas.toString(16)}`)
       }
-      setGas(`0x${estimatedGas.toString(16)}`)
 
       try {
         const gasPrice = await getRecomendedGasPrice()

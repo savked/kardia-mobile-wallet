@@ -202,7 +202,7 @@ export default ({
 
   const isDangerous = () => {
     // return Number(calculateTotalCost()) > DANGEROUS_KAI_AMOUNT
-    return Number(calculateTxFee()) < DANGEROUS_TX_FEE_KAI
+    return Number(calculateTxFee()) > DANGEROUS_TX_FEE_KAI
   }
 
   if (authStep === '1' && gasPrice && gasLimit && amount) {

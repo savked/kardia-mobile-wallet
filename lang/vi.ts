@@ -128,7 +128,7 @@ export const lang: Language = {
     TX_SUCCESS: 'Bạn đã gửi thành công!',
     AUTH_TX_TOTAL_COST: 'Xác nhận tổng chi phí',
     TOTAL_COST: 'Tổng',
-    TX_FEE: 'Phí giao dịch',
+    TX_FEE: 'Phí giao dịch tối đa',
     TX_FEE_WARNING: 'Chú ý: phí giao dịch cao bất thường. Vui lòng kiểm tra lại giao dịch.',
     // Wallet key
     IMPORT: 'Thêm ví',
