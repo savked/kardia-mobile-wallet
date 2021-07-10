@@ -120,25 +120,30 @@ export const createTx = async (
 };
 
 export const getTxDetail = async (txHash: string): Promise<Transaction> => {
-  const options = {
-    method: 'GET',
-  };
-  const response = await fetch(`${ENDPOINT}txs/${txHash}`, options);
-  const responseJSON = await response.json();
-  const tx = responseJSON?.data || {};
-  return {
-    from: tx.from,
-    to: tx.to,
-    hash: tx.hash,
-    amount: weiToKAI(tx.value),
-    date: new Date(tx.time),
-    fee: weiToKAI(tx.txFee),
-    gasPrice: tx.gasPrice,
-    gas: tx.gas,
-    gasUsed: tx.gasUsed,
-    gasLimit: tx.gasLimit,
-    blockHash: tx.blockHash,
-    blockNumber: tx.blockNumber,
-    status: tx.status,
-  };
+
+  const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
+
+  const txReceipt = await kardiaClient.transaction.getTransactionReceipt(txHash)
+
+  if (txReceipt) {
+    const txObj = await kardiaClient.transaction.getTransaction(txHash)
+
+    const gasPriceBN = new BigNumber(txObj.gasPrice)
+    const gasUsedBN = new BigNumber(txReceipt.gasUsed)
+
+    return {
+      ...txReceipt,
+      amount: weiToKAI(txObj.value),
+      date: new Date(txObj.time),
+      fee: weiToKAI(gasUsedBN.multipliedBy(gasPriceBN).toFixed()),
+      // gasPrice: tx.gasPrice,
+      gas: txObj.gas,
+      // gasUsed: tx.gasUsed,
+      gasLimit: txObj.gas,
+      blockNumber: txObj.blockNumber,
+      hash: txObj.hash
+    }
+  }
+
+  return {} as any
 };
