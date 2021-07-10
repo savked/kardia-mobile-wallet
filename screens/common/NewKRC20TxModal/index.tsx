@@ -132,7 +132,8 @@ const NewKRC20TxModal = ({
       calculatedGasPrice = Math.ceil(calculatedGasPrice * 1.25)
     }
 
-    const _txAmount = Number(amount.replace(/,/g, ''));
+    // const _txAmount = Number(amount.replace(/,/g, ''));
+    const _txAmount = amount.replace(/,/g, '');
     try {
       const txResult = await transferKRC20(
         tokenAddress,
