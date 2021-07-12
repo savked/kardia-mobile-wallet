@@ -5,8 +5,10 @@ import {
   createStackNavigator,
 } from '@react-navigation/stack';
 import {ThemeContext} from './ThemeContext';
-import KAIDex from './screens/KAIDex';
 import SuccessTx from './screens/SuccessTx';
+import Trade from './screens/KAIDex/Trade';
+import AddLiquidity from './screens/KAIDex/AddLiquidity';
+import OrderHistory from './screens/KAIDex/OrderHistory';
 
 const DEXStack = createStackNavigator();
 
@@ -14,7 +16,7 @@ const DEXStackScreen = () => {
   const theme = useContext(ThemeContext);
   return (
     <DEXStack.Navigator
-      initialRouteName="DEXHome"
+      initialRouteName="Trade"
       screenOptions={{
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         headerStyle: {
@@ -24,10 +26,27 @@ const DEXStackScreen = () => {
         headerBackTitleVisible: false,
       }}>
       <DEXStack.Screen
-        name="DEXHome"
-        component={KAIDex}
+        name="Trade"
+        component={Trade}
         options={{
-          headerShown: false
+          headerShown: false,
+          animationEnabled: false
+        }}
+      />
+      <DEXStack.Screen
+        name="AddLiquidity"
+        component={AddLiquidity}
+        options={{
+          headerShown: false,
+          animationEnabled: false
+        }}
+      />
+      <DEXStack.Screen
+        name="OrderHistory"
+        component={OrderHistory}
+        options={{
+          headerShown: false,
+          animationEnabled: false
         }}
       />
       <DEXStack.Screen

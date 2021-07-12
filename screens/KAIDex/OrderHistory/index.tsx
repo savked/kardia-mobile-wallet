@@ -14,6 +14,8 @@ import { formatNumberString } from '../../../utils/number';
 import { groupByDate } from '../../../utils/date';
 import { getOrderPrice, isBuy, parseSymbolWKAI } from '../../../utils/dex';
 import OrderDetailModal from '../../common/OrderDetailModal';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import DEXHeader from '../../common/DEXHeader';
 
 const SIZE = 10
 const ITEM_HEIGHT = 93
@@ -32,6 +34,8 @@ export default () => {
 
 	const [showOrderDetail, setShowOrderDetail] = useState(false);
   const [orderObjForDetail, setOrderObjForDetail] = useState<any>();
+
+  const insets = useSafeAreaInsets();
 
 	const { loading, error, data } = useQuery(
 		MY_ORDER_HISTORY, 
@@ -157,125 +161,130 @@ export default () => {
   };
 
   return (
-		<View style={{flex: 1}}>
+    <View style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20, paddingTop: 28 + insets.top}}>
       <OrderDetailModal
         visible={showOrderDetail}
         onClose={() => setShowOrderDetail(false)}
         orderObj={orderObjForDetail}
       />
-			<ScrollView 
-        showsVerticalScrollIndicator={false}
-				scrollEventThrottle={8}
-        onScroll={({nativeEvent}) => {
-          if (!haveMore || gettingMore) return;
-          if (isCloseToBottom(nativeEvent)) {
-						setGettingMore(true)
-            setPage(page + 1)
+      <DEXHeader
+        type="ORDER_HISTORY"
+      />
+      <View style={{flex: 1}}>
+        <ScrollView 
+          showsVerticalScrollIndicator={false}
+          scrollEventThrottle={8}
+          onScroll={({nativeEvent}) => {
+            if (!haveMore || gettingMore) return;
+            if (isCloseToBottom(nativeEvent)) {
+              setGettingMore(true)
+              setPage(page + 1)
+            }
+          }}
+          style={{
+            height: ITEM_HEIGHT * SIZE - 150,
+            // flex: 1
+          }}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={[theme.textColor]}
+              tintColor={theme.textColor}
+              titleColor={theme.textColor}
+            />
           }
-        }}
-        style={{
-					height: ITEM_HEIGHT * SIZE - 150,
-					// flex: 1
-				}}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            colors={[theme.textColor]}
-            tintColor={theme.textColor}
-            titleColor={theme.textColor}
-          />
-        }
-			>
-				{groupByDate(orderList, 'date').map((ordersByDate) => {
-          const dateLocale = getDateFNSLocale(language);
-          return (
-            <React.Fragment key={`transaction-by-${ordersByDate.date.getTime()}`}>
-              <CustomText
-                style={{
-                  // marginHorizontal: 20,
-                  color: theme.textColor,
-                }}>
-                {format(new Date(ordersByDate.date), 'E, dd/MM/yyyy', {locale: dateLocale})}
-              </CustomText>
-              {ordersByDate.items.map((item: any, index: number) => {
-                return (
-                  <View
-                    key={`tx-item-${index}`}
-                    style={{
-                      paddingVertical: 12,
-                      paddingHorizontal: 16,
-                      // marginHorizontal: 20,
-                      marginVertical: 8,
-                      borderRadius: 8,
-                      backgroundColor: theme.backgroundFocusColor,
-                    }}>
-                    <TouchableOpacity
+        >
+          {groupByDate(orderList, 'date').map((ordersByDate) => {
+            const dateLocale = getDateFNSLocale(language);
+            return (
+              <React.Fragment key={`transaction-by-${ordersByDate.date.getTime()}`}>
+                <CustomText
+                  style={{
+                    // marginHorizontal: 20,
+                    color: theme.textColor,
+                  }}>
+                  {format(new Date(ordersByDate.date), 'E, dd/MM/yyyy', {locale: dateLocale})}
+                </CustomText>
+                {ordersByDate.items.map((item: any, index: number) => {
+                  return (
+                    <View
+                      key={`tx-item-${index}`}
                       style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}
-                      onPress={() => {
-                        setOrderObjForDetail(item);
-                        setShowOrderDetail(true);
+                        paddingVertical: 12,
+                        paddingHorizontal: 16,
+                        // marginHorizontal: 20,
+                        marginVertical: 8,
+                        borderRadius: 8,
+                        backgroundColor: theme.backgroundFocusColor,
                       }}>
-                      {renderIcon(item.status, isBuy(item) ? 'IN' : 'OUT')}
-                      <View
+                      <TouchableOpacity
                         style={{
-                          flexDirection: 'column',
-                          flex: 4,
-                          paddingHorizontal: 4,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                        onPress={() => {
+                          setOrderObjForDetail(item);
+                          setShowOrderDetail(true);
                         }}>
-                        <CustomText style={{color: '#FFFFFF', fontSize: theme.defaultFontSize + 1, fontWeight: '500'}}>
-                          {/* {
-                            isBuy(item.amount0In) ? getLanguageString(language, 'ORDER_TYPE_BUY')
-                              : getLanguageString(language, 'ORDER_TYPE_SELL')
-                          } */}
-                          {parseSymbolWKAI(item.pair.token0.symbol)} / {parseSymbolWKAI(item.pair.token1.symbol)}
-                        </CustomText>
-                        <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
-                          {/* {truncate(item.transaction.id, 8, 10)} */}
-                          {getLanguageString(language, isBuy(item) ? 'BUY_AT' : 'SELL_AT')}{' '}
-                          <CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize}}>
-                            {formatNumberString(getOrderPrice(item).toFixed(), 6)}
+                        {renderIcon(item.status, isBuy(item) ? 'IN' : 'OUT')}
+                        <View
+                          style={{
+                            flexDirection: 'column',
+                            flex: 4,
+                            paddingHorizontal: 4,
+                          }}>
+                          <CustomText style={{color: '#FFFFFF', fontSize: theme.defaultFontSize + 1, fontWeight: '500'}}>
+                            {/* {
+                              isBuy(item.amount0In) ? getLanguageString(language, 'ORDER_TYPE_BUY')
+                                : getLanguageString(language, 'ORDER_TYPE_SELL')
+                            } */}
+                            {parseSymbolWKAI(item.pair.token0.symbol)} / {parseSymbolWKAI(item.pair.token1.symbol)}
                           </CustomText>
-                        </CustomText>
-                      </View>
-                      <View
-                        style={{
-                          flex: 3,
-                          alignItems: 'flex-end',
-                        }}>
-                        <CustomText
-                          style={[
-                            {color: theme.textColor, fontSize: theme.defaultFontSize + 1}
-                          ]}>
-                          {formatNumberString(
-														isBuy(item) ? item.amount0Out : item.amount0In, 
-														4
-													)}{' '}
-                          <CustomText style={{color: theme.mutedTextColor}}>
-                            {parseSymbolWKAI(item.pair.token0.symbol)}
+                          <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
+                            {/* {truncate(item.transaction.id, 8, 10)} */}
+                            {getLanguageString(language, isBuy(item) ? 'BUY_AT' : 'SELL_AT')}{' '}
+                            <CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize}}>
+                              {formatNumberString(getOrderPrice(item).toFixed(), 6)}
+                            </CustomText>
                           </CustomText>
-                        </CustomText>
-                        <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
-                          {format(new Date(item.date), 'hh:mm aa')}
-                        </CustomText>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                );
-              })}
-            </React.Fragment>
-          );
-        })}
-        {gettingMore && (
-          <View>
-            <ActivityIndicator color={theme.textColor} size="small" />
-          </View>
-        )}
-			</ScrollView>
-		</View>
+                        </View>
+                        <View
+                          style={{
+                            flex: 3,
+                            alignItems: 'flex-end',
+                          }}>
+                          <CustomText
+                            style={[
+                              {color: theme.textColor, fontSize: theme.defaultFontSize + 1}
+                            ]}>
+                            {formatNumberString(
+                              isBuy(item) ? item.amount0Out : item.amount0In, 
+                              4
+                            )}{' '}
+                            <CustomText style={{color: theme.mutedTextColor}}>
+                              {parseSymbolWKAI(item.pair.token0.symbol)}
+                            </CustomText>
+                          </CustomText>
+                          <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
+                            {format(new Date(item.date), 'hh:mm aa')}
+                          </CustomText>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })}
+              </React.Fragment>
+            );
+          })}
+          {gettingMore && (
+            <View>
+              <ActivityIndicator color={theme.textColor} size="small" />
+            </View>
+          )}
+        </ScrollView>
+      </View>
+    </View>
 	)
 };

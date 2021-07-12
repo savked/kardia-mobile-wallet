@@ -39,7 +39,6 @@ import {getLanguageString} from '../../utils/lang';
 import Portal from '@burstware/react-native-portal';
 import {krc20ListAtom, krc20PricesAtom} from '../../atoms/krc20';
 import HomeStackScreen from '../../HomeStack';
-import AddressStackScreen from '../../AddressStack';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import CustomText from '../../components/Text';
 import { fontSizeAtom } from '../../atoms/fontSize';
@@ -47,7 +46,6 @@ import { getAppStatus } from '../../services/util';
 import { INFO_DATA } from '../Setting';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '../../components/Button';
-import KAIDex from '../KAIDex';
 import { dexStatusAtom } from '../../atoms/dexStatus';
 import { initDexConfig } from '../../services/dex';
 import { cacheAtom } from '../../atoms/cache';
@@ -238,12 +236,9 @@ const Wrap = () => {
       }}>
       {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
       <Tab.Screen name="Home" component={HomeStackScreen} />
-      {/* <Tab.Screen name="Transaction" component={TransactionStackScreen} /> */}
       <Tab.Screen name="DApp" component={DAppStackScreen} />
       <Tab.Screen name="DEX" component={DEXStackScreen} />
       <Tab.Screen name="Staking" component={StakingStackScreen} />
-      {/* <Tab.Screen name="Address" component={AddressStackScreen} /> */}
-      {/* <Tab.Screen name="News" component={NewsScreen} /> */}
       <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>
   );

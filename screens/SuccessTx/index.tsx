@@ -520,7 +520,7 @@ export default () => {
       case 'dex':
         navigation.reset({
           index: 0,
-          routes: [{name: 'DEXHome', params: {pairAddress}}],
+          routes: [{name: 'Trade', params: {pairAddress}}],
         });
         break;
       case 'addLP':
