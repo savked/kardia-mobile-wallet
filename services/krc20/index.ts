@@ -136,7 +136,7 @@ export const getVerifiedTokenList = async () => {
     redirect: 'follow',
   };
   const response: any = await requestWithTimeOut(
-    fetch(`${ENDPOINT}contracts?page=1&limit=25&type=KRC20&status=Verified`, requestOptions),
+    fetch(`${ENDPOINT}contracts?type=KRC20&status=Verified`, requestOptions),
     50 * 1000,
   );
   const responseJSON = await response.json();
