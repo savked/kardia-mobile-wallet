@@ -120,12 +120,6 @@ const StakingScreen = () => {
         <CustomText style={[styles.headline, {color: theme.textColor}]}>
           {getLanguageString(language, 'STAKING_TITLE')}
         </CustomText>
-        {/* <IconButton
-          name="bell-o"
-          color={theme.textColor}
-          size={20}
-          onPress={() => navigation.navigate('Notification')}
-        /> */}
       </View>
       {currentStaking.length > 0 && (
         <ImageBackground
@@ -185,11 +179,10 @@ const StakingScreen = () => {
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              marginTop: 70,
               paddingHorizontal: 27,
             }}>
             <Image
-              style={{width: 200, height: 172}}
+              style={{width: 320, height: 320}}
               source={require('../../assets/icon/no_staking.png')}
             />
             <CustomText style={{color: theme.textColor, fontSize: 24, fontWeight: 'bold', marginBottom: 8, marginTop: 100}}>
