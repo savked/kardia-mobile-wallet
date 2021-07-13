@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Platform, TouchableOpacity, View } from 'react-native'
+import { Image, Platform, TouchableOpacity, View } from 'react-native'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { languageAtom } from '../../../atoms/language'
 import { referralCodeAtom } from '../../../atoms/referralCode'
@@ -36,7 +36,7 @@ export default ({visible, onClose}: {
     if (Platform.OS === 'android') {
       return {
         backgroundColor: theme.backgroundFocusColor,
-        height: 400,
+        height: 570,
         padding: 20,
         paddingTop: 32,
         marginTop: keyboardShown ? 20 : 0,
@@ -47,7 +47,7 @@ export default ({visible, onClose}: {
     }
     return {
       backgroundColor: theme.backgroundFocusColor,
-      height: 400,
+      height: 570,
       padding: 20,
       paddingTop: 32,
       paddingBottom: 52,
@@ -64,6 +64,15 @@ export default ({visible, onClose}: {
       showCloseButton={false}
       contentStyle={getContentStyle()}
     >
+      <View style={{width: '100%', alignItems: 'center'}}>
+        <Image
+          source={require('../../../assets/referral.png')}
+          style={{
+            width: 270,
+            height: 203
+          }}
+        />
+      </View>
       <CustomText
         style={{
           color: theme.textColor,

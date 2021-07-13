@@ -250,9 +250,18 @@ const TokenDetail = () => {
         onClose={() => setShowRemoveConfirm(false)}
         contentStyle={{
           backgroundColor: theme.backgroundFocusColor,
-          height: 370,
+          height: 540,
           justifyContent: 'center',
         }}>
+        <View style={{alignItems: 'center', width: '100%'}}>
+          <Image
+            source={require('../../assets/hide_token.png')}
+            style={{
+              width: 246,
+              height: 170
+            }}
+          />
+        </View>
         <CustomText
           style={{
             textAlign: 'center',
