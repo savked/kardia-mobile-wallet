@@ -717,88 +717,90 @@ export default ({
             shadowRadius: 8,
             elevation: 11,
           }}>
-          <TouchableOpacity 
-            style={{
-              backgroundColor: theme.backgroundColor,
-              padding: 16, 
-              width: '100%',
-              borderRadius: 12,
-              marginBottom: tokenFrom && tokenTo ? 12 : 0,
-              flexDirection: 'row',
-              alignItems: 'center'
+          <AuthModal
+            visible={showAuthModal}
+            onClose={() => {
+              setShowAuthModal(false)
             }}
-            onPress={() => {
-              if (inited && _tokenFrom && _tokenTo && rate) {
-                toggleMenu()
-                setSelectingPair(true)
-              }
-            }}
-          >
-            <AuthModal
-              visible={showAuthModal}
-              onClose={() => {
-                setShowAuthModal(false)
+            onSuccess={onAuthSuccess}
+          />
+          {inited && _tokenFrom && _tokenTo && rate && (
+            <TouchableOpacity 
+              style={{
+                backgroundColor: theme.backgroundColor,
+                padding: 16, 
+                width: '100%',
+                borderRadius: 12,
+                marginBottom: tokenFrom && tokenTo ? 12 : 0,
+                flexDirection: 'row',
+                alignItems: 'center'
               }}
-              onSuccess={onAuthSuccess}
-            />
-            <View style={{flexDirection: 'row', marginRight: 12}}>
-              {
-                _tokenFrom && (
-                  <View style={{width: 32, height: 32, backgroundColor: '#FFFFFF', borderRadius: 16}}>
-                    <Image
-                      source={{uri: _tokenFrom.logo}}
-                      style={{width: 32, height: 32}}
-                    />
-                  </View>
-                )
-              }
-              {
-                _tokenTo && (
-                  <View 
-                    style={{
-                      width: 32,
-                      height: 32,
-                      backgroundColor: '#FFFFFF',
-                      borderRadius: 16,
-                      marginLeft: -8,
-                      shadowColor: 'rgba(0, 0, 0, 0.3)',
-                      shadowOffset: {
-                        width: -6,
-                        height: 0,
-                      },
-                      shadowOpacity: 12,
-                      shadowRadius: 8,
-                      elevation: 11,
-                    }}
-                  >
-                    <Image
-                      source={{uri: _tokenTo.logo}}
-                      style={{width: 32, height: 32}}
-                    />
-                  </View>
-                )
-              }
-            </View>
-            <View style={{flex: 1}}>
-              {_tokenFrom && _tokenTo && <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 4}}>{_tokenFrom.symbol} / {_tokenTo.symbol}</CustomText>}
-              <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
-                {
-                  tokenFrom && tokenTo ? 
-                    <CustomText>
-                      {getLanguageString(language, 'VOLUME_24H')}{' '}
-                      <CustomText style={{color: theme.textColor}}>
-                        ${formatNumberString(volume, 6)}
-                      </CustomText>
-                    </CustomText>
-                    : getLanguageString(language, 'CLICK_TO_SELECT_PAIR')
+              onPress={() => {
+                if (inited && _tokenFrom && _tokenTo && rate) {
+                  toggleMenu()
+                  setSelectingPair(true)
                 }
-              </CustomText>
-            </View>
-            <Image
-              source={require('../../../assets/icon/chevron-right.png')}
-              style={{width: 20, height: 20}}
-            />
-          </TouchableOpacity>
+              }}
+            >     
+              <View style={{flexDirection: 'row', marginRight: 12}}>
+                {
+                  _tokenFrom && (
+                    <View style={{width: 32, height: 32, backgroundColor: '#FFFFFF', borderRadius: 16}}>
+                      <Image
+                        source={{uri: _tokenFrom.logo}}
+                        style={{width: 32, height: 32}}
+                      />
+                    </View>
+                  )
+                }
+                {
+                  _tokenTo && (
+                    <View 
+                      style={{
+                        width: 32,
+                        height: 32,
+                        backgroundColor: '#FFFFFF',
+                        borderRadius: 16,
+                        marginLeft: -8,
+                        shadowColor: 'rgba(0, 0, 0, 0.3)',
+                        shadowOffset: {
+                          width: -6,
+                          height: 0,
+                        },
+                        shadowOpacity: 12,
+                        shadowRadius: 8,
+                        elevation: 11,
+                      }}
+                    >
+                      <Image
+                        source={{uri: _tokenTo.logo}}
+                        style={{width: 32, height: 32}}
+                      />
+                    </View>
+                  )
+                }
+              </View>
+              <View style={{flex: 1}}>
+                {_tokenFrom && _tokenTo && <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 4}}>{_tokenFrom.symbol} / {_tokenTo.symbol}</CustomText>}
+                <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
+                  {
+                    tokenFrom && tokenTo ? 
+                      <CustomText>
+                        {getLanguageString(language, 'VOLUME_24H')}{' '}
+                        <CustomText style={{color: theme.textColor}}>
+                          ${formatNumberString(volume, 6)}
+                        </CustomText>
+                      </CustomText>
+                      : getLanguageString(language, 'CLICK_TO_SELECT_PAIR')
+                  }
+                </CustomText>
+              </View>
+              <Image
+                source={require('../../../assets/icon/chevron-right.png')}
+                style={{width: 20, height: 20}}
+              />
+            </TouchableOpacity>
+          )}
           {tokenTo && (
             <View style={{width: '100%', marginTop: 12}}>
               <CustomText 
