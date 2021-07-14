@@ -9,7 +9,7 @@ import { requestWithTimeOut } from '../util';
 import BigNumber from 'bignumber.js';
 import { getDeltaTimestamps } from '../../utils/date';
 import { apolloKaiBlockClient, apolloKaiDexClient } from './apolloClient';
-import { GET_BLOCKS_BY_TIMESTAMPS, PAIR_LIST_BY_BLOCK_NUMBER } from './queries';
+import { GET_BLOCKS_BY_TIMESTAMPS, GET_PAIR_VOLUME, PAIR_LIST_BY_BLOCK_NUMBER } from './queries';
 import { getLogoURL, toChecksum } from '../../utils/string';
 import Web3 from 'web3'
 import { parseDecimals } from '../../utils/number';
@@ -626,11 +626,17 @@ const fetchPairData = async (pairItem: Record<string, any>) => {
   rs.token0 = await getTokenInfoForDex(pairItem.token0)
   rs.token1 = await getTokenInfoForDex(pairItem.token1)
 
-  // const {reserveA, reserveB} = await client.getReserves(pairItem.token0, pairItem.token1)
   const {reserveIn, reserveOut} = await getReserve(pairItem.token0, pairItem.token1)
 
   rs.reserve0 = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(rs.token0.decimals))).toFixed()
   rs.reserve1 = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(rs.token1.decimals))).toFixed()
+
+  const {data: volumeData} = await apolloKaiDexClient.query({ query: GET_PAIR_VOLUME(pairItem.id) })
+  if (volumeData && volumeData.pairs[0]) {
+    rs.volumeUSD = volumeData.pairs[0].volumeUSD
+  } else {
+    rs.volumeUSD = "0"
+  }
   return rs
 }
 

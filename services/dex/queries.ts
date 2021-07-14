@@ -38,6 +38,21 @@ export const GET_PAIRS = gql`
   }
 `;
 
+export const GET_PAIR_VOLUME = (pairAddress: string) => {
+  return gql`
+    query pairList {
+      pairs(
+        where: {
+          id: "${pairAddress.toLowerCase()}"
+        }
+      ) {
+        id
+        volumeUSD
+      }
+    }
+  `
+}
+
 export const GET_BLOCKS_BY_TIMESTAMPS = (timestamps: number[]) => {
   let queryString = 'query blocks {'
   queryString += timestamps.map((timestamp) => {
