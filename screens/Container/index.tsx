@@ -408,6 +408,7 @@ const AppContainer = () => {
         console.error(error);
       }
 
+      // Get local cache
       try {
         const localCache = await getCache();
         setCache(localCache)

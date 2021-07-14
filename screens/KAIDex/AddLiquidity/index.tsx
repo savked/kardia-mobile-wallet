@@ -9,7 +9,7 @@ import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 import Button from '../../../components/Button';
 import List from '../../../components/List';
 import CustomText from '../../../components/Text';
-import { getMyPortfolio } from '../../../services/dex';
+import { getMyPortfolio, getPairs } from '../../../services/dex';
 import { GET_PAIRS } from '../../../services/dex/queries';
 import { ThemeContext } from '../../../ThemeContext';
 import { pairMapper } from '../../../utils/dex';
@@ -35,6 +35,9 @@ export default () => {
   const [selectingPair, setSelectingPair] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
 
+  const [_pairData, set_PairData] = useState({pairs: [] as any[]}) //
+  const [loading, setLoading] = useState(false);
+
   const wallets = useRecoilValue(walletsAtom)
   const selectedWallet = useRecoilValue(selectedWalletAtom)
   const [showLPDetailModal, setShowLPDetailModal] = useState(false)
@@ -42,7 +45,7 @@ export default () => {
   const [showMenu, setShowMenu] = useState(true);
   const insets = useSafeAreaInsets();
 
-  const { loading, error, data: _pairData, refetch } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
+  // const { loading, error, data: _pairData, refetch } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
 
   useFocusEffect(
     useCallback(() => {
@@ -50,6 +53,25 @@ export default () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
+
+  const fetchPairData = async () => {
+    try {
+      const rs = await getPairs()
+      if (rs) {
+        set_PairData(rs)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true)
+      await fetchPairData()
+      setLoading(false)
+    })()
+  }, [])
 
   useEffect(() => {
     (async () => {

@@ -9,7 +9,7 @@ import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
 import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
-import { approveToken, calculateDexAmountOut, calculatePriceImpact, calculateTransactionDeadline, formatDexToken, getApproveState, getTotalVolume } from '../../../services/dex';
+import { approveToken, calculateDexAmountOut, calculatePriceImpact, calculateTransactionDeadline, formatDexToken, getApproveState, getPairs, getTotalVolume } from '../../../services/dex';
 import { getBalance as getKRC20Balance } from '../../../services/krc20';
 import { ThemeContext } from '../../../ThemeContext';
 import { getLanguageString, parseError } from '../../../utils/lang';
@@ -50,6 +50,11 @@ export default ({
   const [volumeUSD, setVolumeUSD] = useState('') //
   const [pairAddress, setPairAddress] = useState(''); //
   const [pairData, setPairData] = useState({pairs: [] as any[]}) //
+
+  const [_pairData, set_PairData] = useState({pairs: [] as any[]}) //
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('')
+
   const [selectingPair, setSelectingPair] = useState(false) //
   // const [tokenFrom, setTokenFrom] = useState<PairToken | undefined>(_tokenFrom)
   const [tokenFrom, setTokenFrom] = useState<PairToken | undefined>()
@@ -94,7 +99,30 @@ export default ({
   // const [onAuthSuccess, setOnAuthSuccess] = useState<() => void>(() => {})
   const [priceImpact, setPriceImpact] = useState('0');
 
-  const { loading, error, data: _pairData, refetch } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
+  const { data: volumeData, refetch } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
+
+  const fetchPairData = async () => {
+    setError('')
+    try {
+      const rs = await getPairs()
+      if (rs) {
+        set_PairData(rs)
+      } else {
+        setError('Empty pairs error')
+      }
+    } catch (error) {
+      console.log(error)
+      setError('Fetch pairs error')
+    }
+  }
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true)
+      await fetchPairData()
+      setLoading(false)
+    })()
+  }, [])
 
   const onAuthSuccess = () => {
     if (!approvedState) {
@@ -103,7 +131,6 @@ export default ({
       handleSubmitMarket()
     }
   }
-
 
   useEffect(() => {
     if (!selectingPair) {
@@ -146,7 +173,8 @@ export default ({
     if (!pairData.pairs) return;
     const _pairAddress = (params as any).pairAddress
     if (_pairAddress) {
-      refetch()
+      // refetch()
+      fetchPairData()
     }
   }, [params])
 
@@ -171,9 +199,33 @@ export default ({
     if (!pairData.pairs) return;
     const _pairAddress = (params as any).pairAddress
     if (_pairAddress) {
-      refetch()
+      fetchPairData()
     }
   }, [params])
+
+  useEffect(() => {
+    if (!volumeData || !volumeData.pairs) return
+    let index = 0
+    if (params) {
+      const _pairAddress = (params as any).pairAddress
+
+      const ind = pairData.pairs.findIndex((i: any, ind: number) => {
+        return i.contract_address === _pairAddress
+      })
+
+      if (ind !== -1) index = ind
+    } else if (pairAddress && pairAddress !== '') {
+      const ind = pairData.pairs.findIndex((i: any, ind: number) => {
+        return i.contract_address === pairAddress
+      })
+      if (ind !== -1) index = ind
+    }
+    console.log('index', index)
+    if (!volumeData.pairs[index]) return
+    console.log('volumeData.pairs[index].volumeUSD', volumeData.pairs[index].volumeUSD)
+    setVolumeUSD(volumeData.pairs[index].volumeUSD)
+
+  }, [volumeData, params, pairAddress])
 
   useEffect(() => {
     (async () => {
@@ -184,10 +236,15 @@ export default ({
         if (params) {
           const _pairAddress = (params as any).pairAddress
 
-          const item = pairData.pairs.find((i: any) => {
+          const item = pairData.pairs.find((i: any, ind: number) => {
             return i.contract_address === _pairAddress
           })
 
+          if (item) pair = item
+        } else if (pairAddress !== '') {
+          const item = pairData.pairs.find((i: any, ind: number) => {
+            return i.contract_address === pairAddress
+          })
           if (item) pair = item
         }
 
@@ -206,7 +263,6 @@ export default ({
         setTokenToLiquidity(pair.token2_liquidity)
 
         setPairAddress(pair.contract_address)
-        setVolumeUSD(pair.volumeUSD)
         setSelectingPair(false)
 
         const balance = await getBalance(wallets[selectedWallet].address);
@@ -241,7 +297,7 @@ export default ({
       const _rate = bnTo.dividedBy(bnFrom)
       setRate(_rate)
     })()
-  }, [_tokenFromLiquidity, _tokenToLiquidity])
+  }, [_tokenFromLiquidity, _tokenToLiquidity, pairAddress, volumeUSD])
 
   useEffect(() => {
     (async () => {
@@ -618,7 +674,8 @@ export default ({
 
   const onRefresh = async () => {
     setRefreshing(true)
-    await refetch()
+    // await refetch()
+    await fetchPairData()
     setRefreshing(false)
   }
 

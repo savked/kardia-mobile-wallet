@@ -204,9 +204,7 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 			}
 
 			if (!approvalState1) {
-				console.log('here')
 				const rs1 = await approveToken(pair.t2, parseDecimals(balance1, pair.t2.decimals), wallets[selectedWallet])
-				console.log('aaa', rs1)
 				if (rs1.status === 1) {
 					setApprovalState1(true)
 				} else {

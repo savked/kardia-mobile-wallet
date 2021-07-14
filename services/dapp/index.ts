@@ -1,7 +1,7 @@
 import { DEFAULT_APP_JSON } from "../config";
 
 export const getDefaultDApp = async () => {
-	var requestOptions = {
+	const requestOptions = {
 		method: 'GET',
 		redirect: 'follow'
 	};

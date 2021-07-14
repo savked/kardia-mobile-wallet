@@ -1,8 +1,8 @@
 import KaidexClient from 'kaidex-sdk';
 import KardiaClient, {KardiaAccount} from 'kardia-js-sdk';
 import SWAPABI from './swapABI.json'
-import { BLOCK_TIME, KAI_TOKEN_NAME, KAI_TOKEN_SYMBOL } from '../../config';
-import { DEX_ENDPOINT, EXCHANGE_REST, RPC_ENDPOINT } from '../config';
+import { BLOCK_TIME, CACHE_TTL, KAI_TOKEN_NAME, KAI_TOKEN_SYMBOL } from '../../config';
+import { DEX_ENDPOINT, DEX_PAIRS_JSON, EXCHANGE_REST, RPC_ENDPOINT } from '../config';
 import KRC20ABI from '../krc20/KRC20ABI.json';
 // import { cellValueWithDecimals } from '../../utils/number';
 import { requestWithTimeOut } from '../util';
@@ -13,6 +13,7 @@ import { GET_BLOCKS_BY_TIMESTAMPS, PAIR_LIST_BY_BLOCK_NUMBER } from './queries';
 import { getLogoURL, toChecksum } from '../../utils/string';
 import Web3 from 'web3'
 import { parseDecimals } from '../../utils/number';
+import { getCache, saveCacheByKey } from '../../utils/local';
 
 let SWAP_ROUTER_SMC = ''
 let FACTORY_SMC = ''
@@ -20,6 +21,8 @@ let WKAI_SMC = ''
 let LIMIT_ORDER_SMC = ''
 
 let reserve: Record<string, any> = {}
+
+let tokenData: Record<string, any> = {}
 
 export const getKAILogo = () => {
   return getLogoURL(WKAI_SMC)
@@ -272,9 +275,9 @@ export const getTotalVolume = async (volumeUSD: string, pairID: string) => {
   const { data: pairsByBlock1 } = await queryPairsByBlockNumber(_24h_blocks)
   const onedayPairs = pairsByBlock1[`t${_24h_blocks[0].timestamp}`]
   const _oneDayPair = onedayPairs && Array.isArray(onedayPairs) ? onedayPairs.filter(item => item.id === pairID)[0] : null
-
+  console.log('volumeUSD param', volumeUSD)
+  console.log('_oneDayPair', _oneDayPair)
   let volume24hr = _oneDayPair && _oneDayPair.volumeUSD ? parseFloat(volumeUSD) - parseFloat(_oneDayPair.volumeUSD) : parseFloat(volumeUSD)
-
   return volume24hr
 }
 
@@ -581,4 +584,226 @@ export const removeLiquidity = async (params: any, wallet: Wallet) => {
   })
 
   return rs
+}
+
+const getPairFromHTTP = async () => {
+  const requestOptions = {
+		method: 'GET',
+		redirect: 'follow'
+	};
+
+	const rs = await fetch(DEX_PAIRS_JSON, requestOptions)
+	try {
+		const rsJSON = await rs.json()
+		return rsJSON
+	} catch (error) {
+		console.log(error)
+		return []		
+	}
+  // return [
+  //   {
+  //     "id": "0x1ebbf8080149ff07381afd148ba0af007f78cd3c",
+  //     "pairIdentity": {
+  //       "invert": false
+  //     },
+  //     "token0": "0x2eddba8b949048861d2272068a94792275a51658",
+  //     "token1": "0xaf984e23eaa3e7967f3c5e007fbe397d8566d23d"
+  //   },
+  //   {
+  //     "id": "0x256b8a99f69dbdbb5ac781e97f11080a336f5507",
+  //     "pairIdentity": {
+  //       "invert": true
+  //     },
+  //     "token0": "0xaf984e23eaa3e7967f3c5e007fbe397d8566d23d",
+  //     "token1": "0xd675ff2b0ff139e14f86d87b7a6049ca7c66d76e"
+  //   },
+  //   {
+  //     "id": "0x7cd3c7afedd16a72fba66ea35b2e2b301d1b7093",
+  //     "pairIdentity": {
+  //       "invert": true
+  //     },
+  //     "token0": "0x92364ec610efa050d296f1eeb131f2139fb8810e",
+  //     "token1": "0xaf984e23eaa3e7967f3c5e007fbe397d8566d23d"
+  //   },
+  //   {
+  //     "id": "0xdb504f611ae0230bdc60a8f58fe89d3593eb28ce",
+  //     "pairIdentity": {
+  //       "invert": true
+  //     },
+  //     "token0": "0xaf984e23eaa3e7967f3c5e007fbe397d8566d23d",
+  //     "token1": "0xfb62ae373aca027177d1c18ee0862817f9080d08"
+  //   },
+  //   {
+  //     "id": "0x43951c209003a70dca94c2a5b09342c9c84e58ac",
+  //     "pairIdentity": {
+  //       "invert": true
+  //     },
+  //     "token0": "0xaf984e23eaa3e7967f3c5e007fbe397d8566d23d",
+  //     "token1": "0xb697231730c004110a86f51bff4b8dd085c0cb28"
+  //   },
+  //   {
+  //     "id": "0xa5711913ac4bf25c1056d5cf62943743414a58a4",
+  //     "pairIdentity": {
+  //       "invert": false
+  //     },
+  //     "token0": "0xaf984e23eaa3e7967f3c5e007fbe397d8566d23d",
+  //     "token1": "0xeff34b63f55200a9d635b8abbbfcc719b4977864"
+  //   },
+  //   {
+  //     "id": "0x1f95bd3a7d5c9df6bf56504bba948a7adf1c3e27",
+  //     "pairIdentity": {
+  //       "invert": true
+  //     },
+  //     "token0": "0xaf984e23eaa3e7967f3c5e007fbe397d8566d23d",
+  //     "token1": "0xf631bdc21a77afac69b9b3e966e85d7fbcf00b1f"
+  //   },
+  //   {
+  //     "id": "0x3e82f9290a28d4296d34d0c1e6e5366c4220248a",
+  //     "pairIdentity": {
+  //       "invert": true
+  //     },
+  //     "token0": "0x92364ec610efa050d296f1eeb131f2139fb8810e",
+  //     "token1": "0xd675ff2b0ff139e14f86d87b7a6049ca7c66d76e"
+  //   },
+  //   {
+  //     "id": "0xe504898459c682b95b60fed35de410a74216fc92",
+  //     "pairIdentity": {
+  //       "invert": false
+  //     },
+  //     "token0": "0x92364ec610efa050d296f1eeb131f2139fb8810e",
+  //     "token1": "0xeff34b63f55200a9d635b8abbbfcc719b4977864"
+  //   },
+  //   {
+  //     "id": "0x5b60a5761047b3a9ec340941d904231be85f5c0b",
+  //     "pairIdentity": {
+  //       "invert": false
+  //     },
+  //     "token0": "0x5995f16246dfa676a44b8bd7e751c1226093dcd7",
+  //     "token1": "0xaf984e23eaa3e7967f3c5e007fbe397d8566d23d"
+  //   },
+  //   {
+  //     "id": "0x8a9fc881fc8a2570f403012db123f31842242bec",
+  //     "pairIdentity": {
+  //       "invert": true
+  //     },
+  //     "token0": "0x92364ec610efa050d296f1eeb131f2139fb8810e",
+  //     "token1": "0xc1c319434bd861a335752b4b6993c13f139b26fa"
+  //   },
+  //   {
+  //     "id": "0xc2cafdf64d0e403aaf9817556bd99d479c6d4859",
+  //     "pairIdentity": {
+  //       "invert": false
+  //     },
+  //     "token0": "0x75b9d2a0007a6866e32ac0a976fef60cca151f87",
+  //     "token1": "0x92364ec610efa050d296f1eeb131f2139fb8810e"
+  //   },
+  //   {
+  //     "id": "0xeaff45672ac6acde598ccd005db3f60ef1b62379",
+  //     "pairIdentity": {
+  //       "invert": true
+  //     },
+  //     "token0": "0x92364ec610efa050d296f1eeb131f2139fb8810e",
+  //     "token1": "0xc40926e9f3935d00629d26d025c84384f79f3842"
+  //   },
+  //   {
+  //     "id": "0x687ce55e06a90fd75b6b8fd13468973eea2c6513",
+  //     "pairIdentity": {
+  //       "invert": true
+  //     },
+  //     "token0": "0x92364ec610efa050d296f1eeb131f2139fb8810e",
+  //     "token1": "0xf8bb30c912a46f57f2b499111cb536db13a044c3"
+  //   },
+  //   {
+  //     "id": "0xab951b7c56682040dc62fff35c8bdb8fdeca8861",
+  //     "pairIdentity": {
+  //       "invert": false
+  //     },
+  //     "token0": "0x72b7181bd4a0b67ca7df2c7778d8f70455dc735b",
+  //     "token1": "0xaf984e23eaa3e7967f3c5e007fbe397d8566d23d"
+  //   },
+  //   {
+  //     "id": "0xab40f7752babd3d302337fa1e803bfb2889b870d",
+  //     "pairIdentity": {
+  //       "invert": false
+  //     },
+  //     "token0": "0xc40926e9f3935d00629d26d025c84384f79f3842",
+  //     "token1": "0xeff34b63f55200a9d635b8abbbfcc719b4977864"
+  //   },
+  //   {
+  //     "id": "0xaa5554302cca95778eba653d6f3a852a3297f4ca",
+  //     "pairIdentity": {
+  //       "invert": false
+  //     },
+  //     "token0": "0x75b9d2a0007a6866e32ac0a976fef60cca151f87",
+  //     "token1": "0xeff34b63f55200a9d635b8abbbfcc719b4977864"
+  //   },
+  //   {
+  //     "id": "0x909eb13a77be16fd6d4a763b701b3aa82a5aff9d",
+  //     "pairIdentity": {
+  //       "invert": false
+  //     },
+  //     "token0": "0x72b7181bd4a0b67ca7df2c7778d8f70455dc735b",
+  //     "token1": "0xeff34b63f55200a9d635b8abbbfcc719b4977864"
+  //   }
+  // ]
+}
+
+const getTokenInfoForDex = async (tokenAddress: string) => {
+
+  if (tokenData[tokenAddress.toLowerCase()]) {
+    return tokenData[tokenAddress.toLowerCase()]
+  }
+
+  const sdkClient = new KardiaClient({ endpoint: RPC_ENDPOINT })
+  await sdkClient.krc20.getFromAddress(toChecksum(tokenAddress))
+
+  tokenData[tokenAddress.toLowerCase()] = {
+    decimals: sdkClient.krc20.decimals,
+    id: sdkClient.krc20.address.toLowerCase(),
+    name: sdkClient.krc20.name,
+    symbol: sdkClient.krc20.symbol
+  }
+
+  return tokenData[tokenAddress.toLowerCase()]
+
+}
+
+const fetchPairData = async (pairItem: Record<string, any>) => {
+  const rs = JSON.parse(JSON.stringify(pairItem))
+  
+  rs.token0 = await getTokenInfoForDex(pairItem.token0)
+  rs.token1 = await getTokenInfoForDex(pairItem.token1)
+
+  // const {reserveA, reserveB} = await client.getReserves(pairItem.token0, pairItem.token1)
+  const {reserveIn, reserveOut} = await getReserve(pairItem.token0, pairItem.token1)
+
+  rs.reserve0 = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(rs.token0.decimals))).toFixed()
+  rs.reserve1 = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(rs.token1.decimals))).toFixed()
+  return rs
+}
+
+export const getPairs = async () => {
+  const localCache = await getCache();
+  const localPairData = localCache.pairData
+  let newData = false
+
+  if (!localPairData) newData = true
+
+  if (localPairData && localPairData.lastUpdated && Date.now() - Number(localPairData.lastUpdated) > CACHE_TTL) {
+    newData = true
+  }
+
+  if (!newData) return localPairData.pairs
+
+  const remoteData = await getPairFromHTTP()
+
+  await saveCacheByKey('pairData', {
+    pairs: remoteData,
+    lastUpdated: Date.now()
+  })
+
+  const filledData = await Promise.all(remoteData.map(fetchPairData))
+  return {
+    pairs: filledData
+  }
 }

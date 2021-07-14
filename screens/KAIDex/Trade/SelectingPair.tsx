@@ -23,8 +23,6 @@ export default ({goBack, onSelect, pairData, loading}: {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom)
   const language = useRecoilValue(languageAtom)
 
-  // const { loading, error, data: pairData } = useQuery(GET_PAIRS);
-
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(false);
