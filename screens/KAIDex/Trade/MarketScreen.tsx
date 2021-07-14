@@ -220,9 +220,7 @@ export default ({
       })
       if (ind !== -1) index = ind
     }
-    console.log('index', index)
     if (!volumeData.pairs[index]) return
-    console.log('volumeData.pairs[index].volumeUSD', volumeData.pairs[index].volumeUSD)
     setVolumeUSD(volumeData.pairs[index].volumeUSD)
 
   }, [volumeData, params, pairAddress])
@@ -277,7 +275,7 @@ export default ({
         setInited(true)
       }
     })()
-  }, [pairData, params])
+  }, [pairData, params, pairAddress])
 
   useEffect(() => {
     if (!_pairData || !_pairData.pairs) return
@@ -665,7 +663,7 @@ export default ({
           _tokenToLiquidity = liquidityTo
           setTokenToLiquidity(liquidityTo)
           setPairAddress(pairAddress)
-          setVolumeUSD(volumeUSD)
+          // setVolumeUSD(volumeUSD)
           toggleMenu()
         }}
       />
