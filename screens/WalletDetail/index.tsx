@@ -21,7 +21,9 @@ import Modal from '../../components/Modal';
 import { ScrollView } from 'react-native-gesture-handler';
 import AuthModal from '../common/AuthModal';
 import CustomText from '../../components/Text';
-import { formatNumberString } from '../../utils/number';
+import { formatNumberString, parseDecimals } from '../../utils/number';
+import { filterByOwnerSelector, krc20PricesAtom } from '../../atoms/krc20';
+import { getBalance } from '../../services/krc20';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
@@ -33,7 +35,7 @@ export default () => {
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
   const [wallets, setWallets] = useRecoilState(walletsAtom);
-  const setSelectedWallet = useSetRecoilState(selectedWalletAtom);
+  const [selectedWallet, setSelectedWallet] = useRecoilState(selectedWalletAtom);
   const language = useRecoilValue(languageAtom);
   const tokenInfo = useRecoilValue(tokenInfoAtom);
 
@@ -49,12 +51,33 @@ export default () => {
   const [name, setName] = useState(wallet ? wallet.name : '');
   const [cardAvatarID, setCardAvatarID] = useState(wallet ? wallet.cardAvatarID : 1);
 
+  const krc20Prices = useRecoilValue(krc20PricesAtom);;
+  const tokenList = useRecoilValue(filterByOwnerSelector(wallets[selectedWallet].address))
+  const [KRC20Balance, setKRC20Balance] = useState(0)
+
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(false);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
+
+  useEffect(() => {
+		(async () => {
+			const promiseArr = tokenList.map((i) => {
+				return getBalance(i.address, wallets[selectedWallet].address);
+			});
+			const balanceArr = await Promise.all(promiseArr);
+
+			const _krc20Balance = tokenList.reduce((accumulator, currentValue, index) => {
+				const price = krc20Prices[currentValue.address] ? Number(krc20Prices[currentValue.address].price) : 0
+				const decimalValue = parseDecimals(balanceArr[index], currentValue.decimals)
+				return accumulator + Number(decimalValue) * price
+			}, 0)
+	
+			setKRC20Balance(_krc20Balance);
+		})()
+  }, [tokenList, selectedWallet]);
 
   useEffect(() => {
     if (scrollRef && scrollRef.current) {
@@ -177,10 +200,13 @@ export default () => {
                       </CustomText>
                       <CustomText style={{ fontSize: 30, color: 'white' }}>
                         $
-                        {formatNumberString(
-                        (tokenInfo.price *
-                        (Number(weiToKAI(wallet.balance)) + wallet.staked)).toString(), 2, 0
-                        )}
+                        {
+                          formatNumberString(
+                            (tokenInfo.price * (
+                              Number(weiToKAI(wallet.balance)) + wallet.staked + wallet.undelegating
+                            ) + KRC20Balance).toString(), 2, 0
+                          )
+                        }
                       </CustomText>
                     </View>
                     <View style={{flexDirection: 'row'}}>
