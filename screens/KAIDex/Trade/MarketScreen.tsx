@@ -653,6 +653,9 @@ export default ({
           toggleMenu()
         }}
         onSelect={(from: PairToken, to: PairToken, liquidityFrom, liquidityTo, pairAddress, volumeUSD) => {
+          setMode('BUY')
+          setAmountTo('0');
+          setAmountFrom('0');
           _tokenFrom = JSON.parse(JSON.stringify(from))
           setTokenFrom(from);
           _tokenTo = JSON.parse(JSON.stringify(to))
