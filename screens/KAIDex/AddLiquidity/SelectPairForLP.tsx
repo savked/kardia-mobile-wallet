@@ -8,7 +8,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import CustomText from '../../../components/Text';
 import { getLanguageString } from '../../../utils/lang';
 import { languageAtom } from '../../../atoms/language';
-import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, Keyboard, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import List from '../../../components/List';
 import { formatDexToken } from '../../../services/dex';
 import CustomTextInput from '../../../components/TextInput';
@@ -129,23 +129,25 @@ export default ({goBack, onSelect, pairData, loading}: {
   }
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor, paddingHorizontal: 20}}>
-      <Icon.Button
-        style={{paddingLeft: 0}}
-        name="chevron-left"
-        onPress={goBack}
-        backgroundColor="transparent"
-      />
-      <CustomText
-        style={{
-          color: theme.textColor,
-          // textAlign: 'center',
-          fontSize: 36,
-          marginBottom: 20,
-        }}>
-        {getLanguageString(language, 'PAIRS')}
-      </CustomText>
-      {renderPairs()}
-    </SafeAreaView>
+    <TouchableWithoutFeedback style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
+      <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor, paddingHorizontal: 20}}>
+        <Icon.Button
+          style={{paddingLeft: 0}}
+          name="chevron-left"
+          onPress={goBack}
+          backgroundColor="transparent"
+        />
+        <CustomText
+          style={{
+            color: theme.textColor,
+            // textAlign: 'center',
+            fontSize: 36,
+            marginBottom: 20,
+          }}>
+          {getLanguageString(language, 'PAIRS')}
+        </CustomText>
+        {renderPairs()}
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
