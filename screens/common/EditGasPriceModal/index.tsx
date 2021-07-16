@@ -9,7 +9,7 @@ import CustomModal from '../../../components/Modal'
 import CustomTextInput from '../../../components/TextInput'
 import { ThemeContext } from '../../../ThemeContext'
 import { getLanguageString } from '../../../utils/lang'
-import { getDigit } from '../../../utils/number'
+import { formatNumberString, getDigit, isNumber } from '../../../utils/number'
 
 export default ({
   visible,
@@ -95,7 +95,18 @@ export default ({
         <View style={{width: '100%'}}>
           <CustomTextInput
             value={gasPrice}
-            onChangeText={setGasPrice}
+            onChangeText={(newAmount) => {
+              const digitOnly = getDigit(newAmount, false);
+              if (digitOnly === '') {
+                setGasPrice('0');
+                return;
+              }
+              if (isNumber(digitOnly)) {
+                let formatedValue = formatNumberString(digitOnly);
+
+                setGasPrice(formatedValue);
+              }
+            }}
             headline={getLanguageString(language, 'GAS_PRICE')}
             headlineStyle={{
               fontWeight: '500',
