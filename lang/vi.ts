@@ -271,7 +271,7 @@ export const lang: Language = {
     // Dex key
     MARKET_TITLE: 'Thị trường',
     LIMIT_TITLE: 'Giới hạn',
-    PAIRS: 'Pairs',
+    PAIRS: 'Cặp giao dịch',
     BUY: 'Mua',
     SELL: 'Bán',
     CLICK_TO_SELECT_PAIR: 'Chọn cặp giao dịch',
