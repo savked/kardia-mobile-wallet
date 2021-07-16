@@ -9,11 +9,25 @@ import SuccessTx from './screens/SuccessTx';
 import Trade from './screens/KAIDex/Trade';
 import AddLiquidity from './screens/KAIDex/AddLiquidity';
 import OrderHistory from './screens/KAIDex/OrderHistory';
+import UnderMaintainence from './screens/common/UnderMaintainence';
+import ComingSoon from './screens/common/ComingSoon';
+import { useRecoilValue } from 'recoil';
+import { dexStatusAtom } from './atoms/dexStatus';
 
 const DEXStack = createStackNavigator();
 
 const DEXStackScreen = () => {
   const theme = useContext(ThemeContext);
+
+  const dexStatus = useRecoilValue(dexStatusAtom)
+  if (dexStatus === 'OFFLINE') {
+    return <UnderMaintainence />
+  }
+
+  if (dexStatus === 'COMING_SOON') {
+    return <ComingSoon />
+  }
+
   return (
     <DEXStack.Navigator
       initialRouteName="Trade"

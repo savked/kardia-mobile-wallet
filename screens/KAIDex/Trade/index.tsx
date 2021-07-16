@@ -3,12 +3,9 @@ import React, { useContext, useState } from 'react'
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRecoilValue } from 'recoil';
-import { dexStatusAtom } from '../../../atoms/dexStatus';
 import { languageAtom } from '../../../atoms/language';
 import { ThemeContext } from '../../../ThemeContext';
-import ComingSoon from '../../common/ComingSoon';
 import DEXHeader from '../../common/DEXHeader';
-import UnderMaintainence from '../../common/UnderMaintainence';
 import MarketScreen from './MarketScreen'
 
 export default () => {
@@ -18,17 +15,7 @@ export default () => {
   const {params} = useRoute();
   const [showMenu, setShowMenu] = useState(true);
 
-  const dexStatus = useRecoilValue(dexStatusAtom)
-
   const insets = useSafeAreaInsets();
-
-  if (dexStatus === 'OFFLINE') {
-    return <UnderMaintainence />
-  }
-
-  if (dexStatus === 'COMING_SOON') {
-    return <ComingSoon />
-  }
 
   return (
     <View style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20, paddingTop: showMenu ? 28 + insets.top : 0}}>

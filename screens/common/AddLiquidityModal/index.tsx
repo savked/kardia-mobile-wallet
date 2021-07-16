@@ -13,7 +13,7 @@ import CustomModal from '../../../components/Modal';
 import Tags from '../../../components/Tags';
 import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
-import { addLiquidity, approveToken, calculateTransactionDeadline, getApproveState, getTokenBalance } from '../../../services/dex';
+import { addLiquidity, approveToken, calculateTransactionDeadline, getApproveState, getReserve, getTokenBalance } from '../../../services/dex';
 import { ThemeContext } from '../../../ThemeContext';
 import { getPairPriceInBN, parseSymbolWKAI } from '../../../utils/dex';
 import { getLanguageString } from '../../../utils/lang';
@@ -55,6 +55,9 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 
 	const [approvalState0, setApprovalState0] = useState(false)
 	const [approvalState1, setApprovalState1] = useState(false)
+
+	const [token1Liquidity, setToken1Liquidity] = useState('0')
+	const [token2Liquidity, setToken2Liquidity] = useState('0')
 
 	const wallets = useRecoilValue(walletsAtom)
 	const selectedWallet = useRecoilValue(selectedWalletAtom)
@@ -98,6 +101,13 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 				decimals: pair.t2.decimals
 			} as any, parseDecimals(_bl1, pair.t2.decimals), wallets[selectedWallet])
 			setApprovalState1(approval1)
+
+			const {reserveIn, reserveOut} = await getReserve(pair.t1.hash, pair.t2.hash)
+			const parsedReserveIn = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(pair.t1.decimals))).toFixed()
+			const parsedReserveOut = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(pair.t2.decimals))).toFixed()
+			setToken1Liquidity(parsedReserveIn)
+			setToken2Liquidity(parsedReserveOut)
+
 		})()
 	}, [pair])
 
@@ -175,7 +185,7 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 	}
 
 	const getPrice = (returnType = 'string') => {
-		const priceBN = getPairPriceInBN(pair.token1_liquidity, pair.token2_liquidity)
+		const priceBN = getPairPriceInBN(token1Liquidity, token2Liquidity)
 		if (returnType === 'number') return priceBN.toNumber()
 		if (returnType === 'BN') return priceBN
 		return formatNumberString(priceBN.toFixed(), 6)

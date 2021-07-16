@@ -9,7 +9,7 @@ import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
 import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
-import { approveToken, calculateDexAmountOut, calculatePriceImpact, calculateTransactionDeadline, formatDexToken, getApproveState, getPairs, getTotalVolume } from '../../../services/dex';
+import { approveToken, calculateDexAmountOut, calculatePriceImpact, calculateTransactionDeadline, formatDexToken, getApproveState, getPairs, getReserve, getTotalVolume } from '../../../services/dex';
 import { getBalance as getKRC20Balance } from '../../../services/krc20';
 import { ThemeContext } from '../../../ThemeContext';
 import { getLanguageString, parseError } from '../../../utils/lang';
@@ -195,18 +195,9 @@ export default ({
   }, [tokenTo, wallets, selectedWallet])
 
   useEffect(() => {
-    if (!params || loading || error) return;
-    if (!pairData.pairs) return;
-    const _pairAddress = (params as any).pairAddress
-    if (_pairAddress) {
-      fetchPairData()
-    }
-  }, [params])
-
-  useEffect(() => {
     if (!volumeData || !volumeData.pairs) return
     let index = 0
-    if (params) {
+    if (params && pairAddress === '') {
       const _pairAddress = (params as any).pairAddress
 
       const ind = pairData.pairs.findIndex((i: any, ind: number) => {
@@ -230,8 +221,7 @@ export default ({
       // if (params) return
       if (pairData && pairData.pairs) {
         let pair = pairData.pairs[0]
-
-        if (params) {
+        if (params && pairAddress === '') {
           const _pairAddress = (params as any).pairAddress
 
           const item = pairData.pairs.find((i: any, ind: number) => {
@@ -254,13 +244,22 @@ export default ({
         _tokenTo = JSON.parse(JSON.stringify(formatDexToken(pair.t2)))
         setTokenTo(formatDexToken(pair.t2));
 
-        _tokenFromLiquidity = pair.token1_liquidity
-        setTokenFromLiquidity(pair.token1_liquidity);
+        // Get liquidity
+        const {reserveIn, reserveOut} = await getReserve(pair.t1.hash, pair.t2.hash)
+        const parsedReserveIn = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(pair.t1.decimals))).toFixed()
+        const parsedReserveOut = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(pair.t2.decimals))).toFixed()
+        _tokenFromLiquidity = parsedReserveIn
+        setTokenFromLiquidity(parsedReserveIn)
+        _tokenToLiquidity = parsedReserveOut
+        setTokenToLiquidity(parsedReserveOut)
 
-        _tokenToLiquidity = pair.token2_liquidity
-        setTokenToLiquidity(pair.token2_liquidity)
+        // _tokenFromLiquidity = pair.token1_liquidity
+        // setTokenFromLiquidity(pair.token1_liquidity);
 
-        setPairAddress(pair.contract_address)
+        // _tokenToLiquidity = pair.token2_liquidity
+        // setTokenToLiquidity(pair.token2_liquidity)
+
+        if (pairAddress === '') setPairAddress(pair.contract_address)
         setSelectingPair(false)
 
         const balance = await getBalance(wallets[selectedWallet].address);

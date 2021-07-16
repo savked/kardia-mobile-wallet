@@ -87,7 +87,7 @@ export const calculateDexExchangeRate = async (
   }
 }
 
-const getReserve = async (tokenInAddress: string, tokenOutAddress: string) => {
+export const getReserve = async (tokenInAddress: string, tokenOutAddress: string) => {
   const key = `${tokenInAddress}-${tokenOutAddress}`
   const reverseKey = `${tokenOutAddress}-${tokenInAddress}`
 
@@ -631,10 +631,10 @@ const fetchPairData = async (pairItem: Record<string, any>) => {
     rs.token1 = await getTokenInfoForDex(pairItem.token1)
   }
 
-  const {reserveIn, reserveOut} = await getReserve(pairItem.token0, pairItem.token1)
+  // const {reserveIn, reserveOut} = await getReserve(rs.token0.hash, rs.token1.hash)
 
-  rs.reserve0 = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(rs.token0.decimals))).toFixed()
-  rs.reserve1 = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(rs.token1.decimals))).toFixed()
+  // rs.reserve0 = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(rs.token0.decimals))).toFixed()
+  // rs.reserve1 = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(rs.token1.decimals))).toFixed()
 
   const {data: volumeData} = await apolloKaiDexClient.query({ query: GET_PAIR_VOLUME(pairItem.id) })
   if (volumeData && volumeData.pairs[0]) {
