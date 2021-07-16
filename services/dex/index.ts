@@ -623,8 +623,13 @@ const getTokenInfoForDex = async (tokenAddress: string) => {
 const fetchPairData = async (pairItem: Record<string, any>) => {
   const rs = JSON.parse(JSON.stringify(pairItem))
   
-  rs.token0 = await getTokenInfoForDex(pairItem.token0)
-  rs.token1 = await getTokenInfoForDex(pairItem.token1)
+  if (typeof pairItem.token0 === 'string') {
+    rs.token0 = await getTokenInfoForDex(pairItem.token0)
+  }
+
+  if (typeof pairItem.token1 === 'string') {
+    rs.token1 = await getTokenInfoForDex(pairItem.token1)
+  }
 
   const {reserveIn, reserveOut} = await getReserve(pairItem.token0, pairItem.token1)
 
