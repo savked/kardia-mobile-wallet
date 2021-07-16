@@ -674,7 +674,6 @@ export const getPairs = async () => {
   }
 
   const filledData = await Promise.all(pairData.map(fetchPairData))
-  console.log('finish filledData')
   return {
     pairs: filledData
   }
