@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemeContext } from '../../../ThemeContext';
@@ -11,6 +11,7 @@ import { languageAtom } from '../../../atoms/language';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import List from '../../../components/List';
 import { formatDexToken } from '../../../services/dex';
+import CustomTextInput from '../../../components/TextInput';
 
 export default ({goBack, onSelect, pairData, loading}: {
   goBack: () => void;
@@ -23,6 +24,8 @@ export default ({goBack, onSelect, pairData, loading}: {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom)
   const language = useRecoilValue(languageAtom)
 
+  const [keyword, setKeyword] = useState('')
+
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(false);
@@ -30,18 +33,44 @@ export default ({goBack, onSelect, pairData, loading}: {
     }, []),
   );
 
+  const filterItem = () => {
+    const list = pairData.pairs
+
+    if (!keyword || keyword.trim() === '') return list
+
+    return list.filter((item: any) => {
+      const pairName = `${formatDexToken(item.t1).symbol} / ${formatDexToken(item.t2).symbol}`
+      if (pairName.trim().toLowerCase().includes(keyword.trim().toLowerCase())) return true
+      return false
+    })
+
+  }
+
   const renderPairs = () => {
     if (loading) {
       return <ActivityIndicator color={theme.textColor} />
     }
     if (pairData) {
-      const list = pairData.pairs
+      // const list = pairData.pairs
       return (
         <View
           style={{flex: 1}}
         >
+          <CustomTextInput
+            value={keyword}
+            onChangeText={setKeyword}
+            placeholder={getLanguageString(language, 'SEARCH_PAIR_PLACEHOLDER')}
+            placeholderTextColor={theme.mutedTextColor}
+            containerStyle={{
+              marginBottom: 18
+            }}
+            inputStyle={{
+              backgroundColor: 'rgba(96, 99, 108, 1)',
+              color: theme.textColor,
+            }}
+          />
           <List
-            items={list}
+            items={filterItem()}
             keyExtractor={(item: Pair) => item.contract_address}
             render={(item: Pair) => {
               return (
