@@ -61,8 +61,9 @@ export default ({visible, onClose, txObj, onConfirm}: {
     const additional = Platform.OS === 'android' ? 30 : 0
     return {
       backgroundColor: theme.backgroundFocusColor,
-      height: (isDangerous() ? 720 : 690) + additional,
-      justifyContent: 'flex-start'
+      height: (isDangerous() ? 730 : 700) + additional,
+      justifyContent: 'flex-start',
+      padding: 20
     }
   }
 
