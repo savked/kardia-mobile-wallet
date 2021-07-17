@@ -184,11 +184,14 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 		}
 	}
 
-	const getPrice = (returnType = 'string') => {
+	const getPrice = (returnType = 'string', fragtionsCount?: number) => {
+		if (token1Liquidity === '0' && token2Liquidity === '0') {
+			return '-'
+		}
 		const priceBN = getPairPriceInBN(token1Liquidity, token2Liquidity)
 		if (returnType === 'number') return priceBN.toNumber()
 		if (returnType === 'BN') return priceBN
-		return formatNumberString(priceBN.toFixed(), 6)
+		return formatNumberString(priceBN.toFixed(), fragtionsCount)
 	}
 
 	const handleSubmit = () => {
