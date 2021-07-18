@@ -12,7 +12,9 @@ import NewTxModal from '../common/NewTxModal';
 import SelecTokenForTxModal from '../common/SelecTokenForTxModal';
 import {styles} from './style'
 
-export default () => {
+export default ({noAction = false}: {
+  noAction?: boolean
+}) => {
   const navigation = useNavigation()
   const theme = useContext(ThemeContext)
   const language = useRecoilValue(languageAtom)
@@ -86,7 +88,7 @@ export default () => {
       <View style={{alignItems: 'center', justifyContent: 'center', width: '33%'}}>
         <TouchableOpacity
           style={[styles.controlButton, {backgroundColor: theme.secondaryColor}]}
-          onPress={() => setShowSelectToken(true)}
+          onPress={() => noAction === false && setShowSelectToken(true)}
         >
           <Image
             source={require('../../assets/icon/send_button.png')}
@@ -111,7 +113,7 @@ export default () => {
       <View style={{alignItems: 'center', justifyContent: 'center', width: '33%'}}>
         <TouchableOpacity
           style={[styles.controlButton, {backgroundColor: theme.secondaryColor}]}
-          onPress={() => setShowQRModal(true)}
+          onPress={() => noAction === false && setShowQRModal(true)}
         >
           <Image
             source={require('../../assets/icon/receive_button.png')}
@@ -135,7 +137,7 @@ export default () => {
       <View style={{alignItems: 'center', justifyContent: 'center', width: '33%'}}>
         <TouchableOpacity
           style={[styles.controlButton, {backgroundColor: theme.secondaryColor}]}
-          onPress={() => navigation.navigate('TransactionList')}
+          onPress={() => noAction === false && navigation.navigate('TransactionList')}
         >
           <Image
             source={require('../../assets/icon/transaction_dark.png')}

@@ -24,6 +24,7 @@ import CustomText from '../../components/Text';
 import { formatNumberString, parseDecimals } from '../../utils/number';
 import { filterByOwnerSelector, krc20PricesAtom } from '../../atoms/krc20';
 import { getBalance } from '../../services/krc20';
+import CardItem from '../Home/CardItem';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
@@ -173,109 +174,7 @@ export default () => {
           <View style={{ flex: 1 }}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
               <View style={{ paddingHorizontal: 20 }}>
-                <ImageBackground
-                  imageStyle={{
-                    resizeMode: 'cover',
-                    width: viewportWidth - 40,
-                    height: 230,
-                    borderRadius: 12,
-                  }}
-                  style={{
-                    width: viewportWidth - 40,
-                    height: 230,
-                    borderRadius: 8,
-                    justifyContent: 'space-between',
-                    padding: 25,
-                  }}
-                  source={getAddressCardAvatar()}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}>
-                    <View>
-                      <CustomText style={{ color: 'rgba(252, 252, 252, 0.54)', fontSize: 10 }}>
-                        {getLanguageString(language, 'BALANCE').toUpperCase()}
-                      </CustomText>
-                      <CustomText style={{ fontSize: 30, color: 'white' }}>
-                        $
-                        {
-                          formatNumberString(
-                            (tokenInfo.price * (
-                              Number(weiToKAI(wallet.balance)) + wallet.staked + wallet.undelegating
-                            ) + KRC20Balance).toString(), 2, 0
-                          )
-                        }
-                      </CustomText>
-                    </View>
-                    <View style={{flexDirection: 'row'}}>
-                      <TouchableOpacity onPress={() => setRequestAuth(true)}>
-                        <Image
-                          source={require('../../assets/icon/lock_dark.png')}
-                          style={{width: 24, height: 24}}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-
-                  <View style={{ flexDirection: 'row', alignItems: 'flex-end', flex: 1 }}>
-                    <CustomText style={styles.kaiCardText}>
-                      {truncate(
-                        wallet.address,
-                        viewportWidth >= 432 ? 14 : 10,
-                        viewportWidth >= 432 ? 14 : 12,
-                      )}
-                    </CustomText>
-                  </View>
-
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                    <View>
-                      <CustomText style={{ fontSize: 10, color: 'rgba(252, 252, 252, 0.54)' }}>
-                        {getLanguageString(language, 'WALLET_CARD_NAME').toUpperCase()}
-                      </CustomText>
-                      <CustomText style={{ fontSize: 15, color: 'rgba(252, 252, 252, 0.87)' }}>
-                        {name?.toUpperCase()}
-                      </CustomText>
-                    </View>
-                    <TouchableOpacity
-                      onPress={() => setShowQRModal(true)}
-                      style={{
-                        width: 52,
-                        height: 52,
-                        borderRadius: 26,
-                        backgroundColor: '#FFFFFF',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        shadowColor: 'rgba(0, 0, 0, 0.3)',
-                        shadowOffset: {
-                          width: 0,
-                          height: 4,
-                        },
-                        shadowOpacity: 2,
-                        shadowRadius: 4,
-                        elevation: 9,
-                      }}>
-                      <Image
-                        source={require('../../assets/icon/qr_dark.png')}
-                        style={{width: 30, height: 30, marginRight: 2, marginTop: 2}}
-                      />
-                      {/* <Icon size={30} name="qrcode" /> */}
-                    </TouchableOpacity>
-                    {/* <TouchableOpacity
-                      onPress={() => setShowQRModal(true)}
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 22,
-                        backgroundColor: '#FFFFFF',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      <Icon size={20} name="qrcode" />
-                    </TouchableOpacity> */}
-                  </View>
-                </ImageBackground>
+                <CardItem wallet={wallet} noAction={true} />
                 <CustomText style={{ color: theme.textColor, fontSize: 20, fontWeight: 'bold', marginTop: 20 }}>
                   {getLanguageString(language, 'WALLET_DETAILS')}
                 </CustomText>

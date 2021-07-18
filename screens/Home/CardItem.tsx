@@ -16,8 +16,9 @@ import { getBalance } from '../../services/krc20';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
-export default ({wallet}: {
+export default ({wallet, noAction = false}: {
 	wallet: any
+	noAction?: boolean
 }) => {
 	const theme = useContext(ThemeContext);
 	const tokenInfo = useRecoilValue(tokenInfoAtom);
@@ -79,7 +80,7 @@ export default ({wallet}: {
 				</View>
 
 				<View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1}}>
-					<ControlSection />
+					<ControlSection noAction={noAction} />
 				</View>
 
 				<View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
