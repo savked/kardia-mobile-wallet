@@ -64,21 +64,34 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 	const [txDeadline, setTxDeadline] = useRecoilState(cacheSelector('txDeadline'))
   const [slippageTolerance, setSlippageTolerance] = useRecoilState(cacheSelector('slippageTolerance'))
 
-	if (!pair) {
-		return null
-	}
+	const _keyboardDidShow = (e: any) => {
+    setKeyboardOffset(e.endCoordinates.height);
+  };
 
-	const shouldHighight = (val: string, token: PairToken) => {
-    if (!token) return false
-    const val14 = parseDecimals(getPartial(val, 0.25, token.decimals), token.decimals)
-    const val24 = parseDecimals(getPartial(val, 0.5, token.decimals), token.decimals)
-    const val34 = parseDecimals(getPartial(val, 0.75, token.decimals), token.decimals)
-    const val44 = parseDecimals(getPartial(val, 1, token.decimals), token.decimals)
-    if (val14 === val24 || val14 === val34 || val14 === val44) return false
-    if (val24 === val34 || val24 === val44) return false
-    if (val34 === val44) return false
-    return true
-  }
+  const _keyboardDidHide = () => {
+    setKeyboardOffset(0);
+  };
+
+	useEffect(() => {
+		if (Platform.OS === 'ios') {
+      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
+    } else {
+      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    }
+
+    // cleanup function
+    return () => {
+      if (Platform.OS === 'ios') {
+        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
+      } else {
+        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
+        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+      }
+    };
+	}, [])
 
 	useEffect(() => {
 		(async () => {
@@ -131,34 +144,21 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 		}
 	}, [token1])
 
-	const _keyboardDidShow = (e: any) => {
-    setKeyboardOffset(e.endCoordinates.height);
-  };
+	if (!pair) {
+		return null
+	}
 
-  const _keyboardDidHide = () => {
-    setKeyboardOffset(0);
-  };
-
-	useEffect(() => {
-		if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
-    } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    }
-
-    // cleanup function
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
-    };
-	}, [])
+	const shouldHighight = (val: string, token: PairToken) => {
+    if (!token) return false
+    const val14 = parseDecimals(getPartial(val, 0.25, token.decimals), token.decimals)
+    const val24 = parseDecimals(getPartial(val, 0.5, token.decimals), token.decimals)
+    const val34 = parseDecimals(getPartial(val, 0.75, token.decimals), token.decimals)
+    const val44 = parseDecimals(getPartial(val, 1, token.decimals), token.decimals)
+    if (val14 === val24 || val14 === val34 || val14 === val44) return false
+    if (val24 === val34 || val24 === val44) return false
+    if (val34 === val44) return false
+    return true
+  }
 
 	const getContentStyle = () => {
 
@@ -297,6 +297,8 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 				refreshLP
       });
 
+			setToken0('0')
+			setToken1('0')
 			onClose()
 
 		} catch (error) {

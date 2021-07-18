@@ -595,6 +595,7 @@ const getPairFromHTTP = async () => {
 		const rsJSON = await rs.json()
 		return rsJSON
 	} catch (error) {
+    console.log('Get pair from HTTP fail')
 		console.log(error)
 		return []		
 	}
@@ -636,7 +637,10 @@ const fetchPairData = async (pairItem: Record<string, any>) => {
   // rs.reserve0 = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(rs.token0.decimals))).toFixed()
   // rs.reserve1 = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(rs.token1.decimals))).toFixed()
 
-  const {data: volumeData} = await apolloKaiDexClient.query({ query: GET_PAIR_VOLUME(pairItem.id) })
+  const {error, data: volumeData} = await apolloKaiDexClient.query({ query: GET_PAIR_VOLUME(pairItem.id) })
+  if (error) {
+    console.log('fetch volume fail')
+  }
   if (volumeData && volumeData.pairs[0]) {
     rs.volumeUSD = volumeData.pairs[0].volumeUSD
   } else {

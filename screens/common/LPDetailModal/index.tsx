@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Image, Platform, TouchableOpacity, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../../atoms/language';
@@ -7,6 +7,7 @@ import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
 import CustomModal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
+import { getReserve } from '../../../services/dex';
 import { ThemeContext } from '../../../ThemeContext';
 import { getPairPriceInBN, parseSymbolWKAI } from '../../../utils/dex';
 import { getLanguageString } from '../../../utils/lang';
@@ -26,6 +27,9 @@ export default ({visible, onClose, lpItem, triggerAddLP, refreshLP}: {
 
 	const [showWithdraw, setShowWithdraw] = useState(false)
 
+	const [token1Liquidity, setToken1Liquidity] = useState('0')
+	const [token2Liquidity, setToken2Liquidity] = useState('0')
+
 	const getModalStyle = () => {
 		return {
 			backgroundColor: theme.backgroundFocusColor,
@@ -34,13 +38,34 @@ export default ({visible, onClose, lpItem, triggerAddLP, refreshLP}: {
 		}
 	}
 
+	useEffect(() => {
+		(async () => {
+			if (!lpItem) return
+			const {reserveIn, reserveOut} = await getReserve(lpItem.t1.hash, lpItem.t2.hash)
+			const parsedReserveIn = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(lpItem.t1.decimals))).toFixed()
+			const parsedReserveOut = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(lpItem.t2.decimals))).toFixed()
+			setToken1Liquidity(parsedReserveIn)
+			setToken2Liquidity(parsedReserveOut)
+		})()
+	}, [lpItem])
+
 	if (!lpItem) return null
 
-	const getPrice = (returnType = 'string') => {
-		const priceBN = getPairPriceInBN(lpItem.token1_liquidity, lpItem.token2_liquidity)
+	// const getPrice = (returnType = 'string') => {
+	// 	const priceBN = getPairPriceInBN(lpItem.token1_liquidity, lpItem.token2_liquidity)
+	// 	if (returnType === 'number') return priceBN.toNumber()
+	// 	if (returnType === 'BN') return priceBN
+	// 	return formatNumberString(priceBN.toFixed(), 6)
+	// }
+
+	const getPrice = (returnType = 'string', fragtionsCount?: number) => {
+		if (token1Liquidity === '0' && token2Liquidity === '0') {
+			return '-'
+		}
+		const priceBN = getPairPriceInBN(token1Liquidity, token2Liquidity)
 		if (returnType === 'number') return priceBN.toNumber()
 		if (returnType === 'BN') return priceBN
-		return formatNumberString(priceBN.toFixed(), 6)
+		return formatNumberString(priceBN.toFixed(), fragtionsCount)
 	}
 
 	const renderShare = () => {
