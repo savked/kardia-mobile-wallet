@@ -215,6 +215,9 @@ export const lang: Language = {
     SEED_PHRASE_TITLE: 'My credentials',
     SEED_PHRASE_DESC: 'Hãy giữ nó cẩn thận và an toàn.',
     FONT_SIZE: 'Cỡ chữ',
+    WALLET_SECURITY: 'Bảo mật',
+    WALLET_CREDENTIAL: 'My Credentials',
+    REVEAL_DESC: 'Hiện thị seed phrase / private key của bạn. Không để lộ thông tin này cho bất kì ai.',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, có lỗi xảy ra.',
     ERROR_BOUNDARY_DESCRIPTION:

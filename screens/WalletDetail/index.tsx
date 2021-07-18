@@ -160,6 +160,8 @@ export default () => {
       <View
         style={{
           width: '100%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           paddingHorizontal: 20,
         }}>
         <ENIcon.Button
@@ -168,9 +170,15 @@ export default () => {
           backgroundColor="transparent"
           style={{ padding: 0, marginBottom: 18 }}
         />
+        <TouchableOpacity onPress={() => setShowRemoveConfirm(true)}>
+          <Image
+            source={require('../../assets/icon/trash_dark.png')}
+            style={{width: 24, height: 24}}
+          />
+        </TouchableOpacity>
       </View>
-      <View style={{ flex: 1, justifyContent: 'space-between', }}>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ justifyContent: 'space-between', height: 550 }}>
+      <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ justifyContent: 'space-between', flex: 1 }}>
           <View style={{ flex: 1 }}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
               <View style={{ paddingHorizontal: 20 }}>
@@ -190,7 +198,7 @@ export default () => {
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
               <CustomText style={{ marginTop: 16, marginBottom: 8, fontWeight: 'normal', color: theme.textColor, paddingHorizontal: 20 }}>{getLanguageString(language, 'WALLET_CARD_TYPE')}</CustomText>
             </TouchableWithoutFeedback>
-            <View style={{ flex: 1 }}>
+            <View>
               <ScrollView showsHorizontalScrollIndicator={false} horizontal ref={scrollRef}>
                 {[0, 1, 2, 3, 4, 5].map((item, index) => {
                   return (
@@ -228,14 +236,42 @@ export default () => {
                 })}
               </ScrollView>
             </View>
+            <CustomText style={{ color: theme.textColor, paddingHorizontal: 20, fontSize: 20, fontWeight: 'bold', marginTop: 20 }}>
+              {getLanguageString(language, 'WALLET_SECURITY')}
+            </CustomText>
+            <TouchableOpacity style={{
+              marginHorizontal: 20,
+              backgroundColor: theme.backgroundFocusColor,
+              borderRadius: 8,
+              padding: 16,
+              marginTop: 8,
+              flexDirection: 'row',
+              alignItems: 'center'
+            }}
+              onPress={() => setRequestAuth(true)}
+            >
+              <View style={{flex: 1}}>
+                <CustomText style={{color: theme.textColor, marginBottom: 12, fontSize: theme.defaultFontSize + 3}}>
+                  {getLanguageString(language, 'WALLET_CREDENTIAL')}
+                </CustomText>
+                <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
+                  {getLanguageString(language, 'REVEAL_DESC')}
+                </CustomText>
+              </View>
+              <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end' }}> 
+                <ENIcon
+                  color={theme.textColor}
+                  size={24}
+                  name="chevron-right"
+                  style={{padding: 0}}
+                />
+              </View>
+            </TouchableOpacity>
           </View>
         </ScrollView>
-        <View style={{marginBottom: 42, paddingHorizontal: 20 }}>
+        {/* <View style={{marginBottom: 42, paddingHorizontal: 20 }}>
           <Button
             title={getLanguageString(language, "REMOVE_WALLET")}
-            // iconName="trash"
-            // iconSize={18}
-            // iconColor={theme.textColor}
             type="outline"
             onPress={() => setShowRemoveConfirm(true)}
             textStyle={{
@@ -244,17 +280,7 @@ export default () => {
               fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
             }}
           />
-          {/* <Button
-            title={getLanguageString(language, 'SAVE')}
-            onPress={saveWallet}
-            style={{ marginTop: 12 }}
-            textStyle={{
-              fontWeight: '500',
-              fontSize: theme.defaultFontSize + 3,
-              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-            }}
-          /> */}
-        </View>
+        </View> */}
       </View>
       <Modal
         visible={showRemoveConfirm}

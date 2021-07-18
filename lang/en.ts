@@ -221,6 +221,9 @@ export const lang: Language = {
     SEED_PHRASE_TITLE: 'My credentials',
     SEED_PHRASE_DESC: 'Keep it safe & sound.',
     FONT_SIZE: 'Font Size',
+    WALLET_SECURITY: 'Security',
+    WALLET_CREDENTIAL: 'My Credentials',
+    REVEAL_DESC: 'This section will show your seed phrase / private key. Keep it safe & don\'t show to anyone.',
     // Error boundary key
     ERROR_BOUNDARY_TITLE: 'Oops, Something Went Wrong',
     ERROR_BOUNDARY_DESCRIPTION:
