@@ -197,22 +197,23 @@ export default ({
   useEffect(() => {
     if (!volumeData || !volumeData.pairs) return
     let index = 0
+    let item: Record<string, any> = {}
     if (params && pairAddress === '') {
       const _pairAddress = (params as any).pairAddress
-
-      const ind = pairData.pairs.findIndex((i: any, ind: number) => {
-        return i.contract_address === _pairAddress
+      volumeData.pairs.find((it: any) => {
+        if (it.id.toLowerCase() === _pairAddress) {
+          item = it
+        }
       })
-
-      if (ind !== -1) index = ind
     } else if (pairAddress && pairAddress !== '') {
-      const ind = pairData.pairs.findIndex((i: any, ind: number) => {
-        return i.contract_address === pairAddress
+      volumeData.pairs.find((it: any) => {
+        if (it.id.toLowerCase() === pairAddress) {
+          item = it
+        }
       })
-      if (ind !== -1) index = ind
     }
-    if (!volumeData.pairs[index]) return
-    setVolumeUSD(volumeData.pairs[index].volumeUSD)
+    if (!item.volumeUSD) return
+    setVolumeUSD(item.volumeUSD)
 
   }, [volumeData, params, pairAddress])
 
