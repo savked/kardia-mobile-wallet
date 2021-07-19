@@ -18,7 +18,7 @@ import { saveFontSize } from '../../utils/local';
 import ReferralCodeModal from '../common/ReferralCodeModal';
 
 export const INFO_DATA = {
-  version: '2.3.9',
+  version: '2.3.11',
 };
 
 const SettingScreen = () => {
