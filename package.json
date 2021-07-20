@@ -43,7 +43,7 @@
     "https-browserify": "^0.0.1",
     "js-sha3": "^0.8.0",
     "kaidex-sdk": "git+https://github.com/kardiachain/kaidex-sdk.git",
-    "kardia-js-sdk": "^0.4.6",
+    "kardia-js-sdk": "^0.4.7",
     "numeral": "^2.0.6",
     "process": "^0.11.10",
     "react": "16.13.1",
