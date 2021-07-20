@@ -42,7 +42,7 @@ import HomeStackScreen from '../../HomeStack';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import CustomText from '../../components/Text';
 import { fontSizeAtom } from '../../atoms/fontSize';
-import { getAppStatus } from '../../services/util';
+import { checkBlockchainStatus, getAppStatus } from '../../services/util';
 import { INFO_DATA } from '../Setting';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '../../components/Button';
@@ -357,6 +357,13 @@ const AppContainer = () => {
 
   useEffect(() => {
     (async () => {
+      const blockchainAvailable = await checkBlockchainStatus()
+
+      if (!blockchainAvailable) {
+        setAppStatus('UNDER_MAINTAINANCE')
+        return;
+      }
+
       const _wallets = await getWallets();
       const _selectedWallet = await getSelectedWallet();
 

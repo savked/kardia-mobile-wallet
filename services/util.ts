@@ -1,4 +1,5 @@
-import { ENDPOINT, PROXY_ENDPOINT } from "./config";
+import { ENDPOINT, PROXY_ENDPOINT, RPC_ENDPOINT } from "./config";
+import KardiaClient from 'kardia-js-sdk'
 
 const DEFAULT_TIMEOUT = 15 * 1000;
 const DEFAULT_RETRY = 3;
@@ -51,4 +52,15 @@ export const getAppStatus = async (address: string) => {
 
   const responseJSON = await response.json();
   return responseJSON.data;
+}
+
+export const checkBlockchainStatus = async () => {
+  const client = new KardiaClient({endpoint: RPC_ENDPOINT})
+  try {
+    await client.kaiChain.netVersion()
+    return true
+  } catch (error) {
+    console.log('Get net version error')
+    return false
+  }
 }
