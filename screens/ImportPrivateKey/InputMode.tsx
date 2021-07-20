@@ -74,8 +74,21 @@ export default () => {
     try {
       const _wallet = getWalletFromPK(_privateKey.trim());
       const walletAddress = _wallet.getChecksumAddressString();
-      const balance = await getBalance(walletAddress);
-      const staked = await getStakingAmount(walletAddress);
+      let balance = '0'
+      try {
+        balance = await getBalance(walletAddress);
+      } catch (error) {
+        console.log('Get balance fail import private key')
+      }
+
+      let staked = 0
+
+      try {
+        staked = await getStakingAmount(walletAddress);
+      } catch (error) {
+        console.log('Get staked fail import private key')
+      }
+      
       const wallets = await getWallets();
       const wallet: Wallet = {
         privateKey: _privateKey.trim(),

@@ -390,7 +390,12 @@ const AppContainer = () => {
         let localWallets = await getWallets();
 
         const promiseArr = localWallets.map(async (wallet) => {
-          wallet.balance = await getBalance(wallet.address);
+          try {
+            wallet.balance = await getBalance(wallet.address);
+          } catch (error) {
+            wallet.balance = '0'
+            console.log('Get balance fail')
+          }
           return wallet;
         });
 
