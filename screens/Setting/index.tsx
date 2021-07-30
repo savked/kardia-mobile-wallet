@@ -16,9 +16,10 @@ import CustomText from '../../components/Text';
 import { fontSizeAtom } from '../../atoms/fontSize';
 import { saveFontSize } from '../../utils/local';
 import ReferralCodeModal from '../common/ReferralCodeModal';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 
 export const INFO_DATA = {
-  version: '2.3.12',
+  version: '2.3.14',
 };
 
 const SettingScreen = () => {
@@ -34,9 +35,12 @@ const SettingScreen = () => {
   const [fontSize, setFontSize] = useRecoilState(fontSizeAtom)
   const [showReferralModal, setShowReferralModal] = useState(false)
 
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
+
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(true);
+      setStatusBarColor(theme.backgroundColor);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );

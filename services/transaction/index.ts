@@ -4,6 +4,7 @@ import {cellValue, weiToKAI} from './amount';
 import { BigNumber } from 'bignumber.js';
 import { isHexString } from '@ethersproject/bytes';
 import { DEFAULT_GAS_PRICE, DEFAULT_KAI_TX_GAS_LIMIT } from '../../config';
+import { getNonce } from '../account';
 
 export const estimateGas = async (payload: Record<string, any>, data = '') => {
   const _payload = JSON.parse(JSON.stringify(payload))
@@ -81,7 +82,7 @@ export const getRecomendedGasPrice = async () => {
 
 export const sendRawTx = async (txObj: Record<string, any>, wallet: Wallet, waitUntilmined = false) => {
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
-  const nonce = await kardiaClient.account.getNonce(wallet.address.trim());
+  const nonce = await getNonce(wallet.address.trim());
 
   txObj.nonce = nonce
 
@@ -101,7 +102,7 @@ export const createTx = async (
   gasPrice = 1 * (10 ** 9),
 ) => {
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
-  const nonce = await kardiaClient.account.getNonce(wallet.address.trim());
+  const nonce = await getNonce(wallet.address.trim());
   const txData = {
     receiver,
     gas: DEFAULT_KAI_TX_GAS_LIMIT,

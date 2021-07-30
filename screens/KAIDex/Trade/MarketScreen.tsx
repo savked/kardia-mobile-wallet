@@ -653,6 +653,7 @@ export default ({
           toggleMenu()
         }}
         onSelect={(from: PairToken, to: PairToken, liquidityFrom, liquidityTo, pairAddress, volumeUSD) => {
+          console.log('here')
           setMode('BUY')
           setAmountTo('0');
           setAmountFrom('0');

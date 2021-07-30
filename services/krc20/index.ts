@@ -1,8 +1,9 @@
 import {RPC_ENDPOINT, ENDPOINT} from '../config';
-import KardiaClient from 'kardia-js-sdk';
+import KardiaClient, { KardiaAccount } from 'kardia-js-sdk';
 import abiDecoder from 'abi-decoder';
 import {requestWithTimeOut} from '../util';
 import KRC20ABI from './KRC20ABI.json'
+import { getNonce } from '../account';
 
 export const getKRC20TokenInfo = async (address: string) => {
   const client = new KardiaClient({endpoint: RPC_ENDPOINT});
@@ -126,6 +127,11 @@ export const transferKRC20 = async (
   const krc20 = client.krc20;
   krc20.address = tokenAddress;
   await krc20.getDecimals(true);
+
+  if (!transferPayload.nonce) {
+    const account = KardiaAccount.getWalletFromPK(privateKey)
+    transferPayload.nonce = await getNonce(account.address)
+  }
 
   return krc20.transfer(privateKey, to, amount, transferPayload);
 };

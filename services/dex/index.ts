@@ -14,6 +14,8 @@ import { getLogoURL, toChecksum } from '../../utils/string';
 import Web3 from 'web3'
 import { parseDecimals } from '../../utils/number';
 import { getCache, saveCacheByKey } from '../../utils/local';
+import { EventEmitter } from 'events';
+import { getNonce } from '../account';
 
 let SWAP_ROUTER_SMC = ''
 let FACTORY_SMC = ''
@@ -240,7 +242,9 @@ export const approveToken = async (token: PairToken, amount: string | number, wa
 
   // const invocation = smcInstance.invokeContract('approve', [SWAP_ROUTER_SMC, `${cellValue}00`]);
   const invocation = smcInstance.invokeContract('approve', [SWAP_ROUTER_SMC, bnTotalSypply.toFixed()]);
-  const rs = invocation.send(wallet.privateKey!, token.hash, {}, true)
+  const rs = invocation.send(wallet.privateKey!, token.hash, {
+    nonce: await getNonce(wallet.address)
+  }, true)
   
   return rs;
 }
@@ -318,7 +322,8 @@ export const swapTokens = async (params: Record<string, any>, wallet: Wallet) =>
   }
   
   const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
-    amount: parsedParam.amount || 0
+    amount: parsedParam.amount || 0,
+    nonce: await getNonce(wallet.address)
   })
 
   return rs
@@ -529,7 +534,8 @@ export const addLiquidity = async (params: any, wallet: Wallet) => {
   const invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
 
   const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
-    amount: parsedParam.amount || 0
+    amount: parsedParam.amount || 0,
+    nonce: await getNonce(wallet.address)
   })
 
   return rs
@@ -578,7 +584,8 @@ export const removeLiquidity = async (params: any, wallet: Wallet) => {
   // const invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
 
   const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
-    amount: parsedParam.amount || 0
+    amount: parsedParam.amount || 0,
+    nonce: await getNonce(wallet.address)
   })
 
   return rs
@@ -608,7 +615,9 @@ const getTokenInfoForDex = async (tokenAddress: string) => {
   }
 
   const sdkClient = new KardiaClient({ endpoint: RPC_ENDPOINT })
+  console.log('123')
   await sdkClient.krc20.getFromAddress(toChecksum(tokenAddress))
+  console.log('456')
 
   tokenData[tokenAddress.toLowerCase()] = {
     decimals: sdkClient.krc20.decimals,
@@ -637,13 +646,17 @@ const fetchPairData = async (pairItem: Record<string, any>) => {
   // rs.reserve0 = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(rs.token0.decimals))).toFixed()
   // rs.reserve1 = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(rs.token1.decimals))).toFixed()
 
-  const {error, data: volumeData} = await apolloKaiDexClient.query({ query: GET_PAIR_VOLUME(pairItem.id) })
-  if (error) {
-    console.log('fetch volume fail')
-  }
-  if (volumeData && volumeData.pairs[0]) {
-    rs.volumeUSD = volumeData.pairs[0].volumeUSD
-  } else {
+  try {
+    const {error, data: volumeData} = await apolloKaiDexClient.query({ query: GET_PAIR_VOLUME(pairItem.id) })
+    if (error) {
+      console.log('fetch volume fail')
+    }
+    if (volumeData && volumeData.pairs[0]) {
+      rs.volumeUSD = volumeData.pairs[0].volumeUSD
+    } else {
+      rs.volumeUSD = "0"
+    }
+  } catch (error) {
     rs.volumeUSD = "0"
   }
   return rs
@@ -685,5 +698,35 @@ export const getPairs = async () => {
   const filledData = await Promise.all(pairData.map(fetchPairData))
   return {
     pairs: filledData
+  }
+}
+
+export const getMarketHistory = async (pairAddress: string, invert: boolean, type: 'buy' | 'sell') => {
+  const requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  try {
+    const rs = await fetch(`${EXCHANGE_REST}rpc/all_swap?pair_address=${pairAddress}&is_revert=${invert}&action_type=${type}`, requestOptions)
+    const rsJSON = await rs.json()
+    return rsJSON.map((item: any) => {
+      return {
+        pair: {
+          pairIdentity: {
+            invert
+          }
+        },
+        id: item.id,
+        amount0In: item.amount_0_in,
+        amount0Out: item.amount_0_out,
+        amount1In: item.amount_1_in,
+        amount1Out: item.amount_1_out,
+        timestamp: Math.floor(Date.now() / 1000)
+      }
+    })
+  } catch (error) {
+    console.error('Error getMarketHistory')
+    return []
   }
 }

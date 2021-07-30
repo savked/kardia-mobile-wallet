@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -11,15 +11,18 @@ import AddLiquidity from './screens/KAIDex/AddLiquidity';
 import OrderHistory from './screens/KAIDex/OrderHistory';
 import UnderMaintainence from './screens/common/UnderMaintainence';
 import ComingSoon from './screens/common/ComingSoon';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { dexStatusAtom } from './atoms/dexStatus';
+import PairDetail from './screens/KAIDex/PairDetail';
+import { statusBarColorAtom } from './atoms/statusBar';
 
 const DEXStack = createStackNavigator();
 
 const DEXStackScreen = () => {
   const theme = useContext(ThemeContext);
 
-  const dexStatus = useRecoilValue(dexStatusAtom)
+  const dexStatus = useRecoilValue(dexStatusAtom);
+
   if (dexStatus === 'OFFLINE') {
     return <UnderMaintainence />
   }
@@ -66,6 +69,13 @@ const DEXStackScreen = () => {
       <DEXStack.Screen
         name="SuccessTx"
         component={SuccessTx}
+        options={{
+          headerShown: false
+        }}
+      />
+      <DEXStack.Screen
+        name="PairDetail"
+        component={PairDetail}
         options={{
           headerShown: false
         }}

@@ -394,8 +394,92 @@ export const getRefCode = async () => {
     if (!value) return ''
     return value
   } catch (e) {
-    console.error(e);
+    console.error('Error parsing ref code');
     return '';
     // error reading value
+  }
+}
+
+export const getFavPair = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@kardia_fav_pair');
+    if (!value) return []
+    return JSON.parse(value)
+  } catch (e) {
+    console.error('Error parsing fav pair');
+    return [];
+    // error reading value
+  }
+}
+
+export const setFavPair = async (favPairList: string[]) => {
+  try {
+    await AsyncStorage.setItem(
+      '@kardia_fav_pair',
+      JSON.stringify(favPairList),
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
+export const getLocalNonce = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@kardia_nonce');
+    if (!value) return {}
+    return JSON.parse(value)
+  } catch (e) {
+    console.error('Error parsing fav pair');
+    return {};
+    // error reading value
+  }
+}
+
+export const setLocalNonce = async (nonceObj: Record<string, any>) => {
+  try {
+    await AsyncStorage.setItem(
+      '@kardia_nonce',
+      JSON.stringify(nonceObj),
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
+export const saveAddressNonce = async (address: string, nonce: number) => {
+  try {
+    const currentData = await getLocalNonce()
+    if (nonce) {
+      currentData[address] = nonce
+    }
+    await AsyncStorage.setItem(
+      '@kardia_nonce',
+      JSON.stringify(currentData),
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
+export const clearAddressNonce = async (address: string) => {
+  try {
+    const currentData = await getLocalNonce()
+    if (currentData[address]) {
+      delete currentData[address]
+    }
+    await AsyncStorage.setItem(
+      '@kardia_nonce',
+      JSON.stringify(currentData),
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
   }
 }

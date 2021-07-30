@@ -18,10 +18,10 @@ import CustomTextInput from '../../components/TextInput';
 import Button from '../../components/Button';
 import { getSelectedWallet, getWallets, saveWallets } from '../../utils/local';
 import Modal from '../../components/Modal';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native';
 import AuthModal from '../common/AuthModal';
 import CustomText from '../../components/Text';
-import { formatNumberString, parseDecimals } from '../../utils/number';
+import { parseDecimals } from '../../utils/number';
 import { filterByOwnerSelector, krc20PricesAtom } from '../../atoms/krc20';
 import { getBalance } from '../../services/krc20';
 import CardItem from '../Home/CardItem';
@@ -143,7 +143,7 @@ export default () => {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor, flex: 1, justifyContent: 'flex-start' }]}>
       <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
       <AuthModal
         visible={requestAuth}
@@ -177,110 +177,100 @@ export default () => {
           />
         </TouchableOpacity>
       </View>
-      <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ justifyContent: 'space-between', flex: 1 }}>
-          <View style={{ flex: 1 }}>
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-              <View style={{ paddingHorizontal: 20 }}>
-                <CardItem wallet={wallet} noAction={true} />
-                <CustomText style={{ color: theme.textColor, fontSize: 20, fontWeight: 'bold', marginTop: 20 }}>
-                  {getLanguageString(language, 'WALLET_DETAILS')}
-                </CustomText>
-                <CustomTextInput
-                  headline={getLanguageString(language, 'WALLET_CARD_NAME')}
-                  value={name}
-                  onChangeText={setName}
-                  headlineStyle={{ marginTop: 16, fontWeight: 'normal', color: theme.textColor }}
-                  inputStyle={{ marginTop: 6, backgroundColor: 'rgba(96, 99, 108, 1)', color: theme.textColor, borderColor: 'rgba(154, 163, 178, 1)', borderWidth: 1.5 }}
-                />
-              </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-              <CustomText style={{ marginTop: 16, marginBottom: 8, fontWeight: 'normal', color: theme.textColor, paddingHorizontal: 20 }}>{getLanguageString(language, 'WALLET_CARD_TYPE')}</CustomText>
-            </TouchableWithoutFeedback>
-            <View>
-              <ScrollView showsHorizontalScrollIndicator={false} horizontal ref={scrollRef}>
-                {[0, 1, 2, 3, 4, 5].map((item, index) => {
-                  return (
-                    <TouchableOpacity key={`card-${index}`} onPress={() => setCardAvatarID(index)}>
-                      <ImageBackground
-                        imageStyle={{
-                          resizeMode: 'cover',
-                          width: 189,
-                          height: 117,
-                          borderRadius: 12,
-                        }}
-                        style={{
-                          marginLeft: index === 0 ? 20 : 16,
-                          marginRight: index === 5 ? 20 : 0,
-                          width: 193,
-                          height: 121,
-                          borderRadius: 14,
-                          justifyContent: 'flex-end',
-                          padding: 12,
-                          borderColor: item === cardAvatarID ? theme.textColor : 'transparent',
-                          borderWidth: 2,
-                          shadowColor: 'rgba(0, 0, 0, 0.3)',
-                          shadowOffset: {
-                            width: 0,
-                            height: -4,
-                          },
-                          shadowOpacity: 2,
-                          shadowRadius: 4,
-                          elevation: 9,
-                        }} source={parseCardAvatar(item || 0)}>
-                        <CustomText style={{ fontSize: 14, color: theme.textColor }}>{parseCardAvatarColor(item || 0)}</CustomText>
-                      </ImageBackground>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
+      <View style={{flex: 1 }}>
+        <ScrollView 
+          // showsVerticalScrollIndicator={false} 
+          contentContainerStyle={{ justifyContent: 'flex-start' }}
+        >
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={{ paddingHorizontal: 20 }}>
+              <CardItem wallet={wallet} noAction={true} />
+              <CustomText style={{ color: theme.textColor, fontSize: 20, fontWeight: 'bold', marginTop: 20 }}>
+                {getLanguageString(language, 'WALLET_DETAILS')}
+              </CustomText>
+              <CustomTextInput
+                headline={getLanguageString(language, 'WALLET_CARD_NAME')}
+                value={name}
+                onChangeText={setName}
+                headlineStyle={{ marginTop: 16, fontWeight: 'normal', color: theme.textColor }}
+                inputStyle={{ marginTop: 6, backgroundColor: 'rgba(96, 99, 108, 1)', color: theme.textColor, borderColor: 'rgba(154, 163, 178, 1)', borderWidth: 1.5 }}
+              />
             </View>
-            <CustomText style={{ color: theme.textColor, paddingHorizontal: 20, fontSize: 20, fontWeight: 'bold', marginTop: 20 }}>
-              {getLanguageString(language, 'WALLET_SECURITY')}
-            </CustomText>
-            <TouchableOpacity style={{
-              marginHorizontal: 20,
-              backgroundColor: theme.backgroundFocusColor,
-              borderRadius: 8,
-              padding: 16,
-              marginTop: 8,
-              flexDirection: 'row',
-              alignItems: 'center'
-            }}
-              onPress={() => setRequestAuth(true)}
-            >
-              <View style={{flex: 1}}>
-                <CustomText style={{color: theme.textColor, marginBottom: 12, fontSize: theme.defaultFontSize + 3}}>
-                  {getLanguageString(language, 'WALLET_CREDENTIAL')}
-                </CustomText>
-                <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
-                  {getLanguageString(language, 'REVEAL_DESC')}
-                </CustomText>
-              </View>
-              <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end' }}> 
-                <ENIcon
-                  color={theme.textColor}
-                  size={24}
-                  name="chevron-right"
-                  style={{padding: 0}}
-                />
-              </View>
-            </TouchableOpacity>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <CustomText style={{ marginTop: 16, marginBottom: 8, fontWeight: 'normal', color: theme.textColor, paddingHorizontal: 20 }}>{getLanguageString(language, 'WALLET_CARD_TYPE')}</CustomText>
+          </TouchableWithoutFeedback>
+          <View>
+            <ScrollView showsHorizontalScrollIndicator={false} horizontal ref={scrollRef}>
+              {[0, 1, 2, 3, 4, 5].map((item, index) => {
+                return (
+                  <TouchableOpacity key={`card-${index}`} onPress={() => setCardAvatarID(index)}>
+                    <ImageBackground
+                      imageStyle={{
+                        resizeMode: 'cover',
+                        width: 189,
+                        height: 117,
+                        borderRadius: 12,
+                      }}
+                      style={{
+                        marginLeft: index === 0 ? 20 : 16,
+                        marginRight: index === 5 ? 20 : 0,
+                        width: 193,
+                        height: 121,
+                        borderRadius: 14,
+                        justifyContent: 'flex-end',
+                        padding: 12,
+                        borderColor: item === cardAvatarID ? theme.textColor : 'transparent',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.3)',
+                        shadowOffset: {
+                          width: 0,
+                          height: -4,
+                        },
+                        shadowOpacity: 2,
+                        shadowRadius: 4,
+                        elevation: 9,
+                      }} source={parseCardAvatar(item || 0)}>
+                      <CustomText style={{ fontSize: 14, color: theme.textColor }}>{parseCardAvatarColor(item || 0)}</CustomText>
+                    </ImageBackground>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
           </View>
+          <CustomText style={{ color: theme.textColor, paddingHorizontal: 20, fontSize: 20, fontWeight: 'bold', marginTop: 20 }}>
+            {getLanguageString(language, 'WALLET_SECURITY')}
+          </CustomText>
+          <TouchableOpacity style={{
+            marginHorizontal: 20,
+            backgroundColor: theme.backgroundFocusColor,
+            borderRadius: 8,
+            padding: 16,
+            marginBottom: 16,
+            marginTop: 8,
+            flexDirection: 'row',
+            alignItems: 'center'
+          }}
+            onPress={() => setRequestAuth(true)}
+          >
+            <View style={{flex: 1}}>
+              <CustomText style={{color: theme.textColor, marginBottom: 12, fontSize: theme.defaultFontSize + 3}}>
+                {getLanguageString(language, 'WALLET_CREDENTIAL')}
+              </CustomText>
+              <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize}}>
+                {getLanguageString(language, 'REVEAL_DESC')}
+              </CustomText>
+            </View>
+            <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end' }}> 
+              <ENIcon
+                color={theme.textColor}
+                size={24}
+                name="chevron-right"
+                style={{padding: 0}}
+              />
+            </View>
+          </TouchableOpacity>
         </ScrollView>
-        {/* <View style={{marginBottom: 42, paddingHorizontal: 20 }}>
-          <Button
-            title={getLanguageString(language, "REMOVE_WALLET")}
-            type="outline"
-            onPress={() => setShowRemoveConfirm(true)}
-            textStyle={{
-              fontWeight: '500',
-              fontSize: theme.defaultFontSize + 3,
-              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-            }}
-          />
-        </View> */}
       </View>
       <Modal
         visible={showRemoveConfirm}

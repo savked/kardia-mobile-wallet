@@ -161,7 +161,12 @@ export default () => {
   };
 
   return (
-    <View style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20, paddingTop: 28 + insets.top}}>
+    <View style={{
+      backgroundColor: theme.backgroundColor, 
+      flex: 1, 
+      // paddingHorizontal: 20, // Old DEX Tab
+      // paddingTop: 28 + insets.top // Old DEX Tab
+    }}>
       <OrderDetailModal
         visible={showOrderDetail}
         onClose={() => setShowOrderDetail(false)}
@@ -170,7 +175,7 @@ export default () => {
       <DEXHeader
         type="ORDER_HISTORY"
       />
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, paddingHorizontal: 20}}>
         <ScrollView 
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={8}

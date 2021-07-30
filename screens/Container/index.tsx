@@ -6,28 +6,32 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
+import Orientation from 'react-native-orientation-locker';
 // import TransactionStackScreen from '../../TransactionStack';
 import {
   getAddressBook,
   getAppPasscodeSetting,
   getCache,
+  getFavPair,
   getFontSize,
   getLanguageSetting,
   getRefCode,
   getSelectedWallet,
   getTokenList,
   getWallets,
+  saveAddressNonce,
   saveAllCache,
   saveSelectedWallet,
   saveTokenList,
   saveWallets,
+  setFavPair,
 } from '../../utils/local';
 import {styles} from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
 import {createStackNavigator} from '@react-navigation/stack';
 import Notification from '../Notification';
 import {ThemeContext} from '../../ThemeContext';
-import {getBalance} from '../../services/account';
+import {getBalance, getNonce} from '../../services/account';
 import {tokenInfoAtom} from '../../atoms/token';
 import {getKRC20TokensPrices, getTokenInfo} from '../../services/token';
 import {addressBookAtom} from '../../atoms/addressBook';
@@ -53,6 +57,7 @@ import SettingStackScreen from '../../SettingStack';
 import DEXStackScreen from '../../DEXStack';
 import { referralCodeAtom } from '../../atoms/referralCode';
 import DAppStackScreen from '../../DAppStack';
+import { favoritePairsAtom } from '../../atoms/favoritePairs';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -262,6 +267,7 @@ const AppContainer = () => {
   );
   const [inited, setInited] = useState(0);
   const [appStatus, setAppStatus] = useState('OK')
+  const [favoritePair, setFavoritePair] = useRecoilState(favoritePairsAtom)
 
   const setDexStatus = useSetRecoilState(dexStatusAtom)
   const [cache, setCache] = useRecoilState(cacheAtom)
@@ -282,6 +288,11 @@ const AppContainer = () => {
       }
     })();
   }, [selectedWallet, inited]);
+
+  useEffect(() => {
+    if (!inited || appStatus !== 'OK') return;
+    setFavPair(favoritePair)
+  }, [favoritePair])
 
   // useEffect(() => {
   //   (async () => {
@@ -357,6 +368,7 @@ const AppContainer = () => {
 
   useEffect(() => {
     (async () => {
+      Orientation.lockToPortrait()
       const blockchainAvailable = await checkBlockchainStatus()
 
       if (!blockchainAvailable) {
@@ -392,13 +404,19 @@ const AppContainer = () => {
       const refCode = await getRefCode()
       setRefCode(refCode)
 
+      // Get local ref code
+      const favPair = await getFavPair()
+      setFavoritePair(favPair)
+
       // Get local wallets data
       try {
         let localWallets = await getWallets();
 
-        const promiseArr = localWallets.map(async (wallet) => {
+        const promiseArr = localWallets.map(async (wallet: Wallet) => {
           try {
             wallet.balance = await getBalance(wallet.address);
+            const accountNonce = await getNonce(wallet.address)
+            await saveAddressNonce(wallet.address, accountNonce)
           } catch (error) {
             wallet.balance = '0'
             console.log('Get balance fail')

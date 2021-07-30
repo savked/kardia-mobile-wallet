@@ -23,6 +23,7 @@ import { getLanguageString } from '../../../utils/lang';
 import { languageAtom } from '../../../atoms/language';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import DEXHeader from '../../common/DEXHeader';
+import { statusBarColorAtom } from '../../../atoms/statusBar';
 
 export default () => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom)
@@ -44,6 +45,7 @@ export default () => {
 
   const [showMenu, setShowMenu] = useState(true);
   const insets = useSafeAreaInsets();
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   // const { loading, error, data: _pairData, refetch } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
 
@@ -107,6 +109,13 @@ export default () => {
     setShowMenu(!showMenu)
   }
 
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarColor(theme.backgroundStrongColor);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+
   if (selectingPair && _pairData && _pairData.pairs && _pairData.pairs.length > 0) {
     return (
       <SelectPairForLP
@@ -129,7 +138,12 @@ export default () => {
   }
 
   return (
-    <View style={{backgroundColor: theme.backgroundColor, flex: 1, paddingHorizontal: 20, paddingTop: 28 + insets.top}}>
+    <View style={{
+      backgroundColor: theme.backgroundColor, 
+      flex: 1, 
+      // paddingHorizontal: 20, 
+      // paddingTop: 28 + insets.top
+    }}>
       <AddLiquidityModal
         visible={showNewLPModal}
         onClose={() => {

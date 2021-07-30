@@ -11,6 +11,7 @@ import { RPC_ENDPOINT } from '../../services/config';
 import { ThemeContext } from '../../ThemeContext';
 import { parseError, parseRun } from '../../utils/dapp';
 import ConfirmTxFromBrowserModal from '../common/ConfirmTxFromBrowserModal';
+import Orientation from 'react-native-orientation-locker';
 // @ts-ignore
 const myResource = require('./kardia-web3-mobile-provider-min.jsstring');
 import {styles} from './style'
@@ -42,6 +43,14 @@ export default () => {
 
   const wallets = useRecoilValue(walletsAtom)
   const selectedWallet = useRecoilValue(selectedWalletAtom)
+
+  useEffect(() => {
+    Orientation.unlockAllOrientations()
+
+    return () => {
+      Orientation.lockToPortrait()
+    }
+  }, [])
 
   const handleConfirmTx = (txHash: string) => {
     const codeToRun = parseRun(requestIdForCallback, txHash)
@@ -182,45 +191,45 @@ export default () => {
       {
         reloadWebView > 0 &&
           <WebView
-          ref={webRef}
-          userAgent={
-            viewMode === 'DESKTOP' ?
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2564.109 Safari/537.36"
-            : undefined
-          }
-          scalesPageToFit={true}
-          javaScriptEnabled={true}
-          automaticallyAdjustContentInsets={false}
-          injectedJavaScriptBeforeContentLoaded={ resource }
-          injectedJavaScript={ viewMode === 'DESKTOP' ? SCALE_FOR_DESKTOP : '' }
-          onMessage={onMessage}
-          onLoadStart={() => setLoadingURL(true)}
-          onLoadEnd={() => setLoadingURL(false)}
-          source={{ uri: appURL }}
-          style={styles.webview}
-          containerStyle={{
-            flex: loadingURL || error !== '' ? 0 : 1,
-          }}
-          renderError={(errorName) => {
-            if (!errorName) return <CustomText>{''}</CustomText>;
-            setError(errorName)
-            return (
-              <View style={{backgroundColor: '#FFFFFF', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
-                <CustomText 
-                  style={{
-                    fontSize: 30,
-                    marginBottom: 30,
-                    fontWeight: '500',
-                    fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-                  }}
-                >
-                  Error loading your DApp
-                </CustomText>
-                <CustomText>Error code: {errorName}</CustomText>
-              </View>
-            )
-          }}
-        /> 
+            ref={webRef}
+            userAgent={
+              viewMode === 'DESKTOP' ?
+              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2564.109 Safari/537.36"
+              : undefined
+            }
+            scalesPageToFit={true}
+            javaScriptEnabled={true}
+            automaticallyAdjustContentInsets={false}
+            injectedJavaScriptBeforeContentLoaded={ resource }
+            injectedJavaScript={ viewMode === 'DESKTOP' ? SCALE_FOR_DESKTOP : '' }
+            onMessage={onMessage}
+            onLoadStart={() => setLoadingURL(true)}
+            onLoadEnd={() => setLoadingURL(false)}
+            source={{ uri: appURL }}
+            style={styles.webview}
+            containerStyle={{
+              flex: loadingURL || error !== '' ? 0 : 1,
+            }}
+            renderError={(errorName) => {
+              if (!errorName) return <CustomText>{''}</CustomText>;
+              setError(errorName)
+              return (
+                <View style={{backgroundColor: '#FFFFFF', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+                  <CustomText 
+                    style={{
+                      fontSize: 30,
+                      marginBottom: 30,
+                      fontWeight: '500',
+                      fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                    }}
+                  >
+                    Error loading your DApp
+                  </CustomText>
+                  <CustomText>Error code: {errorName}</CustomText>
+                </View>
+              )
+            }}
+          /> 
       }
     </View>
   )  

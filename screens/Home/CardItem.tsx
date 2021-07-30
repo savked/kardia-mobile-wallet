@@ -64,8 +64,7 @@ export default ({wallet, noAction = false}: {
 						{getLanguageString(language, 'TOTAL_BALANCE').toUpperCase()}
 					</CustomText>
 					<CustomText allowFontScaling={false} style={Platform.OS === 'android' ? {fontSize: 24, color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {fontSize: 24, color: theme.textColor, fontWeight: '500'}}>
-						$
-						{formatNumberString(
+						{tokenInfo.price ? '$' + formatNumberString(
 							(
 								tokenInfo.price * (
 									Number(weiToKAI(wallet.balance)) 
@@ -75,7 +74,7 @@ export default ({wallet, noAction = false}: {
 							).toString(),
 							2,
 							0
-						)}
+						) : '--'}
 					</CustomText>
 				</View>
 

@@ -232,9 +232,9 @@ export default ({
         wallets[selectedWallet],
         Number(getDigit(amount)),
       );
-      if (rs.status === 0) {
-        setDelegating(false);
-      } else {
+      // if (rs.status === 0) {
+      //   setDelegating(false);
+      // } else {
         setDelegating(false);
         navigation.navigate('SuccessTx', {
           txHash: rs,
@@ -243,7 +243,7 @@ export default ({
         });
         resetState();
         onClose();
-      }
+      // }
     } catch (err) {
       console.error(err);
       setDelegating(false);

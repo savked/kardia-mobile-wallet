@@ -32,6 +32,7 @@ import {formatNumberString, parseDecimals} from '../../utils/number';
 import TextAvatar from '../../components/TextAvatar';
 import CustomText from '../../components/Text';
 import Toast from 'react-native-toast-message';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 
 LogBox.ignoreLogs([
  'Non-serializable values were found in the navigation state',
@@ -56,6 +57,7 @@ export default () => {
   const dexMode = params ? (params as any).dexMode : '';
   const dexAmount = params ? (params as any).dexAmount : '';
   const pairAddress = params ? (params as any).pairAddress : '';
+  const pairItem = params ? (params as any).pairItem : {};
   const lpPair: Pair = params ? (params as any).lpPair : {}
   const token0 = params ? (params as any).token0 : ''
   const token1 = params ? (params as any).token1 : ''
@@ -73,6 +75,7 @@ export default () => {
   const [loading, setLoading] = useState(true);
 
   const addressBook = useRecoilValue(addressBookAtom);
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   const handleClickLink = (url: string) => {
     Linking.canOpenURL(url).then((supported) => {
@@ -87,6 +90,7 @@ export default () => {
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(false);
+      setStatusBarColor(theme.backgroundColor);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
@@ -95,13 +99,18 @@ export default () => {
     (async () => {
       console.log('Success Tx', txHash)
       while (true) {
-        let tx: Record<string, any>;
-        if (type === 'krc20') {
-          tx = await getKRC20TxDetail(tokenAddress, userAddress, txHash);
-        } else {
-          tx = await getTxDetail(txHash);
-          
+        let tx: Record<string, any> = {};
+
+        try {
+          if (type === 'krc20') {
+            tx = await getKRC20TxDetail(tokenAddress, userAddress, txHash);
+          } else {
+            tx = await getTxDetail(txHash);
+          } 
+        } catch (error) {
+          console.log('No receipt found')
         }
+
         if (tx && tx.hash) {
           const rs = addressBook.filter((item) => item.address === tx.to);
           setAddress(rs[0] || {});
@@ -518,10 +527,19 @@ export default () => {
         });
         break;
       case 'dex':
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'Trade', params: {pairAddress}}],
-        });
+        
+        if (pairItem && pairItem.contract_address) {
+          navigation.reset({
+            index: 1,
+            routes: [{name: 'Trade'}, {name: 'PairDetail', params: {pairItem}}],
+          });
+        } else {
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'Trade', params: {pairAddress}}],
+          });
+        }
+        
         break;
       case 'addLP':
       case 'withdrawLP':

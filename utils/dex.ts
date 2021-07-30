@@ -7,17 +7,36 @@ export const parseSymbolWKAI = (symbol: string) => {
 }
 
 export const getOrderPrice = (order: Record<string, any>) => {
-	const amount0 = order.amount0In !== '0' ? new BigNumber(order.amount0In) : new BigNumber(order.amount0Out)
-	const amount1 = order.amount1In !== '0' ? new BigNumber(order.amount1In) : new BigNumber(order.amount1Out)
-	return amount1.dividedBy(amount0)
+	// const amount0 = order.amount0In !== '0' ? new BigNumber(order.amount0In) : new BigNumber(order.amount0Out)
+	// const amount1 = order.amount1In !== '0' ? new BigNumber(order.amount1In) : new BigNumber(order.amount1Out)
+  // return amount1.dividedBy(amount0)
+
+  const amount = getOrderAmount(order)
+  const total = getOrderTotal(order)
+
+	return (new BigNumber(total)).dividedBy(new BigNumber(amount))
 }
 
 export const getOrderTotal = (order: Record<string, any>) => {
-	return order.amount1In === "0" ? order.amount1Out : order.amount1In
+	// return order.amount1In === "0" ? order.amount1Out : order.amount1In
+  const amount1In = new BigNumber(order.amount1In)
+  const amount1Out = new BigNumber(order.amount1Out)
+  if (amount1In.isGreaterThan(amount1Out)) return amount1In.toFixed();
+  return amount1Out.toFixed();
+}
+
+const getOrderAmount = (order: Record<string, any>) => {
+	// return order.amount1In === "0" ? order.amount1Out : order.amount1In
+  const amount0In = new BigNumber(order.amount0In)
+  const amount0Out = new BigNumber(order.amount0Out)
+  if (amount0In.isGreaterThan(amount0Out)) return amount0In.toFixed();
+  return amount0Out.toFixed();
 }
 
 export const isBuy = (item: Record<string, any>) => {
-	return item.amount0In === "0"
+  const amount0In = new BigNumber(item.amount0In)
+  const amount0Out = new BigNumber(item.amount0Out)
+	return amount0In.isLessThan(amount0Out)
 }
 
 export const pairMapper = (pairs: any[]): Pair[] => {
@@ -51,7 +70,8 @@ export const pairMapper = (pairs: any[]): Pair[] => {
       total_liquidity: '',
       t1: invert ? t2 : t1,
       t2: invert ? t1: t2,
-      volumeUSD: item.volumeUSD
+      volumeUSD: item.volumeUSD,
+      invert,
     }
   })
 }

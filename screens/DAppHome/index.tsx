@@ -10,9 +10,10 @@ import {styles} from './style';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import CustomTextInput from '../../components/TextInput';
 import { getSearchURL, isURL, parseURL } from '../../utils/string';
-import { Keyboard, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Keyboard, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import FavoriteDapp from '../DAppBrowser/FavoriteDapp';
 import { showTabBarAtom } from '../../atoms/showTabBar';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 
 const DAppHome = () => {
   const theme = useContext(ThemeContext)
@@ -21,10 +22,12 @@ const DAppHome = () => {
   const [url, setURL] = useState('');
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   useFocusEffect(
     useCallback(() => {
       setTabBarVisible(true);
+      setStatusBarColor(theme.backgroundColor);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
   )

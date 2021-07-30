@@ -23,6 +23,7 @@ import TokenListSection from './TokenListSection';
 import {showTabBarAtom} from '../../atoms/showTabBar';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { HEADER_HEIGHT } from '../../theme';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
@@ -44,6 +45,8 @@ const HomeScreen = () => {
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
   const navigation = useNavigation();
+
+  const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   useEffect(() => {
     (async () => {
@@ -93,6 +96,7 @@ const HomeScreen = () => {
     useCallback(() => {
       updateWalletBalance();
       setTabBarVisible(true);
+      setStatusBarColor(theme.backgroundColor);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );

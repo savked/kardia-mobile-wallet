@@ -29,4 +29,5 @@ interface Pair {
   t2: PairToken;
   contract_address: string;
   volumeUSD: string;
+  invert: boolean;
 }

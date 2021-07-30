@@ -22,7 +22,7 @@ import { formatNumberString, getDigit } from '../../../utils/number';
 import { BLOCK_TIME } from '../../../config';
 
 const showButton = (value: any) => {
-  return numeral(value).format('0,0.00') !== '0.00'
+  return formatNumberString(value) !== '0'
 }
 
 export default ({
