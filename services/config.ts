@@ -19,13 +19,15 @@
 export const DEX_ENDPOINT = 'https://exchange-backend.kardiachain.io/api/v1/';
 export const ENDPOINT = 'https://backend.kardiachain.io/api/v1/';
 export const RPC_ENDPOINT = 'https://kai-seeds.kardiachain.io';
-export const HASURA_ENDPOINT = 'https://ex-graph.kardiachain.io/subgraphs/name/kai/dex';
-export const HASURA_WS_ENDPOINT = 'wss://ws-ex-graph.kardiachain.io/subgraphs/name/kai/dex';
-export const SUBGRAPH_BLOCKLYTICS_KAIBLOCK = 'https://ex-graph.kardiachain.io/subgraphs/name/blocklytics/kai-blocks';
+
+export const HASURA_ENDPOINT = 'https://dex-graph.kardiachain.io/subgraphs/name/kai/dex';
+export const HASURA_WS_ENDPOINT = 'wss://ws-dex-graph.kardiachain.io/subgraphs/name/kai/dex';
+export const SUBGRAPH_BLOCKLYTICS_KAIBLOCK = 'https://dex-graph.kardiachain.io/subgraphs/name/blocklytics/kai-blocks';
+
 export const EXPLORER_URL = 'https://explorer.kardiachain.io';
 export const HASURA_CREDENTIALS = 'ZjE0ZDgzMWNlOWNlNTY0YmRlMGNiYjJl';
 export const PROXY_ENDPOINT = 'https://backend-proxy.kardiachain.io/api/';
-export const EXCHANGE_REST = 'https://ex-rest.kardiachain.io/';
+export const EXCHANGE_REST = 'https://dex-api.kardiachain.io/';
 export const DEFAULT_APP_JSON = 'https://raw.githubusercontent.com/kardiachain/kardia-default-dapp/master/dapp.json';
 export const DEX_PAIRS_JSON = 'https://raw.githubusercontent.com/kardiachain/kaidex-pairs/master/pairs.json';
 
