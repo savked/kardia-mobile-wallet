@@ -39,7 +39,7 @@ export default ({type}: {
             fontSize: theme.defaultFontSize + 24
           }}
         >
-          KAI DEX
+          KaiDex
         </CustomText>
       </View>
       <View style={{borderRadius: 12, borderColor: 'rgba(96, 99, 108, 1)', borderWidth: 1.5, padding: 4, flexDirection: 'row', marginBottom: 24, width: '100%'}}>
