@@ -242,9 +242,12 @@ export const approveToken = async (token: PairToken, amount: string | number, wa
 
   // const invocation = smcInstance.invokeContract('approve', [SWAP_ROUTER_SMC, `${cellValue}00`]);
   const invocation = smcInstance.invokeContract('approve', [SWAP_ROUTER_SMC, bnTotalSypply.toFixed()]);
-  const rs = invocation.send(wallet.privateKey!, token.hash, {
-    nonce: await getNonce(wallet.address)
-  }, true)
+  // TODO: get local nonce
+  // const rs = invocation.send(wallet.privateKey!, token.hash, {
+  //   nonce: await getNonce(wallet.address)
+  // }, true)
+
+  const rs = invocation.send(wallet.privateKey!, token.hash, {}, true)
   
   return rs;
 }
@@ -320,10 +323,13 @@ export const swapTokens = async (params: Record<string, any>, wallet: Wallet) =>
     parsedParam = client.marketSwapCallParameters(params as any);
     invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
   }
-  
+  // TODO: get local nonce
+  // const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
+  //   amount: parsedParam.amount || 0,
+  //   nonce: await getNonce(wallet.address)
+  // })
   const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
-    amount: parsedParam.amount || 0,
-    nonce: await getNonce(wallet.address)
+    amount: parsedParam.amount || 0
   })
 
   return rs
@@ -537,9 +543,13 @@ export const addLiquidity = async (params: any, wallet: Wallet) => {
 
   const invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
 
+  // TODO: get local nonce
+  // const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
+  //   amount: parsedParam.amount || 0,
+  //   nonce: await getNonce(wallet.address)
+  // })
   const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
-    amount: parsedParam.amount || 0,
-    nonce: await getNonce(wallet.address)
+    amount: parsedParam.amount || 0
   })
 
   return rs
@@ -587,9 +597,13 @@ export const removeLiquidity = async (params: any, wallet: Wallet) => {
 
   // const invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
 
+  // TODO: get local nonce
+  // const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
+  //   amount: parsedParam.amount || 0,
+  //   nonce: await getNonce(wallet.address)
+  // })
   const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
-    amount: parsedParam.amount || 0,
-    nonce: await getNonce(wallet.address)
+    amount: parsedParam.amount || 0
   })
 
   return rs

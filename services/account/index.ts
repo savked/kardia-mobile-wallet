@@ -11,30 +11,32 @@ export const getBalance = async (address: string, timeout?: number): Promise<str
 };
 
 export const getNonce = async (address: string, force = false) => {
-  const localNonce = await getLocalNonce();
+  // TODO: get local nonce
+  // const localNonce = await getLocalNonce();
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
   const networkNonce = await kardiaClient.account.getNonce(address.trim());
-
-  if (!localNonce[address] || networkNonce > localNonce[address]) {
-    try {
-      await saveAddressNonce(address, Number(networkNonce) + 1) 
-    } catch (error) {
-      console.error('Error saving nonce')
-      console.error(error)
-    }
-    return networkNonce
-  }
-
-  if (force === false) {
-    await saveAddressNonce(address, Number(localNonce[address]) + 1) 
-    return localNonce[address]
-  } 
-  
-  try {
-    await saveAddressNonce(address, Number(networkNonce) + 1) 
-  } catch (error) {
-    console.error('Error saving nonce')
-    console.error(error)
-  }
   return networkNonce
+
+  // if (!localNonce[address] || networkNonce > localNonce[address]) {
+  //   try {
+  //     await saveAddressNonce(address, Number(networkNonce) + 1) 
+  //   } catch (error) {
+  //     console.error('Error saving nonce')
+  //     console.error(error)
+  //   }
+  //   return networkNonce
+  // }
+
+  // if (force === false) {
+  //   await saveAddressNonce(address, Number(localNonce[address]) + 1) 
+  //   return localNonce[address]
+  // } 
+  
+  // try {
+  //   await saveAddressNonce(address, Number(networkNonce) + 1) 
+  // } catch (error) {
+  //   console.error('Error saving nonce')
+  //   console.error(error)
+  // }
+  // return networkNonce
 }

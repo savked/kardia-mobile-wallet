@@ -80,6 +80,7 @@ export default ({visible, onClose, txObj, onConfirm}: {
       setLoading(false)
       onConfirm(txHash) 
     } catch (error) {
+      console.log('error', error)
       setLoading(false)
       setError(getLanguageString(language, 'GENERAL_ERROR'))
     }

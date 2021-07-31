@@ -82,8 +82,8 @@ export const getRecomendedGasPrice = async () => {
 
 export const sendRawTx = async (txObj: Record<string, any>, wallet: Wallet, waitUntilmined = false) => {
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
-  const nonce = await getNonce(wallet.address.trim());
-
+  // TODO: get local nonce
+  const nonce = await kardiaClient.account.getNonce(wallet.address.trim());
   txObj.nonce = nonce
 
   const txResult = await kardiaClient.transaction.sendTransaction(
@@ -102,7 +102,8 @@ export const createTx = async (
   gasPrice = 1 * (10 ** 9),
 ) => {
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
-  const nonce = await getNonce(wallet.address.trim());
+  // TODO: get local nonce
+  const nonce = await kardiaClient.account.getNonce(wallet.address.trim());
   const txData = {
     receiver,
     gas: DEFAULT_KAI_TX_GAS_LIMIT,

@@ -128,10 +128,11 @@ export const transferKRC20 = async (
   krc20.address = tokenAddress;
   await krc20.getDecimals(true);
 
-  if (!transferPayload.nonce) {
-    const account = KardiaAccount.getWalletFromPK(privateKey)
-    transferPayload.nonce = await getNonce(account.address)
-  }
+  // TODO: get local nonce
+  // if (!transferPayload.nonce) {
+  //   const account = KardiaAccount.getWalletFromPK(privateKey)
+  //   transferPayload.nonce = await account.address)
+  // }
 
   return krc20.transfer(privateKey, to, amount, transferPayload);
 };

@@ -25,6 +25,7 @@ import {
   saveTokenList,
   saveWallets,
   setFavPair,
+  setLocalNonce,
 } from '../../utils/local';
 import {styles} from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
@@ -415,8 +416,8 @@ const AppContainer = () => {
         const promiseArr = localWallets.map(async (wallet: Wallet) => {
           try {
             wallet.balance = await getBalance(wallet.address);
-            const accountNonce = await getNonce(wallet.address)
-            await saveAddressNonce(wallet.address, accountNonce)
+            // const accountNonce = await getNonce(wallet.address)
+            // await saveAddressNonce(wallet.address, accountNonce)
           } catch (error) {
             wallet.balance = '0'
             console.log('Get balance fail')
@@ -429,6 +430,37 @@ const AppContainer = () => {
       } catch (error) {
         console.error(error);
       }
+
+      // TODO: Get nonce for local use
+      // try {
+      //   let localWallets = await getWallets();
+
+      //   const promiseArr = localWallets.map(async (wallet: Wallet) => {
+      //     try {
+      //       const accountNonce = await getNonce(wallet.address)
+      //       return {
+      //         address: wallet.address,
+      //         nonce: accountNonce
+      //       }
+      //     } catch (error) {
+      //       console.log('Get nonce fail')
+      //       return {
+      //         address: wallet.address,
+      //         nonce: null
+      //       }
+      //     }
+      //   });
+
+      //   const nonceList = (await Promise.all(promiseArr)).filter((item) => item.nonce !== null);
+      //   const nonceObj: Record<string, any> = {}
+      //   nonceList.forEach((item) => {
+      //     nonceObj[item.address] = item.nonce
+      //   })
+      //   setLocalNonce(nonceObj)
+      //   // setWallets(localWallets);
+      // } catch (error) {
+      //   console.error(error);
+      // }
 
       // Get selected wallet
       try {

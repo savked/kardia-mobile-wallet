@@ -126,7 +126,8 @@ export const withdrawReward = async (valSmcAddr: string, wallet: Wallet) => {
     throw new Error('Invalid [valSmcAddr]')
   }
   try {
-    const nonce = await getNonce(wallet.address)
+    // TODO: get local nonce
+    // const nonce = await getNonce(wallet.address)
     kardiaContract.updateAbi(VALIDATOR_ABI);
     const rs = await kardiaContract
       .invokeContract('withdrawRewards', [])
@@ -134,7 +135,7 @@ export const withdrawReward = async (valSmcAddr: string, wallet: Wallet) => {
         from: wallet.address,
         gas: DEFAULT_GAS_LIMIT,
         gasPrice: DEFAULT_GAS_PRICE,
-        nonce
+        // nonce
       });
     if (rs.status === 0) {
       throw new Error(`Withdraw reward TX Fail: ${rs}`);
@@ -154,7 +155,8 @@ export const withdrawDelegatedAmount = async (
     throw new Error('Invalid [valSmcAddr]')
   }
   try {
-    const nonce = await getNonce(wallet.address)
+    // TODO: get local nonce
+    // const nonce = await getNonce(wallet.address)
     kardiaContract.updateAbi(VALIDATOR_ABI);
     const rs = await kardiaContract
       .invokeContract('withdraw', [])
@@ -162,7 +164,7 @@ export const withdrawDelegatedAmount = async (
         from: wallet.address,
         gas: DEFAULT_GAS_LIMIT,
         gasPrice: DEFAULT_GAS_PRICE,
-        nonce
+        // nonce
       });
     if (rs.status === 0) {
       throw new Error(`Withdraw delegated TX Fail: ${rs.transactionHash}`);
@@ -183,7 +185,8 @@ export const undelegateWithAmount = async (
     throw new Error('Invalid [valSmcAddr]')
   }
   try {
-    const nonce = await getNonce(wallet.address)
+    // TODO: get local nonce
+    // const nonce = await getNonce(wallet.address)
     const amountUndelDec = cellValue(amountUndel);
     kardiaContract.updateAbi(VALIDATOR_ABI);
     const rs = await kardiaContract
@@ -192,7 +195,7 @@ export const undelegateWithAmount = async (
         from: wallet.address,
         gas: DEFAULT_GAS_LIMIT,
         gasPrice: DEFAULT_GAS_PRICE,
-        nonce
+        // nonce
       });
     if (rs.status === 0) {
       throw new Error(`Undelegate TX Fail: ${rs}`);
@@ -209,7 +212,8 @@ export const undelegateAll = async (valSmcAddr: string, wallet: Wallet) => {
     throw new Error('Invalid [valSmcAddr]')
   }
   try {
-    const nonce = await getNonce(wallet.address)
+    // TODO: get local nonce
+    // const nonce = await getNonce(wallet.address)
     kardiaContract.updateAbi(VALIDATOR_ABI);
     const rs = await kardiaContract
       .invokeContract('undelegate', [])
@@ -217,7 +221,7 @@ export const undelegateAll = async (valSmcAddr: string, wallet: Wallet) => {
         from: wallet.address,
         gas: DEFAULT_GAS_LIMIT,
         gasPrice: DEFAULT_GAS_PRICE,
-        nonce
+        // nonce
       });
     // if (rs.status === 0) {
     //   throw new Error(`Undelegate TX Fail: ${rs}`);
@@ -238,7 +242,8 @@ export const delegateAction = async (
     throw new Error('Invalid [valSmcAddr]')
   }
   try {
-    const nonce = await getNonce(wallet.address)
+    // TODO: get local nonce
+    // const nonce = await getNonce(wallet.address)
     const cellAmountDel = cellValue(amountDel);
     kardiaContract.updateAbi(VALIDATOR_ABI);
     const rs = await kardiaContract
@@ -248,7 +253,7 @@ export const delegateAction = async (
         amount: cellAmountDel,
         gas: DEFAULT_GAS_LIMIT,
         gasPrice: DEFAULT_GAS_PRICE,
-        nonce
+        // nonce
       });
     // if (rs.status === 0) {
     //   throw new Error(`Delegate TX Fail: ${rs.transactionHash}`);
