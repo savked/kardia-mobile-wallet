@@ -28,7 +28,7 @@ export default ({type}: {
       borderBottomLeftRadius: 24,
       borderBottomRightRadius: 24,
       marginBottom: 12,
-      paddingTop: 28 + insets.top
+      paddingTop: Platform.OS === 'android' ? 8 : insets.top
     }}>
       <View style={{width: '100%'}}>
         <CustomText

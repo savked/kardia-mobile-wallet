@@ -114,7 +114,8 @@ const DAppHome = () => {
             if (!app.url) return;
             const parsedURL = parseURL(app.url)
             navigation.navigate('DAppBrowser', {
-              appURL: parsedURL
+              appURL: parsedURL,
+              allowLandscape: app.allowLandscape
             })
           }} />
         </View>

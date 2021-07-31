@@ -9,8 +9,8 @@ import { statusBarColorAtom } from '../../../atoms/statusBar';
 import { ThemeContext } from '../../../ThemeContext';
 import DEXHeader from '../../common/DEXHeader';
 import FavoriteSection from './FavoriteSection';
-import MarketScreen from './MarketScreen'
 import PairListSection from './PairListSection';
+import SelectingPair from './SelectingPair';
 
 export default () => {
   const navigation = useNavigation()
@@ -23,12 +23,29 @@ export default () => {
 
   const insets = useSafeAreaInsets();
 
+  const [searchingPair, setSearchingPair] = useState(false)
+
   useFocusEffect(
     useCallback(() => {
       setStatusBarColor(theme.backgroundStrongColor);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
+
+  if (searchingPair) {
+    return (
+      <SelectingPair
+        onSelect={(pairItem: Pair) => {
+          navigation.navigate('PairDetail', {
+            pairItem: pairItem
+          })
+        }}
+        goBack={() => {
+          setSearchingPair(false)
+        }}
+      />
+    )
+  }
 
   return (
     <View 
@@ -52,17 +69,7 @@ export default () => {
             )
           }
           {favoritePair.length > 0 && <FavoriteSection />}
-          <PairListSection />
-          {/* <View
-            style={{paddingHorizontal: 20, flex: 1}}
-          >
-            <MarketScreen
-              toggleMenu={() => {
-                setShowMenu(!showMenu)
-              }}
-              params={params}
-            />
-          </View> */}
+          <PairListSection showSearching={() => setSearchingPair(true)} />
         </View>
       {/* </TouchableWithoutFeedback> */}
     </View>

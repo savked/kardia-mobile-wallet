@@ -6,11 +6,14 @@ import { showTabBarAtom } from '../../../atoms/showTabBar';
 import List from '../../../components/List';
 import CustomText from '../../../components/Text';
 import { formatDexToken, getPairs } from '../../../services/dex';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 import { ThemeContext } from '../../../ThemeContext';
 import { pairMapper } from '../../../utils/dex';
 import PairListItem from './PairListItem';
 
-export default () => {
+export default ({showSearching}: {
+  showSearching: () => void
+}) => {
   const theme = useContext(ThemeContext)
 
   const [pairs, setPairs] = useState<any[]>([])
@@ -74,16 +77,32 @@ export default () => {
 
   return (
     <View style={{flex: 1, paddingHorizontal: 20}}>
-      <CustomText
+      <View
         style={{
-          color: theme.textColor,
-          fontWeight: 'bold',
-          fontSize: theme.defaultFontSize + 6,
-          marginBottom: 8
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginVertical: 8
         }}
       >
-        Pairs
-      </CustomText>
+        <CustomText
+          style={{
+            color: theme.textColor,
+            fontWeight: 'bold',
+            fontSize: theme.defaultFontSize + 6,
+            marginBottom: 8
+          }}
+        >
+          Pairs
+        </CustomText>
+        <TouchableOpacity onPress={showSearching}>
+          <AntIcon
+            style={{padding: 0}}
+            name="search1"
+            color={theme.textColor}
+            size={18}
+          />
+        </TouchableOpacity>
+      </View>
       {renderPairs()}
     </View>
   )

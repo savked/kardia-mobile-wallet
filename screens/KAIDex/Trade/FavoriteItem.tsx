@@ -5,7 +5,7 @@ import { Image, Platform, TouchableOpacity, View } from 'react-native';
 import CustomText from '../../../components/Text';
 import { formatDexToken, getReserve } from '../../../services/dex';
 import { ThemeContext } from '../../../ThemeContext';
-import { formatNumberString } from '../../../utils/number';
+import { formatNumberString, isNaN } from '../../../utils/number';
 
 export default ({pairItem, isLast, isFirst}: {
   pairItem: Pair;
@@ -87,10 +87,10 @@ export default ({pairItem, isLast, isFirst}: {
           {formatDexToken(pairItem.t1).symbol} / {formatDexToken(pairItem.t2).symbol}
         </CustomText>
       </View>
-      <View style={{marginTop: 24}}>
+      <View style={{marginTop: 8}}>
         <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 8}}>
           {
-            rate ? formatNumberString(rate.toFixed(), 6) : '--'
+            rate && !isNaN(rate.toNumber()) ? formatNumberString(rate.toFixed(), 6) : '--'
           }
         </CustomText>
       </View>

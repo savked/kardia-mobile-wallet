@@ -26,6 +26,7 @@ export default () => {
   const navigation = useNavigation()
 
   const appURL = params ? (params as any).appURL : ''
+  const allowLandscape = params && (params as any).allowLandscape ? (params as any).allowLandscape : false
 
   const theme = useContext(ThemeContext)
   const [resource, setResource] = useState('')
@@ -45,10 +46,11 @@ export default () => {
   const selectedWallet = useRecoilValue(selectedWalletAtom)
 
   useEffect(() => {
-    Orientation.unlockAllOrientations()
-
-    return () => {
-      Orientation.lockToPortrait()
+    if (allowLandscape) {
+      Orientation.unlockAllOrientations()
+      return () => {
+        Orientation.lockToPortrait()
+      }
     }
   }, [])
 

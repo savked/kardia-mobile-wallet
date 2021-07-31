@@ -86,7 +86,7 @@ export default ({
   const [mode, setMode] = useState('BUY')
   const [inputType, setInputType] = useState(0)
 
-  const [rate, setRate] = useState<BigNumber | number>();
+  const [rate, setRate] = useState<BigNumber>(new BigNumber(0));
   // const [txDeadline, setTxDeadline] = useState('2')
   const [txDeadline, setTxDeadline] = useRecoilState(cacheSelector('txDeadline'))
   // const [slippageTolerance, setSlippageTolerance] = useState('1')
@@ -107,6 +107,14 @@ export default ({
     } else {
       handleSubmitMarket()
     }
+  }
+
+  const estimateRate = () => {
+    if (amountTo === '0' || amountFrom === '0' || !tokenTo || !tokenFrom) return rate
+    const to = tokenTo.hash === _tokenTo.hash ? amountTo : amountFrom
+    const from = tokenTo.hash === _tokenTo.hash ? amountFrom : amountTo
+
+    return new BigNumber(getDigit(to)).dividedBy(new BigNumber(getDigit(from)))
   }
 
   useEffect(() => {
@@ -418,7 +426,12 @@ export default ({
           <CustomText style={{color: theme.textColor}}>
             1{' '}
             <CustomText style={{color: theme.mutedTextColor}}>{_tokenFrom.symbol}</CustomText>{' '}={' '}
-            <CustomText style={{color: theme.textColor}}>~ {formatNumberString(rate.toFixed(), 6)}</CustomText>
+            {
+              loadingFrom || loadingTo ? 
+              <CustomText style={{color: theme.textColor}}> -- </CustomText>
+              :
+              <CustomText style={{color: theme.textColor}}>~ {formatNumberString(estimateRate().toFixed(), 6)}</CustomText>
+            }
             <CustomText style={{color: theme.mutedTextColor}}> {_tokenTo.symbol}</CustomText>
           </CustomText>
         </View>

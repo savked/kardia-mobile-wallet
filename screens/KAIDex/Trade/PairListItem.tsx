@@ -5,7 +5,7 @@ import { Image, Platform, TouchableOpacity, View } from 'react-native';
 import CustomText from '../../../components/Text';
 import { formatDexToken, getReserve } from '../../../services/dex';
 import { ThemeContext } from '../../../ThemeContext';
-import { formatNumberString } from '../../../utils/number';
+import { formatNumberString, isNaN } from '../../../utils/number';
 import { truncate } from '../../../utils/string';
 
 export default ({item}: {
@@ -94,7 +94,7 @@ export default ({item}: {
         </View>
         <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 1}}>
           {
-            rate ? formatNumberString(rate.toFixed(), 6) : '--'
+            rate && !isNaN(rate.toNumber()) ? formatNumberString(rate.toFixed(), 6) : '--'
           }
         </CustomText>
       </View>

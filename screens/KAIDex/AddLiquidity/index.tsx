@@ -166,7 +166,7 @@ export default () => {
       />
       <View
         style={{
-          flex: 1,
+          flex: 1
         }}
       >
         <DEXHeader
@@ -179,7 +179,8 @@ export default () => {
                 width: '100%',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginBottom: 8
+                marginBottom: 8,
+                paddingHorizontal: 20
               }}
             >
               <CustomText 
@@ -218,7 +219,8 @@ export default () => {
               flex: 1,
             }}
             containerStyle={{
-              paddingBottom: 16
+              paddingBottom: 16,
+              marginHorizontal: 20
             }}
             ListEmptyComponent={
               <View style={{

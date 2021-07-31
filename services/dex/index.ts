@@ -376,6 +376,7 @@ export const submitReferal = async (referalCode: string, wallet: Wallet) => {
     const requestOptions = {
       method: 'GET',
     };
+    console.log('dddd')
     const rs: any = await requestWithTimeOut(
       fetch(`${EXCHANGE_REST}refs?and=(short.eq.${referalCode},parent_id.eq.0)`, requestOptions),
       50 * 1000,
@@ -416,8 +417,11 @@ export const submitReferal = async (referalCode: string, wallet: Wallet) => {
       body: raw
     };
 
+    console.log('bbbb')
+
     const refRs = await fetch(`${EXCHANGE_REST}refs`, postOptions)
     if (refRs.ok) {
+      console.log('is ok')
       return true
     }
     return false
