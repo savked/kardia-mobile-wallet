@@ -258,17 +258,17 @@ const getBlock = async (timeStamp: number[]) => {
   const { data: fetchedData } = await queryBlockNumbers(timeStamp)
   const blocks: any[] = []
   try {
-      if (fetchedData) {
-          for (const t in fetchedData) {
-              const item = (fetchedData as any)[t]
-              if (item.length > 0) {
-                  blocks.push({
-                      timestamp: t.split('t')[1],
-                      number: item[0]['number'],
-                  })
-              }
-          }
+    if (fetchedData) {
+      for (const t in fetchedData) {
+        const item = (fetchedData as any)[t]
+        if (item.length > 0) {
+          blocks.push({
+            timestamp: t.split('t')[1],
+            number: item[0]['number'],
+          })
+        }
       }
+    }
   } catch (error) { }
   return blocks
 }
@@ -284,6 +284,16 @@ export const getTotalVolume = async (volumeUSD: string, pairID: string) => {
   const _oneDayPair = onedayPairs && Array.isArray(onedayPairs) ? onedayPairs.filter(item => item.id === pairID)[0] : null
   let volume24hr = _oneDayPair && _oneDayPair.volumeUSD ? parseFloat(volumeUSD) - parseFloat(_oneDayPair.volumeUSD) : parseFloat(volumeUSD)
   return volume24hr
+}
+
+export const get24hPairData = async (pairID: string) => {
+  const [t24] = getDeltaTimestamps()
+
+  const _24h_blocks = await getBlock([t24])
+  const { data: pairsByBlock1 } = await queryPairsByBlockNumber(_24h_blocks)
+  const onedayPairs = pairsByBlock1[`t${_24h_blocks[0].timestamp}`]
+  const _oneDayPair = onedayPairs && Array.isArray(onedayPairs) ? onedayPairs.filter(item => item.id === pairID)[0] : null
+  return _oneDayPair
 }
 
 export const swapTokens = async (params: Record<string, any>, wallet: Wallet) => {

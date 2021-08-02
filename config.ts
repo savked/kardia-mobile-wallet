@@ -12,6 +12,7 @@ export const BLOCK_TIME = 5;
 export const MIN_DELEGATE = 1000;
 export const CACHE_TTL = 3 * 60 * 1000;
 // export const CACHE_TTL = 0;
+export const SMALL_VALUE = 0.00001;
 
 export const DEFAULT_KRC20_TOKENS: KRC20[] = [];
 

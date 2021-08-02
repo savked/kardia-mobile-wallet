@@ -5,10 +5,11 @@ import CustomText from '../../../components/Text'
 import { getMarketHistory } from '../../../services/dex'
 import { GET_MARKET_HISTORY } from '../../../services/dex/queries'
 import { ThemeContext } from '../../../ThemeContext'
-import { getOrderPrice, getOrderTotal, isBuy } from '../../../utils/dex'
-import { formatNumberString } from '../../../utils/number'
+import { getOrderAmount, getOrderPrice, getOrderTotal, isBuy } from '../../../utils/dex'
+import { formatNumberString, isTooSmall } from '../../../utils/number'
 import {format} from 'date-fns'
 import Button from '../../../components/Button'
+import { SMALL_VALUE } from '../../../config'
 
 export default ({pairItem}: {
   pairItem: Pair
@@ -92,7 +93,11 @@ export default ({pairItem}: {
                         fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
                       }}
                     >
-                      {formatNumberString(getOrderPrice(order).toFixed(), 6)}
+                      {
+                        isTooSmall(getOrderPrice(order).toFixed()) ? 
+                        `< ${SMALL_VALUE}` :
+                        formatNumberString(getOrderPrice(order).toFixed(), 6)
+                      }
                     </CustomText>
                   </View>
                   <View style={{flex: 1, alignItems: 'flex-end'}}>
@@ -103,7 +108,12 @@ export default ({pairItem}: {
                         fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
                       }}
                     >
-                      {formatNumberString(getOrderTotal(order), 4)}
+                      {
+                        pairItem.invert ?
+                        formatNumberString(getOrderTotal(order), 4) :
+                        formatNumberString(getOrderAmount(order), 4)
+                      }
+                      
                     </CustomText>
                   </View>
                 </View>

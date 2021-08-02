@@ -21,4 +21,6 @@ export const theme = {
   defaultFontSize: 12,
   inputBackgroundColor: 'rgba(96, 99, 108, 1)',
   warningTextColor: 'rgba(255, 209, 153, 1)',
+  increaseColor: 'rgba(105, 235, 102, 1)',
+  decreaseColor: 'rgba(255, 66, 67, 1)'
 };

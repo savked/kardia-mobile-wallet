@@ -36,6 +36,7 @@ export default () => {
     return (
       <SelectingPair
         onSelect={(pairItem: Pair) => {
+          setSearchingPair(false)
           navigation.navigate('PairDetail', {
             pairItem: pairItem
           })

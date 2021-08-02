@@ -1,5 +1,6 @@
 import { BigNumber } from 'bignumber.js';
 import numeral from 'numeral';
+import { SMALL_VALUE } from '../config';
 export const isNumber = (val: string) => {
   return /^\d+(,\d{3})*(\.\d*)?$/.test(val);
 };
@@ -8,6 +9,11 @@ export const isNaN = (val: any) => {
   if (typeof val === 'number') return Number.isNaN(val)
   if (typeof val === 'string') return val.toLowerCase() === 'nan'
   return true
+}
+
+export const isTooSmall = (num: number | string, smallValue = SMALL_VALUE) => {
+  const bnNum = new BigNumber(num)
+  return bnNum.isLessThan(new BigNumber(smallValue))
 }
 
 export const getDigit = (val: string, editting = true) => {

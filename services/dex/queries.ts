@@ -94,16 +94,18 @@ export const PAIR_LIST_BY_BLOCK_NUMBER = (blocks: any[]) => {
   queryString += blocks.map(
     (block) => `
       t${block.timestamp}: pairs (block: { number: ${block.number} }) { 
-          id
-          reserve0
-          reserve1
-          reserveUSD
-          volumeUSD
-          pairIdentity {
-            invert
-          }
+        id
+        reserve0
+        reserve1
+        reserveUSD
+        volumeUSD
+        token0Price
+        token1Price
+        pairIdentity {
+          invert
         }
-      `
+      }
+    `
   )
   queryString += '}'
   return gql(queryString)

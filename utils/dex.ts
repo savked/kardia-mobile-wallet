@@ -25,7 +25,7 @@ export const getOrderTotal = (order: Record<string, any>) => {
   return amount1Out.toFixed();
 }
 
-const getOrderAmount = (order: Record<string, any>) => {
+export const getOrderAmount = (order: Record<string, any>) => {
 	// return order.amount1In === "0" ? order.amount1Out : order.amount1In
   const amount0In = new BigNumber(order.amount0In)
   const amount0Out = new BigNumber(order.amount0Out)
