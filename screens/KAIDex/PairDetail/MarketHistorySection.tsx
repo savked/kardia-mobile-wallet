@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import React, { useContext, useEffect, useState } from 'react'
 import { Platform, View } from 'react-native'
 import CustomText from '../../../components/Text'
-import { getMarketHistory } from '../../../services/dex'
+import { formatDexToken, getMarketHistory } from '../../../services/dex'
 import { GET_MARKET_HISTORY } from '../../../services/dex/queries'
 import { ThemeContext } from '../../../ThemeContext'
 import { getOrderAmount, getOrderPrice, getOrderTotal, isBuy } from '../../../utils/dex'
@@ -10,10 +10,14 @@ import { formatNumberString, isTooSmall } from '../../../utils/number'
 import {format} from 'date-fns'
 import Button from '../../../components/Button'
 import { SMALL_VALUE } from '../../../config'
+import { getLanguageString } from '../../../utils/lang'
+import { useRecoilValue } from 'recoil'
+import { languageAtom } from '../../../atoms/language'
 
 export default ({pairItem}: {
   pairItem: Pair
 }) => {
+  const language = useRecoilValue(languageAtom)
   const theme = useContext(ThemeContext)
   const {data, loading, error, refetch} = useQuery(GET_MARKET_HISTORY(pairItem.contract_address), {
     pollInterval: 10000,
@@ -68,7 +72,44 @@ export default ({pairItem}: {
       {/* {
         renderError()
       } */}
-      <View style={{flexDirection: 'row', width: '100%'}}>
+      <View style={{width: '100%'}}>
+        <View style={{flex: 1, paddingHorizontal: 20}}>
+          <View style={{flexDirection: 'row', width: '100%', marginBottom: 16, justifyContent: 'space-between', alignItems: 'center'}}>
+            <View style={{flex: 1, alignItems: 'flex-start'}}>
+              <CustomText 
+                style={{
+                  color: 'rgba(252, 252, 252, 0.26)',
+                  fontWeight: '500',
+                  fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                }}
+              >
+                {getLanguageString(language, 'TIME')}
+              </CustomText>
+            </View>
+            <View style={{flex: 1, alignItems: 'center'}}>
+              <CustomText 
+                style={{
+                  color: 'rgba(252, 252, 252, 0.26)',
+                  fontWeight: '500',
+                  fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                }}
+              >
+                {getLanguageString(language, 'PRICE')}
+              </CustomText>
+            </View>
+            <View style={{flex: 1, alignItems: 'flex-end'}}>
+              <CustomText 
+                style={{
+                  color: 'rgba(252, 252, 252, 0.26)',
+                  fontWeight: '500',
+                  fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                }}
+              >
+                {getLanguageString(language, 'SIZE')} ({formatDexToken(pairItem.t1).symbol})
+              </CustomText>
+            </View>
+          </View>
+        </View>
         <View style={{flex: 1, paddingHorizontal: 20}}>
           {
             parsedList().map((order: any) => {
@@ -108,12 +149,7 @@ export default ({pairItem}: {
                         fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
                       }}
                     >
-                      {
-                        pairItem.invert ?
-                        formatNumberString(getOrderTotal(order), 4) :
-                        formatNumberString(getOrderAmount(order), 4)
-                      }
-                      
+                      {formatNumberString(getOrderAmount(order), 4)}
                     </CustomText>
                   </View>
                 </View>
