@@ -158,13 +158,13 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   controlButton: {
-    width: 28,
-    height: 28,
+    width: 52,
+    height: 52,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 14,
     marginBottom: 8,
-    borderRadius: 14,
+    borderRadius: 26,
     flexDirection: 'row',
     shadowColor: 'rgba(0, 0, 0, 0.3)',
     shadowOffset: {

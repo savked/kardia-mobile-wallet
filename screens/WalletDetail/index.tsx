@@ -282,8 +282,8 @@ export default () => {
           justifyContent: 'center',
         }}>
         <Image
-          style={{ width: 101, height: 152 }}
-          source={require('../../assets/trash_dark.png')}
+          style={{ width: 224, height: 145 }}
+          source={require('../../assets/confirm_remove_wallet.png')}
         />
         <CustomText
           style={{

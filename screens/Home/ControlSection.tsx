@@ -29,7 +29,7 @@ export default ({noAction = false}: {
   const [tokenAvatar, setTokenAvatar] = useState('')
 
   return (
-    <View style={{ flexDirection: 'row', width: 180, paddingTop: 30, paddingBottom: 16, justifyContent: 'space-between'}}>
+    <View style={{ flexDirection: 'row', width: 250, paddingTop: 30, paddingBottom: 16, justifyContent: 'space-between'}}>
       {
         showNewTxModal && (
           <NewTxModal
@@ -87,7 +87,7 @@ export default ({noAction = false}: {
       <QRModal visible={showQRModal} onClose={() => setShowQRModal(false)} />
       <View style={{alignItems: 'center', justifyContent: 'center', width: '33%'}}>
         <TouchableOpacity
-          style={[styles.controlButton, {backgroundColor: theme.secondaryColor}]}
+          style={[styles.controlButton, {backgroundColor: 'rgba(249, 249, 249, 1)'}]}
           onPress={() => noAction === false && setShowSelectToken(true)}
         >
           <Image
@@ -112,7 +112,7 @@ export default ({noAction = false}: {
       </View>
       <View style={{alignItems: 'center', justifyContent: 'center', width: '33%'}}>
         <TouchableOpacity
-          style={[styles.controlButton, {backgroundColor: theme.secondaryColor}]}
+          style={[styles.controlButton, {backgroundColor: 'rgba(249, 249, 249, 1)'}]}
           onPress={() => noAction === false && setShowQRModal(true)}
         >
           <Image
@@ -136,7 +136,7 @@ export default ({noAction = false}: {
       </View>
       <View style={{alignItems: 'center', justifyContent: 'center', width: '33%'}}>
         <TouchableOpacity
-          style={[styles.controlButton, {backgroundColor: theme.secondaryColor}]}
+          style={[styles.controlButton, {backgroundColor: 'rgba(249, 249, 249, 1)'}]}
           onPress={() => noAction === false && navigation.navigate('TransactionList')}
         >
           <Image
