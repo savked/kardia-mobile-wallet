@@ -313,6 +313,8 @@ export const lang: Language = {
     WITHDRAW_LP_SUCCESS: 'Rút thanh khoản thành công',
     NOT_ENOUGH_LP: 'Không đủ LP tokens',
     SEARCH_PAIR_PLACEHOLDER: 'Tìm cặp giao dịch',
+    TIME: 'Thời gian',
+    SIZE: 'Số lượng',
     // Referral key
     REFERRAL_CODE: 'Mã giới thiệu',
     REFERRAL_CODE_TITLE: 'Mã giới thiệu',
