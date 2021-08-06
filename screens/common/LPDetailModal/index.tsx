@@ -69,11 +69,11 @@ export default ({visible, onClose, lpItem, triggerAddLP, refreshLP}: {
 	}
 
 	const renderShare = () => {
-		const sharePercentBN = (new BigNumber(lpItem.shareRate)).multipliedBy(new BigNumber(100))
+		const sharePercentBN = (new BigNumber(lpItem.shareRate))
 		if (sharePercentBN.isLessThan(new BigNumber(0.001))) {
 			return '< 0.001%'
 		}
-		return `${formatNumberString((lpItem.shareRate * 100).toString(), 2, 0)}%`
+		return `${formatNumberString((lpItem.shareRate).toString(), 2, 0)}%`
 	}
 
 	if (showWithdraw) {
