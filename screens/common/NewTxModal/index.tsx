@@ -140,11 +140,11 @@ const NewTxModal = ({
       onClose();
       // setSuccessHash(txHash);
     } catch (err) {
-      console.error(err);
+      console.log(err);
       if (err.message) {
         setError(parseError(err.message, language));
       } else {
-        console.error(err);
+        console.log(err);
         setError(getLanguageString(language, 'GENERAL_ERROR'));
       }
       setLoading(false);
@@ -204,6 +204,19 @@ const NewTxModal = ({
   const _getBalance = () => {
     if (!wallets[selectedWallet]) return '0';
     return wallets[selectedWallet].balance;
+  }
+
+  const getMaxBalance = () => {
+    const currentBalance = _getBalance();
+    if (currentBalance === '0') return currentBalance
+
+    const bnBalance = new BigNumber(currentBalance);
+    if (bnBalance.isGreaterThan(10**18)) {
+      return bnBalance.minus(10**16).toFixed()
+    }
+
+    const tenPercent = bnBalance.multipliedBy(0.1);
+    return bnBalance.minus(tenPercent).toFixed()
   }
 
   const getModalStyle = () => {
@@ -420,7 +433,7 @@ const NewTxModal = ({
           <View style={{marginBottom: 10}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <CustomText style={{color: theme.textColor, marginBottom: 5, fontWeight: '500', fontSize: theme.defaultFontSize + 1}}>{getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}</CustomText>
-              <TouchableOpacity onPress={() => setAmount(formatNumberString(parseDecimals(_getBalance(), 18)))}>
+              <TouchableOpacity onPress={() => setAmount(formatNumberString(parseDecimals(getMaxBalance(), 18)))}>
                 <CustomText style={{color: theme.urlColor}}>
                   {parseKaiBalance(_getBalance())} KAI
                 </CustomText>
@@ -464,7 +477,7 @@ const NewTxModal = ({
                 return (
                   <TouchableOpacity 
                     style={{position: 'absolute', right: 10}}
-                    onPress={() => setAmount(formatNumberString(parseDecimals(_getBalance(), 18)))}
+                    onPress={() => setAmount(formatNumberString(parseDecimals(getMaxBalance(), 18)))}
                   >
                     <CustomText 
                       style={{
