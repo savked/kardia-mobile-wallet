@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ActivityIndicator, Keyboard, Platform, TouchableWithoutFeedback, View } from 'react-native'
+import { ActivityIndicator, Keyboard, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native'
 import { useRecoilValue } from 'recoil'
 import BigNumber from 'bignumber.js'
 import { languageAtom } from '../../../atoms/language'
@@ -197,41 +197,94 @@ export default ({visible, onClose, txObj, onConfirm}: {
       showCloseButton={false}
       contentStyle={getContentStyle()}
     >
-      <TouchableWithoutFeedback style={{width: '100%'}} onPress={() => Keyboard.dismiss()}>
-        <View style={{width: '100%'}}>
-          <CustomText 
-            style={{
-              color: theme.textColor,
-              marginBottom: 24,
-              fontSize: theme.defaultFontSize + 8,
-              fontWeight: 'bold',
-              textAlign: 'center'
-            }}
-          >
-            {getLanguageString(language, 'CONFIRM_TRANSACTION')}
-          </CustomText>
-          {
-            !preparing && (
-              <View
-                style={{width: '100%', alignItems: 'flex-start'}}
-              >
-                <CustomText
-                  style={{
-                    fontWeight: '500',
-                    marginBottom: 4,
-                    fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-                    color: theme.textColor
-                  }}
+      <ScrollView style={{width: '100%'}}>
+        <TouchableWithoutFeedback style={{width: '100%'}} onPress={() => Keyboard.dismiss()}>
+          <View style={{width: '100%'}}>
+            <CustomText 
+              style={{
+                color: theme.textColor,
+                marginBottom: 24,
+                fontSize: theme.defaultFontSize + 8,
+                fontWeight: 'bold',
+                textAlign: 'center'
+              }}
+            >
+              {getLanguageString(language, 'CONFIRM_TRANSACTION')}
+            </CustomText>
+            {
+              !preparing && (
+                <View
+                  style={{width: '100%', alignItems: 'flex-start'}}
                 >
-                  {getLanguageString(language, 'GAS_PRICE')}
-                </CustomText>
-                <View style={{justifyContent: 'center', marginBottom: 12}}>
+                  <CustomText
+                    style={{
+                      fontWeight: '500',
+                      marginBottom: 4,
+                      fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+                      color: theme.textColor
+                    }}
+                  >
+                    {getLanguageString(language, 'GAS_PRICE')}
+                  </CustomText>
+                  <View style={{justifyContent: 'center', marginBottom: 12}}>
+                    <CustomTextInput
+                      value={formatNumberString((new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed())}
+                      onChangeText={(newAmount) => {
+                        const digitOnly = getDigit(newAmount, false);
+                        if (digitOnly === '') {
+                          setGasPrice('0x00');
+                          return;
+                        }
+
+                        if (getDecimalCount(newAmount) > 0) {
+                          return;
+                        }
+
+                        if (isNumber(digitOnly)) {
+                          const bnVal = new BigNumber(digitOnly)
+                          setGasPrice(`0x${bnVal.multipliedBy(new BigNumber(10 ** 9)).toString(16)}`)
+                        }
+                      }}
+                      inputStyle={{
+                        backgroundColor: 'rgba(96, 99, 108, 1)',
+                        color: theme.textColor,
+                        paddingRight: 45
+                      }}
+                    />
+                    <CustomText
+                      style={{
+                        position: 'absolute',
+                        right: 10,
+                        color: theme.textColor
+                      }}
+                    >
+                      OXY
+                    </CustomText>
+                  </View>
+                </View>
+              )
+            }
+            {
+              !preparing && (
+                <View style={{flexDirection: 'row', marginBottom: 12}}>
+                  <Tags content={`1 OXY`} active={(new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed() === '1'} containerStyle={{marginRight: 12}} onPress={() => setGasPrice('0x3B9ACA00')} />
+                  <Tags content={`3 OXY`} active={(new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed() === '3'} containerStyle={{marginRight: 12}} onPress={() => setGasPrice('0xB2D05E00')} />
+                  <Tags content={`5 OXY`} active={(new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed() === '5'} containerStyle={{marginRight: 12}} onPress={() => setGasPrice('0x12A05F200')} />
+                  <Tags content={`10 OXY`} active={(new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed() === '10'} onPress={() => setGasPrice('0x2540BE400')} />
+                </View>
+              )
+            }
+            {
+              !preparing && (
+                <View
+                  style={{width: '100%', alignItems: 'flex-start'}}
+                >
                   <CustomTextInput
-                    value={formatNumberString((new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed())}
+                    value={formatNumberString((new BigNumber(gas, 16)).toFixed())}
                     onChangeText={(newAmount) => {
-                      const digitOnly = getDigit(newAmount, false);
+                      const digitOnly = getDigit(newAmount);
                       if (digitOnly === '') {
-                        setGasPrice('0x00');
+                        setGas('0x00');
                         return;
                       }
 
@@ -240,125 +293,74 @@ export default ({visible, onClose, txObj, onConfirm}: {
                       }
 
                       if (isNumber(digitOnly)) {
+                        // let formatedValue = formatNumberString(digitOnly);
                         const bnVal = new BigNumber(digitOnly)
-                        setGasPrice(`0x${bnVal.multipliedBy(new BigNumber(10 ** 9)).toString(16)}`)
+                        setGas(`0x${bnVal.toString(16)}`)
                       }
+                    }}
+                    headline={getLanguageString(language, 'GAS_LIMIT')}
+                    headlineStyle={{
+                      fontWeight: '500',
+                      fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
                     }}
                     inputStyle={{
                       backgroundColor: 'rgba(96, 99, 108, 1)',
                       color: theme.textColor,
-                      paddingRight: 45
+                      marginBottom: 12
                     }}
                   />
-                  <CustomText
-                    style={{
-                      position: 'absolute',
-                      right: 10,
-                      color: theme.textColor
-                    }}
-                  >
-                    OXY
-                  </CustomText>
                 </View>
-              </View>
-            )
-          }
-          {
-            !preparing && (
-              <View style={{flexDirection: 'row', marginBottom: 12}}>
-                <Tags content={`1 OXY`} active={(new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed() === '1'} containerStyle={{marginRight: 12}} onPress={() => setGasPrice('0x3B9ACA00')} />
-                <Tags content={`3 OXY`} active={(new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed() === '3'} containerStyle={{marginRight: 12}} onPress={() => setGasPrice('0xB2D05E00')} />
-                <Tags content={`5 OXY`} active={(new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed() === '5'} containerStyle={{marginRight: 12}} onPress={() => setGasPrice('0x12A05F200')} />
-                <Tags content={`10 OXY`} active={(new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed() === '10'} onPress={() => setGasPrice('0x2540BE400')} />
-              </View>
-            )
-          }
-          {
-            !preparing && (
-              <View
-                style={{width: '100%', alignItems: 'flex-start'}}
-              >
-                <CustomTextInput
-                  value={formatNumberString((new BigNumber(gas, 16)).toFixed())}
-                  onChangeText={(newAmount) => {
-                    const digitOnly = getDigit(newAmount);
-                    if (digitOnly === '') {
-                      setGas('0x00');
-                      return;
-                    }
-
-                    if (getDecimalCount(newAmount) > 0) {
-                      return;
-                    }
-
-                    if (isNumber(digitOnly)) {
-                      // let formatedValue = formatNumberString(digitOnly);
-                      const bnVal = new BigNumber(digitOnly)
-                      setGas(`0x${bnVal.toString(16)}`)
-                    }
-                  }}
-                  headline={getLanguageString(language, 'GAS_LIMIT')}
-                  headlineStyle={{
-                    fontWeight: '500',
-                    fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-                  }}
-                  inputStyle={{
-                    backgroundColor: 'rgba(96, 99, 108, 1)',
-                    color: theme.textColor,
-                    marginBottom: 12
-                  }}
-                />
-              </View>
-            )
-          }
-          
-          <CustomText style={{color: theme.textColor}}>
-            {getLanguageString(language, 'TX_FEE')}
-          </CustomText>
-          <View style={{padding: 12, backgroundColor: theme.backgroundColor, borderRadius: 8, marginTop: 8, marginBottom: 12}}>
-            <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 12}}>
-              {formatNumberString(calculateTxFee())}{' '}
-              <CustomText style={{fontWeight: '400', color: theme.mutedTextColor}}>
-                KAI
-              </CustomText>
+              )
+            }
+            
+            <CustomText style={{color: theme.textColor}}>
+              {getLanguageString(language, 'TX_FEE')}
             </CustomText>
-          </View>
-          {
-            isDangerous() && (
+            <View style={{padding: 12, backgroundColor: theme.backgroundColor, borderRadius: 8, marginTop: 8, marginBottom: 12}}>
+              <CustomText style={{color: theme.textColor, fontWeight: 'bold', fontSize: theme.defaultFontSize + 12}}>
+                {formatNumberString(calculateTxFee())}{' '}
+                <CustomText style={{fontWeight: '400', color: theme.mutedTextColor}}>
+                  KAI
+                </CustomText>
+              </CustomText>
+            </View>
+            {
+              isDangerous() && (
+                <CustomText
+                  style={{
+                    fontWeight: 'bold',
+                    width: '100%',
+                    textAlign: 'center',
+                    color: theme.warningTextColor,
+                    // marginBottom: 12,
+                  }}
+                >
+                  {getLanguageString(language, 'TX_FEE_WARNING')}
+                </CustomText>
+              )
+            }
+            <Divider style={{width: '100%', backgroundColor: '#F0F1F2'}} />
+            {
+              preparing ? <ActivityIndicator color={theme.textColor} size="large" /> : 
+              renderTx()
+            }
+            {
+              error !== '' && 
               <CustomText
                 style={{
-                  fontWeight: 'bold',
+                  color: 'red',
+                  textAlign: 'left',
                   width: '100%',
-                  textAlign: 'center',
-                  color: theme.warningTextColor,
-                  // marginBottom: 12,
+                  marginTop: 8,
+                  fontStyle: 'italic'
                 }}
               >
-                {getLanguageString(language, 'TX_FEE_WARNING')}
+                {error}
               </CustomText>
-            )
-          }
-          <Divider style={{width: '100%', backgroundColor: '#F0F1F2'}} />
-          {
-            preparing ? <ActivityIndicator color={theme.textColor} size="large" /> : 
-            renderTx()
-          }
-          {
-            error !== '' && 
-            <CustomText
-              style={{
-                color: 'red',
-                textAlign: 'left',
-                width: '100%',
-                marginTop: 8,
-                fontStyle: 'italic'
-              }}
-            >
-              {error}
-            </CustomText>
-          }
-        </View>
-      </TouchableWithoutFeedback>
+            }
+          </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
     </CustomModal>
   )
 }

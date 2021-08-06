@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { ScrollView } from 'react-native'
 import CustomModal from '../../../components/Modal'
 import { ThemeContext } from '../../../ThemeContext'
 import MarketTradeForm from '../MarketTradeForm'
@@ -36,7 +37,9 @@ export default ({visible, onClose, pairItem, onSuccess}: {
       showCloseButton={false}
       contentStyle={getModalContentStyle()}
     >
-      <MarketTradeForm pairItem={pairItem} onSuccess={onSuccess} />
+      <ScrollView style={{flex: 1}}>
+        <MarketTradeForm pairItem={pairItem} onSuccess={onSuccess} />
+      </ScrollView>
     </CustomModal>
   )
 }
