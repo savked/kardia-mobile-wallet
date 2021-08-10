@@ -16,9 +16,10 @@ import { getBalance } from '../../services/krc20';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
-export default ({wallet, noAction = false}: {
+export default ({wallet, noAction = false, cardId}: {
 	wallet: any
-	noAction?: boolean
+	noAction?: boolean;
+	cardId?: number;
 }) => {
 	const theme = useContext(ThemeContext);
 	const tokenInfo = useRecoilValue(tokenInfoAtom);
@@ -53,7 +54,7 @@ export default ({wallet, noAction = false}: {
 			<View style={styles.kaiCard}>
 				<Image
 					style={[styles.cardBackground, {width: viewportWidth - 40}]}
-					source={parseCardAvatar(wallet.cardAvatarID)}
+					source={parseCardAvatar(cardId || wallet.cardAvatarID)}
 					// source={require('../../assets/test.jpg')}
 				/>
 				<View

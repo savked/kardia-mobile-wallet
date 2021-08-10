@@ -184,7 +184,7 @@ export default () => {
         >
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={{ paddingHorizontal: 20 }}>
-              <CardItem wallet={wallet} noAction={true} />
+              <CardItem wallet={wallet} noAction={true} cardId={cardAvatarID} />
               <CustomText style={{ color: theme.textColor, fontSize: 20, fontWeight: 'bold', marginTop: 20 }}>
                 {getLanguageString(language, 'WALLET_DETAILS')}
               </CustomText>
