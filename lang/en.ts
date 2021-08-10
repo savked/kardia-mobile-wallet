@@ -331,6 +331,7 @@ export const lang: Language = {
     // DApp
     DAPP: 'DApps',
     SEARCH_DAPP_PLACEHOLDER: 'Search or enter DApp URL',
-    DAPP_ERROR: 'Error confirming your transaction. Please try again later or contact admin for support.'
+    DAPP_ERROR: 'Error confirming your transaction. Please try again later or contact admin for support.',
+    ALL_DAPPS: 'All DApps'
   },
 };

@@ -324,6 +324,7 @@ export const lang: Language = {
     // DApp
     DAPP: 'DApps',
     SEARCH_DAPP_PLACEHOLDER: 'Tìm hoặc nhập địa chỉ DApp',
-    DAPP_ERROR: 'Có lỗi xảy ra. Vui lòng thử lại sau hoặc liên hệ admin để được hỗ trợ.'
+    DAPP_ERROR: 'Có lỗi xảy ra. Vui lòng thử lại sau hoặc liên hệ admin để được hỗ trợ.',
+    ALL_DAPPS: 'Tất cả'
   },
 };
