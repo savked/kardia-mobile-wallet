@@ -24,123 +24,125 @@ export default ({appList}: {
       >
         Featured ({appList.length})
       </CustomText>
-      <ScrollView
-        horizontal
-        style={{flex: 1}}
-        contentContainerStyle={{flexGrow:1}}
-      >
-        {
-          appList.map((app, index) => {
-            return (
-              <TouchableWithoutFeedback
-                key={`featured-app-${index}`}
-                onPress={() => {
-                  if (!app.url) return;
-                  const parsedURL = parseURL(app.url)
-                  navigation.navigate('DAppBrowser', {
-                    appURL: parsedURL,
-                    allowLandscape: app.allowLandscape
-                  })
-                }}
-              >
-                <View
-                  style={{
-                    marginLeft: index === 0 ? 20 : 16,
-                    marginRight: index === appList.length - 1 ? 20 : 0,
+      <View style={{height: 250}}>
+        <ScrollView
+          horizontal
+          style={{flex: 1}}
+          contentContainerStyle={{flexGrow: 1}}
+        >
+          {
+            appList.map((app, index) => {
+              return (
+                <TouchableWithoutFeedback
+                  key={`featured-app-${index}`}
+                  onPress={() => {
+                    if (!app.url) return;
+                    const parsedURL = parseURL(app.url)
+                    navigation.navigate('DAppBrowser', {
+                      appURL: parsedURL,
+                      allowLandscape: app.allowLandscape
+                    })
                   }}
                 >
-                  {
-                    app.banner ? 
-                    <Image
-                      source={{uri: app.banner}}
-                      style={{
-                        width: 279,
-                        height: 168,
-                        resizeMode: 'cover',
-                        borderTopLeftRadius: 12,
-                        borderTopRightRadius: 12
-                      }}
-                    />
-                    :
-                    <View
-                      style={{
-                        backgroundColor: '#FFFFFF',
-                        width: 279,
-                        height: 168,
-                        borderTopLeftRadius: 12,
-                        borderTopRightRadius: 12
-                      }}
-                    />
-                  }
                   <View
                     style={{
-                      backgroundColor: theme.backgroundFocusColor,
-                      paddingVertical: 12,
-                      paddingHorizontal: 16,
-                      borderBottomLeftRadius: 12,
-                      borderBottomRightRadius: 12,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
+                      marginLeft: index === 0 ? 20 : 16,
+                      marginRight: index === appList.length - 1 ? 20 : 0
                     }}
                   >
-                    <View style={{flexDirection: 'row'}}>
+                    {
+                      app.banner ? 
                       <Image
-                        source={{uri: app.icon}}
+                        source={{uri: app.banner}}
                         style={{
-                          width: 32,
-                          height: 32,
-                          borderRadius: 12,
-                          marginRight: 8
+                          width: 279,
+                          height: 168,
+                          resizeMode: 'cover',
+                          borderTopLeftRadius: 12,
+                          borderTopRightRadius: 12
                         }}
                       />
-                      <View style={{justifyContent: 'space-between'}}>
-                        <CustomText 
-                          style={{
-                            color: theme.textColor, 
-                            fontSize: theme.defaultFontSize,
-                            fontWeight: '500',
-                            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-                          }}
-                        >
-                          {app.name}
-                        </CustomText>
-                        <CustomText 
-                          style={{
-                            color: theme.mutedTextColor, 
-                            fontSize: theme.defaultFontSize,
-                            fontWeight: '500',
-                            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-                          }}
-                        >
-                          {
-                            app.categories ? 
-                              truncate(app.categories.join(', '), 20, -1) 
-                            : ' '
-                          }
-                        </CustomText>
-                      </View>
-                    </View>
+                      :
+                      <View
+                        style={{
+                          backgroundColor: '#FFFFFF',
+                          width: 279,
+                          height: 168,
+                          borderTopLeftRadius: 12,
+                          borderTopRightRadius: 12
+                        }}
+                      />
+                    }
                     <View
                       style={{
-                        padding: 14,
-                        borderRadius: 12,
-                        backgroundColor: theme.backgroundLightColor
+                        backgroundColor: theme.backgroundFocusColor,
+                        paddingVertical: 12,
+                        paddingHorizontal: 16,
+                        borderBottomLeftRadius: 12,
+                        borderBottomRightRadius: 12,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
                       }}
                     >
-                      <Icon
-                        name="chevron-right"
-                        color={theme.textColor}
-                        size={20}
-                      />
+                      <View style={{flexDirection: 'row'}}>
+                        <Image
+                          source={{uri: app.icon}}
+                          style={{
+                            width: 32,
+                            height: 32,
+                            borderRadius: 12,
+                            marginRight: 8
+                          }}
+                        />
+                        <View style={{justifyContent: 'space-between'}}>
+                          <CustomText 
+                            style={{
+                              color: theme.textColor, 
+                              fontSize: theme.defaultFontSize,
+                              fontWeight: '500',
+                              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                            }}
+                          >
+                            {app.name}
+                          </CustomText>
+                          <CustomText 
+                            style={{
+                              color: theme.mutedTextColor, 
+                              fontSize: theme.defaultFontSize,
+                              fontWeight: '500',
+                              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                            }}
+                          >
+                            {
+                              app.categories ? 
+                                truncate(app.categories.join(', '), 20, -1) 
+                              : ' '
+                            }
+                          </CustomText>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          padding: 14,
+                          borderRadius: 12,
+                          backgroundColor: theme.backgroundLightColor
+                        }}
+                      >
+                        <Icon
+                          name="chevron-right"
+                          color={theme.textColor}
+                          size={20}
+                        />
+                      </View>
                     </View>
                   </View>
-                </View>
-              </TouchableWithoutFeedback>
-            )
-          })
-        }
-      </ScrollView>
+                </TouchableWithoutFeedback>
+              )
+            })
+          }
+        </ScrollView>
+      </View>
     </>
   )
 }

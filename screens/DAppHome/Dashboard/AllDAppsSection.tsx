@@ -47,7 +47,7 @@ export default ({appList}: {
           paddingHorizontal: 20,
           fontWeight: 'bold',
           fontSize: theme.defaultFontSize + 6,
-          marginBottom: 12
+          marginVertical: 12
         }}
       >
         {getLanguageString(language, 'ALL_DAPPS')} ({appList.length})
