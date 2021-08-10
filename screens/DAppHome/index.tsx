@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import ENIcon from 'react-native-vector-icons/Entypo';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { languageAtom } from '../../atoms/language';
@@ -11,9 +11,11 @@ import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import CustomTextInput from '../../components/TextInput';
 import { getSearchURL, isURL, parseURL } from '../../utils/string';
 import { Keyboard, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import FavoriteDapp from '../DAppBrowser/FavoriteDapp';
+import FavoriteDapp from './FavoriteDapp';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import { statusBarColorAtom } from '../../atoms/statusBar';
+import Dashboard from './Dashboard';
+import SearchResult from './SearchResult';
 
 const DAppHome = () => {
   const theme = useContext(ThemeContext)
@@ -32,9 +34,11 @@ const DAppHome = () => {
     }, [])
   )
 
+  const insets = useSafeAreaInsets();
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+      <View style={[styles.container, {backgroundColor: theme.backgroundColor, paddingTop: insets.top}]}>
         <CustomText
           style={{color: theme.textColor, paddingHorizontal: 20, fontSize: 36}}>
           {getLanguageString(language, 'DAPP')}
@@ -98,7 +102,7 @@ const DAppHome = () => {
           />
         </View>
         <View style={{flex: 1}}>
-          <CustomText 
+          {/* <CustomText 
             style={{
               color: theme.textColor,
               fontWeight: 'bold', 
@@ -106,20 +110,23 @@ const DAppHome = () => {
               marginTop: 22,
               marginBottom: 8,
               fontSize: theme.defaultFontSize + 6
-            }
+            }}
+          >
+            {url === '' ? 'Quick Access' : 'Result'}
+          </CustomText> */}
+          {
+            url === '' ? <Dashboard /> : <SearchResult url={url} />
           }
-            >Quick Access
-          </CustomText>
-          <FavoriteDapp keyword={url} onAppSelect={(app) =>{
+          {/* <FavoriteDapp keyword={url} onAppSelect={(app) =>{
             if (!app.url) return;
             const parsedURL = parseURL(app.url)
             navigation.navigate('DAppBrowser', {
               appURL: parsedURL,
               allowLandscape: app.allowLandscape
             })
-          }} />
+          }} /> */}
         </View>
-      </SafeAreaView>
+      </View>
     </TouchableWithoutFeedback>
   );
 };

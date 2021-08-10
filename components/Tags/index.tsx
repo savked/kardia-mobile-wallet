@@ -13,7 +13,7 @@ export default ({active, content, containerStyle, onPress}: {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[containerStyle, {
+      style={[{
         paddingHorizontal: 6,
         paddingVertical: 4,
         borderRadius: 8,
@@ -24,7 +24,7 @@ export default ({active, content, containerStyle, onPress}: {
         justifyContent: 'center',
         width: 70,
         height: 28
-      }]}
+      }, containerStyle]}
     >
       <CustomText 
         style={{

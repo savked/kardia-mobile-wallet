@@ -165,9 +165,17 @@ export default () => {
       <View style={{width: '100%', backgroundColor: theme.backgroundColor, flexDirection: 'row', justifyContent: 'space-between'}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <ENIcon.Button
-            style={{paddingLeft: 20}}
+            style={{paddingLeft: 20, paddingRight: 0}}
             name="cross"
             onPress={() => navigation.goBack()}
+            backgroundColor="transparent"
+          />
+          <ENIcon.Button
+            style={{paddingHorizontal: 2}}
+            name="chevron-left"
+            onPress={() => {
+              webRef && webRef.current && webRef.current.goBack()
+            }}
             backgroundColor="transparent"
           />
           <CustomText style={{color: theme.textColor}}>KardiaChain Wallet</CustomText>  
