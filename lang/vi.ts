@@ -315,6 +315,14 @@ export const lang: Language = {
     SEARCH_PAIR_PLACEHOLDER: 'Tìm cặp giao dịch',
     TIME: 'Thời gian',
     SIZE: 'Số lượng',
+    MARKET_MODE: 'Thị trường',
+    LIMIT_MODE: 'Giới hạn',
+    NO_LIMIT_SUPPORT: 'Hiện tại cặp này chưa hỗ trợ lệnh giới hạn',
+    LIMIT_ORDER_CREATED: 'Đặt lệnh thành công',
+    LIMIT_ORDERS: 'Lệnh giới hạn',
+    LIMIT_ORDER_ID: 'Mã lệnh',
+    CANCEL_ORDER: 'Huỷ lệnh',
+    ORDER_CANCELLED: 'Lệnh #{{ORDER_ID}} đã được huỷ',
     // Referral key
     REFERRAL_CODE: 'Mã giới thiệu',
     REFERRAL_CODE_TITLE: 'Mã giới thiệu',
@@ -325,6 +333,23 @@ export const lang: Language = {
     DAPP: 'DApps',
     SEARCH_DAPP_PLACEHOLDER: 'Tìm hoặc nhập địa chỉ DApp',
     DAPP_ERROR: 'Có lỗi xảy ra. Vui lòng thử lại sau hoặc liên hệ admin để được hỗ trợ.',
-    ALL_DAPPS: 'Tất cả'
+    ALL_DAPPS: 'Tất cả',
+    ERROR_GAS_EQUAL_0: 'Giới hạn gas phải khác 0',
+    ERROR_GAS_PRICE_EQUAL_0: 'Giá gas phải khác 0',
+    // Loading text:
+    LOADING_TITLE_TEXT: 'Giao dịch chờ xác thực',
+    LOADING_TEXT_1: 'Chuẩn bị cất cánh',
+    LOADING_TEXT_2: 'Mang 2 mũ bảo hộ',
+    LOADING_TEXT_3: 'Mang 6 chiếc burger',
+    LOADING_TEXT_4: 'Tâm sự mỏng trước giờ G',
+    LOADING_TEXT_5: 'Ngồi nhâm nhi trà',
+    LOADING_TEXT_6: 'Cẩn thận người ngoài hành tinh',
+    // Pending tx:
+    HAS_PENDING_TX: 'Vui lòng đợi giao dịch hoàn tất trước khi gửi giao dịch mới.',
+    IGNORE_PENDING_TX_TITLE: 'Ignore pending transaction',
+    IGNORE_PENDING_TX_DESCRIPTION: 
+      "Once ignoring, you won't be notified but your transaction is still not cancelled. Another transaction can be proceed right after.",
+    KEEP_ME_NOTIFY: 'Keep me notified',
+    CONFIRM_IGNORE: 'Ignore this transaction'
   },
 };

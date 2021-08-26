@@ -322,6 +322,14 @@ export const lang: Language = {
     SEARCH_PAIR_PLACEHOLDER: 'Search for pair',
     TIME: 'Time',
     SIZE: 'Size',
+    MARKET_MODE: 'Market',
+    LIMIT_MODE: 'Limit',
+    NO_LIMIT_SUPPORT: 'Currently this pair does NOT support limit order',
+    LIMIT_ORDER_CREATED: 'Order created successfully',
+    LIMIT_ORDERS: 'Limit orders',
+    LIMIT_ORDER_ID: 'Order ID',
+    CANCEL_ORDER: 'Cancel Order',
+    ORDER_CANCELLED: 'Order #{{ORDER_ID}} cancelled',
     // Referral key
     REFERRAL_CODE: 'Referral Code',
     REFERRAL_CODE_TITLE: 'Referral',
@@ -332,6 +340,23 @@ export const lang: Language = {
     DAPP: 'DApps',
     SEARCH_DAPP_PLACEHOLDER: 'Search or enter DApp URL',
     DAPP_ERROR: 'Error confirming your transaction. Please try again later or contact admin for support.',
-    ALL_DAPPS: 'All DApps'
+    ALL_DAPPS: 'All DApps',
+    ERROR_GAS_EQUAL_0: 'Gas limit can not be 0',
+    ERROR_GAS_PRICE_EQUAL_0: 'Gas price can not be 0',
+    // Loading text:
+    LOADING_TITLE_TEXT: 'Transaction is on the way',
+    LOADING_TEXT_1: 'Prepares the launch',
+    LOADING_TEXT_2: 'Packs 2 helmets',
+    LOADING_TEXT_3: 'Packs 6 burgers',
+    LOADING_TEXT_4: 'Prep talk before flight',
+    LOADING_TEXT_5: 'Sips cocoa for strength',
+    LOADING_TEXT_6: 'Looks out for aliens',
+    // Pending tx:
+    HAS_PENDING_TX: 'Please wait until your pending transaction is completed.',
+    IGNORE_PENDING_TX_TITLE: 'Ignore pending transaction',
+    IGNORE_PENDING_TX_DESCRIPTION: 
+      "Once ignoring, you won't be notified but your transaction is still not cancelled. Another transaction can be proceed right after.",
+    KEEP_ME_NOTIFY: 'Keep me notified',
+    CONFIRM_IGNORE: 'Ignore this transaction'
   },
 };
