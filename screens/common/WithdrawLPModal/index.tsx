@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/core';
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { cacheSelector } from '../../../atoms/cache';
 import { languageAtom } from '../../../atoms/language';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
@@ -43,6 +44,7 @@ export default ({visible, onClose, lpItem, onSuccess, refreshLP}: {
 	const selectedWallet = useRecoilValue(selectedWalletAtom)
 	const [txDeadline, setTxDeadline] = useRecoilState(cacheSelector('txDeadline'))
   const [slippageTolerance, setSlippageTolerance] = useRecoilState(cacheSelector('slippageTolerance'))
+	const [pendingTx, setPendingTx] = useRecoilState(pendingTxSelector(wallets[selectedWallet].address))
 
 	const [withdrawing, setWithdrawing] = useState(false)
 
@@ -146,11 +148,9 @@ export default ({visible, onClose, lpItem, onSuccess, refreshLP}: {
 
 			const rs = await removeLiquidity(params, wallets[selectedWallet])
 
-			console.log(rs)
-
 			setWithdrawing(false)
 			onSuccess()
-
+			setPendingTx(rs)
 			navigation.navigate('SuccessTx', {
         type: 'withdrawLP',
         txHash: rs,
@@ -417,7 +417,13 @@ export default ({visible, onClose, lpItem, onSuccess, refreshLP}: {
 						disabled={withdrawing}
 						loading={withdrawing}
 						title={approvalState === true ? getLanguageString(language, 'WITHDRAW') : getLanguageString(language, 'APPROVE')}
-						onPress={approvalState === true ? submit : approve}
+						onPress={() => {
+							if (pendingTx) {
+								Alert.alert(getLanguageString(language, 'HAS_PENDING_TX'));
+								return;
+							}
+							approvalState === true ? submit() : approve()
+						}}
 						textStyle={{
 							fontWeight: '500',
 							fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined

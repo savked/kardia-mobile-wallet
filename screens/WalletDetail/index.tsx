@@ -25,6 +25,7 @@ import { parseDecimals } from '../../utils/number';
 import { filterByOwnerSelector, krc20PricesAtom } from '../../atoms/krc20';
 import { getBalance } from '../../services/krc20';
 import CardItem from '../Home/CardItem';
+import { pendingTxSelector } from '../../atoms/pendingTx';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
@@ -37,6 +38,7 @@ export default () => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(selectedWalletAtom);
+  const [pendingTx, setPendingTx] = useRecoilState(pendingTxSelector(wallets[selectedWallet].address))
   const language = useRecoilValue(languageAtom);
   const tokenInfo = useRecoilValue(tokenInfoAtom);
 

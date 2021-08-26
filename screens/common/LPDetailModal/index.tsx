@@ -51,13 +51,6 @@ export default ({visible, onClose, lpItem, triggerAddLP, refreshLP}: {
 
 	if (!lpItem) return null
 
-	// const getPrice = (returnType = 'string') => {
-	// 	const priceBN = getPairPriceInBN(lpItem.token1_liquidity, lpItem.token2_liquidity)
-	// 	if (returnType === 'number') return priceBN.toNumber()
-	// 	if (returnType === 'BN') return priceBN
-	// 	return formatNumberString(priceBN.toFixed(), 6)
-	// }
-
 	const getPrice = (returnType = 'string', fragtionsCount?: number) => {
 		if (token1Liquidity === '0' && token2Liquidity === '0') {
 			return '-'

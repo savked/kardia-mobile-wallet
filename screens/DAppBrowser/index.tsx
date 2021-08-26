@@ -18,6 +18,7 @@ import {styles} from './style'
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomText from '../../components/Text';
 import { showTabBarAtom } from '../../atoms/showTabBar';
+import Web3 from 'web3'
 
 const SCALE_FOR_DESKTOP = `const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=1'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta); `
 
@@ -69,12 +70,20 @@ export default () => {
   }
 
   const handleLog = (logData: any) => {
-    // console.log('Log from frame', logData)
+    console.log('Log from frame', logData)
   }
 
-  const handleRPC = (requestId: number, method: string, params: Record<string, any>) => {
+  const handleRPC = async (requestId: number, method: string, params: Record<string, any>) => {
     if (!method) return
     switch (method) {
+      case 'signPersonalMessage':
+        const web3 = new Web3(RPC_ENDPOINT)
+        const {signature} = web3.eth.accounts.sign(params.data, wallets[selectedWallet].privateKey!)
+        const rs = parseRun(requestId, signature)
+        if (webRef && webRef.current) {
+          webRef.current.injectJavaScript(rs);
+        }
+        break;
       case 'requestAccounts':
         const codeToRun = parseRun(requestId, [wallets[selectedWallet].address])
         if (webRef && webRef.current) {

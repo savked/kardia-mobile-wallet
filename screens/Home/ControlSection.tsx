@@ -34,7 +34,10 @@ export default ({noAction = false}: {
         showNewTxModal && (
           <NewTxModal
             visible={showNewTxModal}
-            onClose={() => setShowNewTxModal(false)}
+            onClose={(showSuccess = false) => {
+              setShowNewTxModal(false)
+              if (!showSuccess) setShowSelectToken(true)
+            }}
             beforeShowSuccess={() => setShowSelectToken(false)}
           />
         )
@@ -43,7 +46,10 @@ export default ({noAction = false}: {
         showNewKRC20TxModal && (
           <NewKRC20TxModal
             visible={showNewKRC20TxModal}
-            onClose={() => setShowKRC20NewTxModal(false)}
+            onClose={(showSuccess = false) => {
+              setShowKRC20NewTxModal(false)
+              if (!showSuccess) setShowSelectToken(true)
+            }}
             tokenAddress={tokenAddress}
             tokenSymbol={tokenSymbol}
             tokenDecimals={tokenDecimals}
@@ -73,12 +79,14 @@ export default ({noAction = false}: {
             }) => {
               if (selectKAI) {
                 setShowNewTxModal(true)
+                setShowSelectToken(false)
               } else {
                 setTokenAddress(_tokenAddress)
                 setTokenSymbol(_tokenSymbol)
                 setTokenDecimals(_tokenDecimals)
                 setTokenAvatar(_tokenAvatar)
                 setShowKRC20NewTxModal(true)
+                setShowSelectToken(false)
               }
             }}
           />

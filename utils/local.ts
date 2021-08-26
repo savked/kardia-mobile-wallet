@@ -483,3 +483,28 @@ export const clearAddressNonce = async (address: string) => {
     return false;
   }
 }
+
+export const savePendingTx = async (pendingTxObj: Record<string, string>) => {
+  try {
+    await AsyncStorage.setItem(
+      '@kardia_pending_tx',
+      JSON.stringify(pendingTxObj),
+    );
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
+export const getPendingTx = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@kardia_pending_tx');
+    if (!value) return {}
+    return JSON.parse(value)
+  } catch (e) {
+    console.error('Error getting pending tx');
+    return {};
+    // error reading value
+  }
+}

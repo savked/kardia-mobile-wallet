@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
+import {Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
 import numeral from 'numeral';
-import {useRecoilValue} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
 import Divider from '../../../components/Divider';
 import Modal from '../../../components/Modal';
@@ -23,6 +23,7 @@ import {useNavigation} from '@react-navigation/native';
 import { getBalance } from '../../../services/account';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 import CustomText from '../../../components/Text';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
 
 export default ({
   validatorItem,
@@ -47,6 +48,7 @@ export default ({
 
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
+  const [pendingTx, setPendingTx] = useRecoilState(pendingTxSelector(wallets[selectedWallet].address))
 
   useEffect(() => {
     (async () => {
@@ -187,6 +189,11 @@ export default ({
       return false;
     }
 
+    if (pendingTx) {
+      Alert.alert(getLanguageString(language, 'HAS_PENDING_TX'));
+      return;
+    }
+
     const wallets = await getWallets();
     const selectedWallet = await getSelectedWallet();
     const balance = await getBalance(wallets[selectedWallet].address)
@@ -270,7 +277,7 @@ export default ({
       return {
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
-        height: 590,
+        height: 620,
         marginBottom: keyboardShown ? -180 : 0,
         marginTop: keyboardShown ? 180 : 0,
       };
@@ -278,7 +285,7 @@ export default ({
       return {
         backgroundColor: theme.backgroundFocusColor,
         justifyContent: 'flex-start',
-        height: 560,
+        height: 590,
         marginBottom: keyboardOffset - 30,
         marginTop: -keyboardOffset - 30,
       };

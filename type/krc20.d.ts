@@ -30,4 +30,5 @@ interface Pair {
   contract_address: string;
   volumeUSD: string;
   invert: boolean;
+  supportLimit?: boolean;
 }

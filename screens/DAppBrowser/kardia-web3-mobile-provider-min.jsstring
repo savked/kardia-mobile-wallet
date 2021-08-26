@@ -167,7 +167,6 @@ var RPCServer = /*#__PURE__*/function () {
   }, {
     key: "call",
     value: function call(payload) {
-      console.log(payload);
       return fetch(this.rpcUrl, {
         method: "POST",
         headers: {
@@ -178,8 +177,6 @@ var RPCServer = /*#__PURE__*/function () {
       }).then(function (response) {
         return response.json();
       }).then(function (json) {
-        console.log(json);
-
         if (!json.result && json.error) {
           throw new Error(json.error.message || "rpc error");
         }
@@ -30784,7 +30781,10 @@ var KardiaChainWeb3Provider = /*#__PURE__*/function (_EventEmitter) {
           name: handler,
           object: data
         };
-        window.ReactNativeWebView.postMessage(JSON.stringify(object));
+
+        if (window.ReactNativeWebView) {
+          window.ReactNativeWebView.postMessage(JSON.stringify(object));
+        }
       } else {
         // don't forget to verify in the app
         this.sendError(id, new _error.default(4100, "provider is not ready"));
@@ -30835,8 +30835,6 @@ var KardiaChainWeb3Provider = /*#__PURE__*/function (_EventEmitter) {
         data.result = result;
       }
 
-      console.log('final data', data);
-
       if (callback) {
         wrapResult ? callback(null, data) : callback(null, result);
         this.callbacks.delete(id);
@@ -30847,8 +30845,8 @@ var KardiaChainWeb3Provider = /*#__PURE__*/function (_EventEmitter) {
           var frame = window.frames[i];
 
           try {
-            if (frame.ethereum.callbacks.has(id)) {
-              frame.ethereum.sendResponse(id, result);
+            if (frame.kardiachain.callbacks.has(id)) {
+              frame.kardiachain.sendResponse(id, result);
             }
           } catch (error) {
             console.log("send response to frame error: ".concat(error));
@@ -30953,7 +30951,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64906" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60148" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -29,7 +29,7 @@ export default ({pairItem, isLast, isFirst}: {
       const _rate = bnTo.dividedBy(bnFrom)
       setRate(_rate)
     })()
-  }, [])
+  }, [pairItem])
 
   return (
     <TouchableOpacity 

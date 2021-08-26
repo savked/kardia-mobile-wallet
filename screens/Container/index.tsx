@@ -15,12 +15,14 @@ import {
   getFavPair,
   getFontSize,
   getLanguageSetting,
+  getPendingTx,
   getRefCode,
   getSelectedWallet,
   getTokenList,
   getWallets,
   saveAddressNonce,
   saveAllCache,
+  savePendingTx,
   saveSelectedWallet,
   saveTokenList,
   saveWallets,
@@ -59,6 +61,11 @@ import DEXStackScreen from '../../DEXStack';
 import { referralCodeAtom } from '../../atoms/referralCode';
 import DAppStackScreen from '../../DAppStack';
 import { favoritePairsAtom } from '../../atoms/favoritePairs';
+import { pendingTxAtom, pendingTxBackgroundAtom, pendingTxSelector } from '../../atoms/pendingTx';
+import { getTxDetail } from '../../services/transaction';
+import Toast from 'react-native-toast-message';
+import { truncate } from '../../utils/string';
+import IgnorePendingTxModal from '../common/IgnorePendingTxModal';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -272,6 +279,10 @@ const AppContainer = () => {
 
   const setDexStatus = useSetRecoilState(dexStatusAtom)
   const [cache, setCache] = useRecoilState(cacheAtom)
+  const [pendingTx, setPendingTx] = useRecoilState(pendingTxSelector(wallets[selectedWallet] ? wallets[selectedWallet].address : ''))
+  const setPendingTxFull = useSetRecoilState(pendingTxAtom)
+  const [pendingTxBackground, setPendingTxBackground] = useRecoilState(pendingTxBackgroundAtom)
+  const [showPendingTxModal, setShowPendingTxModal] = useState(false);
 
   const theme = useContext(ThemeContext);
 
@@ -295,12 +306,49 @@ const AppContainer = () => {
     setFavPair(favoritePair)
   }, [favoritePair])
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if (!inited || appStatus !== 'OK') return;
-  //     await saveWallets(wallets);
-  //   })();
-  // }, [wallets, inited]);
+  useEffect(() => {
+    if (!pendingTx || !wallets[selectedWallet] || !pendingTxBackground || !inited) {
+      Toast.hide();
+      return
+    }
+    Toast.show({
+      autoHide: false,
+      type: 'pendingTx',
+      props: {
+        backgroundColor: theme.backgroundFocusColor,
+        textColor: theme.textColor,
+        onIgnore: () => {
+          setShowPendingTxModal(true)
+        }
+      },
+      topOffset: 70,
+      text1: `Transaction preparing`,
+      text2: truncate(pendingTx as string, 10, -1)
+    })
+    const pendingTxInterval = setInterval(async () => {
+      console.log('start background check', pendingTx)
+      try {
+        const txDetail = await getTxDetail(pendingTx as string)
+
+        if (txDetail.hash) {
+          console.log('Found tx, clear background')
+          setPendingTx('');
+          setPendingTxBackground(false)
+          clearInterval(pendingTxInterval);
+          Toast.hide();
+          return;
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }, 5000);
+    return () => clearInterval(pendingTxInterval); 
+
+  }, [pendingTx, pendingTxBackground])
+
+  useEffect(() => {
+    if (!pendingTx) setPendingTxBackground(false)
+  }, [pendingTx])
 
   const handleAppStateChange = useCallback(
     (state: string) => {
@@ -338,7 +386,6 @@ const AppContainer = () => {
       return 'OK'
     }
     return 'NEED_UPDATE'
-
   }
 
   useEffect(() => {
@@ -371,8 +418,8 @@ const AppContainer = () => {
     (async () => {
       Orientation.lockToPortrait()
       const blockchainAvailable = await checkBlockchainStatus()
-
       if (!blockchainAvailable) {
+        setInited(1)
         setAppStatus('UNDER_MAINTAINANCE')
         return;
       }
@@ -381,22 +428,18 @@ const AppContainer = () => {
       const _selectedWallet = await getSelectedWallet();
 
       const address = _wallets && _wallets[_selectedWallet] ? _wallets[_selectedWallet].address : ''
-
       const serverStatus = await getAppStatus(address);
-
       if (serverStatus.status === 'UNDER_MAINTAINANCE') {
+        setInited(1)
         setAppStatus('UNDER_MAINTAINANCE')
         return;
       }
-
       const compareResult = compareVersion(INFO_DATA.version, serverStatus.appVersion)
       setAppStatus(compareResult)
-
       if (compareResult !== 'OK') {
         setInited(1);
         return;
       }
-
       // Get local auth setting
       const enabled = await getAppPasscodeSetting();
       setLocalAuthEnabled(enabled);
@@ -409,6 +452,10 @@ const AppContainer = () => {
       const favPair = await getFavPair()
       setFavoritePair(favPair)
 
+      // Get local pending tx
+      const pending = await getPendingTx();
+      setPendingTxFull(pending)
+
       // Get local wallets data
       try {
         let localWallets = await getWallets();
@@ -416,8 +463,6 @@ const AppContainer = () => {
         const promiseArr = localWallets.map(async (wallet: Wallet) => {
           try {
             wallet.balance = await getBalance(wallet.address);
-            // const accountNonce = await getNonce(wallet.address)
-            // await saveAddressNonce(wallet.address, accountNonce)
           } catch (error) {
             wallet.balance = '0'
             console.log('Get balance fail')
@@ -430,37 +475,6 @@ const AppContainer = () => {
       } catch (error) {
         console.error(error);
       }
-
-      // TODO: Get nonce for local use
-      // try {
-      //   let localWallets = await getWallets();
-
-      //   const promiseArr = localWallets.map(async (wallet: Wallet) => {
-      //     try {
-      //       const accountNonce = await getNonce(wallet.address)
-      //       return {
-      //         address: wallet.address,
-      //         nonce: accountNonce
-      //       }
-      //     } catch (error) {
-      //       console.log('Get nonce fail')
-      //       return {
-      //         address: wallet.address,
-      //         nonce: null
-      //       }
-      //     }
-      //   });
-
-      //   const nonceList = (await Promise.all(promiseArr)).filter((item) => item.nonce !== null);
-      //   const nonceObj: Record<string, any> = {}
-      //   nonceList.forEach((item) => {
-      //     nonceObj[item.address] = item.nonce
-      //   })
-      //   setLocalNonce(nonceObj)
-      //   // setWallets(localWallets);
-      // } catch (error) {
-      //   console.error(error);
-      // }
 
       // Get selected wallet
       try {
@@ -602,6 +616,10 @@ const AppContainer = () => {
     <>
       <NavigationContainer>
         <Portal.Host>
+          <IgnorePendingTxModal
+            visible={showPendingTxModal}
+            onClose={() => setShowPendingTxModal(false)}
+          />
           <Stack.Navigator>
             <Stack.Screen
               options={{headerShown: false}}

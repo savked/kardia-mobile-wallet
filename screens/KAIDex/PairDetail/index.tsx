@@ -23,6 +23,7 @@ import ChartSection from './ChartSection';
 import BigNumber from 'bignumber.js';
 import { useQuery } from '@apollo/client';
 import { GET_PAIRS } from '../../../services/dex/queries';
+import Toast from 'react-native-toast-message';
 
 export default () => {
   const navigation = useNavigation()
@@ -80,6 +81,7 @@ export default () => {
 
   const get24hPrice = async () => {
     const pairData = await get24hPairData(pairItem.contract_address)
+    if (!pairData) return pairData
     if (pairItem.invert) {
       return pairData.token0Price
     } else {
@@ -190,16 +192,33 @@ export default () => {
         visible={showTradeModal}
         onClose={() => setShowTradeModal(false)}
         pairItem={pairItem}
-        onSuccess={({mode, amountTo, amountFrom, txResult }) => {
-          navigation.navigate('SuccessTx', {
-            type: 'dex',
-            pairAddress: pairItem.contract_address,
-            dexAmount: mode === 'SELL' ? getDigit(amountTo) : getDigit(amountFrom),
-            tokenSymbol: formatDexToken(pairItem.t1).symbol,
-            dexMode: `DEX_MODE_${mode}`,
-            txHash: typeof txResult === 'string' ? txResult : txResult.transactionHash,
-            pairItem,
-          });
+        onSuccess={({mode, amountTo, amountFrom, txResult, isLimit = false }) => {
+          if (isLimit) {
+            // Toast.show({
+            //   type: 'success',
+            //   topOffset: 70,
+            //   text1: getLanguageString(language, 'LIMIT_ORDER_CREATED'),
+            // });
+            navigation.navigate('SuccessTx', {
+              type: 'dexLimit',
+              pairAddress: pairItem.contract_address,
+              dexAmount: mode === 'SELL' ? getDigit(amountTo) : getDigit(amountFrom),
+              tokenSymbol: formatDexToken(pairItem.t1).symbol,
+              dexMode: `DEX_MODE_${mode}`,
+              txHash: typeof txResult === 'string' ? txResult : txResult.transactionHash,
+              pairItem,
+            });
+          } else {
+            navigation.navigate('SuccessTx', {
+              type: 'dex',
+              pairAddress: pairItem.contract_address,
+              dexAmount: mode === 'SELL' ? getDigit(amountTo) : getDigit(amountFrom),
+              tokenSymbol: formatDexToken(pairItem.t1).symbol,
+              dexMode: `DEX_MODE_${mode}`,
+              txHash: typeof txResult === 'string' ? txResult : txResult.transactionHash,
+              pairItem,
+            });
+          }
           setShowTradeModal(false)
         }}
       />

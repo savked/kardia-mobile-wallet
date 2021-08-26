@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/core';
 import React, { useContext, useEffect, useState } from 'react';
-import { Keyboard, Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import { useRecoilValue } from 'recoil';
+import { Alert, Keyboard, Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { languageAtom } from '../../../atoms/language';
 import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
@@ -15,6 +15,8 @@ import { getLanguageString } from '../../../utils/lang';
 import { getSelectedWallet, getWallets } from '../../../utils/local';
 import { format, formatNumberString, getDigit, isNumber } from '../../../utils/number';
 import CustomText from '../../../components/Text';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
 
 export default ({visible, onClose, validatorItem, onSuccess}: {
   visible: boolean;
@@ -32,6 +34,10 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
   const [submitting, setSubmitting] = useState(false);
   const [keyboardShown, setKeyboardShown] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
+
+  const wallets = useRecoilValue(walletsAtom)
+  const selectedWallet = useRecoilValue(selectedWalletAtom)
+  const [pendingTx, setPendingTx] = useRecoilState(pendingTxSelector(wallets[selectedWallet].address))
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -72,6 +78,10 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
   }
 
   const handleUndelegate = async () => {
+    if (pendingTx) {
+      Alert.alert(getLanguageString(language, 'HAS_PENDING_TX'));
+      return
+    }
     try {
       setSubmitting(true);
       const _undelegateValue = Number(getDigit(undelegateAmount));

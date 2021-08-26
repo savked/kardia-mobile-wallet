@@ -1,11 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {Dimensions, Image, ImageBackground, Platform, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, Platform, TouchableOpacity, View} from 'react-native';
 import Toast from 'react-native-toast-message';
 import QRCode from 'react-native-qrcode-svg';
 import {useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
-import { tokenInfoAtom } from '../../../atoms/token';
 import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
 import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
@@ -26,7 +25,6 @@ const QRModal = ({
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const language = useRecoilValue(languageAtom);
-  const tokenInfo = useRecoilValue(tokenInfoAtom);
 
   const theme = useContext(ThemeContext);
 

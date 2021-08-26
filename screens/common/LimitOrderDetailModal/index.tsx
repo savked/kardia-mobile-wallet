@@ -1,59 +1,127 @@
-import React, { useContext } from 'react';
-import { Image, Linking, Platform, TouchableOpacity, View } from 'react-native';
-import { useRecoilValue } from 'recoil';
+import React, { useContext, useState } from 'react';
+import { Alert, Image, Linking, Platform, TouchableOpacity, View } from 'react-native';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import {format} from 'date-fns';
 import { languageAtom } from '../../../atoms/language';
 import CustomModal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
 import { ThemeContext } from '../../../ThemeContext';
 import { getOrderPrice, getOrderTotal, isBuy, parseSymbolWKAI } from '../../../utils/dex';
-import { formatNumberString } from '../../../utils/number';
+import { formatNumberString, parseDecimals } from '../../../utils/number';
 import {styles} from './styles'
 import { getDateFNSLocale, getLanguageString } from '../../../utils/lang';
 import { copyToClipboard, getLogoURL, getTxURL, truncate } from '../../../utils/string';
 import Toast from 'react-native-toast-message';
 import Divider from '../../../components/Divider';
 import Button from '../../../components/Button';
+import AuthModal from '../AuthModal';
+import { cancelOrder } from '../../../services/dex';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
+import { useNavigation } from '@react-navigation/core';
+import { pendingTxAtom, pendingTxSelector } from '../../../atoms/pendingTx';
 
 export default ({
 	visible,
 	onClose,
-	orderObj
+	orderObj,
+	refreshLimitOrders
 }: {
 	visible: boolean;
 	onClose: () => void;
-	orderObj: Record<string, any>
+	orderObj: Record<string, any>,
+	refreshLimitOrders: () => void
 }) => {
-
+	const navigation = useNavigation()
 	const theme = useContext(ThemeContext)
 	const language = useRecoilValue(languageAtom)
 	const dateLocale = getDateFNSLocale(language);
 
+	const wallet = useRecoilValue(walletsAtom)
+	const selectedWallet = useRecoilValue(selectedWalletAtom)
+	const [pendingTx, setPendingTx] = useRecoilState(pendingTxSelector(wallet[selectedWallet].address))
+
+	const [showAuthModal, setShowAuthModal] = useState(false)
+	const [cancelling, setCancelling] = useState(false)
+	const [error, setError] = useState('');
+
 	const getModalStyle = () => {
 		return {
 			backgroundColor: theme.backgroundFocusColor,
-			height: 470
+			height: 530
 		}
 	}
 
-	const handleClickLink = (url: string) => {
-    Linking.canOpenURL(url).then((supported) => {
-      if (supported) {
-        Linking.openURL(url);
-      } else {
-        console.error("Don't know how to open URI: " + url);
-      }
-    });
-  };
+	const handleCancelOrder = async () => {
+		setCancelling(true)
+		try {
+			const txResult = await cancelOrder(orderObj.id, wallet[selectedWallet]);	
+			setPendingTx(typeof txResult === 'string' ? txResult : txResult.transactionHash)
+
+			navigation.navigate('SuccessTx', {
+				type: 'dexLimitCancelOrder',
+				pairAddress: orderObj.pair.id,
+				orderID: orderObj.id,
+				txHash: typeof txResult === 'string' ? txResult : txResult.transactionHash,
+				refreshLimitOrders: refreshLimitOrders
+			});
+
+			onClose()
+
+		} catch (error) {
+			console.log('error')
+			console.log(error)
+		}
+		setCancelling(false)
+	}
+
+	const renderBadge = (status: number) => {
+    switch (status) {
+      case 1:
+        // Open order
+        return (
+          <View style={{paddingHorizontal: 4, paddingVertical: 2, backgroundColor: 'rgba(174, 126, 71, 1)', borderRadius: 4}}>
+            <CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize}}>Pending</CustomText>
+          </View>
+        )
+      case 2:
+        // Cancelled order
+        return (
+          <View style={{paddingHorizontal: 4, paddingVertical: 2, backgroundColor: 'rgba(96, 99, 108, 1)', borderRadius: 4}}>
+            <CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize}}>Cancelled</CustomText>
+          </View>
+        )
+      default:
+        return (
+          <View style={{paddingHorizontal: 4, paddingVertical: 2, backgroundColor: 'rgba(85, 197, 83, 1)', borderRadius: 4}}>
+            <CustomText style={{fontSize: theme.defaultFontSize}}>Completed</CustomText>
+          </View>
+        )
+    }
+  }
 
 	if (!orderObj) {
 		return null
 	}
 
+	if (showAuthModal) {
+		return (
+			<AuthModal
+				visible={showAuthModal}
+				onClose={() => {
+					setShowAuthModal(false)
+				}}
+				onSuccess={handleCancelOrder}
+			/>
+		)
+	}
+
 	return (
 		<CustomModal
 			visible={visible}
-			onClose={onClose}
+			onClose={() => {
+				setError('')
+				onClose()
+			}}
 			showCloseButton={false}
 			contentStyle={getModalStyle()}
 		>
@@ -81,7 +149,7 @@ export default ({
 						shadowRadius: 4,
 						elevation: 9,
 					}}>
-					{isBuy(orderObj) ? (
+					{orderObj.tradeType === 0 ? (
 						<Image
 							source={require('../../../assets/icon/receive.png')}
 							style={styles.logo}
@@ -106,34 +174,26 @@ export default ({
               {color: theme.textColor, marginRight: 12},
             ]}>
             {/* {parseKaiBalance(txObj.amount, true)} */}
-            {formatNumberString(isBuy(orderObj) ? orderObj.amount0Out : orderObj.amount0In, 4)}
+            {formatNumberString(parseDecimals(orderObj.amount, orderObj.pair.token0.decimals), 4)}
           </CustomText>
           <CustomText style={{color: theme.textColor, fontSize: 18}}>
 						{parseSymbolWKAI(orderObj.pair.token0.symbol)}
 					</CustomText>
         </View>
-				<View style={{backgroundColor: '#212121', paddingHorizontal: 16, paddingVertical: 12, borderRadius: 8, marginTop: 20, width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
-          <CustomText style={{color: theme.textColor}}>
-            {truncate(orderObj.transaction.id, 14, 14)}
-          </CustomText>
-          <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity onPress={() => {
-              copyToClipboard(orderObj.transaction.id)
-              Toast.show({
-                type: 'success',
-                topOffset: 70,
-                text1: getLanguageString(language, 'COPIED'),
-              });
-            }}>
-              <Image source={require('../../../assets/icon/copy.png')} style={{width: 16, height: 16, marginRight: 12}} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleClickLink(getTxURL(orderObj.transaction.id))}>
-              <Image source={require('../../../assets/icon/external_url_dark.png')} style={{width: 16, height: 16}} />
-            </TouchableOpacity>
-          </View>
-        </View>
 				<Divider style={{width: '100%', backgroundColor: '#60636C'}} />
 				<View style={{width: '100%'}}>
+					<View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingVertical: 6}}>
+						<CustomText style={{color: theme.mutedTextColor}}>{getLanguageString(language, 'LIMIT_ORDER_ID')}</CustomText>
+						<CustomText 
+							style={{
+								color: theme.textColor,
+								fontWeight: '500',
+								fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+							}}
+						>
+							#{orderObj.id}
+						</CustomText>
+					</View>
 					<View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 6}}>
 						<CustomText style={{color: theme.mutedTextColor}}>{getLanguageString(language, 'PAIR')}</CustomText>
 						<View style={{flexDirection: 'row'}}>
@@ -168,6 +228,10 @@ export default ({
 						</View>
 					</View>
 					<View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingVertical: 6}}>
+						<CustomText style={{color: theme.mutedTextColor}}>{getLanguageString(language, 'ORDER_STATUS')}</CustomText>
+						{renderBadge(orderObj.status)}
+					</View>
+					<View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingVertical: 6}}>
 						<CustomText style={{color: theme.mutedTextColor}}>{getLanguageString(language, 'PRICE')}</CustomText>
 						<CustomText 
 							style={{
@@ -176,7 +240,7 @@ export default ({
 								fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
 							}}
 						>
-							{formatNumberString(getOrderPrice(orderObj).toFixed(), 6)}{' '}
+							{formatNumberString(orderObj.price, 6)}{' '}
 							<CustomText style={{color: theme.mutedTextColor, fontWeight: 'normal'}}>{parseSymbolWKAI(orderObj.pair.token1.symbol)}</CustomText>
 						</CustomText>
 					</View>
@@ -189,7 +253,7 @@ export default ({
 								fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
 							}}>
 							{formatNumberString(
-								isBuy(orderObj) ? orderObj.amount0Out : orderObj.amount0In, 
+								parseDecimals(orderObj.amount, orderObj.pair.token0.decimals), 
 								6
 							)}{' '}
 							<CustomText style={{color: theme.mutedTextColor, fontWeight: 'normal'}}>
@@ -206,7 +270,7 @@ export default ({
 								fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
 							}}>
 							{formatNumberString(
-								getOrderTotal(orderObj), 
+								parseDecimals(orderObj.total, orderObj.pair.token1.decimals),
 								6
 							)}{' '}
 							<CustomText style={{color: theme.mutedTextColor, fontWeight: 'normal'}}>
@@ -219,11 +283,56 @@ export default ({
 				<Button
 					onPress={onClose}
 					title={getLanguageString(language, 'OK_TEXT')}
+					type="outline"
 					textStyle={{
 						fontWeight: '500',
 						fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
 					}}
+					style={{
+						width: '100%'
+					}}
 				/>
+				{
+					orderObj.status === 1 &&
+					<Button
+						block
+						loading={cancelling}
+						loadingColor={theme.textColor}
+						title={getLanguageString(language, 'CANCEL_ORDER')}
+						type="ghost"
+						style={{
+							marginTop: 12,
+							backgroundColor: 'rgba(208, 37, 38, 1)',
+						}}
+						textStyle={{
+							color: '#FFFFFF',
+							fontWeight: '500',
+							fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+							fontSize: theme.defaultFontSize + 3
+						}}
+						onPress={() => {
+							console.log('eee', pendingTx)
+							if (pendingTx) {
+								Alert.alert(getLanguageString(language, 'HAS_PENDING_TX'));
+								return;
+							}
+							setShowAuthModal(true)
+						}}
+					/>
+				}
+				{
+					error !== '' && 
+					<CustomText
+						style={{
+							fontStyle: 'italic',
+							marginTop: 2,
+							color: 'red',
+							marginBottom: 12
+						}}
+					>
+						{error}
+					</CustomText>
+				}
 			</View>
 		</CustomModal>
 	)

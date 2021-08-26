@@ -237,27 +237,6 @@ const TokenListSection = ({refreshTime}: {
           />
         </View>
       </ImageBackground>
-      {/* {tokenList.length === 0 && !loading && (
-        <View style={{alignItems: 'center', marginTop: 45, marginBottom: 30}}>
-          <Image
-            style={{width: 111, height: 52}}
-            source={require('../../assets/no_tokens_dark.png')}
-          />
-          <CustomText style={[styles.noTXText, {color: theme.textColor}]}>
-            {getLanguageString(language, 'NO_TOKENS')}
-          </CustomText>
-          <CustomText style={{color: theme.mutedTextColor, fontSize: 12, marginBottom: 16}}>
-            {getLanguageString(language, 'NO_TOKENS_SUB_TEXT')}
-          </CustomText>
-          <Button
-            type="outline"
-            textStyle={{fontWeight: 'bold', fontSize: 12}}
-            style={{paddingVertical: 8, paddingHorizontal: 16}}
-            onPress={() => navigation.navigate('NewKRC20Tokens')}
-            title={`+ ${getLanguageString(language, 'ADD_TOKEN')}`}
-          />
-        </View>
-      )} */}
       {loading ? <ActivityIndicator color={theme.textColor} size="large" /> : (
         renderTokenList()
       )}

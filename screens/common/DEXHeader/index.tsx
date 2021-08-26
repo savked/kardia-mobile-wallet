@@ -1,17 +1,15 @@
 import { useNavigation } from '@react-navigation/core';
-import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useContext } from 'react';
-import { Platform, TouchableOpacity, View } from 'react-native';
+import React, { useContext } from 'react';
+import { Image, Platform, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../../atoms/language';
-import { statusBarColorAtom } from '../../../atoms/statusBar';
 import CustomText from '../../../components/Text';
 import { ThemeContext } from '../../../ThemeContext';
 import { getLanguageString } from '../../../utils/lang';
 
 export default ({type}: {
-  type : 'TRADE' | 'LIQUIDITY' | 'ORDER_HISTORY'
+  type : 'TRADE' | 'LIQUIDITY' | 'ORDER_HISTORY' | 'LIMIT_ORDERS'
 }) => {
   const navigation = useNavigation()
   const language = useRecoilValue(languageAtom)
@@ -30,12 +28,11 @@ export default ({type}: {
       marginBottom: 12,
       paddingTop: Platform.OS === 'android' ? 8 : insets.top
     }}>
-      <View style={{width: '100%'}}>
+      <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16,}}>
         <CustomText
           style={{
             textAlign: 'left',
             color: theme.textColor,
-            marginBottom: 16,
             fontSize: theme.defaultFontSize + 24
           }}
         >

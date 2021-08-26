@@ -40,18 +40,21 @@ export const getAppStatus = async (address: string) => {
     })
   };
 
-  const response: any = await requestWithTimeOut(
-    // fetch(`${ENDPOINT}status`, requestOptions),
-    fetch(`${PROXY_ENDPOINT}mobile/status`, requestOptions),
-    50 * 1000,
-  )
-
-  if (!response) {
+  try {
+    const response: any = await requestWithTimeOut(
+      // fetch(`${ENDPOINT}status`, requestOptions),
+      fetch(`${PROXY_ENDPOINT}mobile/status`, requestOptions),
+      50 * 1000,
+    )
+    if (!response) {
+      return {};
+    }
+    const responseJSON = await response.json();
+    return responseJSON.data;
+  } catch (error) {
+    console.log('getAppStatus error', error)
     return {};
   }
-
-  const responseJSON = await response.json();
-  return responseJSON.data;
 }
 
 export const checkBlockchainStatus = async () => {

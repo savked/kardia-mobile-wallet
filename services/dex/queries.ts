@@ -155,10 +155,66 @@ export const MY_ORDER_HISTORY = gql`
       to
       sender
       transaction{
-          id
+        id
       }
     }
   } 
+`
+
+export const MY_LIMIT_ORDER_HISTORY = gql`
+  query LimitOrder($traderAddr: String!, $skip: Int!, $first: Int!) {
+    orders (where: {
+      trader: $traderAddr,
+      status_in: [2, 3]
+    }, 
+    skip: $skip,
+    first: $first,
+    orderBy: createdAt, 
+    orderDirection: desc) {
+      pair
+      id
+      orderInputAmount
+      orderOutputAmount
+      tradeType
+      swapType
+      status
+      createdAt
+      orderTxHash
+      orderPrice0
+      orderPrice1
+      trader {
+        id
+      }
+    }
+  }
+`
+
+export const MY_PENDING_LIMIT_ORDER = gql`
+  query LimitOrder($traderAddr: String!, $skip: Int!, $first: Int!) {
+    orders (where: {
+      trader: $traderAddr,
+      status: 1
+    }, 
+    skip: $skip,
+    first: $first,
+    orderBy: createdAt, 
+    orderDirection: desc) {
+      pair
+      id
+      orderInputAmount
+      orderOutputAmount
+      tradeType
+      swapType
+      status
+      createdAt
+      orderTxHash
+      orderPrice0
+      orderPrice1
+      trader {
+        id
+      }
+    }
+  }
 `
 
 export const GET_CHART_SUB = (resolution: string) => {

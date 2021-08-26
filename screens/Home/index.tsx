@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Dimensions, ImageBackground, RefreshControl, ScrollView} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {ActivityIndicator, Dimensions, ImageBackground, Platform, RefreshControl, ScrollView, View} from 'react-native';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {styles} from './style';
 import HomeHeader from './Header';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
@@ -45,6 +45,8 @@ const HomeScreen = () => {
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
   const navigation = useNavigation();
+
+  const {top: topInsets} = useSafeAreaInsets();
 
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
@@ -141,12 +143,16 @@ const HomeScreen = () => {
   }
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
+    <View style={{flex: 1, backgroundColor: theme.backgroundColor, paddingTop: topInsets}}>
       <HomeHeader />
       <ImageBackground
         source={require('../../assets/home_background.jpg')}
         imageStyle={{width: viewportWidth, height: viewportHeight, resizeMode: 'cover'}}
-        style={{width: viewportWidth, height: viewportHeight - tabBarHeight - HEADER_HEIGHT - 48}}
+        style={{
+          width: viewportWidth, 
+          height: viewportHeight - tabBarHeight - HEADER_HEIGHT - (Platform.OS === 'ios' ? 48 : 0), 
+          paddingBottom: Platform.OS == 'android' ? 24 : 0
+        }}
       >
         <ScrollView 
           showsVerticalScrollIndicator={false}
@@ -165,7 +171,7 @@ const HomeScreen = () => {
           <TokenListSection refreshTime={refreshTime} />
         </ScrollView>
       </ImageBackground>
-    </SafeAreaView>
+    </View>
   );
 };
 

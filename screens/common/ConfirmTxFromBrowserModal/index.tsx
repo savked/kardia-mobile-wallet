@@ -29,9 +29,9 @@ export default ({visible, onClose, txObj, onConfirm}: {
   const language = useRecoilValue(languageAtom)
   const [preparing, setPreparing] = useState(false)
   const [gas, setGas] = useState('0x0')
-  const [edittingGas, setEdittingGas] = useState(false)
+  const [errorGas, setErrorGas] = useState('');
   const [gasPrice, setGasPrice] = useState(DEFAULT_GAS_PRICE_HEX)
-  const [edittingGasPrice, setEdittingGasPrice] = useState(false)
+  const [errorGasPrice, setErrorGasPrice] = useState('');
 
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [loading, setLoading] = useState(false)
@@ -160,7 +160,24 @@ export default ({visible, onClose, txObj, onConfirm}: {
           title={getLanguageString(language, 'CONFIRM')}
           disabled={loading}
           loading={loading}
-          onPress={() => setShowAuthModal(true)}
+          onPress={() => {
+            let isValid = true
+            if ((new BigNumber(gas, 16)).isEqualTo(0)) {
+              setErrorGas(getLanguageString(language, 'ERROR_GAS_EQUAL_0'))
+              isValid = false
+            }
+
+            if ((new BigNumber(gasPrice, 16)).isEqualTo(0)) {
+              setErrorGasPrice(getLanguageString(language, 'ERROR_GAS_PRICE_EQUAL_0'))
+              isValid = false
+            }
+
+            if (!isValid) {
+              return
+            }
+
+            setShowAuthModal(true)
+          }}
           style={{
             width: '100%',
             marginTop: 12
@@ -226,7 +243,7 @@ export default ({visible, onClose, txObj, onConfirm}: {
                   >
                     {getLanguageString(language, 'GAS_PRICE')}
                   </CustomText>
-                  <View style={{justifyContent: 'center', marginBottom: 12}}>
+                  <View style={{justifyContent: 'center', marginBottom: errorGasPrice ? 0 : 12}}>
                     <CustomTextInput
                       value={formatNumberString((new BigNumber(gasPrice, 16)).dividedBy(new BigNumber(10 ** 9)).toFixed())}
                       onChangeText={(newAmount) => {
@@ -261,6 +278,19 @@ export default ({visible, onClose, txObj, onConfirm}: {
                       OXY
                     </CustomText>
                   </View>
+                  {
+                    errorGasPrice !== '' && 
+                    <CustomText
+                      style={{
+                        fontStyle: 'italic',
+                        marginTop: 2,
+                        color: 'red',
+                        marginBottom: 12
+                      }}
+                    >
+                      {errorGasPrice}
+                    </CustomText>
+                  }
                 </View>
               )
             }
@@ -280,6 +310,7 @@ export default ({visible, onClose, txObj, onConfirm}: {
                   style={{width: '100%', alignItems: 'flex-start'}}
                 >
                   <CustomTextInput
+                    message={errorGas}
                     value={formatNumberString((new BigNumber(gas, 16)).toFixed())}
                     onChangeText={(newAmount) => {
                       const digitOnly = getDigit(newAmount);
@@ -306,7 +337,7 @@ export default ({visible, onClose, txObj, onConfirm}: {
                     inputStyle={{
                       backgroundColor: 'rgba(96, 99, 108, 1)',
                       color: theme.textColor,
-                      marginBottom: 12
+                      marginBottom: errorGas ? 0 : 12
                     }}
                   />
                 </View>

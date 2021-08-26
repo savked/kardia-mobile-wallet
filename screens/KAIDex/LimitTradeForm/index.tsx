@@ -1,28 +1,27 @@
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Image, Keyboard, Platform, RefreshControl, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, Keyboard, Platform, RefreshControl, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { languageAtom } from '../../../atoms/language';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
-import TxSettingModal from '../TxSettingModal'
 import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
 import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
-import { approveToken, calculateDexAmountOut, calculatePriceImpact, calculateTransactionDeadline, formatDexToken, getApproveState, getPairs, getReserve, getTotalVolume } from '../../../services/dex';
+import { approveToken, formatDexToken, getApproveState, getReserve, getTotalVolume } from '../../../services/dex';
 import { getBalance as getKRC20Balance } from '../../../services/krc20';
 import { ThemeContext } from '../../../ThemeContext';
 import { getLanguageString, parseError } from '../../../utils/lang';
 import { getSelectedWallet, getWallets, saveWallets } from '../../../utils/local';
 import { formatNumberString, getDecimalCount, getDigit, getPartial, isNumber, parseDecimals } from '../../../utils/number';
-import { swapTokens } from '../../../services/dex';
+import { submitLimitOrder } from '../../../services/dex';
 import Tags from '../../../components/Tags';
 import AuthModal from '../../common/AuthModal';
 import { getErrorKey, isRecognizedError } from '../../../utils/error';
-import { cacheSelector } from '../../../atoms/cache';
 import { useQuery } from '@apollo/client';
 import { GET_PAIRS } from '../../../services/dex/queries';
 import { getBalance } from '../../../services/account';
+import { LIMIT_ORDER_FEE } from '../../../config';
 import { pendingTxSelector } from '../../../atoms/pendingTx';
 
 let _tokenFrom: PairToken
@@ -64,7 +63,6 @@ export default ({
   // const [tokenFromLiquidity, setTokenFromLiquidity] = useState(_tokenFromLiquidity)
   const [tokenFromLiquidity, setTokenFromLiquidity] = useState('')
   const [amountFrom, setAmountFrom] = useState('0')
-  const [amountFromTimeout, setAmountFromTimeout] = useState<any>()
   const [balanceFrom, setBalanceFrom] = useState('0');
   const [loadingFrom, setLoadingFrom] = useState(false);
   const [loadingTo, setLoadingTo] = useState(false);
@@ -79,9 +77,9 @@ export default ({
   // const [tokenToLiquidity, setTokenToLiquidity] = useState(_tokenToLiquidity)
   const [tokenToLiquidity, setTokenToLiquidity] = useState('')
   const [amountTo, setAmountTo] = useState('0')
-  const [amountToTimeout, setAmountToTimeout] = useState<any>()
   const [balanceTo, setBalanceTo] = useState('0');
   const [volume, setVolume] = useState('0');
+  const [orderPrice, setOrderPrice] = useState('0');
 
   const [editting, setEditting] = useState('');
   const [processing, setProcessing] = useState(false)
@@ -89,19 +87,12 @@ export default ({
   const [inputType, setInputType] = useState(0)
 
   const [rate, setRate] = useState<BigNumber>(new BigNumber(0));
-  // const [txDeadline, setTxDeadline] = useState('2')
-  const [txDeadline, setTxDeadline] = useRecoilState(cacheSelector('txDeadline'))
-  // const [slippageTolerance, setSlippageTolerance] = useState('1')
-  const [slippageTolerance, setSlippageTolerance] = useRecoilState(cacheSelector('slippageTolerance'))
 
-  const [showTxSettingModal, setShowTxSettingModal] = useState(false)
   const [swapError, setSwappError] = useState('');
 
   const [showAuthModal, setShowAuthModal] = useState(false);
-  // const [onAuthSuccess, setOnAuthSuccess] = useState<() => void>(() => {})
-  const [priceImpact, setPriceImpact] = useState('0');
 
-  const { data: volumeData, refetch } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
+  const { data: volumeData } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
 
   const onAuthSuccess = () => {
     if (!approvedState) {
@@ -109,14 +100,6 @@ export default ({
     } else {
       handleSubmitMarket()
     }
-  }
-
-  const estimateRate = () => {
-    if (amountTo === '0' || amountFrom === '0' || !tokenTo || !tokenFrom) return rate
-    const to = tokenTo.hash === _tokenTo.hash ? amountTo : amountFrom
-    const from = tokenTo.hash === _tokenTo.hash ? amountFrom : amountTo
-
-    return new BigNumber(getDigit(to)).dividedBy(new BigNumber(getDigit(from)))
   }
 
   useEffect(() => {
@@ -222,7 +205,8 @@ export default ({
 
   useEffect(() => {
     (async () => {
-      if (editting === 'from' && rate && tokenFrom && tokenTo) {
+      if (editting !== 'from') return
+      if (rate && tokenFrom && tokenTo && orderPrice !== '0') {
         const _amountFrom = getDigit(amountFrom, false)
         if (_amountFrom === '0' || _amountFrom === '' || Number(_amountFrom) === 0) {
           setAmountTo('0');
@@ -231,40 +215,33 @@ export default ({
 
         setLoadingTo(true)
 
-        if (amountToTimeout) {
-          clearTimeout(amountToTimeout)
+        // const _newTo = await calculateDexAmountOut(_amountFrom, "TOTAL", tokenTo, tokenFrom)
+        const amountFromBN = new BigNumber(_amountFrom);
+        const _newTo = 
+          tokenFrom.hash === _tokenFrom.hash ? 
+            amountFromBN
+              .multipliedBy(new BigNumber(orderPrice))
+              .toFixed()
+          :
+            amountFromBN
+              .dividedBy(new BigNumber(orderPrice))
+              .toFixed()
+
+        if (tokenTo) {
+          const _approveState = await getApproveState(tokenTo, _newTo, wallets[selectedWallet])
+          setApprovedState(_approveState)
         }
 
-        const timeoutId = setTimeout(async () => {
-          const _newTo = await calculateDexAmountOut(_amountFrom, "TOTAL", tokenTo, tokenFrom)
-
-          if (tokenTo) {
-            const _approveState = await getApproveState(tokenTo, _newTo, wallets[selectedWallet])
-            setApprovedState(_approveState)
-          }
-
-          const impact = await calculatePriceImpact(
-            tokenTo,
-            tokenFrom,
-            getDigit(_newTo),
-            getDigit(amountFrom)
-          )
-
-          setPriceImpact(impact)
-
-          setAmountTo(formatNumberString(_newTo, tokenTo.decimals))
-          setLoadingTo(false)
-          clearTimeout(timeoutId)
-          setAmountToTimeout(null)
-        }, 1000)
-        setAmountToTimeout(timeoutId)
+        setAmountTo(formatNumberString(_newTo, tokenTo.decimals))
+        setLoadingTo(false)
       }
     })()
-  }, [amountFrom, rate])
+  }, [amountFrom, rate, orderPrice])
 
   useEffect(() => {
     (async () => {
-      if (editting === 'to' && rate && tokenFrom && tokenTo) {
+      if (editting !== 'to') return
+      if (rate && tokenFrom && tokenTo && orderPrice !== '0') {
         const _amountTo = getDigit(amountTo, false)
         if (_amountTo === '0' || _amountTo === '' || Number(_amountTo) === 0) {
           setAmountFrom('0');
@@ -272,36 +249,29 @@ export default ({
         }
 
         setLoadingFrom(true)
-
-        if (amountFromTimeout) {
-          clearTimeout(amountFromTimeout)
-        }
-        const timeoutId = setTimeout(async () => {
-          const _approveState = await getApproveState(tokenTo, _amountTo, wallets[selectedWallet])
-          setApprovedState(_approveState)
-
-          const _newFrom = await calculateDexAmountOut(_amountTo, "AMOUNT", tokenTo, tokenFrom)
-
-          const impact = await calculatePriceImpact(
-            tokenTo,
-            tokenFrom,
-            getDigit(amountTo),
-            getDigit(_newFrom)
-          )
-
-          setPriceImpact(impact)
-
-          setAmountFrom(formatNumberString(_newFrom, tokenFrom.decimals))
-          setLoadingFrom(false)
-          clearTimeout(timeoutId)
-          setAmountToTimeout(null)
-
-        }, 1000)
-
-        setAmountFromTimeout(timeoutId)
+        const _approveState = await getApproveState(tokenTo, _amountTo, wallets[selectedWallet])
+        setApprovedState(_approveState)
+        const amountToBN = new BigNumber(_amountTo);
+        const _newFrom =
+          tokenFrom.hash === _tokenFrom.hash ?
+            amountToBN
+              .dividedBy(new BigNumber(orderPrice))
+              .toFixed()
+          :
+            amountToBN
+              .multipliedBy(new BigNumber(orderPrice))
+              .toFixed()
+        setAmountFrom(formatNumberString(_newFrom, tokenFrom.decimals))
+        setLoadingFrom(false)
       }
     })()
-  }, [amountTo, rate])
+  }, [amountTo, rate, orderPrice])
+
+  useEffect(() => {
+    if (editting !== 'price') return;
+    setAmountFrom('0')
+    setAmountTo('0')
+  }, [orderPrice])
 
   const handleSwitchToken = async () => {
     const _from = JSON.parse(JSON.stringify(tokenFrom))
@@ -317,7 +287,7 @@ export default ({
     setTokenFromLiquidity(_toLiquidity)
     setTokenToLiquidity(_fromLiquidity)
     setSwappError('')
-    setPriceImpact('0')
+    setOrderPrice('0')
 
     if (mode === 'BUY') {
       setMode('SELL')
@@ -376,11 +346,11 @@ export default ({
     try {
       const _wallets = await getWallets();
       const _selectedWallet = await getSelectedWallet();
-      
+
       // Swap token
       const swapParams = {
-        amountIn: getDigit(amountTo),
-        amountOut: getDigit(amountFrom),
+        amountIn: (new BigNumber(getDigit(amountTo))).toFixed(),
+        amountOut: (new BigNumber(getDigit(amountFrom))).toFixed(),
         inputToken: {
           tokenAddress: tokenTo.hash,
           decimals: tokenTo.decimals
@@ -389,13 +359,12 @@ export default ({
           tokenAddress: tokenFrom.hash,
           decimals: tokenFrom.decimals
         },
-        addressTo: _wallets[_selectedWallet].address,
         inputType,
-        slippageTolerance,
-        txDeadline: await calculateTransactionDeadline(txDeadline as string),
+        orderKAIFee: LIMIT_ORDER_FEE,
+        tradeType: mode === 'BUY' ? 0 : 1
       }
 
-      const txResult = await swapTokens(swapParams, _wallets[_selectedWallet])
+      const txResult = await submitLimitOrder(swapParams, _wallets[_selectedWallet])
       setProcessing(false)
 
       if (txResult) {
@@ -405,12 +374,12 @@ export default ({
         setAmountTo('0')
         setSwappError('')
         onSuccess({
-          mode, amountTo, amountFrom, txResult, isLimit: false
+          mode, amountTo, amountFrom, txResult, isLimit: true
         })
       } else {
         // Handling fail tx
         console.log('Swap fail')
-        console.log(swapParams)
+        console.log(txResult)
         setSwappError(getLanguageString(language, 'SWAP_GENERAL_ERROR'))
       }
 
@@ -431,58 +400,7 @@ export default ({
     }
 
     if (!isValid) return;
-
     setShowAuthModal(true)
-  }
-
-  const renderRate = () => {
-    if (_tokenFrom && _tokenTo && rate) {
-      return (
-        <View style={{marginTop: 12, backgroundColor: theme.backgroundStrongColor, paddingVertical: 8, paddingHorizontal: 12, borderRadius: 8}}>
-          <CustomText style={{color: theme.textColor}}>
-            1{' '}
-            <CustomText style={{color: theme.mutedTextColor}}>{_tokenFrom.symbol}</CustomText>{' '}={' '}
-            {
-              loadingFrom || loadingTo ? 
-              <CustomText style={{color: theme.textColor}}> -- </CustomText>
-              :
-              <CustomText style={{color: theme.textColor}}>~ {formatNumberString(estimateRate().toFixed(), 6)}</CustomText>
-            }
-            <CustomText style={{color: theme.mutedTextColor}}> {_tokenTo.symbol}</CustomText>
-          </CustomText>
-        </View>
-      )
-    }
-  }
-
-  const renderSetting = () => {
-    if (tokenFrom && tokenTo && tokenFromLiquidity && tokenToLiquidity && rate) {
-      return (
-        <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 16}}>
-          <TxSettingModal
-            visible={showTxSettingModal}
-            slippageTolerance={slippageTolerance as string}
-            deadline={txDeadline as string}
-            onClose={() => {
-              setShowTxSettingModal(false);
-            }}
-            onSubmit={(newDeadline, newSlippageTolerance) => {
-              setTxDeadline(newDeadline);
-              setSlippageTolerance(newSlippageTolerance);
-              setShowTxSettingModal(false);
-            }}
-          />
-          <CustomText style={{color: theme.textColor, textAlign: 'left', width: '100%', marginTop: 8}}>
-            {getLanguageString(language, 'PRICE_IMPACT')}: {priceImpact} %
-          </CustomText>
-          <Divider height={0.5} style={{width: '100%', backgroundColor: 'rgba(96, 99, 108, 1)', height: 2}} />
-          <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', width: '100%'}} onPress={() => setShowTxSettingModal(true)}>
-            <Image style={{width: 16, height: 16, marginRight: 4}} source={require('../../../assets/icon/setting_dark.png')} />
-            <CustomText style={{color: theme.textColor}}>{getLanguageString(language, 'TX_SETTING')}</CustomText>
-          </TouchableOpacity>
-        </View>
-      )
-    }
   }
 
   const renderButton = () => {
@@ -592,6 +510,10 @@ export default ({
     )
   }
 
+  if (!_tokenFrom || !_tokenTo) {
+    return null;
+  }
+
   return (
     <View
       style={{
@@ -609,7 +531,78 @@ export default ({
               // paddingTop: 24,
               paddingBottom: 12,
             }}>
-            
+            <View style={{width: '100%', marginTop: 12}}>
+              <CustomText 
+                style={{
+                  color: theme.textColor,
+                  fontSize: theme.defaultFontSize + 1,
+                  fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+                  fontWeight: '500',
+                  marginBottom: 6
+                }}
+              >
+                {getLanguageString(language, 'PRICE')}
+              </CustomText>
+              <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
+                <CustomText style={{paddingRight: 4, color: theme.textColor}}>
+                  1 {formatDexToken(_tokenFrom).symbol} = 
+                </CustomText>
+                <CustomTextInput
+                  value={orderPrice}
+                  keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
+                  onChangeText={(newValue) => {
+                    const digitOnly = getDigit(newValue, true);
+                    if (digitOnly === '') {
+                      setOrderPrice('0')
+                    }
+
+                    if (isNumber(digitOnly)) {
+                      let formatedValue = formatNumberString(digitOnly);
+
+                      const [numParts, decimalParts] = digitOnly.split('.')
+
+                      if (!decimalParts && decimalParts !== "") {
+                        setOrderPrice(formatedValue);
+                        return
+                      }
+
+                      formatedValue = formatNumberString(numParts) + '.' + decimalParts
+                      setOrderPrice(formatedValue)
+                    }
+
+                  }}
+                  onFocus={() => {
+                    setEditting('price')
+                  }}
+                  onBlur={() => {
+                    setEditting('')
+                  }}
+                  containerStyle={{flex: 1}}
+                  inputStyle={{
+                    // backgroundColor: 'rgba(184, 184, 184, 1)',
+                    // color: 'rgba(28, 28, 40, 0.36)',
+                    backgroundColor: 'rgba(96, 99, 108, 1)',
+                    color: theme.textColor,
+                    paddingRight: 90
+                  }}
+                />
+                <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: 60}}>
+                  {
+                    _tokenTo && (
+                      <>
+                        <View style={{width: 20, height: 20, backgroundColor: '#FFFFFF', borderRadius: 10, marginRight: 8}}>
+                          <Image
+                            source={{uri: _tokenTo.logo}}
+                            style={{width: 20, height: 20}}
+                          />
+                        </View>
+                        <CustomText style={{color: theme.textColor}}>{formatDexToken(_tokenTo).symbol}</CustomText>
+                      </>
+                    )
+                  }
+                </View>
+              </View>
+            </View>
             {tokenTo && (
               <View style={{width: '100%', marginTop: 12}}>
                 <CustomText 
@@ -687,7 +680,7 @@ export default ({
                               style={{width: 20, height: 20}}
                             />
                           </View>
-                          <CustomText style={{color: theme.textColor}}>{tokenTo.symbol}</CustomText>
+                          <CustomText style={{color: theme.textColor}}>{formatDexToken(tokenTo).symbol}</CustomText>
                         </>
                       )
                     }
@@ -696,17 +689,32 @@ export default ({
                 <View style={{flexDirection: 'row', marginTop: 12}}>
                   <Tags 
                     content={`25 %`} 
-                    active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.25, tokenTo.decimals), tokenTo.decimals) } 
+                    active={
+                      balanceTo !== '0' && 
+                      shouldHighight() && 
+                      getDigit(amountTo) ===
+                        getDigit(
+                          formatNumberString(parseDecimals(getPartial(balanceTo, 0.25, tokenTo.decimals), tokenTo.decimals), tokenTo.decimals)
+                        )
+                    } 
                     containerStyle={{marginRight: 12}} 
                     onPress={() => {
                       setEditting('to')
                       const partialValue = getPartial(balanceTo, 0.25, tokenTo.decimals)
-                      setAmountTo(formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals))
+                      const newAmountTo = formatNumberString(parseDecimals(partialValue, tokenTo.decimals), tokenTo.decimals)
+                      setAmountTo(newAmountTo)
                     }} 
                   />
                   <Tags 
                     content={`50 %`} 
-                    active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.5, tokenTo.decimals), tokenTo.decimals) } 
+                    active={
+                      balanceTo !== '0' && 
+                      shouldHighight() && 
+                      getDigit(amountTo) === 
+                        getDigit(
+                          formatNumberString(parseDecimals(getPartial(balanceTo, 0.5, tokenTo.decimals), tokenTo.decimals), tokenTo.decimals)
+                        )
+                    } 
                     containerStyle={{marginRight: 12}} 
                     onPress={() => {
                       setEditting('to')
@@ -716,7 +724,14 @@ export default ({
                   />
                   <Tags 
                     content={`75 %`} 
-                    active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.75, tokenTo.decimals), tokenTo.decimals) } 
+                    active={
+                      balanceTo !== '0' && 
+                      shouldHighight() && 
+                      getDigit(amountTo) === 
+                        getDigit(
+                          formatNumberString(parseDecimals(getPartial(balanceTo, 0.75, tokenTo.decimals), tokenTo.decimals), tokenTo.decimals)
+                        )
+                    } 
                     containerStyle={{marginRight: 12}} 
                     onPress={() => {
                       setEditting('to')
@@ -726,7 +741,14 @@ export default ({
                   />
                   <Tags 
                     content={`100 %`} 
-                    active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 1, tokenTo.decimals), tokenTo.decimals) } 
+                    active={
+                      balanceTo !== '0' && 
+                      shouldHighight() && 
+                      getDigit(amountTo) === 
+                        getDigit(
+                          formatNumberString(parseDecimals(getPartial(balanceTo, 1, tokenTo.decimals), tokenTo.decimals), tokenTo.decimals)
+                        )
+                    } 
                     onPress={() => {
                       setEditting('to')
                       
@@ -868,7 +890,7 @@ export default ({
                               style={{width: 20, height: 20}}
                             />
                           </View>
-                          <CustomText style={{color: theme.textColor}}>{tokenFrom.symbol}</CustomText>
+                          <CustomText style={{color: theme.textColor}}>{formatDexToken(tokenFrom).symbol}</CustomText>
                         </>
                       )
                     }
@@ -886,8 +908,14 @@ export default ({
                 </CustomText>
               </View>
             )}
-            {renderRate()}
-            {renderSetting()}
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginTop: 20}}>
+              <View style={{width: '50%', alignItems: 'flex-start', justifyContent: 'center'}}>
+                <CustomText style={{color: theme.mutedTextColor, fontSize: theme.defaultFontSize + 2}}>Placing fee</CustomText>
+              </View>
+              <View style={{width: '50%', alignItems: 'flex-end', justifyContent: 'center'}}>
+                <CustomText style={{color: theme.textColor, fontSize: theme.defaultFontSize + 2}}>{LIMIT_ORDER_FEE} KAI</CustomText>
+              </View>
+            </View>
             {inited && _tokenFrom && _tokenTo && rate ? 
               renderButton() : 
               <ActivityIndicator color={theme.textColor} size="large" />

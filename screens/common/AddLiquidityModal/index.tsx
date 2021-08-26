@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/core';
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import { Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { cacheSelector } from '../../../atoms/cache';
 import { languageAtom } from '../../../atoms/language';
@@ -20,6 +20,7 @@ import { getLanguageString } from '../../../utils/lang';
 import { formatNumberString, getDecimalCount, getDigit, getPartial, isNumber, parseDecimals } from '../../../utils/number';
 import TxSettingModal from '../../KAIDex/TxSettingModal';
 import AuthModal from '../AuthModal';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
 
 export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 	visible: boolean;
@@ -46,6 +47,7 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 	const [is100Balance1, setIs100Balance1] = useState(false)
 	const [errorToken0, setErrorToken0] = useState('')
 	const [errorToken1, setErrorToken1] = useState('')
+	const [error, setError] = useState('');
 	const [editting, setEditting] = useState('')
 	const [showTxSettingModal, setShowTxSettingModal] = useState(false)
 
@@ -63,6 +65,7 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 	const selectedWallet = useRecoilValue(selectedWalletAtom)
 	const [txDeadline, setTxDeadline] = useRecoilState(cacheSelector('txDeadline'))
   const [slippageTolerance, setSlippageTolerance] = useRecoilState(cacheSelector('slippageTolerance'))
+	const [pendingTx, setPendingTx] = useRecoilState(pendingTxSelector(wallets[selectedWallet].address))
 
 	const _keyboardDidShow = (e: any) => {
     setKeyboardOffset(e.endCoordinates.height);
@@ -204,6 +207,10 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 
 	const handleApproveToken = async () => {
 		try {
+			if (pendingTx) {
+				Alert.alert(getLanguageString(language, 'HAS_PENDING_TX'));
+				return;
+			}
 			setSubmitting(true)
 
 			if (!approvalState0) {
@@ -238,6 +245,12 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 		setErrorToken0('')
 		setErrorToken1('')
 		let isValid = true
+
+		if (pendingTx) {
+      Alert.alert(getLanguageString(language, 'HAS_PENDING_TX'));
+      isValid = false;
+    }
+
 		const amount0BN = new BigNumber(getDigit(token0))
 		const balance0BN = new BigNumber(getDigit(balance0))
 
@@ -287,6 +300,8 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 			if (closeDetail) {
 				closeDetail()
 			}
+
+			setPendingTx(rs)
 
 			navigation.navigate('SuccessTx', {
         type: 'addLP',
@@ -779,6 +794,18 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 							fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
 						}}
 					/>
+					{
+						error !== '' &&
+						<CustomText
+							style={{
+								fontStyle: 'italic',
+								marginTop: 2,
+								color: 'red'
+							}}
+						>
+							{error}
+						</CustomText>
+					}
 				</View>
 			</TouchableWithoutFeedback>
 		</CustomModal>

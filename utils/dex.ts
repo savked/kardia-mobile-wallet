@@ -39,6 +39,13 @@ export const isBuy = (item: Record<string, any>) => {
 	return amount0In.isLessThan(amount0Out)
 }
 
+export const isLimitBuy = (item: Record<string, any>) => {
+  if (item.pair.pairIdentity.invert) {
+    return item.tradeType === 1
+  }
+  return item.tradeType === 0
+}
+
 export const pairMapper = (pairs: any[]): Pair[] => {
   return pairs.map((item) => {
     const invert = item.pairIdentity.invert
@@ -72,6 +79,7 @@ export const pairMapper = (pairs: any[]): Pair[] => {
       t2: invert ? t1: t2,
       volumeUSD: item.volumeUSD,
       invert,
+      supportLimit: item.supportLimit || false
     }
   })
 }

@@ -8,7 +8,7 @@ import {ThemeContext} from '../../../ThemeContext';
 import {getLanguageString, parseError} from '../../../utils/lang';
 import numeral from 'numeral';
 import {styles} from './style';
-import {useRecoilValue} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
 import {weiToKAI} from '../../../services/transaction/amount';
 import Button from '../../../components/Button';
@@ -20,6 +20,8 @@ import CustomText from '../../../components/Text';
 import { getLatestBlock } from '../../../services/blockchain';
 import { formatNumberString, getDigit } from '../../../utils/number';
 import { BLOCK_TIME } from '../../../config';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 
 const showButton = (value: any) => {
   return formatNumberString(value) !== '0'
@@ -37,6 +39,9 @@ export default ({
   const navigation = useNavigation();
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
+  const wallets = useRecoilValue(walletsAtom)
+  const selectedWallet = useRecoilValue(selectedWalletAtom)
+  const [pendingTx, setPendingTx] = useRecoilState(pendingTxSelector(wallets[selectedWallet].address))
 
   const [claiming, setClaiming] = useState(false);
   const [showUndelegateModal, setShowUndelegateModal] = useState(false);
@@ -111,12 +116,17 @@ export default ({
   };
 
   const claimHandler = async () => {
+    if (pendingTx) {
+      Alert.alert(getLanguageString(language, 'HAS_PENDING_TX'));
+      return
+    }
     try {
       setClaiming(true);
       const wallets = await getWallets();
       const selectedWallet = await getSelectedWallet();
       const rs = await withdrawReward(validatorItem.value, wallets[selectedWallet]);
       setClaiming(false);
+      setPendingTx(rs)
       navigation.navigate('SuccessTx', {
         type: 'claim',
         txHash: rs,
@@ -142,6 +152,7 @@ export default ({
       const selectedWallet = await getSelectedWallet();
       const rs = await withdrawDelegatedAmount(validatorItem.value, wallets[selectedWallet]);
       setWithdrawing(false);
+      setPendingTx(rs)
       navigation.navigate('SuccessTx', {
         type: 'withdraw',
         txHash: rs,
@@ -172,7 +183,6 @@ export default ({
           setShowUndelegateModal(false);
         }}
         onSuccess={() => {
-          // setShowUndelegateModal(false);
           onClose();
         }}
         validatorItem={validatorItem}
@@ -326,29 +336,9 @@ export default ({
         )}
       </View>
       <Divider style={{width: '100%'}} color="#60636C" />
-      {/* {showWithdraw(validatorItem.withdrawableAmount) && (
-        <Button
-          loading={withdrawing}
-          disabled={withdrawing}
-          title={getLanguageString(language, 'WITHDRAW')}
-          onPress={withdrawHandler}
-          type="outline"
-          style={{width: '100%', marginBottom: 12}}
-        />
-      )} */}
-      {/* <Button
-        style={{width: '100%', marginBottom: 12}}
-        loading={claiming}
-        disabled={claiming || withdrawing}
-        title={getLanguageString(language, 'CLAIM_REWARD')}
-        type="outline"
-        size="small"
-        onPress={claimHandler}
-      /> */}
       <Button
         title={getLanguageString(language, 'OK_TEXT')}
         onPress={handleClose}
-        // type="outline"
         style={{width: '100%', marginBottom: 12}}
         textStyle={{
           fontWeight: '500',
@@ -356,12 +346,6 @@ export default ({
           fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
         }}
       />
-      {/* <Button
-        title={getLanguageString(language, 'UNDELEGATE')}
-        onPress={() => setShowUndelegateModal(true)}
-        type="secondary"
-        style={{width: '100%', marginVertical: 12}}
-      /> */}
     </Modal>
   );
 };

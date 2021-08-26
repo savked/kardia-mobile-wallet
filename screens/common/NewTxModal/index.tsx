@@ -7,6 +7,7 @@ import {
   Platform,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import {styles} from './style';
 import AlertModal from '../../../components/AlertModal';
@@ -32,8 +33,8 @@ import {useNavigation} from '@react-navigation/native';
 import CustomText from '../../../components/Text';
 import { KardiaAccount } from 'kardia-js-sdk';
 import { saveWallets } from '../../../utils/local';
-import { DEFAULT_KAI_TX_GAS_LIMIT } from '../../../config';
 import BigNumber from 'bignumber.js';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
 
 const MAX_AMOUNT = 5000000000;
 
@@ -43,7 +44,7 @@ const NewTxModal = ({
   beforeShowSuccess
 }: {
   visible: boolean;
-  onClose: () => void;
+  onClose: (showSuccess?: boolean) => void;
   beforeShowSuccess?: () => void
 }) => {
   const navigation = useNavigation();
@@ -63,8 +64,7 @@ const NewTxModal = ({
   const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [gasPriceAuth, setGasPriceAuth] = useState('');
-  const [amountAuth, setAmountAuth] = useState('')
+  const [pendingTx, setPendingTx] = useRecoilState(pendingTxSelector(wallets[selectedWallet].address))
 
   const language = useRecoilValue(languageAtom);
 
@@ -135,9 +135,12 @@ const NewTxModal = ({
 
       setLoading(false);
       beforeShowSuccess && beforeShowSuccess()
+      if (wallet.address) {
+        setPendingTx(txHash)
+      }
       navigation.navigate('SuccessTx', {txHash: txHash});
       resetState();
-      onClose();
+      onClose(true);
       // setSuccessHash(txHash);
     } catch (err) {
       console.log(err);
@@ -160,6 +163,11 @@ const NewTxModal = ({
   };
 
   const showConfirm = async () => {
+    const wallet = wallets[selectedWallet];
+    if (pendingTx && wallet.address) {
+      Alert.alert(getLanguageString(language, 'HAS_PENDING_TX'));
+      return;
+    }
     setErrorAddress(' ');
     setErrorAmount(' ');
     let isValid = true;
@@ -175,7 +183,7 @@ const NewTxModal = ({
       setErrorAmount(getLanguageString(language, 'REQUIRED_FIELD'));
       isValid = false;
     }
-    const wallet = wallets[selectedWallet];
+    
     const _txAmount = Number(amount.replace(/,/g, ''));
     const currentBalance = Number(weiToKAI(wallet.balance));
     if (_txAmount > currentBalance) {

@@ -1,10 +1,9 @@
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useContext, useState } from 'react'
-import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { favoritePairsAtom } from '../../../atoms/favoritePairs';
-import { languageAtom } from '../../../atoms/language';
 import { statusBarColorAtom } from '../../../atoms/statusBar';
 import { ThemeContext } from '../../../ThemeContext';
 import DEXHeader from '../../common/DEXHeader';
@@ -15,8 +14,6 @@ import SelectingPair from './SelectingPair';
 export default () => {
   const navigation = useNavigation()
   const theme = useContext(ThemeContext)
-  const language = useRecoilValue(languageAtom)
-  const {params} = useRoute();
   const [showMenu, setShowMenu] = useState(true);
   const favoritePair = useRecoilValue(favoritePairsAtom)
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);

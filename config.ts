@@ -23,3 +23,5 @@ export const WKAI_SMC = '0x02655eEF130e5F37F8b648BD9c8D10aA2e6bf698';
 
 export const KAI_TOKEN_NAME = "KardiaChain";
 export const KAI_TOKEN_SYMBOL = "KAI";
+
+export const LIMIT_ORDER_FEE = 1; // 1 KAI

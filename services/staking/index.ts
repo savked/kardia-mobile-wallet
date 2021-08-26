@@ -155,8 +155,6 @@ export const withdrawDelegatedAmount = async (
     throw new Error('Invalid [valSmcAddr]')
   }
   try {
-    // TODO: get local nonce
-    // const nonce = await getNonce(wallet.address)
     kardiaContract.updateAbi(VALIDATOR_ABI);
     const rs = await kardiaContract
       .invokeContract('withdraw', [])

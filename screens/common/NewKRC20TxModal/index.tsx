@@ -8,12 +8,13 @@ import {
   Platform,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import {styles} from './style';
 import AlertModal from '../../../components/AlertModal';
 import Modal from '../../../components/Modal';
 import TextInput from '../../../components/TextInput';
-import {useRecoilValue} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import {languageAtom} from '../../../atoms/language';
 import Button from '../../../components/Button';
 import {getLanguageString, parseError} from '../../../utils/lang';
@@ -35,6 +36,7 @@ import {useNavigation} from '@react-navigation/native';
 import CustomText from '../../../components/Text';
 import { getRecomendedGasPrice } from '../../../services/transaction';
 import { KardiaAccount } from 'kardia-js-sdk';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
 
 // const MAX_AMOUNT = 5000000000;
 
@@ -49,7 +51,7 @@ const NewKRC20TxModal = ({
   beforeShowSuccess
 }: {
   visible: boolean;
-  onClose: () => void;
+  onClose: (showSuccess?: boolean) => void;
   tokenAddress: string;
   tokenSymbol: string;
   tokenDecimals: number;
@@ -75,6 +77,7 @@ const NewKRC20TxModal = ({
   const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [pendingTx, setPendingTx] = useRecoilState(pendingTxSelector(wallets[selectedWallet].address))
 
   const language = useRecoilValue(languageAtom);
 
@@ -144,6 +147,9 @@ const NewKRC20TxModal = ({
       );
       setLoading(false);
       beforeShowSuccess && beforeShowSuccess()
+      if (wallet.address) {
+        setPendingTx(txResult)
+      }
       navigation.navigate('SuccessTx', {
         txHash: txResult,
         type: 'krc20',
@@ -155,7 +161,7 @@ const NewKRC20TxModal = ({
         fromHome
       });
       resetState();
-      onClose();
+      onClose(true);
     } catch (err) {
       console.error(err);
       if (err.message) {
@@ -177,6 +183,11 @@ const NewKRC20TxModal = ({
   };
 
   const showConfirm = async () => {
+    const wallet = wallets[selectedWallet];
+    if (pendingTx && wallet.address) {
+      Alert.alert(getLanguageString(language, 'HAS_PENDING_TX'));
+      return
+    }
     setErrorAddress(' ');
     setErrorAmount(' ');
     let isValid = true;
@@ -192,7 +203,6 @@ const NewKRC20TxModal = ({
       setErrorAmount(getLanguageString(language, 'REQUIRED_FIELD'));
       isValid = false;
     }
-    const wallet = wallets[selectedWallet];
     const _txAmount = Number(amount.replace(/,/g, ''));
     // const currentBalance = Number(weiToKAI(wallet.balance));
     const currentBalance = await getKRC20Balance(tokenAddress, wallet.address);

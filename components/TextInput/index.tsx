@@ -23,7 +23,7 @@ const CustomTextInput = ({
   icons,
   message = '',
   keyboardType = 'default',
-  headlineStyle,
+  headlineStyle = {},
   autoCapitalize = 'sentences',
   inputStyle,
   placeholderTextColor,
@@ -36,7 +36,7 @@ const CustomTextInput = ({
   autoCompleteType,
   autoCorrect
 }: CustomTextInputProps & {
-  headlineStyle?: StyleProp<TextStyle>;
+  headlineStyle?: TextStyle;
   containerStyle?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<TextStyle>;
   inputRef?: React.RefObject<TextInput>;

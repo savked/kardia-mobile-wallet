@@ -23,6 +23,7 @@ export const RPC_ENDPOINT = 'https://kai-seeds.kardiachain.io';
 export const HASURA_ENDPOINT = 'https://dex-graph.kardiachain.io/subgraphs/name/kai/dex';
 export const HASURA_WS_ENDPOINT = 'wss://ws-dex-graph.kardiachain.io/subgraphs/name/kai/dex';
 export const SUBGRAPH_BLOCKLYTICS_KAIBLOCK = 'https://dex-graph.kardiachain.io/subgraphs/name/blocklytics/kai-blocks';
+export const SETTLEMENT_ENDPOINT = 'https://dex-graph.kardiachain.io/subgraphs/name/kai/dex-settlement';
 
 export const EXPLORER_URL = 'https://explorer.kardiachain.io';
 export const HASURA_CREDENTIALS = 'ZjE0ZDgzMWNlOWNlNTY0YmRlMGNiYjJl';

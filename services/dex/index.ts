@@ -1,6 +1,7 @@
 import KaidexClient from 'kaidex-sdk';
 import KardiaClient, {KardiaAccount} from 'kardia-js-sdk';
 import SWAPABI from './swapABI.json'
+import LIMIT_ABI from './limitABI.json'
 import { BLOCK_TIME, CACHE_TTL, KAI_TOKEN_NAME, KAI_TOKEN_SYMBOL } from '../../config';
 import { DEX_ENDPOINT, DEX_PAIRS_JSON, EXCHANGE_REST, RPC_ENDPOINT } from '../config';
 import KRC20ABI from '../krc20/KRC20ABI.json';
@@ -14,7 +15,6 @@ import { getLogoURL, toChecksum } from '../../utils/string';
 import Web3 from 'web3'
 import { parseDecimals } from '../../utils/number';
 import { getCache, saveCacheByKey } from '../../utils/local';
-import { EventEmitter } from 'events';
 import { getNonce } from '../account';
 
 let SWAP_ROUTER_SMC = ''
@@ -45,7 +45,6 @@ export const initDexConfig = async () => {
   );
   
   const responseJSON = await response.json();
-
   SWAP_ROUTER_SMC = responseJSON.data.router_smc
   FACTORY_SMC = responseJSON.data.factory_smc
   WKAI_SMC = responseJSON.data.wkai_smc
@@ -296,6 +295,32 @@ export const get24hPairData = async (pairID: string) => {
   return _oneDayPair
 }
 
+export const submitLimitOrder = async (params: Record<string, any>, wallet: Wallet) => {
+  const client = new KaidexClient({
+    rpcEndpoint: RPC_ENDPOINT,
+    smcAddresses: {
+      router: SWAP_ROUTER_SMC,
+      factory: FACTORY_SMC,
+      // kaiSwapper?: string;
+      limitOrder: LIMIT_ORDER_SMC,
+      wkai: WKAI_SMC
+    }
+  })
+
+  const parsedParam = client.limitOrderCallParameters(params as any);
+
+  const sdkClient = new KardiaClient({endpoint: RPC_ENDPOINT});
+  const smcInstance = sdkClient.contract
+  smcInstance.updateAbi(LIMIT_ABI)
+  let invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
+
+  const rs = await invocation.send(wallet.privateKey!, LIMIT_ORDER_SMC, {
+    amount: parsedParam.amount || 0
+  })
+
+  return rs
+}
+
 export const swapTokens = async (params: Record<string, any>, wallet: Wallet) => {
   const client = new KaidexClient({
     rpcEndpoint: RPC_ENDPOINT,
@@ -333,11 +358,6 @@ export const swapTokens = async (params: Record<string, any>, wallet: Wallet) =>
     parsedParam = client.marketSwapCallParameters(params as any);
     invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
   }
-  // TODO: get local nonce
-  // const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
-  //   amount: parsedParam.amount || 0,
-  //   nonce: await getNonce(wallet.address)
-  // })
   const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
     amount: parsedParam.amount || 0
   })
@@ -550,7 +570,7 @@ export const addLiquidity = async (params: any, wallet: Wallet) => {
 
   const smcInstance = sdkClient.contract
   smcInstance.updateAbi(SWAPABI)
-
+  console.log(parsedParam)
   const invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
 
   // TODO: get local nonce
@@ -643,9 +663,7 @@ const getTokenInfoForDex = async (tokenAddress: string) => {
   }
 
   const sdkClient = new KardiaClient({ endpoint: RPC_ENDPOINT })
-  console.log('123')
   await sdkClient.krc20.getFromAddress(toChecksum(tokenAddress))
-  console.log('456')
 
   tokenData[tokenAddress.toLowerCase()] = {
     decimals: sdkClient.krc20.decimals,
@@ -668,11 +686,6 @@ const fetchPairData = async (pairItem: Record<string, any>) => {
   if (typeof pairItem.token1 === 'string') {
     rs.token1 = await getTokenInfoForDex(pairItem.token1)
   }
-
-  // const {reserveIn, reserveOut} = await getReserve(rs.token0.hash, rs.token1.hash)
-
-  // rs.reserve0 = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(rs.token0.decimals))).toFixed()
-  // rs.reserve1 = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(rs.token1.decimals))).toFixed()
 
   try {
     const {error, data: volumeData} = await apolloKaiDexClient.query({ query: GET_PAIR_VOLUME(pairItem.id) })
@@ -757,4 +770,38 @@ export const getMarketHistory = async (pairAddress: string, invert: boolean, typ
     console.error('Error getMarketHistory')
     return []
   }
+}
+
+export const cancelOrder = async (orderID: number, wallet: Wallet) => {
+  const client = new KaidexClient({
+    rpcEndpoint: RPC_ENDPOINT,
+    smcAddresses: {
+      router: SWAP_ROUTER_SMC,
+      factory: FACTORY_SMC,
+      // kaiSwapper?: string;
+      limitOrder: LIMIT_ORDER_SMC,
+      wkai: WKAI_SMC
+    }
+  })
+
+  const parsedParam = client.cancelLimitOrder({ orderID })
+
+  console.log('parsedParam', parsedParam)
+
+  const sdkClient = new KardiaClient({ endpoint: RPC_ENDPOINT })
+  const smcInstance = sdkClient.contract
+  smcInstance.updateAbi(LIMIT_ABI)
+
+  const invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
+
+  // TODO: get local nonce
+  // const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
+  //   amount: parsedParam.amount || 0,
+  //   nonce: await getNonce(wallet.address)
+  // })
+  const rs = await invocation.send(wallet.privateKey!, LIMIT_ORDER_SMC, {
+    amount: parsedParam.amount || 0
+  })
+
+  return rs
 }

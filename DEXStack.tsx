@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -11,7 +11,7 @@ import AddLiquidity from './screens/KAIDex/AddLiquidity';
 import OrderHistory from './screens/KAIDex/OrderHistory';
 import UnderMaintainence from './screens/common/UnderMaintainence';
 import ComingSoon from './screens/common/ComingSoon';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { dexStatusAtom } from './atoms/dexStatus';
 import PairDetail from './screens/KAIDex/PairDetail';
 import { statusBarColorAtom } from './atoms/statusBar';
