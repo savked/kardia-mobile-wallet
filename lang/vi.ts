@@ -130,6 +130,8 @@ export const lang: Language = {
     TOTAL_COST: 'Tổng tối đa',
     TX_FEE: 'Phí giao dịch tối đa',
     TX_FEE_WARNING: 'Chú ý: phí giao dịch cao bất thường. Vui lòng kiểm tra lại giao dịch.',
+    TX_SUCCESS_TOAST: 'Giao dịch thành công',
+    TX_FAIL_TOAST: 'Giao dịch thất bại',
     // Wallet key
     IMPORT: 'Thêm ví',
     WALLET: 'Ví',
@@ -350,6 +352,9 @@ export const lang: Language = {
     IGNORE_PENDING_TX_DESCRIPTION: 
       "Once ignoring, you won't be notified but your transaction is still not cancelled. Another transaction can be proceed right after.",
     KEEP_ME_NOTIFY: 'Keep me notified',
-    CONFIRM_IGNORE: 'Ignore this transaction'
+    CONFIRM_IGNORE: 'Ignore this transaction',
+    // Dual node key
+    DUAL_NODE: 'Dual Node',
+    CROSSCHAIN_WARNING: "Vui lòng không gửi token trực tiếp đến ví ở chain khác. Để gửi token sang ví khác, vui lòng sử dụng cầu Dual Node"
   },
 };

@@ -135,6 +135,8 @@ export const lang: Language = {
     TOTAL_COST: 'Maximum total cost',
     TX_FEE: 'Maximum transaction fee',
     TX_FEE_WARNING: 'Warning: Your transaction cost is significantly high. Please double-check the transaction.',
+    TX_SUCCESS_TOAST: 'Transaction success',
+    TX_FAIL_TOAST: 'Transaction fail',
     // Wallet key
     IMPORT: 'Import',
     WALLET: 'Wallet',
@@ -357,6 +359,9 @@ export const lang: Language = {
     IGNORE_PENDING_TX_DESCRIPTION: 
       "Once ignoring, you won't be notified but your transaction is still not cancelled. Another transaction can be proceed right after.",
     KEEP_ME_NOTIFY: 'Keep me notified',
-    CONFIRM_IGNORE: 'Ignore this transaction'
+    CONFIRM_IGNORE: 'Ignore this transaction',
+    // Dual node key
+    DUAL_NODE: 'Dual Node',
+    CROSSCHAIN_WARNING: "Don't send token directly to address on another chain, it may cause permanent loss. For sending your asset to another chain, please use our Dual Node bridge."
   },
 };
