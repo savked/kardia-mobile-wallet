@@ -71,6 +71,19 @@ const App = () => {
                     </CustomText>
                   </View>
                 ),
+                fail: ({ text1 = '', props = {}, ...rest }) => (
+                  <View style={{ height: 32, minWidth: 77, paddingHorizontal: 16, paddingVertical: 8, backgroundColor: (props as any).backgroundColor || 'rgba(208, 37, 38, 1)', borderRadius: 8, alignItems: 'center', justifyContent: 'center' }}>
+                    <CustomText 
+                      style={{
+                        color: (props as any).textColor || 'rgba(69, 188, 67, 1)',
+                        fontWeight: '500',
+                        fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                      }}
+                    >
+                      {text1}
+                    </CustomText>
+                  </View>
+                ),
                 pendingTx: ({ text1 = '', text2 = '', props = {}, ...rest }) => (
                   <LinearGradient 
                     start={{x: 0, y: 0}}
