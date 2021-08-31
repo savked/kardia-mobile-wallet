@@ -201,7 +201,7 @@ export const formatDexToken = (token: PairToken) => {
   } : token
 }
 
-export const getApproveState = async (token: PairToken, amount: string | number, wallet: Wallet) => {
+export const getApproveState = async (token: PairToken, amount: string | number, wallet: Wallet, isLimit = false) => {
   if (amount === '0' || amount === 0) {
     return false
   }
@@ -220,14 +220,14 @@ export const getApproveState = async (token: PairToken, amount: string | number,
     tokenAddr: token.hash,
     decimals: token.decimals,
     walletAddress: wallet.address,
-    spenderAddress: SWAP_ROUTER_SMC,
+    spenderAddress: isLimit ? LIMIT_ORDER_SMC : SWAP_ROUTER_SMC,
     amountToCheck: amount
   })
 
   return approveState
 }
 
-export const approveToken = async (token: PairToken, amount: string | number, wallet: Wallet) => {
+export const approveToken = async (token: PairToken, amount: string | number, wallet: Wallet, isLimit = false) => {
 
   const sdkClient = new KardiaClient({endpoint: RPC_ENDPOINT});
   const smcInstance = sdkClient.contract
@@ -239,12 +239,7 @@ export const approveToken = async (token: PairToken, amount: string | number, wa
   const totalSupply = await smcInstance.invokeContract('totalSupply', []).call(token.hash);
   const bnTotalSypply = new BigNumber(totalSupply);
 
-  // const invocation = smcInstance.invokeContract('approve', [SWAP_ROUTER_SMC, `${cellValue}00`]);
-  const invocation = smcInstance.invokeContract('approve', [SWAP_ROUTER_SMC, bnTotalSypply.toFixed()]);
-  // TODO: get local nonce
-  // const rs = invocation.send(wallet.privateKey!, token.hash, {
-  //   nonce: await getNonce(wallet.address)
-  // }, true)
+  const invocation = smcInstance.invokeContract('approve', [isLimit ? LIMIT_ORDER_SMC : SWAP_ROUTER_SMC, bnTotalSypply.toFixed()]);
 
   const rs = invocation.send(wallet.privateKey!, token.hash, {}, true)
   

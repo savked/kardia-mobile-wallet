@@ -3,7 +3,6 @@ import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
-import {HeaderBackButton} from '@react-navigation/stack';
 import SettingScreen from './screens/Setting';
 import AddressBookSetting from './screens/AddressBookSetting';
 import {ThemeContext} from './ThemeContext';

@@ -142,7 +142,7 @@ export default ({
         const balance = await getKRC20Balance(tokenTo.hash, wallets[selectedWallet].address)
         setBalanceTo(balance.toString())
 
-        const _approveState = await getApproveState(tokenTo, getDigit(amountTo), wallets[selectedWallet])
+        const _approveState = await getApproveState(tokenTo, getDigit(amountTo), wallets[selectedWallet], true)
         setApprovedState(_approveState)
       }
     })()
@@ -228,7 +228,7 @@ export default ({
               .toFixed()
 
         if (tokenTo) {
-          const _approveState = await getApproveState(tokenTo, _newTo, wallets[selectedWallet])
+          const _approveState = await getApproveState(tokenTo, _newTo, wallets[selectedWallet], true)
           setApprovedState(_approveState)
         }
 
@@ -249,7 +249,7 @@ export default ({
         }
 
         setLoadingFrom(true)
-        const _approveState = await getApproveState(tokenTo, _amountTo, wallets[selectedWallet])
+        const _approveState = await getApproveState(tokenTo, _amountTo, wallets[selectedWallet], true)
         setApprovedState(_approveState)
         const amountToBN = new BigNumber(_amountTo);
         const _newFrom =
@@ -309,9 +309,9 @@ export default ({
       const _wallets = await getWallets();
       const _selectedWalelt = await getSelectedWallet();
       
-      await approveToken(tokenTo, getDigit(amountTo), _wallets[_selectedWalelt])
+      await approveToken(tokenTo, getDigit(amountTo), _wallets[_selectedWalelt], true)
       
-      const _approveState = await getApproveState(tokenTo, getDigit(amountTo), wallets[selectedWallet])
+      const _approveState = await getApproveState(tokenTo, getDigit(amountTo), wallets[selectedWallet], true)
       setApprovedState(_approveState)
       setApproving(false) 
     } catch (error) {
@@ -328,7 +328,6 @@ export default ({
 
   const authForApprove = () => {
     setShowAuthModal(true)
-    // setOnAuthSuccess(handleApprove)
   }
 
   const handleSubmitMarket = async () => {

@@ -116,6 +116,7 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
       }
       setSubmitting(false);
       setUndelegateAmount('');
+      setPendingTx(rs)
       navigation.navigate('SuccessTx', {
         type: 'undelegate',
         txHash: rs,

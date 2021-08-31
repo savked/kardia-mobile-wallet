@@ -60,12 +60,14 @@ import SettingStackScreen from '../../SettingStack';
 import DEXStackScreen from '../../DEXStack';
 import { referralCodeAtom } from '../../atoms/referralCode';
 import DAppStackScreen from '../../DAppStack';
+import DualNodeStack from '../../DualNodeStack';
 import { favoritePairsAtom } from '../../atoms/favoritePairs';
 import { pendingTxAtom, pendingTxBackgroundAtom, pendingTxSelector } from '../../atoms/pendingTx';
 import { getTxDetail } from '../../services/transaction';
 import Toast from 'react-native-toast-message';
 import { truncate } from '../../utils/string';
 import IgnorePendingTxModal from '../common/IgnorePendingTxModal';
+import CustomTab from './CustomTab';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -76,147 +78,10 @@ let lastTimestamp = 0;
 
 const Wrap = () => {
   const theme = useContext(ThemeContext);
-  const language = useRecoilValue(languageAtom);
-
-  const showTabBar = useRecoilValue(showTabBarAtom);
 
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarLabel: ({focused, color, position}) => {
-          if (route.name === 'Home') {
-            return (
-              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
-                {getLanguageString(language, 'HOME')}
-              </CustomText>
-            )
-          } else if (route.name === 'Transaction') {
-            return (
-              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
-                {getLanguageString(language, 'TRANSACTIONS')}
-              </CustomText>
-            )
-          } else if (route.name === 'Staking') {
-            return (
-              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
-                {getLanguageString(language, 'STAKING')}
-              </CustomText>
-            )
-          } else if (route.name === 'Address') {
-            return (
-              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
-                {getLanguageString(language, 'ADDRESS_BOOK')}
-              </CustomText>
-            )
-          } else if (route.name === 'Setting') {
-            return (
-              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
-                {getLanguageString(language, 'SETTING')}
-              </CustomText>
-            )
-          } else if (route.name === 'DEX') {
-            return (
-              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
-                {getLanguageString(language, 'KAI_DEX')}
-              </CustomText>
-            )
-          } else if (route.name === 'DApp') {
-            return (
-              <CustomText style={{fontSize: 10, color: focused ? theme.textColor : '#7A859A'}}>
-                {getLanguageString(language, 'DAPP')}
-              </CustomText>
-            )
-          }
-        },
-        tabBarIcon: ({color, size, focused}) => {
-          let iconName = '';
-
-          if (route.name === 'Home') {
-            return (
-              <Image
-                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
-                source={
-                  focused
-                    ? require('../../assets/icon/home_dark.png')
-                    : require('../../assets/icon/home_dark_inactive.png')
-                }
-              />
-            );
-          } else if (route.name === 'News') {
-            iconName = 'newspaper-o';
-          } else if (route.name === 'Transaction') {
-            return (
-              <Image
-                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
-                source={
-                  focused
-                    ? require('../../assets/icon/transaction_dark.png')
-                    : require('../../assets/icon/transaction_dark_inactive.png')
-                }
-              />
-            );
-          } else if (route.name === 'Setting') {
-            return (
-              <Image
-                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
-                source={
-                  focused
-                    ? require('../../assets/icon/setting_dark.png')
-                    : require('../../assets/icon/setting_dark_inactive.png')
-                }
-              />
-            );
-          } else if (route.name === 'Staking') {
-            return (
-              <Image
-                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
-                source={
-                  focused
-                    ? require('../../assets/icon/staking_dark.png')
-                    : require('../../assets/icon/staking_dark_inactive.png')
-                }
-              />
-            );
-          } else if (route.name === 'Address') {
-            return (
-              <Image
-                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
-                source={
-                  focused
-                    ? require('../../assets/icon/address_book_dark.png')
-                    : require('../../assets/icon/address_book_dark_inactive.png')
-                }
-              />
-            );
-          } else if (route.name === 'DEX') {
-            return (
-              <Image
-                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
-                source={
-                  focused
-                    ? require('../../assets/icon/kai_dex_dark.png')
-                    : require('../../assets/icon/kai_dex_dark_inactive.png')
-                }
-              />
-            )
-          } else if (route.name === 'DApp') {
-            return (
-              <Image
-                style={{width: 24, height: 24, marginTop: 12, marginBottom: 5}}
-                source={
-                  focused
-                    ? require('../../assets/icon/dapp.png')
-                    : require('../../assets/icon/dapp_inactive.png')
-                }
-              />
-            )
-          }
-
-          // You can return any component that you like here!
-          return <Icon name={iconName} size={size} color={color} />;
-        },
-        tabBarVisible: showTabBar,
-      })}
+      tabBar={({state, descriptors, navigation}) => <CustomTab state={state} descriptors={descriptors} navigation={navigation} theme={theme} />}
       tabBarOptions={{
         activeTintColor: theme.primaryColor,
         inactiveTintColor: '#7A859A',
@@ -228,6 +93,7 @@ const Wrap = () => {
           borderTopColor: theme.backgroundFocusColor,
           paddingBottom: 4,
           elevation: 24,
+          width: 4
         },
         labelStyle: {
           fontWeight: 'bold',
@@ -244,14 +110,12 @@ const Wrap = () => {
           shadowOpacity: 2,
           shadowRadius: 4,
         },
-
-        // showLabel: false,
       }}>
-      {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
       <Tab.Screen name="Home" component={HomeStackScreen} />
       <Tab.Screen name="DApp" component={DAppStackScreen} />
       <Tab.Screen name="DEX" component={DEXStackScreen} />
       <Tab.Screen name="Staking" component={StakingStackScreen} />
+      {/* <Tab.Screen name="DualNode" component={DualNodeStack} /> */}
       <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>
   );
@@ -321,7 +185,7 @@ const AppContainer = () => {
           setShowPendingTxModal(true)
         }
       },
-      topOffset: 70,
+      topOffset: 45,
       text1: `Transaction preparing`,
       text2: truncate(pendingTx as string, 10, -1)
     })
@@ -335,7 +199,32 @@ const AppContainer = () => {
           setPendingTx('');
           setPendingTxBackground(false)
           clearInterval(pendingTxInterval);
-          Toast.hide();
+
+          if (txDetail.status === 1) {
+            // SUCCESS tx
+            Toast.show({
+              type: 'success',
+              visibilityTime: 4000,
+              autoHide: true,
+              topOffset: 70,
+              text1: getLanguageString(language, 'TX_SUCCESS_TOAST'),
+              props: {
+                textColor: '#000000'
+              }
+            });
+          } else {
+            // FAIL tx
+            Toast.show({
+              type: 'fail',
+              visibilityTime: 4000,
+              autoHide: true,
+              topOffset: 70,
+              text1: getLanguageString(language, 'TX_FAIL_TOAST'),
+              props: {
+                textColor: theme.textColor
+              }
+            });
+          }
           return;
         }
       } catch (error) {

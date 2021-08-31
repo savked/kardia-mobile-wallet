@@ -70,7 +70,9 @@ export default () => {
   }
 
   const handleLog = (logData: any) => {
-    console.log('Log from frame', logData)
+    if (logData.type === 'error') {
+      console.log('Log from frame', logData.data)
+    }
   }
 
   const handleRPC = async (requestId: number, method: string, params: Record<string, any>) => {
@@ -96,7 +98,7 @@ export default () => {
         setConfirmModalVisible(true);
         break;
       default:
-        throw 'Invalid method name'
+        throw `Invalid method name ${method}`
     }
   }
 

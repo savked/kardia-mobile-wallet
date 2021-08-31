@@ -25,7 +25,7 @@ export default ({onClose, visible}: {
 
   const getModalStyle = () => {
     return {
-      height: 400,
+      height: 600,
       backgroundColor: theme.backgroundFocusColor,
       justifyContent: 'flex-start',
       padding: 20
@@ -49,6 +49,15 @@ export default ({onClose, visible}: {
       contentStyle={getModalStyle()}
       showCloseButton={false}
     >
+      <View>
+        <Image 
+          source={require('../../../assets/ignore_tx.png')}
+          style={{
+            width: 313,
+            height: 203
+          }}
+        />
+      </View>
       <CustomText
         style={{
           color: theme.textColor,
@@ -71,6 +80,7 @@ export default ({onClose, visible}: {
       >
         {getLanguageString(language, 'IGNORE_PENDING_TX_DESCRIPTION')}
       </CustomText>
+      
       <View style={{backgroundColor: '#212121', paddingHorizontal: 16, paddingVertical: 12, borderRadius: 8, marginTop: 20, width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
         <CustomText style={{color: theme.textColor}}>
           {truncate(pendingTx as string, 16, 16)}

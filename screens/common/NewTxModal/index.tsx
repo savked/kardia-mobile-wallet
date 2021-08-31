@@ -232,14 +232,14 @@ const NewTxModal = ({
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: keyboardShown ? 440 : 500,
+        height: keyboardShown ? 460 : 520,
         backgroundColor: 'rgba(58, 59, 60, 1)',
       };
     } else {
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: keyboardShown ? 440 : 500,
+        height: keyboardShown ? 460 : 520,
         backgroundColor: 'rgba(58, 59, 60, 1)',
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,
@@ -510,7 +510,16 @@ const NewTxModal = ({
           <View style={{marginBottom: 20}}>
             <ListCard gasPrice={gasPrice} selectGasPrice={setGasPrice} />
           </View>
-
+          <CustomText
+            style={{
+              fontWeight: '500',
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+              color: theme.warningTextColor,
+              fontStyle: 'italic'
+            }}
+          >
+            {getLanguageString(language, 'CROSSCHAIN_WARNING')}
+          </CustomText>
           <View
             style={{
               // flexDirection: 'row',
