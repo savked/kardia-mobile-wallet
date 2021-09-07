@@ -198,7 +198,6 @@ export default () => {
         onClose={() => setShowOrderDetail(false)}
         orderObj={orderObjForDetail}
         refreshLimitOrders={() => {
-          console.log('here')
           setRefreshing(true)
           if (page !== 1) {
             setPage(1)

@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   },
   errorMessage: {
     fontStyle: 'italic',
-    marginTop: 2,
+    marginTop: 8,
     color: 'red',
   },
 });

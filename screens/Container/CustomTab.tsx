@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { View, Image, Dimensions, ScrollView } from 'react-native';
+import { View, Image, Dimensions, ScrollView, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../atoms/language';
 import CustomText from '../../components/Text';
 import { getLanguageString } from '../../utils/lang';
 import { showTabBarAtom } from '../../atoms/showTabBar';
+import { TABBAR_HEIGHT } from '../../theme';
 
 const {width: viewportWidth} = Dimensions.get('window')
 
@@ -14,6 +15,8 @@ export default ({ state, descriptors, navigation, theme }: any) => {
 
   const language = useRecoilValue(languageAtom)
   const showTabBar = useRecoilValue(showTabBarAtom);
+
+  const tabBarHeight = Platform.OS === 'android' ? TABBAR_HEIGHT : TABBAR_HEIGHT + 15
 
   if (!showTabBar) {
     return null
@@ -25,7 +28,7 @@ export default ({ state, descriptors, navigation, theme }: any) => {
         justifyContent: 'center',
         alignItems: 'flex-start',
         flexDirection: 'row', 
-        height: 80,
+        height: tabBarHeight,
         width: viewportWidth,
         backgroundColor: theme.backgroundFocusColor,
         borderTopColor: theme.backgroundFocusColor,
@@ -53,7 +56,7 @@ export default ({ state, descriptors, navigation, theme }: any) => {
 
           if (!isFocused && !event.defaultPrevented) {
             // The `merge: true` option makes sure that the params inside the tab screen are preserved
-            navigation.navigate({ name: route.name, params: {} });
+            navigation.navigate({ name: route.name, merge: true });
           }
         };
 
@@ -162,8 +165,8 @@ export default ({ state, descriptors, navigation, theme }: any) => {
                 style={{width: 24, height: 24, marginTop: 12, marginBottom: 2}}
                 source={
                   focused
-                    ? require('../../assets/icon/setting_dark.png')
-                    : require('../../assets/icon/setting_dark_inactive.png')
+                    ? require('../../assets/icon/dual_node.png')
+                    : require('../../assets/icon/dual_node_inactive.png')
                 }
               />
             );
@@ -227,7 +230,7 @@ export default ({ state, descriptors, navigation, theme }: any) => {
             onPress={onPress}
             onLongPress={onLongPress}
             style={{ 
-              width: viewportWidth / 5 ,
+              width: viewportWidth / 6 ,
               alignItems: 'center',
               justifyContent: 'center',
             }}

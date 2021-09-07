@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ThemeContext } from '../../../ThemeContext';
 import CustomText from '../../../components/Text';
 import numeral from 'numeral';
-import { formatDexToken, get24hPairData, getReserve, getTotalVolume } from '../../../services/dex';
+import { formatDexToken, get24hPairData, getPairVolume, getReserve, getTotalVolume } from '../../../services/dex';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { statusBarColorAtom } from '../../../atoms/statusBar';
@@ -23,7 +23,6 @@ import ChartSection from './ChartSection';
 import BigNumber from 'bignumber.js';
 import { useQuery } from '@apollo/client';
 import { GET_PAIRS } from '../../../services/dex/queries';
-import Toast from 'react-native-toast-message';
 
 export default () => {
   const navigation = useNavigation()
@@ -32,7 +31,7 @@ export default () => {
   const {params} = useRoute()
   const pairItem: Pair = params ? (params as any).pairItem : {}
 
-  const { data: volumeData, refetch } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
+  // const { data: volumeData, refetch } = useQuery(GET_PAIRS, {fetchPolicy: 'no-cache'});
   const insets = useSafeAreaInsets();
 
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
@@ -61,23 +60,39 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      const [pCurrent, p24h] = await Promise.all([getCurrentPrice(), get24hPrice()])
-      setPrice(pCurrent)
-      setPrice24h(p24h)
+      try {
+        const [pCurrent, p24h] = await Promise.all([getCurrentPrice(), get24hPrice()])
+        setPrice(pCurrent)
+        setPrice24h(p24h)
+      } catch (error) {
+        console.log('get24hPrice error')
+      }
     })()
   }, [])
 
+  // useEffect(() => {
+  //   (async () => {
+  //     if (!volumeData || !volumeData.pairs) return
+  //     const item = volumeData.pairs.find((it: any) => {
+  //       return (it.id.toLowerCase() === pairItem.contract_address)
+  //     })
+  //     if (!item.volumeUSD) return
+  //     const volume = await getTotalVolume(item.volumeUSD, pairItem.contract_address)
+  //     setVolume24h(new BigNumber(volume).toFixed())
+  //   })()
+  // }, [volumeData, pairItem])
+
   useEffect(() => {
     (async () => {
-      if (!volumeData || !volumeData.pairs) return
-      const item = volumeData.pairs.find((it: any) => {
-        return (it.id.toLowerCase() === pairItem.contract_address)
-      })
-      if (!item.volumeUSD) return
-      const volume = await getTotalVolume(item.volumeUSD, pairItem.contract_address)
-      setVolume24h(new BigNumber(volume).toFixed())
+      try {
+        const _volumeUSD = await getPairVolume(pairItem.contract_address)
+        const volume = await getTotalVolume(_volumeUSD, pairItem.contract_address)
+        setVolume24h(new BigNumber(volume).toFixed())
+      } catch (error) {
+        console.log('setVolume24h error')
+      }
     })()
-  }, [volumeData, pairItem])
+  }, [pairItem])
 
   const get24hPrice = async () => {
     const pairData = await get24hPairData(pairItem.contract_address)
@@ -172,6 +187,10 @@ export default () => {
   }
 
   const renderVolume24h = () => {
+    let valueToRender = '--'
+    if (volume24h && volume24h !== '0' && (new BigNumber(volume24h)).isGreaterThan(0)) {
+      valueToRender = `$ ${formatNumberString(volume24h, 2)}`
+    }
     return (
       <CustomText 
         style={{
@@ -181,7 +200,7 @@ export default () => {
           fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
         }}
       >
-        {volume24h ? `$ ${formatNumberString(volume24h, 2)}` : '--'}
+        {valueToRender}
       </CustomText>
     )
   }

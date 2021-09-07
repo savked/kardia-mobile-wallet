@@ -69,6 +69,10 @@ export const lang: Language = {
     SAVE_TO_ADDRESS_BOOK: 'Save address',
     INVALID_ADDRESS: 'Invalid address',
     TOKEN_EXISTS: 'Token already exists.',
+    SELECT: 'Select',
+    ASSET: 'Asset',
+    NETWORK: 'Network',
+    CHANGE_NETWORK: 'Change network',
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now.',
     MNEMONIC_DESCRIPTION:
@@ -362,6 +366,7 @@ export const lang: Language = {
     CONFIRM_IGNORE: 'Ignore this transaction',
     // Dual node key
     DUAL_NODE: 'Dual Node',
-    CROSSCHAIN_WARNING: "Don't send token directly to address on another chain, it may cause permanent loss. For sending your asset to another chain, please use our Dual Node bridge."
+    CROSSCHAIN_WARNING: "Please don't send token directly to wallet on another blockchain. For sending your asset to Ethereum or Binance Smart Chain (BSC), please use our Dual Node bridge.",
+    DUAL_NODE_CONVERT: 'Convert'
   },
 };

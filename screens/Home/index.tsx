@@ -21,8 +21,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {getStakingAmount, getUndelegatingAmount} from '../../services/staking';
 import TokenListSection from './TokenListSection';
 import {showTabBarAtom} from '../../atoms/showTabBar';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { HEADER_HEIGHT } from '../../theme';
+import { HEADER_HEIGHT, TABBAR_HEIGHT } from '../../theme';
 import { statusBarColorAtom } from '../../atoms/statusBar';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
@@ -40,13 +39,13 @@ const HomeScreen = () => {
   );
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
-  const tabBarHeight = useBottomTabBarHeight();
 
   const theme = useContext(ThemeContext);
   const language = useRecoilValue(languageAtom);
   const navigation = useNavigation();
 
   const {top: topInsets} = useSafeAreaInsets();
+  const tabBarHeight = Platform.OS === 'android' ? TABBAR_HEIGHT : TABBAR_HEIGHT + 15
 
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
@@ -121,7 +120,6 @@ const HomeScreen = () => {
 
   if (showPasscodeRemindModal) {
     setShowPasscodeRemindModal(false);
-    // navigation.navigate('NewPasscode');
     navigation.reset({
       index: 0,
       routes: [

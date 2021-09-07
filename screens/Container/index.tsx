@@ -115,7 +115,7 @@ const Wrap = () => {
       <Tab.Screen name="DApp" component={DAppStackScreen} />
       <Tab.Screen name="DEX" component={DEXStackScreen} />
       <Tab.Screen name="Staking" component={StakingStackScreen} />
-      {/* <Tab.Screen name="DualNode" component={DualNodeStack} /> */}
+      <Tab.Screen name="DualNode" component={DualNodeStack} />
       <Tab.Screen name="Setting" component={SettingStackScreen} />
     </Tab.Navigator>
   );

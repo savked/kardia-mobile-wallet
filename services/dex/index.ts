@@ -620,13 +620,6 @@ export const removeLiquidity = async (params: any, wallet: Wallet) => {
     invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
   }
 
-  // const invocation = smcInstance.invokeContract(parsedParam.methodName, parsedParam.args);
-
-  // TODO: get local nonce
-  // const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
-  //   amount: parsedParam.amount || 0,
-  //   nonce: await getNonce(wallet.address)
-  // })
   const rs = await invocation.send(wallet.privateKey!, SWAP_ROUTER_SMC, {
     amount: parsedParam.amount || 0
   })
@@ -671,6 +664,26 @@ const getTokenInfoForDex = async (tokenAddress: string) => {
 
 }
 
+export const getPairVolume = async (pairID: string) => {
+  try {
+    const {error, data: volumeData} = await requestWithTimeOut(
+      apolloKaiDexClient.query({ query: GET_PAIR_VOLUME(pairID) }),
+      10000
+    )
+    if (error) {
+      console.log('fetch volume fail')
+    }
+    if (volumeData && volumeData.pairs[0]) {
+      return volumeData.pairs[0].volumeUSD
+    } else {
+      return "0"
+    }
+  } catch (error) {
+    console.log('getPairVolume error')
+    return "0"
+  }
+}
+
 const fetchPairData = async (pairItem: Record<string, any>) => {
   const rs = JSON.parse(JSON.stringify(pairItem))
   
@@ -682,19 +695,6 @@ const fetchPairData = async (pairItem: Record<string, any>) => {
     rs.token1 = await getTokenInfoForDex(pairItem.token1)
   }
 
-  try {
-    const {error, data: volumeData} = await apolloKaiDexClient.query({ query: GET_PAIR_VOLUME(pairItem.id) })
-    if (error) {
-      console.log('fetch volume fail')
-    }
-    if (volumeData && volumeData.pairs[0]) {
-      rs.volumeUSD = volumeData.pairs[0].volumeUSD
-    } else {
-      rs.volumeUSD = "0"
-    }
-  } catch (error) {
-    rs.volumeUSD = "0"
-  }
   return rs
 }
 
@@ -709,7 +709,7 @@ export const getPairs = async () => {
     localPairData = JSON.parse(localCache.pairData)    
     if (!localPairData) newData = true
 
-    if (localPairData && localPairData.lastUpdated && Date.now() - Number(localPairData.lastUpdated) > CACHE_TTL) {
+    if (localPairData && localPairData.lastUpdated && Date.now() - Number(localPairData.lastUpdated) > 1) {
       newData = true
     }
   } catch (error) {

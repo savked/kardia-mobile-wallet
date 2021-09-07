@@ -32,9 +32,11 @@ let _tokenToLiquidity: string
 
 export default ({
   pairItem,
-  onSuccess
+  onSuccess,
+  onClose
 }: {
   pairItem: Pair;
+  onClose: () => void;
   onSuccess:  
     ({
       mode, 
@@ -490,19 +492,30 @@ export default ({
 
     if (amountFrom === '0' || amountTo === '0') {
       return (
-        <Button
-          title={getLanguageString(language, 'ENTER_AMOUNT')}
-          disabled={true}
-          onPress={() => {}}
-          style={{
-            marginTop: 32,
-            width: '100%',
-          }}
-          textStyle={{
-            fontWeight: '500',
-            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-          }}
-        />
+        <>
+          <Button 
+            title={getLanguageString(language, 'CANCEL')}
+            onPress={onClose}
+            block
+            type="outline"
+            style={{
+              marginTop: 32,
+            }}
+          />
+          <Button
+            title={getLanguageString(language, 'ENTER_AMOUNT')}
+            disabled={true}
+            onPress={() => {}}
+            style={{
+              marginTop: 12,
+              width: '100%',
+            }}
+            textStyle={{
+              fontWeight: '500',
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+            }}
+          />
+        </>
       )
     }
 
@@ -510,7 +523,7 @@ export default ({
       return (
         <View
           style={{
-            marginTop: 24,
+            marginTop: 20,
             width: '100%',
           }}
         >
@@ -523,13 +536,22 @@ export default ({
           >
             {getLanguageString(language, 'APPROVE_NOTE')}
           </CustomText>
+          <Button 
+            title={getLanguageString(language, 'CANCEL')}
+            onPress={onClose}
+            block
+            type="outline"
+            style={{
+              marginTop: 8,
+            }}
+          />
           <Button
             title={getLanguageString(language, 'APPROVE')}
             loading={approving}
             disabled={approving}
             onPress={authForApprove}
             style={{
-              marginTop: 8,
+              marginTop: 12,
               width: '100%',
             }}
             textStyle={{
@@ -541,29 +563,40 @@ export default ({
       )
     } else {
       return (
-        <Button
-          loadingColor={mode === 'BUY' ? '#000000' : '#FFFFFF'}
-          loading={processing}
-          disabled={processing}
-          title={
-            mode === 'BUY' ? 
-            `${getLanguageString(language, 'BUY')} ${tokenFrom.symbol}` : 
-            `${getLanguageString(language, 'SELL')} ${tokenTo.symbol}`
-          }
-          type="secondary"
-          onPress={authForSubmitMarket}
-          style={{
-            marginTop: 32,
-            width: '100%',
-            backgroundColor: mode === 'BUY' ? 'rgba(105, 235, 102, 1)' : 'rgba(255, 66, 67, 1)'
-          }}
-          textStyle={{
-            fontSize: theme.defaultFontSize + 3,
-            fontWeight: '500',
-            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-            color: mode === 'BUY' ? '#000000' : '#FFFFFF'
-          }}
-        />
+        <>
+          <Button 
+            title={getLanguageString(language, 'CANCEL')}
+            onPress={onClose}
+            block
+            type="outline"
+            style={{
+              marginTop: 32,
+            }}
+          />
+          <Button
+            loadingColor={mode === 'BUY' ? '#000000' : '#FFFFFF'}
+            loading={processing}
+            disabled={processing}
+            title={
+              mode === 'BUY' ? 
+              `${getLanguageString(language, 'BUY')} ${tokenFrom.symbol}` : 
+              `${getLanguageString(language, 'SELL')} ${tokenTo.symbol}`
+            }
+            type="secondary"
+            onPress={authForSubmitMarket}
+            style={{
+              marginTop: 12,
+              width: '100%',
+              backgroundColor: mode === 'BUY' ? 'rgba(105, 235, 102, 1)' : 'rgba(255, 66, 67, 1)'
+            }}
+            textStyle={{
+              fontSize: theme.defaultFontSize + 3,
+              fontWeight: '500',
+              fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+              color: mode === 'BUY' ? '#000000' : '#FFFFFF'
+            }}
+          />
+        </>
       )
     }
   }
@@ -578,6 +611,17 @@ export default ({
     if (val24 === val34 || val24 === val44) return false
     if (val34 === val44) return false
     return true
+  }
+
+  const isPercent = (amount: string, totalAmount: string, token: PairToken, percent: number) => {
+    const digitOnly = getDigit(amount)
+    const percentValue = getDigit(
+      formatNumberString(
+        parseDecimals(getPartial(totalAmount, percent, token.decimals), token.decimals),
+        token.decimals
+      )
+    )
+    return digitOnly === percentValue
   }
 
   if (showAuthModal) {
@@ -612,17 +656,23 @@ export default ({
             
             {tokenTo && (
               <View style={{width: '100%', marginTop: 12}}>
-                <CustomText 
-                  style={{
-                    color: theme.textColor,
-                    fontSize: theme.defaultFontSize + 1,
-                    fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-                    fontWeight: '500',
-                    marginBottom: 6
-                  }}
-                >
-                  {getLanguageString(language, 'FROM')}
-                </CustomText>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 4, marginBottom: 6}}>
+                  <CustomText 
+                    style={{
+                      color: theme.textColor,
+                      fontSize: theme.defaultFontSize + 1,
+                      fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+                      fontWeight: '500'
+                    }}
+                  >
+                    {getLanguageString(language, 'FROM')}
+                  </CustomText>
+                  <CustomText style={{ color: theme.mutedTextColor, lineHeight: 20}}>
+                    {getLanguageString(language, 'BALANCE')}:{' '}
+                    <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceTo, tokenTo.decimals), 6)}</CustomText>
+                  </CustomText>
+                </View>
+                
                 <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
                   <CustomTextInput
                     value={amountTo}
@@ -696,7 +746,7 @@ export default ({
                 <View style={{flexDirection: 'row', marginTop: 12}}>
                   <Tags 
                     content={`25 %`} 
-                    active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.25, tokenTo.decimals), tokenTo.decimals) } 
+                    active={balanceTo !== '0' && shouldHighight() && isPercent(amountTo, balanceTo, tokenTo, 0.25) } 
                     containerStyle={{marginRight: 12}} 
                     onPress={() => {
                       setEditting('to')
@@ -706,7 +756,7 @@ export default ({
                   />
                   <Tags 
                     content={`50 %`} 
-                    active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.5, tokenTo.decimals), tokenTo.decimals) } 
+                    active={balanceTo !== '0' && shouldHighight() && isPercent(amountTo, balanceTo, tokenTo, 0.5) } 
                     containerStyle={{marginRight: 12}} 
                     onPress={() => {
                       setEditting('to')
@@ -716,7 +766,7 @@ export default ({
                   />
                   <Tags 
                     content={`75 %`} 
-                    active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 0.75, tokenTo.decimals), tokenTo.decimals) } 
+                    active={balanceTo !== '0' && shouldHighight() && isPercent(amountTo, balanceTo, tokenTo, 0.75) } 
                     containerStyle={{marginRight: 12}} 
                     onPress={() => {
                       setEditting('to')
@@ -726,7 +776,7 @@ export default ({
                   />
                   <Tags 
                     content={`100 %`} 
-                    active={balanceTo !== '0' && shouldHighight() && getDigit(amountTo) === parseDecimals(getPartial(balanceTo, 1, tokenTo.decimals), tokenTo.decimals) } 
+                    active={balanceTo !== '0' && shouldHighight() && isPercent(amountTo, balanceTo, tokenTo, 1) } 
                     onPress={() => {
                       setEditting('to')
                       
@@ -746,10 +796,7 @@ export default ({
                     }} 
                   />
                 </View>
-                <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
-                  {getLanguageString(language, 'BALANCE')}:{' '}
-                  <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceTo, tokenTo.decimals), 6)}</CustomText>
-                </CustomText>
+                
                 <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
                   Liquidity:{' '}
                   <CustomText style={{color: theme.textColor}}>
@@ -792,17 +839,22 @@ export default ({
             }
             {tokenFrom && (
               <View style={{width: '100%'}}>
-                <CustomText 
-                  style={{
-                    color: theme.textColor,
-                    fontSize: theme.defaultFontSize + 1,
-                    fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-                    fontWeight: '500',
-                    marginBottom: 6
-                  }}
-                >
-                  {getLanguageString(language, 'TO')}
-                </CustomText>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 4, marginBottom: 6}}>
+                  <CustomText 
+                    style={{
+                      color: theme.textColor,
+                      fontSize: theme.defaultFontSize + 1,
+                      fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+                      fontWeight: '500'
+                    }}
+                  >
+                    {getLanguageString(language, 'TO')}
+                  </CustomText>
+                  <CustomText style={{color: theme.mutedTextColor, lineHeight: 20}}>
+                    {getLanguageString(language, 'BALANCE')}:{' '}
+                    <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceFrom, tokenFrom.decimals), 6)}</CustomText>
+                  </CustomText>
+                </View>
                 <View style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
                   <CustomTextInput
                     value={amountFrom}
@@ -874,10 +926,7 @@ export default ({
                     }
                   </View>
                 </View>
-                <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
-                  {getLanguageString(language, 'BALANCE')}:{' '}
-                  <CustomText style={{color: theme.textColor}}>{formatNumberString(parseDecimals(balanceFrom, tokenFrom.decimals), 6)}</CustomText>
-                </CustomText>
+                
                 <CustomText style={{marginTop: 2, color: theme.mutedTextColor, lineHeight: 20}}>
                   Liquidity:{' '}
                   <CustomText style={{color: theme.textColor}}>

@@ -24,7 +24,7 @@ export default ({pairItem}: {
   })
 
   const parsedList = () => {
-    if (!data || !data.swaps) return []
+    if (!data || !data.swaps || error) return []
     return data.swaps.map((item: any) => {
       const newItem = JSON.parse(JSON.stringify(item))
       if (pairItem.invert) {

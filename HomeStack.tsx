@@ -27,6 +27,7 @@ const HomeStackScreen = () => {
   const theme = useContext(ThemeContext);
   return (
     <HomeStack.Navigator
+      initialRouteName="HomeScreen"
       screenOptions={{
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         headerStyle: {
@@ -56,11 +57,6 @@ const HomeStackScreen = () => {
         component={TokenTxDetail}
         options={{headerShown: false}}
       />
-      {/* <HomeStack.Screen
-        name="NewKRC20Tx"
-        component={CreateKRC20TxScreen}
-        options={{headerShown: false}}
-      /> */}
       <HomeStack.Screen
         name="NewKRC20Tokens"
         component={AddKRC20Tokens}

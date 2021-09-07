@@ -25,3 +25,4 @@ export const KAI_TOKEN_NAME = "KardiaChain";
 export const KAI_TOKEN_SYMBOL = "KAI";
 
 export const LIMIT_ORDER_FEE = 1; // 1 KAI
+export const KAI_NETWORK_LOGO = 'https://kardiachain-explorer.s3-ap-southeast-1.amazonaws.com/explorer.kardiachain.io/logo/0aca55ee239466bc4bbfd01ac9451bcadbabd66e.png';

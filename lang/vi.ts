@@ -67,6 +67,10 @@ export const lang: Language = {
     SAVE_TO_ADDRESS_BOOK: 'Lưu ví',
     INVALID_ADDRESS: 'Địa chỉ không hợp lệ',
     TOKEN_EXISTS: 'Token đã tồn tại',
+    SELECT: 'Chọn',
+    ASSET: 'Tài sản',
+    NETWORK: 'Mạng',
+    CHANGE_NETWORK: 'Đổi mạng',
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
@@ -355,6 +359,7 @@ export const lang: Language = {
     CONFIRM_IGNORE: 'Ignore this transaction',
     // Dual node key
     DUAL_NODE: 'Dual Node',
-    CROSSCHAIN_WARNING: "Vui lòng không gửi token trực tiếp đến ví ở chain khác. Để gửi token sang ví khác, vui lòng sử dụng cầu Dual Node"
+    CROSSCHAIN_WARNING: "Vui lòng không gửi token trực tiếp đến ví ở blockchain khác. Để gửi token sang blockchain Ethereum hay Binance Smart Chain (BSC), vui lòng sử dụng cầu Dual Node.",
+    DUAL_NODE_CONVERT: 'Chuyển'
   },
 };

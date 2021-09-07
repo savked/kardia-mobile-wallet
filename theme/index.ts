@@ -4,3 +4,4 @@ export default {
 };
 
 export const HEADER_HEIGHT = 52;
+export const TABBAR_HEIGHT = 60;

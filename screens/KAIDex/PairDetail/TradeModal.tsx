@@ -71,13 +71,13 @@ export default ({visible, onClose, pairItem, onSuccess}: {
     if (Platform.OS === 'android') {
       return {
         backgroundColor: theme.backgroundFocusColor,
-        height: mode === 'MARKET' ? 670 : 660,
+        height: mode === 'MARKET' ? 690 : 680,
         padding: 0
       };
     } else {
       return {
         backgroundColor: theme.backgroundFocusColor,
-        height: mode === 'MARKET' ? 670 : 660,
+        height: mode === 'MARKET' ? 690 : 680,
         padding: 0,
         marginBottom: keyboardShown ? keyboardOffset - 60 : 0,
         marginTop: keyboardShown ? -keyboardOffset - 60 : 0,
@@ -124,10 +124,10 @@ export default ({visible, onClose, pairItem, onSuccess}: {
       <ScrollView style={{flex: 1}}>
         {
           mode === 'MARKET' ? 
-          <MarketTradeForm pairItem={pairItem} onSuccess={onSuccess} />
+          <MarketTradeForm pairItem={pairItem} onSuccess={onSuccess} onClose={onClose} />
           :
           pairItem.supportLimit ? 
-          <LimitTradeForm pairItem={pairItem} onSuccess={onSuccess} />
+          <LimitTradeForm pairItem={pairItem} onSuccess={onSuccess} onClose={onClose} />
           : 
           <CustomText style={{color: theme.textColor, paddingVertical: 12}}>
             {getLanguageString(language, 'NO_LIMIT_SUPPORT')}
