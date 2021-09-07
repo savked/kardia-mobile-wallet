@@ -33,3 +33,7 @@ export const DEFAULT_APP_JSON = 'https://raw.githubusercontent.com/kardiachain/k
 export const DEX_PAIRS_JSON = 'https://raw.githubusercontent.com/kardiachain/kaidex-pairs/master/pairs.json';
 
 export const SIMPLEX_URL = 'https://buy.chainbits.com/?crypto=KAI';
+
+export const BRIDGE_API_ENDPOINT = 'https://api-crosschain-router.kardiachain.io'
+export const BSC_RPC_URL = 'https://bsc-dataseed.binance.org/'
+export const ETH_RPC_URL = 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'
