@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { Image } from 'react-native';
 import { View } from 'react-native';
 import { useRecoilValue } from 'recoil';
@@ -13,6 +13,7 @@ import { getLanguageString } from '../../utils/lang';
 import { formatNumberString, getDigit } from '../../utils/number';
 import { truncate } from '../../utils/string';
 import { getSemiBoldStyle } from '../../utils/style';
+import AuthModal from '../common/AuthModal';
 
 export default ({visible, onClose, submitSwap, asset, chain, amount, receiver, swapFee}: {
   visible: boolean;
@@ -26,6 +27,8 @@ export default ({visible, onClose, submitSwap, asset, chain, amount, receiver, s
 }) => {
   const theme = useContext(ThemeContext)
   const language = useRecoilValue(languageAtom)
+
+  const [showAuthModal, setShowAuthModal] = useState(false)
 
   const getOtherChainToken = () => {
     if (!asset) return undefined
@@ -55,6 +58,16 @@ export default ({visible, onClose, submitSwap, asset, chain, amount, receiver, s
   }
 
   if (!asset) return null
+
+  if (showAuthModal) {
+    return (
+      <AuthModal 
+        visible={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={submitSwap}
+      />
+    )
+  }
 
   return (
     <CustomModal
@@ -283,7 +296,7 @@ export default ({visible, onClose, submitSwap, asset, chain, amount, receiver, s
       />
       <Button 
         title={getLanguageString(language, 'DUAL_NODE_CONVERT')}
-        onPress={submitSwap}
+        onPress={() => setShowAuthModal(true)}
         style={{
           marginTop: 12
         }}
