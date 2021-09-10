@@ -40,15 +40,15 @@ export default ({chain, amount, token, minSwap, setMinSwap, maxSwap, setMaxSwap,
       }
 
       // Calculating decimal
-      const underlyingToken = chain.underlyingToken[token.address]
-      if (!underlyingToken) return
+      const otherChainToken = chain.otherChainToken[token.address]
+      if (!otherChainToken) return
       const supportedChain = getSupportedChains()
-      let decimal = underlyingToken.decimals
+      let decimal = otherChainToken.decimals
       supportedChain.forEach((_chain) => {
-        const _underlyingToken = _chain.underlyingToken[token.address]
-        if (!_underlyingToken) return
-        if (_underlyingToken.decimals > decimal) {
-          decimal = _underlyingToken.decimals
+        const _otherChainToken = _chain.otherChainToken[token.address]
+        if (!_otherChainToken) return
+        if (_otherChainToken.decimals > decimal) {
+          decimal = _otherChainToken.decimals
         }
       })
 
@@ -71,15 +71,15 @@ export default ({chain, amount, token, minSwap, setMinSwap, maxSwap, setMaxSwap,
       return;
     }
     // Calculating decimal
-    const underlyingToken = chain.underlyingToken[token.address]
-    if (!underlyingToken) return
+    const otherChainToken = chain.otherChainToken[token.address]
+    if (!otherChainToken) return
     const supportedChain = getSupportedChains()
-    let decimals = underlyingToken.decimals
+    let decimals = otherChainToken.decimals
     supportedChain.forEach((_chain) => {
-      const _underlyingToken = _chain.underlyingToken[token.address]
-      if (!_underlyingToken) return
-      if (_underlyingToken.decimals > decimals) {
-        decimals = _underlyingToken.decimals
+      const _otherChainToken = _chain.otherChainToken[token.address]
+      if (!_otherChainToken) return
+      if (_otherChainToken.decimals > decimals) {
+        decimals = _otherChainToken.decimals
       }
     })
 
@@ -143,7 +143,7 @@ export default ({chain, amount, token, minSwap, setMinSwap, maxSwap, setMaxSwap,
           {formatNumberString(maxSwap)} {token.symbol}
         </CustomText>
       </View>
-      <View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 12}}>
+      <View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 12, paddingBottom: 12 }}>
         <CustomText
           style={[
             {

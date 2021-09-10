@@ -18,6 +18,7 @@ import { getTokenList, saveTokenList } from '../../utils/local';
 import { krc20ListAtom } from '../../atoms/krc20';
 import Button from '../../components/Button';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import CustomTextInput from '../../components/TextInput';
 
 export default () => {
   const theme = useContext(ThemeContext);
@@ -36,6 +37,8 @@ export default () => {
 
   const [touched, setTouched] = useState(false);
   const [adding, setAdding] = useState(false);
+
+  const [keyword, setKeyword] = useState('');
 
   useFocusEffect(
     useCallback(() => {
@@ -127,6 +130,14 @@ export default () => {
     return true
   }
 
+  const filterToken = () => {
+    if (!keyword) return verifiedTokenList
+    const _keyword = keyword.trim().toLowerCase()
+    return verifiedTokenList.filter((token) => {
+      return token.name.toLowerCase().includes(_keyword) || token.symbol.toLowerCase().includes(_keyword)
+    })
+  }
+
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <ENIcon.Button
@@ -140,10 +151,24 @@ export default () => {
         {getLanguageString(language, 'CHOOSE_VERIFIED_TOKENS')}
       </CustomText>
       <View style={{flex: 1, marginVertical: 12}}>
+        <CustomTextInput 
+          value={keyword}
+          onChangeText={setKeyword}
+          placeholder={getLanguageString(language, 'SEARCH_TOKEN_PLACEHOLDER')}
+          placeholderTextColor={theme.mutedTextColor}
+          containerStyle={{
+            paddingHorizontal: 20,
+            paddingBottom: 12
+          }}
+          inputStyle={{
+            backgroundColor: 'rgba(96, 99, 108, 1)',
+            color: theme.textColor,
+          }}
+        />
         <List
           keyExtractor={(item) => item.address}
           // items={validatorList.filter(filter)}
-          items={verifiedTokenList}
+          items={filterToken()}
           loading={loading}
           loadingSize="large"
           loadingColor={theme.textColor}

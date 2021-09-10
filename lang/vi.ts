@@ -52,7 +52,7 @@ export const lang: Language = {
     CONFIRM_REMOVE_ADDRESS: 'Bạn chắc chắn muốn xóa địa chỉ này khỏi danh bạ?',
     SCAN_QR_FOR_ADDRESS: 'Địa chỉ ví của bạn',
     SCAN_QR_FOR_ADDRESS_DESCRIPTION: 'Quét mã QR code chứa địa chỉ',
-    ERC20_WARNING: 'KHÔNG gửi KAI từ ví ERC20 đến ví này.\nKAI ERC20 gửi đến ví này sẽ bị mất vĩnh viễn.',
+    ERC20_WARNING: 'KHÔNG gửi KAI từ ví ERC20 hoặc BEP20 đến ví này.\nKAI ERC20 và BEP20 gửi đến ví này sẽ bị mất vĩnh viễn.',
     LATER: 'Để sau',
     SET_APP_PASSCODE: 'Cài đặt mật khẩu',
     NO_PASSCODE: 'Bạn chưa cài mật khẩu cho ví',
@@ -71,6 +71,7 @@ export const lang: Language = {
     ASSET: 'Tài sản',
     NETWORK: 'Mạng',
     CHANGE_NETWORK: 'Đổi mạng',
+    SEARCH_TOKEN_PLACEHOLDER: 'Tìm token',
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
@@ -360,6 +361,15 @@ export const lang: Language = {
     // Dual node key
     DUAL_NODE: 'Dual Node',
     CROSSCHAIN_WARNING: "Vui lòng không gửi token trực tiếp đến ví ở blockchain khác. Để gửi token sang blockchain Ethereum hay Binance Smart Chain (BSC), vui lòng sử dụng cầu Dual Node.",
-    DUAL_NODE_CONVERT: 'Chuyển'
+    DUAL_NODE_CONVERT: 'Chuyển',
+    MIN_AMOUNT_SWAP: '"Số lượng" trừ "Phí" phải lớn hơn hoặc bằng {{AMOUNT}} {{SYMBOL}}',
+    MAX_AMOUNT_SWAP: '"Số lượng" trừ "Phí" phải bé hơn hoặc bằng {{AMOUNT}} {{SYMBOL}}',
+    NOT_ENOUGH_LIQUIDITY: 'Không đủ thanh khoản',
+    CROSS_CHAIN_SWAP_SUCCESS: "Chuyển thành công",
+    OTHER_CHAIN_TOKEN_NOTE: 'Bạn sẽ nhận được {{SYMBOL}}.',
+    TARGET_CHAIN: 'Chain',
+    TOKEN_TO_RECEIVE: 'Token sẽ nhận',
+    FEE: 'Phí',
+    AMOUNT_TO_RECEIVE: 'Số token sẽ nhận'
   },
 };

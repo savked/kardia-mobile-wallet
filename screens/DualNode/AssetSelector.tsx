@@ -11,7 +11,7 @@ export default ({asset, selectAsset, supportedAssets = [], errorAsset}: {
   asset?: DualNodeToken;
   selectAsset: (newAsset: DualNodeToken) => void,
   supportedAssets?: DualNodeToken[];
-  errorAsset: string
+  errorAsset: string;
 }) => {
 
   const language = useRecoilValue(languageAtom)
@@ -87,43 +87,45 @@ export default ({asset, selectAsset, supportedAssets = [], errorAsset}: {
   }
 
   return (
-    <SelectModal
-      headline={getLanguageString(language, 'ASSET')}
-      containerStyle={{
-        marginBottom: errorAsset ? 12 : 22
-      }}
-      message={errorAsset}
-      value={asset}
-      onSelect={selectAsset}
-      item={supportedAssets}
-      renderSelected={(item: KRC20) => {
-        return (
-          <View style={{flexDirection: 'row'}}>
-            <Image 
-              source={{uri: item.avatar}}
-              style={{
-                width: 18,
-                height: 18,
-                marginRight: 4
-              }}
-            />
-            <CustomText 
-              style={{
-                color: theme.textColor,
-                fontWeight: '500',
-                fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-                fontSize: theme.defaultFontSize + 3
-              }}
-            >
-              {item.name}
-            </CustomText>
-          </View>
-        )
-      }}
-      renderItem={(item: KRC20, index) => renderTokenItem({
-        tokenAvatar: item.avatar || '',
-        tokenSymbol: item.symbol
-      })}
-    />
+    <>
+      <SelectModal
+        headline={getLanguageString(language, 'ASSET')}
+        containerStyle={{
+          marginBottom: errorAsset ? 12 : 22
+        }}
+        message={errorAsset}
+        value={asset}
+        onSelect={selectAsset}
+        item={supportedAssets}
+        renderSelected={(item: KRC20) => {
+          return (
+            <View style={{flexDirection: 'row'}}>
+              <Image 
+                source={{uri: item.avatar}}
+                style={{
+                  width: 18,
+                  height: 18,
+                  marginRight: 4
+                }}
+              />
+              <CustomText 
+                style={{
+                  color: theme.textColor,
+                  fontWeight: '500',
+                  fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+                  fontSize: theme.defaultFontSize + 3
+                }}
+              >
+                {item.name}
+              </CustomText>
+            </View>
+          )
+        }}
+        renderItem={(item: KRC20, index) => renderTokenItem({
+          tokenAvatar: item.avatar || '',
+          tokenSymbol: item.symbol
+        })}
+      />
+    </>
   )
 }

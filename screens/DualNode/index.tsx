@@ -1,33 +1,37 @@
-import { useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { KardiaAccount } from 'kardia-js-sdk'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Image, Keyboard, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { languageAtom } from '../../atoms/language'
+import { showTabBarAtom } from '../../atoms/showTabBar'
 import { statusBarColorAtom } from '../../atoms/statusBar'
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets'
 import Button from '../../components/Button'
 import Divider from '../../components/Divider'
-import SelectModal from '../../components/SelectModal'
 import CustomText from '../../components/Text'
 import TextInput from '../../components/TextInput'
-import { getSupportedChains } from '../../services/dualnode'
-import { getBalance } from '../../services/krc20'
+import { KAI_BRIDGE_ADDRESS } from '../../config'
+import { getSupportedChains, swapCrossChain } from '../../services/dualnode'
+import { approveKRC20Token, getBalance, getKRC20ApproveState } from '../../services/krc20'
 import { ThemeContext } from '../../ThemeContext'
 import { getLanguageString } from '../../utils/lang'
-import { formatNumberString, getDigit } from '../../utils/number'
-import { getFromClipboard, getLogoURL } from '../../utils/string'
+import { cellValueWithDecimals, formatNumberString, getDigit } from '../../utils/number'
+import { getFromClipboard } from '../../utils/string'
 import { getSemiBoldStyle } from '../../utils/style'
 import AddressBookModal from '../common/AddressBookModal'
 import ScanQRAddressModal from '../common/ScanQRAddressModal'
 import AssetSelector from './AssetSelector'
 import BalanceInput from './BalanceInput'
+import ConfirmModal from './ConfirmModal'
 import InfoSection from './InfoSection'
 import NetworkSelector from './NetworkSelector'
 import {styles} from './styles'
 
 export default () => {
+  const navigation = useNavigation()
   const theme = useContext(ThemeContext)
   const language = useRecoilValue(languageAtom)
 
@@ -46,17 +50,25 @@ export default () => {
   const [maxSwap, setMaxSwap] = useState('')
   const [swapFeeRatePerMillion, setSwapFeeRatePerMillion] = useState(0)
   const [swapFee, setSwapFee] = useState(0)
+  const [liquidity, setLiquidity] = useState('')
+  const [approveState, setApproveState] = useState(false)
+
+  const [loading, setLoading] = useState(false)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [amountTimeoutId, setAmountTimeoutId] = useState<any>()
 
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom)
 
   const insets = useSafeAreaInsets()
 
+  const setTabBarVisible = useSetRecoilState(showTabBarAtom);
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
 
   useFocusEffect(
     useCallback(() => {
       setStatusBarColor(theme.backgroundColor);
+      setTabBarVisible(true)
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
   )
@@ -71,18 +83,47 @@ export default () => {
         setBalance(new BigNumber(_balance))
       }
     })()
-  }, [asset])
+  }, [asset, wallets, selectedWallet])
 
   useEffect(() => {
-    setAsset(undefined)
     setAmount('0')
     setErrorAmount('')
+
+    const defaultAsset = chain.supportedAssets.find((asset) => asset.address === chain.defaultAsset)
+    setAsset(defaultAsset)
+
   }, [chain])
 
   useEffect(() => {
     setAmount('0')
     setErrorAmount('')
   }, [asset])
+
+  useEffect(() => {
+    (async () => {
+      if (!asset) return
+      setLoading(true)
+      if (amountTimeoutId) {
+        clearTimeout(amountTimeoutId)
+      }
+
+      const isUnderlying = getUnderlyingToken() ? true : false
+
+      if (!isUnderlying) {
+        setApproveState(true)
+        setLoading(false)
+      } else {
+        const timeoutId = setTimeout(async () => {
+          const _approveState = await getKRC20ApproveState(asset, getDigit(amount), wallets[selectedWallet], KAI_BRIDGE_ADDRESS)
+          setApproveState(_approveState)
+          setLoading(false)
+          clearTimeout(timeoutId)
+          setAmountTimeoutId(null)
+        }, 1000)
+        setAmountTimeoutId(timeoutId)
+      }
+    })()
+  }, [amount])
 
   const showAddressBookSelector = () => {
     setShowAddressBookModal(true);
@@ -92,7 +133,13 @@ export default () => {
     setShowQRModal(true);
   };
 
-  const handleConvert = () => {
+  const getUnderlyingToken = () => {
+    if (!asset) return undefined
+    const underlyingToken = chain.underlyingToken
+    return underlyingToken[asset.address]
+  }
+
+  const handleConvert = async () => {
     // Reset error state
     setErrorAsset('')
     setErrorAddress('')
@@ -107,6 +154,9 @@ export default () => {
     if (!address) {
       setErrorAddress(getLanguageString(language, 'REQUIRED_FIELD'))
       isValid = false
+    } else if (!KardiaAccount.isAddress(address)) {
+      setErrorAddress(getLanguageString(language, 'INVALID_ADDRESS'))
+      isValid = false
     }
 
     if (!isValid) return
@@ -115,13 +165,88 @@ export default () => {
     if (amountBN.isGreaterThan(balance.dividedBy(10 ** asset!.decimals))) {
       setErrorAmount(getLanguageString(language, 'NOT_ENOUGH_KRC20_FOR_TX').replace('{{SYMBOL}}', asset!.symbol))
       isValid = false
+      return
     }
     const netAmountSwap = amountBN.minus(swapFee)
 
     if (netAmountSwap.isLessThan(minSwap)) {
-
+      setErrorAmount(
+        getLanguageString(language, 'MIN_AMOUNT_SWAP')
+          .replace('{{AMOUNT}}', formatNumberString(minSwap))
+          .replace('{{SYMBOL}}', asset!.symbol)
+      )
+      isValid = false
     }
 
+    if (netAmountSwap.isGreaterThan(maxSwap)) {
+      setErrorAmount(
+        getLanguageString(language, 'MAX_AMOUNT_SWAP')
+          .replace('{{AMOUNT}}', formatNumberString(maxSwap))
+          .replace('{{SYMBOL}}', asset!.symbol)
+      )
+      isValid = false
+    }
+
+    if (liquidity) {
+      const liquidityBN = new BigNumber(getDigit(liquidity))
+      if (netAmountSwap.isGreaterThan(liquidityBN)) {
+        setErrorAmount(getLanguageString(language, 'NOT_ENOUGH_LIQUIDITY'))
+        isValid = false
+      }
+    }
+
+    if (!isValid) return
+    setShowConfirmModal(true)
+  }
+
+  const submitSwap = async () => {
+    // Start swap
+    const contractAddress = getContractAddressFromKardiaChain()
+    if (!contractAddress) return
+    setLoading(true)
+    const transactionHash = await swapCrossChain({
+      underlying: getUnderlyingToken() ? true : false,
+      tokenAddress: contractAddress,
+      toAddress: address,
+      amount: cellValueWithDecimals(getDigit(amount), asset!.decimals) as string,
+      toChainId: chain.chainId,
+      wallet: wallets[selectedWallet]
+    })
+
+    setLoading(false)
+    setAmount('0')
+    setAddress('')
+    navigation.navigate('SuccessTx', {
+      type: 'crosschainSwap',
+      txHash: transactionHash,
+      otherChainName: chain.name,
+      otherChainLogo: chain.icon,
+      swapAmount: getDigit(amount),
+      tokenSymbol: asset!.symbol,
+      otherChainReceiver: address,
+    });
+  }
+
+  const getContractAddressFromKardiaChain = () => {
+    if (!asset) return undefined
+    const contractAddress = chain.bridgeContractAddress.fromKardiaChain
+    if (!contractAddress) return undefined
+    return contractAddress[asset.address]
+  }
+
+  const handleApprove = async () => {
+    if (!asset) return
+    try {
+      setLoading(true)
+      await approveKRC20Token(asset, wallets[selectedWallet], KAI_BRIDGE_ADDRESS!)
+    } catch (error) {
+      console.log('Approve error')
+    }
+
+    const _approveState = await getKRC20ApproveState(asset, getDigit(amount), wallets[selectedWallet], KAI_BRIDGE_ADDRESS)
+
+    setApproveState(_approveState)
+    setLoading(false)
   }
 
   if (showQRModal) {
@@ -150,6 +275,32 @@ export default () => {
     );
   }
 
+  const renderButton = () => {
+    if (approveState) {
+      return (
+        <Button 
+          title={getLanguageString(language, 'DUAL_NODE_CONVERT')}
+          onPress={handleConvert}
+          loading={loading}
+          textStyle={
+            {...getSemiBoldStyle(), ...{fontSize: theme.defaultFontSize + 4}}
+          }
+        />
+      )
+    } else {
+      return (
+        <Button 
+          title={getLanguageString(language, 'APPROVE')}
+          onPress={handleApprove}
+          loading={loading}
+          textStyle={
+            {...getSemiBoldStyle(), ...{fontSize: theme.defaultFontSize + 4}}
+          }
+        />
+      )
+    }
+  }
+
   return (
     <View
       style={{
@@ -159,10 +310,20 @@ export default () => {
         paddingTop: Platform.OS === 'android' ? 8 : insets.top
       }}
     >
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={{backgroundColor: 'blue'}}>
-        <View 
-          style={{flex: 1}}
-        >
+      <ConfirmModal 
+        visible={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        chain={chain}
+        asset={asset}
+        amount={amount}
+        receiver={address}
+        submitSwap={submitSwap}
+        swapFee={swapFee}
+      />
+      <View 
+        style={{flex: 1}}
+      >
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <CustomText
             style={{
               color: theme.textColor,
@@ -171,8 +332,16 @@ export default () => {
           >
             Dual Node
           </CustomText>
-          <ScrollView contentContainerStyle={{flex: 1, flexGrow: 1}}>
-            <View onStartShouldSetResponder={() => true}>
+        </TouchableWithoutFeedback>
+        <ScrollView
+          style={{flex: 1}} 
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{flexGrow: 1}}
+        >
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View
+              style={{flex: 1}}
+            >
               <NetworkSelector selectedChain={chain} onSelectChain={(newChain) => setChain(newChain)} />
               <AssetSelector asset={asset} selectAsset={setAsset} supportedAssets={chain.supportedAssets} errorAsset={errorAsset} />
               <CustomText style={[styles.headline, {color: theme.textColor, fontSize: theme.defaultFontSize + 1}]}>
@@ -318,6 +487,8 @@ export default () => {
                   currentBalance={balance}
                   chain={chain}
                   errorAmount={errorAmount}
+                  liquidity={liquidity}
+                  setLiquidity={setLiquidity}
                 />
               }
               <Divider />
@@ -338,19 +509,12 @@ export default () => {
                 />
               }
             </View>
-          </ScrollView>  
-          <Button 
-            title={getLanguageString(language, 'DUAL_NODE_CONVERT')}
-            onPress={handleConvert}
-            style={{
-              marginBottom: 24
-            }}
-            textStyle={
-              {...getSemiBoldStyle(), ...{fontSize: theme.defaultFontSize + 4}}
-            }
-          />
+          </TouchableWithoutFeedback>
+        </ScrollView>
+        <View style={{paddingBottom: 18}}>
+          {renderButton()}
         </View>
-      </TouchableWithoutFeedback>
+      </View>
     </View>
   )
 }

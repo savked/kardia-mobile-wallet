@@ -73,6 +73,10 @@ export default () => {
   const refreshLP = params ? (params as any).refreshLP : () => {}
   const orderID = params ? (params as any).orderID : ''
   const refreshLimitOrders = params ? (params as any).refreshLimitOrders : () => {}
+  const otherChainName = params ? (params as any).otherChainName : ''
+  const otherChainLogo = params ? (params as any).otherChainLogo : ''
+  const otherChainReceiver = params ? (params as any).otherChainReceiver : ''
+  const swapAmount = params ? (params as any).swapAmount : ''
   
   const theme = useContext(ThemeContext);
 
@@ -344,6 +348,26 @@ export default () => {
             </View>
           </View>
         )
+      case 'crosschainSwap':
+        return (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}>
+            <CustomText
+              allowFontScaling={false}
+              style={{color: theme.textColor, fontSize: 32, marginRight: 12}}>
+              {formatNumberString(swapAmount)}
+            </CustomText>
+            <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 18}}>
+              {tokenSymbol}
+            </CustomText>
+          </View>
+        )
       default:
         return (
           <View
@@ -459,6 +483,45 @@ export default () => {
       case 'withdrawLP':
       case 'dexLimitCancelOrder':
         return null;
+      case 'crosschainSwap':
+        return (
+          <View style={styles.addressContainer}>
+            <View
+              style={{
+                width: 48,
+                height: 48,
+                marginRight: 12,
+                borderRadius: 12,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: theme.backgroundColor,
+              }}>
+              <Image
+                style={{width: 48, height: 48, borderRadius: 12}}
+                source={{uri: otherChainLogo}}
+              />
+            </View>
+            <View style={{justifyContent: 'space-between', height: 48, paddingVertical: 4}}>
+              <CustomText
+                style={[
+                  styles.addressName,
+                  {color: theme.textColor, fontSize: 13},
+                ]}>
+                {otherChainName}
+              </CustomText>
+              <CustomText
+                style={[
+                  styles.addressHash,
+                  {
+                    color: 'rgba(252, 252, 252, 0.54)',
+                    fontSize: theme.defaultFontSize,
+                  },
+                ]}>
+                {truncate(otherChainReceiver, 15, 15)}
+              </CustomText>
+            </View>
+          </View>
+        )
       default:
         return (
           <View style={styles.addressContainer}>
@@ -535,6 +598,8 @@ export default () => {
         return getLanguageString(language, 'ADD_LP_SUCCESS')
       case 'withdrawLP':
         return getLanguageString(language, 'WITHDRAW_LP_SUCCESS')
+      case 'crosschainSwap':
+        return getLanguageString(language, 'CROSS_CHAIN_SWAP_SUCCESS');
       default:
         return getLanguageString(language, 'TX_SUCCESS');
     }

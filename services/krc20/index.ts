@@ -3,7 +3,8 @@ import KardiaClient, { KardiaAccount } from 'kardia-js-sdk';
 import abiDecoder from 'abi-decoder';
 import {requestWithTimeOut} from '../util';
 import KRC20ABI from './KRC20ABI.json'
-import { getNonce } from '../account';
+import BigNumber from 'bignumber.js';
+import { cellValueWithDecimals } from '../../utils/number';
 
 export const getKRC20TokenInfo = async (address: string) => {
   const client = new KardiaClient({endpoint: RPC_ENDPOINT});
@@ -152,4 +153,49 @@ export const getVerifiedTokenList = async () => {
     }
   });
   return tokenList;
+}
+
+export const approveKRC20Token = async (token: KRC20, wallet: Wallet, spender: string) => {
+
+  const sdkClient = new KardiaClient({endpoint: RPC_ENDPOINT});
+  const smcInstance = sdkClient.contract
+ 
+  smcInstance.updateAbi(KRC20ABI)
+
+  // const cellValue = cellValueWithDecimals(amount, token.decimals)
+
+  const totalSupply = await smcInstance.invokeContract('totalSupply', []).call(token.address);
+  console.log('totalSupply', totalSupply)
+  const bnTotalSypply = new BigNumber(totalSupply);
+
+  const invocation = smcInstance.invokeContract('approve', [spender, bnTotalSypply.toFixed()]);
+
+  const rs = invocation.send(wallet.privateKey!, token.address, {}, true)
+  
+  return rs;
+}
+
+export const getKRC20ApproveState = async (token: KRC20, amountToCheck: string | number, wallet: Wallet, spender: string) => {
+  if (amountToCheck === '0' || amountToCheck === 0) {
+    return false
+  }
+
+  try {
+    const {contract: kardiaContract} = new KardiaClient({endpoint: RPC_ENDPOINT})
+
+    kardiaContract.updateAbi(KRC20ABI)
+    const invoke = kardiaContract.invokeContract('allowance', [wallet.address, spender]);
+    const allowance = await invoke.call(token.address, {}, "latest")
+
+    console.log('spender', spender)
+    console.log('allowance', allowance)
+
+    const rawValueAmount = new BigNumber(amountToCheck ? cellValueWithDecimals(amountToCheck.toString(), token.decimals) : '0');
+    const rawValueAllowance = new BigNumber(allowance ? allowance : '0');
+
+    return rawValueAllowance.isGreaterThanOrEqualTo(rawValueAmount)
+  } catch (error) {
+    console.log('getKRC20ApproveState error')
+    return false
+  }
 }

@@ -232,14 +232,14 @@ const NewTxModal = ({
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: keyboardShown ? 460 : 520,
+        height: keyboardShown ? 500 : 560,
         backgroundColor: 'rgba(58, 59, 60, 1)',
       };
     } else {
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: keyboardShown ? 460 : 520,
+        height: keyboardShown ? 500 : 560,
         backgroundColor: 'rgba(58, 59, 60, 1)',
         marginBottom: keyboardOffset,
         marginTop: -keyboardOffset,

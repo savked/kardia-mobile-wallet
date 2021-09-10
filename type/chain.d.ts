@@ -9,9 +9,10 @@ interface DualNodeChain {
   icon: string;
   supportedAssets: DualNodeToken[];
   underlyingToken: Record<string, DualNodeToken | undefined>;
-  contractAddress: Record<string, string | undefined>;
-  bridge?: {
-    fromKardiaChain?: string;
-    toKardiaChain?: string;
-  }
+  otherChainToken: Record<string, DualNodeToken | undefined>;
+  bridgeContractAddress: {
+    fromKardiaChain?: Record<string, string | undefined>;
+    fromOtherChain?: Record<string, string | undefined>;
+  },
+  defaultAsset: string;
 }

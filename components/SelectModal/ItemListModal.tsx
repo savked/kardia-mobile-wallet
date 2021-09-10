@@ -110,7 +110,7 @@ export default ({visible, onClose, itemList, renderItem, onSelect}: {
           <View
             style={{
               width: '100%',
-              // paddingHorizontal: 16,
+              paddingHorizontal: 16,
               paddingTop: 24,
               shadowColor: 'rgba(0, 0, 0, 0.5)',
               shadowOffset: {

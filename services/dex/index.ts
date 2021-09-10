@@ -15,7 +15,6 @@ import { getLogoURL, toChecksum } from '../../utils/string';
 import Web3 from 'web3'
 import { parseDecimals } from '../../utils/number';
 import { getCache, saveCacheByKey } from '../../utils/local';
-import { getNonce } from '../account';
 
 let SWAP_ROUTER_SMC = ''
 let FACTORY_SMC = ''

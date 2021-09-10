@@ -148,8 +148,9 @@ const HomeScreen = () => {
         imageStyle={{width: viewportWidth, height: viewportHeight, resizeMode: 'cover'}}
         style={{
           width: viewportWidth, 
-          height: viewportHeight - tabBarHeight - HEADER_HEIGHT - (Platform.OS === 'ios' ? 48 : 0), 
-          paddingBottom: Platform.OS == 'android' ? 24 : 0
+          // height: viewportHeight - tabBarHeight - HEADER_HEIGHT - (Platform.OS === 'ios' ? 48 : 0), 
+          flex: 1,
+          // paddingBottom: Platform.OS == 'android' ? 24 : 0
         }}
       >
         <ScrollView 

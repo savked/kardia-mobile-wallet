@@ -54,7 +54,7 @@ export const lang: Language = {
     SCAN_QR_FOR_ADDRESS_DESCRIPTION:
       'Scan QR code containing address to import',
     ERC20_WARNING:
-      'Please DO NOT send ERC20 KAI to this wallet.\nSending any others may result permanent loss.',
+      'Please DO NOT send ERC20 or BEP20 KAI to this wallet.\nSending any may result permanent loss.',
     LATER: 'Later',
     SET_APP_PASSCODE: 'Set Passcode',
     NO_PASSCODE: "You haven't set your app passcode yet.",
@@ -73,6 +73,7 @@ export const lang: Language = {
     ASSET: 'Asset',
     NETWORK: 'Network',
     CHANGE_NETWORK: 'Change network',
+    SEARCH_TOKEN_PLACEHOLDER: 'Search for token',
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now.',
     MNEMONIC_DESCRIPTION:
@@ -367,6 +368,15 @@ export const lang: Language = {
     // Dual node key
     DUAL_NODE: 'Dual Node',
     CROSSCHAIN_WARNING: "Please don't send token directly to wallet on another blockchain. For sending your asset to Ethereum or Binance Smart Chain (BSC), please use our Dual Node bridge.",
-    DUAL_NODE_CONVERT: 'Convert'
+    DUAL_NODE_CONVERT: 'Convert',
+    MIN_AMOUNT_SWAP: '"Amount" minus "fee" must be greater than {{AMOUNT}} {{SYMBOL}}',
+    MAX_AMOUNT_SWAP: '"Amount" minus "fee" must be less than {{AMOUNT}} {{SYMBOL}}',
+    NOT_ENOUGH_LIQUIDITY: 'Not enough liquidity',
+    CROSS_CHAIN_SWAP_SUCCESS: "You've successfully swap",
+    OTHER_CHAIN_TOKEN_NOTE: 'You will receive {{SYMBOL}}.',
+    TARGET_CHAIN: 'Chain',
+    TOKEN_TO_RECEIVE: 'Token to receive',
+    FEE: 'Fee',
+    AMOUNT_TO_RECEIVE: 'Amount to receive'
   },
 };

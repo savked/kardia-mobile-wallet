@@ -16,7 +16,9 @@ export default ({
   token,
   currentBalance,
   chain,
-  errorAmount
+  errorAmount,
+  liquidity,
+  setLiquidity
 }: {
   amount: string;
   setAmount: (newAmount: string) => void;
@@ -25,35 +27,36 @@ export default ({
   // underlyingToken?: KRC20;
   chain: DualNodeChain;
   errorAmount: string;
+  liquidity: string;
+  setLiquidity: (newValue: string) => void
 }) => {
   const theme = useContext(ThemeContext)
 
-  const [liquidity, setLiquidity] = useState('')
-
   useEffect(() => {
     (async () => {
-      const underlyingToken = getUnderlyingToken()
-      const contractAddress = getContractAddress()
-      if (!underlyingToken || !contractAddress) return
-      const rs = await getUnderlyingTokenLiquidity(contractAddress, underlyingToken.address, chain.name)
+      const otherChainToken = getOtherChainToken()
+      const contractAddress = getContractAddressFromOtherChain()
+      if (!otherChainToken || !contractAddress) return
+      const rs = await getUnderlyingTokenLiquidity(contractAddress, otherChainToken.address, chain.name)
 
       setLiquidity(
         formatNumberString(
-          parseDecimals(rs, underlyingToken.decimals)
+          parseDecimals(rs, otherChainToken.decimals)
         )
       )
     })()
   }, [chain, token])
 
-  const getUnderlyingToken = () => {
+  const getOtherChainToken = () => {
     if (!token) return undefined
-    const underlyingToken = chain.underlyingToken
-    return underlyingToken[token.address]
+    const otherChainToken = chain.otherChainToken
+    return otherChainToken[token.address]
   }
 
-  const getContractAddress = () => {
+  const getContractAddressFromOtherChain = () => {
     if (!token) return undefined
-    const contractAddress = chain.contractAddress
+    const contractAddress = chain.bridgeContractAddress.fromOtherChain
+    if (!contractAddress) return undefined
     return contractAddress[token.address]
   }
 
@@ -74,7 +77,7 @@ export default ({
       <CustomText
         style={[{
           color: theme.mutedTextColor,
-          marginTop: 12,
+          marginTop: errorAmount !== '' ? 6 : 12,
           fontSize: theme.defaultFontSize
         }, getSemiBoldStyle()]}
       >
@@ -107,7 +110,6 @@ export default ({
         <CustomTextInput
           keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
           value={amount}
-          message={errorAmount}
           onChangeText={(newAmount) => {
             const digitOnly = getDigit(newAmount);
 
@@ -158,6 +160,20 @@ export default ({
           </View>
         }
       </View>
+      {
+        errorAmount !== '' &&
+        <CustomText
+          style={{
+            color: 'rgba(255, 66, 67, 1)',
+            marginTop: errorAmount ? 6 : 0,
+            fontSize: theme.defaultFontSize + 1,
+            textAlign: 'left',
+            width: '100%'
+          }}
+        >
+          {errorAmount}
+        </CustomText>
+      }
       {renderLiquidity()}
       <View style={{flexDirection: 'row', marginTop: 12}}>
         <Tags 
@@ -195,17 +211,6 @@ export default ({
           onPress={() => {
             
             let partialValue = getPartial(currentBalance.toFixed(), 1, token.decimals)
-            if (token.symbol === 'KAI') {
-              const bnPartialValue = new BigNumber(partialValue)
-              const ONE_KAI = new BigNumber(10 ** 18)
-              // const bn110KAI = new BigNumber(10 ** (tokenTo.decimals))
-              const bn110KAI = new BigNumber(partialValue).multipliedBy(new BigNumber(0.1))
-              if (bnPartialValue.isGreaterThan(ONE_KAI)) {
-                partialValue = bnPartialValue.minus(new BigNumber(10 ** 16)).toFixed(token.decimals, 1)
-              } else {
-                partialValue = bnPartialValue.minus(bn110KAI).toFixed(token.decimals, 1)
-              }
-            }
             setAmount(formatNumberString(parseDecimals(partialValue, token.decimals), token.decimals))
           }} 
         />
