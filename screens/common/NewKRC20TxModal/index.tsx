@@ -71,8 +71,8 @@ const NewKRC20TxModal = ({
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [errorAddress, setErrorAddress] = useState(' ');
-  const [errorAmount, setErrorAmount] = useState(' ');
+  const [errorAddress, setErrorAddress] = useState('');
+  const [errorAmount, setErrorAmount] = useState('');
   const [keyboardShown, setKeyboardShown] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
 
@@ -228,17 +228,19 @@ const NewKRC20TxModal = ({
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: keyboardShown ? 480 : 540,
+        height: keyboardShown ? 500 : 560,
         backgroundColor: 'rgba(58, 59, 60, 1)',
+        justifyContent: 'flex-start'
       };
     } else {
       return {
         paddingHorizontal: 0,
         // flex: 0.65,
-        height: keyboardShown ? 480 : 540,
+        height: keyboardShown ? 500 : 560,
         backgroundColor: 'rgba(58, 59, 60, 1)',
         marginBottom: keyboardOffset - (keyboardShown ? 100 : 0),
         marginTop: -keyboardOffset - (keyboardShown ? 100 : 0),
+        justifyContent: 'flex-start'
       };
     }
   };
@@ -345,11 +347,9 @@ const NewKRC20TxModal = ({
       contentStyle={getModalStyle()}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.container]}>
-          <View>
-            <CustomText style={[styles.headline, {color: theme.textColor}]}>
-              {getLanguageString(language, 'CREATE_TX_ADDRESS')}
-            </CustomText>
-          </View>
+          <CustomText style={[styles.headline, {color: theme.textColor}]}>
+            {getLanguageString(language, 'CREATE_TX_ADDRESS')}
+          </CustomText>
           <View
             style={{
               marginBottom: 10,
@@ -428,8 +428,8 @@ const NewKRC20TxModal = ({
           </View>
 
           <View style={{marginBottom: 10}}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <CustomText style={{color: theme.textColor, marginBottom: 5, fontWeight: 'bold'}}>{getLanguageString(language, 'CREATE_TX_KRC20_AMOUNT')}</CustomText>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5,}}>
+              <CustomText style={{color: theme.textColor, fontWeight: 'bold'}}>{getLanguageString(language, 'CREATE_TX_KRC20_AMOUNT')}</CustomText>
               <TouchableOpacity onPress={() => setAmount(formatNumberString(parseDecimals(balance, tokenDecimals)))}>
                 <CustomText style={{color: theme.urlColor}}>
                   {formatNumberString(parseDecimals(balance, tokenDecimals))} {tokenSymbol}
