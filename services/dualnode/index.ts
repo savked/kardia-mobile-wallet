@@ -73,8 +73,8 @@ export const getSupportedChains: () => DualNodeChain[] = () => {
         {
           id: '0xAF984E23EAA3E7967F3C5E007fbe397D8566D23d',
           address: '0xAF984E23EAA3E7967F3C5E007fbe397D8566D23d',
-          name: 'KAI',
-          symbol: 'KAI',
+          name: 'Wrapped KAI',
+          symbol: 'wKAI',
           avatar: getLogoURL('0xAF984E23EAA3E7967F3C5E007fbe397D8566D23d'),
           decimals: 18,
           universalSymbol: 'KAI'
