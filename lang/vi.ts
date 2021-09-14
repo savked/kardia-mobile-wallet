@@ -330,6 +330,9 @@ export const lang: Language = {
     LIMIT_ORDER_ID: 'Mã lệnh',
     CANCEL_ORDER: 'Huỷ lệnh',
     ORDER_CANCELLED: 'Lệnh #{{ORDER_ID}} đã được huỷ',
+    LIMIT_PAY: 'Trả',
+    AT_PRICE: 'Giá 1 {{SYMBOL}}',
+    ESTIMATED_RECEIVE: 'Nhận',
     // Referral key
     REFERRAL_CODE: 'Mã giới thiệu',
     REFERRAL_CODE_TITLE: 'Mã giới thiệu',

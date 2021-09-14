@@ -337,6 +337,9 @@ export const lang: Language = {
     LIMIT_ORDER_ID: 'Order ID',
     CANCEL_ORDER: 'Cancel Order',
     ORDER_CANCELLED: 'Order #{{ORDER_ID}} cancelled',
+    LIMIT_PAY: 'Pay',
+    AT_PRICE: 'Price per {{SYMBOL}}',
+    ESTIMATED_RECEIVE: 'Estimated receive',
     // Referral key
     REFERRAL_CODE: 'Referral Code',
     REFERRAL_CODE_TITLE: 'Referral',
