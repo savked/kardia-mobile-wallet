@@ -6,7 +6,7 @@ import { languageAtom } from '../../../atoms/language'
 import CustomModal from '../../../components/Modal'
 import CustomText from '../../../components/Text'
 import { ThemeContext } from '../../../ThemeContext'
-import { getLanguageString } from '../../../utils/lang'
+import { getLanguageString, parseError } from '../../../utils/lang'
 import { toChecksum, truncate } from '../../../utils/string'
 import {styles} from './styles'
 import { formatNumberString, getDecimalCount, getDigit, isNumber } from '../../../utils/number'
@@ -82,7 +82,7 @@ export default ({visible, onClose, txObj, onConfirm}: {
     } catch (error) {
       console.log('error', error)
       setLoading(false)
-      setError(getLanguageString(language, 'GENERAL_ERROR'))
+      setError(parseError(error.message, language))
     }
   }
 

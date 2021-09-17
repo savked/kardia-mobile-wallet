@@ -72,6 +72,7 @@ export const lang: Language = {
     NETWORK: 'Mạng',
     CHANGE_NETWORK: 'Đổi mạng',
     SEARCH_TOKEN_PLACEHOLDER: 'Tìm token',
+    GAS_TOO_LOW: 'Giới hạn gas quá thấp, hãy thử tăng giới hạn gas',
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:

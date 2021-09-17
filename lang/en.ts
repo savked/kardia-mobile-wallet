@@ -74,6 +74,7 @@ export const lang: Language = {
     NETWORK: 'Network',
     CHANGE_NETWORK: 'Change network',
     SEARCH_TOKEN_PLACEHOLDER: 'Search for token',
+    GAS_TOO_LOW: 'Gas too low',
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now.',
     MNEMONIC_DESCRIPTION:

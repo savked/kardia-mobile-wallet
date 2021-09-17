@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import FeatherIcon from 'react-native-vector-icons/Feather';
 import {
   Image,
   TouchableOpacity,
@@ -9,11 +9,14 @@ import {
   ViewStyle,
   StyleProp,
   ImageStyle,
+  View,
 } from 'react-native';
 import styles from './style';
 import { getLanguageString } from '../../utils/lang';
 import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../atoms/language';
+import { ThemeContext } from '../../ThemeContext';
+import LinearGradient from 'react-native-linear-gradient';
 
 const CustomImagePicker = ({
   image,
@@ -30,6 +33,7 @@ const CustomImagePicker = ({
   style?: StyleProp<ViewStyle>;
   imageStyle?: StyleProp<ImageStyle>;
 }) => {
+  const theme = useContext(ThemeContext)
   const language = useRecoilValue(languageAtom);
   const pickImage = () => {
     Alert.alert(pickerTitle, '', [
@@ -78,9 +82,34 @@ const CustomImagePicker = ({
   }
   return (
     <TouchableOpacity
-      style={[styles.newImageContainer, style]}
+      style={[styles.newImageContainer, {backgroundColor: theme.backgroundStrongColor}, style]}
       onPress={() => editable && pickImage()}>
-      <MCIcon name="image-plus" color={'#DADADA'} size={32} />
+      <Image 
+        source={require('../../assets/icon/user_dark.png')}
+        style={{
+          width: 32,
+          height: 32
+        }}
+      />
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        locations={[0, 0.5]}
+        end={{x: 1, y: 1}}
+        colors={[
+          'rgba(91, 141, 239, 1)',
+          'rgba(0, 99, 247, 1)',
+        ]}
+        style={{
+          position: 'absolute',
+          backgroundColor: 'rgba(91, 141, 239, 1)',
+          padding: 7,
+          borderRadius: 8,
+          right: -8,
+          bottom: 0
+        }}
+      >
+        <FeatherIcon name="camera" color="#FFFFFF" size={15} />
+      </LinearGradient>
     </TouchableOpacity>
   );
 };

@@ -1,6 +1,6 @@
 import { useRoute } from '@react-navigation/core';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Platform, View } from 'react-native';
+import { ActivityIndicator, Image, Platform, TouchableOpacity, View } from 'react-native';
 import loadLocalResource from 'react-native-local-resource'
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
@@ -9,7 +9,7 @@ import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import ENIcon from 'react-native-vector-icons/Entypo';
 import { RPC_ENDPOINT } from '../../services/config';
 import { ThemeContext } from '../../ThemeContext';
-import { parseError, parseRun } from '../../utils/dapp';
+import { hardReload, parseError, parseRun } from '../../utils/dapp';
 import ConfirmTxFromBrowserModal from '../common/ConfirmTxFromBrowserModal';
 import Orientation from 'react-native-orientation-locker';
 // @ts-ignore
@@ -19,6 +19,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomText from '../../components/Text';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import Web3 from 'web3'
+import { getSemiBoldStyle } from '../../utils/style';
 
 const SCALE_FOR_DESKTOP = `const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=1'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta); `
 
@@ -40,6 +41,8 @@ export default () => {
   const [viewMode, setViewMode] = useState('MOBILE')
   const [reloadWebView, setReloadWebView] = useState(Date.now())
 
+  const [showSetting, setShowSetting] = useState(false)
+
   const webRef = useRef<any>()
   const insets = useSafeAreaInsets();
 
@@ -54,6 +57,14 @@ export default () => {
       }
     }
   }, [])
+
+  const handleClearCache = () => {
+    const codeToRun = hardReload()
+    if (webRef && webRef.current) {
+      webRef.current.injectJavaScript(codeToRun);
+    }
+    setShowSetting(false)
+  }
 
   const handleConfirmTx = (txHash: string) => {
     const codeToRun = parseRun(requestIdForCallback, txHash)
@@ -176,13 +187,7 @@ export default () => {
       <View style={{width: '100%', backgroundColor: theme.backgroundColor, flexDirection: 'row', justifyContent: 'space-between'}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <ENIcon.Button
-            style={{paddingLeft: 20, paddingRight: 0}}
-            name="cross"
-            onPress={() => navigation.goBack()}
-            backgroundColor="transparent"
-          />
-          <ENIcon.Button
-            style={{paddingHorizontal: 2}}
+            style={{paddingLeft: 20}}
             name="chevron-left"
             onPress={() => {
               webRef && webRef.current && webRef.current.goBack()
@@ -191,67 +196,143 @@ export default () => {
           />
           <CustomText style={{color: theme.textColor}}>KardiaChain Wallet</CustomText>  
         </View>
-        <View>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
           <ENIcon.Button
-            style={{paddingLeft: 20}}
-            name={viewMode === 'MOBILE' ? 'laptop' : 'mobile'}
+            style={{padding: 0}}
+            name={'dots-three-horizontal'}
             onPress={() => {
-              setReloadWebView(-1)
-              viewMode === 'MOBILE' ? setViewMode('DESKTOP') : setViewMode('MOBILE')
+              setShowSetting(!showSetting)
             }}
+            backgroundColor="transparent"
+          />
+          <ENIcon.Button
+            style={{paddingRight: 0}}
+            name="cross"
+            onPress={() => navigation.goBack()}
             backgroundColor="transparent"
           />
         </View>
       </View>
-      {
-        loadingURL &&
-          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <ActivityIndicator size="large" />
+      <View style={{flex: 1}}>
+        {
+          loadingURL &&
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+              <ActivityIndicator size="large" />
+            </View>
+        }
+        {
+          reloadWebView > 0 &&
+            <WebView
+              ref={webRef}
+              userAgent={
+                viewMode === 'DESKTOP' ?
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2564.109 Safari/537.36"
+                : undefined
+              }
+              scalesPageToFit={true}
+              javaScriptEnabled={true}
+              automaticallyAdjustContentInsets={false}
+              injectedJavaScriptBeforeContentLoaded={ resource }
+              injectedJavaScript={ viewMode === 'DESKTOP' ? SCALE_FOR_DESKTOP : '' }
+              onMessage={onMessage}
+              onLoadStart={() => setLoadingURL(true)}
+              onLoadEnd={() => setLoadingURL(false)}
+              source={{ uri: appURL }}
+              style={styles.webview}
+              containerStyle={{
+                flex: loadingURL || error !== '' ? 0 : 1,
+              }}
+              renderError={(errorName) => {
+                if (!errorName) return <CustomText>{''}</CustomText>;
+                setError(errorName)
+                return (
+                  <View style={{backgroundColor: '#FFFFFF', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+                    <CustomText 
+                      style={{
+                        fontSize: 30,
+                        marginBottom: 30,
+                        fontWeight: '500',
+                        fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+                      }}
+                    >
+                      Error loading your DApp
+                    </CustomText>
+                    <CustomText>Error code: {errorName}</CustomText>
+                  </View>
+                )
+              }}
+            /> 
+        }
+        {
+          showSetting && 
+          <View
+            style={{
+              position: 'absolute',
+              top: -8, 
+              right: 20,
+              borderRadius: 8,
+              backgroundColor: theme.backgroundFocusColor
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                paddingVertical: 12,
+                paddingHorizontal: 18,
+                flexDirection: 'row',
+                alignItems: 'center'
+              }}
+              onPress={handleClearCache}
+            >
+              <Image 
+                source={require('../../assets/icon/clear_cache.png')}
+                style={{
+                  width: 18,
+                  height: 18,
+                  marginRight: 4
+                }}
+              />
+              <CustomText 
+                style={[{
+                  color: theme.textColor, 
+                  fontSize: theme.defaultFontSize + 3
+                }, getSemiBoldStyle()]}
+              >
+                Hard reload
+              </CustomText>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                paddingVertical: 12,
+                paddingHorizontal: 18,
+                flexDirection: 'row',
+                alignItems: 'center'
+              }}
+              onPress={() => {
+                setReloadWebView(-1)
+                setShowSetting(false)
+                viewMode === 'MOBILE' ? setViewMode('DESKTOP') : setViewMode('MOBILE')
+              }}
+            >
+              <Image 
+                source={require('../../assets/icon/switch_view.png')}
+                style={{
+                  width: 18,
+                  height: 18,
+                  marginRight: 4
+                }}
+              />
+              <CustomText 
+                style={[{
+                  color: theme.textColor, 
+                  fontSize: theme.defaultFontSize + 3
+                }, getSemiBoldStyle()]}
+              >
+                {viewMode === 'MOBILE' ? 'Desktop' : 'Mobile'}{' '}view
+              </CustomText>
+            </TouchableOpacity>
           </View>
-      }
-      {
-        reloadWebView > 0 &&
-          <WebView
-            ref={webRef}
-            userAgent={
-              viewMode === 'DESKTOP' ?
-              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2564.109 Safari/537.36"
-              : undefined
-            }
-            scalesPageToFit={true}
-            javaScriptEnabled={true}
-            automaticallyAdjustContentInsets={false}
-            injectedJavaScriptBeforeContentLoaded={ resource }
-            injectedJavaScript={ viewMode === 'DESKTOP' ? SCALE_FOR_DESKTOP : '' }
-            onMessage={onMessage}
-            onLoadStart={() => setLoadingURL(true)}
-            onLoadEnd={() => setLoadingURL(false)}
-            source={{ uri: appURL }}
-            style={styles.webview}
-            containerStyle={{
-              flex: loadingURL || error !== '' ? 0 : 1,
-            }}
-            renderError={(errorName) => {
-              if (!errorName) return <CustomText>{''}</CustomText>;
-              setError(errorName)
-              return (
-                <View style={{backgroundColor: '#FFFFFF', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
-                  <CustomText 
-                    style={{
-                      fontSize: 30,
-                      marginBottom: 30,
-                      fontWeight: '500',
-                      fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-                    }}
-                  >
-                    Error loading your DApp
-                  </CustomText>
-                  <CustomText>Error code: {errorName}</CustomText>
-                </View>
-              )
-            }}
-          /> 
-      }
+        }
+      </View>
     </View>
   )  
 }

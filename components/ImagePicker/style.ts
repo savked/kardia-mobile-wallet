@@ -2,13 +2,12 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   newImageContainer: {
-    backgroundColor: '#FAFAFC',
-    borderColor: '#EBEBF0',
-    borderRadius: 5,
+    borderRadius: 24,
     borderWidth: 0.5,
     borderStyle: 'solid',
-    width: 72,
-    padding: 12,
+    width: 64,
+    height: 64,
+    padding: 16,
     alignItems: 'center',
     justifyContent: 'center',
     margin: 5,

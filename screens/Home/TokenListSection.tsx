@@ -79,7 +79,8 @@ const TokenListSection = ({refreshTime}: {
   };
 
   const renderTokenList = () => {
-    return tokenList.slice(0, 7).map((item, index) => {
+    // return tokenList.slice(0, 7).map((item, index) => {
+    return tokenList.map((item, index) => {
       return <View
         key={item.address}
         style={{

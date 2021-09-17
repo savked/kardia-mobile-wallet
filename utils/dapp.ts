@@ -17,3 +17,9 @@ export const parseEmit = (event: string, message: any) => {
 		window.kardiachain.remoteEmit(${event}, '${parsedMessage}')
 	`
 }
+
+export const hardReload = () => {
+	return `
+		window.location.replace(window.location.href + '?reload=${Date.now()}')
+	`
+}
