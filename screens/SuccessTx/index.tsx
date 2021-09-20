@@ -26,7 +26,7 @@ import {getTxDetail} from '../../services/transaction';
 import {getTxDetail as getKRC20TxDetail} from '../../services/krc20';
 import {ThemeContext} from '../../ThemeContext';
 import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
-import {copyToClipboard, getTxURL, truncate} from '../../utils/string';
+import {copyToClipboard, getAddressURL, getTxURL, truncate} from '../../utils/string';
 import {styles} from './style';
 import {formatNumberString, parseDecimals} from '../../utils/number';
 import TextAvatar from '../../components/TextAvatar';
@@ -415,7 +415,7 @@ export default () => {
                 }
               />
             </View>
-            <View>
+            <View style={{backgroundColor: 'red'}}>
               <CustomText
                 style={[
                   styles.addressName,
@@ -425,16 +425,22 @@ export default () => {
                   ? address.name
                   : getLanguageString(language, 'NEW_CONTACT')}
               </CustomText>
-              <CustomText
-                style={[
-                  styles.addressHash,
-                  {
-                    color: 'rgba(252, 252, 252, 0.54)',
-                    fontSize: theme.defaultFontSize,
-                  },
-                ]}>
-                {truncate(txObj.to, 15, 15)}
-              </CustomText>
+              <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+                <CustomText
+                  style={[
+                    styles.addressHash,
+                    {
+                      color: 'rgba(252, 252, 252, 0.54)',
+                      fontSize: theme.defaultFontSize,
+                      marginRight: 8
+                    },
+                  ]}>
+                  {truncate(txObj.to, 15, 15)}
+                </CustomText>
+                <TouchableOpacity onPress={() => handleClickLink(getTxURL(txObj.hash))}>
+                  <Image source={require('../../assets/icon/external_url_dark.png')} style={{width: 16, height: 16}} />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         );
@@ -536,7 +542,7 @@ export default () => {
                 backgroundColor: theme.backgroundColor,
               }}>
               <Image
-                style={{width: 48, height: 48, borderRadius: 12}}
+                style={{width: 48, height: 48}}
                 source={
                   address.avatar
                     ? {uri: address.avatar}
@@ -544,7 +550,7 @@ export default () => {
                 }
               />
             </View>
-            <View style={{justifyContent: 'space-between', height: 48, paddingVertical: 4}}>
+            <View>
               <CustomText
                 style={[
                   styles.addressName,
@@ -554,16 +560,22 @@ export default () => {
                   ? address.name
                   : getLanguageString(language, 'NEW_CONTACT')}
               </CustomText>
-              <CustomText
-                style={[
-                  styles.addressHash,
-                  {
-                    color: 'rgba(252, 252, 252, 0.54)',
-                    fontSize: theme.defaultFontSize,
-                  },
-                ]}>
-                {truncate(txObj.to, 15, 15)}
-              </CustomText>
+              <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+                <CustomText
+                  style={[
+                    styles.addressHash,
+                    {
+                      color: 'rgba(252, 252, 252, 0.54)',
+                      fontSize: theme.defaultFontSize,
+                      marginRight: 8
+                    },
+                  ]}>
+                  {truncate(txObj.to, 15, 15)}
+                </CustomText>
+                <TouchableOpacity onPress={() => handleClickLink(getAddressURL(txObj.to))}>
+                  <Image source={require('../../assets/icon/external_url_dark.png')} style={{width: 16, height: 16}} />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         );
@@ -822,18 +834,20 @@ export default () => {
           </View>
         </View>
       </View>
-      <Button
-        title={getLanguageString(language, 'OK_TEXT')}
-        loading={backing}
-        onPress={handleBack}
-        block
-        style={{marginBottom: 82}}
-        textStyle={{
-          fontWeight: '500', 
-          fontSize: theme.defaultFontSize + 4,
-          fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-        }}
-      />
+      <View style={{paddingBottom: 82}}>
+        <Button
+          title={getLanguageString(language, 'OK_TEXT')}
+          loading={backing}
+          onPress={handleBack}
+          block
+          
+          textStyle={{
+            fontWeight: '500', 
+            fontSize: theme.defaultFontSize + 4,
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+          }}
+        />
+      </View>
     </View>
   );
 };

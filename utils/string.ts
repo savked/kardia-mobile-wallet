@@ -127,6 +127,10 @@ export const getTxURL = (txHash: string) => {
   return `${EXPLORER_URL}/tx/${txHash}`;
 };
 
+export const getAddressURL = (address: string) => {
+  return `${EXPLORER_URL}/address/${toChecksum(address)}`
+}
+
 export const groupByAlphabet = (
   data: Record<string, any>[],
   keyField: string,
