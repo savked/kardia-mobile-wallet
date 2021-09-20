@@ -40,6 +40,7 @@ export default () => {
   const [error, setError] = useState('')
   const [viewMode, setViewMode] = useState('MOBILE')
   const [reloadWebView, setReloadWebView] = useState(Date.now())
+  const [shouldUseCache, setShouldUseCache] = useState(true)
 
   const [showSetting, setShowSetting] = useState(false)
 
@@ -61,9 +62,21 @@ export default () => {
   const handleClearCache = () => {
     const codeToRun = hardReload()
     if (webRef && webRef.current) {
+      if (Platform.OS === 'android') {
+        webRef.current.clearCache()
+      }
       webRef.current.injectJavaScript(codeToRun);
     }
     setShowSetting(false)
+
+    setShouldUseCache(false)
+    setReloadWebView(-1)
+
+    setTimeout(() => {
+      setReloadWebView(Date.now())
+      setShouldUseCache(true)
+    }, 300)
+
   }
 
   const handleConfirmTx = (txHash: string) => {
@@ -223,6 +236,7 @@ export default () => {
         {
           reloadWebView > 0 &&
             <WebView
+              cacheEnabled={shouldUseCache}
               ref={webRef}
               userAgent={
                 viewMode === 'DESKTOP' ?
