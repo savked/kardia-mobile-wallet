@@ -141,7 +141,12 @@ export default () => {
 
   const handleConvert = async () => {
     // Reset error state
-    setErrorAsset('')
+    // setErrorAsset('')
+
+    if (errorAsset) {
+      return;
+    }
+
     setErrorAddress('')
     setErrorAmount('')
 
@@ -506,6 +511,7 @@ export default () => {
                   setSwapFee={setSwapFee}
                   setSwapFeeRatePerMillion={setSwapFeeRatePerMillion}
                   amount={getDigit(amount)}
+                  setErrorAsset={setErrorAsset}
                 />
               }
             </View>
