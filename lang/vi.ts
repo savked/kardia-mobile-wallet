@@ -374,6 +374,7 @@ export const lang: Language = {
     TARGET_CHAIN: 'Chain',
     TOKEN_TO_RECEIVE: 'Token sẽ nhận',
     FEE: 'Phí',
-    AMOUNT_TO_RECEIVE: 'Số token sẽ nhận'
+    AMOUNT_TO_RECEIVE: 'Số token sẽ nhận',
+    GET_BRIDGE_CONFIG_ERROR: 'Lỗi cấu hình DualNode, vui lòng thử lại sau.'
   },
 };

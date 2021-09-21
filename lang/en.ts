@@ -381,6 +381,7 @@ export const lang: Language = {
     TARGET_CHAIN: 'Chain',
     TOKEN_TO_RECEIVE: 'Token to receive',
     FEE: 'Fee',
-    AMOUNT_TO_RECEIVE: 'Amount to receive'
+    AMOUNT_TO_RECEIVE: 'Amount to receive',
+    GET_BRIDGE_CONFIG_ERROR: 'Error getting DualNode config, please try again later.'
   },
 };
