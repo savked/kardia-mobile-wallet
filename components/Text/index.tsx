@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { Text, TextStyle } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { fontSizeAtom } from '../../atoms/fontSize';
 
