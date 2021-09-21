@@ -20,11 +20,8 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* KardiaChainWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* KardiaChainWalletTests.m */; };
-		3E5C7A5C26F0ABFB00F1DA57 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5C7A5B26F0ABFB00F1DA57 /* NotificationService.swift */; };
-		3E5C7A6026F0ABFB00F1DA57 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3E5C7A5926F0ABFB00F1DA57 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4174F492CC3D4176807AB008 /* WorkSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F790BD3C06034F6E926F7B07 /* WorkSans-BoldItalic.ttf */; };
 		4603E3047EF143E797964BC0 /* WorkSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 60C1AD319C3C46DC9C41C934 /* WorkSans-ExtraBold.ttf */; };
-		6201580B030FAFFB4D8CE79D /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4503E2183F45678D51C72F52 /* libPods-OneSignalNotificationServiceExtension.a */; };
 		641C5654DD9BD58346C7EFAE /* libPods-KardiaChainWallet-KardiaChainWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFD89B467400CABBBD42E63A /* libPods-KardiaChainWallet-KardiaChainWalletTests.a */; };
 		687ED2DD77B64BD1B223A4DA /* WorkSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E65E2C61E2524BAE98440D37 /* WorkSans-ExtraBoldItalic.ttf */; };
 		6D08BE128E30D1053D9F1ACE /* libPods-KardiaChainWallet-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AABE70309BD1456DFA6CDA1D /* libPods-KardiaChainWallet-tvOS.a */; };
@@ -57,13 +54,6 @@
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "KardiaChainWallet-tvOS";
 		};
-		3E5C7A5E26F0ABFB00F1DA57 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3E5C7A5826F0ABFB00F1DA57;
-			remoteInfo = OneSignalNotificationServiceExtension;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -73,7 +63,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				3E5C7A6026F0ABFB00F1DA57 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -102,7 +91,6 @@
 		2D02E4901E0B4A5D006451C7 /* KardiaChainWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KardiaChainWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		38169D63EF2445B1B1738E3B /* WorkSans-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-BlackItalic.ttf"; path = "../assets/fonts/WorkSans-BlackItalic.ttf"; sourceTree = "<group>"; };
 		3E5C7A4826F0ABD100F1DA57 /* KardiaChain Wallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "KardiaChain Wallet.entitlements"; path = "KardiaChainWallet/KardiaChain Wallet.entitlements"; sourceTree = "<group>"; };
-		3E5C7A5926F0ABFB00F1DA57 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E5C7A5B26F0ABFB00F1DA57 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		3E5C7A5D26F0ABFB00F1DA57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3EF192F726F0AD74009159E1 /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
@@ -181,14 +169,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B541B39C312F67F072BBB64 /* libPods-KardiaChainWallet-tvOSTests.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3E5C7A5626F0ABFB00F1DA57 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6201580B030FAFFB4D8CE79D /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,7 +302,6 @@
 				00E356EE1AD99517003FC87E /* KardiaChainWalletTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* KardiaChainWallet-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* KardiaChainWallet-tvOSTests.xctest */,
-				3E5C7A5926F0ABFB00F1DA57 /* OneSignalNotificationServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -385,7 +364,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				3E5C7A5F26F0ABFB00F1DA57 /* PBXTargetDependency */,
 			);
 			name = KardiaChainWallet;
 			productName = KardiaChainWallet;
@@ -431,24 +409,6 @@
 			productReference = 2D02E4901E0B4A5D006451C7 /* KardiaChainWallet-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		3E5C7A5826F0ABFB00F1DA57 /* OneSignalNotificationServiceExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3E5C7A6126F0ABFB00F1DA57 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
-			buildPhases = (
-				980EC188235B79431482C3E0 /* [CP] Check Pods Manifest.lock */,
-				3E5C7A5526F0ABFB00F1DA57 /* Sources */,
-				3E5C7A5626F0ABFB00F1DA57 /* Frameworks */,
-				3E5C7A5726F0ABFB00F1DA57 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = OneSignalNotificationServiceExtension;
-			productName = OneSignalNotificationServiceExtension;
-			productReference = 3E5C7A5926F0ABFB00F1DA57 /* OneSignalNotificationServiceExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -479,11 +439,6 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 2D02E47A1E0B4A5D006451C7;
 					};
-					3E5C7A5826F0ABFB00F1DA57 = {
-						CreatedOnToolsVersion = 12.4;
-						DevelopmentTeam = 2UXQPMP7YD;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "KardiaChainWallet" */;
@@ -503,7 +458,6 @@
 				00E356ED1AD99517003FC87E /* KardiaChainWalletTests */,
 				2D02E47A1E0B4A5D006451C7 /* KardiaChainWallet-tvOS */,
 				2D02E48F1E0B4A5D006451C7 /* KardiaChainWallet-tvOSTests */,
-				3E5C7A5826F0ABFB00F1DA57 /* OneSignalNotificationServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -551,13 +505,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2D02E48E1E0B4A5D006451C7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3E5C7A5726F0ABFB00F1DA57 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -683,28 +630,6 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-KardiaChainWallet-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		980EC188235B79431482C3E0 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -920,14 +845,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3E5C7A5526F0ABFB00F1DA57 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3E5C7A5C26F0ABFB00F1DA57 /* NotificationService.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -940,11 +857,6 @@
 			isa = PBXTargetDependency;
 			target = 2D02E47A1E0B4A5D006451C7 /* KardiaChainWallet-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
-		};
-		3E5C7A5F26F0ABFB00F1DA57 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3E5C7A5826F0ABFB00F1DA57 /* OneSignalNotificationServiceExtension */;
-			targetProxy = 3E5C7A5E26F0ABFB00F1DA57 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1008,7 +920,7 @@
 				CODE_SIGN_ENTITLEMENTS = "KardiaChainWallet/KardiaChain Wallet.entitlements";
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 190;
+				CURRENT_PROJECT_VERSION = 192;
 				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = KardiaChainWallet/Info.plist;
@@ -1038,7 +950,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 190;
+				CURRENT_PROJECT_VERSION = 192;
 				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				INFOPLIST_FILE = KardiaChainWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1171,69 +1083,6 @@
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaChainWallet-tvOS.app/KardiaChainWallet-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
-			};
-			name = Release;
-		};
-		3E5C7A6226F0ABFB00F1DA57 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8F287647C5ACBEDE0E993FCB /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 2UXQPMP7YD;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kardiachain.wallet.OneSignalNotificationServiceExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		3E5C7A6326F0ABFB00F1DA57 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = FEC101D8B134D321996CE1DF /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 2UXQPMP7YD;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kardiachain.wallet.OneSignalNotificationServiceExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1389,15 +1238,6 @@
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
 				2D02E49A1E0B4A5E006451C7 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		3E5C7A6126F0ABFB00F1DA57 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3E5C7A6226F0ABFB00F1DA57 /* Debug */,
-				3E5C7A6326F0ABFB00F1DA57 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
