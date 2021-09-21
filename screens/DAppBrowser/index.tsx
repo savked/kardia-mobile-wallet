@@ -69,13 +69,13 @@ export default () => {
     }
     setShowSetting(false)
 
-    setShouldUseCache(false)
-    setReloadWebView(-1)
+    // setShouldUseCache(false)
+    // setReloadWebView(-1)
 
-    setTimeout(() => {
-      setReloadWebView(Date.now())
-      setShouldUseCache(true)
-    }, 300)
+    // setTimeout(() => {
+    //   setReloadWebView(Date.now())
+    //   setShouldUseCache(true)
+    // }, 300)
 
   }
 
