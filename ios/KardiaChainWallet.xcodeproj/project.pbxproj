@@ -56,6 +56,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		3E5C7A6426F0ABFB00F1DA57 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* KardiaChainWalletTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KardiaChainWalletTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +90,11 @@
 		2D02E47B1E0B4A5D006451C7 /* KardiaChainWallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KardiaChainWallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* KardiaChainWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KardiaChainWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		38169D63EF2445B1B1738E3B /* WorkSans-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-BlackItalic.ttf"; path = "../assets/fonts/WorkSans-BlackItalic.ttf"; sourceTree = "<group>"; };
+		3E5C7A4826F0ABD100F1DA57 /* KardiaChain Wallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "KardiaChain Wallet.entitlements"; path = "KardiaChainWallet/KardiaChain Wallet.entitlements"; sourceTree = "<group>"; };
+		3E5C7A5B26F0ABFB00F1DA57 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		3E5C7A5D26F0ABFB00F1DA57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3EF192F726F0AD74009159E1 /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
+		4503E2183F45678D51C72F52 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C2657719F0041D6A5DAB534 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		53BE24379F13141892B3F960 /* Pods-KardiaChainWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet.debug.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet/Pods-KardiaChainWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		58C3C99A7B9946E4B68C5108 /* WorkSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-SemiBoldItalic.ttf"; path = "../assets/fonts/WorkSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
@@ -89,6 +107,7 @@
 		8D470CB135034D73BE75C1E6 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		8E18617FA42740088C9FBD2E /* WorkSans-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-ExtraLightItalic.ttf"; path = "../assets/fonts/WorkSans-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		8F1E501164430AED8C75CB21 /* Pods-KardiaChainWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet.release.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet/Pods-KardiaChainWallet.release.xcconfig"; sourceTree = "<group>"; };
+		8F287647C5ACBEDE0E993FCB /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		924165BF1C394B04A58C4B89 /* WorkSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-SemiBold.ttf"; path = "../assets/fonts/WorkSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		9C10FA5356E14EC8958126C4 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		A94612FE1748227D40AA22C5 /* Pods-KardiaChainWallet-KardiaChainWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KardiaChainWallet-KardiaChainWalletTests.debug.xcconfig"; path = "Target Support Files/Pods-KardiaChainWallet-KardiaChainWalletTests/Pods-KardiaChainWallet-KardiaChainWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -115,6 +134,7 @@
 		F790BD3C06034F6E926F7B07 /* WorkSans-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-BoldItalic.ttf"; path = "../assets/fonts/WorkSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		F7C909A7469D4E1782727EAC /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		FC73DE383E9B494A83FF356A /* WorkSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-Regular.ttf"; path = "../assets/fonts/WorkSans-Regular.ttf"; sourceTree = "<group>"; };
+		FEC101D8B134D321996CE1DF /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		FFAEF617DFE34B148A443741 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		FFED244E7A414D9BBC7D39B4 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -175,6 +195,7 @@
 		13B07FAE1A68108700A75B9A /* KardiaChainWallet */ = {
 			isa = PBXGroup;
 			children = (
+				3E5C7A4826F0ABD100F1DA57 /* KardiaChain Wallet.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -195,6 +216,7 @@
 				BFD89B467400CABBBD42E63A /* libPods-KardiaChainWallet-KardiaChainWalletTests.a */,
 				AABE70309BD1456DFA6CDA1D /* libPods-KardiaChainWallet-tvOS.a */,
 				CCAC4B8772DD357F18CCA1B5 /* libPods-KardiaChainWallet-tvOSTests.a */,
+				4503E2183F45678D51C72F52 /* libPods-OneSignalNotificationServiceExtension.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -239,6 +261,16 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		3E5C7A5A26F0ABFB00F1DA57 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				3EF192F726F0AD74009159E1 /* OneSignalNotificationServiceExtension.entitlements */,
+				3E5C7A5B26F0ABFB00F1DA57 /* NotificationService.swift */,
+				3E5C7A5D26F0ABFB00F1DA57 /* Info.plist */,
+			);
+			path = OneSignalNotificationServiceExtension;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,6 +284,7 @@
 				13B07FAE1A68108700A75B9A /* KardiaChainWallet */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* KardiaChainWalletTests */,
+				3E5C7A5A26F0ABFB00F1DA57 /* OneSignalNotificationServiceExtension */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				3B2E0477192E4C21A611A1DB /* Resources */,
@@ -284,6 +317,8 @@
 				067AE19D22D5AAF339612981 /* Pods-KardiaChainWallet-tvOS.release.xcconfig */,
 				CF53DD1F9E429800851C8870 /* Pods-KardiaChainWallet-tvOSTests.debug.xcconfig */,
 				0717DBC7C93BAC8FF2235AAF /* Pods-KardiaChainWallet-tvOSTests.release.xcconfig */,
+				8F287647C5ACBEDE0E993FCB /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				FEC101D8B134D321996CE1DF /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -324,6 +359,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				658DF3D70F16BE6FADCE6CBB /* [CP] Copy Pods Resources */,
 				D7E9859CB4DEAA6BC8210E0C /* [CP] Embed Pods Frameworks */,
+				3E5C7A6426F0ABFB00F1DA57 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -379,6 +415,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1140;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -606,10 +643,12 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-KardiaChainWallet/Pods-KardiaChainWallet-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignal.framework/OneSignal",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -668,10 +707,12 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-KardiaChainWallet-KardiaChainWalletTests/Pods-KardiaChainWallet-KardiaChainWalletTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignal.framework/OneSignal",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -863,8 +904,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0351e4ba-bdcd-47a3-9522-042dec9923a2";
-				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore 1625755911";
+				PROVISIONING_PROFILE = "7e3ef5bf-2e82-4eba-bebd-6e5a1d6a1ea1";
+				PROVISIONING_PROFILE_SPECIFIER = com.kardiachain.wallet;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaChainWallet.app/KardiaChainWallet";
 			};
 			name = Release;
@@ -873,11 +914,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 53BE24379F13141892B3F960 /* Pods-KardiaChainWallet.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "KardiaChainWallet/KardiaChain Wallet.entitlements";
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 187;
+				CURRENT_PROJECT_VERSION = 194;
 				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = KardiaChainWallet/Info.plist;
@@ -900,12 +943,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8F1E501164430AED8C75CB21 /* Pods-KardiaChainWallet.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "KardiaChainWallet/KardiaChain Wallet.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 187;
+				CURRENT_PROJECT_VERSION = 194;
 				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				INFOPLIST_FILE = KardiaChainWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -916,8 +961,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kardiachain.wallet;
 				PRODUCT_NAME = "KardiaChain Wallet";
-				PROVISIONING_PROFILE = "0351e4ba-bdcd-47a3-9522-042dec9923a2";
-				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore 1625755911";
+				PROVISIONING_PROFILE = "7e3ef5bf-2e82-4eba-bebd-6e5a1d6a1ea1";
+				PROVISIONING_PROFILE_SPECIFIER = com.kardiachain.wallet;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -975,8 +1020,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaChainWallet-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0351e4ba-bdcd-47a3-9522-042dec9923a2";
-				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore 1625755911";
+				PROVISIONING_PROFILE = "7e3ef5bf-2e82-4eba-bebd-6e5a1d6a1ea1";
+				PROVISIONING_PROFILE_SPECIFIER = com.kardiachain.wallet;
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
@@ -1033,8 +1078,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaChainWallet-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0351e4ba-bdcd-47a3-9522-042dec9923a2";
-				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore 1625755911";
+				PROVISIONING_PROFILE = "7e3ef5bf-2e82-4eba-bebd-6e5a1d6a1ea1";
+				PROVISIONING_PROFILE_SPECIFIER = com.kardiachain.wallet;
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaChainWallet-tvOS.app/KardiaChainWallet-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;

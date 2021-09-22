@@ -37,7 +37,7 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import {format} from 'date-fns';
 import {parseKaiBalance} from '../../utils/number';
 import TxDetailModal from '../common/TxDetailModal';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import NewAddressModal from '../common/NewAddressModal';
 import IconButton from '../../components/IconButton';
 import CustomImagePicker from '../../components/ImagePicker';
@@ -190,14 +190,11 @@ const AddressDetail = () => {
       </View>
     );
   };
+  
+  const {top: topInset} = useSafeAreaInsets()
 
   useEffect(() => {
     getTX();
-    // const getTxInterval = setInterval(() => {
-    //   getTX();
-    // }, 3000);
-    // return () => clearInterval(getTxInterval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useFocusEffect(
@@ -208,8 +205,8 @@ const AddressDetail = () => {
   );
 
   useEffect(() => {
-    setStatusBarColor(theme.backgroundColor);
-  }, [setStatusBarColor, theme.backgroundColor]);
+    setStatusBarColor(theme.backgroundStrongColor);
+  }, [setStatusBarColor, theme.backgroundStrongColor]);
 
   useEffect(() => {
     const addressItem = addressBook.find(
@@ -239,7 +236,7 @@ const AddressDetail = () => {
   });
 
   return (
-    <SafeAreaView
+    <View
       style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
       <TxDetailModal
         visible={showTxDetail}
@@ -262,57 +259,38 @@ const AddressDetail = () => {
         }}>
         <View
           style={{
-            flexDirection: 'row',
             width: '100%',
-            justifyContent: 'flex-start',
-          }}>
-          <Icon.Button
-            style={{paddingLeft: 20}}
-            name="chevron-left"
-            onPress={() => navigation.goBack()}
-            backgroundColor="transparent"
-          />
-        </View>
-        <ImageBackground
-          imageStyle={{
-            resizeMode: 'cover',
-            width: viewportWidth - 40,
             height: 210,
-            borderRadius: 12,
-          }}
-          style={{
-            width: viewportWidth - 40,
-            height: 210,
-            borderRadius: 12,
+            borderBottomLeftRadius: 32,
+            borderBottomRightRadius: 32,
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
+            backgroundColor: theme.backgroundStrongColor,
+            paddingTop: topInset
           }}
-          source={require('../../assets/address_detail_background.jpg')}>
+        >
           {addressData.avatar ? (
-            // <Image source={{uri: addressData.avatar}} />
             <CustomImagePicker
               image={{uri: addressData.avatar}}
               editable={false}
               imageStyle={{
-                width: 80,
-                height: 80,
+                width: 64,
+                height: 64,
                 borderRadius: 24,
               }}
-              // style={styles.addressAvatarContainer}
-              // imageStyle={styles.addressAvatar}
             />
           ) : (
             <View
               style={{
                 backgroundColor: theme.backgroundColor,
-                width: 80,
-                height: 80,
+                width: 64,
+                height: 64,
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 24,
               }}>
               <Image
-                style={{width: 48, height: 48}}
+                style={{width: 32, height: 32}}
                 source={require('../../assets/icon/user_dark.png')}
               />
             </View>
@@ -327,7 +305,15 @@ const AddressDetail = () => {
             }}>
             {addressData.name}
           </CustomText>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{
+            flexDirection: 'row', 
+            backgroundColor: theme.backgroundFocusColor,
+            paddingVertical: 4,
+            paddingHorizontal: 12,
+            borderRadius: 8,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
             <CustomText
               style={{
                 color: 'rgba(252, 252, 252, 0.54)',
@@ -338,27 +324,32 @@ const AddressDetail = () => {
               {truncate(addressData.address, 10, 10)}
             </CustomText>
             <TouchableOpacity
-              style={{
-                width: 24,
-                height: 24,
-                backgroundColor: 'rgba(249, 249, 249, 1)',
-                borderRadius: 12,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
               onPress={() => copyToClipboard(addressData.address)}>
               <Image
                 style={{width: 20, height: 20}}
-                source={require('../../assets/icon/copy_dark.png')}
+                source={require('../../assets/icon/copy.png')}
               />
             </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              position: 'absolute',
+              top: topInset,
+              left: 20,
+            }}
+          >
+            <Icon.Button
+              name="chevron-left"
+              onPress={() => navigation.goBack()}
+              backgroundColor="transparent"
+            />
           </View>
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'flex-end',
               position: 'absolute',
-              top: 24,
+              top: topInset,
               right: 20,
             }}>
             <TouchableOpacity onPress={() => setShowUpdateAddressModal(true)}>
@@ -374,7 +365,7 @@ const AddressDetail = () => {
               />
             </TouchableOpacity>
           </View>
-        </ImageBackground>
+        </View>
       </View>
       <View style={{padding: 20}}>
         <CustomText
@@ -475,7 +466,7 @@ const AddressDetail = () => {
           })}
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

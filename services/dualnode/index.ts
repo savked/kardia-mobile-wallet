@@ -239,12 +239,14 @@ export const getUnderlyingTokenLiquidity = async (contractAddress: string, under
 }
 
 export const getBridgeConfig = async (tokenSymbol: any, chainId: number) => {
-  const res = await fetch(BRIDGE_API_ENDPOINT + `/swapconfig/${tokenSymbol.toLowerCase()}/${chainId}`)
+  const symbol = tokenSymbol.toLowerCase() === 'wkai' ? 'kai' : tokenSymbol.toLowerCase()
+  const res = await fetch(BRIDGE_API_ENDPOINT + `/swapconfig/${symbol}/${chainId}`)
   try {
-    return res.json()
+    const rs = await res.json()
+    return rs
   } catch (error) {
     console.log('Get bridge config error')
-    return {}
+    return undefined
   }
 }
 

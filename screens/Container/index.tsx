@@ -1,10 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {View, Image, AppState, Dimensions, Linking, Platform} from 'react-native';
-import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
+import {useRecoilState, useSetRecoilState} from 'recoil';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import Orientation from 'react-native-orientation-locker';
 // import TransactionStackScreen from '../../TransactionStack';
@@ -25,16 +24,14 @@ import {
   savePendingTx,
   saveSelectedWallet,
   saveTokenList,
-  saveWallets,
   setFavPair,
-  setLocalNonce,
 } from '../../utils/local';
 import {styles} from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
 import {createStackNavigator} from '@react-navigation/stack';
 import Notification from '../Notification';
 import {ThemeContext} from '../../ThemeContext';
-import {getBalance, getNonce} from '../../services/account';
+import {getBalance} from '../../services/account';
 import {tokenInfoAtom} from '../../atoms/token';
 import {getKRC20TokensPrices, getTokenInfo} from '../../services/token';
 import {addressBookAtom} from '../../atoms/addressBook';
@@ -46,7 +43,6 @@ import {getLanguageString} from '../../utils/lang';
 import Portal from '@burstware/react-native-portal';
 import {krc20ListAtom, krc20PricesAtom} from '../../atoms/krc20';
 import HomeStackScreen from '../../HomeStack';
-import {showTabBarAtom} from '../../atoms/showTabBar';
 import CustomText from '../../components/Text';
 import { fontSizeAtom } from '../../atoms/fontSize';
 import { checkBlockchainStatus, getAppStatus } from '../../services/util';

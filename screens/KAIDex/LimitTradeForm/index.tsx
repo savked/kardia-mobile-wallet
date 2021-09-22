@@ -334,12 +334,6 @@ export default ({
 
   const handleSubmitMarket = async () => {
     if (!tokenFrom || !tokenTo) return;
-    const bnTo = new BigNumber(getDigit(amountTo))
-    const bnBalanceTo = new BigNumber(parseDecimals(getDigit(balanceTo), tokenTo.decimals))
-    if (bnTo.isGreaterThan(bnBalanceTo)) {
-      setSwappError(getLanguageString(language, 'NOT_ENOUGH_KRC20_FOR_TX').replace('{{SYMBOL}}', tokenTo.symbol))
-      return;
-    }
 
     setProcessing(true)
     setSwappError('')
@@ -392,9 +386,22 @@ export default ({
   }
 
   const authForSubmitMarket = () => {
+    if (!tokenTo || !tokenFrom) return
+
+    // Reset error state
+    setSwappError('')
+
     let isValid = true;
 
     const wallet = wallets[selectedWallet];
+
+    const bnTo = new BigNumber(getDigit(amountTo))
+    const bnBalanceTo = new BigNumber(parseDecimals(getDigit(balanceTo), tokenTo.decimals))
+    if (bnTo.isGreaterThan(bnBalanceTo)) {
+      setSwappError(getLanguageString(language, 'NOT_ENOUGH_KRC20_FOR_TX').replace('{{SYMBOL}}', tokenTo.symbol))
+      isValid = false
+    }
+
     if (pendingTx && wallet.address) {
       Alert.alert(getLanguageString(language, 'HAS_PENDING_TX'));
       return
@@ -574,78 +581,7 @@ export default ({
               // paddingTop: 24,
               paddingBottom: 12,
             }}>
-            <View style={{width: '100%', marginTop: 12}}>
-              <CustomText 
-                style={{
-                  color: theme.textColor,
-                  fontSize: theme.defaultFontSize + 1,
-                  fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
-                  fontWeight: '500',
-                  marginBottom: 6
-                }}
-              >
-                {getLanguageString(language, 'PRICE')}
-              </CustomText>
-              <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
-                <CustomText style={{paddingRight: 4, color: theme.textColor}}>
-                  1 {formatDexToken(_tokenFrom).symbol} = 
-                </CustomText>
-                <CustomTextInput
-                  value={orderPrice}
-                  keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
-                  onChangeText={(newValue) => {
-                    const digitOnly = getDigit(newValue, true);
-                    if (digitOnly === '') {
-                      setOrderPrice('0')
-                    }
-
-                    if (isNumber(digitOnly)) {
-                      let formatedValue = formatNumberString(digitOnly);
-
-                      const [numParts, decimalParts] = digitOnly.split('.')
-
-                      if (!decimalParts && decimalParts !== "") {
-                        setOrderPrice(formatedValue);
-                        return
-                      }
-
-                      formatedValue = formatNumberString(numParts) + '.' + decimalParts
-                      setOrderPrice(formatedValue)
-                    }
-
-                  }}
-                  onFocus={() => {
-                    setEditting('price')
-                  }}
-                  onBlur={() => {
-                    setEditting('')
-                  }}
-                  containerStyle={{flex: 1}}
-                  inputStyle={{
-                    // backgroundColor: 'rgba(184, 184, 184, 1)',
-                    // color: 'rgba(28, 28, 40, 0.36)',
-                    backgroundColor: 'rgba(96, 99, 108, 1)',
-                    color: theme.textColor,
-                    paddingRight: 90
-                  }}
-                />
-                <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: 60}}>
-                  {
-                    _tokenTo && (
-                      <>
-                        <View style={{width: 20, height: 20, backgroundColor: '#FFFFFF', borderRadius: 10, marginRight: 8}}>
-                          <Image
-                            source={{uri: _tokenTo.logo}}
-                            style={{width: 20, height: 20}}
-                          />
-                        </View>
-                        <CustomText style={{color: theme.textColor}}>{formatDexToken(_tokenTo).symbol}</CustomText>
-                      </>
-                    )
-                  }
-                </View>
-              </View>
-            </View>
+            
             {tokenTo && (
               <View style={{width: '100%', marginTop: 12}}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 4, marginBottom: 6}}>
@@ -657,7 +593,7 @@ export default ({
                       fontWeight: '500'
                     }}
                   >
-                    {getLanguageString(language, 'FROM')}
+                    {getLanguageString(language, 'LIMIT_PAY')}
                   </CustomText>
                   <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
                     {getLanguageString(language, 'BALANCE')}:{' '}
@@ -816,6 +752,75 @@ export default ({
                 </CustomText>
               </View>
             )}
+            <View style={{width: '100%', marginTop: 12}}>
+              <CustomText 
+                style={{
+                  color: theme.textColor,
+                  fontSize: theme.defaultFontSize + 1,
+                  fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined,
+                  fontWeight: '500',
+                  marginBottom: 6
+                }}
+              >
+                {getLanguageString(language, 'AT_PRICE').replace('{{SYMBOL}}', _tokenFrom.symbol)}
+              </CustomText>
+              <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
+                <CustomTextInput
+                  value={orderPrice}
+                  keyboardType={Platform.OS === 'android' ? "decimal-pad" : "numbers-and-punctuation"}
+                  onChangeText={(newValue) => {
+                    const digitOnly = getDigit(newValue, true);
+                    if (digitOnly === '') {
+                      setOrderPrice('0')
+                    }
+
+                    if (isNumber(digitOnly)) {
+                      let formatedValue = formatNumberString(digitOnly);
+
+                      const [numParts, decimalParts] = digitOnly.split('.')
+
+                      if (!decimalParts && decimalParts !== "") {
+                        setOrderPrice(formatedValue);
+                        return
+                      }
+
+                      formatedValue = formatNumberString(numParts) + '.' + decimalParts
+                      setOrderPrice(formatedValue)
+                    }
+
+                  }}
+                  onFocus={() => {
+                    setEditting('price')
+                  }}
+                  onBlur={() => {
+                    setEditting('')
+                  }}
+                  containerStyle={{flex: 1}}
+                  inputStyle={{
+                    // backgroundColor: 'rgba(184, 184, 184, 1)',
+                    // color: 'rgba(28, 28, 40, 0.36)',
+                    backgroundColor: 'rgba(96, 99, 108, 1)',
+                    color: theme.textColor,
+                    paddingRight: 90
+                  }}
+                />
+                <View style={{position: 'absolute', right: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: 60}}>
+                  {
+                    _tokenTo && (
+                      <>
+                        <View style={{width: 20, height: 20, backgroundColor: '#FFFFFF', borderRadius: 10, marginRight: 8}}>
+                          <Image
+                            source={{uri: _tokenTo.logo}}
+                            style={{width: 20, height: 20}}
+                          />
+                        </View>
+                        <CustomText style={{color: theme.textColor}}>{formatDexToken(_tokenTo).symbol}</CustomText>
+                      </>
+                    )
+                  }
+                </View>
+              </View>
+            </View>
             {
               tokenFrom && tokenTo && (
                 <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 16}}>
@@ -859,7 +864,7 @@ export default ({
                       fontWeight: '500'
                     }}
                   >
-                    {getLanguageString(language, 'TO')}
+                    {getLanguageString(language, 'ESTIMATED_RECEIVE')}
                   </CustomText>
                   <CustomText style={{marginTop: 4, color: theme.mutedTextColor, lineHeight: 20}}>
                     {getLanguageString(language, 'BALANCE')}:{' '}

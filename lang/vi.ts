@@ -72,6 +72,7 @@ export const lang: Language = {
     NETWORK: 'Mạng',
     CHANGE_NETWORK: 'Đổi mạng',
     SEARCH_TOKEN_PLACEHOLDER: 'Tìm token',
+    GAS_TOO_LOW: 'Giới hạn gas quá thấp, hãy thử tăng giới hạn gas',
     // Create wallet key:
     SUBMIT_CREATE: 'Tôi đã hiểu và đã ghi lại. Truy cập ví',
     MNEMONIC_DESCRIPTION:
@@ -330,6 +331,9 @@ export const lang: Language = {
     LIMIT_ORDER_ID: 'Mã lệnh',
     CANCEL_ORDER: 'Huỷ lệnh',
     ORDER_CANCELLED: 'Lệnh #{{ORDER_ID}} đã được huỷ',
+    LIMIT_PAY: 'Trả',
+    AT_PRICE: 'Giá 1 {{SYMBOL}}',
+    ESTIMATED_RECEIVE: 'Nhận',
     // Referral key
     REFERRAL_CODE: 'Mã giới thiệu',
     REFERRAL_CODE_TITLE: 'Mã giới thiệu',
@@ -370,6 +374,7 @@ export const lang: Language = {
     TARGET_CHAIN: 'Chain',
     TOKEN_TO_RECEIVE: 'Token sẽ nhận',
     FEE: 'Phí',
-    AMOUNT_TO_RECEIVE: 'Số token sẽ nhận'
+    AMOUNT_TO_RECEIVE: 'Số token sẽ nhận',
+    GET_BRIDGE_CONFIG_ERROR: 'Lỗi cấu hình DualNode, vui lòng thử lại sau.'
   },
 };

@@ -1,13 +1,16 @@
 import BigNumber from 'bignumber.js'
 import React, { useContext, useEffect, useState } from 'react'
 import { View } from 'react-native'
+import { useRecoilValue } from 'recoil'
+import { languageAtom } from '../../atoms/language'
 import CustomText from '../../components/Text'
 import { getBridgeConfig, getSupportedChains } from '../../services/dualnode'
 import { ThemeContext } from '../../ThemeContext'
+import { getLanguageString } from '../../utils/lang'
 import { cellValueWithDecimals, formatNumberString, getDigit, parseDecimals } from '../../utils/number'
 import { getSemiBoldStyle } from '../../utils/style'
 
-export default ({chain, amount, token, minSwap, setMinSwap, maxSwap, setMaxSwap, swapFeeRatePerMillion, setSwapFeeRatePerMillion, swapFee, setSwapFee}: {
+export default ({chain, amount, token, minSwap, setMinSwap, maxSwap, setMaxSwap, swapFeeRatePerMillion, setSwapFeeRatePerMillion, swapFee, setSwapFee, setErrorAsset}: {
   chain: DualNodeChain;
   token: DualNodeToken;
   minSwap: string;
@@ -19,15 +22,25 @@ export default ({chain, amount, token, minSwap, setMinSwap, maxSwap, setMaxSwap,
   amount: string;
   swapFee: number;
   setSwapFee: (newValue: number) => void
+  setErrorAsset: (err: string) => void
 }) => {
   const theme = useContext(ThemeContext)
+  const language = useRecoilValue(languageAtom)
 
   const [minimumSwapFee, setMinimumSwapFee] = useState('')
   const [maximumSwapFee, setMaximumSwapFee] = useState('')
 
   useEffect(() => {
     (async () => {
+      setErrorAsset('')
       const rs = await getBridgeConfig(token.symbol, chain.chainId)
+
+      if (!rs) {
+        setErrorAsset(getLanguageString(language, 'GET_BRIDGE_CONFIG_ERROR'));
+        return
+      } else {
+        console.log(rs)
+      }
 
       if (rs.SwapFeeRatePerMillion) {
         setSwapFeeRatePerMillion(rs.SwapFeeRatePerMillion)

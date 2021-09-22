@@ -74,6 +74,7 @@ export const lang: Language = {
     NETWORK: 'Network',
     CHANGE_NETWORK: 'Change network',
     SEARCH_TOKEN_PLACEHOLDER: 'Search for token',
+    GAS_TOO_LOW: 'Gas too low',
     // Create wallet key:
     SUBMIT_CREATE: 'Understood. Access my wallet now.',
     MNEMONIC_DESCRIPTION:
@@ -337,6 +338,9 @@ export const lang: Language = {
     LIMIT_ORDER_ID: 'Order ID',
     CANCEL_ORDER: 'Cancel Order',
     ORDER_CANCELLED: 'Order #{{ORDER_ID}} cancelled',
+    LIMIT_PAY: 'Pay',
+    AT_PRICE: 'Price per {{SYMBOL}}',
+    ESTIMATED_RECEIVE: 'Estimated receive',
     // Referral key
     REFERRAL_CODE: 'Referral Code',
     REFERRAL_CODE_TITLE: 'Referral',
@@ -377,6 +381,7 @@ export const lang: Language = {
     TARGET_CHAIN: 'Chain',
     TOKEN_TO_RECEIVE: 'Token to receive',
     FEE: 'Fee',
-    AMOUNT_TO_RECEIVE: 'Amount to receive'
+    AMOUNT_TO_RECEIVE: 'Amount to receive',
+    GET_BRIDGE_CONFIG_ERROR: 'Error getting DualNode config, please try again later.'
   },
 };

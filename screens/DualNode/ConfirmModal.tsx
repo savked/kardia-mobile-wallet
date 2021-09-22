@@ -64,7 +64,10 @@ export default ({visible, onClose, submitSwap, asset, chain, amount, receiver, s
       <AuthModal 
         visible={showAuthModal}
         onClose={() => setShowAuthModal(false)}
-        onSuccess={submitSwap}
+        onSuccess={() => {
+          submitSwap()
+          onClose()
+        }}
       />
     )
   }
