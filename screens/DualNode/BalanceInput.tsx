@@ -18,7 +18,10 @@ export default ({
   chain,
   errorAmount,
   liquidity,
-  setLiquidity
+  setLiquidity,
+  loadingLiquidity,
+  setLoadingLiquidity,
+  loadingConfig
 }: {
   amount: string;
   setAmount: (newAmount: string) => void;
@@ -29,6 +32,9 @@ export default ({
   errorAmount: string;
   liquidity: string;
   setLiquidity: (newValue: string) => void
+  loadingLiquidity: boolean;
+  setLoadingLiquidity: (newVal: boolean) => void
+  loadingConfig: boolean;
 }) => {
   const theme = useContext(ThemeContext)
 
@@ -37,6 +43,7 @@ export default ({
       const otherChainToken = getOtherChainToken()
       const contractAddress = getContractAddressFromOtherChain()
       if (!otherChainToken || !contractAddress) return
+      setLoadingLiquidity(true)
       const rs = await getUnderlyingTokenLiquidity(contractAddress, otherChainToken.address, chain.name)
 
       setLiquidity(
@@ -44,6 +51,7 @@ export default ({
           parseDecimals(rs, otherChainToken.decimals)
         )
       )
+      setLoadingLiquidity(false)
     })()
   }, [chain, token])
 
@@ -102,6 +110,10 @@ export default ({
       )
     )
     return digitOnly === percentValue
+  }
+
+  if (loadingLiquidity || loadingConfig) {
+    return null
   }
 
   return (
@@ -200,7 +212,6 @@ export default ({
           containerStyle={{marginRight: 12, flex: 1}} 
           onPress={() => {
             const partialValue = getPartial(currentBalance.toFixed(), 0.75, token.decimals)
-            console.log('new value', parseDecimals(partialValue, token.decimals))
             setAmount(formatNumberString(parseDecimals(partialValue, token.decimals), token.decimals))
           }}
         />

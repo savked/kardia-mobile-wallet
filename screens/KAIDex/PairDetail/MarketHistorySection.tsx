@@ -149,7 +149,11 @@ export default ({pairItem}: {
                         fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
                       }}
                     >
-                      {formatNumberString(getOrderAmount(order), 4)}
+                      {
+                        pairItem.invert ?
+                        formatNumberString(getOrderAmount(order), 4)
+                        : formatNumberString(getOrderTotal(order), 4)
+                      }
                     </CustomText>
                   </View>
                 </View>

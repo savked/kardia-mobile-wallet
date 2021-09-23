@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import List from '../../components/List';
 import CustomText from '../../components/Text';
 import {ThemeContext} from '../../ThemeContext';

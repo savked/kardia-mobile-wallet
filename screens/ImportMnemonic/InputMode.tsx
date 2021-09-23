@@ -102,10 +102,6 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
                     fontSize: 15,
                   },
                 }}
-                // containerStyle={{
-                //   minWidth: 80,
-                //   margin: 6,
-                // }}
               />
             </View>
           );

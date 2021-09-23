@@ -10,7 +10,23 @@ import { getLanguageString } from '../../utils/lang'
 import { cellValueWithDecimals, formatNumberString, getDigit, parseDecimals } from '../../utils/number'
 import { getSemiBoldStyle } from '../../utils/style'
 
-export default ({chain, amount, token, minSwap, setMinSwap, maxSwap, setMaxSwap, swapFeeRatePerMillion, setSwapFeeRatePerMillion, swapFee, setSwapFee, setErrorAsset}: {
+export default ({
+  chain, 
+  amount, 
+  token, 
+  minSwap, 
+  setMinSwap, 
+  maxSwap, 
+  setMaxSwap, 
+  swapFeeRatePerMillion, 
+  setSwapFeeRatePerMillion, 
+  swapFee, 
+  setSwapFee, 
+  setErrorAsset,
+  loadingConfig,
+  setLoadingConfig,
+  loadingLiquidity
+}: {
   chain: DualNodeChain;
   token: DualNodeToken;
   minSwap: string;
@@ -23,6 +39,9 @@ export default ({chain, amount, token, minSwap, setMinSwap, maxSwap, setMaxSwap,
   swapFee: number;
   setSwapFee: (newValue: number) => void
   setErrorAsset: (err: string) => void
+  loadingConfig: boolean;
+  setLoadingConfig: (newVal: boolean) => void;
+  loadingLiquidity: boolean
 }) => {
   const theme = useContext(ThemeContext)
   const language = useRecoilValue(languageAtom)
@@ -32,11 +51,14 @@ export default ({chain, amount, token, minSwap, setMinSwap, maxSwap, setMaxSwap,
 
   useEffect(() => {
     (async () => {
+      if (!token) return
       setErrorAsset('')
+      setLoadingConfig(true)
       const rs = await getBridgeConfig(token.symbol, chain.chainId)
 
       if (!rs) {
         setErrorAsset(getLanguageString(language, 'GET_BRIDGE_CONFIG_ERROR'));
+        setLoadingConfig(false)
         return
       } else {
         console.log(rs)
@@ -73,6 +95,7 @@ export default ({chain, amount, token, minSwap, setMinSwap, maxSwap, setMaxSwap,
         const bnValue = new BigNumber(rs.MaximumSwap)
         setMaxSwap(bnValue.dividedBy(10**decimal).toFixed())
       }
+      setLoadingConfig(false)
     })()
   }, [chain, token])
 
@@ -111,6 +134,10 @@ export default ({chain, amount, token, minSwap, setMinSwap, maxSwap, setMaxSwap,
 
     setSwapFee(rs)
   }, [amount, swapFeeRatePerMillion, minimumSwapFee, maximumSwapFee])
+
+  if (loadingConfig || loadingLiquidity) {
+    return null
+  }
 
   return (
     <>
