@@ -2,7 +2,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import BigNumber from 'bignumber.js'
 import { KardiaAccount } from 'kardia-js-sdk'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { Image, Keyboard, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { ActivityIndicator, Image, Keyboard, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { languageAtom } from '../../atoms/language'
@@ -54,6 +54,8 @@ export default () => {
   const [approveState, setApproveState] = useState(false)
 
   const [loading, setLoading] = useState(false)
+  const [loadingConfig, setLoadingConfig] = useState(false)
+  const [loadingLiquidity, setLoadingLiquidity] = useState(false)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [amountTimeoutId, setAmountTimeoutId] = useState<any>()
 
@@ -89,8 +91,9 @@ export default () => {
     setAmount('0')
     setErrorAmount('')
 
-    const defaultAsset = chain.supportedAssets.find((asset) => asset.address === chain.defaultAsset)
-    setAsset(defaultAsset)
+    // const defaultAsset = chain.supportedAssets.find((asset) => asset.address === chain.defaultAsset)
+    // setAsset(defaultAsset)
+    setAsset(undefined)
 
   }, [chain])
 
@@ -280,8 +283,21 @@ export default () => {
     );
   }
 
+  const renderLoadingConfig = () => {
+    if (!asset) return null
+    if (loadingLiquidity || loadingConfig) {
+      return (
+        <ActivityIndicator 
+          color={theme.textColor}
+          size="large"
+        />
+      )
+    }
+    return null
+  }
+
   const renderButton = () => {
-    if (approveState) {
+    if (!asset || !address) {
       return (
         <Button 
           title={getLanguageString(language, 'DUAL_NODE_CONVERT')}
@@ -292,7 +308,8 @@ export default () => {
           }
         />
       )
-    } else {
+    }
+    if (!approveState) {
       return (
         <Button 
           title={getLanguageString(language, 'APPROVE')}
@@ -304,6 +321,16 @@ export default () => {
         />
       )
     }
+    return (
+      <Button 
+        title={getLanguageString(language, 'DUAL_NODE_CONVERT')}
+        onPress={handleConvert}
+        loading={loading}
+        textStyle={
+          {...getSemiBoldStyle(), ...{fontSize: theme.defaultFontSize + 4}}
+        }
+      />
+    )
   }
 
   return (
@@ -449,7 +476,7 @@ export default () => {
                 </CustomText>
               </View>
               {
-                asset && 
+                asset && !loadingLiquidity && 
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 22, marginBottom: 12}}>
                   <CustomText 
                     style={[{
@@ -494,9 +521,15 @@ export default () => {
                   errorAmount={errorAmount}
                   liquidity={liquidity}
                   setLiquidity={setLiquidity}
+                  loadingLiquidity={loadingLiquidity}
+                  setLoadingLiquidity={setLoadingLiquidity}
+                  loadingConfig={loadingConfig}
                 />
               }
               <Divider />
+              {
+                renderLoadingConfig()
+              }
               {
                 asset &&
                 <InfoSection 
@@ -512,6 +545,9 @@ export default () => {
                   setSwapFeeRatePerMillion={setSwapFeeRatePerMillion}
                   amount={getDigit(amount)}
                   setErrorAsset={setErrorAsset}
+                  loadingLiquidity={loadingLiquidity}
+                  loadingConfig={loadingConfig}
+                  setLoadingConfig={setLoadingConfig}
                 />
               }
             </View>
