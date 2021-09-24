@@ -68,7 +68,6 @@ const ConfirmPasscode = () => {
       setError(getLanguageString(language, 'WRONG_PIN'));
       return;
     }
-    console.log('here')
     setPasscode('')
     clearOTP()
     setLocalAuth(true);

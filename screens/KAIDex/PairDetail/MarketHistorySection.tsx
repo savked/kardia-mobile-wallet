@@ -150,9 +150,7 @@ export default ({pairItem}: {
                       }}
                     >
                       {
-                        pairItem.invert ?
                         formatNumberString(getOrderAmount(order), 4)
-                        : formatNumberString(getOrderTotal(order), 4)
                       }
                     </CustomText>
                   </View>
