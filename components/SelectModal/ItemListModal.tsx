@@ -10,12 +10,13 @@ import List from '../List'
 import CustomModal from '../Modal'
 import CustomTextInput from '../TextInput'
 
-export default ({visible, onClose, itemList, renderItem, onSelect}: {
+export default ({visible, onClose, itemList, renderItem, onSelect, searchPlaceHolder = ''}: {
   visible: boolean;
   onClose: () => void;
   itemList: Record<string, any>[];
   renderItem: (item: Record<string, any>, index: number) => any;
-  onSelect: (item: Record<string, any>) => void
+  onSelect: (item: Record<string, any>) => void;
+  searchPlaceHolder?: string
 }) => {
   const language = useRecoilValue(languageAtom)
   const theme = useContext(ThemeContext)
@@ -76,7 +77,7 @@ export default ({visible, onClose, itemList, renderItem, onSelect}: {
                 backgroundColor: theme.inputBackgroundColor,
                 color: theme.textColor
               }}
-              placeholder={getLanguageString(language, 'SEARCH_FOR_TOKEN')}
+              placeholder={searchPlaceHolder}
               placeholderTextColor={theme.mutedTextColor}
             />
             <List
