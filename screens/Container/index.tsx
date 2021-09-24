@@ -68,7 +68,7 @@ import CustomTab from './CustomTab';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const {width: viewportWidth} = Dimensions.get('window')
+const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
 let lastTimestamp = 0;
 
@@ -242,7 +242,7 @@ const AppContainer = () => {
         lastTimestamp = Date.now();
       } else if (state === 'active') {
         // Lock app if unfocused in 2 minute
-        if (Date.now() - lastTimestamp > 2 * 60 * 1000) {
+        if (Date.now() - lastTimestamp > 2 * 60 * 1) {
           setIsLocalAuthed(false);
         }
       }
@@ -493,10 +493,6 @@ const AppContainer = () => {
     );
   }
 
-  if (!isLocalAuthed && localAuthEnabled) {
-    return <ConfirmPasscode />;
-  }
-
   return (
     <>
       <NavigationContainer>
@@ -530,6 +526,17 @@ const AppContainer = () => {
               }}
             />
           </Stack.Navigator>
+          <View
+            style={{
+              position: 'absolute',
+              top: !isLocalAuthed && localAuthEnabled ? 0 : viewportHeight + 40,
+              left: 0, 
+              width: viewportWidth,
+              height: viewportHeight
+            }}
+          >
+            <ConfirmPasscode />
+          </View>
         </Portal.Host>
       </NavigationContainer>
     </>
