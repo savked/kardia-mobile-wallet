@@ -6,4 +6,5 @@ interface SelectModalProps {
   renderSelected: (item: any) => any;
   item: Record<string, any>[];
   message?: string
+  searchPlaceHolder?: string
 }

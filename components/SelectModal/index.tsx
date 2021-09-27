@@ -17,7 +17,8 @@ export default ({
   renderSelected,
   item,
   onSelect,
-  message = ''
+  message = '',
+  searchPlaceHolder = ''
 }: SelectModalProps & {
   headlineStyle?: TextStyle | TextStyle[]
   containerStyle?: ViewStyle
@@ -44,6 +45,7 @@ export default ({
           onSelect(item)
           setShowSelectItemModal(false)
         }}
+        searchPlaceHolder={searchPlaceHolder}
       />
       {
         headline !== '' &&

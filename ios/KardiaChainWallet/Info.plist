@@ -1,107 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>KardiaChain Wallet</string>
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>2.3.30</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>197</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>itms-apps</string>
-	</array>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoads</key>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>en</string>
+		<key>CFBundleDisplayName</key>
+		<string>KardiaChain Wallet</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>$(PRODUCT_NAME)</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>2.3.30</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleVersion</key>
+		<string>197</string>
+		<key>ITSAppUsesNonExemptEncryption</key>
+		<false/>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>itms-apps</string>
+		</array>
+		<key>LSRequiresIPhoneOS</key>
 		<true/>
-		<key>NSExceptionDomains</key>
+		<key>NSAppTransportSecurity</key>
 		<dict>
-			<key>localhost</key>
+			<key>NSAllowsArbitraryLoads</key>
+			<true/>
+			<key>NSExceptionDomains</key>
 			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
+				<key>localhost</key>
+				<dict>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true/>
+				</dict>
 			</dict>
 		</dict>
+		<key>NSCameraUsageDescription</key>
+		<string>KardiaChain wallet to access your camera for QR code scaning</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>Enabling Face ID allows you quick and secure access to your wallet.</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string/>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Allow KardiaChain wallet to access your microphone</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>KardiaChain wallet to access your camera for QR code uploading</string>
+		<key>UIAppFonts</key>
+		<array>
+			<string>AntDesign.ttf</string>
+			<string>Entypo.ttf</string>
+			<string>EvilIcons.ttf</string>
+			<string>Feather.ttf</string>
+			<string>FontAwesome.ttf</string>
+			<string>FontAwesome5_Brands.ttf</string>
+			<string>FontAwesome5_Regular.ttf</string>
+			<string>FontAwesome5_Solid.ttf</string>
+			<string>Fontisto.ttf</string>
+			<string>Foundation.ttf</string>
+			<string>Ionicons.ttf</string>
+			<string>MaterialCommunityIcons.ttf</string>
+			<string>MaterialIcons.ttf</string>
+			<string>Octicons.ttf</string>
+			<string>SimpleLineIcons.ttf</string>
+			<string>Zocial.ttf</string>
+			<string>WorkSans-Black.ttf</string>
+			<string>WorkSans-BlackItalic.ttf</string>
+			<string>WorkSans-Bold.ttf</string>
+			<string>WorkSans-BoldItalic.ttf</string>
+			<string>WorkSans-ExtraBold.ttf</string>
+			<string>WorkSans-ExtraBoldItalic.ttf</string>
+			<string>WorkSans-ExtraLight.ttf</string>
+			<string>WorkSans-ExtraLightItalic.ttf</string>
+			<string>WorkSans-Italic.ttf</string>
+			<string>WorkSans-Light.ttf</string>
+			<string>WorkSans-LightItalic.ttf</string>
+			<string>WorkSans-Medium.ttf</string>
+			<string>WorkSans-MediumItalic.ttf</string>
+			<string>WorkSans-Regular.ttf</string>
+			<string>WorkSans-SemiBold.ttf</string>
+			<string>WorkSans-SemiBoldItalic.ttf</string>
+			<string>WorkSans-Thin.ttf</string>
+		</array>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIRequiredDeviceCapabilities</key>
+		<array>
+			<string>armv7</string>
+		</array>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false/>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>kardiachainwallet</string>
+				</array>
+			</dict>
+		</array>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>KardiaChain wallet to access your camera for QR code scaning</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Enabling Face ID allows you quick and secure access to your wallet.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Allow KardiaChain wallet to access your microphone</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>KardiaChain wallet to access your camera for QR code uploading</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>AntDesign.ttf</string>
-		<string>Entypo.ttf</string>
-		<string>EvilIcons.ttf</string>
-		<string>Feather.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>FontAwesome5_Brands.ttf</string>
-		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>Fontisto.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Zocial.ttf</string>
-		<string>WorkSans-Black.ttf</string>
-		<string>WorkSans-BlackItalic.ttf</string>
-		<string>WorkSans-Bold.ttf</string>
-		<string>WorkSans-BoldItalic.ttf</string>
-		<string>WorkSans-ExtraBold.ttf</string>
-		<string>WorkSans-ExtraBoldItalic.ttf</string>
-		<string>WorkSans-ExtraLight.ttf</string>
-		<string>WorkSans-ExtraLightItalic.ttf</string>
-		<string>WorkSans-Italic.ttf</string>
-		<string>WorkSans-Light.ttf</string>
-		<string>WorkSans-LightItalic.ttf</string>
-		<string>WorkSans-Medium.ttf</string>
-		<string>WorkSans-MediumItalic.ttf</string>
-		<string>WorkSans-Regular.ttf</string>
-		<string>WorkSans-SemiBold.ttf</string>
-		<string>WorkSans-SemiBoldItalic.ttf</string>
-		<string>WorkSans-Thin.ttf</string>
-	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-</dict>
 </plist>

@@ -19,17 +19,13 @@ import {
   getSelectedWallet,
   getTokenList,
   getWallets,
-  saveAddressNonce,
   saveAllCache,
-  savePendingTx,
   saveSelectedWallet,
   saveTokenList,
   setFavPair,
 } from '../../utils/local';
 import {styles} from './style';
 import NoWalletStackScreen from '../../NoWalletStack';
-import {createStackNavigator} from '@react-navigation/stack';
-import Notification from '../Notification';
 import {ThemeContext} from '../../ThemeContext';
 import {getBalance} from '../../services/account';
 import {tokenInfoAtom} from '../../atoms/token';
@@ -66,9 +62,8 @@ import IgnorePendingTxModal from '../common/IgnorePendingTxModal';
 import CustomTab from './CustomTab';
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 
-const {width: viewportWidth} = Dimensions.get('window')
+const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
 let lastTimestamp = 0;
 
@@ -242,7 +237,7 @@ const AppContainer = () => {
         lastTimestamp = Date.now();
       } else if (state === 'active') {
         // Lock app if unfocused in 2 minute
-        if (Date.now() - lastTimestamp > 2 * 60 * 1000) {
+        if (Date.now() - lastTimestamp > 2 * 60 * 1) {
           setIsLocalAuthed(false);
         }
       }
@@ -493,10 +488,6 @@ const AppContainer = () => {
     );
   }
 
-  if (!isLocalAuthed && localAuthEnabled) {
-    return <ConfirmPasscode />;
-  }
-
   return (
     <>
       <NavigationContainer>
@@ -505,31 +496,18 @@ const AppContainer = () => {
             visible={showPendingTxModal}
             onClose={() => setShowPendingTxModal(false)}
           />
-          <Stack.Navigator>
-            <Stack.Screen
-              options={{headerShown: false}}
-              name="Wrap"
-              component={Wrap}
-            />
-            <Stack.Screen
-              name="Notification"
-              component={Notification}
-              options={{
-                headerStyle: {
-                  backgroundColor: theme.backgroundColor,
-                },
-                headerTitleStyle: {
-                  color: theme.textColor,
-                },
-                headerTintColor: theme.textColor,
-                headerBackTitleVisible: false,
-                headerTitle: getLanguageString(
-                  language,
-                  'NOTIFICATION_SCREEN_TITLE',
-                ),
-              }}
-            />
-          </Stack.Navigator>
+          <Wrap />
+          <View
+            style={{
+              position: 'absolute',
+              top: !isLocalAuthed && localAuthEnabled ? 0 : viewportHeight + 40,
+              left: 0, 
+              width: viewportWidth,
+              height: viewportHeight
+            }}
+          >
+            <ConfirmPasscode />
+          </View>
         </Portal.Host>
       </NavigationContainer>
     </>

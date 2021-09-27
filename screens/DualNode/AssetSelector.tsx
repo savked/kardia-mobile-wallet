@@ -93,6 +93,7 @@ export default ({asset, selectAsset, supportedAssets = [], errorAsset}: {
         containerStyle={{
           marginBottom: errorAsset ? 12 : 22
         }}
+        searchPlaceHolder={getLanguageString(language, 'SEARCH_FOR_TOKEN')}
         message={errorAsset}
         value={asset}
         onSelect={selectAsset}

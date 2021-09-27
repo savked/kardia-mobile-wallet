@@ -38,6 +38,12 @@ const ConfirmPasscode = () => {
     }
   }, [])
 
+  const clearOTP = useCallback(() => {
+    if (otpRef && otpRef.current) {
+      otpRef.current.reset();
+    }
+  }, [])
+
   useEffect(() => {
     focusOTP()
     TouchID.isSupported(optionalConfigObject)
@@ -62,12 +68,16 @@ const ConfirmPasscode = () => {
       setError(getLanguageString(language, 'WRONG_PIN'));
       return;
     }
+    setPasscode('')
+    clearOTP()
     setLocalAuth(true);
   };
 
   const authByTouchID = async () => {
     TouchID.authenticate('Use touch ID to access wallet', optionalConfigObject)
       .then(async () => {
+        setPasscode('')
+        clearOTP()
         setLocalAuth(true);
       })
       .catch((err: any) => {
