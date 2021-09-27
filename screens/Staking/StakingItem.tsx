@@ -18,6 +18,7 @@ import CustomText from '../../components/Text';
 import { getLatestBlock } from '../../services/blockchain';
 import { formatNumberString, getDigit } from '../../utils/number';
 import { BLOCK_TIME } from '../../config';
+import { truncate } from '../../utils/string';
 
 const StakingItem = ({
   item
@@ -140,7 +141,7 @@ const StakingItem = ({
           />
           <View>
             <CustomText style={[styles.validatorName, {color: theme.textColor}]}>
-              {item.name}
+              {truncate(item.name, 16, -1)}
             </CustomText>
             <CustomText
               allowFontScaling={false}
