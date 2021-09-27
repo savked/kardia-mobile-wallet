@@ -81,7 +81,6 @@ export const getRecomendedGasPrice = async () => {
 
 export const sendRawTx = async (txObj: Record<string, any>, wallet: Wallet, waitUntilmined = false) => {
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
-  // TODO: get local nonce
   const nonce = await kardiaClient.account.getNonce(wallet.address.trim());
   txObj.nonce = nonce
   const txResult = await kardiaClient.transaction.sendTransaction(
@@ -89,6 +88,8 @@ export const sendRawTx = async (txObj: Record<string, any>, wallet: Wallet, wait
     wallet.privateKey!,
     waitUntilmined
   );
+
+  if (!waitUntilmined) return txResult
 
   return txResult.transactionHash;
 }
