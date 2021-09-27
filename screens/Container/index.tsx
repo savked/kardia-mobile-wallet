@@ -72,7 +72,7 @@ const config = {
     Home: {
       screens: {
         AuthorizeAccess: 'authorize/:appName/:callbackSchema/:callbackPath',
-        SignTxFromExternal: 'signTx/:signature/:stringifiedTx'
+        SignTxFromExternal: 'signTx/:signature/:txMeta'
       }
     }
   },
