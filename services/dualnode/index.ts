@@ -123,6 +123,15 @@ export const getSupportedChains: () => DualNodeChain[] = () => {
           avatar: getLogoURL('0x6CD689DefCA80f9F2CBED9D0C6f3B2Cf4abc4598'),
           decimals: 18,
           universalSymbol: 'KPHI'
+        },
+        {
+          id: '0xF0051fd4758147F1749D1696C9266d047B4c43Fa',
+          address: '0xF0051fd4758147F1749D1696C9266d047B4c43Fa',
+          name: 'Thetan Gem',
+          symbol: 'THG',
+          avatar: getLogoURL('0xF0051fd4758147F1749D1696C9266d047B4c43Fa'),
+          decimals: 18,
+          universalSymbol: 'THG'
         }
       ],
       otherChainToken: {
@@ -179,6 +188,15 @@ export const getSupportedChains: () => DualNodeChain[] = () => {
           decimals: 18,
           universalSymbol: 'KPHI',
           avatar: getLogoURL('0x6CD689DefCA80f9F2CBED9D0C6f3B2Cf4abc4598')
+        },
+        '0xF0051fd4758147F1749D1696C9266d047B4c43Fa': {
+          id: '0x9fd87aefe02441b123c3c32466cd9db4c578618f',
+          address: '0x9fd87aefe02441b123c3c32466cd9db4c578618f',
+          name: 'Thetan Gem',
+          symbol: 'THG',
+          decimals: 18,
+          universalSymbol: 'THG',
+          avatar: getLogoURL('0x9fd87aefe02441b123c3c32466cd9db4c578618f')
         }
       },
       underlyingToken: {
@@ -199,6 +217,15 @@ export const getSupportedChains: () => DualNodeChain[] = () => {
           avatar: getLogoURL('0x6CD689DefCA80f9F2CBED9D0C6f3B2Cf4abc4598'),
           decimals: 18,
           universalSymbol: 'KPHI'
+        },
+        '0xF0051fd4758147F1749D1696C9266d047B4c43Fa': {
+          id: '0xF0051fd4758147F1749D1696C9266d047B4c43Fa',
+          address: '0xF0051fd4758147F1749D1696C9266d047B4c43Fa',
+          name: 'Thetan Gem',
+          symbol: 'THG',
+          avatar: getLogoURL('0xF0051fd4758147F1749D1696C9266d047B4c43Fa'),
+          decimals: 18,
+          universalSymbol: 'THG'
         }
       },
       bridgeContractAddress: {
@@ -208,7 +235,8 @@ export const getSupportedChains: () => DualNodeChain[] = () => {
           '0x3444273AFdf9E00Fd0491C8a97738acA3ebB2A93': '0x3444273AFdf9E00Fd0491C8a97738acA3ebB2A93',
           '0x1540020a94aA8bc189aA97639Da213a4ca49d9a7': '0x1540020a94aA8bc189aA97639Da213a4ca49d9a7',
           '0x551A5dcAC57C66aA010940c2dcFf5DA9c53aa53b': '0x551A5dcAC57C66aA010940c2dcFf5DA9c53aa53b',
-          '0x6CD689DefCA80f9F2CBED9D0C6f3B2Cf4abc4598': '0xb2C328Fb6D8377caeaFdA8a465b79C67b5EE2550'
+          '0x6CD689DefCA80f9F2CBED9D0C6f3B2Cf4abc4598': '0xb2C328Fb6D8377caeaFdA8a465b79C67b5EE2550',
+          '0xF0051fd4758147F1749D1696C9266d047B4c43Fa': '0xea87546a5a40142B512EB78f73c4E20c300B69bb'
         },
         fromOtherChain: {
           '0xAF984E23EAA3E7967F3C5E007fbe397D8566D23d': '0xBb14e7905c663B176Aa4FF02Fd4E3688722d5856',
@@ -216,7 +244,8 @@ export const getSupportedChains: () => DualNodeChain[] = () => {
           '0x3444273AFdf9E00Fd0491C8a97738acA3ebB2A93': '0x8505be08b053bc1d76e511fcab1a2bb082c62ae1',
           '0x1540020a94aA8bc189aA97639Da213a4ca49d9a7': '0xf8D195d5DeA90D5e9bBa32154916AF73bfc3e03D',
           '0x551A5dcAC57C66aA010940c2dcFf5DA9c53aa53b': '0xbB014967977FDEeD4f645DF4768A15932989fac1',
-          '0x6CD689DefCA80f9F2CBED9D0C6f3B2Cf4abc4598': '0xb65ca9a3e710970473fd45d4dddd7b8f1253ce28'
+          '0x6CD689DefCA80f9F2CBED9D0C6f3B2Cf4abc4598': '0xb65ca9a3e710970473fd45d4dddd7b8f1253ce28',
+          '0xF0051fd4758147F1749D1696C9266d047B4c43Fa': '0xc073B33d58f8FCD4ba5e5463eB073FD62ce2220e'
         }
       },
       defaultAsset: '0xAF984E23EAA3E7967F3C5E007fbe397D8566D23d'
