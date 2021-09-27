@@ -382,6 +382,8 @@ export const lang: Language = {
     TOKEN_TO_RECEIVE: 'Token to receive',
     FEE: 'Fee',
     AMOUNT_TO_RECEIVE: 'Amount to receive',
-    GET_BRIDGE_CONFIG_ERROR: 'Error getting DualNode config, please try again later.'
+    GET_BRIDGE_CONFIG_ERROR: 'Error getting DualNode config, please try again later.',
+    // Authorize access key
+    SEARCH_FOR_ADDRESS: 'Search for address'
   },
 };

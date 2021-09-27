@@ -375,6 +375,8 @@ export const lang: Language = {
     TOKEN_TO_RECEIVE: 'Token sẽ nhận',
     FEE: 'Phí',
     AMOUNT_TO_RECEIVE: 'Số token sẽ nhận',
-    GET_BRIDGE_CONFIG_ERROR: 'Lỗi cấu hình DualNode, vui lòng thử lại sau.'
+    GET_BRIDGE_CONFIG_ERROR: 'Lỗi cấu hình DualNode, vui lòng thử lại sau.',
+    // Authorize access key
+    SEARCH_FOR_ADDRESS: 'Tìm địa chỉ'
   },
 };
