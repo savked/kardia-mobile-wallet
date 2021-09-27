@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
-import {Image, Platform, TouchableOpacity, View} from 'react-native';
+import {Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
 import OtpInputs, { OtpInputsRef } from 'react-native-otp-inputs';
 import TouchID from 'react-native-touch-id';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -33,10 +33,12 @@ const ConfirmPasscode = () => {
   const otpRef = useRef<OtpInputsRef>(null)
 
   const focusOTP = useCallback(() => {
-    if (otpRef && otpRef.current) {
+    if (otpRef && otpRef.current && touchSupported) {
       otpRef.current.focus();
+    } else {
+      Keyboard.dismiss()
     }
-  }, [])
+  }, [touchSupported])
 
   const clearOTP = useCallback(() => {
     if (otpRef && otpRef.current) {
@@ -68,6 +70,7 @@ const ConfirmPasscode = () => {
       setError(getLanguageString(language, 'WRONG_PIN'));
       return;
     }
+    Keyboard.dismiss()
     setPasscode('')
     clearOTP()
     setLocalAuth(true);
@@ -76,6 +79,7 @@ const ConfirmPasscode = () => {
   const authByTouchID = async () => {
     TouchID.authenticate('Use touch ID to access wallet', optionalConfigObject)
       .then(async () => {
+        Keyboard.dismiss()
         setPasscode('')
         clearOTP()
         setLocalAuth(true);
@@ -93,68 +97,70 @@ const ConfirmPasscode = () => {
   }, [touchSupported])
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-      <CustomText style={[styles.title, {color: theme.textColor}]}>
-        {getLanguageString(language, 'ENTER_PIN_CODE')}
-      </CustomText>
-      <View style={{marginVertical: 24, width: '100%'}}>
-        <OtpInputs
-          // TODO: remove ts-ignore after issue fixed
-          // @ts-ignore
-          keyboardType="decimal-pad"
-          handleChange={setPasscode}
-          numberOfInputs={4}
-          autofillFromClipboard={false}
-          style={styles.otpContainer}
-          inputStyles={{
-            ...styles.otpInput,
-            ...{backgroundColor: theme.backgroundFocusColor, color: theme.textColor},
-          }}
-          secureTextEntry={true}
-          ref={otpRef}
-        />
-        {error !== '' && (
-          <CustomText
-            allowFontScaling={false}
-            style={{color: 'red', paddingHorizontal: 20, fontStyle: 'italic'}}>
-            {error}
-          </CustomText>
-        )}
-      </View>
-      <Divider style={{width: 32, backgroundColor: '#F0F1F2'}} />
-      {touchSupported && (
-        <TouchableOpacity
-          onPress={authByTouchID}
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingBottom: 20,
-          }}>
-          {touchType === 'FaceID' ? (
-            <Image
-              style={{width: 30, height: 30, marginRight: 8}}
-              source={require('../../assets/icon/face_id_dark.png')}
-            />
-          ) : (
-            <Icon name="finger-print" color={theme.textColor} size={30} />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <CustomText style={[styles.title, {color: theme.textColor}]}>
+          {getLanguageString(language, 'ENTER_PIN_CODE')}
+        </CustomText>
+        <View style={{marginVertical: 24, width: '100%'}}>
+          <OtpInputs
+            // TODO: remove ts-ignore after issue fixed
+            // @ts-ignore
+            keyboardType="decimal-pad"
+            handleChange={setPasscode}
+            numberOfInputs={4}
+            autofillFromClipboard={false}
+            style={styles.otpContainer}
+            inputStyles={{
+              ...styles.otpInput,
+              ...{backgroundColor: theme.backgroundFocusColor, color: theme.textColor},
+            }}
+            secureTextEntry={true}
+            ref={otpRef}
+          />
+          {error !== '' && (
+            <CustomText
+              allowFontScaling={false}
+              style={{color: 'red', paddingHorizontal: 20, fontStyle: 'italic'}}>
+              {error}
+            </CustomText>
           )}
-          <CustomText style={{color: theme.textColor}}>
-            Authenticate by {touchType}
-          </CustomText>
-        </TouchableOpacity>
-      )}
-      <Button
-        block
-        title={getLanguageString(language, 'CONFIRM')}
-        onPress={handleSubmit}
-        textStyle={{
-          fontSize: theme.defaultFontSize + 4,
-          fontWeight: '500',
-          fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
-        }}
-      />
-    </View>
+        </View>
+        <Divider style={{width: 32, backgroundColor: '#F0F1F2'}} />
+        {touchSupported && (
+          <TouchableOpacity
+            onPress={authByTouchID}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 20,
+            }}>
+            {touchType === 'FaceID' ? (
+              <Image
+                style={{width: 30, height: 30, marginRight: 8}}
+                source={require('../../assets/icon/face_id_dark.png')}
+              />
+            ) : (
+              <Icon name="finger-print" color={theme.textColor} size={30} />
+            )}
+            <CustomText style={{color: theme.textColor}}>
+              Authenticate by {touchType}
+            </CustomText>
+          </TouchableOpacity>
+        )}
+        <Button
+          block
+          title={getLanguageString(language, 'CONFIRM')}
+          onPress={handleSubmit}
+          textStyle={{
+            fontSize: theme.defaultFontSize + 4,
+            fontWeight: '500',
+            fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined
+          }}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
