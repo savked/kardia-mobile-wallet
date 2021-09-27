@@ -67,6 +67,22 @@ const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
 let lastTimestamp = 0;
 
+const config = {
+  screens: {
+    Home: {
+      screens: {
+        AuthorizeAccess: 'authorize/:appName/:callbackSchema/:callbackPath',
+        SignTxFromExternal: 'signTx/:signature/:stringifiedTx'
+      }
+    }
+  },
+};
+
+const linking = {
+  prefixes: ['kardiachainwallet://'],
+  config,
+};
+
 const Wrap = () => {
   const theme = useContext(ThemeContext);
 
@@ -237,7 +253,7 @@ const AppContainer = () => {
         lastTimestamp = Date.now();
       } else if (state === 'active') {
         // Lock app if unfocused in 2 minute
-        if (Date.now() - lastTimestamp > 2 * 60 * 1) {
+        if (Date.now() - lastTimestamp > 2 * 60 * 1000) {
           setIsLocalAuthed(false);
         }
       }
@@ -490,7 +506,10 @@ const AppContainer = () => {
 
   return (
     <>
-      <NavigationContainer>
+      <NavigationContainer
+        linking={linking} 
+        fallback={<CustomText style={{color: theme.textColor}}>Loading...</CustomText>}
+      >
         <Portal.Host>
           <IgnorePendingTxModal
             visible={showPendingTxModal}
