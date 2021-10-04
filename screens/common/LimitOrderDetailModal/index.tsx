@@ -6,19 +6,18 @@ import { languageAtom } from '../../../atoms/language';
 import CustomModal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
 import { ThemeContext } from '../../../ThemeContext';
-import { getOrderPrice, getOrderTotal, isBuy, parseSymbolWKAI } from '../../../utils/dex';
+import { parseSymbolWKAI } from '../../../utils/dex';
 import { formatNumberString, parseDecimals } from '../../../utils/number';
 import {styles} from './styles'
 import { getDateFNSLocale, getLanguageString } from '../../../utils/lang';
-import { copyToClipboard, getLogoURL, getTxURL, truncate } from '../../../utils/string';
-import Toast from 'react-native-toast-message';
+import { getLogoURL } from '../../../utils/string';
 import Divider from '../../../components/Divider';
 import Button from '../../../components/Button';
 import AuthModal from '../AuthModal';
 import { cancelOrder } from '../../../services/dex';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 import { useNavigation } from '@react-navigation/core';
-import { pendingTxAtom, pendingTxSelector } from '../../../atoms/pendingTx';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
 
 export default ({
 	visible,

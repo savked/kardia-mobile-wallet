@@ -4,11 +4,9 @@ import {
   ActivityIndicator,
   Alert,
   Image,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {ethers} from 'ethers';
 import {getBalance} from '../../services/account';
 import {getStakingAmount} from '../../services/staking';
 import {ThemeContext} from '../../ThemeContext';
@@ -31,9 +29,9 @@ import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomText from '../../components/Text';
 import { statusBarColorAtom } from '../../atoms/statusBar';
-import { sleep } from '../../utils/promiseHelper';
 import { referralCodeAtom } from '../../atoms/referralCode';
 import { submitReferal } from '../../services/dex';
+import { getWalletFromMnemonic } from '../../utils/blockchain';
 
 const SelectWallet = () => {
   const [startIndex, setStartIndex] = useState(0);
@@ -125,10 +123,7 @@ const SelectWallet = () => {
       const indexArr = [startIndex, startIndex + 1, startIndex + 2, startIndex + 3, startIndex + 4]
       indexArr.forEach((index) => {
         const promise = new Promise<Wallet>(async (resolve, reject) => {
-          const ethWallet = ethers.Wallet.fromMnemonic(
-            mnemonic.trim(),
-            `m/44'/60'/0'/0/${index}`,
-          );
+          const ethWallet = await getWalletFromMnemonic(mnemonic.trim(), `m/44'/60'/0'/0/${index}`)
           const walletAddress = ethWallet.address;
           const _privateKey = ethWallet.privateKey;
           try {

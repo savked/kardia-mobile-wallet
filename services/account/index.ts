@@ -1,7 +1,6 @@
-import {ENDPOINT, RPC_ENDPOINT} from '../config';
+import {RPC_ENDPOINT} from '../config';
 // import {requestWithTimeOut} from '../util';
 import KardiaClient from 'kardia-js-sdk';
-import { clearAddressNonce, getLocalNonce, saveAddressNonce } from '../../utils/local';
 // import { parseKaiBalance } from '../../utils/number';
 
 export const getBalance = async (address: string, timeout?: number): Promise<string> => {

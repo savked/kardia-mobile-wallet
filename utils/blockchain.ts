@@ -11,23 +11,19 @@ export const getWalletFromPK = (privateKey: string) => {
 
 export const getWalletFromMnemonic = async (
   mnemonic: string,
-): Promise<Wallet | false> => {
-  try {
-    const wallet = ethers.Wallet.fromMnemonic(mnemonic.trim());
-    const privateKey = wallet.privateKey;
-    const addressStr = wallet.address;
+  path?: string
+): Promise<Wallet> => {
+  const wallet = ethers.Wallet.fromMnemonic(mnemonic.trim(), path);
+  const privateKey = wallet.privateKey;
+  const addressStr = wallet.address;
 
-    return {
-      address: addressStr,
-      privateKey,
-      balance: '0',
-      staked: 0,
-      undelegating: 0,
-    };
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
+  return {
+    address: addressStr,
+    privateKey,
+    balance: '0',
+    staked: 0,
+    undelegating: 0,
+  };
 };
 
 export const generateWallet = () => {
