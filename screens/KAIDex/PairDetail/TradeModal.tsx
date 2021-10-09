@@ -72,7 +72,9 @@ export default ({visible, onClose, pairItem, onSuccess}: {
       return {
         backgroundColor: theme.backgroundFocusColor,
         height: mode === 'MARKET' ? 690 : 680,
-        padding: 0
+        padding: 0,
+        marginBottom: keyboardShown ? -150 : 0,
+        marginTop: keyboardShown ? -150 : 0,
       };
     } else {
       return {
