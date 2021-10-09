@@ -81,8 +81,8 @@ export default ({visible, onClose, pairItem, onSuccess}: {
         backgroundColor: theme.backgroundFocusColor,
         height: mode === 'MARKET' ? 690 : 680,
         padding: 0,
-        marginBottom: keyboardShown ? keyboardOffset - 60 : 0,
-        marginTop: keyboardShown ? -keyboardOffset - 60 : 0,
+        marginBottom: keyboardShown ? keyboardOffset - 150 : 0,
+        marginTop: keyboardShown ? -keyboardOffset - 150 : 0,
       };
     }
   }
