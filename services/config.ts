@@ -20,7 +20,7 @@ export const DEX_ENDPOINT = 'https://exchange-backend.kardiachain.io/api/v1/';
 export const ENDPOINT = 'https://backend.kardiachain.io/api/v1/';
 export const RPC_ENDPOINT = 'https://kai-seeds.kardiachain.io';
 
-export const HASURA_WS_ENDPOINT = 'wss://ws-dex-graph.kardiachain.io/subgraphs/name/kai/dex';
+// export const HASURA_WS_ENDPOINT = 'wss://ws-dex-graph.kardiachain.io/subgraphs/name/kai/dex';
 export const HASURA_ENDPOINT = 'https://ex-graph.kardiachain.io/subgraphs/name/kai/exchange-v2';
 export const SUBGRAPH_BLOCKLYTICS_KAIBLOCK = 'https://ex-graph.kardiachain.io/subgraphs/name/blocklytics/kai-blocks';
 export const SETTLEMENT_ENDPOINT = 'https://dex-graph.kardiachain.io/subgraphs/name/kai/dex-settlement';

@@ -237,7 +237,7 @@ const AppContainer = () => {
         lastTimestamp = Date.now();
       } else if (state === 'active') {
         // Lock app if unfocused in 2 minute
-        if (Date.now() - lastTimestamp > 2 * 60 * 1) {
+        if (Date.now() - lastTimestamp > 2 * 60 * 1000) {
           setIsLocalAuthed(false);
         }
       }
