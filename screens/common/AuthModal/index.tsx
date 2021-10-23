@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import {Image, Keyboard, Platform} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import OtpInputs, {OtpInputsRef} from 'react-native-otp-inputs';
 import TouchID from 'react-native-touch-id';
 import {useRecoilValue} from 'recoil';
@@ -23,7 +23,7 @@ import Divider from '../../../components/Divider';
 import CustomText from '../../../components/Text';
 import { formatNumberString } from '../../../utils/number';
 import BigNumber from 'bignumber.js';
-import { DANGEROUS_KAI_AMOUNT, DANGEROUS_TX_FEE_KAI } from '../../../config';
+import { DANGEROUS_TX_FEE_KAI } from '../../../config';
 
 const optionalConfigObject = {
   unifiedErrors: false, // use unified error messages (default false)
