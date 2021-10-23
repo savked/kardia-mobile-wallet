@@ -187,9 +187,6 @@ export const getKRC20ApproveState = async (token: KRC20, amountToCheck: string |
     const invoke = kardiaContract.invokeContract('allowance', [wallet.address, spender]);
     const allowance = await invoke.call(token.address, {}, "latest")
 
-    console.log('spender', spender)
-    console.log('allowance', allowance)
-
     const rawValueAmount = new BigNumber(amountToCheck ? cellValueWithDecimals(amountToCheck.toString(), token.decimals) : '0');
     const rawValueAllowance = new BigNumber(allowance ? allowance : '0');
 
