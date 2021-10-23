@@ -219,6 +219,7 @@ export default () => {
   }
 
   const handleRefresh = () => {
+    if (!asset) return
     setReloadingLiquidity(true)
     setReloadConfig(Date.now())
   }
