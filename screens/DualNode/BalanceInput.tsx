@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Image, Platform, View } from 'react-native'
 import Tags from '../../components/Tags'
 import CustomText from '../../components/Text'
 import CustomTextInput from '../../components/TextInput'
-import { getUnderlyingTokenLiquidity } from '../../services/dualnode'
+import { getDualNodeLiquidity } from '../../services/dualnode'
 import { ThemeContext } from '../../ThemeContext'
 import { formatNumberString, getDigit, getPartial, isNumber, parseDecimals } from '../../utils/number'
 import { getSemiBoldStyle } from '../../utils/style'
@@ -21,7 +21,9 @@ export default ({
   setLiquidity,
   loadingLiquidity,
   setLoadingLiquidity,
-  loadingConfig
+  loadingConfig,
+  reloadingConfig,
+  onReloadComplete
 }: {
   amount: string;
   setAmount: (newAmount: string) => void;
@@ -35,38 +37,34 @@ export default ({
   loadingLiquidity: boolean;
   setLoadingLiquidity: (newVal: boolean) => void
   loadingConfig: boolean;
+  reloadingConfig: number;
+  onReloadComplete: () => void
 }) => {
   const theme = useContext(ThemeContext)
 
+  const getLiquidity = async () => {
+    setLoadingLiquidity(true)
+    const rs = await getDualNodeLiquidity(token, chain)
+
+    if (!rs) {
+      setLoadingLiquidity(false)
+      return
+    }
+
+    setLiquidity(
+      formatNumberString(
+        rs
+      )
+    )
+    setLoadingLiquidity(false)
+    onReloadComplete()
+  }
+
   useEffect(() => {
     (async () => {
-      const otherChainToken = getOtherChainToken()
-      const contractAddress = getContractAddressFromOtherChain()
-      if (!otherChainToken || !contractAddress) return
-      setLoadingLiquidity(true)
-      const rs = await getUnderlyingTokenLiquidity(contractAddress, otherChainToken.address, chain.name)
-
-      setLiquidity(
-        formatNumberString(
-          parseDecimals(rs, otherChainToken.decimals)
-        )
-      )
-      setLoadingLiquidity(false)
+      await getLiquidity()
     })()
-  }, [chain, token])
-
-  const getOtherChainToken = () => {
-    if (!token) return undefined
-    const otherChainToken = chain.otherChainToken
-    return otherChainToken[token.address]
-  }
-
-  const getContractAddressFromOtherChain = () => {
-    if (!token) return undefined
-    const contractAddress = chain.bridgeContractAddress.fromOtherChain
-    if (!contractAddress) return undefined
-    return contractAddress[token.address]
-  }
+  }, [chain, token, reloadingConfig])
 
   const shouldHighight = () => {
     const val14 = parseDecimals(getPartial(currentBalance.toFixed(), 0.25, token.decimals), token.decimals)

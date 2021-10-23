@@ -5,6 +5,7 @@ import { BRIDGE_API_ENDPOINT, BSC_RPC_URL, ETH_RPC_URL, RPC_ENDPOINT } from "../
 import KardiaClient from "kardia-js-sdk";
 import { KAI_BRIDGE_ADDRESS } from "../../config";
 import kaiBridgeRouterAbi from './KAIBridgeRouter.json'
+import { parseDecimals } from "../../utils/number";
 
 export const getSupportedChains: () => DualNodeChain[] = () => {
   return [
@@ -344,4 +345,26 @@ export const swapCrossChain = async ({
     console.log('Swap crosschain error')
     return ''
   }
+}
+
+export const getOtherChainToken = (token: KRC20, chain: DualNodeChain) => {
+  if (!token) return undefined
+  const otherChainToken = chain.otherChainToken
+  return otherChainToken[token.address]
+} 
+
+export const getContractAddressFromOtherChain = (token: KRC20, chain: DualNodeChain) => {
+  if (!token) return undefined
+  const contractAddress = chain.bridgeContractAddress.fromOtherChain
+  if (!contractAddress) return undefined
+  return contractAddress[token.address]
+}
+
+export const getDualNodeLiquidity = async (token: KRC20, chain: DualNodeChain) => {
+  const otherChainToken = getOtherChainToken(token, chain)
+  const contractAddress = getContractAddressFromOtherChain(token, chain)
+
+  if (!otherChainToken || !contractAddress) return
+  const rs = await getUnderlyingTokenLiquidity(contractAddress, otherChainToken.address, chain.name)
+  return parseDecimals(rs, otherChainToken.decimals)
 }
