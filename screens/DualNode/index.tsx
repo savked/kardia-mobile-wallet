@@ -2,7 +2,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import BigNumber from 'bignumber.js'
 import { KardiaAccount } from 'kardia-js-sdk'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { ActivityIndicator, Image, Keyboard, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { ActivityIndicator, Image, Keyboard, Platform, RefreshControl, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { languageAtom } from '../../atoms/language'
@@ -14,7 +14,7 @@ import Divider from '../../components/Divider'
 import CustomText from '../../components/Text'
 import TextInput from '../../components/TextInput'
 import { KAI_BRIDGE_ADDRESS } from '../../config'
-import { getSupportedChains, swapCrossChain } from '../../services/dualnode'
+import { getDualNodeLiquidity, getSupportedChains, swapCrossChain } from '../../services/dualnode'
 import { approveKRC20Token, getBalance, getKRC20ApproveState } from '../../services/krc20'
 import { ThemeContext } from '../../ThemeContext'
 import { getLanguageString } from '../../utils/lang'
@@ -59,6 +59,10 @@ export default () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [amountTimeoutId, setAmountTimeoutId] = useState<any>()
 
+  const [reloadConfig, setReloadConfig] = useState(0)
+  const [reloadingLiquidity, setReloadingLiquidity] = useState(false)
+  const [reloadingBalance, setReloadingBalance] = useState(false)
+
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom)
 
@@ -75,16 +79,20 @@ export default () => {
     }, [])
   )
 
-  useEffect(() => {
-    (async () => {
-      if (!asset || !wallets) return
-      if (!wallets[selectedWallet]) return
+  const fetchBalance = async () => {
+    if (!asset || !wallets) return
+    if (!wallets[selectedWallet]) return
 
-      const _balance = await getBalance(asset.address, wallets[selectedWallet].address)
-      if (_balance) {
-        setBalance(new BigNumber(_balance))
-      }
-    })()
+    const _balance = await getBalance(asset.address, wallets[selectedWallet].address)
+    if (_balance) {
+      setBalance(new BigNumber(_balance))
+    }
+
+    setReloadingBalance(false)
+  }
+
+  useEffect(() => {
+    fetchBalance()
   }, [asset, wallets, selectedWallet])
 
   useEffect(() => {
@@ -196,16 +204,29 @@ export default () => {
     }
 
     if (liquidity) {
-      const liquidityBN = new BigNumber(getDigit(liquidity))
-      if (netAmountSwap.isGreaterThan(liquidityBN)) {
-        setErrorAmount(getLanguageString(language, 'NOT_ENOUGH_LIQUIDITY'))
-        isValid = false
+      const latestLQ = await getDualNodeLiquidity(asset!, chain)
+      if (latestLQ) {
+        const liquidityBN = new BigNumber(getDigit(latestLQ))
+        if (netAmountSwap.isGreaterThan(liquidityBN)) {
+          setErrorAmount(getLanguageString(language, 'NOT_ENOUGH_LIQUIDITY'))
+          isValid = false
+        }
       }
     }
 
     if (!isValid) return
     setShowConfirmModal(true)
   }
+
+  const handleRefresh = () => {
+    setReloadingLiquidity(true)
+    setReloadConfig(Date.now())
+  }
+
+  useEffect(() => {
+    setReloadingBalance(true)
+    fetchBalance()
+  }, [reloadConfig])
 
   const submitSwap = async () => {
     // Start swap
@@ -369,6 +390,15 @@ export default () => {
           style={{flex: 1}} 
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{flexGrow: 1}}
+          refreshControl={
+            <RefreshControl
+              colors={[theme.textColor]}
+              tintColor={theme.textColor}
+              titleColor={theme.textColor}
+              refreshing={reloadingLiquidity && reloadingBalance}
+              onRefresh={handleRefresh}
+            />
+          }
         >
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View
@@ -513,6 +543,10 @@ export default () => {
               {
                 asset && 
                 <BalanceInput 
+                  reloadingConfig={reloadConfig}
+                  onReloadComplete={() => {
+                    setReloadingLiquidity(false)
+                  }}
                   amount={amount} 
                   setAmount={setAmount}
                   token={asset}
