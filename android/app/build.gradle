@@ -142,8 +142,8 @@ android {
         applicationId "com.kardiawallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 121
-        versionName "2.3.35"
+        versionCode 124
+        versionName "2.3.37"
         // React native camera config for QR scanner
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true

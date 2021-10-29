@@ -12,7 +12,7 @@ import SelectNetworkModal from './SelectNetworkModal';
 
 export default ({onSelectChain, selectedChain}: {
   onSelectChain: (chain: DualNodeChain) => void;
-  selectedChain: DualNodeChain
+  selectedChain?: DualNodeChain
 }) => {
   const theme = useContext(ThemeContext)
   const language = useRecoilValue(languageAtom)
@@ -21,9 +21,11 @@ export default ({onSelectChain, selectedChain}: {
   const [showSelectNetwork, setShowSelectNetwork] = useState(false)
 
   useEffect(() => {
-    const rs = getSupportedChains()
-    setSupportedChain(rs)
-    onSelectChain(rs[0])
+    (async () => {
+      const rs = await getSupportedChains()
+      setSupportedChain(rs)
+      onSelectChain(rs[0])
+    })()
   }, [])
   return (
     <View
@@ -87,14 +89,18 @@ export default ({onSelectChain, selectedChain}: {
           style={{width: 15, height: 9, marginHorizontal: 15}}
         />
         <View style={{flexDirection: 'row', justifyContent: 'flex-start', flex: 1}}>
-          <Image 
-            source={{uri: selectedChain.icon}}
-            style={{
-              width: 28,
-              height: 28,
-              marginRight: 8
-            }}
-          />
+          {
+            selectedChain && (
+              <Image 
+                source={{uri: selectedChain.icon}}
+                style={{
+                  width: 28,
+                  height: 28,
+                  marginRight: 8
+                }}
+              />
+            )
+          }
           <TouchableOpacity onPress={() => setShowSelectNetwork(true)}>
             <CustomText 
               style={{
@@ -103,7 +109,7 @@ export default ({onSelectChain, selectedChain}: {
                 fontSize: theme.defaultFontSize + 3
               }}
             >
-              {selectedChain.name}
+              {selectedChain ? selectedChain.name : ''}
             </CustomText>
             <CustomText
               style={[{
