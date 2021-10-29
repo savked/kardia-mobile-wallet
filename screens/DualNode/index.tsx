@@ -40,7 +40,7 @@ export default () => {
   const [showQRModal, setShowQRModal] = useState(false);
   const [showAddressBookModal, setShowAddressBookModal] = useState(false);
 
-  const [chain, setChain] = useState<DualNodeChain>(getSupportedChains()[0]);
+  const [chain, setChain] = useState<DualNodeChain>();
   const [asset, setAsset] = useState<DualNodeToken>();
   const [errorAsset, setErrorAsset] = useState('')
   const [balance, setBalance] = useState(new BigNumber(0))
@@ -78,6 +78,13 @@ export default () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
   )
+
+  useEffect(() => {
+    (async () => {
+      const rs = await getSupportedChains()
+      setChain(rs[0])
+    })()
+  }, [])
 
   const fetchBalance = async () => {
     if (!asset || !wallets) return
@@ -145,7 +152,7 @@ export default () => {
   };
 
   const getUnderlyingToken = () => {
-    if (!asset) return undefined
+    if (!asset || !chain) return undefined
     const underlyingToken = chain.underlyingToken
     return underlyingToken[asset.address]
   }
@@ -154,9 +161,10 @@ export default () => {
     // Reset error state
     // setErrorAsset('')
 
-    if (errorAsset) {
+    if (errorAsset || !chain) {
       return;
     }
+    
 
     setErrorAddress('')
     setErrorAmount('')
@@ -232,7 +240,7 @@ export default () => {
   const submitSwap = async () => {
     // Start swap
     const contractAddress = getContractAddressFromKardiaChain()
-    if (!contractAddress) return
+    if (!contractAddress || !chain) return
     setLoading(true)
     const transactionHash = await swapCrossChain({
       underlying: getUnderlyingToken() ? true : false,
@@ -258,7 +266,7 @@ export default () => {
   }
 
   const getContractAddressFromKardiaChain = () => {
-    if (!asset) return undefined
+    if (!asset || !chain) return undefined
     const contractAddress = chain.bridgeContractAddress.fromKardiaChain
     if (!contractAddress) return undefined
     return contractAddress[asset.address]
@@ -406,7 +414,7 @@ export default () => {
               style={{flex: 1}}
             >
               <NetworkSelector selectedChain={chain} onSelectChain={(newChain) => setChain(newChain)} />
-              <AssetSelector asset={asset} selectAsset={setAsset} supportedAssets={chain.supportedAssets} errorAsset={errorAsset} />
+              {chain && <AssetSelector asset={asset} selectAsset={setAsset} supportedAssets={chain.supportedAssets} errorAsset={errorAsset} />}
               <CustomText style={[styles.headline, {color: theme.textColor, fontSize: theme.defaultFontSize + 1}]}>
                 {getLanguageString(language, 'CREATE_TX_ADDRESS')}
               </CustomText>
@@ -503,7 +511,7 @@ export default () => {
                     fontSize: theme.defaultFontSize
                   }, getSemiBoldStyle()]}
                 >
-                  {chain.supportedTokenStandard.join(', ')} address only
+                  {chain && `${chain.supportedTokenStandard.join(', ')} address only`} 
                 </CustomText>
               </View>
               {
@@ -542,7 +550,7 @@ export default () => {
                 </View>
               }
               {
-                asset && 
+                asset && chain && 
                 <BalanceInput 
                   reloadingConfig={reloadConfig}
                   onReloadComplete={() => {
@@ -566,7 +574,7 @@ export default () => {
                 renderLoadingConfig()
               }
               {
-                asset &&
+                asset && chain &&
                 <InfoSection 
                   chain={chain} 
                   token={asset} 

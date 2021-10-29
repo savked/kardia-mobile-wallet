@@ -77,7 +77,7 @@ export default ({
       // Calculating decimal
       const otherChainToken = chain.otherChainToken[token.address]
       if (!otherChainToken) return
-      const supportedChain = getSupportedChains()
+      const supportedChain = await getSupportedChains()
       let decimal = otherChainToken.decimals
       supportedChain.forEach((_chain) => {
         const _otherChainToken = _chain.otherChainToken[token.address]
@@ -100,39 +100,43 @@ export default ({
   }, [chain, token])
 
   useEffect(() => {
-    const _amountDigit = getDigit(amount)
 
-    if (!swapFeeRatePerMillion || !Number(_amountDigit)) {
-      setSwapFee(0)
-      return;
-    }
-    // Calculating decimal
-    const otherChainToken = chain.otherChainToken[token.address]
-    if (!otherChainToken) return
-    const supportedChain = getSupportedChains()
-    let decimals = otherChainToken.decimals
-    supportedChain.forEach((_chain) => {
-      const _otherChainToken = _chain.otherChainToken[token.address]
-      if (!_otherChainToken) return
-      if (_otherChainToken.decimals > decimals) {
-        decimals = _otherChainToken.decimals
+    (async () => {
+      const _amountDigit = getDigit(amount)
+
+      if (!swapFeeRatePerMillion || !Number(_amountDigit)) {
+        setSwapFee(0)
+        return;
       }
-    })
+      // Calculating decimal
+      const otherChainToken = chain.otherChainToken[token.address]
+      if (!otherChainToken) return
+      const supportedChain = await getSupportedChains()
+      let decimals = otherChainToken.decimals
+      supportedChain.forEach((_chain) => {
+        const _otherChainToken = _chain.otherChainToken[token.address]
+        if (!_otherChainToken) return
+        if (_otherChainToken.decimals > decimals) {
+          decimals = _otherChainToken.decimals
+        }
+      })
 
-    const fee = new BigNumber(cellValueWithDecimals(amount, decimals))
-        .multipliedBy(swapFeeRatePerMillion)
-        .div(1e6)
+      const fee = new BigNumber(cellValueWithDecimals(amount, decimals))
+          .multipliedBy(swapFeeRatePerMillion)
+          .div(1e6)
 
-    const displayedFee = parseDecimals(fee.toString(), decimals)
-    let rs = parseFloat(displayedFee)
+      const displayedFee = parseDecimals(fee.toString(), decimals)
+      let rs = parseFloat(displayedFee)
 
-    const maxValue = parseDecimals(maximumSwapFee, decimals)
-    const minValue = parseDecimals(minimumSwapFee, decimals)
+      const maxValue = parseDecimals(maximumSwapFee, decimals)
+      const minValue = parseDecimals(minimumSwapFee, decimals)
 
-    if (parseFloat(displayedFee) > parseFloat(maxValue)) rs = parseFloat(maxValue)
-    if (parseFloat(displayedFee) < parseFloat(minValue)) rs = parseFloat(minValue)
+      if (parseFloat(displayedFee) > parseFloat(maxValue)) rs = parseFloat(maxValue)
+      if (parseFloat(displayedFee) < parseFloat(minValue)) rs = parseFloat(minValue)
 
-    setSwapFee(rs)
+      setSwapFee(rs)
+    })()
+
   }, [amount, swapFeeRatePerMillion, minimumSwapFee, maximumSwapFee])
 
   if (loadingConfig || loadingLiquidity) {

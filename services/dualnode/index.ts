@@ -1,13 +1,27 @@
 import { getLogoURL } from "../../utils/string"
 import Web3 from 'web3';
 import krc20_abi from '../krc20/KRC20ABI.json'
-import { BRIDGE_API_ENDPOINT, BSC_RPC_URL, ETH_RPC_URL, RPC_ENDPOINT } from "../config"
+import { BRIDGE_API_ENDPOINT, BSC_RPC_URL, DUALNODE_CONFIG_JSON, ETH_RPC_URL, RPC_ENDPOINT } from "../config"
 import KardiaClient from "kardia-js-sdk";
 import { KAI_BRIDGE_ADDRESS } from "../../config";
 import kaiBridgeRouterAbi from './KAIBridgeRouter.json'
 import { parseDecimals } from "../../utils/number";
 
-export const getSupportedChains: () => DualNodeChain[] = () => {
+export const getSupportedChains: () => Promise<DualNodeChain[]> = async () => {
+  const requestOptions = {
+		method: 'GET',
+		redirect: 'follow'
+	};
+
+	const rs = await fetch(DUALNODE_CONFIG_JSON, requestOptions)
+	try {
+		const rsJSON = await rs.json()
+		return rsJSON
+	} catch (error) {
+    console.log('Get pair from HTTP fail')
+		console.log(error)
+		return []		
+	}
   return [
     {
       name: 'Ethereum',
