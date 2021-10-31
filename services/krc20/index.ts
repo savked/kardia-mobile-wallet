@@ -11,22 +11,32 @@ export const getKRC20TokenInfo = async (address: string) => {
   const krc20 = client.krc20;
   krc20.address = address;
 
-  const requestOptions = {
-    method: 'GET',
-    redirect: 'follow',
-  };
-  const response: any = await requestWithTimeOut(
-    fetch(`${ENDPOINT}contracts/${address}`, requestOptions),
-    50 * 1000,
-  );
-  const responseJSON = await response.json();
+  await krc20.getFromAddress(address)
+
+  const totalSupply: BigNumber = await krc20.getTotalSupply("BigNumber")
+  let avatar = ''
+
+  try {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+    const response: any = await requestWithTimeOut(
+      fetch(`${ENDPOINT}contracts/${address}`, requestOptions),
+      50 * 1000,
+    );
+    const responseJSON = await response.json();
+    avatar = responseJSON.data.logo
+  } catch (error) {
+    console.log('Error getting token info from backend')
+  }
+
   const info = {
-    name: responseJSON.data.name,
-    symbol: responseJSON.data.tokenSymbol,
-    decimals: responseJSON.data.decimals,
-    totalSupply: responseJSON.data.totalSupply,
-    avatar: responseJSON.data.logo || '',
-    // avatar: '',
+    name: krc20.name,
+    symbol: krc20.symbol,
+    decimals: krc20.decimals,
+    totalSupply: totalSupply.toFixed(),
+    avatar,
   };
   return info;
 };
@@ -165,7 +175,6 @@ export const approveKRC20Token = async (token: KRC20, wallet: Wallet, spender: s
   // const cellValue = cellValueWithDecimals(amount, token.decimals)
 
   const totalSupply = await smcInstance.invokeContract('totalSupply', []).call(token.address);
-  console.log('totalSupply', totalSupply)
   const bnTotalSypply = new BigNumber(totalSupply);
 
   const invocation = smcInstance.invokeContract('approve', [spender, bnTotalSypply.toFixed()]);
