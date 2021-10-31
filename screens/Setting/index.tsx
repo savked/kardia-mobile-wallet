@@ -19,7 +19,7 @@ import ReferralCodeModal from '../common/ReferralCodeModal';
 import { statusBarColorAtom } from '../../atoms/statusBar';
 
 export const INFO_DATA = {
-  version: '2.3.37',
+  version: '2.3.38',
 };
 
 const SettingScreen = () => {
