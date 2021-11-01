@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
 import { Image, Platform, TouchableOpacity, View } from 'react-native';
@@ -15,21 +15,45 @@ export default ({pairItem, isLast, isFirst}: {
   const theme = useContext(ThemeContext)
   const navigation = useNavigation()
 
+  const isFocused = useIsFocused();
+
   const [rate, setRate] = useState<BigNumber>();
+  const [intervalID, setIntervalID] = useState<NodeJS.Timer>()
+
+  const fetchRate = async () => {
+    const {reserveIn, reserveOut} = await getReserve(pairItem.t1.hash, pairItem.t2.hash)
+    const _tokenFromLiquidity = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(pairItem.t1.decimals))).toFixed()
+    const _tokenToLiquidity = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(pairItem.t2.decimals))).toFixed()
+
+    const bnFrom = new BigNumber(_tokenFromLiquidity)
+    const bnTo = new BigNumber(_tokenToLiquidity)
+    const _rate = bnTo.dividedBy(bnFrom)
+    setRate(_rate)
+  }
 
   useEffect(() => {
     (async () => {
+      if (!isFocused) {
+        if (intervalID) {
+          clearInterval(intervalID)
+        }
+        return
+      }
 
-      const {reserveIn, reserveOut} = await getReserve(pairItem.t1.hash, pairItem.t2.hash)
-      const _tokenFromLiquidity = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(pairItem.t1.decimals))).toFixed()
-      const _tokenToLiquidity = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(pairItem.t2.decimals))).toFixed()
+      await fetchRate()
 
-      const bnFrom = new BigNumber(_tokenFromLiquidity)
-      const bnTo = new BigNumber(_tokenToLiquidity)
-      const _rate = bnTo.dividedBy(bnFrom)
-      setRate(_rate)
+      setIntervalID(
+        setInterval(() => {
+          fetchRate()
+        }, 5000)
+      ) 
+
+      return () => {
+        intervalID && clearInterval(intervalID)
+      }
+
     })()
-  }, [pairItem])
+  }, [pairItem, isFocused])
 
   return (
     <TouchableOpacity 
