@@ -80,10 +80,8 @@ PODS:
     - glog
   - glog (0.3.5)
   - libevent (2.1.12)
-  - OneSignal (3.8.0)
-  - OneSignalXCFramework (3.6.1)
   - OpenSSL-Universal (1.1.180)
-  - Permission-Camera (3.0.4):
+  - Permission-Camera (3.1.0):
     - RNPermissions
   - RCTRequired (0.63.3)
   - RCTTypeSafety (0.63.3):
@@ -253,13 +251,13 @@ PODS:
   - React-jsinspector (0.63.3)
   - react-native-blur (0.8.0):
     - React
-  - react-native-camera (3.44.1):
+  - react-native-camera (3.44.3):
     - React-Core
-    - react-native-camera/RCT (= 3.44.1)
-    - react-native-camera/RN (= 3.44.1)
-  - react-native-camera/RCT (3.44.1):
+    - react-native-camera/RCT (= 3.44.3)
+    - react-native-camera/RN (= 3.44.3)
+  - react-native-camera/RCT (3.44.3):
     - React-Core
-  - react-native-camera/RN (3.44.1):
+  - react-native-camera/RN (3.44.3):
     - React-Core
   - react-native-cookies (5.0.1):
     - React-Core
@@ -269,18 +267,15 @@ PODS:
     - React-Core
   - react-native-image-picker (3.8.1):
     - React-Core
-  - react-native-onesignal (4.3.0):
-    - OneSignalXCFramework (= 3.6.1)
-    - React (< 1.0.0, >= 0.13.0)
   - react-native-orientation-locker (1.3.1):
     - React-Core
   - react-native-randombytes (3.6.1):
     - React-Core
   - react-native-restart (0.0.20):
     - React-Core
-  - react-native-safe-area-context (3.2.0):
+  - react-native-safe-area-context (3.3.2):
     - React-Core
-  - react-native-webview (11.6.4):
+  - react-native-webview (11.14.2):
     - React-Core
   - React-RCTActionSheet (0.63.3):
     - React-Core/RCTActionSheetHeaders (= 0.63.3)
@@ -342,19 +337,19 @@ PODS:
     - React-Core (= 0.63.3)
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
-  - RNCAsyncStorage (1.15.5):
+  - RNCAsyncStorage (1.15.9):
     - React-Core
   - RNCClipboard (1.5.1):
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
-  - RNCPicker (1.16.3):
+  - RNCPicker (1.16.8):
     - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
   - RNOS (1.2.6):
     - React
-  - RNPermissions (3.0.4):
+  - RNPermissions (3.1.0):
     - React-Core
   - RNReanimated (1.13.3):
     - React-Core
@@ -396,7 +391,6 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (= 0.87.0)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - OneSignal (< 4.0, >= 3.0)
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -416,7 +410,6 @@ DEPENDENCIES:
   - react-native-encrypted-storage (from `../node_modules/react-native-encrypted-storage`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
-  - react-native-onesignal (from `../node_modules/react-native-onesignal`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-restart (from `../node_modules/react-native-restart`)
@@ -458,8 +451,6 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - libevent
-    - OneSignal
-    - OneSignalXCFramework
     - OpenSSL-Universal
     - YogaKit
 
@@ -510,8 +501,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-get-random-values"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
-  react-native-onesignal:
-    :path: "../node_modules/react-native-onesignal"
   react-native-orientation-locker:
     :path: "../node_modules/react-native-orientation-locker"
   react-native-randombytes:
@@ -586,10 +575,8 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  OneSignal: bb3c8da4467f2b48a89398da5ff107ba70cff06e
-  OneSignalXCFramework: 674dd48705d0e1842a7c950177ae7569dbfc261c
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
-  Permission-Camera: ffd449756840ddc0f6294e95d688fecaadfe238c
+  Permission-Camera: 1f383e3f9a38ba393c63ba9b09a4726f94eda769
   RCTRequired: 48884c74035a0b5b76dbb7a998bd93bcfc5f2047
   RCTTypeSafety: edf4b618033c2f1c5b7bc3d90d8e085ed95ba2ab
   React: f36e90f3ceb976546e97df3403e37d226f79d0e3
@@ -601,17 +588,16 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b56c03e61c0dd5f5801255f2160a815f4a53d451
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
-  react-native-camera: 6e6d25f6318980dd2837747760628b4442aac01a
+  react-native-camera: fefef39fcd20850d17c3780638b04f741e0ccaae
   react-native-cookies: ce50e42ace7cf0dd47769260ca5bbe8eee607e4e
   react-native-encrypted-storage: 837c733334debf626204f03d867c7e01d8741e2f
   react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
   react-native-image-picker: 5a7dd93d4f9dd0d910da5dde3707fd96f70d03b3
-  react-native-onesignal: f829833463ec574cad5e83d1a3e3eed607a3bc3c
   react-native-orientation-locker: 998c0744e26624407dac068c04c605b4af7304a2
   react-native-randombytes: 5fc412efe7b5c55b9002c0004d75fe5fabcaa507
   react-native-restart: 6cc683e208c080581c147d0875609e64572a9443
-  react-native-safe-area-context: e471852c5ed67eea4b10c5d9d43c1cebae3b231d
-  react-native-webview: 4288b81c682bca4dcc9037afb3ee118af2655c03
+  react-native-safe-area-context: 5cf05f49df9d17261e40e518481f2e334c6cd4b5
+  react-native-webview: 01791db11d056b9e880db8232809b9ee3e10e9cf
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
   React-RCTAnimation: 1befece0b5183c22ae01b966f5583f42e69a83c2
   React-RCTBlob: 0b284339cbe4b15705a05e2313a51c6d8b51fa40
@@ -622,13 +608,13 @@ SPEC CHECKSUMS:
   React-RCTText: 65a6de06a7389098ce24340d1d3556015c38f746
   React-RCTVibration: 8e9fb25724a0805107fc1acc9075e26f814df454
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
-  RNCAsyncStorage: 8324611026e8dc3706f829953aa6e3899f581589
+  RNCAsyncStorage: d599364c12b1ddb042cc2d7ab6f8258962b83097
   RNCClipboard: 5e299c6df8e0c98f3d7416b86ae563d3a9f768a3
   RNCMaskedView: f127cd9652acfa31b91dcff613e07ba18b774db6
-  RNCPicker: 6724ab5fcca83c34fe1f18a89baa13e9885f0393
+  RNCPicker: 0991c56da7815c0cf946d6f63cf920b25296e5f6
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
-  RNPermissions: 75128bfb4c4ef92f572a8efdb8adfbfab75e8ed0
+  RNPermissions: b3588a19e12bff03fe21bc46911fd32343666dc0
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
@@ -637,6 +623,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: f0053bfbe2f686923ddba122c518dac458b21e29
+PODFILE CHECKSUM: 8544514bebdd9801e7ad408578186eec067c882c
 
 COCOAPODS: 1.10.1
