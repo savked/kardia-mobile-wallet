@@ -26,7 +26,7 @@ export default ({
   const language = useRecoilValue(languageAtom)
 
   const [gasPrice, setGasPrice] = useState(
-    initGasPrice
+    formatNumberString(initGasPrice)
   )
   const [error, setError] = useState('')
 
@@ -74,26 +74,40 @@ export default ({
 
   const handleSubmit = () => {
     let isValid = true
+    setError('')
     const digitOnly = getDigit(gasPrice)
+    console.log('digitOnly', digitOnly)
     if (!digitOnly) {
       isValid = false
       setError(getLanguageString(language, 'REQUIRED_FIELD'))
+    }
+
+    if (new BigNumber(digitOnly).isEqualTo(0)) {
+      isValid = false
+      setError(getLanguageString(language, 'ERROR_GAS_PRICE_EQUAL_0'))
     }
 
     if (!isValid) return
     onSuccess(digitOnly)
   }
 
+  const handleCancel = () => {
+    setGasPrice(formatNumberString(initGasPrice))
+    setError('')
+    onClose()
+  }
+
   return (
     <CustomModal
       visible={visible}
-      onClose={onClose}
+      onClose={handleCancel}
       showCloseButton={false}
       contentStyle={getContentStyle()}
     >
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{width: '100%'}}>
           <CustomTextInput
+            message={error}
             value={gasPrice}
             onChangeText={(newAmount) => {
               const digitOnly = getDigit(newAmount, false);
@@ -115,13 +129,13 @@ export default ({
             inputStyle={{
               backgroundColor: 'rgba(96, 99, 108, 1)',
               color: theme.textColor,
-              marginBottom: 24
+              marginBottom: 12
             }}
           />
           <Divider height={0.5} style={{width: '100%', backgroundColor: 'rgba(96, 99, 108, 1)', height: 2}} />
           <Button
             title={getLanguageString(language, 'CANCEL')}
-            onPress={onClose}
+            onPress={handleCancel}
             type="outline"
             style={{
               width: '100%',

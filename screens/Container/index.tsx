@@ -67,6 +67,22 @@ const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
 let lastTimestamp = 0;
 
+const config = {
+  screens: {
+    Home: {
+      screens: {
+        AuthorizeAccess: 'authorize/:appName/:callbackSchema/:callbackPath',
+        SignTxFromExternal: 'signTx/:signature/:txMeta/:callbackSchema/:callbackPath'
+      }
+    }
+  },
+};
+
+const linking = {
+  prefixes: ['kardiachainwallet://'],
+  config,
+};
+
 const Wrap = () => {
   const theme = useContext(ThemeContext);
 
@@ -490,7 +506,10 @@ const AppContainer = () => {
 
   return (
     <>
-      <NavigationContainer>
+      <NavigationContainer
+        linking={linking} 
+        fallback={<CustomText style={{color: theme.textColor}}>Loading...</CustomText>}
+      >
         <Portal.Host>
           <IgnorePendingTxModal
             visible={showPendingTxModal}

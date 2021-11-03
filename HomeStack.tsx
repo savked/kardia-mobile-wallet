@@ -20,6 +20,8 @@ import TransactionScreen from './screens/Transactions';
 import SuccessTx from './screens/SuccessTx';
 import AddressBookSetting from './screens/AddressBookSetting';
 import AddressDetail from './screens/AddressDetail';
+import AuthorizeAccess from './screens/AuthorizeAccess';
+import SignTxFromExternal from './screens/SignTxFromExternal';
 
 const HomeStack = createStackNavigator();
 
@@ -112,6 +114,20 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name="AddressDetail"
         component={AddressDetail}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <HomeStack.Screen
+        name="AuthorizeAccess"
+        component={AuthorizeAccess}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <HomeStack.Screen
+        name="SignTxFromExternal"
+        component={SignTxFromExternal}
         options={{
           headerShown: false,
         }}
