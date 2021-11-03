@@ -83,6 +83,8 @@ export const sendRawTx = async (txObj: Record<string, any>, wallet: Wallet, wait
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
   const nonce = await kardiaClient.account.getNonce(wallet.address.trim());
   txObj.nonce = nonce
+  delete txObj.from
+  console.log('txObj', txObj)
   const txResult = await kardiaClient.transaction.sendTransaction(
     txObj,
     wallet.privateKey!,

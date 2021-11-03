@@ -26,7 +26,5 @@ export const getAddressFromSignature = (signature: string, schema: string) => {
 }
 
 export const verifySignature = (signature: string, schema: string, walletAddress: string) => {
-  const web3 = new Web3()
-  const address = web3.eth.accounts.recover(getApproveMessage(schema), signature)
   return getAddressFromSignature(signature, schema).toLowerCase() === walletAddress.toLowerCase()
 }

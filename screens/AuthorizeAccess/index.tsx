@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { Image, View } from 'react-native'
+import { Image, Linking, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { languageAtom } from '../../atoms/language'
@@ -19,6 +19,7 @@ import { truncate } from '../../utils/string'
 import { getSemiBoldStyle } from '../../utils/style'
 
 export default () => {
+  const navigation = useNavigation()
   const theme = useContext(ThemeContext)
   const language = useRecoilValue(languageAtom)
   const {params}: any = useRoute()
@@ -59,7 +60,7 @@ export default () => {
     return `${params.callbackSchema}://${params.callbackPath}`
   }
 
-  const approveAccess = () => {
+  const approveAccess = async () => {
     if (!wallets || !wallets[selectedWallet]) return;
     const message = getApproveMessage(params.callbackSchema || '')
     console.log(message)
@@ -67,12 +68,17 @@ export default () => {
     console.log('signature', signature)
     const url = `${getResponseURL()}/approve/${wallets[selectedWallet].address}/${signature}`
     console.log(url)
-    console.log(JSON.stringify({
-      to: '0x01B3232Bc2AdfBa8c39Ba4A4002924d62e39aE5d',
-      value: '1000000000000000000',
-      gas: 50000,
-      gasPrice: 1000000000
-    }))
+
+    try {
+      await Linking.openURL(url)
+    } catch (error) {
+      console.log('Error authorize callback')
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Home'}],
+      });
+    }
+
   }
 
   const rejectAccess = () => {
@@ -101,10 +107,10 @@ export default () => {
       <Image 
         source={appLogo !== '' ? {uri: appLogo} : require('../../assets/logo.png')}
         style={{
-          width: 100,
-          height: 100,
+          width: 130,
+          height: 130,
           resizeMode: 'contain',
-          marginVertical: 20
+          marginVertical: 12
         }}
       />
       <CustomText

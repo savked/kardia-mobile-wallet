@@ -74,20 +74,32 @@ export default ({
 
   const handleSubmit = () => {
     let isValid = true
+    setError('')
     const digitOnly = getDigit(gas)
     if (!digitOnly) {
       isValid = false
       setError(getLanguageString(language, 'REQUIRED_FIELD'))
     }
 
+    if (new BigNumber(digitOnly).isEqualTo(0)) {
+      isValid = false
+      setError(getLanguageString(language, 'ERROR_GAS_EQUAL_0'))
+    }
+
     if (!isValid) return
     onSuccess(digitOnly)
+  }
+
+  const handleCancel = () => {
+    setGas(formatNumberString(initGas))
+    setError('')
+    onClose()
   }
 
   return (
     <CustomModal
       visible={visible}
-      onClose={onClose}
+      onClose={handleCancel}
       showCloseButton={false}
       contentStyle={getContentStyle()}
     >
@@ -120,13 +132,13 @@ export default ({
             inputStyle={{
               backgroundColor: 'rgba(96, 99, 108, 1)',
               color: theme.textColor,
-              marginBottom: 24
+              marginBottom: 12
             }}
           />
           <Divider height={0.5} style={{width: '100%', backgroundColor: 'rgba(96, 99, 108, 1)', height: 2}} />
           <Button
             title={getLanguageString(language, 'CANCEL')}
-            onPress={onClose}
+            onPress={handleCancel}
             type="outline"
             style={{
               width: '100%',
