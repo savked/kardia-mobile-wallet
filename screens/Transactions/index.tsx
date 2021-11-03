@@ -1,27 +1,27 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {TouchableOpacity, View, Image, ActivityIndicator, RefreshControl} from 'react-native';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { format } from 'date-fns';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { ActivityIndicator, Image, RefreshControl, TouchableOpacity, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import ENIcon from 'react-native-vector-icons/Entypo';
-import {truncate} from '../../utils/string';
-import {styles} from './style';
-import {getTxByAddress} from '../../services/transaction';
-import {formatNumberString, parseDecimals, parseKaiBalance} from '../../utils/number';
-import {format} from 'date-fns';
-import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
-import {languageAtom} from '../../atoms/language';
-import {ThemeContext} from '../../ThemeContext';
-import {getSelectedWallet, getWallets} from '../../utils/local';
-import {groupByDate} from '../../utils/date';
-import TxDetailModal from '../common/TxDetailModal';
-import {ScrollView} from 'react-native-gesture-handler';
-import {showTabBarAtom} from '../../atoms/showTabBar';
-import CustomText from '../../components/Text';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../atoms/language';
+import { showTabBarAtom } from '../../atoms/showTabBar';
 import { statusBarColorAtom } from '../../atoms/statusBar';
-import { isKRC20Tx } from '../../utils/transaction';
+import CustomText from '../../components/Text';
 import { getKRC20TokenInfo } from '../../services/krc20';
+import { getTxByAddress } from '../../services/transaction';
+import { ThemeContext } from '../../ThemeContext';
+import { groupByDate } from '../../utils/date';
+import { getDateFNSLocale, getLanguageString } from '../../utils/lang';
+import { getSelectedWallet, getWallets } from '../../utils/local';
+import { formatNumberString, parseDecimals } from '../../utils/number';
+import { truncate } from '../../utils/string';
+import { isKRC20Tx } from '../../utils/transaction';
+import TxDetailModal from '../common/TxDetailModal';
+import { styles } from './style';
 
 const TransactionScreen = () => {
   const theme = useContext(ThemeContext);

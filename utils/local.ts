@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import { DEFAULT_CACHE } from '../atoms/cache';
-import {DEFAULT_KRC20_TOKENS} from '../config';
+import { DEFAULT_KRC20_TOKENS } from '../config';
 
 const _getWallets = async () => {
   try {

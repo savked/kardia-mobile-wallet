@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Image, Dimensions, Platform } from 'react-native';
-import {ThemeContext} from '../../ThemeContext';
-import {useRecoilValue} from 'recoil';
-import {styles} from './style'
-import {getLanguageString, parseCardAvatar} from '../../utils/lang';
-import CustomText from '../../components/Text';
-import {tokenInfoAtom} from '../../atoms/token';
-import ControlSection from './ControlSection';
-import {languageAtom} from '../../atoms/language';
-import { weiToKAI } from '../../services/transaction/amount';
-import { formatNumberString, parseDecimals } from '../../utils/number';
-import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import { Dimensions, Image, Platform, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
 import { filterByOwnerSelector, krc20PricesAtom } from '../../atoms/krc20';
+import { languageAtom } from '../../atoms/language';
+import { tokenInfoAtom } from '../../atoms/token';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import CustomText from '../../components/Text';
 import { getBalance } from '../../services/krc20';
+import { weiToKAI } from '../../services/transaction/amount';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString, parseCardAvatar } from '../../utils/lang';
+import { formatNumberString, parseDecimals } from '../../utils/number';
+import ControlSection from './ControlSection';
+import { styles } from './style';
 
 const {width: viewportWidth} = Dimensions.get('window');
 

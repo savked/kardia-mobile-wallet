@@ -1,18 +1,18 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, Keyboard, KeyboardAvoidingView, Platform, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, Keyboard, Platform, TouchableOpacity, View } from 'react-native';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { languageAtom } from '../../atoms/language';
+import { statusBarColorAtom } from '../../atoms/statusBar';
 import IconButton from '../../components/IconButton';
+import CustomText from '../../components/Text';
 import { theme } from '../../theme/dark';
 import { getLanguageString } from '../../utils/lang';
-import { styles } from './style';
-import ScanMode from './ScanMode';
-import InputMode from './InputMode';
 import { saveAppPasscodeSetting } from '../../utils/local';
-import { statusBarColorAtom } from '../../atoms/statusBar';
-import CustomText from '../../components/Text';
+import InputMode from './InputMode';
+import ScanMode from './ScanMode';
+import { styles } from './style';
 // import {RNCamera} from 'react-native-camera';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');

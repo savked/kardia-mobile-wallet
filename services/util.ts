@@ -1,5 +1,5 @@
-import { ENDPOINT, PROXY_ENDPOINT, RPC_ENDPOINT } from "./config";
-import KardiaClient from 'kardia-js-sdk'
+import KardiaClient from 'kardia-js-sdk';
+import { PROXY_ENDPOINT, RPC_ENDPOINT } from "./config";
 
 const DEFAULT_TIMEOUT = 15 * 1000;
 const DEFAULT_RETRY = 3;

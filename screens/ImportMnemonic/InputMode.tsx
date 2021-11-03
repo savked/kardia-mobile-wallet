@@ -1,21 +1,21 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {createRef, useEffect, useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
 import * as Bip39 from 'bip39';
+import React, { createRef, useEffect, useState } from 'react';
 import {
-  Alert,
-  Keyboard,
-  Platform,
-  TextInput as RNTextInput,
-  View,
+    Alert,
+    Keyboard,
+
+    TextInput as RNTextInput,
+    View
 } from 'react-native';
-import {styles} from './style';
-import TextInput from '../../components/TextInput';
-import {theme} from '../../theme/dark';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../atoms/language';
 import Button from '../../components/Button';
-import {getLanguageString} from '../../utils/lang';
-import {useRecoilValue} from 'recoil';
-import {languageAtom} from '../../atoms/language';
-import {useNavigation} from '@react-navigation/native';
+import TextInput from '../../components/TextInput';
+import { theme } from '../../theme/dark';
+import { getLanguageString } from '../../utils/lang';
+import { styles } from './style';
 
 export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
 

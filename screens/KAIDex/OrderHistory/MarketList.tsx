@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { format } from 'date-fns';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, Image, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../../atoms/language';

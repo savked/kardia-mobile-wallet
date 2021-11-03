@@ -1,23 +1,23 @@
-import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useContext, useState} from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useContext, useState } from 'react';
 import {
-  ImageURISource,
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
+    ImageURISource,
+
+
+    Keyboard, TouchableWithoutFeedback, View
 } from 'react-native';
-import {useRecoilState, useRecoilValue} from 'recoil';
-import {ThemeContext} from '../../ThemeContext';
-import {addressBookAtom} from '../../atoms/addressBook';
-import {languageAtom} from '../../atoms/language';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { addressBookAtom } from '../../atoms/addressBook';
+import { languageAtom } from '../../atoms/language';
 import Button from '../../components/Button';
 import CustomImagePicker from '../../components/ImagePicker';
 import TextInput from '../../components/TextInput';
-import {getLanguageString} from '../../utils/lang';
-import {saveAddressBook} from '../../utils/local';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { saveAddressBook } from '../../utils/local';
+import { truncate } from '../../utils/string';
 import ScanQRAddressModal from '../common/ScanQRAddressModal';
-import {styles} from './style';
-import {truncate} from '../../utils/string';
+import { styles } from './style';
 
 const NewAddress = () => {
   const {params} = useRoute();

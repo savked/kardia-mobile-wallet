@@ -1,22 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useNavigation} from '@react-navigation/native';
-import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Image, ImageBackground, Linking, Platform, TouchableOpacity, View} from 'react-native';
-import {ThemeContext} from '../../ThemeContext';
-// import List from '../../components/List';
-import {styles} from './style';
-import {formatNumberString, parseDecimals} from '../../utils/number';
-import Button from '../../components/Button';
-import {useRecoilValue} from 'recoil';
-import {getLanguageString} from '../../utils/lang';
-import {languageAtom} from '../../atoms/language';
-import {filterByOwnerSelector} from '../../atoms/krc20';
-import {getBalance} from '../../services/krc20';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import CustomText from '../../components/Text';
-import { weiToKAI } from '../../services/transaction/amount';
+import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useEffect, useState } from 'react';
+import { ActivityIndicator, Image, ImageBackground, Linking, Platform, TouchableOpacity, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { filterByOwnerSelector } from '../../atoms/krc20';
+import { languageAtom } from '../../atoms/language';
 import { tokenInfoAtom } from '../../atoms/token';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import Button from '../../components/Button';
+import CustomText from '../../components/Text';
 import { SIMPLEX_URL } from '../../services/config';
+import { getBalance } from '../../services/krc20';
+import { weiToKAI } from '../../services/transaction/amount';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { formatNumberString, parseDecimals } from '../../utils/number';
+// import List from '../../components/List';
+import { styles } from './style';
 
 const TokenListSection = ({refreshTime}: {
   refreshTime: number

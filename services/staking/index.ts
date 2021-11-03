@@ -1,11 +1,10 @@
-import {ENDPOINT, RPC_ENDPOINT} from '../config';
-import VALIDATOR_ABI from './validatorABI.json';
+import { toChecksumAddress } from 'ethereumjs-util';
 import KardiaClient from 'kardia-js-sdk';
-import {toChecksumAddress} from 'ethereumjs-util';
-import {DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE} from '../../config';
-import {cellValue, weiToKAI} from '../transaction/amount';
-import {requestWithTimeOut} from '../util';
-import { getNonce } from '../account';
+import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE } from '../../config';
+import { ENDPOINT, RPC_ENDPOINT } from '../config';
+import { cellValue, weiToKAI } from '../transaction/amount';
+import { requestWithTimeOut } from '../util';
+import VALIDATOR_ABI from './validatorABI.json';
 
 const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
 const kardiaContract = kardiaClient.contract;

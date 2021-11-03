@@ -1,11 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {StyleProp, Text, TextStyle, View, ViewStyle} from 'react-native';
+import { StyleProp, TextStyle, View, ViewStyle } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import {styles} from './style';
-import Modal from '../Modal';
 import Button from '../Button';
+import Modal from '../Modal';
 import CustomText from '../Text';
+import { styles } from './style';
 
 const getIcon = (type: string, iconSize = 140, color?: string) => {
   switch (type) {

@@ -1,42 +1,38 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
-import {
-  TouchableWithoutFeedback,
-  View,
-  Text,
-  Keyboard,
-  Platform,
-  TouchableOpacity,
-  Image,
-  Alert,
-} from 'react-native';
-import {styles} from './style';
-import AlertModal from '../../../components/AlertModal';
-import Modal from '../../../components/Modal';
-import TextInput from '../../../components/TextInput';
-import {useRecoilState, useRecoilValue} from 'recoil';
-import {languageAtom} from '../../../atoms/language';
-import Button from '../../../components/Button';
-import {getLanguageString, parseError} from '../../../utils/lang';
-import {getFromClipboard, toChecksum, truncate} from '../../../utils/string';
-import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
-import {
-  getBalance as getKRC20Balance,
-  transferKRC20,
-} from '../../../services/krc20';
-import {getSelectedWallet, getWallets} from '../../../utils/local';
-import ListCard from './ListCard';
-// import Icon from 'react-native-vector-icons/FontAwesome';
-import {getDigit, isNumber, format, parseDecimals, formatNumberString} from '../../../utils/number';
-import AddressBookModal from '../AddressBookModal';
-import ScanQRAddressModal from '../ScanQRAddressModal';
-import {theme} from '../../../theme/dark';
-import AuthModal from '../AuthModal';
-import {useNavigation} from '@react-navigation/native';
-import CustomText from '../../../components/Text';
-import { getRecomendedGasPrice } from '../../../services/transaction';
+import { useNavigation } from '@react-navigation/native';
 import { KardiaAccount } from 'kardia-js-sdk';
+import React, { useEffect, useState } from 'react';
+import {
+    Alert, Image, Keyboard,
+    Platform,
+    TouchableOpacity, TouchableWithoutFeedback,
+    View
+} from 'react-native';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { languageAtom } from '../../../atoms/language';
 import { pendingTxSelector } from '../../../atoms/pendingTx';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
+import AlertModal from '../../../components/AlertModal';
+import Button from '../../../components/Button';
+import Modal from '../../../components/Modal';
+import CustomText from '../../../components/Text';
+import TextInput from '../../../components/TextInput';
+import {
+    getBalance as getKRC20Balance,
+    transferKRC20
+} from '../../../services/krc20';
+import { getRecomendedGasPrice } from '../../../services/transaction';
+import { theme } from '../../../theme/dark';
+import { getLanguageString, parseError } from '../../../utils/lang';
+import { getSelectedWallet, getWallets } from '../../../utils/local';
+// import Icon from 'react-native-vector-icons/FontAwesome';
+import { format, formatNumberString, getDigit, isNumber, parseDecimals } from '../../../utils/number';
+import { getFromClipboard, toChecksum, truncate } from '../../../utils/string';
+import AddressBookModal from '../AddressBookModal';
+import AuthModal from '../AuthModal';
+import ScanQRAddressModal from '../ScanQRAddressModal';
+import ListCard from './ListCard';
+import { styles } from './style';
 
 // const MAX_AMOUNT = 5000000000;
 

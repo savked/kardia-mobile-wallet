@@ -1,17 +1,17 @@
-import React, { useCallback, useContext, useState } from 'react';
-import Icon from 'react-native-vector-icons/Entypo';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ThemeContext } from '../../../ThemeContext';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { showTabBarAtom } from '../../../atoms/showTabBar';
 import { useFocusEffect } from '@react-navigation/native';
-import CustomText from '../../../components/Text';
-import { getLanguageString } from '../../../utils/lang';
-import { languageAtom } from '../../../atoms/language';
+import React, { useCallback, useContext, useState } from 'react';
 import { ActivityIndicator, Image, Keyboard, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/Entypo';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../../atoms/language';
+import { showTabBarAtom } from '../../../atoms/showTabBar';
 import List from '../../../components/List';
-import { formatDexToken } from '../../../services/dex';
+import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
+import { formatDexToken } from '../../../services/dex';
+import { ThemeContext } from '../../../ThemeContext';
+import { getLanguageString } from '../../../utils/lang';
 
 export default ({goBack, onSelect, pairData, loading}: {
   goBack: () => void;

@@ -6,7 +6,7 @@ import { ThemeContext } from '../../ThemeContext'
 import { getLanguageString } from '../../utils/lang'
 import CustomText from '../Text'
 import ItemListModal from './ItemListModal'
-import {styles} from './style'
+import { styles } from './style'
 
 export default ({
   value,

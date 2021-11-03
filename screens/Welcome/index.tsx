@@ -1,17 +1,17 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useNavigation} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import React, {useContext, useEffect, useState} from 'react';
-import {Image, Text, View} from 'react-native';
-import {useRecoilValue} from 'recoil';
-import {languageAtom} from '../../atoms/language';
+import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Image, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../atoms/language';
 import Button from '../../components/Button';
-import {getLanguageString} from '../../utils/lang';
-import {styles} from './style';
-import {ThemeContext} from '../../ThemeContext';
-import WalkThrough from '../WalkThrough';
-import { getWalkThroughView, saveWalkThroughView } from '../../utils/local';
 import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { getWalkThroughView, saveWalkThroughView } from '../../utils/local';
+import WalkThrough from '../WalkThrough';
+import { styles } from './style';
 
 const Welcome = () => {
   const navigation = useNavigation();

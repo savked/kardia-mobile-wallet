@@ -1,24 +1,24 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
 import numeral from 'numeral';
-import {TouchableOpacity, View} from 'react-native';
-import {ThemeContext} from '../../ThemeContext';
-import {styles} from './style';
-import {weiToKAI} from '../../services/transaction/amount';
-import {
-  getAllValidator,
-  getValidatorCommissionRate,
-} from '../../services/staking';
-import {useRecoilValue} from 'recoil';
-import {getLanguageString} from '../../utils/lang';
-import {languageAtom} from '../../atoms/language';
-import TextAvatar from '../../components/TextAvatar';
-import DelegateDetailModal from '../common/DelegateDetailModal';
+import React, { useContext, useEffect, useState } from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../atoms/language';
 import CustomText from '../../components/Text';
-import { getLatestBlock } from '../../services/blockchain';
-import { formatNumberString, getDigit } from '../../utils/number';
+import TextAvatar from '../../components/TextAvatar';
 import { BLOCK_TIME } from '../../config';
+import { getLatestBlock } from '../../services/blockchain';
+import {
+    getAllValidator,
+    getValidatorCommissionRate
+} from '../../services/staking';
+import { weiToKAI } from '../../services/transaction/amount';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { formatNumberString, getDigit } from '../../utils/number';
 import { truncate } from '../../utils/string';
+import DelegateDetailModal from '../common/DelegateDetailModal';
+import { styles } from './style';
 
 const StakingItem = ({
   item

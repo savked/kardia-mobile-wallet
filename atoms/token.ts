@@ -1,4 +1,4 @@
-import {atom} from 'recoil';
+import { atom } from 'recoil';
 
 export const tokenInfoAtom = atom({
   key: 'tokenInfoAtom', // unique ID (with respect to other atoms/selectors)

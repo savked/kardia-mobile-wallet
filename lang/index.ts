@@ -1,5 +1,5 @@
-import {lang as vi} from './vi';
-import {lang as en} from './en';
+import { lang as en } from './en';
+import { lang as vi } from './vi';
 
 export const lang = {
   [vi.key]: vi,

@@ -1,24 +1,24 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
-import {Alert, Keyboard, Platform, TouchableWithoutFeedback, View} from 'react-native';
-import TextInput from '../../components/TextInput';
-import {theme} from '../../theme/dark';
-import Button from '../../components/Button';
-import {getLanguageString} from '../../utils/lang';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {languageAtom} from '../../atoms/language';
-import {getWalletFromPK} from '../../utils/blockchain';
-import {getBalance} from '../../services/account';
-import {getStakingAmount} from '../../services/staking';
-import {
-  getWallets,
-  saveMnemonic,
-  saveWallets,
-} from '../../utils/local';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {useNavigation} from '@react-navigation/native';
-import { submitReferal } from '../../services/dex';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Keyboard, Platform, View } from 'react-native';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../atoms/language';
 import { referralCodeAtom } from '../../atoms/referralCode';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import Button from '../../components/Button';
+import TextInput from '../../components/TextInput';
+import { getBalance } from '../../services/account';
+import { submitReferal } from '../../services/dex';
+import { getStakingAmount } from '../../services/staking';
+import { theme } from '../../theme/dark';
+import { getWalletFromPK } from '../../utils/blockchain';
+import { getLanguageString } from '../../utils/lang';
+import {
+    getWallets,
+    saveMnemonic,
+    saveWallets
+} from '../../utils/local';
 
 export default () => {
   const navigation = useNavigation();

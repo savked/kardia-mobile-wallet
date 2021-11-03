@@ -10,7 +10,7 @@ import QRModal from '../common/AddressQRCode';
 import NewKRC20TxModal from '../common/NewKRC20TxModal';
 import NewTxModal from '../common/NewTxModal';
 import SelecTokenForTxModal from '../common/SelecTokenForTxModal';
-import {styles} from './style'
+import { styles } from './style';
 
 export default ({noAction = false}: {
   noAction?: boolean

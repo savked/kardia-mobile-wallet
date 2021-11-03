@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Dimensions, TouchableOpacity, Image } from 'react-native'
+import { Dimensions, Image, TouchableOpacity, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import CustomText from '../../components/Text'
 import TextAvatar from '../../components/TextAvatar'

@@ -1,29 +1,28 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import {Image, Keyboard, Platform} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {TouchableOpacity, View} from 'react-native';
-import OtpInputs, {OtpInputsRef} from 'react-native-otp-inputs';
-import TouchID from 'react-native-touch-id';
-import {useRecoilValue} from 'recoil';
-import {languageAtom} from '../../../atoms/language';
-import Button from '../../../components/Button';
-import Modal from '../../../components/Modal';
-import {ThemeContext} from '../../../ThemeContext';
-import {getLanguageString} from '../../../utils/lang';
-import {getAppPasscode} from '../../../utils/local';
-import {styles} from './style';
-import Divider from '../../../components/Divider';
-import CustomText from '../../../components/Text';
-import { formatNumberString } from '../../../utils/number';
 import BigNumber from 'bignumber.js';
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState
+} from 'react';
+import { Image, Keyboard, Platform, TouchableOpacity, View } from 'react-native';
+import OtpInputs, { OtpInputsRef } from 'react-native-otp-inputs';
+import TouchID from 'react-native-touch-id';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../../atoms/language';
+import Button from '../../../components/Button';
+import Divider from '../../../components/Divider';
+import Modal from '../../../components/Modal';
+import CustomText from '../../../components/Text';
 import { DANGEROUS_TX_FEE_KAI } from '../../../config';
+import { ThemeContext } from '../../../ThemeContext';
+import { getLanguageString } from '../../../utils/lang';
+import { getAppPasscode } from '../../../utils/local';
+import { formatNumberString } from '../../../utils/number';
+import { styles } from './style';
 
 const optionalConfigObject = {
   unifiedErrors: false, // use unified error messages (default false)

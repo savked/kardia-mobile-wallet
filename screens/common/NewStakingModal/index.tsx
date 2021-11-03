@@ -1,29 +1,29 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
-import {Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import numeral from 'numeral';
-import {useRecoilState, useRecoilValue} from 'recoil';
-import {languageAtom} from '../../../atoms/language';
+import React, { useContext, useEffect, useState } from 'react';
+import { Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { languageAtom } from '../../../atoms/language';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
+import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
 import Modal from '../../../components/Modal';
+import CustomText from '../../../components/Text';
 import TextAvatar from '../../../components/TextAvatar';
 import TextInput from '../../../components/TextInput';
-import {ThemeContext} from '../../../ThemeContext';
-import {getLanguageString, parseError} from '../../../utils/lang';
-import {getDigit, isNumber, format, parseKaiBalance, parseDecimals, formatNumberString} from '../../../utils/number';
-import {styles} from './style';
-import {weiToKAI} from '../../../services/transaction/amount';
-import Button from '../../../components/Button';
-import {BLOCK_TIME, MIN_DELEGATE} from '../../../config';
-import {getSelectedWallet, getWallets} from '../../../utils/local';
-import {delegateAction, getAllValidator} from '../../../services/staking';
-import {getLatestBlock} from '../../../services/blockchain';
-import AuthModal from '../AuthModal';
-import {useNavigation} from '@react-navigation/native';
+import { BLOCK_TIME, MIN_DELEGATE } from '../../../config';
 import { getBalance } from '../../../services/account';
-import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
-import CustomText from '../../../components/Text';
-import { pendingTxSelector } from '../../../atoms/pendingTx';
+import { getLatestBlock } from '../../../services/blockchain';
+import { delegateAction, getAllValidator } from '../../../services/staking';
+import { weiToKAI } from '../../../services/transaction/amount';
+import { ThemeContext } from '../../../ThemeContext';
+import { getLanguageString, parseError } from '../../../utils/lang';
+import { getSelectedWallet, getWallets } from '../../../utils/local';
+import { formatNumberString, getDigit, isNumber, parseDecimals, parseKaiBalance } from '../../../utils/number';
+import AuthModal from '../AuthModal';
+import { styles } from './style';
 
 export default ({
   validatorItem,

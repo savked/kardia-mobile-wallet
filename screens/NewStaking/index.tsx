@@ -1,30 +1,30 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Keyboard,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import {useRecoilValue} from 'recoil';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import numeral from 'numeral';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
+import React, { useContext, useEffect, useState } from 'react';
+import {
+    ActivityIndicator,
+    Keyboard,
+
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../atoms/language';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import AlertModal from '../../components/AlertModal';
 import Button from '../../components/Button';
 import Picker from '../../components/Picker';
-import CustomTextInput from '../../components/TextInput';
-import {delegateAction, getAllValidator} from '../../services/staking';
-import {ThemeContext} from '../../ThemeContext';
-import {getDigit, isNumber, format} from '../../utils/number';
-import {styles} from './style';
-import {weiToKAI} from '../../services/transaction/amount';
-import {getLatestBlock} from '../../services/blockchain';
-import {BLOCK_TIME, MIN_DELEGATE} from '../../config';
-import AlertModal from '../../components/AlertModal';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {getLanguageString} from '../../utils/lang';
-import {languageAtom} from '../../atoms/language';
 import CustomText from '../../components/Text';
+import CustomTextInput from '../../components/TextInput';
+import { BLOCK_TIME, MIN_DELEGATE } from '../../config';
+import { getLatestBlock } from '../../services/blockchain';
+import { delegateAction, getAllValidator } from '../../services/staking';
+import { weiToKAI } from '../../services/transaction/amount';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { format, getDigit, isNumber } from '../../utils/number';
+import { styles } from './style';
 
 const parseValidatorItemForList = (item: Validator) => {
   return {

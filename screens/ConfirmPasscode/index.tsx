@@ -1,19 +1,19 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
-import {Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import OtpInputs, { OtpInputsRef } from 'react-native-otp-inputs';
 import TouchID from 'react-native-touch-id';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {languageAtom} from '../../atoms/language';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../atoms/language';
+import { localAuthAtom } from '../../atoms/localAuth';
 import Button from '../../components/Button';
-import {ThemeContext} from '../../ThemeContext';
-import {getLanguageString} from '../../utils/lang';
-import {getAppPasscode} from '../../utils/local';
-import {styles} from './style';
-import {localAuthAtom} from '../../atoms/localAuth';
 import Divider from '../../components/Divider';
 import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { getAppPasscode } from '../../utils/local';
+import { styles } from './style';
 
 const optionalConfigObject = {
   unifiedErrors: false, // use unified error messages (default false)

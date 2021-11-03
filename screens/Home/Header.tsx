@@ -1,15 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
-import {styles} from './style';
-import {useNavigation} from '@react-navigation/native';
-import {ThemeContext} from '../../ThemeContext';
-import {useRecoilValue} from 'recoil';
-import {notificationAtom} from '../../atoms/notification';
-import {getLanguageString} from '../../utils/lang';
-import NewTxModal from '../common/NewTxModal';
-import {languageAtom} from '../../atoms/language';
+import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useState } from 'react';
+import { Image, TouchableOpacity, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../atoms/language';
+import { notificationAtom } from '../../atoms/notification';
 import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import NewTxModal from '../common/NewTxModal';
+import { styles } from './style';
 
 const HomeHeader = () => {
   const navigation = useNavigation();

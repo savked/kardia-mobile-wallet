@@ -1,4 +1,4 @@
-import {atom, selectorFamily} from 'recoil';
+import { atom, selectorFamily } from 'recoil';
 
 export const DEFAULT_CACHE: Record<string, any> = {
   slippageTolerance: '0.1',

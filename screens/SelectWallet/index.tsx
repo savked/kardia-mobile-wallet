@@ -1,37 +1,37 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Alert,
-  Image,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Alert,
+    Image,
+    TouchableOpacity,
+    View
 } from 'react-native';
-import {getBalance} from '../../services/account';
-import {getStakingAmount} from '../../services/staking';
-import {ThemeContext} from '../../ThemeContext';
-import {styles} from './style';
-import List from '../../components/List';
-import Button from '../../components/Button';
-import {truncate} from '../../utils/string';
-import {parseKaiBalance} from '../../utils/number';
-import Icon from 'react-native-vector-icons/Entypo';
-import {getLanguageString} from '../../utils/lang';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {languageAtom} from '../../atoms/language';
-import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native';
-import {
-  getWallets,
-  saveMnemonic,
-  saveWallets,
-} from '../../utils/local';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CustomText from '../../components/Text';
-import { statusBarColorAtom } from '../../atoms/statusBar';
+import Icon from 'react-native-vector-icons/Entypo';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../atoms/language';
 import { referralCodeAtom } from '../../atoms/referralCode';
+import { statusBarColorAtom } from '../../atoms/statusBar';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import Button from '../../components/Button';
+import List from '../../components/List';
+import CustomText from '../../components/Text';
+import { getBalance } from '../../services/account';
 import { submitReferal } from '../../services/dex';
+import { getStakingAmount } from '../../services/staking';
+import { ThemeContext } from '../../ThemeContext';
 import { getWalletFromMnemonic } from '../../utils/blockchain';
+import { getLanguageString } from '../../utils/lang';
+import {
+    getWallets,
+    saveMnemonic,
+    saveWallets
+} from '../../utils/local';
+import { parseKaiBalance } from '../../utils/number';
+import { truncate } from '../../utils/string';
+import { styles } from './style';
 
 const SelectWallet = () => {
   const [startIndex, setStartIndex] = useState(0);

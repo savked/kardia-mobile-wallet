@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  Platform,
-  StatusBar,
-  StatusBarProps,
-  StyleSheet,
-  View,
+    Platform,
+    StatusBar,
+    StatusBarProps,
+    StyleSheet,
+    View
 } from 'react-native';
 
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;

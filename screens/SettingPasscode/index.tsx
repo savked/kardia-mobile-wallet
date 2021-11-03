@@ -1,35 +1,32 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+// import {localAuthEnabledAtom} from '../../atoms/localAuth';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Image,
+
+    TouchableOpacity,
+    View
 } from 'react-native';
 import OtpInputs from 'react-native-otp-inputs';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {languageAtom} from '../../atoms/language';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import TouchID from 'react-native-touch-id';
+import ENIcon from 'react-native-vector-icons/Entypo';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../atoms/language';
+import { showTabBarAtom } from '../../atoms/showTabBar';
 import Button from '../../components/Button';
-import {ThemeContext} from '../../ThemeContext';
-import {getLanguageString} from '../../utils/lang';
+import Divider from '../../components/Divider';
+import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
 import {
-  getAppPasscode,
-  // getAppPasscodeSetting,
-  // saveAppPasscode,
-  // saveAppPasscodeSetting,
+    getAppPasscode
 } from '../../utils/local';
 import NewPasscode from './NewPasscode';
-import {styles} from './style';
-// import {localAuthEnabledAtom} from '../../atoms/localAuth';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import {showTabBarAtom} from '../../atoms/showTabBar';
-import Divider from '../../components/Divider';
-import TouchID from 'react-native-touch-id';
-import Icon from 'react-native-vector-icons/Ionicons';
-import ENIcon from 'react-native-vector-icons/Entypo';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import CustomText from '../../components/Text';
+import { styles } from './style';
 
 const optionalConfigObject = {
   unifiedErrors: false, // use unified error messages (default false)

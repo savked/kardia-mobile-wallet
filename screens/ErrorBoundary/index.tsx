@@ -1,17 +1,17 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
-import FontAwesome from 'react-native-vector-icons/Ionicons';
+import { SafeAreaView, View } from 'react-native';
 import RNRestart from 'react-native-restart';
-// some stylesheet
-import {styles} from './style';
+import FontAwesome from 'react-native-vector-icons/Ionicons';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../atoms/language';
 // some button component
 import Button from '../../components/Button';
-import {ThemeContext} from '../../ThemeContext';
-import {useRecoilValue} from 'recoil';
-import {languageAtom} from '../../atoms/language';
-import {getLanguageString} from '../../utils/lang';
 import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+// some stylesheet
+import { styles } from './style';
 
 class ErrorBoundary extends React.Component<any, any> {
   static contextType = ThemeContext;

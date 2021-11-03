@@ -1,11 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
-import {TextInput, View, Text, StyleProp, TextStyle, ViewStyle, ActivityIndicator, TextInputKeyPressEventData, NativeSyntheticEvent, TextInputSubmitEditingEventData} from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { ActivityIndicator, NativeSyntheticEvent, StyleProp, TextInput, TextInputKeyPressEventData, TextInputSubmitEditingEventData, TextStyle, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {ThemeContext} from '../../ThemeContext';
+import { ThemeContext } from '../../ThemeContext';
 import { mergeObjArr } from '../../utils/object';
 import CustomText from '../Text';
-import {styles} from './style';
+import { styles } from './style';
 
 const CustomTextInput = ({
   onChangeText,

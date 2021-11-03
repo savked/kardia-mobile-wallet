@@ -1,25 +1,25 @@
 import { useRoute } from '@react-navigation/core';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, Platform, TouchableOpacity, View } from 'react-native';
-import loadLocalResource from 'react-native-local-resource'
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import loadLocalResource from 'react-native-local-resource';
+import Orientation from 'react-native-orientation-locker';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import ENIcon from 'react-native-vector-icons/Entypo';
 import { WebView } from 'react-native-webview';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import Web3 from 'web3';
+import { showTabBarAtom } from '../../atoms/showTabBar';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
-import ENIcon from 'react-native-vector-icons/Entypo';
+import CustomText from '../../components/Text';
 import { RPC_ENDPOINT } from '../../services/config';
 import { ThemeContext } from '../../ThemeContext';
 import { hardReload, parseError, parseRun } from '../../utils/dapp';
+import { getSemiBoldStyle } from '../../utils/style';
 import ConfirmTxFromBrowserModal from '../common/ConfirmTxFromBrowserModal';
-import Orientation from 'react-native-orientation-locker';
+import { styles } from './style';
 // @ts-ignore
 const myResource = require('./kardia-web3-mobile-provider-min.jsstring');
-import {styles} from './style'
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import CustomText from '../../components/Text';
-import { showTabBarAtom } from '../../atoms/showTabBar';
-import Web3 from 'web3'
-import { getSemiBoldStyle } from '../../utils/style';
 
 const SCALE_FOR_DESKTOP = `const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=1'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta); `
 

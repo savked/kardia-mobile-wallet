@@ -1,14 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import {Dimensions, Image, View} from 'react-native';
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import {useRecoilValue} from 'recoil';
-import {languageAtom} from '../../../atoms/language';
-import {getLanguageString} from '../../../utils/lang';
-import {styles} from './style';
 import Portal from '@burstware/react-native-portal';
+import React from 'react';
+import { Dimensions, Image, View } from 'react-native';
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../../atoms/language';
 import IconButton from '../../../components/IconButton';
 import CustomText from '../../../components/Text';
+import { getLanguageString } from '../../../utils/lang';
+import { styles } from './style';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window');
 

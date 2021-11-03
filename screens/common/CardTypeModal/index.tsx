@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { ImageBackground, Text, View } from 'react-native';
+import { ImageBackground, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Modal from '../../../components/Modal';
 import CustomText from '../../../components/Text';

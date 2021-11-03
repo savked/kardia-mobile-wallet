@@ -1,17 +1,17 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import {
-  ActivityIndicator,
-  StyleProp,
-  TextStyle,
-  TouchableOpacity,
-  ViewStyle,
+    ActivityIndicator,
+    StyleProp,
+    TextStyle,
+    TouchableOpacity,
+    ViewStyle
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {ThemeContext} from '../../ThemeContext';
+import { ThemeContext } from '../../ThemeContext';
 import CustomText from '../Text';
-import {styles} from './style';
+import { styles } from './style';
 
 const Button = ({
   title,

@@ -28,7 +28,7 @@ import BalanceInput from './BalanceInput'
 import ConfirmModal from './ConfirmModal'
 import InfoSection from './InfoSection'
 import NetworkSelector from './NetworkSelector'
-import {styles} from './styles'
+import { styles } from './styles'
 
 export default () => {
   const navigation = useNavigation()

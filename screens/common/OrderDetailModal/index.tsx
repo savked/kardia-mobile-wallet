@@ -1,19 +1,19 @@
+import { format } from 'date-fns';
 import React, { useContext } from 'react';
 import { Image, Linking, Platform, TouchableOpacity, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { useRecoilValue } from 'recoil';
-import {format} from 'date-fns';
 import { languageAtom } from '../../../atoms/language';
+import Button from '../../../components/Button';
+import Divider from '../../../components/Divider';
 import CustomModal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
 import { ThemeContext } from '../../../ThemeContext';
 import { getOrderPrice, getOrderTotal, isBuy, parseSymbolWKAI } from '../../../utils/dex';
-import { formatNumberString } from '../../../utils/number';
-import {styles} from './styles'
 import { getDateFNSLocale, getLanguageString } from '../../../utils/lang';
+import { formatNumberString } from '../../../utils/number';
 import { copyToClipboard, getLogoURL, getTxURL, truncate } from '../../../utils/string';
-import Toast from 'react-native-toast-message';
-import Divider from '../../../components/Divider';
-import Button from '../../../components/Button';
+import { styles } from './styles';
 
 export default ({
 	visible,

@@ -1,22 +1,21 @@
 /* eslint-disable react-native/no-inline-styles */
+import { useNavigation, useRoute } from '@react-navigation/core';
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import { ThemeContext } from '../../ThemeContext';
-import List from '../../components/List';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import ENIcon from 'react-native-vector-icons/Entypo';
-import Button from '../../components/Button';
-import { getMnemonic } from '../../utils/local';
-import { styles } from './style';
-import { copyToClipboard } from '../../utils/string';
-import { getLanguageString } from '../../utils/lang';
 import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../atoms/language';
-import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
-import { useNavigation, useRoute } from '@react-navigation/core';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import Button from '../../components/Button';
+import List from '../../components/List';
 import CustomText from '../../components/Text';
-import Toast from 'react-native-toast-message';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { getMnemonic } from '../../utils/local';
+import { copyToClipboard } from '../../utils/string';
+import { styles } from './style';
 
 const MnemonicPhraseSetting = () => {
   const navigation = useNavigation();

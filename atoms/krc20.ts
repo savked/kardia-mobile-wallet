@@ -1,4 +1,4 @@
-import {atom, selectorFamily} from 'recoil';
+import { atom, selectorFamily } from 'recoil';
 
 export const krc20PricesAtom = atom({
   key: 'krc20PricesAtom', // unique ID (with respect to other atoms/selectors)

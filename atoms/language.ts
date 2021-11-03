@@ -1,6 +1,6 @@
-import {atom} from 'recoil';
-import {NativeModules, Platform} from 'react-native';
-import {getSupportedLanguage} from '../utils/lang';
+import { NativeModules, Platform } from 'react-native';
+import { atom } from 'recoil';
+import { getSupportedLanguage } from '../utils/lang';
 
 let deviceLanguage = 'en_US';
 

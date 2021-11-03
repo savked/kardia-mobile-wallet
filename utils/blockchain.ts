@@ -1,8 +1,8 @@
 import '@ethersproject/shims';
 import * as EthUtil from 'ethereumjs-util';
 import EtherWallet from 'ethereumjs-wallet';
-import {ethers} from 'ethers';
-import Web3 from 'web3'
+import { ethers } from 'ethers';
+import Web3 from 'web3';
 
 export const getWalletFromPK = (privateKey: string) => {
   const privateKeyBuffer = EthUtil.toBuffer(privateKey);

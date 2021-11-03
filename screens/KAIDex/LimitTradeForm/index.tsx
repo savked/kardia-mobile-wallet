@@ -1,28 +1,27 @@
+import { useQuery } from '@apollo/client';
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Image, Keyboard, Platform, RefreshControl, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { ActivityIndicator, Alert, Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { languageAtom } from '../../../atoms/language';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
+import Tags from '../../../components/Tags';
 import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
-import { approveToken, formatDexToken, getApproveState, getReserve, getTotalVolume } from '../../../services/dex';
+import { LIMIT_ORDER_FEE } from '../../../config';
+import { getBalance } from '../../../services/account';
+import { approveToken, formatDexToken, getApproveState, getReserve, getTotalVolume, submitLimitOrder } from '../../../services/dex';
+import { GET_PAIRS } from '../../../services/dex/queries';
 import { getBalance as getKRC20Balance } from '../../../services/krc20';
 import { ThemeContext } from '../../../ThemeContext';
+import { getErrorKey, isRecognizedError } from '../../../utils/error';
 import { getLanguageString, parseError } from '../../../utils/lang';
 import { getSelectedWallet, getWallets, saveWallets } from '../../../utils/local';
 import { formatNumberString, getDecimalCount, getDigit, getPartial, isNumber, parseDecimals } from '../../../utils/number';
-import { submitLimitOrder } from '../../../services/dex';
-import Tags from '../../../components/Tags';
 import AuthModal from '../../common/AuthModal';
-import { getErrorKey, isRecognizedError } from '../../../utils/error';
-import { useQuery } from '@apollo/client';
-import { GET_PAIRS } from '../../../services/dex/queries';
-import { getBalance } from '../../../services/account';
-import { LIMIT_ORDER_FEE } from '../../../config';
-import { pendingTxSelector } from '../../../atoms/pendingTx';
 
 let _tokenFrom: PairToken
 let _tokenTo: PairToken

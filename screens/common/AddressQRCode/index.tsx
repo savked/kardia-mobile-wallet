@@ -1,17 +1,17 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext} from 'react';
-import {Dimensions, Image, Platform, TouchableOpacity, View} from 'react-native';
-import Toast from 'react-native-toast-message';
+import React, { useContext } from 'react';
+import { Dimensions, Image, Platform, TouchableOpacity, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import {useRecoilValue} from 'recoil';
-import {languageAtom} from '../../../atoms/language';
-import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
+import Toast from 'react-native-toast-message';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../../atoms/language';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
-import {ThemeContext} from '../../../ThemeContext';
-import {getLanguageString} from '../../../utils/lang';
-import {copyToClipboard, truncate} from '../../../utils/string';
 import CustomText from '../../../components/Text';
+import { ThemeContext } from '../../../ThemeContext';
+import { getLanguageString } from '../../../utils/lang';
+import { copyToClipboard, truncate } from '../../../utils/string';
 
 const {width: viewportWidth} = Dimensions.get('window');
 

@@ -1,21 +1,20 @@
+import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import React, { useCallback, useContext, useState } from 'react';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Keyboard, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ENIcon from 'react-native-vector-icons/Entypo';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { languageAtom } from '../../atoms/language';
-import CustomText from '../../components/Text';
-import { ThemeContext } from '../../ThemeContext';
-import { getLanguageString } from '../../utils/lang';
-import {styles} from './style';
-import { useFocusEffect, useNavigation } from '@react-navigation/core';
-import CustomTextInput from '../../components/TextInput';
-import { getSearchURL, isURL, parseURL } from '../../utils/string';
-import { Keyboard, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import FavoriteDapp from './FavoriteDapp';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import { statusBarColorAtom } from '../../atoms/statusBar';
+import CustomText from '../../components/Text';
+import CustomTextInput from '../../components/TextInput';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { getSearchURL, isURL, parseURL } from '../../utils/string';
 import Dashboard from './Dashboard';
 import SearchResult from './SearchResult';
+import { styles } from './style';
 
 const DAppHome = () => {
   const theme = useContext(ThemeContext)

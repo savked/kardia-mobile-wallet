@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
 export const useForceUpdate = () => {
   const set = useState(0)[1];

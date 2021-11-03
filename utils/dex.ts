@@ -7,9 +7,6 @@ export const parseSymbolWKAI = (symbol: string) => {
 }
 
 export const getOrderPrice = (order: Record<string, any>) => {
-	// const amount0 = order.amount0In !== '0' ? new BigNumber(order.amount0In) : new BigNumber(order.amount0Out)
-	// const amount1 = order.amount1In !== '0' ? new BigNumber(order.amount1In) : new BigNumber(order.amount1Out)
-  // return amount1.dividedBy(amount0)
 
   const amount = getOrderAmount(order)
   const total = getOrderTotal(order)

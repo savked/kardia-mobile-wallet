@@ -1,12 +1,42 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {View, Image, AppState, Dimensions, Linking, Platform} from 'react-native';
-import {useRecoilState, useSetRecoilState} from 'recoil';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import Orientation from 'react-native-orientation-locker';
+import Portal from '@burstware/react-native-portal';
 import NetInfo from "@react-native-community/netinfo";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { AppState, Dimensions, Image, Linking, Platform, View } from 'react-native';
+import Orientation from 'react-native-orientation-locker';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { addressBookAtom } from '../../atoms/addressBook';
+import { cacheAtom } from '../../atoms/cache';
+import { dexStatusAtom } from '../../atoms/dexStatus';
+import { favoritePairsAtom } from '../../atoms/favoritePairs';
+import { fontSizeAtom } from '../../atoms/fontSize';
+import { krc20ListAtom, krc20PricesAtom } from '../../atoms/krc20';
+import { languageAtom } from '../../atoms/language';
+import { localAuthAtom, localAuthEnabledAtom } from '../../atoms/localAuth';
+import { pendingTxAtom, pendingTxBackgroundAtom, pendingTxSelector } from '../../atoms/pendingTx';
+import { referralCodeAtom } from '../../atoms/referralCode';
+import { tokenInfoAtom } from '../../atoms/token';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import Button from '../../components/Button';
+import CustomText from '../../components/Text';
+import DAppStackScreen from '../../DAppStack';
+import DEXStackScreen from '../../DEXStack';
+import DualNodeStack from '../../DualNodeStack';
+import HomeStackScreen from '../../HomeStack';
+import NoWalletStackScreen from '../../NoWalletStack';
+import { getBalance } from '../../services/account';
+import { initDexConfig } from '../../services/dex';
+import { getKRC20TokensPrices, getTokenInfo } from '../../services/token';
+import { getTxDetail } from '../../services/transaction';
+import { checkBlockchainStatus, getAppStatus } from '../../services/util';
+import SettingStackScreen from '../../SettingStack';
+import StakingStackScreen from '../../StakingStack';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
 import {
   getAddressBook,
   getAppPasscodeSetting,
@@ -22,44 +52,14 @@ import {
   saveAllCache,
   saveSelectedWallet,
   saveTokenList,
-  setFavPair,
+  setFavPair
 } from '../../utils/local';
-import {styles} from './style';
-import NoWalletStackScreen from '../../NoWalletStack';
-import {ThemeContext} from '../../ThemeContext';
-import {getBalance} from '../../services/account';
-import {tokenInfoAtom} from '../../atoms/token';
-import {getKRC20TokensPrices, getTokenInfo} from '../../services/token';
-import {addressBookAtom} from '../../atoms/addressBook';
-import {languageAtom} from '../../atoms/language';
-import {localAuthAtom, localAuthEnabledAtom} from '../../atoms/localAuth';
-import ConfirmPasscode from '../ConfirmPasscode';
-import StakingStackScreen from '../../StakingStack';
-import {getLanguageString} from '../../utils/lang';
-import Portal from '@burstware/react-native-portal';
-import {krc20ListAtom, krc20PricesAtom} from '../../atoms/krc20';
-import HomeStackScreen from '../../HomeStack';
-import CustomText from '../../components/Text';
-import { fontSizeAtom } from '../../atoms/fontSize';
-import { checkBlockchainStatus, getAppStatus } from '../../services/util';
-import { INFO_DATA } from '../Setting';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Button from '../../components/Button';
-import { dexStatusAtom } from '../../atoms/dexStatus';
-import { initDexConfig } from '../../services/dex';
-import { cacheAtom } from '../../atoms/cache';
-import SettingStackScreen from '../../SettingStack';
-import DEXStackScreen from '../../DEXStack';
-import { referralCodeAtom } from '../../atoms/referralCode';
-import DAppStackScreen from '../../DAppStack';
-import DualNodeStack from '../../DualNodeStack';
-import { favoritePairsAtom } from '../../atoms/favoritePairs';
-import { pendingTxAtom, pendingTxBackgroundAtom, pendingTxSelector } from '../../atoms/pendingTx';
-import { getTxDetail } from '../../services/transaction';
-import Toast from 'react-native-toast-message';
 import { truncate } from '../../utils/string';
 import IgnorePendingTxModal from '../common/IgnorePendingTxModal';
+import ConfirmPasscode from '../ConfirmPasscode';
+import { INFO_DATA } from '../Setting';
 import CustomTab from './CustomTab';
+import { styles } from './style';
 
 const Tab = createBottomTabNavigator();
 

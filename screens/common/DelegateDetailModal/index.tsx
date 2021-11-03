@@ -1,27 +1,27 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, Platform, Text, TouchableOpacity, View} from 'react-native';
-import Divider from '../../../components/Divider';
-import Modal from '../../../components/Modal';
-import TextAvatar from '../../../components/TextAvatar';
-import {ThemeContext} from '../../../ThemeContext';
-import {getLanguageString, parseError} from '../../../utils/lang';
-import numeral from 'numeral';
-import {styles} from './style';
-import {useRecoilState, useRecoilValue} from 'recoil';
-import {languageAtom} from '../../../atoms/language';
-import {weiToKAI} from '../../../services/transaction/amount';
-import Button from '../../../components/Button';
-import {getSelectedWallet, getWallets} from '../../../utils/local';
-import {getAllValidator, withdrawDelegatedAmount, withdrawReward} from '../../../services/staking';
 import { useNavigation } from '@react-navigation/native';
-import UndelegateModal from '../UndelegateModal';
-import CustomText from '../../../components/Text';
-import { getLatestBlock } from '../../../services/blockchain';
-import { formatNumberString, getDigit } from '../../../utils/number';
-import { BLOCK_TIME } from '../../../config';
+import numeral from 'numeral';
+import React, { useContext, useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, Platform, TouchableOpacity, View } from 'react-native';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { languageAtom } from '../../../atoms/language';
 import { pendingTxSelector } from '../../../atoms/pendingTx';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
+import Button from '../../../components/Button';
+import Divider from '../../../components/Divider';
+import Modal from '../../../components/Modal';
+import CustomText from '../../../components/Text';
+import TextAvatar from '../../../components/TextAvatar';
+import { BLOCK_TIME } from '../../../config';
+import { getLatestBlock } from '../../../services/blockchain';
+import { getAllValidator, withdrawDelegatedAmount, withdrawReward } from '../../../services/staking';
+import { weiToKAI } from '../../../services/transaction/amount';
+import { ThemeContext } from '../../../ThemeContext';
+import { getLanguageString, parseError } from '../../../utils/lang';
+import { getSelectedWallet, getWallets } from '../../../utils/local';
+import { formatNumberString, getDigit } from '../../../utils/number';
+import UndelegateModal from '../UndelegateModal';
+import { styles } from './style';
 
 const showButton = (value: any) => {
   return formatNumberString(value) !== '0'

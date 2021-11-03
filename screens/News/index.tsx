@@ -1,19 +1,19 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Text, View, Image, ActivityIndicator, Linking} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
-import {styles} from './style';
-import {ThemeContext} from '../../App';
+import { format, formatDistanceToNowStrict, isSameDay } from 'date-fns';
+import React, { useContext, useEffect, useState } from 'react';
+import { ActivityIndicator, Image, Linking, View } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRecoilValue } from 'recoil';
+import { ThemeContext } from '../../App';
+import { languageAtom } from '../../atoms/language';
+import CustomText from '../../components/Text';
+import { getNews } from '../../services/news';
 import {
   getDateFNSLocale,
   getDateTimeFormat,
-  getLanguageString,
+  getLanguageString
 } from '../../utils/lang';
-import {useRecoilValue} from 'recoil';
-import {languageAtom} from '../../atoms/language';
-import {getNews} from '../../services/news';
-import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
-import CustomText from '../../components/Text';
+import { styles } from './style';
 
 const NewsScreen = () => {
   const theme = useContext(ThemeContext);
@@ -96,12 +96,14 @@ const NewsScreen = () => {
                 <View style={styles.right}>
                   <CustomText
                     style={[styles.title, {color: theme.textColor}]}
-                    numberOfLines={2}>
+                    // numberOfLines={2}
+                  >
                     {item.title}
                   </CustomText>
                   <CustomText
                     style={[styles.description, {color: theme.textColor}]}
-                    numberOfLines={2}>
+                    // numberOfLines={2}
+                  >
                     {item.description}
                   </CustomText>
                   <CustomText style={[styles.time, {color: theme.textColor}]}>

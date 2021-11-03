@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { favoritePairsAtom } from '../../../atoms/favoritePairs';
 import CustomText from '../../../components/Text';
-import { formatDexToken, getPairs } from '../../../services/dex';
+import { getPairs } from '../../../services/dex';
 import { ThemeContext } from '../../../ThemeContext';
 import { pairMapper } from '../../../utils/dex';
 import FavoriteItem from './FavoriteItem';

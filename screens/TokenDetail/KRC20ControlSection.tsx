@@ -10,7 +10,7 @@ import { getLanguageString } from '../../utils/lang';
 import { copyToClipboard } from '../../utils/string';
 import QRModal from '../common/AddressQRCode';
 import NewKRC20TxModal from '../common/NewKRC20TxModal';
-import {styles} from './style'
+import { styles } from './style';
 
 export default ({
   tokenAvatar,

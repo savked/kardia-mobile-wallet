@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Keyboard, Platform} from 'react-native';
+import { Keyboard, Platform } from 'react-native';
 
 export default function useIsKeyboardShown() {
   const [isKeyboardShown, setIsKeyboardShown] = React.useState(false);

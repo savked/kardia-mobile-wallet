@@ -1,13 +1,12 @@
-import React, { useContext } from 'react'
+import React from 'react';
+import { Dimensions, Image, Platform, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { View, Image, Dimensions, ScrollView, Platform } from 'react-native';
-import { TouchableOpacity } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../atoms/language';
-import CustomText from '../../components/Text';
-import { getLanguageString } from '../../utils/lang';
 import { showTabBarAtom } from '../../atoms/showTabBar';
+import CustomText from '../../components/Text';
 import { TABBAR_HEIGHT } from '../../theme';
+import { getLanguageString } from '../../utils/lang';
 
 const {width: viewportWidth} = Dimensions.get('window')
 

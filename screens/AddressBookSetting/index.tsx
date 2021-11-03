@@ -1,24 +1,24 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useContext, useState} from 'react';
-import {View, TouchableOpacity, Image, Platform} from 'react-native';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {ThemeContext} from '../../ThemeContext';
-import {addressBookAtom} from '../../atoms/addressBook';
-import {languageAtom} from '../../atoms/language';
-import CustomImagePicker from '../../components/ImagePicker';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useContext, useState } from 'react';
+import { Image, Platform, TouchableOpacity, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import ENIcon from 'react-native-vector-icons/Entypo';
-import {getLanguageString} from '../../utils/lang';
-import {groupByAlphabet, truncate} from '../../utils/string';
-import {styles} from './style';
-import Button from '../../components/Button';
-import NewAddressModal from '../common/NewAddressModal';
-import {showTabBarAtom} from '../../atoms/showTabBar';
-import {ScrollView} from 'react-native-gesture-handler';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import CustomText from '../../components/Text';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { addressBookAtom } from '../../atoms/addressBook';
+import { languageAtom } from '../../atoms/language';
+import { showTabBarAtom } from '../../atoms/showTabBar';
 import { statusBarColorAtom } from '../../atoms/statusBar';
+import Button from '../../components/Button';
+import CustomImagePicker from '../../components/ImagePicker';
+import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { groupByAlphabet, truncate } from '../../utils/string';
+import NewAddressModal from '../common/NewAddressModal';
+import { styles } from './style';
 
 const AddressBookSetting = () => {
   const theme = useContext(ThemeContext);

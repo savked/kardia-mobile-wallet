@@ -1,29 +1,28 @@
+import { useQuery } from '@apollo/client';
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Image, Keyboard, Platform, RefreshControl, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { ActivityIndicator, Alert, Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { cacheSelector } from '../../../atoms/cache';
 import { languageAtom } from '../../../atoms/language';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
-import TxSettingModal from '../TxSettingModal'
 import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
+import Tags from '../../../components/Tags';
 import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
-import { approveToken, calculateDexAmountOut, calculatePriceImpact, calculateTransactionDeadline, formatDexToken, getApproveState, getPairs, getReserve, getTotalVolume } from '../../../services/dex';
+import { getBalance } from '../../../services/account';
+import { approveToken, calculateDexAmountOut, calculatePriceImpact, calculateTransactionDeadline, formatDexToken, getApproveState, getReserve, getTotalVolume, swapTokens } from '../../../services/dex';
+import { GET_PAIRS } from '../../../services/dex/queries';
 import { getBalance as getKRC20Balance } from '../../../services/krc20';
 import { ThemeContext } from '../../../ThemeContext';
+import { getErrorKey, isRecognizedError } from '../../../utils/error';
 import { getLanguageString, parseError } from '../../../utils/lang';
 import { getSelectedWallet, getWallets, saveWallets } from '../../../utils/local';
 import { formatNumberString, getDecimalCount, getDigit, getPartial, isNumber, parseDecimals } from '../../../utils/number';
-import { swapTokens } from '../../../services/dex';
-import Tags from '../../../components/Tags';
 import AuthModal from '../../common/AuthModal';
-import { getErrorKey, isRecognizedError } from '../../../utils/error';
-import { cacheSelector } from '../../../atoms/cache';
-import { useQuery } from '@apollo/client';
-import { GET_PAIRS } from '../../../services/dex/queries';
-import { getBalance } from '../../../services/account';
-import { pendingTxSelector } from '../../../atoms/pendingTx';
+import TxSettingModal from '../TxSettingModal';
 
 let _tokenFrom: PairToken
 let _tokenTo: PairToken

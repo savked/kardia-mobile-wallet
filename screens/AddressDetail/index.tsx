@@ -1,47 +1,46 @@
 /* eslint-disable react-native/no-inline-styles */
 import {
-  useFocusEffect,
-  useNavigation,
-  useRoute,
+    useFocusEffect,
+    useNavigation,
+    useRoute
 } from '@react-navigation/native';
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import { format } from 'date-fns';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
-  Alert,
-  Dimensions,
-  Image,
-  ImageBackground,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
+    Alert,
+    Dimensions,
+    Image,
+
+    ScrollView,
+
+    TouchableOpacity,
+    View
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Entypo';
-import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
-import {ThemeContext} from '../../ThemeContext';
-import {addressBookAtom} from '../../atoms/addressBook';
-import {languageAtom} from '../../atoms/language';
-import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
-import {
-  getSelectedWallet,
-  getWallets,
-  saveAddressBook,
-} from '../../utils/local';
-import {styles} from './style';
-import {statusBarColorAtom} from '../../atoms/statusBar';
-import {copyToClipboard, truncate} from '../../utils/string';
-import {showTabBarAtom} from '../../atoms/showTabBar';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {getTxByAddress} from '../../services/transaction';
-import {groupByDate} from '../../utils/date';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import {format} from 'date-fns';
-import {parseKaiBalance} from '../../utils/number';
-import TxDetailModal from '../common/TxDetailModal';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import NewAddressModal from '../common/NewAddressModal';
-import IconButton from '../../components/IconButton';
+import Icon from 'react-native-vector-icons/Entypo';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { addressBookAtom } from '../../atoms/addressBook';
+import { languageAtom } from '../../atoms/language';
+import { showTabBarAtom } from '../../atoms/showTabBar';
+import { statusBarColorAtom } from '../../atoms/statusBar';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import CustomImagePicker from '../../components/ImagePicker';
 import CustomText from '../../components/Text';
+import { getTxByAddress } from '../../services/transaction';
+import { ThemeContext } from '../../ThemeContext';
+import { groupByDate } from '../../utils/date';
+import { getDateFNSLocale, getLanguageString } from '../../utils/lang';
+import {
+    getSelectedWallet,
+    getWallets,
+    saveAddressBook
+} from '../../utils/local';
+import { parseKaiBalance } from '../../utils/number';
+import { copyToClipboard, truncate } from '../../utils/string';
+import NewAddressModal from '../common/NewAddressModal';
+import TxDetailModal from '../common/TxDetailModal';
+import { styles } from './style';
 
 const {width: viewportWidth} = Dimensions.get('window');
 

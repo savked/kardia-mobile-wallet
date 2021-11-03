@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Dimensions, Image, Text, View } from 'react-native';
+import { Dimensions, Image, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { useRecoilValue } from 'recoil';
@@ -8,7 +8,7 @@ import Button from '../../components/Button';
 import CustomText from '../../components/Text';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
-import {styles} from './style';
+import { styles } from './style';
 
 const {width: viewportWidth} = Dimensions.get('window')
 

@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import {Alert, Dimensions} from 'react-native';
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import {useRecoilValue} from 'recoil';
-import {languageAtom} from '../../atoms/language';
-import {getLanguageString} from '../../utils/lang';
+import { useNavigation } from '@react-navigation/native';
 import * as Bip39 from 'bip39';
-import {useNavigation} from '@react-navigation/native';
+import React from 'react';
+import { Alert, Dimensions } from 'react-native';
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../atoms/language';
+import { getLanguageString } from '../../utils/lang';
 
 export default () => {
   const language = useRecoilValue(languageAtom);

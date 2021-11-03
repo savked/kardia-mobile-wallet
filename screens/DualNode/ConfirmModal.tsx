@@ -1,7 +1,6 @@
 import BigNumber from 'bignumber.js';
 import React, { useContext, useMemo, useState } from 'react';
-import { Image } from 'react-native';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../atoms/language';
 import Button from '../../components/Button';

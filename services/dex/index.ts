@@ -1,20 +1,20 @@
+import BigNumber from 'bignumber.js';
 import KaidexClient from 'kaidex-sdk';
-import KardiaClient, {KardiaAccount} from 'kardia-js-sdk';
-import SWAPABI from './swapABI.json'
-import LIMIT_ABI from './limitABI.json'
-import { BLOCK_TIME, CACHE_TTL, KAI_TOKEN_NAME, KAI_TOKEN_SYMBOL } from '../../config';
+import KardiaClient, { KardiaAccount } from 'kardia-js-sdk';
+import Web3 from 'web3';
+import { BLOCK_TIME, KAI_TOKEN_NAME, KAI_TOKEN_SYMBOL } from '../../config';
+import { getDeltaTimestamps } from '../../utils/date';
+import { getCache, saveCacheByKey } from '../../utils/local';
+import { parseDecimals } from '../../utils/number';
+import { getLogoURL, toChecksum } from '../../utils/string';
 import { DEX_ENDPOINT, DEX_PAIRS_JSON, EXCHANGE_REST, RPC_ENDPOINT } from '../config';
 import KRC20ABI from '../krc20/KRC20ABI.json';
 // import { cellValueWithDecimals } from '../../utils/number';
 import { requestWithTimeOut } from '../util';
-import BigNumber from 'bignumber.js';
-import { getDeltaTimestamps } from '../../utils/date';
 import { apolloKaiBlockClient, apolloKaiDexClient } from './apolloClient';
+import LIMIT_ABI from './limitABI.json';
 import { GET_BLOCKS_BY_TIMESTAMPS, GET_PAIR_VOLUME, PAIR_LIST_BY_BLOCK_NUMBER } from './queries';
-import { getLogoURL, toChecksum } from '../../utils/string';
-import Web3 from 'web3'
-import { parseDecimals } from '../../utils/number';
-import { getCache, saveCacheByKey } from '../../utils/local';
+import SWAPABI from './swapABI.json';
 
 let SWAP_ROUTER_SMC = ''
 let FACTORY_SMC = ''

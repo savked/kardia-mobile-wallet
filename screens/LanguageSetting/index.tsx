@@ -1,21 +1,21 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useContext} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
-import Flag from 'react-native-flags';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import ENIcon from 'react-native-vector-icons/Entypo';
-import {useRecoilState, useSetRecoilState} from 'recoil';
-import {ThemeContext} from '../../ThemeContext';
-import {languageAtom} from '../../atoms/language';
-import List from '../../components/List';
-import {getLanguageString, getSupportedLanguage} from '../../utils/lang';
-import {saveLanguageSetting} from '../../utils/local';
-import {styles} from './style';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
 import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useContext } from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import Flag from 'react-native-flags';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import ENIcon from 'react-native-vector-icons/Entypo';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../atoms/language';
 import { showTabBarAtom } from '../../atoms/showTabBar';
+import List from '../../components/List';
 import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString, getSupportedLanguage } from '../../utils/lang';
+import { saveLanguageSetting } from '../../utils/local';
+import { styles } from './style';
 
 const languageList = getSupportedLanguage();
 

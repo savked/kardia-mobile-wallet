@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Dimensions, Text, View} from 'react-native';
-import {useRecoilValue} from 'recoil';
-import {languageAtom} from '../../../atoms/language';
+import { Dimensions, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../../atoms/language';
 import Button from '../../../components/Button';
 import CustomModal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
-import {getLanguageString} from '../../../utils/lang';
+import { getLanguageString } from '../../../utils/lang';
 
 const {height: viewportHeight} = Dimensions.get('window');
 

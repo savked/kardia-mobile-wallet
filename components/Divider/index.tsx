@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {StyleProp, View, ViewStyle} from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 
 export default function Divider({
   height,

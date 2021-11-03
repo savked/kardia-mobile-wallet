@@ -1,18 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useContext } from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {useRecoilValue} from 'recoil';
-import {addressBookAtom} from '../../../atoms/addressBook';
-import {styles} from './style';
+import { TouchableOpacity, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { addressBookAtom } from '../../../atoms/addressBook';
+import { languageAtom } from '../../../atoms/language';
+import CustomImagePicker from '../../../components/ImagePicker';
 import List from '../../../components/List';
 import Modal from '../../../components/Modal';
-import {truncate} from '../../../utils/string';
-import TextAvatar from '../../../components/TextAvatar';
-import {languageAtom} from '../../../atoms/language';
-import {getLanguageString} from '../../../utils/lang';
 import CustomText from '../../../components/Text';
+import TextAvatar from '../../../components/TextAvatar';
 import { ThemeContext } from '../../../ThemeContext';
-import CustomImagePicker from '../../../components/ImagePicker';
+import { getLanguageString } from '../../../utils/lang';
+import { truncate } from '../../../utils/string';
+import { styles } from './style';
 
 const AddressBookModal = ({
   visible,

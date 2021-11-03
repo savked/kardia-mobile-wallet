@@ -1,22 +1,19 @@
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Text, TouchableOpacity, View} from 'react-native';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {languageAtom} from '../../atoms/language';
-import ENIcon from 'react-native-vector-icons/Entypo';
-import List from '../../components/List';
-import TextInput from '../../components/TextInput';
-import {getAllValidator} from '../../services/staking';
-import {ThemeContext} from '../../ThemeContext';
-import {getLanguageString} from '../../utils/lang';
-import {getDigit, isNumber} from '../../utils/number';
-import {styles} from './style';
-import TextAvatar from '../../components/TextAvatar';
-import NewStakingModal from '../common/NewStakingModal';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CustomText from '../../components/Text';
+import ENIcon from 'react-native-vector-icons/Entypo';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../atoms/language';
 import { showTabBarAtom } from '../../atoms/showTabBar';
+import List from '../../components/List';
+import CustomText from '../../components/Text';
+import { getAllValidator } from '../../services/staking';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import NewStakingModal from '../common/NewStakingModal';
+import { styles } from './style';
 import ValidatorItem from './ValidatorItem';
 
 const ValidatorList = () => {

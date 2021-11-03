@@ -1,5 +1,5 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-import { HASURA_ENDPOINT, SUBGRAPH_BLOCKLYTICS_KAIBLOCK, SETTLEMENT_ENDPOINT } from "../config";
+import { HASURA_ENDPOINT, SETTLEMENT_ENDPOINT, SUBGRAPH_BLOCKLYTICS_KAIBLOCK } from "../config";
 
 export const apolloKaiBlockClient = new ApolloClient({
 	uri: SUBGRAPH_BLOCKLYTICS_KAIBLOCK,

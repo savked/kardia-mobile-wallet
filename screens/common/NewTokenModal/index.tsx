@@ -1,30 +1,30 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
-import Modal from '../../../components/Modal';
-import {
-  Image,
-  Keyboard,
-  Platform,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import TextInput from '../../../components/TextInput';
-import {styles} from './style';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {languageAtom} from '../../../atoms/language';
-import {getLanguageString} from '../../../utils/lang';
-import ScanQRAddressModal from '../ScanQRAddressModal';
-import {getKRC20TokenInfo} from '../../../services/krc20';
-import {getTokenList, saveTokenList} from '../../../utils/local';
-import {krc20ListAtom} from '../../../atoms/krc20';
-import Button from '../../../components/Button';
-import {DEFAULT_KRC20_TOKENS} from '../../../config';
-import {parseDecimals} from '../../../utils/number';
 import numeral from 'numeral';
-import {ThemeContext} from '../../../ThemeContext';
-import CustomText from '../../../components/Text';
+import React, { useContext, useEffect, useState } from 'react';
+import {
+    Image,
+    Keyboard,
+    Platform,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { krc20ListAtom } from '../../../atoms/krc20';
+import { languageAtom } from '../../../atoms/language';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
+import Button from '../../../components/Button';
+import Modal from '../../../components/Modal';
+import CustomText from '../../../components/Text';
+import TextInput from '../../../components/TextInput';
+import { DEFAULT_KRC20_TOKENS } from '../../../config';
+import { getKRC20TokenInfo } from '../../../services/krc20';
+import { ThemeContext } from '../../../ThemeContext';
+import { getLanguageString } from '../../../utils/lang';
+import { getTokenList, saveTokenList } from '../../../utils/local';
+import { parseDecimals } from '../../../utils/number';
+import ScanQRAddressModal from '../ScanQRAddressModal';
+import { styles } from './style';
 
 const NewTokenModal = ({
   visible,

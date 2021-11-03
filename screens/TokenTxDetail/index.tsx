@@ -1,29 +1,29 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useNavigation, useRoute} from '@react-navigation/core';
-import React, {useContext} from 'react';
-import {ActivityIndicator, Image, Text, View} from 'react-native';
-import {useRecoilValue} from 'recoil';
-import {addressBookAtom} from '../../atoms/addressBook';
-import {languageAtom} from '../../atoms/language';
-import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
-import IconButton from '../../components/IconButton';
-import {ThemeContext} from '../../ThemeContext';
-import {
-  getDateFNSLocale,
-  getDateTimeFormat,
-  getLanguageString,
-} from '../../utils/lang';
-import {parseDecimals} from '../../utils/number';
-import {
-  copyToClipboard,
-  getFromAddressBook,
-  truncate,
-} from '../../utils/string';
-import {styles} from './styles';
+import { useNavigation, useRoute } from '@react-navigation/core';
+import { format, formatDistanceToNowStrict, isSameDay } from 'date-fns';
 import numeral from 'numeral';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
+import React, { useContext } from 'react';
+import { ActivityIndicator, Image, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { addressBookAtom } from '../../atoms/addressBook';
+import { languageAtom } from '../../atoms/language';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import Button from '../../components/Button';
+import IconButton from '../../components/IconButton';
 import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
+import {
+    getDateFNSLocale,
+    getDateTimeFormat,
+    getLanguageString
+} from '../../utils/lang';
+import { parseDecimals } from '../../utils/number';
+import {
+    copyToClipboard,
+    getFromAddressBook,
+    truncate
+} from '../../utils/string';
+import { styles } from './styles';
 
 const TokenTxDetail = () => {
   const navigation = useNavigation();
