@@ -14,7 +14,7 @@ import { DEFAULT_GAS_LIMIT, DEFAULT_GAS_PRICE } from '../../config'
 import { getVerifiedAppSchema } from '../../services/kardiaConnect'
 import { sendRawTx } from '../../services/transaction'
 import { ThemeContext } from '../../ThemeContext'
-import { parseTxMetaForKardiaConnect } from '../../utils/kardiaConnect'
+import { parseTxMetaForKardiaConnect, verifySignature } from '../../utils/kardiaConnect'
 import { parseError } from '../../utils/lang'
 import { formatNumberString, getDigit } from '../../utils/number'
 import { truncate } from '../../utils/string'
@@ -67,7 +67,14 @@ export default () => {
 
   useEffect(() => {
     if (!params || !params.signature || !params.txMeta || !params.callbackSchema || !params.callbackPath) return;
+
+    const callbackURL = `${params.callbackSchema}://${params.callbackPath}`
+
     const txParams = parseTxMetaForKardiaConnect(params.txMeta)
+    if (!verifySignature(params.signature, params.callbackSchema, txParams.from)) {
+      handleReject('INVALID_SIGNATURE')
+      return;
+    }
 
     // Set Tx params
     if (txParams.from) {
@@ -90,7 +97,7 @@ export default () => {
     }
 
     // Set callback url
-    setCallbackURL(`${params.callbackSchema}://${params.callbackPath}`)
+    setCallbackURL(callbackURL)
 
     const verifiedList = getVerifiedAppSchema()
 
@@ -104,12 +111,12 @@ export default () => {
 
   }, [params])
 
-  const handleReject = async () => {
-    const rejectURL = `${callbackURL}/sign-tx-fail`
+  const handleReject = async (rejectCode = 'USER_REJECTED') => {
+    const rejectURL = `${callbackURL}/sign-tx-fail/${rejectCode}`
 
     try {
       await Linking.openURL(rejectURL)
-      console.log('Error sign tx fail callback')
+      console.log(`Error sign tx fail: ${rejectCode}`)
       navigation.reset({
         index: 0,
         routes: [{name: 'Home'}],

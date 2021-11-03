@@ -71,6 +71,10 @@ export default () => {
 
     try {
       await Linking.openURL(url)
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Home'}],
+      });
     } catch (error) {
       console.log('Error authorize callback')
       navigation.reset({
@@ -81,9 +85,15 @@ export default () => {
 
   }
 
-  const rejectAccess = () => {
+  const rejectAccess = async () => {
     const url = `${getResponseURL()}/reject`
     console.log(url)
+    
+    await Linking.openURL(url)
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Home'}],
+    });
   }
 
   return (
