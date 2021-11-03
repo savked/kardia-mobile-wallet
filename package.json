@@ -44,7 +44,7 @@
     "https-browserify": "^0.0.1",
     "js-sha3": "^0.8.0",
     "kaidex-sdk": "^0.2.2",
-    "kardia-js-sdk": "^0.4.9",
+    "kardia-js-sdk": "^0.5.2",
     "numeral": "^2.0.6",
     "process": "^0.11.10",
     "react": "16.13.1",
