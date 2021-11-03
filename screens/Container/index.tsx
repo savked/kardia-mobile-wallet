@@ -6,7 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import Orientation from 'react-native-orientation-locker';
-// import TransactionStackScreen from '../../TransactionStack';
+import NetInfo from "@react-native-community/netinfo";
 import {
   getAddressBook,
   getAppPasscodeSetting,
@@ -313,6 +313,16 @@ const AppContainer = () => {
   useEffect(() => {
     (async () => {
       Orientation.lockToPortrait()
+
+      // Check internet connection
+      const netState = await NetInfo.fetch()
+      if (!netState.isConnected) {
+        setInited(1)
+        setAppStatus('NO_INTERNET')
+        return;
+      }
+
+      // Check for blockchain available
       const blockchainAvailable = await checkBlockchainStatus()
       if (!blockchainAvailable) {
         setInited(1)
@@ -452,6 +462,25 @@ const AppContainer = () => {
         />
       </View>
     );
+  }
+
+  if (appStatus === 'NO_INTERNET') {
+    return (
+      <SafeAreaView style={{flex: 1, paddingHorizontal: 47, backgroundColor: theme.backgroundColor, alignItems: 'center', justifyContent: 'center'}}>
+        <Image
+          source={require('../../assets/no_internet.png')}
+          style={{
+            width: viewportWidth,
+            height: 320,
+            marginBottom: 70
+          }}
+        />
+        <CustomText style={{color: theme.textColor, fontSize: 24, textAlign: 'center', marginBottom: 12, fontWeight: 'bold'}}>No connection</CustomText>
+        <CustomText style={{color: theme.textColor, fontSize: 13, textAlign: 'center', marginHorizontal: 20}}>
+          Please check your internet connection and try again later
+        </CustomText>
+      </SafeAreaView>
+    )
   }
 
   if (appStatus === 'UNDER_MAINTAINANCE') {
