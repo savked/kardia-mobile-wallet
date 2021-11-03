@@ -377,6 +377,7 @@ export const lang: Language = {
     AMOUNT_TO_RECEIVE: 'Số token sẽ nhận',
     GET_BRIDGE_CONFIG_ERROR: 'Lỗi cấu hình DualNode, vui lòng thử lại sau.',
     // Authorize access key
-    SEARCH_FOR_ADDRESS: 'Tìm địa chỉ'
+    SEARCH_FOR_ADDRESS: 'Tìm địa chỉ',
+    ERROR_SIGNING_TX: 'Giao dịch không đúng định dạng'
   },
 };

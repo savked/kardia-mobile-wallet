@@ -384,6 +384,7 @@ export const lang: Language = {
     AMOUNT_TO_RECEIVE: 'Amount to receive',
     GET_BRIDGE_CONFIG_ERROR: 'Error getting DualNode config, please try again later.',
     // Authorize access key
-    SEARCH_FOR_ADDRESS: 'Search for address'
+    SEARCH_FOR_ADDRESS: 'Search for address',
+    ERROR_SIGNING_TX: 'Invalid transaction format'
   },
 };
