@@ -2,7 +2,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import BigNumber from 'bignumber.js'
 import { KardiaAccount } from 'kardia-js-sdk'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { ActivityIndicator, Image, Keyboard, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { ActivityIndicator, Image, Keyboard, Platform, RefreshControl, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { languageAtom } from '../../atoms/language'
@@ -14,7 +14,7 @@ import Divider from '../../components/Divider'
 import CustomText from '../../components/Text'
 import TextInput from '../../components/TextInput'
 import { KAI_BRIDGE_ADDRESS } from '../../config'
-import { getSupportedChains, swapCrossChain } from '../../services/dualnode'
+import { getDualNodeLiquidity, getSupportedChains, swapCrossChain } from '../../services/dualnode'
 import { approveKRC20Token, getBalance, getKRC20ApproveState } from '../../services/krc20'
 import { ThemeContext } from '../../ThemeContext'
 import { getLanguageString } from '../../utils/lang'
@@ -40,7 +40,7 @@ export default () => {
   const [showQRModal, setShowQRModal] = useState(false);
   const [showAddressBookModal, setShowAddressBookModal] = useState(false);
 
-  const [chain, setChain] = useState<DualNodeChain>(getSupportedChains()[0]);
+  const [chain, setChain] = useState<DualNodeChain>();
   const [asset, setAsset] = useState<DualNodeToken>();
   const [errorAsset, setErrorAsset] = useState('')
   const [balance, setBalance] = useState(new BigNumber(0))
@@ -58,6 +58,10 @@ export default () => {
   const [loadingLiquidity, setLoadingLiquidity] = useState(false)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [amountTimeoutId, setAmountTimeoutId] = useState<any>()
+
+  const [reloadConfig, setReloadConfig] = useState(0)
+  const [reloadingLiquidity, setReloadingLiquidity] = useState(false)
+  const [reloadingBalance, setReloadingBalance] = useState(false)
 
   const wallets = useRecoilValue(walletsAtom);
   const selectedWallet = useRecoilValue(selectedWalletAtom)
@@ -77,14 +81,25 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      if (!asset || !wallets) return
-      if (!wallets[selectedWallet]) return
-
-      const _balance = await getBalance(asset.address, wallets[selectedWallet].address)
-      if (_balance) {
-        setBalance(new BigNumber(_balance))
-      }
+      const rs = await getSupportedChains()
+      setChain(rs[0])
     })()
+  }, [])
+
+  const fetchBalance = async () => {
+    if (!asset || !wallets) return
+    if (!wallets[selectedWallet]) return
+
+    const _balance = await getBalance(asset.address, wallets[selectedWallet].address)
+    if (_balance) {
+      setBalance(new BigNumber(_balance))
+    }
+
+    setReloadingBalance(false)
+  }
+
+  useEffect(() => {
+    fetchBalance()
   }, [asset, wallets, selectedWallet])
 
   useEffect(() => {
@@ -137,7 +152,7 @@ export default () => {
   };
 
   const getUnderlyingToken = () => {
-    if (!asset) return undefined
+    if (!asset || !chain) return undefined
     const underlyingToken = chain.underlyingToken
     return underlyingToken[asset.address]
   }
@@ -146,9 +161,10 @@ export default () => {
     // Reset error state
     // setErrorAsset('')
 
-    if (errorAsset) {
+    if (errorAsset || !chain) {
       return;
     }
+    
 
     setErrorAddress('')
     setErrorAmount('')
@@ -196,10 +212,13 @@ export default () => {
     }
 
     if (liquidity) {
-      const liquidityBN = new BigNumber(getDigit(liquidity))
-      if (netAmountSwap.isGreaterThan(liquidityBN)) {
-        setErrorAmount(getLanguageString(language, 'NOT_ENOUGH_LIQUIDITY'))
-        isValid = false
+      const latestLQ = await getDualNodeLiquidity(asset!, chain)
+      if (latestLQ) {
+        const liquidityBN = new BigNumber(getDigit(latestLQ))
+        if (netAmountSwap.isGreaterThan(liquidityBN)) {
+          setErrorAmount(getLanguageString(language, 'NOT_ENOUGH_LIQUIDITY'))
+          isValid = false
+        }
       }
     }
 
@@ -207,10 +226,21 @@ export default () => {
     setShowConfirmModal(true)
   }
 
+  const handleRefresh = () => {
+    if (!asset) return
+    setReloadingLiquidity(true)
+    setReloadConfig(Date.now())
+  }
+
+  useEffect(() => {
+    setReloadingBalance(true)
+    fetchBalance()
+  }, [reloadConfig])
+
   const submitSwap = async () => {
     // Start swap
     const contractAddress = getContractAddressFromKardiaChain()
-    if (!contractAddress) return
+    if (!contractAddress || !chain) return
     setLoading(true)
     const transactionHash = await swapCrossChain({
       underlying: getUnderlyingToken() ? true : false,
@@ -236,7 +266,7 @@ export default () => {
   }
 
   const getContractAddressFromKardiaChain = () => {
-    if (!asset) return undefined
+    if (!asset || !chain) return undefined
     const contractAddress = chain.bridgeContractAddress.fromKardiaChain
     if (!contractAddress) return undefined
     return contractAddress[asset.address]
@@ -369,13 +399,22 @@ export default () => {
           style={{flex: 1}} 
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{flexGrow: 1}}
+          refreshControl={
+            <RefreshControl
+              colors={[theme.textColor]}
+              tintColor={theme.textColor}
+              titleColor={theme.textColor}
+              refreshing={reloadingLiquidity && reloadingBalance}
+              onRefresh={handleRefresh}
+            />
+          }
         >
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View
               style={{flex: 1}}
             >
               <NetworkSelector selectedChain={chain} onSelectChain={(newChain) => setChain(newChain)} />
-              <AssetSelector asset={asset} selectAsset={setAsset} supportedAssets={chain.supportedAssets} errorAsset={errorAsset} />
+              {chain && <AssetSelector asset={asset} selectAsset={setAsset} supportedAssets={chain.supportedAssets} errorAsset={errorAsset} />}
               <CustomText style={[styles.headline, {color: theme.textColor, fontSize: theme.defaultFontSize + 1}]}>
                 {getLanguageString(language, 'CREATE_TX_ADDRESS')}
               </CustomText>
@@ -472,7 +511,7 @@ export default () => {
                     fontSize: theme.defaultFontSize
                   }, getSemiBoldStyle()]}
                 >
-                  {chain.supportedTokenStandard.join(', ')} address only
+                  {chain && `${chain.supportedTokenStandard.join(', ')} address only`} 
                 </CustomText>
               </View>
               {
@@ -511,8 +550,12 @@ export default () => {
                 </View>
               }
               {
-                asset && 
+                asset && chain && 
                 <BalanceInput 
+                  reloadingConfig={reloadConfig}
+                  onReloadComplete={() => {
+                    setReloadingLiquidity(false)
+                  }}
                   amount={amount} 
                   setAmount={setAmount}
                   token={asset}
@@ -531,7 +574,7 @@ export default () => {
                 renderLoadingConfig()
               }
               {
-                asset &&
+                asset && chain &&
                 <InfoSection 
                   chain={chain} 
                   token={asset} 

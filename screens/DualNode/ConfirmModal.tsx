@@ -19,7 +19,7 @@ export default ({visible, onClose, submitSwap, asset, chain, amount, receiver, s
   visible: boolean;
   onClose: () => void;
   submitSwap: () => void;
-  chain: DualNodeChain;
+  chain?: DualNodeChain;
   asset?: DualNodeToken;
   amount: string;
   receiver: string;
@@ -31,7 +31,7 @@ export default ({visible, onClose, submitSwap, asset, chain, amount, receiver, s
   const [showAuthModal, setShowAuthModal] = useState(false)
 
   const getOtherChainToken = () => {
-    if (!asset) return undefined
+    if (!asset || !chain) return undefined
     const otherChainToken = chain.otherChainToken
     return otherChainToken[asset.address]
   }
@@ -57,7 +57,7 @@ export default ({visible, onClose, submitSwap, asset, chain, amount, receiver, s
     }
   }
 
-  if (!asset) return null
+  if (!asset || !chain) return null
 
   if (showAuthModal) {
     return (

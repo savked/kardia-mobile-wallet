@@ -31,6 +31,7 @@ export const PROXY_ENDPOINT = 'https://backend-proxy.kardiachain.io/api/';
 export const EXCHANGE_REST = 'https://dex-api-1.kardiachain.io/';
 export const DEFAULT_APP_JSON = 'https://raw.githubusercontent.com/kardiachain/kardia-default-dapp/master/dapp.json';
 export const DEX_PAIRS_JSON = 'https://raw.githubusercontent.com/kardiachain/kaidex-pairs/master/pairs.json';
+export const DUALNODE_CONFIG_JSON = 'https://raw.githubusercontent.com/kardiachain/dualnode-config/master/dualnode.json'
 
 export const SIMPLEX_URL = 'https://buy.chainbits.com/?crypto=KAI';
 

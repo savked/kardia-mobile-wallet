@@ -643,12 +643,10 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-KardiaChainWallet/Pods-KardiaChainWallet-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignal.framework/OneSignal",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -707,12 +705,10 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-KardiaChainWallet-KardiaChainWalletTests/Pods-KardiaChainWallet-KardiaChainWalletTests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignal.framework/OneSignal",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -904,8 +900,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7e3ef5bf-2e82-4eba-bebd-6e5a1d6a1ea1";
-				PROVISIONING_PROFILE_SPECIFIER = com.kardiachain.wallet;
+				PROVISIONING_PROFILE = "092521cd-b0ca-49cb-9933-209763906e48";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaChainWallet.app/KardiaChainWallet";
 			};
 			name = Release;
@@ -920,7 +916,7 @@
 				CODE_SIGN_ENTITLEMENTS = "KardiaChainWallet/KardiaChain Wallet.entitlements";
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 206;
+				CURRENT_PROJECT_VERSION = 217;
 				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = KardiaChainWallet/Info.plist;
@@ -950,7 +946,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 206;
+				CURRENT_PROJECT_VERSION = 217;
 				DEVELOPMENT_TEAM = 2UXQPMP7YD;
 				INFOPLIST_FILE = KardiaChainWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -961,8 +957,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kardiachain.wallet;
 				PRODUCT_NAME = "KardiaChain Wallet";
-				PROVISIONING_PROFILE = "7e3ef5bf-2e82-4eba-bebd-6e5a1d6a1ea1";
-				PROVISIONING_PROFILE_SPECIFIER = com.kardiachain.wallet;
+				PROVISIONING_PROFILE = "092521cd-b0ca-49cb-9933-209763906e48";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1020,8 +1016,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaChainWallet-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7e3ef5bf-2e82-4eba-bebd-6e5a1d6a1ea1";
-				PROVISIONING_PROFILE_SPECIFIER = com.kardiachain.wallet;
+				PROVISIONING_PROFILE = "092521cd-b0ca-49cb-9933-209763906e48";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
@@ -1078,8 +1074,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.KardiaChainWallet-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7e3ef5bf-2e82-4eba-bebd-6e5a1d6a1ea1";
-				PROVISIONING_PROFILE_SPECIFIER = com.kardiachain.wallet;
+				PROVISIONING_PROFILE = "092521cd-b0ca-49cb-9933-209763906e48";
+				PROVISIONING_PROFILE_SPECIFIER = "com.kardiachain.wallet AppStore";
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KardiaChainWallet-tvOS.app/KardiaChainWallet-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;

@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
 import { Image, Platform, TouchableOpacity, View } from 'react-native';
@@ -15,20 +15,43 @@ export default ({item}: {
   const navigation = useNavigation()
 
   const [rate, setRate] = useState<BigNumber>();
+  const [intervalID, setIntervalID] = useState<NodeJS.Timer>()
+
+  const isFocused = useIsFocused();
+
+  const fetchRate = async () => {
+    if (!isFocused) return;
+    const {reserveIn, reserveOut} = await getReserve(item.t1.hash, item.t2.hash)
+    const _tokenFromLiquidity = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(item.t1.decimals))).toFixed()
+    const _tokenToLiquidity = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(item.t2.decimals))).toFixed()
+
+    const bnFrom = new BigNumber(_tokenFromLiquidity)
+    const bnTo = new BigNumber(_tokenToLiquidity)
+    const _rate = bnTo.dividedBy(bnFrom)
+    setRate(_rate)
+  }
 
   useEffect(() => {
     (async () => {
+      if (!isFocused) {
+        
+        if (intervalID) {
+          clearInterval(intervalID)
+        }
+        return
+      }
 
-      const {reserveIn, reserveOut} = await getReserve(item.t1.hash, item.t2.hash)
-      const _tokenFromLiquidity = (new BigNumber(reserveIn)).dividedBy(new BigNumber(10 ** Number(item.t1.decimals))).toFixed()
-      const _tokenToLiquidity = (new BigNumber(reserveOut)).dividedBy(new BigNumber(10 ** Number(item.t2.decimals))).toFixed()
+      await fetchRate()
 
-      const bnFrom = new BigNumber(_tokenFromLiquidity)
-      const bnTo = new BigNumber(_tokenToLiquidity)
-      const _rate = bnTo.dividedBy(bnFrom)
-      setRate(_rate)
+      setIntervalID(setInterval(() => {
+        fetchRate()
+      }, 5000))
+
+      return () => {
+        intervalID && clearInterval(intervalID)
+      }
     })()
-  }, [])
+  }, [item, isFocused])
 
   return (
     <TouchableOpacity 
