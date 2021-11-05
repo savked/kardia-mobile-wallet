@@ -1,11 +1,10 @@
-import { getLogoURL } from "../../utils/string"
-import Web3 from 'web3';
-import krc20_abi from '../krc20/KRC20ABI.json'
-import { BRIDGE_API_ENDPOINT, BSC_RPC_URL, DUALNODE_CONFIG_JSON, ETH_RPC_URL, RPC_ENDPOINT } from "../config"
 import KardiaClient from "kardia-js-sdk";
+import Web3 from 'web3';
 import { KAI_BRIDGE_ADDRESS } from "../../config";
-import kaiBridgeRouterAbi from './KAIBridgeRouter.json'
 import { parseDecimals } from "../../utils/number";
+import { BRIDGE_API_ENDPOINT, BSC_RPC_URL, DUALNODE_CONFIG_JSON, ETH_RPC_URL, RPC_ENDPOINT } from "../config";
+import krc20_abi from '../krc20/KRC20ABI.json';
+import kaiBridgeRouterAbi from './KAIBridgeRouter.json';
 
 export const getSupportedChains: () => Promise<DualNodeChain[]> = async () => {
   const requestOptions = {

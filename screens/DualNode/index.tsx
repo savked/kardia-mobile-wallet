@@ -28,7 +28,7 @@ import BalanceInput from './BalanceInput'
 import ConfirmModal from './ConfirmModal'
 import InfoSection from './InfoSection'
 import NetworkSelector from './NetworkSelector'
-import {styles} from './styles'
+import { styles } from './styles'
 
 export default () => {
   const navigation = useNavigation()
@@ -193,7 +193,8 @@ export default () => {
     }
     const netAmountSwap = amountBN.minus(swapFee)
 
-    if (netAmountSwap.isLessThan(minSwap)) {
+    // if (netAmountSwap.isLessThan(minSwap)) {
+    if (amountBN.isLessThan(minSwap)) {
       setErrorAmount(
         getLanguageString(language, 'MIN_AMOUNT_SWAP')
           .replace('{{AMOUNT}}', formatNumberString(minSwap))
@@ -202,7 +203,8 @@ export default () => {
       isValid = false
     }
 
-    if (netAmountSwap.isGreaterThan(maxSwap)) {
+    // if (netAmountSwap.isGreaterThan(maxSwap)) {
+    if (amountBN.isGreaterThan(maxSwap)) {
       setErrorAmount(
         getLanguageString(language, 'MAX_AMOUNT_SWAP')
           .replace('{{AMOUNT}}', formatNumberString(maxSwap))

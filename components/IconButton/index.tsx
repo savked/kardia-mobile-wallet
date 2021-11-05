@@ -1,15 +1,15 @@
 import React from 'react';
 import {
-  ActivityIndicator,
-  StyleProp,
-  Text,
-  TouchableOpacity,
-  View,
-  ViewStyle,
+    ActivityIndicator,
+    StyleProp,
+
+    TouchableOpacity,
+    View,
+    ViewStyle
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomText from '../Text';
-import {styles} from './style';
+import { styles } from './style';
 
 const IconButton = ({
   name,

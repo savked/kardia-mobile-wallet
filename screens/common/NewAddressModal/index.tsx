@@ -1,31 +1,31 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
-import {
-  Image,
-  ImageURISource,
-  Keyboard,
-  Platform,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import {useRecoilState, useRecoilValue} from 'recoil';
-import {} from 'ethereumjs-util';
-import {languageAtom} from '../../../atoms/language';
-import Button from '../../../components/Button';
-import Modal from '../../../components/Modal';
-import TextInput from '../../../components/TextInput';
-import {ThemeContext} from '../../../ThemeContext';
-import {getLanguageString} from '../../../utils/lang';
-import ScanQRAddressModal from '../ScanQRAddressModal';
-import CustomImagePicker from '../../../components/ImagePicker';
-import {styles} from './style';
-import {addressBookAtom} from '../../../atoms/addressBook';
-import {saveAddressBook} from '../../../utils/local';
-import {toChecksum} from '../../../utils/string';
-import CustomText from '../../../components/Text';
+import { } from 'ethereumjs-util';
 import { KardiaAccount } from 'kardia-js-sdk';
+import React, { useContext, useEffect, useState } from 'react';
+import {
+    Image,
+    ImageURISource,
+    Keyboard,
+    Platform,
+
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { addressBookAtom } from '../../../atoms/addressBook';
+import { languageAtom } from '../../../atoms/language';
+import Button from '../../../components/Button';
+import CustomImagePicker from '../../../components/ImagePicker';
+import Modal from '../../../components/Modal';
+import CustomText from '../../../components/Text';
+import TextInput from '../../../components/TextInput';
+import { ThemeContext } from '../../../ThemeContext';
+import { getLanguageString } from '../../../utils/lang';
+import { saveAddressBook } from '../../../utils/local';
+import { toChecksum } from '../../../utils/string';
+import ScanQRAddressModal from '../ScanQRAddressModal';
+import { styles } from './style';
 
 export default ({
   name = '',

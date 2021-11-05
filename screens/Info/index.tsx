@@ -1,9 +1,9 @@
-import React, {useContext} from 'react';
-import {View} from 'react-native';
+import React, { useContext } from 'react';
+import { View } from 'react-native';
 import List from '../../components/List';
 import CustomText from '../../components/Text';
-import {ThemeContext} from '../../ThemeContext';
-import {styles} from './style';
+import { ThemeContext } from '../../ThemeContext';
+import { styles } from './style';
 
 const INFO_DATA = [
   {

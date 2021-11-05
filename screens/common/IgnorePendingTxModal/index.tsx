@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Image, Linking, Platform, TouchableOpacity, View } from 'react-native';
-import Toast from 'react-native-toast-message';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { languageAtom } from '../../../atoms/language';
 import { pendingTxSelector } from '../../../atoms/pendingTx';

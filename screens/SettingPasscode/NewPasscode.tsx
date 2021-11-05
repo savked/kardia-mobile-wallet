@@ -1,15 +1,14 @@
-import {useFocusEffect, useNavigation, useRoute} from '@react-navigation/native';
-import React, {useCallback, useContext, useState} from 'react';
-import {View} from 'react-native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import React, { useCallback, useContext, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {useSetRecoilState} from 'recoil';
-import {localAuthAtom, localAuthEnabledAtom} from '../../atoms/localAuth';
-import {showTabBarAtom} from '../../atoms/showTabBar';
-import {ThemeContext} from '../../ThemeContext';
-import {saveAppPasscode, saveAppPasscodeSetting} from '../../utils/local';
+import { useSetRecoilState } from 'recoil';
+import { localAuthAtom, localAuthEnabledAtom } from '../../atoms/localAuth';
+import { showTabBarAtom } from '../../atoms/showTabBar';
+import { ThemeContext } from '../../ThemeContext';
+import { saveAppPasscode, saveAppPasscodeSetting } from '../../utils/local';
 import Step1 from './Step1';
 import Step2 from './Step2';
-import {styles} from './style';
+import { styles } from './style';
 
 const NewPasscode = () => {
   const {params} = useRoute();

@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {HEADER_HEIGHT} from '../../theme';
+import { StyleSheet } from 'react-native';
+import { HEADER_HEIGHT } from '../../theme';
 
 export const SEARCH_INPUT_HEIGHT = 80;
 

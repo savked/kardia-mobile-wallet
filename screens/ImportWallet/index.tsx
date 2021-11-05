@@ -1,18 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useContext} from 'react';
-import {Image, ScrollView, TouchableOpacity, View} from 'react-native';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import Icon from 'react-native-vector-icons/Entypo';
-import {showTabBarAtom} from '../../atoms/showTabBar';
-import {ThemeContext} from '../../ThemeContext';
-import {styles} from './style';
-import {getLanguageString} from '../../utils/lang';
-import {languageAtom} from '../../atoms/language';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useContext } from 'react';
+import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/Entypo';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../atoms/language';
+import { showTabBarAtom } from '../../atoms/showTabBar';
 import { statusBarColorAtom } from '../../atoms/statusBar';
-import CustomText from '../../components/Text';
 import { walletsAtom } from '../../atoms/wallets';
+import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { styles } from './style';
 
 export default () => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);

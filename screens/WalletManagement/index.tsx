@@ -1,22 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useContext} from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {showTabBarAtom} from '../../atoms/showTabBar';
-import {ThemeContext} from '../../ThemeContext';
-import ENIcon from 'react-native-vector-icons/Entypo';
-import AntIcon from 'react-native-vector-icons/AntDesign';
-import {styles} from './style';
-import {getLanguageString, parseCardAvatar} from '../../utils/lang';
-import {languageAtom} from '../../atoms/language';
-import {walletsAtom} from '../../atoms/wallets';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useContext } from 'react';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import List from '../../components/List';
-import { truncate } from '../../utils/string';
-import Button from '../../components/Button';
-import CustomText from '../../components/Text';
+import AntIcon from 'react-native-vector-icons/AntDesign';
+import ENIcon from 'react-native-vector-icons/Entypo';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../atoms/language';
+import { showTabBarAtom } from '../../atoms/showTabBar';
 import { statusBarColorAtom } from '../../atoms/statusBar';
+import { walletsAtom } from '../../atoms/wallets';
+import Button from '../../components/Button';
+import List from '../../components/List';
+import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString, parseCardAvatar } from '../../utils/lang';
+import { truncate } from '../../utils/string';
+import { styles } from './style';
 
 export default () => {
   const navigation = useNavigation();

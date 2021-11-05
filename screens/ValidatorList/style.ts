@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {SEARCH_INPUT_HEIGHT} from '../Transactions/style';
+import { StyleSheet } from 'react-native';
+import { SEARCH_INPUT_HEIGHT } from '../Transactions/style';
 
 export const styles = StyleSheet.create({
   container: {

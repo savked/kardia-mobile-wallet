@@ -1,28 +1,28 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Dimensions, ImageBackground, Platform, RefreshControl, ScrollView, View} from 'react-native';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {styles} from './style';
-import HomeHeader from './Header';
-import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {
-  getAppPasscodeSetting,
-  getSelectedWallet,
-  getWallets,
-  saveWallets,
-} from '../../utils/local';
-import {ThemeContext} from '../../ThemeContext';
-import {getBalance} from '../../services/account';
-import CardSliderSection from './CardSliderSection';
-import {languageAtom} from '../../atoms/language';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-// import RemindPasscodeModal from '../common/RemindPasscodeModal';
-import {getStakingAmount, getUndelegatingAmount} from '../../services/staking';
-import TokenListSection from './TokenListSection';
-import {showTabBarAtom} from '../../atoms/showTabBar';
-import { HEADER_HEIGHT, TABBAR_HEIGHT } from '../../theme';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { ActivityIndicator, Dimensions, ImageBackground, Platform, RefreshControl, ScrollView, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../atoms/language';
+import { showTabBarAtom } from '../../atoms/showTabBar';
 import { statusBarColorAtom } from '../../atoms/statusBar';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import { getBalance } from '../../services/account';
+// import RemindPasscodeModal from '../common/RemindPasscodeModal';
+import { getStakingAmount, getUndelegatingAmount } from '../../services/staking';
+import { TABBAR_HEIGHT } from '../../theme';
+import { ThemeContext } from '../../ThemeContext';
+import {
+    getAppPasscodeSetting,
+    getSelectedWallet,
+    getWallets,
+    saveWallets
+} from '../../utils/local';
+import CardSliderSection from './CardSliderSection';
+import HomeHeader from './Header';
+import { styles } from './style';
+import TokenListSection from './TokenListSection';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 

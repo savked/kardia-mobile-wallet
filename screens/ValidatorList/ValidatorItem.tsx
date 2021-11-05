@@ -1,3 +1,4 @@
+import numeral from 'numeral';
 import React, { useContext, useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
@@ -10,9 +11,8 @@ import { getAllValidator } from '../../services/staking';
 import { weiToKAI } from '../../services/transaction/amount';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
-import numeral from 'numeral';
 import { getDigit } from '../../utils/number';
-import {styles} from './style';
+import { styles } from './style';
 
 export default ({item, onSelect}: {item: Validator, onSelect: (item: Validator) => void}) => {
   const theme = useContext(ThemeContext)

@@ -1,11 +1,12 @@
 import { useNavigation } from '@react-navigation/core';
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5'
 import { Alert, Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { cacheSelector } from '../../../atoms/cache';
 import { languageAtom } from '../../../atoms/language';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
@@ -20,7 +21,6 @@ import { getLanguageString } from '../../../utils/lang';
 import { formatNumberString, getDecimalCount, getDigit, getPartial, isNumber, parseDecimals } from '../../../utils/number';
 import TxSettingModal from '../../KAIDex/TxSettingModal';
 import AuthModal from '../AuthModal';
-import { pendingTxSelector } from '../../../atoms/pendingTx';
 
 export default ({visible, onClose, pair, refreshLP, closeDetail}: {
 	visible: boolean;

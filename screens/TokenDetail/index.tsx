@@ -1,36 +1,36 @@
 /* eslint-disable react-native/no-inline-styles */
 import {
-  useFocusEffect,
-  useNavigation,
-  useRoute,
+    useFocusEffect,
+    useNavigation,
+    useRoute
 } from '@react-navigation/native';
-import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Image, TouchableOpacity, View, Dimensions, Platform} from 'react-native';
-import ENIcon from 'react-native-vector-icons/Entypo';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {krc20ListAtom} from '../../atoms/krc20';
-import {languageAtom} from '../../atoms/language';
-import {DEFAULT_KRC20_TOKENS} from '../../config';
-import {getBalance} from '../../services/krc20';
-import {ThemeContext} from '../../ThemeContext';
-import {getLanguageString} from '../../utils/lang';
-import Modal from '../../components/Modal';
-import {
-  getSelectedWallet,
-  getTokenList,
-  getWallets,
-  saveTokenList,
-} from '../../utils/local';
-import {formatNumberString, parseDecimals} from '../../utils/number';
-import KRC20AddressQRModal from '../common/KRC20AddressQRCode';
-import {styles} from './style';
-import TokenTxList from './TokenTxList';
-import {showTabBarAtom} from '../../atoms/showTabBar';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Dimensions, Image, Platform, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CustomText from '../../components/Text';
+import ENIcon from 'react-native-vector-icons/Entypo';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { krc20ListAtom } from '../../atoms/krc20';
+import { languageAtom } from '../../atoms/language';
+import { showTabBarAtom } from '../../atoms/showTabBar';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
-import KRC20ControlSection from './KRC20ControlSection';
 import Button from '../../components/Button';
+import Modal from '../../components/Modal';
+import CustomText from '../../components/Text';
+import { DEFAULT_KRC20_TOKENS } from '../../config';
+import { getBalance } from '../../services/krc20';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import {
+    getSelectedWallet,
+    getTokenList,
+    getWallets,
+    saveTokenList
+} from '../../utils/local';
+import { formatNumberString, parseDecimals } from '../../utils/number';
+import KRC20AddressQRModal from '../common/KRC20AddressQRCode';
+import KRC20ControlSection from './KRC20ControlSection';
+import { styles } from './style';
+import TokenTxList from './TokenTxList';
 
 const {width: viewportWidth} = Dimensions.get('window');
 

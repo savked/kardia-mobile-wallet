@@ -1,31 +1,31 @@
 /* eslint-disable react-native/no-inline-styles */
-import {format} from 'date-fns';
-import React, {useContext, useEffect, useState} from 'react';
-import AntIcon from 'react-native-vector-icons/AntDesign';
+import { format } from 'date-fns';
+import React, { useContext, useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Image,
-  Platform,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Image,
+    Platform,
+    ScrollView,
+
+    TouchableOpacity,
+    View
 } from 'react-native';
-import {useRecoilValue} from 'recoil';
-import {languageAtom} from '../../atoms/language';
-import {selectedWalletAtom} from '../../atoms/wallets';
-import {getTx} from '../../services/krc20';
-import {ThemeContext} from '../../ThemeContext';
-import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
-import {getSelectedWallet, getWallets} from '../../utils/local';
-import {formatNumberString, parseDecimals} from '../../utils/number';
-import {truncate} from '../../utils/string';
-import {styles} from './style';
-import {groupByDate} from '../../utils/date';
+import AntIcon from 'react-native-vector-icons/AntDesign';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../atoms/language';
+import { selectedWalletAtom } from '../../atoms/wallets';
 import Button from '../../components/Button';
-import NewKRC20TxModal from '../common/NewKRC20TxModal';
-import KRC20TxDetailModal from '../common/KRC20TxDetailModal';
 import CustomText from '../../components/Text';
+import { getTx } from '../../services/krc20';
+import { ThemeContext } from '../../ThemeContext';
+import { groupByDate } from '../../utils/date';
+import { getDateFNSLocale, getLanguageString } from '../../utils/lang';
+import { getSelectedWallet, getWallets } from '../../utils/local';
+import { formatNumberString, parseDecimals } from '../../utils/number';
+import { truncate } from '../../utils/string';
+import KRC20TxDetailModal from '../common/KRC20TxDetailModal';
+import NewKRC20TxModal from '../common/NewKRC20TxModal';
+import { styles } from './style';
 
 const TokenTxList = ({
   tokenAddress,

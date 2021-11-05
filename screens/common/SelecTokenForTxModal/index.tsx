@@ -2,20 +2,20 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { filterByOwnerSelector } from '../../../atoms/krc20';
+import { languageAtom } from '../../../atoms/language';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
+import Button from '../../../components/Button';
+import List from '../../../components/List';
 import CustomModal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
-import List from '../../../components/List';
+import CustomTextInput from '../../../components/TextInput';
+import useIsKeyboardShown from '../../../hooks/isKeyboardShown';
+import { getKAILogo } from '../../../services/dex';
 import { getBalance } from '../../../services/krc20';
 import { ThemeContext } from '../../../ThemeContext';
-import { formatNumberString, parseDecimals } from '../../../utils/number';
-import {styles} from './style'
-import CustomTextInput from '../../../components/TextInput';
 import { getLanguageString } from '../../../utils/lang';
-import { languageAtom } from '../../../atoms/language';
-import Button from '../../../components/Button';
-import { getKAILogo } from '../../../services/dex';
-import useIsKeyboardShown from '../../../hooks/isKeyboardShown';
+import { formatNumberString, parseDecimals } from '../../../utils/number';
+import { styles } from './style';
 
 export default ({visible, onClose, onSelect}: {
   visible: boolean;

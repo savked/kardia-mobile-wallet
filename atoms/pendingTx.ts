@@ -1,4 +1,4 @@
-import {atom, selectorFamily} from 'recoil';
+import { atom, selectorFamily } from 'recoil';
 
 export const pendingTxAtom = atom({
   key: 'pendingTxAtom', // unique ID (with respect to other atoms/selectors)

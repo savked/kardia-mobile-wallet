@@ -1,4 +1,4 @@
-import {atom} from 'recoil';
+import { atom } from 'recoil';
 
 export const referralCodeAtom = atom({
   key: 'referralCodeAtom', // unique ID (with respect to other atoms/selectors)

@@ -1,16 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
-import {Keyboard, Platform, Text, View} from 'react-native';
-import {BarCodeReadEvent} from 'react-native-camera';
+import React, { useEffect, useState } from 'react';
+import { Keyboard, Platform, View } from 'react-native';
+import { BarCodeReadEvent } from 'react-native-camera';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import {styles} from './style';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../atoms/language';
 import Button from '../../components/Button';
-import {getLanguageString} from '../../utils/lang';
-import {useRecoilValue} from 'recoil';
-import {languageAtom} from '../../atoms/language';
 import Modal from '../../components/Modal';
-import CustomTextInput from '../../components/TextInput';
 import CustomText from '../../components/Text';
+import CustomTextInput from '../../components/TextInput';
+import { getLanguageString } from '../../utils/lang';
+import { styles } from './style';
 
 const ImportModal = ({
   onClose,

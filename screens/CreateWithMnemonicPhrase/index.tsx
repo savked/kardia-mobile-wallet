@@ -1,22 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Image, Text, View} from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/core';
+import React, { useContext, useEffect, useState } from 'react';
+import { ActivityIndicator, Image, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
-import {styles} from './style';
-import Button from '../../components/Button';
-import {generateMnemonic, getWalletFromMnemonic} from '../../utils/blockchain';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../atoms/language';
+import { referralCodeAtom } from '../../atoms/referralCode';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import AlertModal from '../../components/AlertModal';
-import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {saveMnemonic, saveWallets} from '../../utils/local';
-import {ThemeContext} from '../../ThemeContext';
+import Button from '../../components/Button';
 import List from '../../components/List';
-import {getLanguageString} from '../../utils/lang';
-import {languageAtom} from '../../atoms/language';
-import {useNavigation, useRoute} from '@react-navigation/core';
 import CustomText from '../../components/Text';
 import { submitReferal } from '../../services/dex';
-import { referralCodeAtom } from '../../atoms/referralCode';
+import { ThemeContext } from '../../ThemeContext';
+import { generateMnemonic, getWalletFromMnemonic } from '../../utils/blockchain';
+import { getLanguageString } from '../../utils/lang';
+import { saveMnemonic, saveWallets } from '../../utils/local';
+import { styles } from './style';
 
 const CreateWithMnemonicPhrase = () => {
   const {params} = useRoute();

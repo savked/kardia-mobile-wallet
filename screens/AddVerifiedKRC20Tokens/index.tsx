@@ -1,24 +1,24 @@
 import { useNavigation } from '@react-navigation/core';
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Image, Platform, TouchableOpacity, View } from 'react-native';
-import ENIcon from 'react-native-vector-icons/Entypo';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import ToggleSwitch from 'toggle-switch-react-native';
+import ENIcon from 'react-native-vector-icons/Entypo';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import ToggleSwitch from 'toggle-switch-react-native';
+import { krc20ListAtom } from '../../atoms/krc20';
 import { languageAtom } from '../../atoms/language';
+import { showTabBarAtom } from '../../atoms/showTabBar';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import Button from '../../components/Button';
+import List from '../../components/List';
+import CustomText from '../../components/Text';
+import CustomTextInput from '../../components/TextInput';
+import { getVerifiedTokenList } from '../../services/krc20';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
-import {styles} from './style';
-import { showTabBarAtom } from '../../atoms/showTabBar';
-import { useFocusEffect } from '@react-navigation/native';
-import CustomText from '../../components/Text';
-import { getVerifiedTokenList } from '../../services/krc20';
-import List from '../../components/List';
 import { getTokenList, saveTokenList } from '../../utils/local';
-import { krc20ListAtom } from '../../atoms/krc20';
-import Button from '../../components/Button';
-import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
-import CustomTextInput from '../../components/TextInput';
+import { styles } from './style';
 
 export default () => {
   const theme = useContext(ThemeContext);

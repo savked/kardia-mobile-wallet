@@ -1,27 +1,26 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Dimensions, ImageBackground, View, Image, Platform} from 'react-native';
-import AntIcon from 'react-native-vector-icons/AntDesign';
-import {useFocusEffect} from '@react-navigation/native';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
-import {languageAtom} from '../../atoms/language';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { BigNumber } from "bignumber.js";
-import List from '../../components/List';
-import {getCurrentStaking, mapValidatorRole} from '../../services/staking';
-import {ThemeContext} from '../../ThemeContext';
-import {getLanguageString} from '../../utils/lang';
-import {styles} from './style';
-import StakingItem from './StakingItem';
-import AlertModal from '../../components/AlertModal';
-import {useNavigation} from '@react-navigation/native';
-import Button from '../../components/Button';
-import {statusBarColorAtom} from '../../atoms/statusBar';
-import {getSelectedWallet, getWallets} from '../../utils/local';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Dimensions, Image, ImageBackground, Platform, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AntIcon from 'react-native-vector-icons/AntDesign';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../atoms/language';
 import { showTabBarAtom } from '../../atoms/showTabBar';
+import { statusBarColorAtom } from '../../atoms/statusBar';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import AlertModal from '../../components/AlertModal';
+import Button from '../../components/Button';
+import List from '../../components/List';
 import CustomText from '../../components/Text';
+import { getCurrentStaking, mapValidatorRole } from '../../services/staking';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { getSelectedWallet, getWallets } from '../../utils/local';
 import { formatNumberString } from '../../utils/number';
+import StakingItem from './StakingItem';
+import { styles } from './style';
 
 const {width: viewportWidth} = Dimensions.get('window');
 

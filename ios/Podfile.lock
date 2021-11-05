@@ -267,6 +267,8 @@ PODS:
     - React-Core
   - react-native-image-picker (3.8.1):
     - React-Core
+  - react-native-netinfo (6.0.4):
+    - React-Core
   - react-native-orientation-locker (1.3.1):
     - React-Core
   - react-native-randombytes (3.6.1):
@@ -410,6 +412,7 @@ DEPENDENCIES:
   - react-native-encrypted-storage (from `../node_modules/react-native-encrypted-storage`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-restart (from `../node_modules/react-native-restart`)
@@ -501,6 +504,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-get-random-values"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-orientation-locker:
     :path: "../node_modules/react-native-orientation-locker"
   react-native-randombytes:
@@ -593,6 +598,7 @@ SPEC CHECKSUMS:
   react-native-encrypted-storage: 837c733334debf626204f03d867c7e01d8741e2f
   react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
   react-native-image-picker: 5a7dd93d4f9dd0d910da5dde3707fd96f70d03b3
+  react-native-netinfo: 1c7676413ab265759c7b3da205efab163f5366ef
   react-native-orientation-locker: 998c0744e26624407dac068c04c605b4af7304a2
   react-native-randombytes: 5fc412efe7b5c55b9002c0004d75fe5fabcaa507
   react-native-restart: 6cc683e208c080581c147d0875609e64572a9443

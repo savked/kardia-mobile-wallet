@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext} from 'react';
-import {Text, TouchableOpacity, View, Image} from 'react-native';
-import {useRecoilValue} from 'recoil';
-import {ThemeContext} from '../../../ThemeContext';
-import {languageAtom} from '../../../atoms/language';
-import {getLanguageString} from '../../../utils/lang';
-import {styles} from './style';
+import React, { useContext } from 'react';
+import { Image, TouchableOpacity, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../../atoms/language';
 import CustomText from '../../../components/Text';
+import { ThemeContext } from '../../../ThemeContext';
+import { getLanguageString } from '../../../utils/lang';
+import { styles } from './style';
 
 const ListCard = ({
   gasPrice,

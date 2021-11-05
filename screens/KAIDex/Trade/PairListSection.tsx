@@ -1,12 +1,12 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 import { useSetRecoilState } from 'recoil';
 import { showTabBarAtom } from '../../../atoms/showTabBar';
 import List from '../../../components/List';
 import CustomText from '../../../components/Text';
-import { formatDexToken, getPairs } from '../../../services/dex';
-import AntIcon from 'react-native-vector-icons/AntDesign';
+import { getPairs } from '../../../services/dex';
 import { ThemeContext } from '../../../ThemeContext';
 import { pairMapper } from '../../../utils/dex';
 import PairListItem from './PairListItem';

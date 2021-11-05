@@ -1,7 +1,8 @@
 import '@ethersproject/shims';
 import * as EthUtil from 'ethereumjs-util';
 import EtherWallet from 'ethereumjs-wallet';
-import {ethers} from 'ethers';
+import { ethers } from 'ethers';
+import Web3 from 'web3';
 
 export const getWalletFromPK = (privateKey: string) => {
   const privateKeyBuffer = EthUtil.toBuffer(privateKey);
@@ -38,3 +39,9 @@ export const generateMnemonic = () => {
   const wallet = ethers.Wallet.createRandom();
   return wallet.mnemonic.phrase;
 };
+
+export const signMessage = (message: string, privateKey: string) => {
+  const web3 = new Web3()
+  const {signature} = web3.eth.accounts.sign(message, privateKey)
+  return signature
+}

@@ -1,15 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
-import {Text, View} from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View } from 'react-native';
 import OtpInputs from 'react-native-otp-inputs';
-import {useRecoilValue} from 'recoil';
 import ENIcon from 'react-native-vector-icons/Entypo';
-import {languageAtom} from '../../atoms/language';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../atoms/language';
 import Button from '../../components/Button';
-import {ThemeContext} from '../../ThemeContext';
-import {getLanguageString} from '../../utils/lang';
-import {styles} from './style';
 import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { styles } from './style';
 
 const Step2 = ({
   step1Passcode,

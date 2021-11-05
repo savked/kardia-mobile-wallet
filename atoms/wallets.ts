@@ -1,4 +1,4 @@
-import {atom} from 'recoil';
+import { atom } from 'recoil';
 
 export const walletsAtom = atom({
   key: 'walletsAtom', // unique ID (with respect to other atoms/selectors)

@@ -1,7 +1,7 @@
-import {lang} from '../lang';
 import US_LOCALE from 'date-fns/locale/en-US';
 import VI_LOCALE from 'date-fns/locale/vi';
-import {getErrorKey} from './error';
+import { lang } from '../lang';
+import { getErrorKey } from './error';
 
 export const getSupportedLanguage = (): Partial<Language>[] => {
   return Object.values(lang).map((item) => ({

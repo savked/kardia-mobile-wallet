@@ -1,28 +1,26 @@
 import { useNavigation, useRoute } from '@react-navigation/core';
-import ENIcon from 'react-native-vector-icons/Entypo';
-import AntIcon from 'react-native-vector-icons/AntDesign';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { View, TouchableOpacity, Platform, Image, ScrollView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ThemeContext } from '../../../ThemeContext';
-import CustomText from '../../../components/Text';
-import numeral from 'numeral';
-import { formatDexToken, get24hPairData, getPairVolume, getReserve, getTotalVolume } from '../../../services/dex';
 import { useFocusEffect } from '@react-navigation/native';
+import BigNumber from 'bignumber.js';
+import numeral from 'numeral';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Image, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AntIcon from 'react-native-vector-icons/AntDesign';
+import ENIcon from 'react-native-vector-icons/Entypo';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { statusBarColorAtom } from '../../../atoms/statusBar';
-import { showTabBarAtom } from '../../../atoms/showTabBar';
-import Button from '../../../components/Button';
-import { getLanguageString } from '../../../utils/lang';
+import { favoritePairsAtom } from '../../../atoms/favoritePairs';
 import { languageAtom } from '../../../atoms/language';
+import { showTabBarAtom } from '../../../atoms/showTabBar';
+import { statusBarColorAtom } from '../../../atoms/statusBar';
+import Button from '../../../components/Button';
+import CustomText from '../../../components/Text';
+import { formatDexToken, get24hPairData, getPairVolume, getReserve, getTotalVolume } from '../../../services/dex';
+import { ThemeContext } from '../../../ThemeContext';
+import { getLanguageString } from '../../../utils/lang';
+import { formatNumberString, getDigit } from '../../../utils/number';
+import ChartSection from './ChartSection';
 import MarketHistorySection from './MarketHistorySection';
 import TradeModal from './TradeModal';
-import { formatNumberString, getDigit } from '../../../utils/number';
-import { favoritePairsAtom } from '../../../atoms/favoritePairs';
-import ChartSection from './ChartSection';
-import BigNumber from 'bignumber.js';
-import { useQuery } from '@apollo/client';
-import { GET_PAIRS } from '../../../services/dex/queries';
 
 export default () => {
   const navigation = useNavigation()

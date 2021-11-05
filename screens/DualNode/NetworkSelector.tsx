@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Platform, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../atoms/language';
 import CustomText from '../../components/Text';

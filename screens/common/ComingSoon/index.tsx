@@ -6,7 +6,7 @@ import { languageAtom } from '../../../atoms/language';
 import CustomText from '../../../components/Text';
 import { ThemeContext } from '../../../ThemeContext';
 import { getLanguageString } from '../../../utils/lang';
-import {styles} from './style';
+import { styles } from './style';
 
 const WIDTH_HEIGHT_RATIO = 414 / 330;
 

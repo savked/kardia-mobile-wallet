@@ -1,14 +1,14 @@
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useState } from 'react';
 import { View } from 'react-native';
 import { useSetRecoilState } from 'recoil';
+import { showTabBarAtom } from '../../../atoms/showTabBar';
+import Tags from '../../../components/Tags';
 import { ThemeContext } from '../../../ThemeContext';
 import DEXHeader from '../../common/DEXHeader';
-import { useFocusEffect } from '@react-navigation/native';
-import { showTabBarAtom } from '../../../atoms/showTabBar';
-import MarketList from './MarketList';
-import Tags from '../../../components/Tags';
 import LimitList from './LimitList';
-import PendingLimitList from './PendingLimitList'
+import MarketList from './MarketList';
+import PendingLimitList from './PendingLimitList';
 
 export default () => {
 	const theme = useContext(ThemeContext)

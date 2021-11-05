@@ -1,11 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useRef, useState} from 'react';
-import {Dimensions, View} from 'react-native';
-import Carousel, {Pagination} from 'react-native-snap-carousel';
-import {useRecoilState, useRecoilValue} from 'recoil';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
-import {styles} from './style';
-import CardItem from './CardItem'
+import React, { useEffect, useRef, useState } from 'react';
+import { Dimensions, View } from 'react-native';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import CardItem from './CardItem';
+import { styles } from './style';
 
 const {width: viewportWidth} = Dimensions.get('window');
 

@@ -373,8 +373,10 @@ export const lang: Language = {
     DUAL_NODE: 'Dual Node',
     CROSSCHAIN_WARNING: "Please don't send token directly to wallet on another blockchain. For sending your asset to Ethereum or Binance Smart Chain (BSC), please use our Dual Node bridge.",
     DUAL_NODE_CONVERT: 'Convert',
-    MIN_AMOUNT_SWAP: '"Amount" minus "fee" must be greater than {{AMOUNT}} {{SYMBOL}}',
-    MAX_AMOUNT_SWAP: '"Amount" minus "fee" must be less than {{AMOUNT}} {{SYMBOL}}',
+    // MIN_AMOUNT_SWAP: '"Amount" minus "fee" must be greater than {{AMOUNT}} {{SYMBOL}}',
+    MIN_AMOUNT_SWAP: '"Amount" must be greater than {{AMOUNT}} {{SYMBOL}}',
+    // MAX_AMOUNT_SWAP: '"Amount" minus "fee" must be less than {{AMOUNT}} {{SYMBOL}}',
+    MAX_AMOUNT_SWAP: '"Amount" must be less than {{AMOUNT}} {{SYMBOL}}',
     NOT_ENOUGH_LIQUIDITY: 'Not enough liquidity',
     CROSS_CHAIN_SWAP_SUCCESS: "You've successfully swap",
     OTHER_CHAIN_TOKEN_NOTE: 'You will receive {{SYMBOL}}.',
@@ -382,6 +384,9 @@ export const lang: Language = {
     TOKEN_TO_RECEIVE: 'Token to receive',
     FEE: 'Fee',
     AMOUNT_TO_RECEIVE: 'Amount to receive',
-    GET_BRIDGE_CONFIG_ERROR: 'Error getting DualNode config, please try again later.'
+    GET_BRIDGE_CONFIG_ERROR: 'Error getting DualNode config, please try again later.',
+    // Authorize access key
+    SEARCH_FOR_ADDRESS: 'Search for address',
+    ERROR_SIGNING_TX: 'Invalid transaction format'
   },
 };

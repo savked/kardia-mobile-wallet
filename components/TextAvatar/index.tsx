@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleProp, TextStyle, View, ViewStyle} from 'react-native';
+import { StyleProp, TextStyle, View, ViewStyle } from 'react-native';
 import CustomText from '../Text';
-import {styles} from './style';
+import { styles } from './style';
 
 const TextAvatar = ({
   text,

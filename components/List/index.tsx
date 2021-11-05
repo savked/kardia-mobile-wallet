@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
-import {ActivityIndicator, RefreshControl, View} from 'react-native';
-import {FlatList} from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
 import { ThemeContext } from '../../ThemeContext';
 import ListItem from './ListItem';
-import {styles} from './style';
+import { styles } from './style';
 
 // const ItemSeprator = () => <View style={styles.separator} />
 

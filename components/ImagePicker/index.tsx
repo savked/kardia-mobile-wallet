@@ -1,22 +1,27 @@
 import React, { useContext } from 'react';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import FeatherIcon from 'react-native-vector-icons/Feather';
 import {
-  Image,
-  TouchableOpacity,
-  ImageURISource,
-  Alert,
-  ViewStyle,
-  StyleProp,
-  ImageStyle,
-  View,
+    Alert, Image,
+
+
+
+
+
+    ImageStyle, ImageURISource,
+
+
+    StyleProp, TouchableOpacity,
+
+
+    ViewStyle
 } from 'react-native';
-import styles from './style';
-import { getLanguageString } from '../../utils/lang';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import LinearGradient from 'react-native-linear-gradient';
+import FeatherIcon from 'react-native-vector-icons/Feather';
 import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../atoms/language';
 import { ThemeContext } from '../../ThemeContext';
-import LinearGradient from 'react-native-linear-gradient';
+import { getLanguageString } from '../../utils/lang';
+import styles from './style';
 
 const CustomImagePicker = ({
   image,

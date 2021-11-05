@@ -1,33 +1,33 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Linking, Text, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/Feather';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { format, formatDistanceToNowStrict, isSameDay } from 'date-fns';
 import numeral from 'numeral';
-import {ThemeContext} from '../../ThemeContext';
+import React, { useContext, useEffect, useState } from 'react';
+import { ActivityIndicator, Linking, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/Feather';
+import { useRecoilValue } from 'recoil';
+import { addressBookAtom } from '../../atoms/addressBook';
+import { languageAtom } from '../../atoms/language';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import Button from '../../components/Button';
 import Divider from '../../components/Divider';
-import {getTxDetail} from '../../services/transaction';
-import {
-  copyToClipboard,
-  getFromAddressBook,
-  getTxURL,
-  truncate,
-} from '../../utils/string';
-import {styles} from './style';
-import {format, formatDistanceToNowStrict, isSameDay} from 'date-fns';
-import {useRecoilValue} from 'recoil';
-import {addressBookAtom} from '../../atoms/addressBook';
-import {languageAtom} from '../../atoms/language';
-import {
-  getDateFNSLocale,
-  getDateTimeFormat,
-  getLanguageString,
-} from '../../utils/lang';
-import {selectedWalletAtom, walletsAtom} from '../../atoms/wallets';
 import IconButton from '../../components/IconButton';
 import CustomText from '../../components/Text';
+import { getTxDetail } from '../../services/transaction';
+import { ThemeContext } from '../../ThemeContext';
+import {
+    getDateFNSLocale,
+    getDateTimeFormat,
+    getLanguageString
+} from '../../utils/lang';
+import {
+    copyToClipboard,
+    getFromAddressBook,
+    getTxURL,
+    truncate
+} from '../../utils/string';
+import { styles } from './style';
 
 const TransactionDetail = () => {
   const theme = useContext(ThemeContext);

@@ -1,41 +1,37 @@
 /* eslint-disable react-native/no-inline-styles */
 import {
-  useFocusEffect,
-  useNavigation,
-  useRoute,
+    useFocusEffect,
+    useNavigation,
+    useRoute
 } from '@react-navigation/native';
-import {format} from 'date-fns';
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import { format } from 'date-fns';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
-  View,
-  Image,
-  ImageBackground,
-  TouchableOpacity,
-  Linking,
-  Platform,
-  Dimensions,
+    Dimensions, Image,
+    ImageBackground,
+
+    Linking, LogBox, Platform, TouchableOpacity, View
 } from 'react-native';
-import { LogBox } from 'react-native';
-import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
-import {addressBookAtom} from '../../atoms/addressBook';
-import {languageAtom} from '../../atoms/language';
-import {showTabBarAtom} from '../../atoms/showTabBar';
+import Toast from 'react-native-toast-message';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { addressBookAtom } from '../../atoms/addressBook';
+import { languageAtom } from '../../atoms/language';
+import { pendingTxBackgroundAtom, pendingTxSelector } from '../../atoms/pendingTx';
+import { showTabBarAtom } from '../../atoms/showTabBar';
+import { statusBarColorAtom } from '../../atoms/statusBar';
+import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import Button from '../../components/Button';
 import Divider from '../../components/Divider';
-import {getTxDetail} from '../../services/transaction';
-import {getTxDetail as getKRC20TxDetail} from '../../services/krc20';
-import {ThemeContext} from '../../ThemeContext';
-import {getDateFNSLocale, getLanguageString} from '../../utils/lang';
-import {copyToClipboard, getAddressURL, getTxURL, truncate} from '../../utils/string';
-import {styles} from './style';
-import {formatNumberString, parseDecimals} from '../../utils/number';
-import TextAvatar from '../../components/TextAvatar';
 import CustomText from '../../components/Text';
-import Toast from 'react-native-toast-message';
-import { statusBarColorAtom } from '../../atoms/statusBar';
+import TextAvatar from '../../components/TextAvatar';
+import { getTxDetail as getKRC20TxDetail } from '../../services/krc20';
+import { getTxDetail } from '../../services/transaction';
+import { ThemeContext } from '../../ThemeContext';
+import { getDateFNSLocale, getLanguageString } from '../../utils/lang';
+import { formatNumberString, parseDecimals } from '../../utils/number';
 import { sleep } from '../../utils/promiseHelper';
-import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
-import { pendingTxBackgroundAtom, pendingTxSelector } from '../../atoms/pendingTx';
+import { copyToClipboard, getAddressURL, getTxURL, truncate } from '../../utils/string';
+import { styles } from './style';
 
 LogBox.ignoreLogs([
  'Non-serializable values were found in the navigation state',

@@ -1,4 +1,4 @@
-import {atom} from 'recoil';
+import { atom } from 'recoil';
 
 export const localAuthAtom = atom({
   key: 'localAuth', // unique ID (with respect to other atoms/selectors)

@@ -1,14 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext} from 'react';
-import {View, Text, Image} from 'react-native';
-import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
-import {styles} from './style';
-import {ThemeContext} from '../../ThemeContext';
-import {useRecoilValue} from 'recoil';
-import {notificationAtom} from '../../atoms/notification';
-import {getLanguageString} from '../../utils/lang';
-import {languageAtom} from '../../atoms/language';
+import React, { useContext } from 'react';
+import { Image, View } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { useRecoilValue } from 'recoil';
+import { languageAtom } from '../../atoms/language';
+import { notificationAtom } from '../../atoms/notification';
 import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageString } from '../../utils/lang';
+import { styles } from './style';
 
 const Notification = () => {
   const theme = useContext(ThemeContext);

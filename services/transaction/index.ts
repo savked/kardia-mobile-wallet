@@ -1,9 +1,9 @@
-import {ENDPOINT, RPC_ENDPOINT} from '../config';
-import KardiaClient from 'kardia-js-sdk';
-import {cellValue, weiToKAI} from './amount';
-import { BigNumber } from 'bignumber.js';
 import { isHexString } from '@ethersproject/bytes';
+import { BigNumber } from 'bignumber.js';
+import KardiaClient from 'kardia-js-sdk';
 import { DEFAULT_GAS_PRICE, DEFAULT_KAI_TX_GAS_LIMIT } from '../../config';
+import { ENDPOINT, RPC_ENDPOINT } from '../config';
+import { cellValue, weiToKAI } from './amount';
 
 export const estimateGas = async (payload: Record<string, any>, data = '') => {
   const _payload = JSON.parse(JSON.stringify(payload))
@@ -81,14 +81,17 @@ export const getRecomendedGasPrice = async () => {
 
 export const sendRawTx = async (txObj: Record<string, any>, wallet: Wallet, waitUntilmined = false) => {
   const kardiaClient = new KardiaClient({endpoint: RPC_ENDPOINT});
-  // TODO: get local nonce
   const nonce = await kardiaClient.account.getNonce(wallet.address.trim());
   txObj.nonce = nonce
+  delete txObj.from
+  console.log('txObj', txObj)
   const txResult = await kardiaClient.transaction.sendTransaction(
     txObj,
     wallet.privateKey!,
     waitUntilmined
   );
+
+  if (!waitUntilmined) return txResult
 
   return txResult.transactionHash;
 }

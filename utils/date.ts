@@ -1,5 +1,5 @@
-import {format} from 'date-fns';
-import dayjs from "dayjs"
+import { format } from 'date-fns';
+import dayjs from "dayjs";
 
 export const getMonthName = (month: number) => {
   switch (month) {

@@ -1,23 +1,23 @@
+import { useNavigation } from '@react-navigation/core';
+import { format } from 'date-fns';
 import React, { useContext, useState } from 'react';
-import { Alert, Image, Linking, Platform, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Platform, View } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import {format} from 'date-fns';
 import { languageAtom } from '../../../atoms/language';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
+import Button from '../../../components/Button';
+import Divider from '../../../components/Divider';
 import CustomModal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
+import { cancelOrder } from '../../../services/dex';
 import { ThemeContext } from '../../../ThemeContext';
 import { parseSymbolWKAI } from '../../../utils/dex';
-import { formatNumberString, parseDecimals } from '../../../utils/number';
-import {styles} from './styles'
 import { getDateFNSLocale, getLanguageString } from '../../../utils/lang';
+import { formatNumberString, parseDecimals } from '../../../utils/number';
 import { getLogoURL } from '../../../utils/string';
-import Divider from '../../../components/Divider';
-import Button from '../../../components/Button';
 import AuthModal from '../AuthModal';
-import { cancelOrder } from '../../../services/dex';
-import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
-import { useNavigation } from '@react-navigation/core';
-import { pendingTxSelector } from '../../../atoms/pendingTx';
+import { styles } from './styles';
 
 export default ({
 	visible,

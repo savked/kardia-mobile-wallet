@@ -1,4 +1,4 @@
-import {atom} from 'recoil';
+import { atom } from 'recoil';
 import themes from '../theme/index';
 
 const DEFAULT_THEME = themes.dark;

@@ -1,9 +1,9 @@
-import React, {useContext} from 'react';
-import RNPickerSelect, {Item} from 'react-native-picker-select';
+import React, { useContext } from 'react';
+import RNPickerSelect, { Item } from 'react-native-picker-select';
 import Icon from 'react-native-vector-icons/Feather';
-import {ThemeContext} from '../../ThemeContext';
+import { ThemeContext } from '../../ThemeContext';
 import CustomText from '../Text';
-import {pickerSelectStyles, styles} from './style';
+import { pickerSelectStyles, styles } from './style';
 
 const Picker = ({
   headline,

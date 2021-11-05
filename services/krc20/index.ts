@@ -1,10 +1,10 @@
-import {RPC_ENDPOINT, ENDPOINT} from '../config';
-import KardiaClient, { KardiaAccount } from 'kardia-js-sdk';
 import abiDecoder from 'abi-decoder';
-import {requestWithTimeOut} from '../util';
-import KRC20ABI from './KRC20ABI.json'
 import BigNumber from 'bignumber.js';
+import KardiaClient from 'kardia-js-sdk';
 import { cellValueWithDecimals } from '../../utils/number';
+import { ENDPOINT, RPC_ENDPOINT } from '../config';
+import { requestWithTimeOut } from '../util';
+import KRC20ABI from './KRC20ABI.json';
 
 export const getKRC20TokenInfo = async (address: string) => {
   const client = new KardiaClient({endpoint: RPC_ENDPOINT});

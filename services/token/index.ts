@@ -1,5 +1,5 @@
-import {ENDPOINT} from '../config';
-import {requestWithTimeOut} from '../util';
+import { ENDPOINT } from '../config';
+import { requestWithTimeOut } from '../util';
 
 export const getTokenInfo = async (): Promise<KAITokenInfo> => {
   try {

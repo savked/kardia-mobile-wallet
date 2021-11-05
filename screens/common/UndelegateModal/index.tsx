@@ -1,11 +1,14 @@
 import { useNavigation } from '@react-navigation/core';
 import React, { useContext, useEffect, useState } from 'react';
-import { Alert, Keyboard, Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { languageAtom } from '../../../atoms/language';
+import { pendingTxSelector } from '../../../atoms/pendingTx';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
 import Modal from '../../../components/Modal';
+import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
 import { MIN_DELEGATE } from '../../../config';
 import { undelegateAll, undelegateWithAmount } from '../../../services/staking';
@@ -14,9 +17,6 @@ import { ThemeContext } from '../../../ThemeContext';
 import { getLanguageString } from '../../../utils/lang';
 import { getSelectedWallet, getWallets } from '../../../utils/local';
 import { format, formatNumberString, getDigit, isNumber } from '../../../utils/number';
-import CustomText from '../../../components/Text';
-import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
-import { pendingTxSelector } from '../../../atoms/pendingTx';
 
 export default ({visible, onClose, validatorItem, onSuccess}: {
   visible: boolean;

@@ -1,30 +1,30 @@
-import {format} from 'date-fns';
+import { format } from 'date-fns';
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
-import {View, Image, Linking, TouchableOpacity, Platform} from 'react-native';
-import {useRecoilValue} from 'recoil';
-import {addressBookAtom} from '../../../atoms/addressBook';
-import {languageAtom} from '../../../atoms/language';
-import {selectedWalletAtom, walletsAtom} from '../../../atoms/wallets';
+import React, { useContext, useState } from 'react';
+import { Image, Linking, Platform, TouchableOpacity, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { addressBookAtom } from '../../../atoms/addressBook';
+import { languageAtom } from '../../../atoms/language';
+import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 import Button from '../../../components/Button';
 import Divider from '../../../components/Divider';
 import Modal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
-import {ThemeContext} from '../../../ThemeContext';
+import { ThemeContext } from '../../../ThemeContext';
 import {
-  getDateFNSLocale,
-  getLanguageString,
-  parseCardAvatar,
+    getDateFNSLocale,
+    getLanguageString,
+    parseCardAvatar
 } from '../../../utils/lang';
-import {formatNumberString, parseDecimals} from '../../../utils/number';
+import { formatNumberString, parseDecimals } from '../../../utils/number';
 import {
-  getFromAddressBook,
-  getAddressAvatar,
-  truncate,
-  getTxURL,
+    getAddressAvatar, getFromAddressBook,
+
+
+    getTxURL, truncate
 } from '../../../utils/string';
 import NewAddressModal from '../NewAddressModal';
-import {styles} from './style';
+import { styles } from './style';
 
 export default ({
   txObj,

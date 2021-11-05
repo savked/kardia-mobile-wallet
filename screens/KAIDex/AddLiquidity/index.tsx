@@ -1,29 +1,26 @@
-import { useQuery } from '@apollo/client';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { ScrollView, View, Image, Platform, TouchableOpacity } from 'react-native';
+import { Image, Platform, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AntIcon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { languageAtom } from '../../../atoms/language';
 import { showTabBarAtom } from '../../../atoms/showTabBar';
+import { statusBarColorAtom } from '../../../atoms/statusBar';
 import { selectedWalletAtom, walletsAtom } from '../../../atoms/wallets';
 import Button from '../../../components/Button';
 import List from '../../../components/List';
 import CustomText from '../../../components/Text';
 import { getMyPortfolio, getPairs } from '../../../services/dex';
-import { GET_PAIRS } from '../../../services/dex/queries';
 import { ThemeContext } from '../../../ThemeContext';
 import { pairMapper } from '../../../utils/dex';
+import { getLanguageString } from '../../../utils/lang';
 import AddLiquidityModal from '../../common/AddLiquidityModal';
-import ComingSoon from '../../common/ComingSoon';
-import Icon from 'react-native-vector-icons/Ionicons'
+import DEXHeader from '../../common/DEXHeader';
+import LPDetailModal from '../../common/LPDetailModal';
 import LiquidityItem from './LiquidityItem';
 import SelectPairForLP from './SelectPairForLP';
-import LPDetailModal from '../../common/LPDetailModal';
-import { getLanguageString } from '../../../utils/lang';
-import { languageAtom } from '../../../atoms/language';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import DEXHeader from '../../common/DEXHeader';
-import { statusBarColorAtom } from '../../../atoms/statusBar';
 
 export default () => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom)

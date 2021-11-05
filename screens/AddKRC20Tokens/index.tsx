@@ -1,15 +1,15 @@
 import { useNavigation } from '@react-navigation/core';
 import React, { useContext, useState } from 'react';
-import ENIcon from 'react-native-vector-icons/Entypo';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ThemeContext } from '../../ThemeContext';
-import {styles} from './style'
-import CustomText from '../../components/Text';
+import ENIcon from 'react-native-vector-icons/Entypo';
 import { useRecoilValue } from 'recoil';
 import { languageAtom } from '../../atoms/language';
+import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
-import { Image, TouchableOpacity, View } from 'react-native';
 import NewTokenModal from '../common/NewTokenModal';
+import { styles } from './style';
 
 export default () => {
   const theme = useContext(ThemeContext)

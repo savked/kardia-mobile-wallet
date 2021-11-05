@@ -1,25 +1,25 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useContext, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, TouchableOpacity, Image, ScrollView, Platform} from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useContext, useState } from 'react';
+import { Image, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import ENIcon from 'react-native-vector-icons/Entypo';
-import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
-import {ThemeContext} from '../../ThemeContext';
-import {languageAtom} from '../../atoms/language';
-import {getLanguageName, getLanguageString} from '../../utils/lang';
-import {styles} from './style';
-import {showTabBarAtom} from '../../atoms/showTabBar';
-import {walletsAtom} from '../../atoms/wallets';
-import CustomText from '../../components/Text';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { fontSizeAtom } from '../../atoms/fontSize';
+import { languageAtom } from '../../atoms/language';
+import { showTabBarAtom } from '../../atoms/showTabBar';
+import { statusBarColorAtom } from '../../atoms/statusBar';
+import { walletsAtom } from '../../atoms/wallets';
+import CustomText from '../../components/Text';
+import { ThemeContext } from '../../ThemeContext';
+import { getLanguageName, getLanguageString } from '../../utils/lang';
 import { saveFontSize } from '../../utils/local';
 import ReferralCodeModal from '../common/ReferralCodeModal';
-import { statusBarColorAtom } from '../../atoms/statusBar';
+import { styles } from './style';
 
 export const INFO_DATA = {
-  version: '2.3.38',
+  version: '2.3.39',
 };
 
 const SettingScreen = () => {

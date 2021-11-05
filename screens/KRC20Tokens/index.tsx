@@ -1,25 +1,24 @@
 import { useNavigation } from '@react-navigation/core';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import ENIcon from 'react-native-vector-icons/Entypo';
-import numeral from 'numeral';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { filterByOwnerSelector } from '../../atoms/krc20';
 import { languageAtom } from '../../atoms/language';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import Button from '../../components/Button';
 import List from '../../components/List';
+import CustomText from '../../components/Text';
 import { getBalance } from '../../services/krc20';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
 import { getSelectedWallet, getWallets } from '../../utils/local';
 import { formatNumberString, parseDecimals } from '../../utils/number';
-import {styles} from './style';
-import Button from '../../components/Button';
-import CustomText from '../../components/Text';
+import { styles } from './style';
 
 export default () => {
   const theme = useContext(ThemeContext);

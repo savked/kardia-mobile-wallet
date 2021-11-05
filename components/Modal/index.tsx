@@ -1,22 +1,29 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useRef} from 'react';
-import {
-  Animated,
-  StyleProp,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  ViewStyle,
-  Dimensions,
-  View,
-  BackHandler,
-  Keyboard,
-} from 'react-native';
-import {BlurView} from '@react-native-community/blur';
 import Portal from '@burstware/react-native-portal';
-import {styles} from './style';
-import IconButton from '../IconButton';
-import {ThemeContext} from '../../ThemeContext';
+import { BlurView } from '@react-native-community/blur';
+import React, { useContext, useEffect, useRef } from 'react';
+import {
+    Animated,
+
+
+
+
+
+
+    BackHandler, Dimensions,
+
+
+    Keyboard, StyleProp,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+
+
+    View, ViewStyle
+} from 'react-native';
 import useIsKeyboardShown from '../../hooks/isKeyboardShown';
+import { ThemeContext } from '../../ThemeContext';
+import IconButton from '../IconButton';
+import { styles } from './style';
 
 const {height: viewportHeight} = Dimensions.get('window');
 
