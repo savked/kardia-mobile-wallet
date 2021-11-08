@@ -19,7 +19,7 @@ import ReferralCodeModal from '../common/ReferralCodeModal';
 import { styles } from './style';
 
 export const INFO_DATA = {
-  version: '2.3.39',
+  version: '2.3.40',
 };
 
 const SettingScreen = () => {
