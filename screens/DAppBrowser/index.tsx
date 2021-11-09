@@ -1,7 +1,7 @@
-import { useRoute } from '@react-navigation/core';
+import { useIsFocused, useRoute } from '@react-navigation/core';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Image, Platform, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, BackHandler, Image, Platform, TouchableOpacity, View } from 'react-native';
 import loadLocalResource from 'react-native-local-resource';
 import Orientation from 'react-native-orientation-locker';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -29,6 +29,8 @@ export default () => {
 
   const appURL = params ? (params as any).appURL : ''
   const allowLandscape = params && (params as any).allowLandscape ? (params as any).allowLandscape : false
+
+  const isFocused = useIsFocused()
 
   const theme = useContext(ThemeContext)
   const [resource, setResource] = useState('')
@@ -58,6 +60,53 @@ export default () => {
       }
     }
   }, [])
+
+  const registerBackHandlerAndroid = () => {
+    const onBackPress = () => {
+      if (isFocused) {
+        if (!webRef || !webRef.current) return false
+        webRef.current.goBack();
+        return true;
+      } else {
+        return false;
+      }
+    };
+    
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  }
+
+  const registerBackHandlerIOS = () => {
+    const gestureEndListener = () => {
+      if (isFocused) {
+        if (!webRef || !webRef.current) return false
+        webRef.current.goBack();
+        return true;
+      } else {
+        return false;
+      }
+    };
+  
+    // You can also use the 'gestureStart' or 'gestureCancel' events
+    // @ts-ignore
+    navigation.addListener('gestureEnd', gestureEndListener);
+  
+    return () => {
+      // @ts-ignore
+      navigation.removeListener('gestureEnd', gestureEndListener);
+    };
+  }
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      registerBackHandlerAndroid()
+    } else if (Platform.OS === 'ios') {
+      registerBackHandlerIOS()
+    }
+    
+  }, [isFocused, webRef])
 
   const handleClearCache = () => {
     const codeToRun = hardReload()
