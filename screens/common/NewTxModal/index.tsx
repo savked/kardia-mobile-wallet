@@ -181,9 +181,9 @@ const NewTxModal = ({
       isValid = false;
     }
     
-    const _txAmount = Number(amount.replace(/,/g, ''));
-    const currentBalance = Number(weiToKAI(wallet.balance));
-    if (_txAmount > currentBalance) {
+    const _txAmount = new BigNumber(amount.replace(/,/g, ''));
+    const currentBalance = new BigNumber(weiToKAI(wallet.balance));
+    if (_txAmount.isGreaterThan(currentBalance)) {
       setErrorAmount(getLanguageString(language, 'NOT_ENOUGH_KAI_FOR_TX'));
       isValid = false;
     }
@@ -440,7 +440,8 @@ const NewTxModal = ({
               <CustomText style={{color: theme.textColor, marginBottom: 5, fontWeight: '500', fontSize: theme.defaultFontSize + 1}}>{getLanguageString(language, 'CREATE_TX_KAI_AMOUNT')}</CustomText>
               <TouchableOpacity onPress={() => setAmount(formatNumberString(parseDecimals(getMaxBalance(), 18)))}>
                 <CustomText style={{color: theme.urlColor}}>
-                  {parseKaiBalance(_getBalance())} KAI
+                  {/* {parseKaiBalance(_getBalance())} KAI */}
+                  ~{formatNumberString(parseDecimals(getMaxBalance(), 18), 6)} KAI
                 </CustomText>
               </TouchableOpacity>
             </View>
