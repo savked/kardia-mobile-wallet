@@ -55,6 +55,7 @@ import {
   setFavPair
 } from '../../utils/local';
 import { truncate } from '../../utils/string';
+import { getSemiBoldStyle } from '../../utils/style';
 import IgnorePendingTxModal from '../common/IgnorePendingTxModal';
 import ConfirmPasscode from '../ConfirmPasscode';
 import { INFO_DATA } from '../Setting';
@@ -483,13 +484,19 @@ const AppContainer = () => {
           Please check your internet connection and try again later
         </CustomText>
         <Button 
-          title="Retry"
+          title="Tap to Reload"
+          type="outline"
           loading={retrying}
           onPress={async () => {
             setRetrying(true)
             await initializeApp()
             setRetrying(false)
           }}
+          style={{
+            paddingHorizontal: 24,
+            paddingVertical: 12,
+          }}
+          textStyle={getSemiBoldStyle()}
         />
       </SafeAreaView>
     )
