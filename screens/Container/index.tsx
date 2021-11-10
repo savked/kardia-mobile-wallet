@@ -287,10 +287,13 @@ const AppContainer = () => {
   }
 
   useEffect(() => {
-    AppState.addEventListener('change', handleAppStateChange);
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
 
     return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
+      // TODO: Remove when ts update type
+      // @ts-ignore
+      subscription.remove()
+      // AppState.removeEventListener('change', handleAppStateChange);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inited]);
