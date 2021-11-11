@@ -101,18 +101,6 @@ const DAppHome = () => {
           />
         </View>
         <View style={{flex: 1}}>
-          {/* <CustomText 
-            style={{
-              color: theme.textColor,
-              fontWeight: 'bold', 
-              marginHorizontal: 20,
-              marginTop: 22,
-              marginBottom: 8,
-              fontSize: theme.defaultFontSize + 6
-            }}
-          >
-            {url === '' ? 'Quick Access' : 'Result'}
-          </CustomText> */}
           {
             url === '' ? <Dashboard /> : <SearchResult url={url} />
           }

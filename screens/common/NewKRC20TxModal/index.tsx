@@ -1,5 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import { useNavigation } from '@react-navigation/native';
+import BigNumber from 'bignumber.js';
 import { KardiaAccount } from 'kardia-js-sdk';
 import React, { useEffect, useState } from 'react';
 import {
@@ -199,10 +200,10 @@ const NewKRC20TxModal = ({
       setErrorAmount(getLanguageString(language, 'REQUIRED_FIELD'));
       isValid = false;
     }
-    const _txAmount = Number(amount.replace(/,/g, ''));
+    const _txAmount = new BigNumber(amount.replace(/,/g, ''));
     // const currentBalance = Number(weiToKAI(wallet.balance));
     const currentBalance = await getKRC20Balance(tokenAddress, wallet.address);
-    if (_txAmount > Number(parseDecimals(Number(currentBalance), tokenDecimals))) {
+    if (_txAmount.isGreaterThan(new BigNumber(parseDecimals(Number(currentBalance), tokenDecimals)))) {
       setErrorAmount(getLanguageString(language, 'NOT_ENOUGH_KAI_FOR_TX'));
       isValid = false;
     }

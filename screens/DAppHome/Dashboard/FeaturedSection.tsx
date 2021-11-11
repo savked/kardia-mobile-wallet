@@ -16,7 +16,7 @@ export default ({appList}: {
       <CustomText 
         style={{
           paddingHorizontal: 20, 
-          paddingVertical: 14,
+          paddingBottom: 14,
           fontWeight: 'bold',
           fontSize: theme.defaultFontSize + 6,
           color: theme.textColor

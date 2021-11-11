@@ -55,6 +55,7 @@ import {
   setFavPair
 } from '../../utils/local';
 import { truncate } from '../../utils/string';
+import { getSemiBoldStyle } from '../../utils/style';
 import IgnorePendingTxModal from '../common/IgnorePendingTxModal';
 import ConfirmPasscode from '../ConfirmPasscode';
 import { INFO_DATA } from '../Setting';
@@ -145,6 +146,7 @@ const AppContainer = () => {
     localAuthEnabledAtom,
   );
   const [inited, setInited] = useState(0);
+  const [retrying, setRetrying] = useState(false);
   const [appStatus, setAppStatus] = useState('OK')
   const [favoritePair, setFavoritePair] = useRecoilState(favoritePairsAtom)
 
@@ -285,10 +287,13 @@ const AppContainer = () => {
   }
 
   useEffect(() => {
-    AppState.addEventListener('change', handleAppStateChange);
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
 
     return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
+      // TODO: Remove when ts update type
+      // @ts-ignore
+      subscription.remove()
+      // AppState.removeEventListener('change', handleAppStateChange);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inited]);
@@ -310,139 +315,141 @@ const AppContainer = () => {
     })()
   }, [selectedWallet, wallets])
 
-  useEffect(() => {
-    (async () => {
-      Orientation.lockToPortrait()
+  const initializeApp = async () => {
+    Orientation.lockToPortrait()
 
-      // Check internet connection
-      const netState = await NetInfo.fetch()
-      if (!netState.isConnected) {
-        setInited(1)
-        setAppStatus('NO_INTERNET')
-        return;
-      }
+    // Check internet connection
+    const netState = await NetInfo.fetch()
+    if (!netState.isConnected) {
+      setInited(1)
+      setAppStatus('NO_INTERNET')
+      return;
+    }
 
-      // Check for blockchain available
-      const blockchainAvailable = await checkBlockchainStatus()
-      if (!blockchainAvailable) {
-        setInited(1)
-        setAppStatus('UNDER_MAINTAINANCE')
-        return;
-      }
+    // Check for blockchain available
+    const blockchainAvailable = await checkBlockchainStatus()
+    if (!blockchainAvailable) {
+      setInited(1)
+      setAppStatus('UNDER_MAINTAINANCE')
+      return;
+    }
 
-      const _wallets = await getWallets();
-      const _selectedWallet = await getSelectedWallet();
+    const _wallets = await getWallets();
+    const _selectedWallet = await getSelectedWallet();
 
-      const address = _wallets && _wallets[_selectedWallet] ? _wallets[_selectedWallet].address : ''
-      const serverStatus = await getAppStatus(address);
-      if (serverStatus.status === 'UNDER_MAINTAINANCE') {
-        setInited(1)
-        setAppStatus('UNDER_MAINTAINANCE')
-        return;
-      }
-      const compareResult = compareVersion(INFO_DATA.version, serverStatus.appVersion)
-      setAppStatus(compareResult)
-      if (compareResult !== 'OK') {
-        setInited(1);
-        return;
-      }
-      // Get local auth setting
-      const enabled = await getAppPasscodeSetting();
-      setLocalAuthEnabled(enabled);
-
-      // Get local ref code
-      const refCode = await getRefCode()
-      setRefCode(refCode)
-
-      // Get local ref code
-      const favPair = await getFavPair()
-      setFavoritePair(favPair)
-
-      // Get local pending tx
-      const pending = await getPendingTx();
-      setPendingTxFull(pending)
-
-      // Get local wallets data
-      try {
-        let localWallets = await getWallets();
-
-        const promiseArr = localWallets.map(async (wallet: Wallet) => {
-          try {
-            wallet.balance = await getBalance(wallet.address);
-          } catch (error) {
-            wallet.balance = '0'
-            console.log('Get balance fail')
-          }
-          return wallet;
-        });
-
-        localWallets = await Promise.all(promiseArr);
-        setWallets(localWallets);
-      } catch (error) {
-        console.error(error);
-      }
-
-      // Get selected wallet
-      try {
-        let _selectedWallet = await getSelectedWallet();
-        setSelectedWallet(_selectedWallet);
-      } catch (error) {
-        console.error(error);
-      }
-
-      // Get local cache
-      try {
-        const localCache = await getCache();
-        setCache(localCache)
-      } catch (error) {
-        console.error(error);
-      }
-
-      // Get token info
-      try {
-        const info = await getTokenInfo();
-        setTokenInfo(info);
-      } catch (error) {
-        console.error(error);
-      }
-
-      // Get KRC20 tokens price
-      try {
-        const krc20Price = await getKRC20TokensPrices();
-        setKRC20Prices(krc20Price);
-      } catch (error) {
-        console.error(error);
-      }
-
-      // Get local address book
-      const addressBook = await getAddressBook();
-      setAddressBook(addressBook);
-
-      // Get language setting
-      const languageSetting = await getLanguageSetting();
-      languageSetting && setLanguage(languageSetting);
-
-      // Get local KRC20 list
-      try {
-        const krc20List = await getTokenList();
-        const filteredList = krc20List.filter((item) => !!item.walletOwnerAddress)
-        if (filteredList.length === krc20List.length) {
-          console.log('No old token found')
-        } else {
-          console.log('Clear old token')
-          await saveTokenList(filteredList);
-        }
-        setKRC20TokenList(filteredList); 
-      } catch (error) {
-        console.error(error);
-      }
-
-      // Get font size setting
-      const fontSizeSetting = await getFontSize();
-      setFontSize(fontSizeSetting)
-
+    const address = _wallets && _wallets[_selectedWallet] ? _wallets[_selectedWallet].address : ''
+    const serverStatus = await getAppStatus(address);
+    if (serverStatus.status === 'UNDER_MAINTAINANCE') {
+      setInited(1)
+      setAppStatus('UNDER_MAINTAINANCE')
+      return;
+    }
+    const compareResult = compareVersion(INFO_DATA.version, serverStatus.appVersion)
+    setAppStatus(compareResult)
+    if (compareResult !== 'OK') {
       setInited(1);
-    })();
+      return;
+    }
+    // Get local auth setting
+    const enabled = await getAppPasscodeSetting();
+    setLocalAuthEnabled(enabled);
+
+    // Get local ref code
+    const refCode = await getRefCode()
+    setRefCode(refCode)
+
+    // Get local ref code
+    const favPair = await getFavPair()
+    setFavoritePair(favPair)
+
+    // Get local pending tx
+    const pending = await getPendingTx();
+    setPendingTxFull(pending)
+
+    // Get local wallets data
+    try {
+      let localWallets = await getWallets();
+
+      const promiseArr = localWallets.map(async (wallet: Wallet) => {
+        try {
+          wallet.balance = await getBalance(wallet.address);
+        } catch (error) {
+          wallet.balance = '0'
+          console.log('Get balance fail')
+        }
+        return wallet;
+      });
+
+      localWallets = await Promise.all(promiseArr);
+      setWallets(localWallets);
+    } catch (error) {
+      console.error(error);
+    }
+
+    // Get selected wallet
+    try {
+      let _selectedWallet = await getSelectedWallet();
+      setSelectedWallet(_selectedWallet);
+    } catch (error) {
+      console.error(error);
+    }
+
+    // Get local cache
+    try {
+      const localCache = await getCache();
+      setCache(localCache)
+    } catch (error) {
+      console.error(error);
+    }
+
+    // Get token info
+    try {
+      const info = await getTokenInfo();
+      setTokenInfo(info);
+    } catch (error) {
+      console.error(error);
+    }
+
+    // Get KRC20 tokens price
+    try {
+      const krc20Price = await getKRC20TokensPrices();
+      setKRC20Prices(krc20Price);
+    } catch (error) {
+      console.error(error);
+    }
+
+    // Get local address book
+    const addressBook = await getAddressBook();
+    setAddressBook(addressBook);
+
+    // Get language setting
+    const languageSetting = await getLanguageSetting();
+    languageSetting && setLanguage(languageSetting);
+
+    // Get local KRC20 list
+    try {
+      const krc20List = await getTokenList();
+      const filteredList = krc20List.filter((item) => !!item.walletOwnerAddress)
+      if (filteredList.length === krc20List.length) {
+        console.log('No old token found')
+      } else {
+        console.log('Clear old token')
+        await saveTokenList(filteredList);
+      }
+      setKRC20TokenList(filteredList); 
+    } catch (error) {
+      console.error(error);
+    }
+
+    // Get font size setting
+    const fontSizeSetting = await getFontSize();
+    setFontSize(fontSizeSetting)
+
+    setInited(1);
+  }
+
+  useEffect(() => {
+    initializeApp();
   }, [
     setWallets,
     setTokenInfo,
@@ -476,9 +483,24 @@ const AppContainer = () => {
           }}
         />
         <CustomText style={{color: theme.textColor, fontSize: 24, textAlign: 'center', marginBottom: 12, fontWeight: 'bold'}}>No connection</CustomText>
-        <CustomText style={{color: theme.textColor, fontSize: 13, textAlign: 'center', marginHorizontal: 20}}>
+        <CustomText style={{color: theme.textColor, fontSize: 13, textAlign: 'center', marginHorizontal: 20, marginBottom: 16}}>
           Please check your internet connection and try again later
         </CustomText>
+        <Button 
+          title="Tap to Reload"
+          type="outline"
+          loading={retrying}
+          onPress={async () => {
+            setRetrying(true)
+            await initializeApp()
+            setRetrying(false)
+          }}
+          style={{
+            paddingHorizontal: 24,
+            paddingVertical: 12,
+          }}
+          textStyle={getSemiBoldStyle()}
+        />
       </SafeAreaView>
     )
   }
