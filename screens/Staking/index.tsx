@@ -103,6 +103,7 @@ const StakingScreen = () => {
       withdrawableAmount: item.withdrawableAmount,
       unbondedAmount: item.unbondedAmount,
       role: mapValidatorRole(item.validatorRole),
+      unbondedRecords: item.unbondedRecords
     };
   };
 

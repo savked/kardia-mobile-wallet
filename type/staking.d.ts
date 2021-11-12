@@ -1,8 +1,14 @@
+interface StakingUnbondedRecord {
+  balance: string;
+  completionTime: Date;
+}
+
 interface Staking {
   claimableRewards: string;
   name: string;
   stakedAmount: string;
   unbondedAmount: string;
+  unbondedRecords: StakingUnbondedRecord[]
   validator: string;
   validatorContractAddr: string;
   validatorRole: number;

@@ -88,6 +88,16 @@ export const getCurrentStaking = async (address: string) => {
         item.withdrawableAmount = item.totalWithdrawableAmount;
       }
     }
+
+    item.unbondedRecords = item.unbondedRecords ? 
+      item.unbondedRecords.map((r: Record<string, any>) => {
+        return {
+          balance: r.balance,
+          completionTime: new Date(Number(r.completionTime) * 1000)
+        }
+      })
+    : []
+
     return item;
   });
 };
