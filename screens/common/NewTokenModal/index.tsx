@@ -18,6 +18,7 @@ import Modal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
 import TextInput from '../../../components/TextInput';
 import { DEFAULT_KRC20_TOKENS } from '../../../config';
+import { useKeyboardHook } from '../../../hooks/isKeyboardShown';
 import { getKRC20TokenInfo } from '../../../services/krc20';
 import { ThemeContext } from '../../../ThemeContext';
 import { getLanguageString } from '../../../utils/lang';
@@ -73,27 +74,6 @@ const NewTokenModal = ({
     })();
   }, [tokenAddress]);
 
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
-    } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    }
-
-    // cleanup function
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
-    };
-  }, []);
-
   const clearState = () => {
     setTokenAddress('');
     setErrorAddress('');
@@ -148,19 +128,6 @@ const NewTokenModal = ({
     onSuccess();
   };
 
-  if (showQRModal) {
-    return (
-      <ScanQRAddressModal
-        visible={showQRModal}
-        onClose={() => setShowQRModal(false)}
-        onScanned={(_address) => {
-          setTokenAddress(_address);
-          setShowQRModal(false);
-        }}
-      />
-    );
-  }
-
   const _keyboardDidShow = (e: any) => {
     setKeyboardOffset(e.endCoordinates.height);
     setKeyboardShown(true);
@@ -170,6 +137,8 @@ const NewTokenModal = ({
     setKeyboardOffset(0);
     setKeyboardShown(false);
   };
+
+  useKeyboardHook(_keyboardDidShow, _keyboardDidHide)
 
   const getModalStyle = () => {
     if (Platform.OS === 'android') {
@@ -186,6 +155,19 @@ const NewTokenModal = ({
       };
     }
   };
+
+  if (showQRModal) {
+    return (
+      <ScanQRAddressModal
+        visible={showQRModal}
+        onClose={() => setShowQRModal(false)}
+        onScanned={(_address) => {
+          setTokenAddress(_address);
+          setShowQRModal(false);
+        }}
+      />
+    );
+  }
 
   return (
     <Modal

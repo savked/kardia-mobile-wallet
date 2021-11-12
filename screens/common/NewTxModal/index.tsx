@@ -18,6 +18,7 @@ import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
 import TextInput from '../../../components/TextInput';
+import { useKeyboardHook } from '../../../hooks/isKeyboardShown';
 import { getBalance } from '../../../services/account';
 import { createTx, getRecomendedGasPrice } from '../../../services/transaction';
 import { weiToKAI } from '../../../services/transaction/amount';
@@ -65,27 +66,6 @@ const NewTxModal = ({
 
   const language = useRecoilValue(languageAtom);
 
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
-    } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    }
-
-    // cleanup function
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
-    };
-  }, []);
-
   const _keyboardDidShow = (e: any) => {
     setKeyboardOffset(e.endCoordinates.height);
     setKeyboardShown(true);
@@ -95,6 +75,8 @@ const NewTxModal = ({
     setKeyboardOffset(0);
     setKeyboardShown(false);
   };
+
+  useKeyboardHook(_keyboardDidShow, _keyboardDidHide)
 
   const calculateGasPrice = async () => {
     let calculatedGasPrice = await getRecomendedGasPrice();

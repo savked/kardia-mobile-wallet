@@ -20,6 +20,7 @@ import { ThemeContext } from '../../../ThemeContext';
 import { getLanguageString, parseError } from '../../../utils/lang';
 import { getSelectedWallet, getWallets } from '../../../utils/local';
 import { formatNumberString, getDigit } from '../../../utils/number';
+import UnbondedDetailModal from '../UnbondedDetailModal';
 import UndelegateModal from '../UndelegateModal';
 import { styles } from './style';
 
@@ -49,9 +50,12 @@ export default ({
   const [totalStakedAmount, setTotalStakedAmount] = useState('');
   const [estimatedAPR, setEstimatedAPR] = useState('');
 
+  const [showUnbondedDetailModal, setShowUnbondedDetailModal] = useState(false);
+
   useEffect(() => {
     (async () => {
       try {
+        console.log(validatorItem)
         const {totalStaked} = await getAllValidator();
         setTotalStakedAmount(totalStaked);
         // setValidatorList(validators);
@@ -190,6 +194,18 @@ export default ({
     );
   }
 
+  if (showUnbondedDetailModal) {
+    return (
+      <UnbondedDetailModal
+        visible={showUnbondedDetailModal}
+        onClose={() => {
+          setShowUnbondedDetailModal(false);
+        }}
+        unbondedRecords={validatorItem.unbondedRecords}
+      />
+    );
+  }
+
   const getModalHeight = () => {
     let height = Platform.OS === 'android' ? 530 : 500;
     if (showButton(validatorItem.withdrawableAmount)) {
@@ -310,6 +326,16 @@ export default ({
             KAI
           </CustomText>
         </View>
+        {
+          validatorItem.unbondedRecords.length > 0 &&
+          <View style={[styles.dataContainer, {justifyContent: 'flex-end'}]}>
+            <TouchableOpacity onPress={() => setShowUnbondedDetailModal(true)}>
+              <CustomText style={[{color: theme.urlColor}]}>
+                {getLanguageString(language, 'DETAIL')}
+              </CustomText>
+            </TouchableOpacity>
+          </View>
+        }
         <View style={styles.dataContainer}>
           <CustomText style={{color: theme.mutedTextColor}}>
             {getLanguageString(language, 'WITHDRAWABLE')}

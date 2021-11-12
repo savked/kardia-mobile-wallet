@@ -8,6 +8,7 @@ import { referralCodeAtom } from '../../atoms/referralCode';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
+import { useKeyboardHook } from '../../hooks/isKeyboardShown';
 import { getBalance } from '../../services/account';
 import { submitReferal } from '../../services/dex';
 import { getStakingAmount } from '../../services/staking';
@@ -33,27 +34,6 @@ export default () => {
   const setWallets = useSetRecoilState(walletsAtom);
   const setSelectedWallet = useSetRecoilState(selectedWalletAtom);
 
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
-    } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    }
-
-    // cleanup function
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
-    };
-  }, []);
-
   const _keyboardDidShow = () => {
     // setKeyboardOffset(e.endCoordinates.height);
     setKeyboardShown(true);
@@ -63,6 +43,8 @@ export default () => {
     // setKeyboardOffset(0);
     setKeyboardShown(false);
   };
+
+  useKeyboardHook(_keyboardDidShow, _keyboardDidHide)
 
   const importPrivateKey = async () => {
     setLoading(true)

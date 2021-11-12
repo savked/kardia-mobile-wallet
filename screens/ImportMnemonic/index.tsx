@@ -7,6 +7,7 @@ import { languageAtom } from '../../atoms/language';
 import { statusBarColorAtom } from '../../atoms/statusBar';
 import IconButton from '../../components/IconButton';
 import CustomText from '../../components/Text';
+import { useKeyboardHook } from '../../hooks/isKeyboardShown';
 import { theme } from '../../theme/dark';
 import { getLanguageString } from '../../utils/lang';
 import { saveAppPasscodeSetting } from '../../utils/local';
@@ -47,6 +48,8 @@ export default () => {
     setKeyboardShown(false)
   };
 
+  useKeyboardHook(_keyboardDidShow, _keyboardDidHide)
+
   useEffect(() => {
     if (mode === 'enter') {
       setStatusBarColor('rgba(28, 28, 40, 0.87)');
@@ -54,27 +57,6 @@ export default () => {
       setStatusBarColor(theme.backgroundColor)
     }
   }, [mode])
-
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
-    } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    }
-
-    // cleanup function
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
-    };
-  }, []);
 
   return (
     <View style={styles.container}>

@@ -18,6 +18,7 @@ import Divider from '../../../components/Divider';
 import Modal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
 import { DANGEROUS_TX_FEE_KAI } from '../../../config';
+import { useKeyboardHook } from '../../../hooks/isKeyboardShown';
 import { ThemeContext } from '../../../ThemeContext';
 import { getLanguageString } from '../../../utils/lang';
 import { getAppPasscode } from '../../../utils/local';
@@ -70,6 +71,8 @@ export default ({
     setKeyboardShown(false);
   };
 
+  useKeyboardHook(_keyboardDidShow, _keyboardDidHide)
+
   useEffect(() => {
     TouchID.isSupported(optionalConfigObject)
       .then((biometryType) => {
@@ -85,25 +88,6 @@ export default ({
         // Failure code
         console.log(err);
       });
-
-    if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
-    } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    }
-
-    // cleanup function
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
-    };
   }, []);
 
   const resetOTP = useCallback(() => {

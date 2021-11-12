@@ -11,6 +11,7 @@ import Modal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
 import { MIN_DELEGATE } from '../../../config';
+import { useKeyboardHook } from '../../../hooks/isKeyboardShown';
 import { undelegateAll, undelegateWithAmount } from '../../../services/staking';
 import { weiToKAI } from '../../../services/transaction/amount';
 import { ThemeContext } from '../../../ThemeContext';
@@ -39,27 +40,6 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
   const selectedWallet = useRecoilValue(selectedWalletAtom)
   const [pendingTx, setPendingTx] = useRecoilState(pendingTxSelector(wallets[selectedWallet].address))
 
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
-    } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    }
-
-    // cleanup function
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
-    };
-  }, []);
-
   const _keyboardDidShow = (e: any) => {
     setKeyboardOffset(e.endCoordinates.height);
     setKeyboardShown(true);
@@ -69,6 +49,8 @@ export default ({visible, onClose, validatorItem, onSuccess}: {
     setKeyboardOffset(0);
     setKeyboardShown(false);
   };
+
+  useKeyboardHook(_keyboardDidShow, _keyboardDidHide)
 
   const handleClose = () => {
     if (submitting) {

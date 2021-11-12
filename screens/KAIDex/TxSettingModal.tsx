@@ -7,6 +7,7 @@ import CustomModal from '../../components/Modal';
 import Tags from '../../components/Tags';
 import CustomText from '../../components/Text';
 import CustomTextInput from '../../components/TextInput';
+import { useKeyboardHook } from '../../hooks/isKeyboardShown';
 import { ThemeContext } from '../../ThemeContext';
 import { getLanguageString } from '../../utils/lang';
 import { getDigit } from '../../utils/number';
@@ -39,26 +40,7 @@ export default ({visible, onClose, onSubmit, deadline: _deadline, slippageTolera
     // setKeyboardShown(false);
   };
 
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
-    } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    }
-
-    // cleanup function
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
-    };
-  }, []);
+  useKeyboardHook(_keyboardDidShow, _keyboardDidHide)
 
   const getContentStyle = () => {
     if (Platform.OS === 'android') {

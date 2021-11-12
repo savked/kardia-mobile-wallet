@@ -85,10 +85,10 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
                 width: 80,
                 margin: 6,
               }}
+              key={`word-${index}`}
             >
               <TextInput
                 autoCapitalize="none"
-                key={`word-${index}`}
                 value={word}
                 onChangeText={(newText) => {
                   updateMnemonic(newText, index + 0);
@@ -120,10 +120,10 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
                 width: 80,
                 margin: 6,
               }}
+              key={`word-${index + 4}`}
             >
               <TextInput
                 autoCapitalize="none"
-                key={`word-${index}`}
                 value={word}
                 onChangeText={(newText) => {
                   updateMnemonic(newText, index + 4);
@@ -155,10 +155,10 @@ export default ({fromNoWallet = false}: {fromNoWallet?: boolean}) => {
                 width: 80,
                 margin: 6,
               }}
+              key={`word-${index + 8}`}
             >
               <TextInput
                 autoCapitalize="none"
-                key={`word-${index}`}
                 value={word}
                 onChangeText={(newText) => {
                   updateMnemonic(newText, index + 8);

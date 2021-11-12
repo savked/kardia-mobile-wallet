@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Keyboard, Platform } from 'react-native';
+import { EmitterSubscription, Keyboard, KeyboardEventListener, Platform } from 'react-native';
 
 export default function useIsKeyboardShown() {
   const [isKeyboardShown, setIsKeyboardShown] = React.useState(false);
@@ -8,24 +8,41 @@ export default function useIsKeyboardShown() {
     const handleKeyboardShow = () => setIsKeyboardShown(true);
     const handleKeyboardHide = () => setIsKeyboardShown(false);
 
+    let showHandler: EmitterSubscription, hideHandler: EmitterSubscription
+
     if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', handleKeyboardShow);
-      Keyboard.addListener('keyboardWillHide', handleKeyboardHide);
+      showHandler = Keyboard.addListener('keyboardWillShow', handleKeyboardShow);
+      hideHandler = Keyboard.addListener('keyboardWillHide', handleKeyboardHide);
     } else {
-      Keyboard.addListener('keyboardDidShow', handleKeyboardShow);
-      Keyboard.addListener('keyboardDidHide', handleKeyboardHide);
+      showHandler = Keyboard.addListener('keyboardDidShow', handleKeyboardShow);
+      hideHandler = Keyboard.addListener('keyboardDidHide', handleKeyboardHide);
     }
 
     return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', handleKeyboardShow);
-        Keyboard.removeListener('keyboardWillHide', handleKeyboardHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', handleKeyboardShow);
-        Keyboard.removeListener('keyboardDidHide', handleKeyboardHide);
-      }
+      if (showHandler) showHandler.remove()
+      if (hideHandler) hideHandler.remove()
     };
   }, []);
 
   return isKeyboardShown;
+}
+
+export const useKeyboardHook = (onShow: KeyboardEventListener, onHide: KeyboardEventListener) => {
+  React.useEffect(() => {
+
+    let showHandler: EmitterSubscription, hideHandler: EmitterSubscription
+
+    if (Platform.OS === 'ios') {
+      showHandler = Keyboard.addListener('keyboardWillShow', onShow);
+      hideHandler = Keyboard.addListener('keyboardWillHide', onHide);
+    } else {
+      showHandler = Keyboard.addListener('keyboardDidShow', onShow);
+      hideHandler = Keyboard.addListener('keyboardDidHide', onHide);
+    }
+
+    return () => {
+      if (showHandler) showHandler.remove()
+      if (hideHandler) hideHandler.remove()
+    };
+  }, []);
 }

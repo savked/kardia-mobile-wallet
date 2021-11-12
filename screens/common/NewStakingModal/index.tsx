@@ -14,6 +14,7 @@ import CustomText from '../../../components/Text';
 import TextAvatar from '../../../components/TextAvatar';
 import TextInput from '../../../components/TextInput';
 import { BLOCK_TIME, MIN_DELEGATE } from '../../../config';
+import { useKeyboardHook } from '../../../hooks/isKeyboardShown';
 import { getBalance } from '../../../services/account';
 import { getLatestBlock } from '../../../services/blockchain';
 import { delegateAction, getAllValidator } from '../../../services/staking';
@@ -67,27 +68,6 @@ export default ({
   const [keyboardShown, setKeyboardShown] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
 
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
-    } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    }
-
-    // cleanup function
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
-    };
-  }, []);
-
   const _keyboardDidShow = (e: any) => {
     setKeyboardOffset(e.endCoordinates.height);
     setKeyboardShown(true);
@@ -97,6 +77,8 @@ export default ({
     setKeyboardOffset(0);
     setKeyboardShown(false);
   };
+
+  useKeyboardHook(_keyboardDidShow, _keyboardDidHide)
 
   const resetState = () => {
     setAmount('0');

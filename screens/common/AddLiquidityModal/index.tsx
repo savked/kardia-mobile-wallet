@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/core';
 import BigNumber from 'bignumber.js';
 import React, { useContext, useEffect, useState } from 'react';
-import { Alert, Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, EmitterSubscription, Image, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { cacheSelector } from '../../../atoms/cache';
@@ -14,6 +14,7 @@ import CustomModal from '../../../components/Modal';
 import Tags from '../../../components/Tags';
 import CustomText from '../../../components/Text';
 import CustomTextInput from '../../../components/TextInput';
+import useIsKeyboardShown from '../../../hooks/isKeyboardShown';
 import { addLiquidity, approveToken, calculateTransactionDeadline, getApproveState, getReserve, getTokenBalance } from '../../../services/dex';
 import { ThemeContext } from '../../../ThemeContext';
 import { getPairPriceInBN, parseSymbolWKAI } from '../../../utils/dex';
@@ -76,23 +77,21 @@ export default ({visible, onClose, pair, refreshLP, closeDetail}: {
   };
 
 	useEffect(() => {
+
+		let showHandler: EmitterSubscription, hideHandler: EmitterSubscription
+
 		if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
+      showHandler = Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
+      hideHandler = Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
     } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+      showHandler = Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+      hideHandler = Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
     }
 
     // cleanup function
     return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
+      if (showHandler) showHandler.remove()
+      if (hideHandler) hideHandler.remove()
     };
 	}, [])
 

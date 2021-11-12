@@ -18,6 +18,7 @@ import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
 import CustomText from '../../../components/Text';
 import TextInput from '../../../components/TextInput';
+import { useKeyboardHook } from '../../../hooks/isKeyboardShown';
 import {
     getBalance as getKRC20Balance,
     transferKRC20
@@ -85,25 +86,6 @@ const NewKRC20TxModal = ({
 
   useEffect(() => {
     _getKRC20Balance();
-
-    if (Platform.OS === 'ios') {
-      Keyboard.addListener('keyboardWillShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardWillHide', _keyboardDidHide);
-    } else {
-      Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    }
-
-    // cleanup function
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardWillHide', _keyboardDidHide);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-        Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
-      }
-    };
   }, []);
 
   const _keyboardDidShow = (e: any) => {
@@ -115,6 +97,8 @@ const NewKRC20TxModal = ({
     setKeyboardOffset(0);
     setKeyboardShown(false);
   };
+
+  useKeyboardHook(_keyboardDidShow, _keyboardDidHide)
 
   async function send() {
     setShowConfirmModal(false);
