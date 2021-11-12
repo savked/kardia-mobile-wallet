@@ -6,6 +6,7 @@ export const lang: Language = {
   dateTimeFormat: 'dd/MM/yyyy HH:mm',
   mapping: {
     // Common key:
+    DETAIL: 'Chi tiết',
     RECEIVE_ANY_TOKEN: 'Ví này được dùng cho KAI và tất cả các token KRC20',
     CREATE: 'Tạo',
     CREATE_DESC: 'ví mới',
@@ -186,6 +187,7 @@ export const lang: Language = {
     VALIDATOR_LIST_TITLE: 'Chọn validator',
     NEW_STAKING_TITLE: 'Stake & Earn',
     SEARCH_VALIDATOR_PLACEHOLDER: 'Tìm theo tên validator ...',
+    UNBONDED_DETAIL: 'Chi tiết',
     // Notification Key
     NOTIFICATION_SCREEN_TITLE: 'Thông báo',
     TODAY: 'Hôm nay',

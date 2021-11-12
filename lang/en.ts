@@ -6,6 +6,7 @@ export const lang: Language = {
   tag: ['en_US', 'US', 'en', 'US English'],
   mapping: {
     // Common key:
+    DETAIL: 'Detail',
     RECEIVE_ANY_TOKEN: 'This wallet can receive KAI and any KRC20 Tokens',
     CREATE: 'Create',
     CREATE_DESC: 'a brand new Wallet',
@@ -192,6 +193,7 @@ export const lang: Language = {
     VALIDATOR_LIST_TITLE: 'Choose a Validator',
     NEW_STAKING_TITLE: 'Stake & Earn',
     SEARCH_VALIDATOR_PLACEHOLDER: 'Search by validator name ...',
+    UNBONDED_DETAIL: 'Unbonded detail',
     // Notification Key
     NOTIFICATION_SCREEN_TITLE: 'Notification',
     TODAY: 'Today',
