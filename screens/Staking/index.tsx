@@ -125,7 +125,7 @@ const StakingScreen = () => {
         <ImageBackground
           source={require('../../assets/staking_background.png')}
           imageStyle={{
-            resizeMode: 'cover',
+            resizeMode: 'contain',
             width: viewportWidth - 40,
             height: 172,
             borderRadius: 12,
@@ -149,7 +149,7 @@ const StakingScreen = () => {
           </CustomText>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <CustomText style={[styles.totalSaving, Platform.OS === 'android' ? {color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {color: theme.textColor, fontWeight: '500'}]}>
-              {formatNumberString(getTotalSaving(), 2)} KAI
+              {formatNumberString(getTotalSaving(), 2)}
             </CustomText>
             <CustomText style={{fontSize: theme.defaultFontSize + 6, color: 'rgba(252, 252, 252, 0.54)', fontWeight: '500', fontFamily: Platform.OS === 'android' ? 'WorkSans-SemiBold' : undefined}}>
               KAI

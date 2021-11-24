@@ -26,7 +26,7 @@ export const getKRC20TokensPrices = async (): Promise<Record<string, any>> => {
     };
     const response: any = await requestWithTimeOut(
       fetch("https://api.info.kaidex.io/api/tokens", requestOptions),
-      10 * 1000,
+      10 * 1000, 
     );
     const responseJSON = await response.json();
     return responseJSON.data || {};
