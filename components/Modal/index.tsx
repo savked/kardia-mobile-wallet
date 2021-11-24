@@ -4,20 +4,10 @@ import { BlurView } from '@react-native-community/blur';
 import React, { useContext, useEffect, useRef } from 'react';
 import {
     Animated,
-
-
-
-
-
-
     BackHandler, Dimensions,
-
-
     Keyboard, StyleProp,
     TouchableOpacity,
     TouchableWithoutFeedback,
-
-
     View, ViewStyle
 } from 'react-native';
 import useIsKeyboardShown from '../../hooks/isKeyboardShown';
