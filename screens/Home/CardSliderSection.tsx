@@ -7,9 +7,9 @@ import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
 import CardItem from './CardItem';
 import { styles } from './style';
 
-const {width: viewportWidth} = Dimensions.get('window');
+const { width: viewportWidth } = Dimensions.get('window');
 
-const CardSliderSection = ({hideBalance, onHideBalanceClick}: {
+const CardSliderSection = ({ hideBalance, onHideBalanceClick }: {
   hideBalance: boolean,
   onHideBalanceClick: () => void
 }) => {
@@ -21,9 +21,9 @@ const CardSliderSection = ({hideBalance, onHideBalanceClick}: {
 
   const [snapTimeoutId, setSnapTimeoutId] = useState<any>()
 
-  const renderWalletItem = ({item: wallet}: any) => {
+  const renderWalletItem = ({ item: wallet }: any) => {
     return <CardItem wallet={wallet} hideBalance={hideBalance}
-     onHideBalanceClick={() => onHideBalanceClick()} />
+      onHideBalanceClick={() => onHideBalanceClick()} />
   };
 
   useEffect(() => {

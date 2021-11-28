@@ -14,20 +14,20 @@ import { getStakingAmount, getUndelegatingAmount } from '../../services/staking'
 import { TABBAR_HEIGHT } from '../../theme';
 import { ThemeContext } from '../../ThemeContext';
 import {
-    getAppPasscodeSetting,
-    getSelectedWallet,
-    getWallets,
-    saveWallets
+  getAppPasscodeSetting,
+  getSelectedWallet,
+  getWallets,
+  saveWallets
 } from '../../utils/local';
 import CardSliderSection from './CardSliderSection';
 import HomeHeader from './Header';
 import { styles } from './style';
 import TokenListSection from './TokenListSection';
 
-const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
 const HomeScreen = () => {
-  
+
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
   const [inited, setInited] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -45,7 +45,7 @@ const HomeScreen = () => {
   const language = useRecoilValue(languageAtom);
   const navigation = useNavigation();
 
-  const {top: topInsets} = useSafeAreaInsets();
+  const { top: topInsets } = useSafeAreaInsets();
   const tabBarHeight = Platform.OS === 'android' ? TABBAR_HEIGHT : TABBAR_HEIGHT + 15
 
   const setStatusBarColor = useSetRecoilState(statusBarColorAtom);
@@ -113,7 +113,7 @@ const HomeScreen = () => {
 
   if (!inited) {
     return (
-      <SafeAreaView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: theme.backgroundColor }}>
         <ActivityIndicator color={theme.textColor} size="large" />
       </SafeAreaView>
     );
@@ -127,7 +127,7 @@ const HomeScreen = () => {
         {
           name: 'Setting',
           state: {
-            routes: [{name: 'NewPasscode', params: {fromHome: true}}],
+            routes: [{ name: 'NewPasscode', params: { fromHome: true } }],
           },
         },
       ],
@@ -146,21 +146,21 @@ const HomeScreen = () => {
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: theme.backgroundColor, paddingTop: topInsets}}>
+    <View style={{ flex: 1, backgroundColor: theme.backgroundColor, paddingTop: topInsets }}>
       <HomeHeader />
       <ImageBackground
         source={require('../../assets/home_background.jpg')}
-        imageStyle={{width: viewportWidth, height: viewportHeight, resizeMode: 'cover'}}
+        imageStyle={{ width: viewportWidth, height: viewportHeight, resizeMode: 'cover' }}
         style={{
-          width: viewportWidth, 
+          width: viewportWidth,
           // height: viewportHeight - tabBarHeight - HEADER_HEIGHT - (Platform.OS === 'ios' ? 48 : 0), 
           flex: 1,
           // paddingBottom: Platform.OS == 'android' ? 24 : 0
         }}
       >
-        <ScrollView 
+        <ScrollView
           showsVerticalScrollIndicator={false}
-          style={[styles.bodyContainer]} 
+          style={[styles.bodyContainer]}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
