@@ -32,6 +32,7 @@ const HomeScreen = () => {
   const [inited, setInited] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [refreshTime, setRefreshTime] = useState(Date.now())
+  const [hideBalance, setHideBalance] = useState(false)
 
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(
@@ -140,6 +141,10 @@ const HomeScreen = () => {
     setRefreshing(false)
   }
 
+  const onHideBalanceClick = async () => {
+    setHideBalance(!hideBalance)
+  }
+
   return (
     <View style={{flex: 1, backgroundColor: theme.backgroundColor, paddingTop: topInsets}}>
       <HomeHeader />
@@ -166,8 +171,8 @@ const HomeScreen = () => {
             />
           }
         >
-          <CardSliderSection />
-          <TokenListSection refreshTime={refreshTime} />
+          <CardSliderSection hideBalance={hideBalance} onHideBalanceClick={onHideBalanceClick} />
+          <TokenListSection refreshTime={refreshTime} hideBalance={hideBalance} />
         </ScrollView>
       </ImageBackground>
     </View>
