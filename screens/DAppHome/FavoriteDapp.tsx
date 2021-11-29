@@ -56,13 +56,13 @@ export default ({
 								width: ITEM_WIDTH, 
 								// height: ITEM_WIDTH, 
 								marginLeft: index % columns === 0 ? 0 : marginLeft,
-								marginBottom: 8
+								marginBottom: 8,
 							}}
 						>
 							<View
 								style={{
 									backgroundColor: '#FFFFFF', 
-									borderRadius: 8,
+									borderRadius: 16,
 									marginBottom: 8,
 									alignItems: 'center',
 									justifyContent: 'center',
