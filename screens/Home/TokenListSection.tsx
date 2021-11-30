@@ -18,7 +18,7 @@ import { formatNumberString, parseDecimals } from '../../utils/number';
 // import List from '../../components/List';
 import { styles } from './style';
 
-const TokenListSection = ({ refreshTime, hideBalance }: {
+const TokenListSection = ({refreshTime, hideBalance}: {
   refreshTime: number,
   hideBalance: boolean
 }) => {
@@ -50,7 +50,7 @@ const TokenListSection = ({ refreshTime, hideBalance }: {
 
   const renderIcon = (avatar: string) => {
     return (
-      <View style={{ flex: 0.3, marginRight: 12 }}>
+      <View style={{flex: 0.3, marginRight: 12}}>
         <View
           style={{
             width: 30,
@@ -67,7 +67,7 @@ const TokenListSection = ({ refreshTime, hideBalance }: {
             borderColor: 'gray',
           }}>
           {avatar ? (
-            <Image source={{ uri: avatar }} style={styles.tokenLogo} />
+            <Image source={{uri: avatar}} style={styles.tokenLogo} />
           ) : (
             <Image
               source={require('../../assets/logo.png')}
@@ -137,10 +137,11 @@ const TokenListSection = ({ refreshTime, hideBalance }: {
               alignItems: 'flex-end',
               justifyContent: 'center',
             }}>
-            <CustomText style={[styles.kaiAmount, { color: theme.textColor }]}>
-              {!hideBalance ? (formatNumberString(parseDecimals(balance[index], item.decimals), 2)) : '*****'}
+            <CustomText style={[styles.kaiAmount, {color: theme.textColor}]}>
+              {!hideBalance ? (formatNumberString(parseDecimals(balance[index],
+                 item.decimals), 2)) : '*****'}
             </CustomText>
-            <CustomText style={{ color: theme.ghostTextColor }}>
+            <CustomText style={{color: theme.ghostTextColor}}>
               {item.symbol}
             </CustomText>
           </View>
@@ -166,11 +167,11 @@ const TokenListSection = ({ refreshTime, hideBalance }: {
           paddingTop: 16,
           paddingBottom: 12,
         }}>
-        <CustomText style={{ fontSize: 18, fontWeight: 'bold', color: theme.textColor }}>
+        <CustomText style={{fontSize: 18, fontWeight: 'bold', color: theme.textColor}}>
           {getLanguageString(language, 'KRC20_TOKENS_SECTION_TITLE')}
         </CustomText>
         <TouchableOpacity onPress={() => navigation.navigate('KRC20Tokens')}>
-          <CustomText style={{ fontSize: theme.defaultFontSize, color: theme.textColor }}>
+          <CustomText style={{fontSize: theme.defaultFontSize, color: theme.textColor}}>
             {getLanguageString(language, 'VIEW_ALL')} ({tokenList.length + 1})
           </CustomText>
         </TouchableOpacity>
@@ -205,25 +206,24 @@ const TokenListSection = ({ refreshTime, hideBalance }: {
               alignItems: 'center',
             }}>
             <Image
-              style={{ width: 32, height: 32, marginRight: 12 }}
+              style={{width: 32, height: 32, marginRight: 12}}
               source={require('../../assets/logo_dark.png')}
             />
             <View>
-              <CustomText style={{ color: 'rgba(252, 252, 252, 0.54)', fontSize: 12 }}>
+              <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
                 {getLanguageString(language, 'BALANCE').toUpperCase()}
               </CustomText>
-              <CustomText style={{ color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold' }}>
-                {!hideBalance ? (formatNumberString(weiToKAI(_getBalance()), 2, 0)) : '*****'}{' '}
-                <CustomText style={{ color: theme.mutedTextColor, fontWeight: '500' }}>KAI</CustomText>
+              <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold'}}>
+                { !hideBalance ? (formatNumberString(weiToKAI(_getBalance()), 2, 0)) : '*****'}{' '}
+                <CustomText style={{color: theme.mutedTextColor, fontWeight: '500'}}>KAI</CustomText>
               </CustomText>
-              <CustomText style={{ color: 'rgba(252, 252, 252, 0.54)', fontSize: 12 }}>
-                {!hideBalance ? ('$' +
-                  formatNumberString(
-                    (tokenInfo.price *
-                      Number(weiToKAI(_getBalance()))).toString(),
-                    2,
-                    0
-                  )) : '*****'}
+              <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
+                {!hideBalance ? ('$' + formatNumberString(
+                  (tokenInfo.price *
+                    Number(weiToKAI(_getBalance()))).toString(),
+                  2,
+                  0
+                )) : '*****'}
               </CustomText>
             </View>
           </View>
@@ -233,8 +233,8 @@ const TokenListSection = ({ refreshTime, hideBalance }: {
             onPress={() => Linking.openURL(SIMPLEX_URL)}
             type="ghost"
             size="small"
-            textStyle={Platform.OS === 'android' ? { color: '#000000', fontFamily: 'WorkSans-SemiBold' } : { color: '#000000', fontWeight: '500' }}
-            style={{ paddingHorizontal: 16, paddingVertical: 8 }}
+            textStyle={Platform.OS === 'android' ? {color: '#000000', fontFamily: 'WorkSans-SemiBold'} : {color: '#000000', fontWeight: '500'}}
+            style={{paddingHorizontal: 16, paddingVertical: 8}}
           />
         </View>
       </ImageBackground>

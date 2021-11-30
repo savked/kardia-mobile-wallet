@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Dimensions, Image, Platform, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, Platform, View, TouchableOpacity } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { filterByOwnerSelector, krc20PricesAtom } from '../../atoms/krc20';
 import { languageAtom } from '../../atoms/language';
@@ -14,9 +14,9 @@ import { formatNumberString, parseDecimals } from '../../utils/number';
 import ControlSection from './ControlSection';
 import { styles } from './style';
 
-const { width: viewportWidth } = Dimensions.get('window');
+const {width: viewportWidth} = Dimensions.get('window');
 
-export default ({ wallet, hideBalance, onHideBalanceClick, noAction = false, cardId }: {
+export default ({wallet, hideBalance, onHideBalanceClick, noAction = false, cardId}: {
 	wallet: any,
 	hideBalance: boolean,
 	onHideBalanceClick: () => void,
@@ -34,7 +34,7 @@ export default ({ wallet, hideBalance, onHideBalanceClick, noAction = false, car
 
 	const [KRC20Balance, setKRC20Balance] = useState(0)
 
-	useEffect(() => {
+  useEffect(() => {
 		(async () => {
 			const promiseArr = tokenList.map((i) => {
 				return getBalance(i.address, wallets[selectedWallet].address);
@@ -49,15 +49,15 @@ export default ({ wallet, hideBalance, onHideBalanceClick, noAction = false, car
 
 			setKRC20Balance(_krc20Balance);
 		})()
-	}, [tokenList, selectedWallet]);
+  }, [tokenList, selectedWallet]);
 
-	return (
+  return (
 		<View style={styles.kaiCardContainer}>
 			<View style={styles.kaiCard}>
 				<Image
-					style={[styles.cardBackground, { width: viewportWidth - 40 }]}
+					style={[styles.cardBackground, {width: viewportWidth - 40}]}
 					source={parseCardAvatar(cardId || wallet.cardAvatarID)}
-				// source={require('../../assets/test.jpg')}
+					// source={require('../../assets/test.jpg')}
 				/>
 				<View
 					style={{
@@ -74,7 +74,7 @@ export default ({ wallet, hideBalance, onHideBalanceClick, noAction = false, car
 						onPress={() => onHideBalanceClick()}>
 						<Image
 							source={require('../../assets/icon/hide_dark.png')}
-							style={{ width: 24, height: 24 }}
+							style={{width: 24, height: 24}}
 						/>
 					</TouchableOpacity>
 				</View>
@@ -82,10 +82,10 @@ export default ({ wallet, hideBalance, onHideBalanceClick, noAction = false, car
 					style={{
 						alignItems: 'center',
 					}}>
-					<CustomText allowFontScaling={false} style={{ color: 'rgba(252, 252, 252, 0.54)', fontSize: theme.defaultFontSize }}>
+					<CustomText allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: theme.defaultFontSize}}>
 						{getLanguageString(language, 'TOTAL_BALANCE').toUpperCase()}
 					</CustomText>
-					<CustomText allowFontScaling={false} style={Platform.OS === 'android' ? { fontSize: 24, color: theme.textColor, fontFamily: 'WorkSans-SemiBold' } : { fontSize: 24, color: theme.textColor, fontWeight: '500' }}>
+					<CustomText allowFontScaling={false} style={Platform.OS === 'android' ? {fontSize: 24, color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {fontSize: 24, color: theme.textColor, fontWeight: '500'}}>
 						{!hideBalance ? (tokenInfo.price ? '$' + formatNumberString(
 							(
 								tokenInfo.price * (
@@ -100,14 +100,14 @@ export default ({ wallet, hideBalance, onHideBalanceClick, noAction = false, car
 					</CustomText>
 				</View>
 
-				<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+				<View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1}}>
 					<ControlSection noAction={noAction} />
 				</View>
 
-				<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+				<View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
 					<View>
-						<CustomText style={Platform.OS === 'android' ? { fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontFamily: 'WorkSans-SemiBold' } : { fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontWeight: '500' }}>
-							{wallet.name ? wallet.name.toUpperCase() : getLanguageString(language, 'NEW_WALLET').toUpperCase()}
+						<CustomText style={Platform.OS === 'android' ? {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontFamily: 'WorkSans-SemiBold'} : {fontSize: 15, color: 'rgba(252, 252, 252, 0.87)', fontWeight: '500'}}>
+							{wallet.name ? wallet.name.toUpperCase() : getLanguageString(language,'NEW_WALLET').toUpperCase()}
 						</CustomText>
 					</View>
 				</View>
