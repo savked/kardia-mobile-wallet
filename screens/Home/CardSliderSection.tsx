@@ -19,7 +19,7 @@ const CardSliderSection = () => {
   const [snapTimeoutId, setSnapTimeoutId] = useState<any>()
 
   const renderWalletItem = ({item: wallet}: any) => {
-    return <CardItem wallet={wallet} />
+    return <CardItem wallet={wallet} cardId={wallet.cardAvatarID} />
   };
 
   useEffect(() => {

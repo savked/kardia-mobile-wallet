@@ -49,9 +49,9 @@ export default () => {
   const wallet = wallets.find((w) => w.address === address);
 
   const [name, setName] = useState(wallet ? wallet.name : '');
-  const [cardAvatarID, setCardAvatarID] = useState(wallet ? wallet.cardAvatarID : 1);
+  const [cardAvatarID, setCardAvatarID] = useState(wallet ? wallet.cardAvatarID : 0);
 
-  const krc20Prices = useRecoilValue(krc20PricesAtom);;
+  const krc20Prices = useRecoilValue(krc20PricesAtom);
   const tokenList = useRecoilValue(filterByOwnerSelector(wallets[selectedWallet].address))
   const [KRC20Balance, setKRC20Balance] = useState(0)
 
@@ -183,7 +183,7 @@ export default () => {
         >
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={{ paddingHorizontal: 20 }}>
-              <CardItem wallet={wallet} noAction={true} cardId={cardAvatarID} />
+              <CardItem wallet={wallet} noAction={true} cardId={cardAvatarID || 0} />
               <CustomText style={{ color: theme.textColor, fontSize: 20, fontWeight: 'bold', marginTop: 20 }}>
                 {getLanguageString(language, 'WALLET_DETAILS')}
               </CustomText>

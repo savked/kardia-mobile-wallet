@@ -19,7 +19,7 @@ const {width: viewportWidth} = Dimensions.get('window');
 export default ({wallet, noAction = false, cardId}: {
 	wallet: any
 	noAction?: boolean;
-	cardId?: number;
+	cardId: number;
 }) => {
 	const theme = useContext(ThemeContext);
 	const tokenInfo = useRecoilValue(tokenInfoAtom);
@@ -54,7 +54,7 @@ export default ({wallet, noAction = false, cardId}: {
 			<View style={styles.kaiCard}>
 				<Image
 					style={[styles.cardBackground, {width: viewportWidth - 40}]}
-					source={parseCardAvatar(cardId || wallet.cardAvatarID)}
+					source={parseCardAvatar(cardId)}
 					// source={require('../../assets/test.jpg')}
 				/>
 				<View
