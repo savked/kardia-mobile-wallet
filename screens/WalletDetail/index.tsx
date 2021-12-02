@@ -98,7 +98,7 @@ export default () => {
     return () =>
       BackHandler.removeEventListener('hardwareBackPress', onBackPress);
 
-  }, []);
+  }, [name, cardAvatarID]);
 
   if (!wallet) {
     return null;
