@@ -83,7 +83,7 @@ export const styles = StyleSheet.create({
     top: 0,
     left: 0,
     height: 230,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
     position: 'absolute',
     borderRadius: 8,
   },
