@@ -29,7 +29,6 @@ export default ({wallet, noAction = false, cardId}: {
 	const selectedWallet = useRecoilValue(selectedWalletAtom)
 	const krc20Prices = useRecoilValue(krc20PricesAtom);;
 	const tokenList = useRecoilValue(filterByOwnerSelector(wallets[selectedWallet].address))
-	const [balance, setBalance] = useState<string[]>([]);
 
 	const [hideBalance, setHideBalance] = useRecoilState(hideBalanceAtom)
 
@@ -57,7 +56,7 @@ export default ({wallet, noAction = false, cardId}: {
 			<View style={styles.kaiCard}>
 				<Image
 					style={[styles.cardBackground, {width: viewportWidth - 40}]}
-					source={parseCardAvatar(cardId || wallet.cardAvatarID)}
+					source={parseCardAvatar(cardId !== undefined ? cardId : wallet.cardAvatarID)}
 					// source={require('../../assets/test.jpg')}
 				/>
 				<View
