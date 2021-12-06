@@ -6,7 +6,6 @@ import ENIcon from 'react-native-vector-icons/Entypo';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { filterByOwnerSelector, krc20PricesAtom } from '../../atoms/krc20';
 import { languageAtom } from '../../atoms/language';
-import { pendingTxSelector } from '../../atoms/pendingTx';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import { tokenInfoAtom } from '../../atoms/token';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
@@ -35,13 +34,11 @@ export default () => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(selectedWalletAtom);
-  const [pendingTx, setPendingTx] = useRecoilState(pendingTxSelector(wallets[selectedWallet].address))
   const language = useRecoilValue(languageAtom);
   const tokenInfo = useRecoilValue(tokenInfoAtom);
 
   const [showQRModal, setShowQRModal] = useState(false);
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
-  const [showCardTypeModal, setShowCardTypeModal] = useState(false);
   const [requestAuth, setRequestAuth] = useState(false);
 
   const { params } = useRoute();
@@ -74,7 +71,7 @@ export default () => {
 				const decimalValue = parseDecimals(balanceArr[index], currentValue.decimals)
 				return accumulator + Number(decimalValue) * price
 			}, 0)
-	
+
 			setKRC20Balance(_krc20Balance);
 		})()
   }, [tokenList, selectedWallet]);
@@ -177,8 +174,8 @@ export default () => {
         </TouchableOpacity>
       </View>
       <View style={{flex: 1 }}>
-        <ScrollView 
-          // showsVerticalScrollIndicator={false} 
+        <ScrollView
+          // showsVerticalScrollIndicator={false}
           contentContainerStyle={{ justifyContent: 'flex-start' }}
         >
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -260,7 +257,7 @@ export default () => {
                 {getLanguageString(language, 'REVEAL_DESC')}
               </CustomText>
             </View>
-            <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end' }}> 
+            <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end' }}>
               <ENIcon
                 color={theme.textColor}
                 size={24}

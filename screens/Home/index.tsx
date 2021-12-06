@@ -8,6 +8,7 @@ import { languageAtom } from '../../atoms/language';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import { statusBarColorAtom } from '../../atoms/statusBar';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import { hideBalanceAtom } from '../../atoms/hideBalance'
 import { getBalance } from '../../services/account';
 // import RemindPasscodeModal from '../common/RemindPasscodeModal';
 import { getStakingAmount, getUndelegatingAmount } from '../../services/staking';
@@ -27,7 +28,7 @@ import TokenListSection from './TokenListSection';
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window')
 
 const HomeScreen = () => {
-  
+
   const [showPasscodeRemindModal, setShowPasscodeRemindModal] = useState(false);
   const [inited, setInited] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -147,15 +148,15 @@ const HomeScreen = () => {
         source={require('../../assets/home_background.jpg')}
         imageStyle={{width: viewportWidth, height: viewportHeight, resizeMode: 'cover'}}
         style={{
-          width: viewportWidth, 
-          // height: viewportHeight - tabBarHeight - HEADER_HEIGHT - (Platform.OS === 'ios' ? 48 : 0), 
+          width: viewportWidth,
+          // height: viewportHeight - tabBarHeight - HEADER_HEIGHT - (Platform.OS === 'ios' ? 48 : 0),
           flex: 1,
           // paddingBottom: Platform.OS == 'android' ? 24 : 0
         }}
       >
-        <ScrollView 
+        <ScrollView
           showsVerticalScrollIndicator={false}
-          style={[styles.bodyContainer]} 
+          style={[styles.bodyContainer]}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}

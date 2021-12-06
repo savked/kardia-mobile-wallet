@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, Image, ImageBackground, Linking, Platform, TouchableOpacity, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
+import { hideBalanceAtom } from '../../atoms/hideBalance';
 import { filterByOwnerSelector } from '../../atoms/krc20';
 import { languageAtom } from '../../atoms/language';
 import { tokenInfoAtom } from '../../atoms/token';
@@ -26,6 +27,7 @@ const TokenListSection = ({refreshTime}: {
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const wallets = useRecoilValue(walletsAtom)
   const tokenInfo = useRecoilValue(tokenInfoAtom);
+  const hideBalance = useRecoilValue(hideBalanceAtom)
 
   const language = useRecoilValue(languageAtom);
   const [loading, setLoading] = useState(true);
@@ -137,7 +139,8 @@ const TokenListSection = ({refreshTime}: {
               justifyContent: 'center',
             }}>
             <CustomText style={[styles.kaiAmount, {color: theme.textColor}]}>
-              {formatNumberString(parseDecimals(balance[index], item.decimals), 2)}
+              {!hideBalance ? (formatNumberString(parseDecimals(balance[index],
+                 item.decimals), 2)) : '*****'}
             </CustomText>
             <CustomText style={{color: theme.ghostTextColor}}>
               {item.symbol}
@@ -212,18 +215,16 @@ const TokenListSection = ({refreshTime}: {
                 {getLanguageString(language, 'BALANCE').toUpperCase()}
               </CustomText>
               <CustomText style={{color: theme.textColor, fontSize: 18, marginVertical: 4, fontWeight: 'bold'}}>
-                {
-                  formatNumberString(weiToKAI(_getBalance()), 2, 0)}{' '}
+                { !hideBalance ? (formatNumberString(weiToKAI(_getBalance()), 2, 0)) : '*****'}{' '}
                 <CustomText style={{color: theme.mutedTextColor, fontWeight: '500'}}>KAI</CustomText>
               </CustomText>
               <CustomText style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: 12}}>
-                $
-                {formatNumberString(
+                {!hideBalance ? ('$' + formatNumberString(
                   (tokenInfo.price *
                     Number(weiToKAI(_getBalance()))).toString(),
-                  2, 
+                  2,
                   0
-                )}
+                )) : '*****'}
               </CustomText>
             </View>
           </View>
