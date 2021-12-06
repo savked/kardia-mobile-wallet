@@ -10,6 +10,7 @@ import { pendingTxSelector } from '../../atoms/pendingTx';
 import { showTabBarAtom } from '../../atoms/showTabBar';
 import { tokenInfoAtom } from '../../atoms/token';
 import { selectedWalletAtom, walletsAtom } from '../../atoms/wallets';
+import { hideBalanceAtom } from '../../atoms/hideBalance';
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import CustomText from '../../components/Text';
@@ -35,6 +36,7 @@ export default () => {
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
   const [wallets, setWallets] = useRecoilState(walletsAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(selectedWalletAtom);
+  const [hideBalance, setHideBalance] = useRecoilState(hideBalanceAtom);
   const [pendingTx, setPendingTx] = useRecoilState(pendingTxSelector(wallets[selectedWallet].address))
   const language = useRecoilValue(languageAtom);
   const tokenInfo = useRecoilValue(tokenInfoAtom);
@@ -62,6 +64,10 @@ export default () => {
     }, []),
   );
 
+  const onHideBalanceClick = async () => {
+    setHideBalance(!hideBalance)
+  }
+
   useEffect(() => {
 		(async () => {
 			const promiseArr = tokenList.map((i) => {
@@ -74,7 +80,7 @@ export default () => {
 				const decimalValue = parseDecimals(balanceArr[index], currentValue.decimals)
 				return accumulator + Number(decimalValue) * price
 			}, 0)
-	
+
 			setKRC20Balance(_krc20Balance);
 		})()
   }, [tokenList, selectedWallet]);
@@ -177,13 +183,13 @@ export default () => {
         </TouchableOpacity>
       </View>
       <View style={{flex: 1 }}>
-        <ScrollView 
-          // showsVerticalScrollIndicator={false} 
+        <ScrollView
+          // showsVerticalScrollIndicator={false}
           contentContainerStyle={{ justifyContent: 'flex-start' }}
         >
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={{ paddingHorizontal: 20 }}>
-              <CardItem wallet={wallet} noAction={true} cardId={cardAvatarID} />
+              <CardItem wallet={wallet} hideBalance={hideBalance} onHideBalanceClick={onHideBalanceClick} noAction={true} cardId={cardAvatarID} />
               <CustomText style={{ color: theme.textColor, fontSize: 20, fontWeight: 'bold', marginTop: 20 }}>
                 {getLanguageString(language, 'WALLET_DETAILS')}
               </CustomText>
@@ -260,7 +266,7 @@ export default () => {
                 {getLanguageString(language, 'REVEAL_DESC')}
               </CustomText>
             </View>
-            <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end' }}> 
+            <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end' }}>
               <ENIcon
                 color={theme.textColor}
                 size={24}

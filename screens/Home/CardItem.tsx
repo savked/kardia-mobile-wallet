@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Dimensions, Image, Platform, View } from 'react-native';
+import { Dimensions, Image, Platform, View, TouchableOpacity } from 'react-native';
 import { useRecoilValue } from 'recoil';
 import { filterByOwnerSelector, krc20PricesAtom } from '../../atoms/krc20';
 import { languageAtom } from '../../atoms/language';
@@ -16,8 +16,10 @@ import { styles } from './style';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
-export default ({wallet, noAction = false, cardId}: {
-	wallet: any
+export default ({wallet, hideBalance, onHideBalanceClick, noAction = false, cardId}: {
+	wallet: any,
+	hideBalance: boolean,
+	onHideBalanceClick: () => void,
 	noAction?: boolean;
 	cardId?: number;
 }) => {
@@ -44,7 +46,7 @@ export default ({wallet, noAction = false, cardId}: {
 				const decimalValue = parseDecimals(balanceArr[index], currentValue.decimals)
 				return accumulator + Number(decimalValue) * price
 			}, 0)
-	
+
 			setKRC20Balance(_krc20Balance);
 		})()
   }, [tokenList, selectedWallet]);
@@ -59,23 +61,42 @@ export default ({wallet, noAction = false, cardId}: {
 				/>
 				<View
 					style={{
+						flexDirection: 'row',
+						justifyContent: 'center',
+						alignItems: 'flex-start',
+						width: '100%'
+					}}>
+					<TouchableOpacity
+						style={{
+							position: 'absolute',
+							left: 0
+						}}
+						onPress={() => onHideBalanceClick()}>
+						<Image
+							source={require('../../assets/icon/hide_dark.png')}
+							style={{width: 24, height: 24}}
+						/>
+					</TouchableOpacity>
+				</View>
+				<View
+					style={{
 						alignItems: 'center',
 					}}>
 					<CustomText allowFontScaling={false} style={{color: 'rgba(252, 252, 252, 0.54)', fontSize: theme.defaultFontSize}}>
 						{getLanguageString(language, 'TOTAL_BALANCE').toUpperCase()}
 					</CustomText>
 					<CustomText allowFontScaling={false} style={Platform.OS === 'android' ? {fontSize: 24, color: theme.textColor, fontFamily: 'WorkSans-SemiBold'} : {fontSize: 24, color: theme.textColor, fontWeight: '500'}}>
-						{tokenInfo.price ? '$' + formatNumberString(
+						{!hideBalance ? (tokenInfo.price ? '$' + formatNumberString(
 							(
 								tokenInfo.price * (
-									Number(weiToKAI(wallet.balance)) 
-									+ wallet.staked 
+									Number(weiToKAI(wallet.balance))
+									+ wallet.staked
 									+ wallet.undelegating
 								) + KRC20Balance
 							).toString(),
 							2,
 							0
-						) : '--'}
+						) : '--') : '*****'}
 					</CustomText>
 				</View>
 
