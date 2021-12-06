@@ -9,10 +9,7 @@ import { styles } from './style';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
-const CardSliderSection = ({hideBalance, onHideBalanceClick}: {
-  hideBalance: boolean,
-  onHideBalanceClick: () => void
-}) => {
+const CardSliderSection = () => {
   const carouselRef = useRef<Carousel<Wallet>>(null);
   const wallets = useRecoilValue(walletsAtom);
   const [selectedWallet, setSelectedWallet] = useRecoilState(
@@ -22,8 +19,7 @@ const CardSliderSection = ({hideBalance, onHideBalanceClick}: {
   const [snapTimeoutId, setSnapTimeoutId] = useState<any>()
 
   const renderWalletItem = ({item: wallet}: any) => {
-    return <CardItem wallet={wallet} hideBalance={hideBalance}
-    onHideBalanceClick={() => onHideBalanceClick()}/>
+    return <CardItem wallet={wallet} />
   };
 
   useEffect(() => {

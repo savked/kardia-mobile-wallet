@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Dimensions, Image, Platform, View, TouchableOpacity } from 'react-native';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { hideBalanceAtom } from '../../atoms/hideBalance';
 import { filterByOwnerSelector, krc20PricesAtom } from '../../atoms/krc20';
 import { languageAtom } from '../../atoms/language';
 import { tokenInfoAtom } from '../../atoms/token';
@@ -16,10 +17,8 @@ import { styles } from './style';
 
 const {width: viewportWidth} = Dimensions.get('window');
 
-export default ({wallet, hideBalance, onHideBalanceClick, noAction = false, cardId}: {
+export default ({wallet, noAction = false, cardId}: {
 	wallet: any,
-	hideBalance: boolean,
-	onHideBalanceClick: () => void,
 	noAction?: boolean;
 	cardId?: number;
 }) => {
@@ -31,6 +30,8 @@ export default ({wallet, hideBalance, onHideBalanceClick, noAction = false, card
 	const krc20Prices = useRecoilValue(krc20PricesAtom);;
 	const tokenList = useRecoilValue(filterByOwnerSelector(wallets[selectedWallet].address))
 	const [balance, setBalance] = useState<string[]>([]);
+
+	const [hideBalance, setHideBalance] = useRecoilState(hideBalanceAtom)
 
 	const [KRC20Balance, setKRC20Balance] = useState(0)
 
@@ -64,14 +65,15 @@ export default ({wallet, hideBalance, onHideBalanceClick, noAction = false, card
 						flexDirection: 'row',
 						justifyContent: 'center',
 						alignItems: 'flex-start',
-						width: '100%'
+						width: '100%',
+						zIndex: 1
 					}}>
 					<TouchableOpacity
 						style={{
 							position: 'absolute',
 							left: 0
 						}}
-						onPress={() => onHideBalanceClick()}>
+						onPress={() => setHideBalance(!hideBalance)}>
 						<Image
 							source={require('../../assets/icon/hide_dark.png')}
 							style={{width: 24, height: 24}}

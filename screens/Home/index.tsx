@@ -38,7 +38,6 @@ const HomeScreen = () => {
   const [selectedWallet, setSelectedWallet] = useRecoilState(
     selectedWalletAtom,
   );
-  const [hideBalance, setHideBalance] = useRecoilState(hideBalanceAtom)
 
   const setTabBarVisible = useSetRecoilState(showTabBarAtom);
 
@@ -142,10 +141,6 @@ const HomeScreen = () => {
     setRefreshing(false)
   }
 
-  const onHideBalanceClick = async () => {
-    setHideBalance(!hideBalance)
-  }
-
   return (
     <View style={{flex: 1, backgroundColor: theme.backgroundColor, paddingTop: topInsets}}>
       <HomeHeader />
@@ -172,8 +167,8 @@ const HomeScreen = () => {
             />
           }
         >
-          <CardSliderSection hideBalance={hideBalance} onHideBalanceClick={onHideBalanceClick} />
-          <TokenListSection refreshTime={refreshTime} hideBalance={hideBalance} />
+          <CardSliderSection />
+          <TokenListSection refreshTime={refreshTime} />
         </ScrollView>
       </ImageBackground>
     </View>

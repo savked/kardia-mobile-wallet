@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, Image, ImageBackground, Linking, Platform, TouchableOpacity, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
+import { hideBalanceAtom } from '../../atoms/hideBalance';
 import { filterByOwnerSelector } from '../../atoms/krc20';
 import { languageAtom } from '../../atoms/language';
 import { tokenInfoAtom } from '../../atoms/token';
@@ -18,15 +19,15 @@ import { formatNumberString, parseDecimals } from '../../utils/number';
 // import List from '../../components/List';
 import { styles } from './style';
 
-const TokenListSection = ({refreshTime, hideBalance}: {
-  refreshTime: number,
-  hideBalance: boolean
+const TokenListSection = ({refreshTime}: {
+  refreshTime: number
 }) => {
   const navigation = useNavigation();
   const theme = useContext(ThemeContext);
   const selectedWallet = useRecoilValue(selectedWalletAtom);
   const wallets = useRecoilValue(walletsAtom)
   const tokenInfo = useRecoilValue(tokenInfoAtom);
+  const hideBalance = useRecoilValue(hideBalanceAtom)
 
   const language = useRecoilValue(languageAtom);
   const [loading, setLoading] = useState(true);
